@@ -12,6 +12,17 @@
 #include "minecraft/commands/common/GameModeCommand.h"
 #include "minecraft/commands/common/GiveItemCommand.h"
 #include "minecraft/commands/common/KillCommand.h"
+#include "minecraft/commands/common/SummonCommand.h"
+#include "minecraft/commands/common/ListPlayersCommand.h"
+#include "minecraft/commands/common/KickPlayerCommand.h"
+#include "minecraft/commands/common/MsgCommand.h"
+#include "minecraft/commands/common/HealCommand.h"
+#include "minecraft/commands/common/FeedCommand.h"
+#include "minecraft/commands/common/SeedCommand.h"
+#include "minecraft/commands/common/OpCommand.h"
+#include "minecraft/commands/common/BanCommand.h"
+#include "minecraft/commands/common/TpsCommand.h"
+#include "minecraft/commands/common/PlayerLocationCommands.h"
 #include "minecraft/commands/common/TimeCommand.h"
 #include "minecraft/commands/common/ToggleDownfallCommand.h"
 #include "minecraft/network/packet/ChatPacket.h"
@@ -29,6 +40,25 @@ ServerCommandDispatcher::ServerCommandDispatcher() {
     addCommand(new TeleportCommand());
     addCommand(new GiveItemCommand());
     addCommand(new EnchantItemCommand());
+    addCommand(new SummonCommand());
+    // 4J Added - multiplayer admin / QoL commands
+    addCommand(new ListPlayersCommand());
+    addCommand(new KickPlayerCommand());
+    addCommand(new MsgCommand());
+    addCommand(new HealCommand());
+    addCommand(new FeedCommand());
+    addCommand(new SeedCommand());
+    addCommand(new OpCommand());
+    addCommand(new DeOpCommand());
+    addCommand(new BanCommand());
+    addCommand(new PardonCommand());
+    addCommand(new TpsCommand());
+    // Player QoL: spawn / home / back / reply
+    addCommand(new SpawnCommand());
+    addCommand(new SetHomeCommand());
+    addCommand(new HomeCommand());
+    addCommand(new BackCommand());
+    addCommand(new ReplyCommand());
     // addCommand(new EmoteCommand());
     // addCommand(new ShowSeedCommand());
     // addCommand(new HelpCommand());

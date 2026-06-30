@@ -21,6 +21,7 @@ LevelType* LevelType::lvl_flat = nullptr;  // = new LevelType(1, "flat");
 LevelType* LevelType::lvl_largeBiomes =
     nullptr;  // = new LevelType(2, "largeBiomes");
 LevelType* LevelType::lvl_amplified = nullptr;
+LevelType* LevelType::lvl_triple = nullptr;
 LevelType* LevelType::lvl_normal_1_1 =
     nullptr;  // = new LevelType(8, "default_1_1",
               // 0).setSelectableByUser(false);
@@ -32,6 +33,10 @@ void LevelType::staticCtor() {
     lvl_flat = new LevelType(1, L"flat");
     lvl_largeBiomes = new LevelType(2, L"largeBiomes");
     lvl_amplified = new LevelType(3, L"amplified");
+    // 4J macOS - "Triple" biome type. Slot 4 was unused in the original
+    // table; placing it here keeps existing save data with generator IDs
+    // 0-3 / 8 fully backwards compatible.
+    lvl_triple = new LevelType(4, L"triple");
     lvl_normal_1_1 = new LevelType(8, L"default_1_1", 0);
     lvl_normal_1_1->setSelectableByUser(false);
 }

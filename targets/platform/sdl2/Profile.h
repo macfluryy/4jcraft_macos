@@ -102,8 +102,8 @@ public:
         std::function<int(unsigned char*, unsigned short, int)>) {
         return 0;
     }
-    void WriteToProfile(int, bool = false, bool = false) {}
-    void ForceQueuedProfileWrites(int = XUSER_INDEX_ANY) {}
+    void WriteToProfile(int, bool = false, bool = false);
+    void ForceQueuedProfileWrites(int = XUSER_INDEX_ANY);
     void ResetProfileProcessState() {}
     void RegisterAward(int, int, EAwardType, bool = false,
                        CXuiStringTable* = nullptr, int = -1, int = -1, int = -1,
@@ -126,3 +126,14 @@ public:
 
 // Singleton
 extern C_4JProfile ProfileManager;
+
+// 4J macOS - see Profile.cpp. Call once at the start of a direct-connect
+// session before FakeLocalPlayerJoined() so the joining client doesn't share
+// an XUID with the host running on the same machine.
+void OverrideXuidBaseForDirectConnect();
+
+// 4J macOS - persist the user-chosen nickname across all four player
+// pad slots' gamertag / display-name caches. Called by Options::load
+// (so the saved name applies as soon as we start) and by the dedicated
+// Username editor screen (so changes take effect immediately).
+void SetUserGamertag(int iPad, const std::wstring& nick);

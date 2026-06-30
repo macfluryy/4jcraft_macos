@@ -34,6 +34,7 @@ void ServerConnection::NewIncomingSocket(Socket* socket) {
 
 void ServerConnection::addPlayerConnection(
     std::shared_ptr<PlayerConnection> uc) {
+    std::lock_guard<std::mutex> lock(players_cs);
     players.push_back(uc);
 }
 
@@ -53,8 +54,13 @@ void ServerConnection::stop() {
         }
     }
 
-    for (unsigned int i = 0; i < players.size(); i++) {
-        std::shared_ptr<PlayerConnection> player = players[i];
+    std::vector<std::shared_ptr<PlayerConnection> > playersSnapshot;
+    {
+        std::lock_guard<std::mutex> lock(players_cs);
+        playersSnapshot = players;
+    }
+    for (unsigned int i = 0; i < playersSnapshot.size(); i++) {
+        std::shared_ptr<PlayerConnection> player = playersSnapshot[i];
         player->connection->close(DisconnectPacket::eDisconnect_Closed);
     }
 }
@@ -92,19 +98,35 @@ void ServerConnection::tick() {
             }
     }
 
-    for (unsigned int i = 0; i < players.size(); i++) {
-        std::shared_ptr<PlayerConnection> player = players[i];
+    // 4J - copy player connections under players_cs so the iteration is not
+    // racy with addPlayerConnection() / external removals. The shared_ptr
+    // copies keep the underlying objects alive even if removed from the
+    // vector mid-iteration.
+    std::vector<std::shared_ptr<PlayerConnection> > playersSnapshot;
+    {
+        std::lock_guard<std::mutex> lock(players_cs);
+        playersSnapshot = players;
+    }
+    for (unsigned int i = 0; i < playersSnapshot.size(); i++) {
+        std::shared_ptr<PlayerConnection> player = playersSnapshot[i];
         std::shared_ptr<ServerPlayer> serverPlayer = player->getPlayer();
         if (serverPlayer) {
             serverPlayer->updateFrameTick();
             serverPlayer->doChunkSendingTick(false);
         }
         player->tick();
-        if (player->done) {
-            players.erase(players.begin() + i);
-            i--;
+        if (player->connection != nullptr) player->connection->flush();
+    }
+    // Now compact the live list: remove anything marked done.
+    {
+        std::lock_guard<std::mutex> lock(players_cs);
+        for (unsigned int i = 0; i < players.size();) {
+            if (players[i]->done) {
+                players.erase(players.begin() + i);
+            } else {
+                ++i;
+            }
         }
-        player->connection->flush();
     }
 }
 
@@ -132,8 +154,13 @@ void ServerConnection::handleTextureReceived(const std::wstring& textureName) {
     if (it != m_pendingTextureRequests.end()) {
         m_pendingTextureRequests.erase(it);
     }
-    for (unsigned int i = 0; i < players.size(); i++) {
-        std::shared_ptr<PlayerConnection> player = players[i];
+    std::vector<std::shared_ptr<PlayerConnection> > playersSnapshot;
+    {
+        std::lock_guard<std::mutex> lock(players_cs);
+        playersSnapshot = players;
+    }
+    for (unsigned int i = 0; i < playersSnapshot.size(); i++) {
+        std::shared_ptr<PlayerConnection> player = playersSnapshot[i];
         if (!player->done) {
             player->handleTextureReceived(textureName);
         }
@@ -147,8 +174,13 @@ void ServerConnection::handleTextureAndGeometryReceived(
     if (it != m_pendingTextureRequests.end()) {
         m_pendingTextureRequests.erase(it);
     }
-    for (unsigned int i = 0; i < players.size(); i++) {
-        std::shared_ptr<PlayerConnection> player = players[i];
+    std::vector<std::shared_ptr<PlayerConnection> > playersSnapshot;
+    {
+        std::lock_guard<std::mutex> lock(players_cs);
+        playersSnapshot = players;
+    }
+    for (unsigned int i = 0; i < playersSnapshot.size(); i++) {
+        std::shared_ptr<PlayerConnection> player = playersSnapshot[i];
         if (!player->done) {
             player->handleTextureAndGeometryReceived(textureName);
         }

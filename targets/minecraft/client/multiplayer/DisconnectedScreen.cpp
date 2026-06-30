@@ -21,6 +21,14 @@ DisconnectedScreen::DisconnectedScreen(const std::wstring& title,
     }
 }
 
+DisconnectedScreen::DisconnectedScreen(const std::wstring& title,
+                                       const std::wstring& reason,
+                                       bool bRawText) {
+    (void)bRawText;
+    this->title = title;
+    this->reason = reason;
+}
+
 void DisconnectedScreen::tick() {}
 
 void DisconnectedScreen::keyPressed(char eventCharacter, int eventKey) {}

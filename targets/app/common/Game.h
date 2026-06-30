@@ -226,6 +226,16 @@ public:
     void SetDisconnectReason(DisconnectPacket::eDisconnectReason bVal) {
         m_disconnectReason = bVal;
     }
+    // 4J macOS - arbitrary disconnect text (e.g. a flattened Java kick message)
+    // to show verbatim on the disconnect screen. Empty for ordinary code-based
+    // LCE disconnects, which keep their localized message. Always set alongside
+    // SetDisconnectReason so it never goes stale across disconnects.
+    const std::wstring& GetDisconnectReasonText() {
+        return m_disconnectReasonText;
+    }
+    void SetDisconnectReasonText(const std::wstring& text) {
+        m_disconnectReasonText = text;
+    }
 
     bool GetChangingSessionType() { return m_bChangingSessionType; }
     void SetChangingSessionType(bool bVal) { m_bChangingSessionType = bVal; }
@@ -551,6 +561,7 @@ private:
     // bool m_bHandRenderingOff;
 
     DisconnectPacket::eDisconnectReason m_disconnectReason;
+    std::wstring m_disconnectReasonText;  // 4J macOS - custom disconnect text
 
 public:
     virtual void RunFrame() {};

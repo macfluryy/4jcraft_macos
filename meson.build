@@ -36,6 +36,11 @@ else
   add_project_arguments(['-O3'], language: ['cpp', 'c'])
 endif
 
+# Keep frame pointers so the SIGSEGV handler's backtrace() can walk the stack.
+# At -O2 the compiler omits them by default and every crash collapses to
+# `main + N`, making the in-app backtrace useless. Cost is negligible.
+add_project_arguments(['-fno-omit-frame-pointer'], language: ['cpp', 'c', 'objcpp'])
+
 if host_machine.system() == 'linux'
   global_cpp_defs += ['-Dlinux', '-D__linux', '-D__linux__']
 endif

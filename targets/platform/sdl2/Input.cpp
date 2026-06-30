@@ -49,6 +49,11 @@ static int s_mouseX = 0, s_mouseY = 0;
 
 static int s_scrollTicksForButtonPressed = 0;
 static int s_scrollTicksForGetValue = 0;
+// 4J macOS - separate accumulator that is only consumed by callers who
+// explicitly drain it (currently ChatScreen). Keeps the chat scroll
+// independent of the hotbar / inventory scroll snapshot pipeline that
+// zeroes s_scrollTicksForButtonPressed every tick.
+static int s_scrollTicksForChat = 0;
 static int s_scrollTicksSnap = 0;
 static bool s_scrollSnapTaken = false;
 
@@ -221,13 +226,16 @@ static int SDLCALL EventWatcher(void*, SDL_Event* e) {
         }
         s_scrollTicksForGetValue += y;
         s_scrollTicksForButtonPressed += y;
+        s_scrollTicksForChat += y;
     } else if (e->type == SDL_MOUSEBUTTONDOWN) {
         if (e->button.button == 4) {
             s_scrollTicksForGetValue++;
             s_scrollTicksForButtonPressed++;
+            s_scrollTicksForChat++;
         } else if (e->button.button == 5) {
             s_scrollTicksForGetValue--;
             s_scrollTicksForButtonPressed--;
+            s_scrollTicksForChat--;
         }
     } else if (e->type == SDL_MOUSEMOTION) {
         s_accumRelX += (float)e->motion.xrel;
@@ -694,6 +702,16 @@ void C_4JInput::SetMenuDisplayed(int iPad, bool bVal) {
 int C_4JInput::GetScrollDelta() {
     int v = s_scrollTicksForButtonPressed;
     s_scrollTicksForButtonPressed = 0;
+    return v;
+}
+
+// 4J macOS - Drain the chat-only scroll accumulator. ChatScreen polls
+// this every tick so its mouse-wheel scroll keeps working even when
+// other consumers (hotbar, creative inventory) drain the shared
+// snapshot pipeline first.
+int C_4JInput::GetChatScrollDelta() {
+    int v = s_scrollTicksForChat;
+    s_scrollTicksForChat = 0;
     return v;
 }
 

@@ -26,6 +26,7 @@
 #include "minecraft/client/skins/DLCTexturePack.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/network/packet/DisconnectPacket.h"
+#include "minecraft/client/multiplayer/DisconnectedScreen.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "strings.h"
 
@@ -336,10 +337,18 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
             // that is most likely the cause of the disconnection so don't
             // display a message box. This will allow the message box requested
             // by the libraries to be brought up
-            if (ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad()))
+            // 4J macOS - the disconnect screen (including any custom Java
+            // reason) is now created synchronously in the eAppAction_ExitWorld
+            // handler, so run_middle never renders a null screen. Here we only
+            // still raise the per-code message box for ordinary (non-custom)
+            // LCE disconnects; custom-text disconnects already show their reason
+            // on the DisconnectedScreen.
+            if (app.GetDisconnectReasonText().empty() &&
+                ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad())) {
                 ui.RequestErrorMessage(exitReasonTitleId, exitReasonStringId,
                                        uiIDA, 1,
                                        ProfileManager.GetPrimaryPad());
+            }
             exitReasonStringId = -1;
 
             // 4J - Force a disconnection, this handles the situation that the

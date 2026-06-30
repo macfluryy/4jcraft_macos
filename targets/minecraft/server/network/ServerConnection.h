@@ -26,6 +26,8 @@ private:
 private:
     std::mutex pending_cs;  // 4J added
     std::vector<std::shared_ptr<PendingConnection> > pending;
+    std::mutex players_cs;  // 4J - protects 'players' against concurrent
+                            // add from accept thread vs server tick.
     std::vector<std::shared_ptr<PlayerConnection> > players;
 
     // 4J - When the server requests a texture, it should add it to here while

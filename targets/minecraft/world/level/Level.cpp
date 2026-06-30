@@ -3963,6 +3963,15 @@ void Level::setRainLevel(float rainLevel) {
     this->rainLevel = rainLevel;
 }
 
+// 4J macOS - mirror setRainLevel for the thunder track so the client can
+// snap to a thunderstorm (darker sky, lightning ambience) when the server
+// sends START_RAINING with param=1. Note getThunderLevel multiplies by
+// rainLevel, so callers must also raise rainLevel for thunder to show.
+void Level::setThunderLevel(float thunderLevel) {
+    oThunderLevel = thunderLevel;
+    this->thunderLevel = thunderLevel;
+}
+
 bool Level::isThundering() { return getThunderLevel(1) > 0.9; }
 
 bool Level::isRaining() { return getRainLevel(1) > 0.2; }

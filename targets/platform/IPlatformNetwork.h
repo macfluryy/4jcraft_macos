@@ -113,6 +113,9 @@ public:
     virtual void SystemFlagSet(INetworkPlayer* pNetworkPlayer, int index) = 0;
     [[nodiscard]] virtual bool SystemFlagGet(INetworkPlayer* pNetworkPlayer,
                                               int index) = 0;
+    // 4J macOS task 5.2 (Req 4.5) - clear a per-system flag so a chunk
+    // unloaded for a Remote_Client is re-sent if the player re-enters range.
+    virtual void SystemFlagClear(INetworkPlayer* pNetworkPlayer, int index) = 0;
 
     // Stats
     [[nodiscard]] virtual std::wstring GatherStats() = 0;

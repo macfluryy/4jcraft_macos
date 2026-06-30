@@ -31,6 +31,12 @@ public:
     int m_xzSize;     // 4J Added
     int m_hellScale;  // 4J Added
 
+    // 4J macOS - Server -> Client Server_View_Distance in chunks. Sent during
+    // login so the remote client can compute its Effective_View_Distance before
+    // any BlockRegionUpdatePacket arrives. Meaningless (0) for the
+    // Client -> Server direction.
+    int serverViewDistance;
+
     // 1.8.2
     int gameType;
     std::uint8_t mapHeight;
@@ -42,8 +48,8 @@ public:
                 char dimension, std::uint8_t mapHeight, std::uint8_t maxPlayers,
                 char difficulty, int m_multiplayerInstanceId,
                 std::uint8_t playerIndex, bool newSeaLevel,
-                unsigned int uiGamePrivileges, int xzSize,
-                int hellScale);  // Server -> Client
+                unsigned int uiGamePrivileges, int xzSize, int hellScale,
+                int serverViewDistance);  // Server -> Client
     LoginPacket(const std::wstring& userName, int clientVersion,
                 PlayerUID offlineXuid, PlayerUID onlineXuid,
                 bool friendsOnlyUGC, std::uint32_t ugcPlayersVersion,

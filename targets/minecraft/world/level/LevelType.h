@@ -9,6 +9,13 @@ public:
     static LevelType* lvl_flat;         // = new LevelType(1, "flat");
     static LevelType* lvl_largeBiomes;  // = new LevelType(2, "largeBiomes");
     static LevelType* lvl_amplified;    // = new LevelType(3, "amplified");
+    // 4J macOS - "Triple" world type. Re-uses the standard 4J terrain
+    // generator (so chunk shape, structures, caves are unchanged) but
+    // restricts BiomeInitLayer to a fixed set of three biomes - flowery
+    // forest, snowy ice plains, and rocky extreme hills - giving the
+    // world a very specific Java-Realms-style look without touching the
+    // noise pipeline.
+    static LevelType* lvl_triple;       // = new LevelType(4, "triple");
     static LevelType* lvl_normal_1_1;   // = new LevelType(8, "default_1_1",
                                         // 0).setSelectableByUser(false);
 

@@ -91,6 +91,17 @@ LevelData::LevelData(CompoundTag* tag) {
         L"hasBeenInCreative");  // 4J added so we can not award achievements to
                                 // levels modified in creative
 
+    // 4J macOS - restore persisted host game-rule bitmask. Older saves
+    // won't have this key; getInt returns 0 then and we leave the
+    // host-picked settings untouched (MinecraftServer::loadLevel guards
+    // on != 0).
+    if (tag->contains(L"GameHostSettings")) {
+        m_gameHostSettings =
+            (unsigned int)tag->getInt(L"GameHostSettings");
+    } else {
+        m_gameHostSettings = 0;
+    }
+
     // 4J added - for stronghold position
     bStronghold = tag->getBoolean(L"hasStronghold");
 
@@ -296,6 +307,7 @@ LevelData::LevelData(LevelData* copy) {
     initialized = copy->initialized;
     newSeaLevel = copy->newSeaLevel;
     hasBeenInCreative = copy->hasBeenInCreative;
+    m_gameHostSettings = copy->m_gameHostSettings;  // 4J macOS
     gameRules = copy->gameRules;
 
     // 4J-PB for the stronghold position
@@ -360,6 +372,9 @@ void LevelData::setTagData(CompoundTag* tag) {
     // tag->putCompound(L"GameRules", gameRules.createTag());
     tag->putBoolean(L"newSeaLevel", newSeaLevel);
     tag->putBoolean(L"hasBeenInCreative", hasBeenInCreative);
+    // 4J macOS - persist the host game-rule bitmask so PVP / TNT / fire
+    // spread / keep-inventory / daylight-cycle etc survive a relaunch.
+    tag->putInt(L"GameHostSettings", (int)m_gameHostSettings);
     // store the stronghold position
     tag->putBoolean(L"hasStronghold", bStronghold);
     tag->putInt(L"StrongholdX", xStronghold);

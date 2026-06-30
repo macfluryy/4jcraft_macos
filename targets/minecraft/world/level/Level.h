@@ -607,6 +607,7 @@ public:
     float getThunderLevel(float a);
     float getRainLevel(float a);
     void setRainLevel(float rainLevel);
+    void setThunderLevel(float thunderLevel);
     bool isThundering();
     bool isRaining();
     bool isRainingAt(int x, int y, int z);

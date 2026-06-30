@@ -547,8 +547,16 @@ bool DLCManager::processDLCDataFile(unsigned int& dwFilesProcessed,
             bool validPack =
                 processDLCDataFile(texturePackFilesProcessed, pbTemp,
                                    fileBuf.uiFileSize, dlcTexturePack);
-            pack->SetDataPointer(
-                nullptr);  // If it's a child pack, it doesn't own the data
+            // The child texture pack's m_data points INTO the parent's single
+            // new[] buffer (processDLCDataFile set it to the interior pbTemp),
+            // so the child must never delete[] it. Clear the CHILD's pointer -
+            // not the parent's. The previous code nulled `pack` (the parent),
+            // which (a) leaked the parent's real allocation and (b) left this
+            // child holding an interior pointer; on the invalid-pack cleanup
+            // path below (`delete dlcTexturePack`, before addChildPack sets its
+            // parent) the dtor's `if (m_parentPack == nullptr) delete[] m_data`
+            // then bad-freed that interior pointer.
+            dlcTexturePack->SetDataPointer(nullptr);
             if (!validPack || texturePackFilesProcessed == 0) {
                 delete dlcTexturePack;
                 dlcTexturePack = nullptr;

@@ -185,21 +185,24 @@ bool Connection::writeTick() {
     // deleted
     if (bufferedDos == nullptr || byteArrayDos == nullptr) return didSomething;
 
-    // try {
-    if (!outgoing.empty() &&
-        (fakeLag == 0 ||
-         System::currentTimeMillis() - outgoing.front()->createTime >=
-             fakeLag)) {
-        std::shared_ptr<Packet> packet;
-
-        {
-            std::lock_guard<std::mutex> lock(writeLock);
-
+    // 4J - take the write lock once for the empty/front check + pop, instead
+    // of two separate critical sections. Without this lock spanning the check,
+    // another thread could pop the queue between the empty()/front() probe
+    // and the lock_guard below, leaving us calling pop() on an empty queue.
+    std::shared_ptr<Packet> packet;
+    {
+        std::lock_guard<std::mutex> lock(writeLock);
+        if (!outgoing.empty() &&
+            (fakeLag == 0 ||
+             System::currentTimeMillis() - outgoing.front()->createTime >=
+                 fakeLag)) {
             packet = outgoing.front();
             outgoing.pop();
             estimatedRemaining -= packet->getEstimatedSize() + 1;
         }
+    }
 
+    if (packet != nullptr) {
         Packet::writePacket(packet, bufferedDos);
 #if defined(__linux__) && defined(__APPLE__)
         bufferedDos->flush();  // Ensure buffered data reaches socket before any
@@ -231,24 +234,23 @@ bool Connection::writeTick() {
 
         writeSizes[packet->getId()] += packet->getEstimatedSize() + 1;
         didSomething = true;
+        packet.reset();
     }
 
-    if ((slowWriteDelay-- <= 0) && !outgoing_slow.empty() &&
-        (fakeLag == 0 ||
-         System::currentTimeMillis() - outgoing_slow.front()->createTime >=
-             fakeLag)) {
-        std::shared_ptr<Packet> packet;
-
-        // synchronized (writeLock) {
-
-        {
-            std::lock_guard<std::mutex> lock(writeLock);
-
+    {
+        std::lock_guard<std::mutex> lock(writeLock);
+        if ((slowWriteDelay-- <= 0) && !outgoing_slow.empty() &&
+            (fakeLag == 0 ||
+             System::currentTimeMillis() -
+                     outgoing_slow.front()->createTime >=
+                 fakeLag)) {
             packet = outgoing_slow.front();
             outgoing_slow.pop();
             estimatedRemaining -= packet->getEstimatedSize() + 1;
         }
+    }
 
+    if (packet != nullptr) {
         // If the shouldDelay flag is still set at this point then we want to
         // write it to QNet as a single packet with priority flags Otherwise
         // just buffer the packet with other outgoing packets as the java game
@@ -300,11 +302,6 @@ bool Connection::writeTick() {
         slowWriteDelay = 0;
         didSomething = true;
     }
-    /* 4J JEV, removed try/catch
-    } catch (Exception e) {
-    if (!disconnected) handleException(e);
-    return false;
-    } */
 
     return didSomething;
 }
@@ -426,6 +423,22 @@ void Connection::close(DisconnectPacket::eDisconnectReason reason) {
         socket->close(packetListener->isServerPacketListener());
         socket = nullptr;
     }
+
+    // 4J - drop any queued OUTGOING packets that never made it to the wire so
+    // we release their shared_ptrs immediately rather than holding them until
+    // ~Connection. Otherwise references kept inside packets (level data,
+    // entities, etc) outlive the disconnect and can be very heavy.
+    // We deliberately keep `incoming` intact: tick() still needs to drain
+    // any client packets that arrived right before the disconnect (e.g. a
+    // closing chat / kick handshake) before reporting onDisconnect upstream.
+    {
+        std::lock_guard<std::mutex> lock(writeLock);
+        std::queue<std::shared_ptr<Packet> > emptyA;
+        std::queue<std::shared_ptr<Packet> > emptyB;
+        outgoing.swap(emptyA);
+        outgoing_slow.swap(emptyB);
+        estimatedRemaining = 0;
+    }
 }
 
 void Connection::tick() {
@@ -439,7 +452,12 @@ void Connection::tick() {
     }
     if (empty) {
 #if CONNECTION_ENABLE_TIMEOUT_DISCONNECT
-        if (noInputTicks++ == MAX_TICKS_WITHOUT_INPUT) {
+        // 4J - was '== MAX_TICKS_WITHOUT_INPUT' which only fires once. If
+        // close() somehow doesn't take effect on the very tick the counter
+        // matches the limit, the timeout never re-triggers because the
+        // counter keeps incrementing past the equal-check forever. '>=' is
+        // also safer if MAX_TICKS_WITHOUT_INPUT changes at runtime.
+        if (noInputTicks++ >= MAX_TICKS_WITHOUT_INPUT) {
             close(DisconnectPacket::eDisconnect_TimeOut);
         }
 #endif
@@ -563,7 +581,10 @@ void Connection::sendAndQuit() {
     }
 }
 
-int Connection::countDelayedPackets() { return (int)outgoing_slow.size(); }
+int Connection::countDelayedPackets() {
+    std::lock_guard<std::mutex> lock(writeLock);
+    return (int)outgoing_slow.size();
+}
 
 int Connection::runRead(void* lpParam) {
     ShutdownManager::HasStarted(ShutdownManager::eConnectionReadThreads);

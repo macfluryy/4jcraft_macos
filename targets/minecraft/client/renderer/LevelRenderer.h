@@ -217,6 +217,22 @@ private:
     double yOld[4];  // 4J - now one per player
     double zOld[4];  // 4J - now one per player
 
+public:
+    // 4J macOS - reset the per-player "last known position" cache so the
+    // render loop picks up the new cameraTargetPlayer location next frame
+    // and triggers a normal resortChunks. Used by ClientConnection on the
+    // first MovePlayerPacket for a remote join, where doing the reset
+    // from the network thread (via allChanged) would race with the render
+    // thread iterating the chunks vector.
+    void invalidateLastPlayerPos(int playerIndex) {
+        if (playerIndex < 0 || playerIndex >= 4) return;
+        xOld[playerIndex] = -9999;
+        yOld[playerIndex] = -9999;
+        zOld[playerIndex] = -9999;
+    }
+
+private:
+
     int totalChunks, offscreenChunks, occludedChunks, renderedChunks,
         emptyChunks;
     static const int RENDERLISTS_LENGTH = 4;  // 4J - added

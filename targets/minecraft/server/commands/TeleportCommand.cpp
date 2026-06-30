@@ -21,77 +21,113 @@ EGameCommand TeleportCommand::getId() { return eGameCommand_Teleport; }
 
 void TeleportCommand::execute(std::shared_ptr<CommandSender> source,
                               std::vector<uint8_t>& commandData) {
-    ByteArrayInputStream bais(commandData);
-    DataInputStream dis(&bais);
-
-    PlayerUID subjectID = dis.readPlayerUID();
-    PlayerUID destinationID = dis.readPlayerUID();
-
-    bais.reset();
-
-    PlayerList* players = MinecraftServer::getInstance()->getPlayerList();
-
-    std::shared_ptr<ServerPlayer> subject = players->getPlayer(subjectID);
-    std::shared_ptr<ServerPlayer> destination =
-        players->getPlayer(destinationID);
-
-    if (subject != nullptr && destination != nullptr &&
-        subject->level->dimension->id == destination->level->dimension->id &&
-        subject->isAlive()) {
-        subject->ride(nullptr);
-        subject->connection->teleport(destination->x, destination->y,
-                                      destination->z, destination->yRot,
-                                      destination->xRot);
-        // logAdminAction(source, "commands.tp.success", subject->getAName(),
-        // destination->getAName());
-        logAdminAction(source, ChatPacket::e_ChatCommandTeleportSuccess,
-                       subject->getName(), eTYPE_SERVERPLAYER,
-                       destination->getName());
-
-        if (subject == source) {
-            destination->sendMessage(subject->getName(),
-                                     ChatPacket::e_ChatCommandTeleportToMe);
-        } else {
-            subject->sendMessage(destination->getName(),
-                                 ChatPacket::e_ChatCommandTeleportMe);
-        }
+    if (commandData.empty()) {
+        source->sendMessage(L"§cUsage: /tp <player> | <x> <y> <z> | <subject> <target>");
+        return;
     }
 
-    // if (args.size() >= 1) {
-    //	MinecraftServer server = MinecraftServer.getInstance();
-    //	ServerPlayer victim;
+    try {
+        ByteArrayInputStream bais(commandData);
+        DataInputStream dis(&bais);
 
-    //	if (args.size() == 2 || args.size() == 4) {
-    //		victim = server.getPlayers().getPlayer(args[0]);
-    //		if (victim == null) throw new PlayerNotFoundException();
-    //	} else {
-    //		victim = (ServerPlayer) convertSourceToPlayer(source);
-    //	}
+        int mode = dis.readInt();
 
-    //	if (args.size() == 3 || args.size() == 4) {
-    //		if (victim.level != null) {
-    //			int pos = args.size() - 3;
-    //			int maxPos = Level.MAX_LEVEL_SIZE;
-    //			int x = convertArgToInt(source, args[pos++], -maxPos,
-    // maxPos); 			int y = convertArgToInt(source,
-    // args[pos++], Level.minBuildHeight, Level.maxBuildHeight);
-    // int z = convertArgToInt(source, args[pos++], -maxPos, maxPos);
+        MinecraftServer* server = MinecraftServer::getInstance();
+        if (server == nullptr) return;
+        PlayerList* players = server->getPlayerList();
 
-    //			victim.teleportTo(x + 0.5f, y, z + 0.5f);
-    //			logAdminAction(source, "commands.tp.coordinates",
-    // victim.getAName(), x, y, z);
-    //		}
-    //	} else if (args.size() == 1 || args.size() == 2) {
-    //		ServerPlayer destination =
-    // server.getPlayers().getPlayer(args[args.size() - 1]); 		if
-    // (destination == null) throw new PlayerNotFoundException();
+        auto sourcePlayer = std::dynamic_pointer_cast<ServerPlayer>(source);
 
-    //		victim.connection.teleport(destination.x, destination.y,
-    // destination.z, destination.yRot, destination.xRot);
-    // logAdminAction(source, "commands.tp.success", victim.getAName(),
-    // destination.getAName());
-    //	}
-    //}
+        if (mode == TP_MODE_TO_PLAYER) {
+            // /tp <targetName> - source moves to target
+            std::wstring targetName = dis.readUTF();
+            if (sourcePlayer == nullptr) {
+                source->sendMessage(L"§cOnly players can use this form of /tp");
+                return;
+            }
+            auto target = players->getPlayer(targetName);
+            if (target == nullptr) {
+                source->sendMessage(L"§cPlayer not found: " + targetName);
+                return;
+            }
+            if (sourcePlayer->level->dimension->id !=
+                target->level->dimension->id) {
+                source->sendMessage(
+                    L"§cTarget is in a different dimension");
+                return;
+            }
+            sourcePlayer->ride(nullptr);
+            sourcePlayer->connection->teleport(target->x, target->y, target->z,
+                                               target->yRot, target->xRot);
+            source->sendMessage(L"§aTeleported to " + targetName);
+
+        } else if (mode == TP_MODE_TO_COORDS) {
+            // /tp <x> <y> <z>
+            double x = dis.readDouble();
+            double y = dis.readDouble();
+            double z = dis.readDouble();
+            if (sourcePlayer == nullptr) {
+                source->sendMessage(L"§cOnly players can use this form of /tp");
+                return;
+            }
+            sourcePlayer->ride(nullptr);
+            sourcePlayer->connection->teleport(x, y, z, sourcePlayer->yRot,
+                                               sourcePlayer->xRot);
+            source->sendMessage(L"§aTeleported to " + std::to_wstring((int)x) +
+                                L", " + std::to_wstring((int)y) + L", " +
+                                std::to_wstring((int)z));
+
+        } else if (mode == TP_MODE_PLAYER_TO_PLAYER) {
+            // /tp <subject> <target>
+            std::wstring subjectName = dis.readUTF();
+            std::wstring targetName = dis.readUTF();
+            auto subject = players->getPlayer(subjectName);
+            auto target = players->getPlayer(targetName);
+            if (subject == nullptr) {
+                source->sendMessage(L"§cPlayer not found: " + subjectName);
+                return;
+            }
+            if (target == nullptr) {
+                source->sendMessage(L"§cPlayer not found: " + targetName);
+                return;
+            }
+            if (subject->level->dimension->id !=
+                target->level->dimension->id) {
+                source->sendMessage(
+                    L"§cTarget is in a different dimension");
+                return;
+            }
+            subject->ride(nullptr);
+            subject->connection->teleport(target->x, target->y, target->z,
+                                          target->yRot, target->xRot);
+            source->sendMessage(L"§aTeleported " + subjectName + L" to " +
+                                targetName);
+
+        } else if (mode == TP_MODE_PLAYER_TO_COORDS) {
+            // /tp <subject> <x> <y> <z>
+            std::wstring subjectName = dis.readUTF();
+            double x = dis.readDouble();
+            double y = dis.readDouble();
+            double z = dis.readDouble();
+            auto subject = players->getPlayer(subjectName);
+            if (subject == nullptr) {
+                source->sendMessage(L"§cPlayer not found: " + subjectName);
+                return;
+            }
+            subject->ride(nullptr);
+            subject->connection->teleport(x, y, z, subject->yRot,
+                                          subject->xRot);
+            source->sendMessage(L"§aTeleported " + subjectName + L" to " +
+                                std::to_wstring((int)x) + L", " +
+                                std::to_wstring((int)y) + L", " +
+                                std::to_wstring((int)z));
+        } else {
+            source->sendMessage(L"§cUnknown teleport mode");
+        }
+
+    } catch (const std::exception&) {
+        source->sendMessage(L"§cError executing teleport command");
+    }
 }
 
 std::shared_ptr<GameCommandPacket> TeleportCommand::preparePacket(

@@ -1,9 +1,6 @@
-// macOS ARM port of Linux_UIController.cpp
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
-// GDraw GL backend for macOS
 #include "platform/sdl2/Render.h"
 #include "Mac_UIController.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
@@ -47,7 +44,6 @@ static void restoreFixedFunctionStateAfterIggy() {
 
 void ConsoleUIController::init(S32 w, S32 h) {
 #ifdef _ENABLEIGGY
-    // Shared init
     preInit(w, h);
 
     gdraw_funcs = gdraw_GL_CreateContext(w, h, 0);
@@ -136,6 +132,27 @@ void ConsoleUIController::shutdown() {
         gdraw_funcs = nullptr;
     }
 #endif
+}
+
+ConsoleUIController::TutorialOverlayState
+    ConsoleUIController::s_tutorialOverlay;
+
+void ConsoleUIController::SetTutorialDescription(int iPad,
+                                                 TutorialPopupInfo* info) {
+    UIController::SetTutorialDescription(iPad, info);
+
+    if (info == nullptr) {
+        s_tutorialOverlay.visible = false;
+        s_tutorialOverlay.title.clear();
+        s_tutorialOverlay.desc.clear();
+        return;
+    }
+    s_tutorialOverlay.title =
+        (info->title != nullptr) ? std::wstring(info->title) : std::wstring();
+    s_tutorialOverlay.desc =
+        (info->desc != nullptr) ? std::wstring(info->desc) : std::wstring();
+    s_tutorialOverlay.visible =
+        !s_tutorialOverlay.title.empty() || !s_tutorialOverlay.desc.empty();
 }
 
 #pragma clang diagnostic pop

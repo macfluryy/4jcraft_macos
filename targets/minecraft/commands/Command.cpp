@@ -5,6 +5,7 @@
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/PlayerList.h"
+#include "minecraft/server/level/ServerPlayer.h"
 
 AdminLogCommand* Command::logger;
 
@@ -34,6 +35,21 @@ void Command::logAdminAction(std::shared_ptr<CommandSender> source, int type,
 }
 
 void Command::setLogger(AdminLogCommand* logger) { Command::logger = logger; }
+
+bool Command::requireOp(std::shared_ptr<CommandSender> source) {
+    auto serverPlayer = std::dynamic_pointer_cast<ServerPlayer>(source);
+    if (serverPlayer == nullptr) {
+        // Console / non-player command source is implicitly authorized
+        return true;
+    }
+    auto* server = MinecraftServer::getInstance();
+    if (server == nullptr) return true;  // No server, no enforcement
+    if (server->getPlayers()->isOp(serverPlayer)) return true;
+
+    serverPlayer->sendMessage(
+        L"§cYou do not have permission to use this command");
+    return false;
+}
 
 std::shared_ptr<ServerPlayer> Command::getPlayer(PlayerUID playerId) {
     std::shared_ptr<ServerPlayer> player =

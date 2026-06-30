@@ -27,6 +27,7 @@
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"
+#include "minecraft/client/User.h"
 #include "minecraft/client/gui/Screen.h"
 #include "minecraft/client/gui/ScrolledSelectionList.h"
 #include "minecraft/locale/Language.h"
@@ -241,6 +242,21 @@ void SelectWorldScreen::worldSelected(int id) {
     param->settings = app.GetGameHostOption(eGameHostOption_All);
     param->xzSize = LEVEL_MAX_WIDTH;
     param->hellScale = HELL_LEVEL_MAX_SCALE;
+
+    // 4J macOS - clear stale terrain feature positions from any
+    // previously loaded world before re-mounting this save. The
+    // structures will repopulate as chunks generate / are read from
+    // disk; without this clear the F3 overlay shows entries from the
+    // previous world layered on top of the new one.
+    app.ClearTerrainFeaturePosition();
+
+    // 4J macOS - apply the player's chosen nickname (Title -> Username
+    // screen) before hosting so chat / tab list / death messages use it
+    // instead of the auto-generated PlayerNNNN created at startup.
+    if (minecraft->user != nullptr && minecraft->options != nullptr &&
+        !minecraft->options->lastMpNickname.empty()) {
+        minecraft->user->name = minecraft->options->lastMpNickname;
+    }
 
     g_NetworkManager.HostGame(0, false, false, MINECRAFT_NET_MAX_PLAYERS, 0);
     g_NetworkManager.FakeLocalPlayerJoined();

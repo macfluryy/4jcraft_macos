@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 
+#include <atomic>
 #include <memory>
 #include <mutex>
 #include <queue>
@@ -62,7 +63,10 @@ private:
     ByteArrayOutputStream* baos;
     Socket::SocketOutputStream* sos;
 
-    bool running;
+    // 4J - made atomic; flipped between server tick / read thread / write
+    // thread without an external lock. Using atomic gives us a defined
+    // memory model and rules out tearing on weakly-ordered platforms.
+    std::atomic<bool> running;
 
     std::queue<std::shared_ptr<Packet> >
         incoming;            // 4J - was using synchronizedList...
@@ -75,7 +79,7 @@ private:
                         // is required as usage is wrapped in writeLock
 
     PacketListener* packetListener;
-    bool quitting;
+    std::atomic<bool> quitting;
 
     C4JThread* readThread;
     C4JThread* writeThread;
@@ -85,7 +89,7 @@ private:
 
     uint32_t saqThreadID, closeThreadID;
 
-    bool disconnected;
+    std::atomic<bool> disconnected;
     DisconnectPacket::eDisconnectReason disconnectReason;
     void** disconnectReasonObjects;  // 4J a pointer to an array.
 

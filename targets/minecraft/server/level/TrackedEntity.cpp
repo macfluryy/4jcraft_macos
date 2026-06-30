@@ -512,6 +512,13 @@ TrackedEntity::eVisibility TrackedEntity::isVisible(
     }
 
     int playersRange = range;
+    // 4J macOS task 8.1 (Req 7.1) - never track entities beyond the viewing
+    // player's effective view distance (chunks -> blocks). Keeps entity
+    // visibility consistent with the chunk streaming radius.
+    int pvdBlocks = sp->getViewDistance() * 16;
+    if (playersRange > pvdBlocks) playersRange = pvdBlocks;
+    // RTT-based reduction (Req 7.2/7.3): subtract ONLY from the entity tracking
+    // range, never from the chunk view distance.
     if (playersRange > TRACKED_ENTITY_MINIMUM_VIEW_DISTANCE) {
         playersRange -= sp->getPlayerViewDistanceModifier();
     }

@@ -168,6 +168,20 @@ void PlayerChunkMap::PlayerChunk::remove(std::shared_ptr<ServerPlayer> player) {
                 // (%d,%d) to player %ls\n", x, z, player->name.c_str() );
                 player->connection->send(std::shared_ptr<ChunkVisibilityPacket>(
                     new ChunkVisibilityPacket(pos.x, pos.z, false)));
+
+                // 4J macOS task 5.2 (Req 4.5) - the chunk is now being unloaded
+                // for this system (no same-system player still sees it). Clear
+                // the per-system "already sent" flag for this chunk so that if
+                // the player later re-enters its view distance, doChunkSendingTick
+                // re-sends the BlockRegionUpdatePacket. Without this the flag is
+                // only ever SET, so a chunk sent once is never resent even after
+                // it leaves and re-enters range. Only meaningful for remote
+                // players - local players bypass the SystemFlag path entirely.
+                if (!player->connection->isLocal()) {
+                    int flagIndex = ServerPlayer::getFlagIndexForChunk(
+                        pos, parent->dimension);
+                    g_NetworkManager.SystemFlagClear(thisNetPlayer, flagIndex);
+                }
             }
         } else {
             // app.DebugPrintf("PlayerChunkMap::PlayerChunk::remove - QNetPlayer
@@ -766,6 +780,28 @@ void PlayerChunkMap::move(std::shared_ptr<ServerPlayer> player) {
             }
         }
 
+    // 4J macOS task 5.1 - the spiral above keeps subscriptions within the
+    // shared server-level `radius`. When a player walks, also drop chunks that
+    // are now OUTSIDE that player's per-player effective view distance (pvd),
+    // so a client with a smaller render distance frees far chunks as its ring
+    // shifts. Only needed when pvd < radius (when equal the loop above already
+    // covers everything). Uses the same Chebyshev/square model as chunkInRange
+    // and add(). getChunkAndRemovePlayer is a safe no-op for chunks the player
+    // isn't subscribed to, so redundant calls here are harmless.
+    int pvd = player->getViewDistance();
+    if (pvd < radius) {
+        for (int x = xc - radius; x <= xc + radius; x++)
+            for (int z = zc - radius; z <= zc + radius; z++) {
+                int dcx = x - xc;
+                if (dcx < 0) dcx = -dcx;
+                int dcz = z - zc;
+                if (dcz < 0) dcz = -dcz;
+                if (dcx > pvd || dcz > pvd) {
+                    getChunkAndRemovePlayer(x, z, player);
+                }
+            }
+    }
+
     player->lastMoveX = player->x;
     player->lastMoveZ = player->z;
 }
@@ -817,5 +853,50 @@ void PlayerChunkMap::setRadius(int newRadius) {
         assert(radius <= MAX_VIEW_DISTANCE);
         assert(radius >= MIN_VIEW_DISTANCE);
         this->radius = newRadius;
+    }
+}
+
+// 4J macOS - adjust a single player's subscription radius (effective
+// view-distance, in chunks) around their CURRENT chunk. The add/remove helpers
+// are private, so this is the public entry point used by
+// ServerPlayer::setEffectiveViewDistance. Square-radius model matches
+// add()/move()/setRadius(). MUST run on the server tick only (not the network
+// thread) to avoid the documented chunk-subscription data races.
+void PlayerChunkMap::adjustPlayerViewDistance(
+    std::shared_ptr<ServerPlayer> player, int oldChunks, int newChunks) {
+    // Bound both radii to [MIN_VIEW_DISTANCE, this->radius]: a per-player view
+    // distance must never exceed the server-level radius (the upper bound the
+    // map actually maintains subscriptions for) nor drop below MIN.
+    auto bound = [this](int chunks) {
+        if (chunks < MIN_VIEW_DISTANCE) return MIN_VIEW_DISTANCE;
+        if (chunks > radius) return radius;
+        return chunks;
+    };
+    oldChunks = bound(oldChunks);
+    newChunks = bound(newChunks);
+
+    if (newChunks == oldChunks) return;
+
+    int xc = ((int)player->x) >> 4;
+    int zc = ((int)player->z) >> 4;
+
+    if (newChunks > oldChunks) {
+        // INCREASE: subscribe chunks within newChunks but OUTSIDE oldChunks.
+        for (int x = xc - newChunks; x <= xc + newChunks; x++)
+            for (int z = zc - newChunks; z <= zc + newChunks; z++) {
+                if (x < xc - oldChunks || x > xc + oldChunks ||
+                    z < zc - oldChunks || z > zc + oldChunks) {
+                    getChunkAndAddPlayer(x, z, player);
+                }
+            }
+    } else {
+        // DECREASE: unsubscribe chunks within oldChunks but OUTSIDE newChunks.
+        for (int x = xc - oldChunks; x <= xc + oldChunks; x++)
+            for (int z = zc - oldChunks; z <= zc + oldChunks; z++) {
+                if (x < xc - newChunks || x > xc + newChunks ||
+                    z < zc - newChunks || z > zc + newChunks) {
+                    getChunkAndRemovePlayer(x, z, player);
+                }
+            }
     }
 }

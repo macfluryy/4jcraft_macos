@@ -92,6 +92,7 @@ public:
     void SetMenuDisplayed(int iPad, bool bVal);
     int GetHotbarSlotPressed(int iPad);
     int GetScrollDelta();
+    int GetChatScrollDelta();
 
     // Legacy keyboard request overloads with integer string-table ids used to
     // live here. The remaining public API keeps the direct text/callback form.

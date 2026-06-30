@@ -70,8 +70,10 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/enchantment/EnchantmentHelper.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeSource.h"
+#include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 #include "minecraft/world/level/chunk/CompressedTileStorage.h"
 #include "minecraft/world/level/chunk/SparseDataStorage.h"
@@ -246,6 +248,14 @@ void GameRenderer::tick(bool first)  // 4J - add bFirst
 
     if (mc->cameraTargetPlayer == nullptr) {
         mc->cameraTargetPlayer = std::dynamic_pointer_cast<Mob>(mc->player);
+    }
+
+    // 4J macOS - If we still have no camera target (e.g. between levels
+    // or on a half-set-up second-client multiplayer join) bail out of the
+    // tick instead of null-derefing in getBrightness below. The next
+    // frame will have a valid player once handleLogin / setLevel finish.
+    if (mc->cameraTargetPlayer == nullptr) {
+        return;
     }
 
     float brr = mc->level->getBrightness(std::floor(mc->cameraTargetPlayer->x),
@@ -1261,9 +1271,14 @@ void GameRenderer::renderLevel(float a, int64_t until) {
     {
         mc->cameraTargetPlayer = mc->player;
     }
+    // 4J macOS - bail out if we still have no camera target. Hits during
+    // handleLogin -> setLevel transitions on slow remote clients where
+    // mc->player has not been wired up yet.
+    if (mc->cameraTargetPlayer == nullptr) return;
     pick(a);
 
     std::shared_ptr<LivingEntity> cameraEntity = mc->cameraTargetPlayer;
+    if (cameraEntity == nullptr) return;
     LevelRenderer* levelRenderer = mc->levelRenderer;
     ParticleEngine* particleEngine = mc->particleEngine;
     double xOff =
@@ -2126,6 +2141,46 @@ void GameRenderer::setupFog(int i, float alpha) {
                     if (distance > dist) distance = dist;
                 }
             }
+        }
+
+        // 4J macOS - Phase B3 atmosphere polish. Amplified-only,
+        // overworld-only. We don't touch Nether / End / cloud /
+        // underwater / underlava paths above. Two effects:
+        //
+        //   1. Slightly thicker distance fog (-7%) so the giant
+        //      cliffs read with a bit of atmospheric depth instead
+        //      of crisp edge-of-render visibility.
+        //
+        //   2. Biome-aware nudge using the camera column's biome
+        //      temperature:
+        //        cold (taiga / ice plains, temp < 0.4): alpine
+        //          haze, push fog slightly closer (-5% more).
+        //        hot+humid (jungle, temp > 0.95):
+        //          humid jungle haze, push fog closer (-8% more).
+        //        temperate: leave at -7% baseline.
+        //
+        // All effects are tiny (single-digit percentage) so vanilla
+        // gameplay sightlines are preserved. We only scale `distance`
+        // here; FOG_START / FOG_END are derived from it just below
+        // and inherit the change automatically.
+        if (mc->level != nullptr &&
+            mc->level->getLevelData() != nullptr &&
+            mc->level->getLevelData()->getGenerator() ==
+                LevelType::lvl_amplified &&
+            mc->level->dimension->id == 0) {
+            float amp = 0.93f;  // baseline -7%
+            int bx = (int)player->x;
+            int bz = (int)player->z;
+            Biome* atBiome = mc->level->getBiome(bx, bz);
+            if (atBiome != nullptr) {
+                float t = atBiome->getTemperature();
+                if (t < 0.4f) {
+                    amp = 0.88f;        // alpine haze
+                } else if (t > 0.95f) {
+                    amp = 0.85f;        // humid jungle haze
+                }
+            }
+            distance *= amp;
         }
 
         glFogi(GL_FOG_MODE, GL_LINEAR);

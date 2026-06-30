@@ -1025,6 +1025,12 @@ bool CGameNetworkManager::SystemFlagGet(INetworkPlayer* pNetworkPlayer,
     return s_pPlatformNetworkManager->SystemFlagGet(pNetworkPlayer, index);
 }
 
+// 4J macOS task 5.2 (Req 4.5) - forward to the platform layer.
+void CGameNetworkManager::SystemFlagClear(INetworkPlayer* pNetworkPlayer,
+                                          int index) {
+    s_pPlatformNetworkManager->SystemFlagClear(pNetworkPlayer, index);
+}
+
 std::wstring CGameNetworkManager::GatherStats() {
     return s_pPlatformNetworkManager->GatherStats();
 }

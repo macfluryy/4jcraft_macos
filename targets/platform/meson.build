@@ -24,6 +24,7 @@ _sdl2 = dependency('sdl2')
 _defs = []
 
 sdl2_sources = files(
+  'sdl2/Clipboard.cpp',
   'sdl2/Input.cpp',
   'sdl2/Profile.cpp',
   'sdl2/Render.cpp',

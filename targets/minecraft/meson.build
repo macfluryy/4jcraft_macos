@@ -16,6 +16,16 @@ exclude_sources = [
   '! -name "CreativeMode.cpp"',
   '! -name "GameMode.cpp"',
   '! -name "DemoMode.cpp"',
+
+  # Standalone property tests, built into their own test executable below
+  # (see view_distance_util_test). Must not be compiled into lib_minecraft.
+  '! -name "ViewDistanceUtilTest.cpp"',
+  # (see login_packet_view_distance_test). Must not be compiled into
+  # lib_minecraft (it ships its own main()).
+  '! -name "LoginPacketViewDistanceTest.cpp"',
+  # (see client_information_packet_test). Must not be compiled into
+  # lib_minecraft (it ships its own main()).
+  '! -name "ClientInformationPacketTest.cpp"',
 ]
 
 # GET IT ALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
@@ -79,3 +89,66 @@ minecraft_dep = declare_dependency(
   link_with : lib_minecraft,
   dependencies : [crypto_dep, zlib_dep],
 )
+
+# --- Property tests for pure view-distance helpers (task 1.2) -------------
+# Built as a small standalone executable that compiles ViewDistanceUtil.cpp
+# directly (rather than linking the whole lib_minecraft, which would drag in
+# heavy graphics/network deps). ViewDistanceUtil.cpp only needs the lightweight
+# PlayerChunkMap.h MIN/MAX constants and ChunkPos/JavaIntHash headers.
+view_distance_util_test = executable(
+  'view_distance_util_test',
+  [
+    'world/level/tests/ViewDistanceUtilTest.cpp',
+    'world/level/ViewDistanceUtil.cpp',
+  ],
+  include_directories : include_directories('..'),
+  dependencies : [java_dep],
+  cpp_args : global_cpp_args + global_cpp_defs,
+  build_by_default : false,
+)
+
+test('view_distance_util', view_distance_util_test)
+
+# --- Property test for LoginPacket serverViewDistance round-trip (task 3.2) -
+# Built as a small standalone executable. The real LoginPacket couples to the
+# `app` global (MacGame, defined in the app target) plus LevelType/Player, so
+# compiling LoginPacket.cpp here would create unresolved symbols and drag in
+# the client stack. Instead this test reproduces LoginPacket::write()'s exact
+# wire field sequence using the lightweight java stream classes (java_dep) and
+# compiles ViewDistanceUtil.cpp directly for clampViewDistance. The live
+# end-to-end login round-trip is covered by the task 10 integration checklist.
+login_packet_view_distance_test = executable(
+  'login_packet_view_distance_test',
+  [
+    'network/packet/tests/LoginPacketViewDistanceTest.cpp',
+    'world/level/ViewDistanceUtil.cpp',
+  ],
+  include_directories : include_directories('..'),
+  dependencies : [java_dep],
+  cpp_args : global_cpp_args + global_cpp_defs,
+  build_by_default : false,
+)
+
+test('login_packet_view_distance', login_packet_view_distance_test)
+
+# --- Property test for ClientInformationPacket viewDistance round-trip ------
+# (task 6.2). Built as a small standalone executable. The real
+# ClientInformationPacket derives from Packet, whose Packet.cpp staticCtor()
+# references every registered packet type plus the `app` global, so compiling
+# ClientInformationPacket.cpp here would create unresolved symbols and drag in
+# the client/network stack. Instead this test reproduces
+# ClientInformationPacket::write()'s exact single-int wire sequence using the
+# lightweight java stream classes (java_dep). The live end-to-end packet
+# round-trip is covered by the task 10 integration checklist.
+client_information_packet_test = executable(
+  'client_information_packet_test',
+  [
+    'network/packet/tests/ClientInformationPacketTest.cpp',
+  ],
+  include_directories : include_directories('..'),
+  dependencies : [java_dep],
+  cpp_args : global_cpp_args + global_cpp_defs,
+  build_by_default : false,
+)
+
+test('client_information_packet', client_information_packet_test)

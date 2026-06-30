@@ -12,6 +12,7 @@
 #include "minecraft/server/network/PlayerConnection.h"
 #include "minecraft/network/packet/GameEventPacket.h"
 #include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
 #include "minecraft/server/level/ServerLevel.h"
 #include "minecraft/server/level/ServerPlayer.h"
 #include "minecraft/world/level/storage/LevelData.h"
@@ -83,9 +84,13 @@ void ToggleDownfallCommand::doSetWeather(int weatherType) {
             levelData->setRaining(true);
             levelData->setThundering(true);
             level->setRainLevel(1.0f);
-            
+
+            // 4J macOS - param=1 signals a thunderstorm so the client can
+            // raise its thunderLevel (darker sky + lightning ambience),
+            // not just plain rain. param=0 (used by the rain branch above)
+            // stays a normal downpour.
             auto startRainPacket = std::shared_ptr<GameEventPacket>(
-                new GameEventPacket(GameEventPacket::START_RAINING, 0));
+                new GameEventPacket(GameEventPacket::START_RAINING, 1));
             for (auto& player : server->getPlayers()->players) {
                 if (player && player->connection) {
                     player->connection->send(startRainPacket);

@@ -52,6 +52,10 @@ public:
                                const std::wstring& additionalMessage = L"");
     static void setLogger(AdminLogCommand* logger);
 
+    // 4J Added - shared op check used by admin-tier commands.
+    // Non-player senders (e.g. console) are always considered authorized.
+    static bool requireOp(std::shared_ptr<CommandSender> source);
+
 protected:
     std::shared_ptr<ServerPlayer> getPlayer(PlayerUID playerId);
 };

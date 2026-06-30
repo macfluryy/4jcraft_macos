@@ -210,6 +210,10 @@ void MultiplayerLocalPlayer::reallyDrop(
     std::shared_ptr<ItemEntity> itemEntity) {}
 
 void MultiplayerLocalPlayer::chat(const std::wstring& message) {
+    // 4J macOS - guard against a torn-down connection (e.g. chat submitted
+    // during a disconnect). Without this a stale ChatScreen submit would
+    // null-deref.
+    if (connection == nullptr) return;
     connection->send(std::make_shared<ChatPacket>(message));
 }
 

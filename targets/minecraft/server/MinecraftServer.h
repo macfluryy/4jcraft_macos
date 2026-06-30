@@ -32,7 +32,16 @@ class Level;
 class Player;
 class Pos;
 
-#define MINECRAFT_SERVER_SLOW_QUEUE_DELAY 250
+// 4J macOS - Was 250 ms which throttles a single chunk packet per remote
+// client every quarter-second. That meant a freshly-joined remote
+// direct-connect player only loaded ~4 chunks/sec, and at viewDistance
+// 16 it would take ~5 minutes for the full visible area to populate -
+// hence the user-visible bug "host sees the world, the client only
+// streams in chunks as you walk towards them". 25 ms is the floor we
+// can use without hammering local TCP loopback in split-screen-on-LAN
+// scenarios; the per-tick gating (countDelayedPackets, send-queue size)
+// still backs us off when the network is genuinely saturated.
+#define MINECRAFT_SERVER_SLOW_QUEUE_DELAY 25
 
 typedef struct _LoadSaveDataThreadParam {
     void* data;
@@ -104,6 +113,12 @@ private:
 public:
     bool stopped;
     int tickCount;
+
+    // 4J Added - tick timing for /tps
+    static const int TPS_SAMPLE_COUNT = 100;
+    int64_t m_tickTimesNs[TPS_SAMPLE_COUNT] = {0};
+    int m_tickTimesIndex = 0;
+    int m_tickTimesFilled = 0;
 
 public:
     std::wstring progressStatus;
@@ -319,6 +334,14 @@ public:
         m_saveOnExit = save;
         s_bSaveOnExitAnswered = true;
     }
+
+    // 4J macOS - graceful shutdown save. Performs an immediate
+    // synchronous flush of all connected players + the overworld level
+    // to disk. Called from atexit / SIGTERM handlers when the player
+    // closes the game without going through the in-game Save & Exit
+    // UI (Cmd+Q, force-quit, kill from Activity Monitor, etc).
+    // Safe to call multiple times - internally guarded by the caller.
+    void forceShutdownSave();
     void Suspend();
     bool IsSuspending();
 

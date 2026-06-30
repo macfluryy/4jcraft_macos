@@ -128,4 +128,16 @@ public:
 
     // AP added for Vita
     void setRadius(int newRadius);
+
+    // 4J macOS - adjust a SINGLE player's effective view-distance (in chunks)
+    // around their current chunk, square-radius model matching add()/move()/
+    // setRadius(). Both oldChunks and newChunks are bounded to
+    // [MIN_VIEW_DISTANCE, this->radius] (a per-player view distance can never
+    // exceed the server-level radius the map maintains subscriptions for, nor
+    // drop below MIN_VIEW_DISTANCE). On increase, newly-in-range chunks are
+    // subscribed via getChunkAndAddPlayer; on decrease, now-excess chunks are
+    // unsubscribed via getChunkAndRemovePlayer; equal is a no-op.
+    // MUST be called from the server tick only (not the network thread).
+    void adjustPlayerViewDistance(std::shared_ptr<ServerPlayer> player,
+                                  int oldChunks, int newChunks);
 };

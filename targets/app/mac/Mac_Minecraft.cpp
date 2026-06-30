@@ -1,14 +1,8 @@
-// macOS ARM port of Linux_Minecraft.cpp
-
-// #include <system_service.h>
-
 #include <csignal>
 
 #include "util/StringHelpers.h"
 
-// ---------------------------------------------------------------------------
-// Crash signal handler (macOS — execinfo is available on Apple platforms)
-// ---------------------------------------------------------------------------
+
 #if defined(__APPLE__)
 #include <execinfo.h>
 #include <unistd.h>
@@ -45,7 +39,36 @@ static void sigsegv_handler(int sig) {
 }
 #endif  // __APPLE__
 
-// ---------------------------------------------------------------------------
+#include "minecraft/server/MinecraftServer.h"
+
+namespace {
+
+std::atomic<bool> g_shutdownSaveDone{false};
+
+void GracefulShutdownSave() {
+    bool expected = false;
+    if (!g_shutdownSaveDone.compare_exchange_strong(expected, true)) {
+        return;
+    }
+
+    ProfileManager.ForceQueuedProfileWrites();
+
+    MinecraftServer* server = MinecraftServer::getInstance();
+    if (server == nullptr) return;
+    server->setSaveOnExit(true);
+    server->forceShutdownSave();
+}
+
+void GracefulShutdownSignal(int sig) {
+    GracefulShutdownSave();
+    struct sigaction sa{};
+    sa.sa_handler = SIG_DFL;
+    sigemptyset(&sa.sa_mask);
+    sigaction(sig, &sa, nullptr);
+    raise(sig);
+}
+
+}
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -78,8 +101,6 @@ static void sigsegv_handler(int sig) {
 #include "platform/sdl2/Storage.h"
 #include "strings.h"
 
-// ---------------------------------------------------------------------------
-
 #define THEME_NAME "584111F70AAAAAAA"
 #define THEME_FILESIZE 2797568
 #define FIFTY_ONE_MB (1000000 * 51)
@@ -88,16 +109,9 @@ static void sigsegv_handler(int sig) {
 #define NUM_PROFILE_SETTINGS 4
 
 uint32_t dwProfileSettingsA[NUM_PROFILE_VALUES] = {0, 0, 0, 0, 0};
-
-// Rich-presence string helpers
 uint8_t* AddRichPresenceString(int iID);
 void FreeRichPresenceStrings();
-
 bool g_bWidescreen = true;
-
-// ---------------------------------------------------------------------------
-// Input action mappings (identical to Linux version)
-// ---------------------------------------------------------------------------
 void DefineActions(void) {
     InputManager.SetGameJoypadMaps(MAP_STYLE_0, ACTION_MENU_A,
                                    _360_JOY_BUTTON_A);
@@ -392,13 +406,18 @@ void DefineActions(void) {
                                    _360_JOY_BUTTON_DPAD_DOWN);
 }
 
-// ---------------------------------------------------------------------------
-// main()
-// ---------------------------------------------------------------------------
+
+#if defined(__SANITIZE_ADDRESS__)
+#define JE_ASAN_BUILD 1
+#elif defined(__has_feature)
+#if __has_feature(address_sanitizer)
+#define JE_ASAN_BUILD 1
+#endif
+#endif
 
 int main(int argc, const char* argv[]) {
 #if defined(__APPLE__)
-    // Install crash signal handlers (same approach as Linux / GLIBC version)
+#if !defined(JE_ASAN_BUILD)
     struct sigaction sa;
     sa.sa_handler = sigsegv_handler;
     sigemptyset(&sa.sa_mask);
@@ -407,11 +426,26 @@ int main(int argc, const char* argv[]) {
     sigaction(SIGABRT, &sa, nullptr);
     sigaction(SIGBUS, &sa, nullptr);
     sigaction(SIGTRAP, &sa, nullptr);
+#else
+    fprintf(stderr,
+            "[ASAN] AddressSanitizer build: custom crash handlers disabled so "
+            "ASan can report the real memory error.\n");
+#endif
+
+    struct sigaction term_sa;
+    term_sa.sa_handler = GracefulShutdownSignal;
+    sigemptyset(&term_sa.sa_mask);
+    term_sa.sa_flags = 0;
+    sigaction(SIGTERM, &term_sa, nullptr);
+    sigaction(SIGINT, &term_sa, nullptr);
+    sigaction(SIGHUP, &term_sa, nullptr);
+    sigaction(SIGQUIT, &term_sa, nullptr);
+
+    std::atexit(GracefulShutdownSave);
 #endif
 
     app.DebugPrintf("---main()\n");
 
-    // ---- Parse CLI arguments ----
     {
         int reqW = 0, reqH = 0;
         bool fs = false;
@@ -481,10 +515,6 @@ int main(int argc, const char* argv[]) {
     app.InitGameSettings();
     app.InitialiseTips();
 
-    // 4J macOS - direct-connect bootstrap. If MC_DIRECT_CONNECT=host[:port] is
-    // set in the environment, skip the main menu UI and immediately open a
-    // TCP connection to the given host. The default port is 25565, matching
-    // Socket::StartTcpListener.
     const char* dc = std::getenv("MC_DIRECT_CONNECT");
     fprintf(stderr, "[TCP] MC_DIRECT_CONNECT env = %s\n",
             dc ? dc : "(unset)");
@@ -504,7 +534,6 @@ int main(int argc, const char* argv[]) {
         app.TemporaryDirectConnectStart(host.c_str(), port);
     }
 
-    // ---- Main game loop ----
     while (!RenderManager.ShouldClose()) {
         RenderManager.StartFrame();
 
@@ -546,7 +575,6 @@ int main(int argc, const char* argv[]) {
         RenderManager.Present();
         ui.CheckMenuDisplayed();
 
-        // Apply game-settings changes triggered by profile loads
         if (app.uiGameDefinedDataChangedBitmask != 0) {
             void* pData = nullptr;
             for (int i = 0; i < XUSER_MAX_COUNT; i++) {
@@ -575,16 +603,11 @@ int main(int argc, const char* argv[]) {
             ui.ShowTrialTimer(false);
             bTrialTimerDisplayed = false;
         }
-    }  // end game loop
+    }
 
-    // Graceful shutdown: destroy GL context and window before C++ dtors run.
     RenderManager.Shutdown();
     return 0;
-}  // end main
-
-// ---------------------------------------------------------------------------
-// Rich-presence string helpers
-// ---------------------------------------------------------------------------
+}
 
 std::vector<uint8_t*> vRichPresenceStrings;
 

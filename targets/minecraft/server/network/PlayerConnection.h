@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 
+#include <atomic>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -19,6 +20,7 @@ class ServerPlayer;
 class INetworkPlayer;
 class Packet;
 class Random;
+class ClientInformationPacket;
 
 class PlayerConnection : public PacketListener, public ConsoleInputSource {
     //    public static Logger logger = Logger.getLogger("Minecraft");
@@ -123,6 +125,11 @@ public:
         std::shared_ptr<PlayerAbilitiesPacket> playerAbilitiesPacket);
     virtual void handleCustomPayload(
         std::shared_ptr<CustomPayloadPacket> customPayloadPacket);
+    // 4J macOS task 6.3 (Req 5.2/5.5/1.5) - receive the client's requested
+    // view distance. Stashed here (possibly on the network thread) and applied
+    // on the server tick; see tick() and m_pendingClientViewDistance.
+    virtual void handleClientInformation(
+        std::shared_ptr<ClientInformationPacket> packet);
     virtual bool isDisconnected();
 
     // 4J Added
@@ -172,4 +179,13 @@ private:
     std::vector<std::wstring> m_texturesRequested;
 
     bool m_bWasKicked;
+
+    // 4J macOS task 6.3 (Req 5.2/5.5/1.5) - the client's most recently
+    // requested view distance (in chunks), or -1 when there is no pending
+    // change. Written from handleClientInformation (which may run on the
+    // network thread because canHandleAsyncPackets() == true) and
+    // read/reset from tick() on the server thread, so it is atomic. The actual
+    // ServerPlayer::setEffectiveViewDistance call (which mutates PlayerChunkMap
+    // subscription state) happens only on the server tick.
+    std::atomic<int> m_pendingClientViewDistance{-1};
 };

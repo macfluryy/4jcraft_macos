@@ -1,7 +1,14 @@
 #include "Options.h"
 
+#include <algorithm>
+#include <vector>
+
 #include "KeyMapping.h"
+#include "platform/sdl2/Input.h"
+#include "platform/sdl2/Profile.h"
 #include "app/common/src/Audio/SoundEngine.h"
+#include "app/common/src/Network/GameNetworkManager.h"
+#include "app/common/src/Network/Socket.h"
 #include "app/mac/MacGame.h"
 #include "app/include/stubs.h"
 #include "util/StringHelpers.h"
@@ -12,10 +19,13 @@
 #include "java/InputOutputStream/FileOutputStream.h"
 #include "java/InputOutputStream/InputStreamReader.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/renderer/LevelRenderer.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/locale/I18n.h"
 #include "minecraft/locale/Language.h"
+#include "minecraft/network/packet/ClientInformationPacket.h"
+#include "minecraft/world/level/ViewDistanceUtil.h"
 
 // 4J - the Option sub-class used to be an java enumerated type, trying to
 // emulate that functionality here
@@ -166,6 +176,7 @@ void Options::init() {
     thirdPersonView = false;
     renderDebug = false;
     lastMpIp = L"";
+    lastMpNickname = L"";
 
     isFlying = false;
     smoothCamera = false;
@@ -182,6 +193,7 @@ Options::Options(Minecraft* minecraft, File workingDirectory) {
     init();
     this->minecraft = minecraft;
     optionsFile = File(workingDirectory, L"options.txt");
+    load();
 }
 
 Options::Options() { init(); }
@@ -227,8 +239,22 @@ void Options::set(const Options::Option* item, float fVal) {
 
 void Options::toggle(const Options::Option* option, int dir) {
     if (option == Option::INVERT_MOUSE) invertYMouse = !invertYMouse;
-    if (option == Option::RENDER_DISTANCE)
+    if (option == Option::RENDER_DISTANCE) {
         viewDistance = (viewDistance + dir) & 3;
+        if (minecraft != nullptr && g_NetworkManager.IsInSession() &&
+            !g_NetworkManager.IsHost()) {
+            int primaryPad = InputManager.GetPrimaryPad();
+            ClientConnection* conn = nullptr;
+            if (minecraft->localplayers[primaryPad] != nullptr) {
+                conn = minecraft->getConnection(primaryPad);
+            }
+            if (conn != nullptr && conn->getSocket() != nullptr &&
+                !conn->getSocket()->isLocal()) {
+                conn->send(std::make_shared<ClientInformationPacket>(
+                    viewDistanceOptionToChunks(viewDistance)));
+            }
+        }
+    }
     if (option == Option::GUI_SCALE) guiScale = (guiScale + dir) & 3;
     if (option == Option::PARTICLES) particles = (particles + dir) % 3;
 
@@ -383,54 +409,142 @@ void Options::load() {
         new InputStreamReader(new FileInputStream(optionsFile)));
 
     std::wstring line = L"";
+    static const std::wstring kKnownKeys[] = {
+        L"music",          L"sound",          L"mouseSensitivity",
+        L"fov",            L"gamma",          L"invertYMouse",
+        L"viewDistance",   L"guiScale",       L"particles",
+        L"bobView",        L"anaglyph3d",     L"advancedOpengl",
+        L"fpsLimit",       L"difficulty",     L"fancyGraphics",
+        L"ao",             L"clouds",         L"skin",
+        L"lastServer",     L"lastNickname",
+    };
+
     while ((line = br->readLine()) !=
            L"")  // 4J - was check against nullptr - do we need to distinguish
                  // between empty lines and a fail here?
     {
-        // 4J - removed try/catch
-        //            try {
-        std::wstring cmds[2];
-        int splitpos = (int)line.find(L":");
-        if (splitpos == std::wstring::npos) {
-            cmds[0] = line;
-            cmds[1] = L"";
-        } else {
-            cmds[0] = line.substr(0, splitpos);
-            cmds[1] = line.substr(splitpos, line.length() - splitpos);
+        if (line.find(L'\0') != std::wstring::npos) {
+            std::wstring filtered;
+            filtered.reserve(line.size());
+            for (wchar_t wc : line) {
+                if (wc != L'\0') filtered.push_back(wc);
+            }
+            line = filtered;
         }
-
-        if (cmds[0] == L"music") music = readFloat(cmds[1]);
-        if (cmds[0] == L"sound") sound = readFloat(cmds[1]);
-        if (cmds[0] == L"mouseSensitivity") sensitivity = readFloat(cmds[1]);
-        if (cmds[0] == L"fov") fov = readFloat(cmds[1]);
-        if (cmds[0] == L"gamma") gamma = readFloat(cmds[1]);
-        if (cmds[0] == L"invertYMouse") invertYMouse = cmds[1] == L"true";
-        if (cmds[0] == L"viewDistance")
-            viewDistance = fromWString<int>(cmds[1]);
-        if (cmds[0] == L"guiScale") guiScale = fromWString<int>(cmds[1]);
-        if (cmds[0] == L"particles") particles = fromWString<int>(cmds[1]);
-        if (cmds[0] == L"bobView") bobView = cmds[1] == L"true";
-        if (cmds[0] == L"anaglyph3d") anaglyph3d = cmds[1] == L"true";
-        if (cmds[0] == L"advancedOpengl") advancedOpengl = cmds[1] == L"true";
-        if (cmds[0] == L"fpsLimit") framerateLimit = fromWString<int>(cmds[1]);
-        if (cmds[0] == L"difficulty") difficulty = fromWString<int>(cmds[1]);
-        if (cmds[0] == L"fancyGraphics") fancyGraphics = cmds[1] == L"true";
-        if (cmds[0] == L"ao") ambientOcclusion = cmds[1] == L"true";
-        if (cmds[0] == L"clouds") renderClouds = cmds[1] == L"true";
-        if (cmds[0] == L"skin") skin = cmds[1];
-        if (cmds[0] == L"lastServer") lastMpIp = cmds[1];
-
-        for (int i = 0; i < keyMappings_length; i++) {
-            if (cmds[0] == (L"key_" + keyMappings[i]->name)) {
-                keyMappings[i]->key = fromWString<int>(cmds[1]);
+        std::vector<std::wstring> pairs;
+        {
+            std::vector<size_t> cuts;
+            cuts.push_back(0);
+            auto considerCutAt = [&](size_t pos) {
+                if (pos != 0 && pos != std::wstring::npos &&
+                    std::find(cuts.begin(), cuts.end(), pos) == cuts.end()) {
+                    cuts.push_back(pos);
+                }
+            };
+            for (const auto& key : kKnownKeys) {
+                size_t pos = 0;
+                while ((pos = line.find(key, pos)) != std::wstring::npos) {
+                    bool followedByColon =
+                        pos + key.length() < line.length() &&
+                        line[pos + key.length()] == L':';
+                    bool atBoundary =
+                        pos == 0 ||
+                        !((line[pos - 1] >= L'a' && line[pos - 1] <= L'z') ||
+                          (line[pos - 1] >= L'A' && line[pos - 1] <= L'Z') ||
+                          (line[pos - 1] >= L'0' && line[pos - 1] <= L'9') ||
+                          line[pos - 1] == L'_');
+                    if (followedByColon && atBoundary) {
+                        considerCutAt(pos);
+                    }
+                    pos += key.length();
+                }
+            }
+            size_t pos = 0;
+            while ((pos = line.find(L"key_", pos)) != std::wstring::npos) {
+                bool atBoundary =
+                    pos == 0 ||
+                    !((line[pos - 1] >= L'a' && line[pos - 1] <= L'z') ||
+                      (line[pos - 1] >= L'A' && line[pos - 1] <= L'Z') ||
+                      (line[pos - 1] >= L'0' && line[pos - 1] <= L'9') ||
+                      line[pos - 1] == L'_');
+                if (atBoundary) considerCutAt(pos);
+                pos += 4;
+            }
+            std::sort(cuts.begin(), cuts.end());
+            for (size_t i = 0; i < cuts.size(); ++i) {
+                size_t startPos = cuts[i];
+                size_t endPos =
+                    (i + 1 < cuts.size()) ? cuts[i + 1] : line.length();
+                pairs.push_back(line.substr(startPos, endPos - startPos));
             }
         }
-        //            } catch (Exception e) {
-        //                System.out.println("Skipping bad option: " + line);
-        //            }
+
+        for (const auto& rawPair : pairs) {
+            std::wstring pair = rawPair;
+            // 4J - removed try/catch
+            //            try {
+            std::wstring cmds[2];
+            int splitpos = (int)pair.find(L":");
+            if (splitpos == (int)std::wstring::npos) {
+                cmds[0] = pair;
+                cmds[1] = L"";
+            } else {
+                cmds[0] = pair.substr(0, splitpos);
+                cmds[1] = pair.substr(splitpos + 1);
+            }
+
+            if (cmds[0] == L"music") {
+                music = readFloat(cmds[1]);
+            }
+            if (cmds[0] == L"sound") {
+                sound = readFloat(cmds[1]);
+            }
+            if (cmds[0] == L"mouseSensitivity")
+                sensitivity = readFloat(cmds[1]);
+            if (cmds[0] == L"fov") fov = readFloat(cmds[1]);
+            if (cmds[0] == L"gamma") gamma = readFloat(cmds[1]);
+            if (cmds[0] == L"invertYMouse")
+                invertYMouse = cmds[1] == L"true";
+            if (cmds[0] == L"viewDistance")
+                viewDistance = fromWString<int>(cmds[1]);
+            if (cmds[0] == L"guiScale")
+                guiScale = fromWString<int>(cmds[1]);
+            if (cmds[0] == L"particles")
+                particles = fromWString<int>(cmds[1]);
+            if (cmds[0] == L"bobView") bobView = cmds[1] == L"true";
+            if (cmds[0] == L"anaglyph3d") anaglyph3d = cmds[1] == L"true";
+            if (cmds[0] == L"advancedOpengl")
+                advancedOpengl = cmds[1] == L"true";
+            if (cmds[0] == L"fpsLimit")
+                framerateLimit = fromWString<int>(cmds[1]);
+            if (cmds[0] == L"difficulty")
+                difficulty = fromWString<int>(cmds[1]);
+            if (cmds[0] == L"fancyGraphics")
+                fancyGraphics = cmds[1] == L"true";
+            if (cmds[0] == L"ao") ambientOcclusion = cmds[1] == L"true";
+            if (cmds[0] == L"clouds") renderClouds = cmds[1] == L"true";
+            if (cmds[0] == L"skin") skin = cmds[1];
+            if (cmds[0] == L"lastServer") lastMpIp = cmds[1];
+            if (cmds[0] == L"lastNickname") lastMpNickname = cmds[1];
+
+            for (int i = 0; i < keyMappings_length; i++) {
+                if (cmds[0] == (L"key_" + keyMappings[i]->name)) {
+                    keyMappings[i]->key = fromWString<int>(cmds[1]);
+                }
+            }
+            //            } catch (Exception e) {
+            //                System.out.println("Skipping bad option: " +
+            //                line);
+            //            }
+        }
     }
     // KeyMapping.resetMapping(); // 4J Not implemented
     br->close();
+    if (!lastMpNickname.empty()) {
+        for (int p = 0; p < XUSER_MAX_COUNT; ++p) {
+            SetUserGamertag(p, lastMpNickname);
+        }
+    }
     //    } catch (Exception e) {
     //        System.out.println("Failed to load options");
     //        e.printStackTrace();
@@ -453,34 +567,43 @@ void Options::save() {
     DataOutputStream dos = DataOutputStream(&fos);
     //        PrintWriter pw = new PrintWriter(new FileWriter(optionsFile));
 
-    dos.writeChars(L"music:" + toWString<float>(music) + L"\n");
-    dos.writeChars(L"sound:" + toWString<float>(sound) + L"\n");
-    dos.writeChars(L"invertYMouse:" +
-                   std::wstring(invertYMouse ? L"true" : L"false") + L"\n");
-    dos.writeChars(L"mouseSensitivity:" + toWString<float>(sensitivity));
-    dos.writeChars(L"fov:" + toWString<float>(fov));
-    dos.writeChars(L"gamma:" + toWString<float>(gamma));
-    dos.writeChars(L"viewDistance:" + toWString<int>(viewDistance));
-    dos.writeChars(L"guiScale:" + toWString<int>(guiScale));
-    dos.writeChars(L"particles:" + toWString<int>(particles));
-    dos.writeChars(L"bobView:" + std::wstring(bobView ? L"true" : L"false"));
-    dos.writeChars(L"anaglyph3d:" +
-                   std::wstring(anaglyph3d ? L"true" : L"false"));
-    dos.writeChars(L"advancedOpengl:" +
-                   std::wstring(advancedOpengl ? L"true" : L"false"));
-    dos.writeChars(L"fpsLimit:" + toWString<int>(framerateLimit));
-    dos.writeChars(L"difficulty:" + toWString<int>(difficulty));
-    dos.writeChars(L"fancyGraphics:" +
-                   std::wstring(fancyGraphics ? L"true" : L"false"));
-    dos.writeChars(L"ao:" +
-                   std::wstring(ambientOcclusion ? L"true" : L"false"));
-    dos.writeChars(L"clouds:" + toWString<bool>(renderClouds));
-    dos.writeChars(L"skin:" + skin);
-    dos.writeChars(L"lastServer:" + lastMpIp);
+    auto writeAscii = [&dos](const std::wstring& s) {
+        for (wchar_t wc : s) {
+            unsigned int b = static_cast<unsigned int>(wc) & 0xff;
+            dos.write(b);
+        }
+    };
+
+    writeAscii(L"music:" + toWString<float>(music) + L"\n");
+    writeAscii(L"sound:" + toWString<float>(sound) + L"\n");
+    writeAscii(L"invertYMouse:" +
+               std::wstring(invertYMouse ? L"true" : L"false") + L"\n");
+    writeAscii(L"mouseSensitivity:" + toWString<float>(sensitivity) + L"\n");
+    writeAscii(L"fov:" + toWString<float>(fov) + L"\n");
+    writeAscii(L"gamma:" + toWString<float>(gamma) + L"\n");
+    writeAscii(L"viewDistance:" + toWString<int>(viewDistance) + L"\n");
+    writeAscii(L"guiScale:" + toWString<int>(guiScale) + L"\n");
+    writeAscii(L"particles:" + toWString<int>(particles) + L"\n");
+    writeAscii(L"bobView:" + std::wstring(bobView ? L"true" : L"false") +
+               L"\n");
+    writeAscii(L"anaglyph3d:" +
+               std::wstring(anaglyph3d ? L"true" : L"false") + L"\n");
+    writeAscii(L"advancedOpengl:" +
+               std::wstring(advancedOpengl ? L"true" : L"false") + L"\n");
+    writeAscii(L"fpsLimit:" + toWString<int>(framerateLimit) + L"\n");
+    writeAscii(L"difficulty:" + toWString<int>(difficulty) + L"\n");
+    writeAscii(L"fancyGraphics:" +
+               std::wstring(fancyGraphics ? L"true" : L"false") + L"\n");
+    writeAscii(L"ao:" +
+               std::wstring(ambientOcclusion ? L"true" : L"false") + L"\n");
+    writeAscii(L"clouds:" + toWString<bool>(renderClouds) + L"\n");
+    writeAscii(L"skin:" + skin + L"\n");
+    writeAscii(L"lastServer:" + lastMpIp + L"\n");
+    writeAscii(L"lastNickname:" + lastMpNickname + L"\n");
 
     for (int i = 0; i < keyMappings_length; i++) {
-        dos.writeChars(L"key_" + keyMappings[i]->name + L":" +
-                       toWString<int>(keyMappings[i]->key));
+        writeAscii(L"key_" + keyMappings[i]->name + L":" +
+                   toWString<int>(keyMappings[i]->key) + L"\n");
     }
 
     dos.close();

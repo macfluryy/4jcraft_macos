@@ -19,6 +19,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#include <signal.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -27,6 +28,43 @@
 #include <string>
 
 class SocketAddress {};
+
+// 4J macOS - ignore SIGPIPE process-wide exactly once. Writing to a TCP socket
+// whose peer has already closed raises SIGPIPE, whose default disposition is to
+// TERMINATE the process. That is precisely how the host was being killed when a
+// remote client crashed/disconnected mid-stream (the shell showed "PIPE"). With
+// SIGPIPE ignored, send() instead fails with errno==EPIPE which our send loop
+// already handles gracefully (marks the end closed). This is the most portable
+// fix (works on both macOS and Linux); we additionally set SO_NOSIGPIPE per
+// socket on macOS and pass MSG_NOSIGNAL on send on Linux as belt-and-braces.
+static void EnsureSigpipeIgnored() {
+    static bool ignored = []() -> bool {
+        signal(SIGPIPE, SIG_IGN);
+        return true;
+    }();
+    (void)ignored;
+}
+
+// 4J macOS - portable "don't raise SIGPIPE for this fd". macOS has the
+// SO_NOSIGPIPE socket option; Linux has no such option (it uses MSG_NOSIGNAL
+// on send instead) so this is a no-op there. Safe to call on any TCP fd.
+static void DisableSigpipeOnSocket(int fd) {
+#if defined(SO_NOSIGPIPE)
+    int one = 1;
+    setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &one, sizeof(one));
+#else
+    (void)fd;
+#endif
+}
+
+// 4J macOS - send flags that suppress SIGPIPE on platforms that support it at
+// the call site (Linux MSG_NOSIGNAL). On macOS MSG_NOSIGNAL doesn't exist; the
+// per-socket SO_NOSIGPIPE above covers it, so this resolves to 0.
+#if defined(MSG_NOSIGNAL)
+static const int kSendFlags = MSG_NOSIGNAL;
+#else
+static const int kSendFlags = 0;
+#endif
 
 // This current socket implementation is for the creation of a single local
 // link. 2 sockets can be created, one for either end of this local link, the
@@ -184,6 +222,13 @@ Socket::Socket(INetworkPlayer* player, int tcpFd, bool response) {
     int one = 1;
     setsockopt(m_tcpFd, IPPROTO_TCP, TCP_NODELAY, &one, sizeof(one));
 
+    // 4J macOS - make sure a peer disconnect can never kill us with SIGPIPE.
+    // Ignore it process-wide (idempotent) and, on macOS, also set the
+    // per-socket SO_NOSIGPIPE option. Without this the host died with "PIPE"
+    // the instant a remote client's socket closed mid-stream.
+    EnsureSigpipeIgnored();
+    DisableSigpipeOnSocket(m_tcpFd);
+
     m_tcpRunning = true;
     m_tcpReaderThread = new std::thread([this]() {
         // Reader loop - blocking recv on the TCP fd, push bytes into the
@@ -251,6 +296,9 @@ int Socket::GetTcpListenerPort() { return g_tcpListenerPort.load(); }
 
 Socket* Socket::ConnectTcp(const std::string& host, int port,
                            INetworkPlayer* player) {
+    // 4J macOS - install the process-wide SIGPIPE ignore before any socket
+    // I/O can happen, so a peer disconnect never terminates the client.
+    EnsureSigpipeIgnored();
     int fd = ::socket(AF_INET, SOCK_STREAM, 0);
     if (fd < 0) {
         fprintf(stderr, "[TCP] socket() failed: %s\n", strerror(errno));
@@ -289,6 +337,9 @@ Socket* Socket::ConnectTcp(const std::string& host, int port,
 }
 
 bool Socket::StartTcpListener(int port) {
+    // 4J macOS - install the process-wide SIGPIPE ignore before any socket
+    // I/O can happen, so a peer disconnect never terminates the host.
+    EnsureSigpipeIgnored();
     if (g_tcpListenerRunning.load()) {
         fprintf(stderr, "[TCP] Listener already running on port %d\n",
                 g_tcpListenerPort.load());
@@ -344,21 +395,51 @@ bool Socket::StartTcpListener(int port) {
                     "[TCP] Incoming connection from %s:%d (fd=%d)\n", ipbuf,
                     ntohs(peer.sin_port), clientFd);
 
-            // Create a remote-player stub for this connection and wire it
-            // through the existing server machinery. The small-id is handed
-            // out by RemoteNetworkPlayer::AllocateSmallId.
-            RemoteNetworkPlayer* remote = RemoteNetworkPlayer::CreateForIncoming(
-                ipbuf, ntohs(peer.sin_port));
-            Socket* serverSock = new Socket(remote, clientFd, /*response=*/true);
-            remote->SetSocket(serverSock);
+            // 4J - wrap the per-client setup in try/catch so that a single
+            // misbehaving connect (e.g. allocation failure, throw inside
+            // CreateForIncoming) cannot terminate the listener thread and
+            // take the whole server with it. Also explicitly close clientFd
+            // on any local failure so we don't leak descriptors.
+            try {
+                // Create a remote-player stub for this connection and wire it
+                // through the existing server machinery. The small-id is
+                // handed out by RemoteNetworkPlayer::AllocateSmallId.
+                RemoteNetworkPlayer* remote =
+                    RemoteNetworkPlayer::CreateForIncoming(
+                        ipbuf, ntohs(peer.sin_port));
+                if (remote == nullptr) {
+                    fprintf(stderr,
+                            "[TCP] CreateForIncoming returned null, "
+                            "dropping fd=%d\n",
+                            clientFd);
+                    ::close(clientFd);
+                    continue;
+                }
 
-            // Let the CGameNetworkManager know a player has joined so the
-            // rest of the session bookkeeping (player lists, events) fires.
-            g_NetworkManager.DirectConnectPlayerJoining(remote);
+                Socket* serverSock =
+                    new Socket(remote, clientFd, /*response=*/true);
+                remote->SetSocket(serverSock);
 
-            // Hand off to ServerConnection so the existing PendingConnection
-            // flow picks up the handshake packets.
-            Socket::addIncomingSocket(serverSock);
+                // Let the CGameNetworkManager know a player has joined so
+                // the rest of the session bookkeeping (player lists, events)
+                // fires.
+                g_NetworkManager.DirectConnectPlayerJoining(remote);
+
+                // Hand off to ServerConnection so the existing
+                // PendingConnection flow picks up the handshake packets.
+                Socket::addIncomingSocket(serverSock);
+            } catch (const std::exception& e) {
+                fprintf(stderr,
+                        "[TCP] Exception while accepting fd=%d: %s\n",
+                        clientFd, e.what());
+                ::close(clientFd);
+            } catch (...) {
+                fprintf(stderr,
+                        "[TCP] Unknown exception while accepting fd=%d, "
+                        "dropping connection.\n",
+                        clientFd);
+                ::close(clientFd);
+            }
         }
         fprintf(stderr, "[TCP] Listener thread exiting.\n");
     });
@@ -734,7 +815,7 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(
         const uint8_t* p = &b[offset];
         size_t remaining = length;
         while (remaining > 0) {
-            ssize_t sent = ::send(fd, p, remaining, 0);
+            ssize_t sent = ::send(fd, p, remaining, kSendFlags);
             if (sent <= 0) {
                 if (sent < 0 && (errno == EINTR || errno == EAGAIN)) continue;
                 fprintf(stderr, "[TCP] send() failed on fd=%d: %s\n", fd,

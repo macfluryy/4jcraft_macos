@@ -44,6 +44,7 @@
 #include "minecraft/Pos.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
 #include "minecraft/client/ProgressRenderer.h"
 #include "minecraft/client/User.h"
 #include "minecraft/client/gui/Gui.h"
@@ -183,6 +184,7 @@
 #include "minecraft/world/level/Explosion.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSettings.h"
+#include "minecraft/world/level/ViewDistanceUtil.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/saveddata/MapItemSavedData.h"
@@ -256,6 +258,7 @@ ClientConnection::~ClientConnection() {
 }
 
 void ClientConnection::tick() {
+    if (connection == nullptr) return;
     if (!done) connection->tick();
     connection->flush();
 }
@@ -473,6 +476,29 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
             // No client-side scheduling is needed.
         }
 
+        {
+            int clientOptionChunks =
+                viewDistanceOptionToChunks(minecraft->options->viewDistance);
+            int effective;
+            const bool isLocalOrHost =
+                g_NetworkManager.IsHost() ||
+                (connection != nullptr && connection->getSocket() != nullptr &&
+                 connection->getSocket()->isLocal());
+            if (isLocalOrHost) {
+                effective = clampViewDistance(packet->serverViewDistance);
+            } else {
+                effective = effectiveViewDistance(packet->serverViewDistance,
+                                                  clientOptionChunks);
+            }
+            minecraft->m_serverViewDistanceChunks = effective;
+            app.DebugPrintf(
+                "ClientConnection - Effective_View_Distance = %d chunks "
+                "(serverVD=%d, clientOption=%d->%d chunks, %s)\n",
+                effective, packet->serverViewDistance,
+                minecraft->options->viewDistance, clientOptionChunks,
+                isLocalOrHost ? "local/host" : "remote");
+        }
+
         minecraft->player->entityId = packet->clientVersion;
         minecraft->player->dimension = packet->dimension;
         minecraft->setScreen(new ReceivingLevelScreen(this));
@@ -605,6 +631,13 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
 
 void ClientConnection::handleAddEntity(
     std::shared_ptr<AddEntityPacket> packet) {
+    if (level == nullptr) {
+        fprintf(stderr,
+                "[TCP] handleAddEntity dropped: level not ready yet "
+                "(id=%d type=%d)\n",
+                packet->id, packet->type);
+        return;
+    }
     double x = packet->x / 32.0;
     double y = packet->y / 32.0;
     double z = packet->z / 32.0;
@@ -733,11 +766,11 @@ void ClientConnection::handleAddEntity(
                 new LeashFenceKnotEntity(level, (int)x, (int)y, (int)z));
             packet->data = 0;
             break;
-#if !defined(_FINAL_BUILD)
         default:
-            // Not a known entity (?)
-            assert(0);
-#endif
+            fprintf(stderr, "[TCP] handleAddEntity: unsupported type %d "
+                            "(id=%d) - dropped\n",
+                    packet->type, packet->id);
+            break;
     }
 
     /*   if (packet->type == AddEntityPacket::MINECART_RIDEABLE) e =
@@ -906,6 +939,7 @@ void ClientConnection::handleAddEntity(
 
 void ClientConnection::handleAddExperienceOrb(
     std::shared_ptr<AddExperienceOrbPacket> packet) {
+    if (level == nullptr) return;
     std::shared_ptr<Entity> e = std::shared_ptr<ExperienceOrb>(
         new ExperienceOrb(level, packet->x / 32.0, packet->y / 32.0,
                           packet->z / 32.0, packet->value));
@@ -920,6 +954,7 @@ void ClientConnection::handleAddExperienceOrb(
 
 void ClientConnection::handleAddGlobalEntity(
     std::shared_ptr<AddGlobalEntityPacket> packet) {
+    if (level == nullptr) return;
     double x = packet->x / 32.0;
     double y = packet->y / 32.0;
     double z = packet->z / 32.0;
@@ -939,6 +974,7 @@ void ClientConnection::handleAddGlobalEntity(
 
 void ClientConnection::handleAddPainting(
     std::shared_ptr<AddPaintingPacket> packet) {
+    if (level == nullptr) return;
     std::shared_ptr<Painting> painting = std::make_shared<Painting>(
         level, packet->x, packet->y, packet->z, packet->dir, packet->motive);
     level->putEntity(packet->id, painting);
@@ -962,6 +998,13 @@ void ClientConnection::handleSetEntityData(
 
 void ClientConnection::handleAddPlayer(
     std::shared_ptr<AddPlayerPacket> packet) {
+    if (level == nullptr) {
+        fprintf(stderr,
+                "[TCP] handleAddPlayer dropped: ClientConnection has no "
+                "level yet (id=%d name=%ls)\n",
+                packet->id, packet->name.c_str());
+        return;
+    }
     // Some remote players could actually be local players that are already
     // added
     for (unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx) {
@@ -985,7 +1028,7 @@ void ClientConnection::handleAddPlayer(
     float yRot = packet->yRot * 360 / 256.0f;
     float xRot = packet->xRot * 360 / 256.0f;
     std::shared_ptr<RemotePlayer> player = std::shared_ptr<RemotePlayer>(
-        new RemotePlayer(minecraft->level, packet->name));
+        new RemotePlayer(level, packet->name));
     player->xo = player->xOld = player->xp = packet->x;
     player->yo = player->yOld = player->yp = packet->y;
     player->zo = player->zOld = player->zp = packet->z;
@@ -1156,6 +1199,7 @@ void ClientConnection::handleMoveEntitySmall(
 
 void ClientConnection::handleRemoveEntity(
     std::shared_ptr<RemoveEntitiesPacket> packet) {
+    if (level == nullptr) return;
     for (int i = 0; i < packet->ids.size(); i++) {
         level->removeEntity(packet->ids[i]);
     }
@@ -1165,6 +1209,14 @@ void ClientConnection::handleMovePlayer(
     std::shared_ptr<MovePlayerPacket> packet) {
     std::shared_ptr<Player> player =
         minecraft->localplayers[m_userIndex];  // minecraft->player;
+
+    if (player == nullptr) {
+        fprintf(stderr,
+                "[TCP] handleMovePlayer skipped: localplayers[%d] not "
+                "ready yet\n",
+                m_userIndex);
+        return;
+    }
 
     double x = player->x;
     double y = player->y;
@@ -1233,31 +1285,13 @@ void ClientConnection::handleMovePlayer(
             ui.CloseUIScenes(m_userIndex);
         }
 
-        // 4J macOS - This is the moment that finally fixes the "dark zone"
-        // on remote direct-connect joins. When Minecraft::setLevel ran
-        // during handleLogin, mc->cameraTargetPlayer was still nullptr
-        // (it's only assigned at the very end of setLevel), so
-        // LevelRenderer::allChanged created the per-player chunk grid at
-        // the origin without ever calling resortChunks. Streamed chunks
-        // from the server populate the level's chunk cache at the real
-        // server-side coordinates, but the renderer was still pointing
-        // its grid at (0, 0, 0), giving the user a black void with sky.
-        //
-        // Now that the very first MovePlayerPacket has arrived we finally
-        // know the correct player position, so kick a full rebuild of
-        // the renderer's chunk grid centred on the player. This is the
-        // same operation Minecraft::respawnPlayer relies on after a
-        // death, which is why the user reported "everything works after
-        // /kill". Trigger it for remote (non-host) clients only - hosts
-        // already had cameraTargetPlayer set when setLevel ran.
         if (!g_NetworkManager.IsHost() &&
             minecraft->levelRenderer != nullptr) {
             fprintf(stderr,
-                    "[TCP] First MovePlayer for remote client - rebuilding "
-                    "LevelRenderer chunks around (%.1f,%.1f,%.1f)\n",
+                    "[TCP] First MovePlayer for remote client - asking "
+                    "LevelRenderer to recentre around (%.1f,%.1f,%.1f)\n",
                     player->x, player->y, player->z);
-            minecraft->cameraTargetPlayer = player;
-            minecraft->levelRenderer->allChanged(m_userIndex);
+            minecraft->levelRenderer->invalidateLastPlayerPos(m_userIndex);
         }
     }
 }
@@ -1294,6 +1328,10 @@ void ClientConnection::handleChunkVisibility(
 void ClientConnection::handleChunkTilesUpdate(
     std::shared_ptr<ChunkTilesUpdatePacket> packet) {
     // 4J - changed to encode level in packet
+    if (packet->levelIdx < 0 ||
+        packet->levelIdx >= (int)minecraft->levels.size()) {
+        return;
+    }
     MultiPlayerLevel* dimensionLevel =
         (MultiPlayerLevel*)minecraft->levels[packet->levelIdx];
     if (dimensionLevel) {
@@ -1372,6 +1410,14 @@ void ClientConnection::handleChunkTilesUpdate(
 void ClientConnection::handleBlockRegionUpdate(
     std::shared_ptr<BlockRegionUpdatePacket> packet) {
     // 4J - changed to encode level in packet
+    if (packet->levelIdx < 0 ||
+        packet->levelIdx >= (int)minecraft->levels.size()) {
+        fprintf(stderr,
+                "[TCP] handleBlockRegionUpdate dropped: bad levelIdx=%d "
+                "(size=%zu)\n",
+                packet->levelIdx, minecraft->levels.size());
+        return;
+    }
     MultiPlayerLevel* dimensionLevel =
         (MultiPlayerLevel*)minecraft->levels[packet->levelIdx];
     if (dimensionLevel) {
@@ -1459,6 +1505,10 @@ void ClientConnection::handleTileUpdate(
         destroyTilePacket = true;
     }
     // 4J - changed to encode level in packet
+    if (packet->levelIdx < 0 ||
+        packet->levelIdx >= (int)minecraft->levels.size()) {
+        return;
+    }
     MultiPlayerLevel* dimensionLevel =
         (MultiPlayerLevel*)minecraft->levels[packet->levelIdx];
     if (dimensionLevel) {
@@ -1526,6 +1576,10 @@ void ClientConnection::handleDisconnect(
     Minecraft* pMinecraft = Minecraft::GetInstance();
     pMinecraft->connectionDisconnected(m_userIndex, packet->reason);
     app.SetDisconnectReason(packet->reason);
+    // 4J macOS - carry any custom (Java) disconnect text through to the screen.
+    // Empty for ordinary code-based LCE disconnects, which clears stale text so
+    // vanilla behavior is preserved.
+    app.SetDisconnectReasonText(packet->m_customText);
 
     app.SetAction(m_userIndex, eAppAction_ExitWorld, (void*)true);
     // minecraft->setLevel(nullptr);
@@ -2289,6 +2343,9 @@ void ClientConnection::handleAddMob(std::shared_ptr<AddMobPacket> packet) {
 
     std::shared_ptr<LivingEntity> mob = std::dynamic_pointer_cast<LivingEntity>(
         EntityIO::newById(packet->type, level));
+    if (mob == nullptr) {
+        return;
+    }
     mob->xp = packet->x;
     mob->yp = packet->y;
     mob->zp = packet->z;
@@ -3190,9 +3247,18 @@ void ClientConnection::handleGameEvent(
     if (event == GameEventPacket::START_RAINING) {
         level->getLevelData()->setRaining(true);
         level->setRainLevel(1);
+        if (gameEventPacket->param == 1) {
+            level->getLevelData()->setThundering(true);
+            level->setThunderLevel(1);
+        } else {
+            level->getLevelData()->setThundering(false);
+            level->setThunderLevel(0);
+        }
     } else if (event == GameEventPacket::STOP_RAINING) {
         level->getLevelData()->setRaining(false);
         level->setRainLevel(0);
+        level->getLevelData()->setThundering(false);
+        level->setThunderLevel(0);
     } else if (event == GameEventPacket::CHANGE_GAME_MODE) {
         minecraft->localgameModes[m_userIndex]->setLocalMode(
             GameType::byId(param));

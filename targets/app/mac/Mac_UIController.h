@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "app/common/src/UI/All Platforms/UIStructs.h"
 #include "app/common/src/UI/UIController.h"
 #include "app/mac/Iggy/include/iggy.h"
@@ -21,6 +23,14 @@ public:
             IggyCustomDrawCallbackRegion* region);
 
     virtual void endCustomDraw(IggyCustomDrawCallbackRegion* region);
+    virtual void SetTutorialDescription(int iPad, TutorialPopupInfo* info);
+
+    struct TutorialOverlayState {
+        std::wstring title;
+        std::wstring desc;
+        bool visible = false;
+    };
+    static TutorialOverlayState s_tutorialOverlay;
 
 protected:
     virtual void setTileOrigin(S32 xPos, S32 yPos);

@@ -22,6 +22,7 @@
 #include "platform/C4JThread.h"
 
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
 #include "minecraft/client/User.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/world/level/LevelSettings.h"
@@ -60,27 +61,21 @@ void MacGame::GetScreenshot(int iPad, std::uint8_t** screenshotData,
                              unsigned int* screenshotSize) {}
 
 void MacGame::TemporaryCreateGameStart() {
-    // -------------------------------------------------------------------------
-    // From CScene_Main::OnInit
     app.setLevelGenerationOptions(nullptr);
-
-    // From CScene_Main::RunPlayGame
     Minecraft* pMinecraft = Minecraft::GetInstance();
     app.ReleaseSaveThumbnail();
     ProfileManager.SetLockedProfile(0);
-    pMinecraft->user->name = L"Windows";
+    {
+        std::wstring nick = pMinecraft->options
+                                ? pMinecraft->options->lastMpNickname
+                                : std::wstring();
+        if (nick.empty()) nick = L"Player";
+        pMinecraft->user->name = nick;
+    }
     app.ApplyGameSettingsChanged(0);
-
-    // -------------------------------------------------------------------------
-    // From CScene_MultiGameJoinLoad::OnInit
     MinecraftServer::resetFlags();
-
-    // From CScene_MultiGameJoinLoad::OnNotifyPressEx
     app.SetTutorialMode(false);
     app.SetCorruptSaveDeleted(false);
-
-    // -------------------------------------------------------------------------
-    // From CScene_MultiGameCreate::CreateGame
     app.ClearTerrainFeaturePosition();
 
     std::wstring wWorldName = L"TestWorld";
@@ -126,18 +121,22 @@ void MacGame::TemporaryCreateGameStart() {
 }
 
 bool MacGame::TemporaryDirectConnectStart(const char* host, int port) {
-    // -------------------------------------------------------------------------
-    // Baseline app/profile init - same as TemporaryCreateGameStart.
+    return TemporaryDirectConnectStartEx(host, port, /*spawnOwnThread*/ true,
+                                         /*nickname*/ nullptr);
+}
+
+bool MacGame::TemporaryDirectConnectStartEx(const char* host, int port,
+                                            bool spawnOwnThread,
+                                            const wchar_t* nickname) {
     app.setLevelGenerationOptions(nullptr);
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
     app.ReleaseSaveThumbnail();
     ProfileManager.SetLockedProfile(0);
-    // 4J macOS - Generate a per-process random "PlayerNNN" name so multiple
-    // direct-connect clients on the same machine show up as distinct names
-    // in chat / tab list, matching what vanilla Minecraft.cpp does for
-    // anonymous users (`L"Player" + currentTimeMillis() % 1000`).
-    {
+    OverrideXuidBaseForDirectConnect();
+    if (nickname != nullptr && nickname[0] != L'\0') {
+        pMinecraft->user->name = std::wstring(nickname);
+    } else {
         struct timespec ts;
         clock_gettime(CLOCK_REALTIME, &ts);
         unsigned int suffix =
@@ -153,27 +152,12 @@ bool MacGame::TemporaryDirectConnectStart(const char* host, int port) {
     app.SetTutorialMode(false);
     app.SetCorruptSaveDeleted(false);
     app.ClearTerrainFeaturePosition();
-
-    // Required by assorted game-host-option consumers even when joining.
     app.SetGameHostOption(eGameHostOption_GameType,
                           GameType::CREATIVE->getId());
-
-    // -------------------------------------------------------------------------
-    // Flip IQNet stub into client mode BEFORE any session bookkeeping so
-    // g_NetworkManager.IsHost() returns false throughout setup.
     _bQNetStubIsHost = false;
     _bQNetStubGameRunning = true;
     g_NetworkManager.SetLocalGame(false);
-
-    // Spawn the local IQNet-backed player so the rest of the stack has
-    // someone to hand the socket to. FakeLocalPlayerJoined is the only
-    // path that registers a NetworkPlayerQNet in the stub.
     g_NetworkManager.FakeLocalPlayerJoined();
-
-    // -------------------------------------------------------------------------
-    // Build the remote host stand-in (small id 1, flagged as host) and open
-    // the real TCP connection to the server. Both need to exist before we
-    // attach the socket to the local player.
     RemoteNetworkPlayer* remoteHost =
         RemoteNetworkPlayer::CreateForOutgoing(host ? host : "host");
     IPlatformNetworkStub::s_pRemoteHostOverride = remoteHost;
@@ -190,8 +174,6 @@ bool MacGame::TemporaryDirectConnectStart(const char* host, int port) {
     }
     remoteHost->SetSocket(tcpSock);
 
-    // Attach the TCP socket to the local player so StartNetworkGame picks it
-    // up via pNetworkPlayer->GetSocket() on the client branch.
     INetworkPlayer* localPlayer = g_NetworkManager.GetLocalPlayerByUserIndex(0);
     if (localPlayer == nullptr) {
         fprintf(stderr,
@@ -205,23 +187,25 @@ bool MacGame::TemporaryDirectConnectStart(const char* host, int port) {
     }
     localPlayer->SetSocket(tcpSock);
 
-    // -------------------------------------------------------------------------
-    // Kick off the usual network-game thread - it will notice IsHost()==false
-    // and enter the client handshake path.
     NetworkGameInitData* param = new NetworkGameInitData();
     param->seed = 0;
     param->saveData = nullptr;
     param->settings = app.GetGameHostOption(eGameHostOption_All);
 
-    LoadingInputParams* loadingParams = new LoadingInputParams();
-    loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-    loadingParams->lpParam = param;
-
     app.SetAutosaveTimerTime();
 
-    C4JThread* thread = new C4JThread(loadingParams->func,
-                                      loadingParams->lpParam, "RunNetworkGame");
-    thread->run();
+    if (spawnOwnThread) {
+        LoadingInputParams* loadingParams = new LoadingInputParams();
+        loadingParams->func =
+            &CGameNetworkManager::RunNetworkGameThreadProc;
+        loadingParams->lpParam = param;
+        C4JThread* thread = new C4JThread(loadingParams->func,
+                                          loadingParams->lpParam,
+                                          "RunNetworkGame");
+        thread->run();
+    } else {
+        m_pendingDirectConnectParam = param;
+    }
     return true;
 }
 

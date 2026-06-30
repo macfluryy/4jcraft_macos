@@ -39,9 +39,20 @@ const std::wstring ItemInstance::ATTRIBUTE_MODIFIER_FORMAT = L"#.###";
 const wchar_t* ItemInstance::TAG_ENCH_ID = L"id";
 const wchar_t* ItemInstance::TAG_ENCH_LEVEL = L"lvl";
 
+namespace {
+int sanitizeItemId(int id) {
+    if (id < 0) return id;
+    const bool hasItem =
+        id < static_cast<int>(Item::items.size()) && Item::items[id] != nullptr;
+    const bool tileOkForBlock =
+        id >= 256 || (Tile::tiles != nullptr && Tile::tiles[id] != nullptr);
+    return (hasItem && tileOkForBlock) ? id : 1;  // 1 = stone
+}
+}  // namespace
+
 void ItemInstance::_init(int id, int count, int auxValue) {
     this->popTime = 0;
-    this->id = id;
+    this->id = sanitizeItemId(id);
     this->count = count;
     this->auxValue = auxValue;
     this->tag = nullptr;
@@ -143,7 +154,7 @@ CompoundTag* ItemInstance::save(CompoundTag* compoundTag) {
 
 void ItemInstance::load(CompoundTag* compoundTag) {
     popTime = 0;
-    id = compoundTag->getShort(L"id");
+    id = sanitizeItemId(compoundTag->getShort(L"id"));
     count = compoundTag->getByte(L"Count");
     auxValue = compoundTag->getShort(L"Damage");
     if (auxValue < 0) {

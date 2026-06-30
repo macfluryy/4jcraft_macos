@@ -16,6 +16,10 @@ client_sources = run_command(
 
 exclude_platform_common_sources = [
   ' ! -name "UIScene_InGameSaveManagementMenu.cpp"',
+  # Standalone JavaEdition property tests carry their own main() and are built
+  # into their own small test executables below; keep them OUT of the client
+  # source glob (mirrors view_distance_util_test in targets/minecraft).
+  ' ! -path "*/JavaEdition/tests/*"',
 ]
 
 # all sources in common/
@@ -100,3 +104,83 @@ custom_target(
   ],
   build_by_default: true,
 )
+
+# --- Standalone property tests for the pure JavaEdition module (Phase 1) -----
+# Each test carries its own main() and a tiny deterministic property harness
+# (fixed-seed std::mt19937, >=100 iterations), modelled on view_distance_util_test
+# in targets/minecraft/meson.build. They compile only the lightweight, pure
+# JavaEdition translation units directly (no graphics/network/app globals), so
+# they do NOT link the whole client. include_directories('include','..') makes
+# the `app/common/src/JavaEdition/...` include paths resolve.
+
+java_address_parser_test = executable(
+  'java_address_parser_test',
+  [
+    'common/src/JavaEdition/tests/JavaAddressParserTest.cpp',
+    'common/src/JavaEdition/JavaAddressParser.cpp',
+  ],
+  include_directories: include_directories('include', '..'),
+  cpp_args: global_cpp_args + global_cpp_defs,
+  build_by_default: false,
+)
+
+test('java_address_parser', java_address_parser_test)
+
+java_server_list_test = executable(
+  'java_server_list_test',
+  [
+    'common/src/JavaEdition/tests/JavaServerListTest.cpp',
+    'common/src/JavaEdition/JavaServerList.cpp',
+  ],
+  include_directories: include_directories('include', '..'),
+  cpp_args: global_cpp_args + global_cpp_defs,
+  build_by_default: false,
+)
+
+test('java_server_list', java_server_list_test)
+
+java_packet_buffer_test = executable(
+  'java_packet_buffer_test',
+  [
+    'common/src/JavaEdition/tests/JavaPacketBufferTest.cpp',
+    'common/src/JavaEdition/JavaPacketBuffer.cpp',
+  ],
+  include_directories: include_directories('include', '..'),
+  cpp_args: global_cpp_args + global_cpp_defs,
+  build_by_default: false,
+)
+
+test('java_packet_buffer', java_packet_buffer_test)
+
+status_json_extractor_test = executable(
+  'status_json_extractor_test',
+  [
+    'common/src/JavaEdition/tests/StatusJsonExtractorTest.cpp',
+    'common/src/JavaEdition/StatusJsonExtractor.cpp',
+  ],
+  include_directories: include_directories('include', '..'),
+  cpp_args: global_cpp_args + global_cpp_defs,
+  build_by_default: false,
+)
+
+test('status_json_extractor', status_json_extractor_test)
+
+# JavaServerListStore performs real file I/O through the project File / stream
+# stack, so this test links java_dep (File + FileInputStream / DataOutputStream
+# / BufferedReader) and util_dep (StringHelpers include path + symbols). The
+# test runs entirely against unique temp working directories and provides its
+# own PlatformFileIO stub, so it pulls in no graphics/SDL/app globals.
+java_server_list_store_test = executable(
+  'java_server_list_store_test',
+  [
+    'common/src/JavaEdition/tests/JavaServerListStoreTest.cpp',
+    'common/src/JavaEdition/JavaServerListStore.cpp',
+    'common/src/JavaEdition/JavaServerList.cpp',
+  ],
+  include_directories: include_directories('include', '..'),
+  dependencies: [java_dep, util_dep],
+  cpp_args: global_cpp_args + global_cpp_defs,
+  build_by_default: false,
+)
+
+test('java_server_list_store', java_server_list_store_test)

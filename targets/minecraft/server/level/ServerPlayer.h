@@ -49,6 +49,19 @@ public:
     std::unordered_set<ChunkPos, ChunkPosKeyHash, ChunkPosKeyEq> seenChunks;
     int spewTimer;
 
+    // 4J macOS - per-player runtime state for /home, /back and /r.
+    // Not persisted across server restarts (kept in-memory only); a
+    // future improvement would tie these to player save files.
+    bool m_hasHome = false;
+    double m_homeX = 0.0, m_homeY = 0.0, m_homeZ = 0.0;
+    int m_homeDim = 0;
+
+    bool m_hasBack = false;
+    double m_backX = 0.0, m_backY = 0.0, m_backZ = 0.0;
+    int m_backDim = 0;
+
+    std::wstring m_lastReplyTo;  // last sender of a /msg to this player
+
     // 4J-Added, for 'Adventure Time' achievement.
     Biome* currentBiome;
 
@@ -198,6 +211,12 @@ public:
     // void updateOptions(std::shared_ptr<ClientInformationPacket> packet); //
     // 4J: Don't use
     int getViewDistance();
+    // 4J macOS - set this player's effective view-distance (in chunks),
+    // clamped to [MIN, MAX] and capped at PlayerList::getViewDistance(), then
+    // (un)subscribe chunks accordingly. MUST be invoked from the server tick
+    // only (callers route the network-requested value through the tick), never
+    // from the network thread, to avoid chunk-subscription data races.
+    void setEffectiveViewDistance(int chunks);
     // bool canChatInColor();
     // int getChatVisibility();
     Pos* getCommandSenderWorldPosition();

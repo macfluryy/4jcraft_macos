@@ -9,6 +9,7 @@
 #include <cstdint>
 
 #include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Storage.h"
 #include "app/common/App_enums.h"
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
@@ -26,16 +27,19 @@
 #include "minecraft/world/entity/player/SkinTypes.h"
 #include "java/Class.h"
 #include "java/JavaMath.h"
+#include "java/System.h"
 #include "minecraft/Pos.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/network/Connection.h"
+#include "minecraft/network/packet/AddPlayerPacket.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/network/packet/DisconnectPacket.h"
 #include "minecraft/network/packet/GameEventPacket.h"
 #include "minecraft/network/packet/LoginPacket.h"
 #include "minecraft/network/packet/PlayerAbilitiesPacket.h"
 #include "minecraft/network/packet/PlayerInfoPacket.h"
+#include "minecraft/network/packet/RemoveEntitiesPacket.h"
 #include "minecraft/network/packet/RespawnPacket.h"
 #include "minecraft/network/packet/SetCarriedItemPacket.h"
 #include "minecraft/network/packet/SetExperiencePacket.h"
@@ -68,6 +72,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSettings.h"
 #include "minecraft/world/level/PortalForcer.h"
+#include "minecraft/world/level/ViewDistanceUtil.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/saveddata/MapItemSavedData.h"
 #include "minecraft/world/level/storage/LevelData.h"
@@ -90,16 +95,46 @@ PlayerList::PlayerList(MinecraftServer* server) {
     overrideGameMode = nullptr;
     allowCheatsForAllPlayers = false;
 
+    // 4J macOS - Server_View_Distance is now configurable through the
+    // server.properties "view-distance" key instead of being hardcoded.
+    // Default is 16 on _LARGE_WORLDS (matches the client render area) and
+    // 10 otherwise. The raw value is clamped into
+    // [PlayerChunkMap::MIN_VIEW_DISTANCE, PlayerChunkMap::MAX_VIEW_DISTANCE];
+    // an out-of-range configured value is corrected and a warning is logged.
+    // All three PlayerChunkMaps (Dimension::id 0, -1, 1) pick this up via the
+    // ServerLevel ctor (new PlayerChunkMap(.., getViewDistance())).
 #if defined(_LARGE_WORLDS)
-    viewDistance = 16;
+    int defaultVD = 16;
 #else
-    viewDistance = 10;
+    int defaultVD = 10;
 #endif
 
-    // int viewDistance = server->settings->getInt(L"view-distance", 10);
+    int rawViewDistance = server->settings->getInt(L"view-distance", defaultVD);
+    viewDistance = clampViewDistance(rawViewDistance);
+    if (rawViewDistance != viewDistance) {
+        app.DebugPrintf(
+            "WARNING: view-distance %d out of range [%d, %d], clamped to %d\n",
+            rawViewDistance, PlayerChunkMap::MIN_VIEW_DISTANCE,
+            PlayerChunkMap::MAX_VIEW_DISTANCE, viewDistance);
+    }
+
+    // 4J macOS - Req 2.4: persist the current (clamped) Server_View_Distance
+    // back into the "view-distance" key. getInt lazily stored the raw value;
+    // here we overwrite it with the authoritative clamped value so the
+    // persisted key always reflects the in-use Server_View_Distance and reads
+    // back identically via getInt.
+    server->settings->setIntAndSave(L"view-distance", viewDistance);
 
     maxPlayers = server->settings->getInt(L"max-players", 20);
     doWhiteList = false;
+
+    // 4J macOS - multiplayer persistence hardening. Initialise the
+    // flush throttle so the first remote disconnect can immediately
+    // flush; afterwards we throttle to once per 60s. The autosave
+    // countdown starts at the multiplayer interval so we flush
+    // periodically while remote players are connected.
+    m_lastFullDiskFlushMs = 0;
+    m_mpAutosaveCountdown = 20 * 90;  // 90s at 20Hz
 }
 
 PlayerList::~PlayerList() {
@@ -277,7 +312,9 @@ void PlayerList::placeNewPlayer(Connection* connection,
         (uint8_t)playerIndex, level->useNewSeaLevel(),
         player->getAllPlayerGamePrivileges(),
         level->getLevelData()->getXZSize(),
-        level->getLevelData()->getHellScale()));
+        level->getLevelData()->getHellScale(),
+        getViewDistance()));  // 4J macOS - Server_View_Distance (clamped in
+                              // PlayerList ctor); sent before any BRUP
     playerConnection->send(std::shared_ptr<SetSpawnPositionPacket>(
         new SetSpawnPositionPacket(spawnPos->x, spawnPos->y, spawnPos->z)));
     playerConnection->send(std::shared_ptr<PlayerAbilitiesPacket>(
@@ -542,6 +579,57 @@ void PlayerList::add(std::shared_ptr<ServerPlayer> player) {
         }
     }
 
+    // 4J macOS - The vanilla flow only delivers AddPlayerPacket via the
+    // EntityTracker, which is gated on visibility (default 32 chunks =
+    // 512 blocks). Two players spawned far apart never see each other in
+    // the tab list / tracked-entity scoreboard until one teleports into
+    // tracker range. We bridge the gap by sending an AddPlayerPacket for
+    // every existing player to the joiner, and an AddPlayerPacket for
+    // the joiner to every existing player. Mirror what
+    // TrackedEntity::getAddEntityPacket would produce; the client code in
+    // handleAddPlayer is idempotent so re-sending later from the tracker
+    // is harmless.
+    auto buildAddPacket = [](std::shared_ptr<ServerPlayer> p) {
+        int xp = (int)std::floor(p->x * 32.0);
+        int yp = (int)std::floor(p->y * 32.0);
+        int zp = (int)std::floor(p->z * 32.0);
+        int yRotp = (int)std::floor(p->yRot * 256.0f / 360.0f);
+        int xRotp = (int)std::floor(p->xRot * 256.0f / 360.0f);
+        int yHeadRotp =
+            (int)std::floor(p->getYHeadRot() * 256.0f / 360.0f);
+        return std::make_shared<AddPlayerPacket>(
+            std::dynamic_pointer_cast<Player>(p), p->getXuid(),
+            p->getOnlineXuid(), xp, yp, zp, yRotp, xRotp, yHeadRotp);
+    };
+
+    if (player->connection->getNetworkPlayer()) {
+        // Tell every already-online player about the joiner - but NOT the
+        // joiner themselves. broadcastAll would include the new player,
+        // and because remote players now use a name-hashed pseudo-XUID
+        // (see getPlayerForLogin) the joiner's own XUID no longer matches
+        // their local ProfileManager XUID, so handleAddPlayer's
+        // "this is me" guard fails to fire and we'd spawn a duplicate
+        // phantom of the joiner. Send per-connection and skip self.
+        auto joinerPacket = buildAddPacket(player);
+        for (auto& op : players) {
+            if (op == player) continue;
+            if (op->connection != nullptr &&
+                op->connection->getNetworkPlayer()) {
+                op->connection->send(joinerPacket);
+            }
+        }
+
+        // Tell the joiner about every already-online player (excluding
+        // themselves; they were just push_back-ed above).
+        for (auto& op : players) {
+            if (op == player) continue;
+            if (op->connection != nullptr &&
+                op->connection->getNetworkPlayer()) {
+                player->connection->send(buildAddPacket(op));
+            }
+        }
+    }
+
     if (level->isAtLeastOnePlayerSleeping()) {
         std::shared_ptr<ServerPlayer> firstSleepingPlayer = nullptr;
         for (unsigned int i = 0; i < players.size(); i++) {
@@ -564,6 +652,29 @@ void PlayerList::move(std::shared_ptr<ServerPlayer> player) {
 
 void PlayerList::remove(std::shared_ptr<ServerPlayer> player) {
     save(player);
+
+    // 4J macOS - Phase A persistence hardening. The vanilla path only
+    // writes the player's NBT into the in-memory ConsoleSaveFile cache.
+    // If the host crashes or hard-quits before the next autosave the
+    // .dat is lost. Force a cached-data flush on every disconnect so
+    // every remote player's inventory / position / XP is at least
+    // staged on the cache, then on a 60s rate-limit also flush the
+    // whole level to disk. The 60s rate-limit prevents stalls when a
+    // player join/leave-spams.
+    if (playerIo != nullptr) {
+        playerIo->saveAllCachedData();
+        playerIo->saveMapIdLookup();
+
+        int64_t nowMs = System::currentTimeMillis();
+        if (nowMs - m_lastFullDiskFlushMs > 60 * 1000) {
+            m_lastFullDiskFlushMs = nowMs;
+            ServerLevel* level0 = server->getLevel(0);
+            if (level0 != nullptr) {
+                level0->saveToDisc(nullptr, true);  // autosave-mode flush
+            }
+        }
+    }
+
     // 4J Stu - We don't want to save the map data for guests, so when we are
     // sure that the player is gone delete the map
     if (player->isGuest()) playerIo->deleteMapFilesForPlayer(player);
@@ -583,6 +694,17 @@ void PlayerList::remove(std::shared_ptr<ServerPlayer> player) {
     }
     // broadcastAll(std::shared_ptr<PlayerInfoPacket>( new
     // PlayerInfoPacket(player->name, false, 9999) ) );
+
+    // 4J macOS - Mirror the explicit AddPlayerPacket broadcast in add():
+    // when a player leaves we need every other client to drop them from
+    // the tab list / world even if the leaver was outside their tracker
+    // visibility range. EntityTracker::removeEntity already sends a
+    // RemoveEntitiesPacket but only to peers that had this entity tracked.
+    {
+        std::vector<int> ids;
+        ids.push_back(player->entityId);
+        broadcastAll(std::make_shared<RemoveEntitiesPacket>(ids));
+    }
 
     removePlayerFromReceiving(player);
     player->connection = nullptr;  // Must remove reference to connection, or
@@ -609,7 +731,43 @@ std::shared_ptr<ServerPlayer> PlayerList::getPlayerForLogin(
                          new ServerPlayerGameMode(server->getLevel(0))));
     player->gameMode->player = player;  // 4J added as had to remove this
                                         // assignment from ServerPlayer ctor
-    player->setXuid(xuid);              // 4J Added
+
+    // 4J macOS - persistent remote-player saves. Direct-connect clients
+    // re-randomise their XUID every launch (see
+    // OverrideXuidBaseForDirectConnect in Profile.cpp), so the
+    // players/<xuid>.dat file the server writes would change name every
+    // session and the player's position / inventory would never be
+    // recovered. For NON-HOST players we derive a stable pseudo-XUID
+    // from a hash of their (case-sensitive) username, so the same
+    // nickname always maps to the same save file. The host keeps its
+    // real persisted XUID so its single-player saves keep loading.
+    PlayerUID effectiveXuid = xuid;
+    {
+        INetworkPlayer* np =
+            pendingConnection->connection != nullptr &&
+                    pendingConnection->connection->getSocket() != nullptr
+                ? pendingConnection->connection->getSocket()->getPlayer()
+                : nullptr;
+        bool isHost = (np != nullptr && np->IsHost());
+        if (!isHost && !userName.empty()) {
+            // FNV-1a 64-bit over the UTF-32 name. Mask the top bits to
+            // 0xC... so the value can't collide with the host's
+            // 0xE000-prefixed XUID space and is never INVALID_XUID(0).
+            uint64_t h = 1469598103934665603ULL;
+            for (wchar_t wc : userName) {
+                h ^= (uint64_t)(uint32_t)wc;
+                h *= 1099511628211ULL;
+            }
+            effectiveXuid =
+                (PlayerUID)((h & 0x0fffffffffffffffULL) |
+                            0xC000000000000000ULL);
+            fprintf(stderr,
+                    "[NET] Remote player '%ls' mapped to stable save XUID "
+                    "0x%016llx\n",
+                    userName.c_str(), (unsigned long long)effectiveXuid);
+        }
+    }
+    player->setXuid(effectiveXuid);     // 4J Added
     player->setOnlineXuid(onlineXuid);  // 4J Added
 
     // Work out the base server player settings
@@ -635,6 +793,31 @@ std::shared_ptr<ServerPlayer> PlayerList::getPlayerForLogin(
 std::shared_ptr<ServerPlayer> PlayerList::respawn(
     std::shared_ptr<ServerPlayer> serverPlayer, int targetDimension,
     bool keepAllPlayerData) {
+    // 4J macOS - capture death location for /back BEFORE we tear the
+    // player down. The respawned ServerPlayer below is a fresh object
+    // with restoreFrom() copying selected fields, so we have to stash
+    // both into the temp here and re-apply at the end.
+    bool deathHadBack = serverPlayer->m_hasBack;
+    double deathBackX = serverPlayer->m_backX;
+    double deathBackY = serverPlayer->m_backY;
+    double deathBackZ = serverPlayer->m_backZ;
+    int deathBackDim = serverPlayer->m_backDim;
+    bool deathHadHome = serverPlayer->m_hasHome;
+    double deathHomeX = serverPlayer->m_homeX;
+    double deathHomeY = serverPlayer->m_homeY;
+    double deathHomeZ = serverPlayer->m_homeZ;
+    int deathHomeDim = serverPlayer->m_homeDim;
+    std::wstring deathReplyTo = serverPlayer->m_lastReplyTo;
+    // The location we just died at is the back point.
+    bool dyingHasBack = true;
+    double dyingBackX = serverPlayer->x;
+    double dyingBackY = serverPlayer->y;
+    double dyingBackZ = serverPlayer->z;
+    int dyingBackDim =
+        (serverPlayer->level != nullptr &&
+         serverPlayer->level->dimension != nullptr)
+            ? serverPlayer->level->dimension->id
+            : 0;
     // How we handle the entity tracker depends on whether we are the primary
     // player currently, and whether there will be any player in the same system
     // in the same dimension once we finish respawning.
@@ -725,6 +908,30 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
                                         // assignment from ServerPlayer ctor
     player->setXuid(playerXuid);        // 4J Added
     player->setOnlineXuid(playerOnlineXuid);  // 4J Added
+
+    // 4J macOS - carry our home/back/reply state across respawn. Without
+    // this, /home, /back and /r would forget their state on every death.
+    player->m_hasHome = deathHadHome;
+    player->m_homeX = deathHomeX;
+    player->m_homeY = deathHomeY;
+    player->m_homeZ = deathHomeZ;
+    player->m_homeDim = deathHomeDim;
+    // Prefer the just-died location as the new /back target so the player
+    // can return to where they died, falling back to the previous /back.
+    if (dyingHasBack) {
+        player->m_hasBack = true;
+        player->m_backX = dyingBackX;
+        player->m_backY = dyingBackY;
+        player->m_backZ = dyingBackZ;
+        player->m_backDim = dyingBackDim;
+    } else {
+        player->m_hasBack = deathHadBack;
+        player->m_backX = deathBackX;
+        player->m_backY = deathBackY;
+        player->m_backZ = deathBackZ;
+        player->m_backDim = deathBackDim;
+    }
+    player->m_lastReplyTo = deathReplyTo;
 
     // 4J Stu - Don't reuse the id. If we do, then the player can be re-added
     // after being removed, but the add packet gets sent before the remove
@@ -1041,11 +1248,58 @@ void PlayerList::tick() {
         sendAllPlayerInfoIn = 0;
     }
 
+    // 4J macOS - Phase C multiplayer autosave override. The host's
+    // local autosave timer (eGameSetting_Autosave, default 5+ minutes)
+    // is too coarse for shared worlds where remote players may build
+    // for an hour and then crash before any save lands. While at least
+    // one remote player is connected we run a level flush every 90s.
+    // Single-player and host-only sessions keep the vanilla cadence.
+    bool hasRemotePlayer = false;
+    for (size_t i = 0; i < players.size(); i++) {
+        std::shared_ptr<ServerPlayer> sp = players[i];
+        if (sp == nullptr || sp->connection == nullptr ||
+            sp->connection->connection == nullptr) {
+            continue;
+        }
+        Socket* sock = sp->connection->connection->getSocket();
+        if (sock != nullptr) {
+            INetworkPlayer* np = sock->getPlayer();
+            if (np != nullptr && !np->IsHost()) {
+                hasRemotePlayer = true;
+                break;
+            }
+        }
+    }
+    if (hasRemotePlayer) {
+        if (--m_mpAutosaveCountdown <= 0) {
+            m_mpAutosaveCountdown = 20 * 90;  // re-arm 90s
+            if (playerIo != nullptr &&
+                !StorageManager.GetSaveDisabled()) {
+                playerIo->saveAllCachedData();
+                playerIo->saveMapIdLookup();
+                ServerLevel* level0 = server->getLevel(0);
+                if (level0 != nullptr) {
+                    level0->saveToDisc(nullptr, true);
+                }
+                m_lastFullDiskFlushMs = System::currentTimeMillis();
+            }
+        }
+    } else {
+        // Hold the counter at the start value while no remote players
+        // are present so the next remote join doesn't trigger an
+        // immediate flush.
+        m_mpAutosaveCountdown = 20 * 90;
+    }
+
     if (sendAllPlayerInfoIn < players.size()) {
         std::shared_ptr<ServerPlayer> op = players[sendAllPlayerInfoIn];
         // broadcastAll(std::shared_ptr<PlayerInfoPacket>( new
         // PlayerInfoPacket(op->name, true, op->latency) ) );
-        if (op->connection->getNetworkPlayer()) {
+        // 4J - guard against op->connection being null. PlayerList::remove()
+        // sets connection to nullptr before erasing the entry; if tick() runs
+        // between those two operations we would otherwise null-deref.
+        if (op != nullptr && op->connection != nullptr &&
+            op->connection->getNetworkPlayer()) {
             broadcastAll(std::make_shared<PlayerInfoPacket>(op));
         }
     }
@@ -1154,16 +1408,28 @@ void PlayerList::prioritiseTileChanges(int x, int y, int z, int dimension) {
 }
 
 void PlayerList::broadcastAll(std::shared_ptr<Packet> packet) {
-    for (unsigned int i = 0; i < players.size(); i++) {
-        std::shared_ptr<ServerPlayer> player = players[i];
-        player->connection->send(packet);
+    // 4J - take a snapshot of player pointers so a remove() racing with us
+    // (or a disconnect triggered as a side-effect of send()) cannot
+    // invalidate the iteration. Skip players whose connection has already
+    // been nulled out by PlayerList::remove() since their entry will be
+    // erased on the next tick.
+    std::vector<std::shared_ptr<ServerPlayer> > snapshot = players;
+    for (auto& player : snapshot) {
+        if (player == nullptr) continue;
+        auto conn = player->connection;
+        if (conn == nullptr) continue;
+        conn->send(packet);
     }
 }
 
 void PlayerList::broadcastAll(std::shared_ptr<Packet> packet, int dimension) {
-    for (unsigned int i = 0; i < players.size(); i++) {
-        std::shared_ptr<ServerPlayer> player = players[i];
-        if (player->dimension == dimension) player->connection->send(packet);
+    std::vector<std::shared_ptr<ServerPlayer> > snapshot = players;
+    for (auto& player : snapshot) {
+        if (player == nullptr) continue;
+        if (player->dimension != dimension) continue;
+        auto conn = player->connection;
+        if (conn == nullptr) continue;
+        conn->send(packet);
     }
 }
 
@@ -1713,7 +1979,35 @@ bool PlayerList::isXuidBanned(PlayerUID xuid) {
     return banned;
 }
 
+bool PlayerList::banXuid(PlayerUID xuid) {
+    if (xuid == INVALID_XUID) return false;
+    if (isXuidBanned(xuid)) return false;
+    m_bannedXuids.push_back(xuid);
+    return true;
+}
+
+bool PlayerList::pardonXuid(PlayerUID xuid) {
+    if (xuid == INVALID_XUID) return false;
+    for (auto it = m_bannedXuids.begin(); it != m_bannedXuids.end(); ++it) {
+        if (ProfileManager.AreXUIDSEqual(xuid, *it)) {
+            m_bannedXuids.erase(it);
+            return true;
+        }
+    }
+    return false;
+}
+
 // AP added for Vita so the range can be increased once the level starts
 void PlayerList::setViewDistance(int newViewDistance) {
-    viewDistance = newViewDistance;
+    // 4J macOS task 8.2 (Req 7.4) - clamp the new Server_View_Distance and
+    // propagate it to every ServerLevel's chunk map radius and entity tracker
+    // range within this tick, so chunk streaming and entity visibility stay
+    // consistent after a live view-distance change.
+    int clamped = clampViewDistance(newViewDistance);
+    viewDistance = clamped;
+    for (ServerLevel* level : server->levels) {
+        if (level == nullptr) continue;
+        level->getChunkMap()->setRadius(clamped);  // keep chunk subscription radius in sync
+        level->getTracker()->updateMaxRange();      // Req 7.4 - recompute entity tracking range
+    }
 }

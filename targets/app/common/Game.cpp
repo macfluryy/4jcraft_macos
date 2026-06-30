@@ -29,6 +29,7 @@
 #include "java/File.h"
 #include "java/Random.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/DisconnectedScreen.h"
 #include "minecraft/client/Options.h"
 #include "minecraft/client/ProgressRenderer.h"
 #include "minecraft/client/model/geom/Model.h"
@@ -2573,6 +2574,27 @@ void Game::HandleXuiActions(void) {
                 } break;
 
                 case eAppAction_ExitWorld:
+                    // 4J macOS - restore the vanilla invariant that a valid
+                    // screen exists BEFORE exitingWorldRightNow makes
+                    // run_middle render `screen`. Vanilla LCE assigned the
+                    // DisconnectedScreen up front in ClientConnection::
+                    // handleDisconnect; the macOS port moved screen creation to
+                    // the async ExitWorldThreadProc, which runs only after
+                    // run_middle has already null-dereferenced `screen` (no menu
+                    // is open on an in-world server disconnect). Recreate it here
+                    // synchronously on the main thread - the reason was stashed
+                    // in app by handleDisconnect - so the very next run_middle
+                    // renders a valid disconnect screen instead of crashing.
+                    if (pMinecraft->screen == nullptr) {
+                        std::wstring reasonText = app.GetDisconnectReasonText();
+                        if (reasonText.empty()) {
+                            reasonText =
+                                app.GetString(IDS_CONNECTION_LOST_SERVER);
+                        }
+                        pMinecraft->setScreen(new DisconnectedScreen(
+                            app.GetString(IDS_CONNECTION_LOST), reasonText,
+                            true));
+                    }
                     pMinecraft->exitingWorldRightNow = true;
 
                     SetAction(i, eAppAction_Idle);

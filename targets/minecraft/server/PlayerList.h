@@ -58,6 +58,14 @@ private:
     PlayerIO* playerIo;
     bool doWhiteList;
 
+public:
+    // 4J macOS - exposed for the graceful shutdown save path
+    // (MinecraftServer::forceShutdownSave needs to flush cached
+    // map / player data on Cmd+Q and SIGTERM).
+    PlayerIO* getPlayerIO() { return playerIo; }
+
+private:
+
     GameType* overrideGameMode;
     bool allowCheatsForAllPlayers;
     int viewDistance;
@@ -67,6 +75,18 @@ private:
     // 4J Added to maintain which players in which dimensions can receive all
     // packet types
     std::vector<std::shared_ptr<ServerPlayer> > receiveAllPlayers[3];
+
+    // 4J macOS - multiplayer persistence hardening. Track wall-clock
+    // milliseconds of the last full disk flush so we don't flush the
+    // entire level on every disconnect (would stall the host on every
+    // join/leave). Rate-limited to once per 60s; player .dat files are
+    // always flushed via saveAllCachedData() which is cheap.
+    int64_t m_lastFullDiskFlushMs;
+    // Multiplayer autosave override: when remote players are connected
+    // we shorten the autosave interval since the host's local autosave
+    // (5+ minutes default) is too coarse for shared worlds. This counter
+    // ticks down at 20Hz; when it hits zero we run a flush and reset.
+    int m_mpAutosaveCountdown;
 
 private:
     std::shared_ptr<ServerPlayer> findAlivePlayerOnSystem(
@@ -180,6 +200,9 @@ public:
     void kickPlayerByShortId(std::uint8_t networkSmallId);
     void closePlayerConnectionBySmallId(std::uint8_t networkSmallId);
     bool isXuidBanned(PlayerUID xuid);
+    // 4J Added - explicit ban management for /ban + /pardon
+    bool banXuid(PlayerUID xuid);
+    bool pardonXuid(PlayerUID xuid);
     // AP added for Vita so the range can be increased once the level starts
     void setViewDistance(int newViewDistance);
 };

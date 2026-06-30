@@ -134,7 +134,10 @@ private:
     std::mutex m_queueLockNetwork[2];            // For input data
     SocketInputStreamNetwork* m_inputStream[2];
     SocketOutputStreamNetwork* m_outputStream[2];
-    bool m_endClosed[2];
+    // 4J macOS - written from the TCP reader thread (on EOF) and the sender,
+    // read from other threads via isClosing()/read paths. Made atomic to avoid
+    // a data race on the close flag (was a plain bool).
+    std::atomic<bool> m_endClosed[2];
     bool m_isTcp;
     int m_tcpFd;
     std::thread* m_tcpReaderThread;

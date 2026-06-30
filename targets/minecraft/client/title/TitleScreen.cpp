@@ -3,11 +3,23 @@
 #include <stdint.h>
 
 #include <cmath>
+#include <numbers>
 #include <vector>
 
 #include "platform/sdl2/Input.h"
+#include "platform/sdl2/Profile.h"
 #include "platform/sdl2/Render.h"
+#include "platform/sdl2/Storage.h"
+#include "app/common/App_Defines.h"
+#include "app/common/App_enums.h"
+#include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "app/common/src/Network/GameNetworkManager.h"
+#include "app/common/src/UI/All Platforms/UIEnums.h"
+#include "app/common/src/UI/All Platforms/UIStructs.h"
+#include "app/include/NetTypes.h"
+#include "app/include/stubs.h"
 #include "app/mac/MacGame.h"
+#include "app/mac/Mac_UIController.h"
 #include "app/mac/Stubs/winapi_stubs.h"
 #include "app/include/BufferedImage.h"
 #include "util/StringHelpers.h"
@@ -22,12 +34,14 @@
 #include "minecraft/client/gui/JoinMultiplayerScreen.h"
 #include "minecraft/client/gui/OptionsScreen.h"
 #include "minecraft/client/gui/SelectWorldScreen.h"
+#include "minecraft/client/gui/UsernameScreen.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/client/skins/TexturePack.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/locale/Language.h"
+#include "minecraft/server/MinecraftServer.h"
 
 Random* TitleScreen::random = new Random();
 
@@ -269,6 +283,20 @@ if (c.get(Calendar.MONTH) + 1 == 11 && c.get(Calendar.DAY_OF_MONTH) == 9) {
         buttons.push_back(new Button(4, width / 2 + 2,
                                      topPos + spacing * 3 + 12, 98, 20,
                                      language->getElement(L"menu.quit")));
+        // 4J macOS - Tutorial entry. Loads the bundled Tutorial.mcs save
+        // (the original 4J Studios pre-built tutorial world). The Iggy /
+        // Flash main menu had a button for this but we use the Java-style
+        // TitleScreen instead, so without this row the only way to play
+        // the tutorial was an env-var trigger.
+        buttons.push_back(new Button(5, width / 2 - 100,
+                                     topPos + spacing * 4 + 12, 200, 20,
+                                     L"Play Tutorial"));
+        // 4J macOS - "Username" entry below Tutorial. Opens a small
+        // editor screen that writes Options::lastMpNickname so direct-
+        // connect MP picks up the user's chosen name.
+        buttons.push_back(new Button(6, width / 2 - 100,
+                                     topPos + spacing * 5 + 12, 200, 20,
+                                     L"Username"));
     }
 
     // 4J macOS - the Multiplayer button used to be disabled when user==null,
@@ -309,6 +337,73 @@ void TitleScreen::buttonClicked(Button* button) {
         app.DebugPrintf(
             "TitleScreen::buttonClicked() Exit Game if (button->id == 4)\n");
         RenderManager.Close();  // minecraft->stop();
+    }
+    if (button->id == 5) {
+        // 4J macOS - Play Tutorial. Mirrors UIScene_MainMenu::LoadTrial
+        // from the original Iggy/Flash main menu, just without the
+        // trial-timer overlay (we are not running a time-limited demo).
+        // Tutorial.mcs is bundled in res/TitleUpdate/GameRules and
+        // GameRuleManager registers it at index 0 of the level
+        // generators list during InitGameSettings.
+        app.DebugPrintf(
+            "TitleScreen::buttonClicked() 'Play Tutorial' if (button->id == "
+            "5)\n");
+
+        app.SetTutorialMode(true);
+        app.ClearTerrainFeaturePosition();
+
+        StorageManager.ResetSaveData();
+        // Tutorial is read-only; a separate save would clutter Saves/.
+        StorageManager.SetSaveDisabled(true);
+        app.SetGameHostOption(eGameHostOption_WasntSaveOwner, false);
+        app.SetGameHostOption(eGameHostOption_DisableSaving, 1);
+        StorageManager.SetSaveTitle(L"Tutorial");
+        app.SetAutosaveTimerTime();
+
+        g_NetworkManager.HostGame(0, false, true, MINECRAFT_NET_MAX_PLAYERS,
+                                  0);
+        g_NetworkManager.FakeLocalPlayerJoined();
+
+        NetworkGameInitData* param = new NetworkGameInitData();
+        param->seed = 0;
+        param->saveData = nullptr;
+        param->settings = app.GetGameHostOption(eGameHostOption_Tutorial) |
+                          app.GetGameHostOption(eGameHostOption_DisableSaving);
+
+        std::vector<LevelGenerationOptions*>* generators =
+            app.getLevelGenerators();
+        if (generators != nullptr && !generators->empty()) {
+            param->levelGen = generators->at(0);
+        } else {
+            // No tutorial registered - bail without leaving the screen
+            // in a half-set-up state.
+            app.DebugPrintf(
+                "TitleScreen::buttonClicked() Play Tutorial: no level "
+                "generators registered, aborting\n");
+            delete param;
+            return;
+        }
+
+        LoadingInputParams* loadingParams = new LoadingInputParams();
+        loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
+        loadingParams->lpParam = (void*)param;
+
+        UIFullscreenProgressCompletionData* completionData =
+            new UIFullscreenProgressCompletionData();
+        completionData->bShowBackground = true;
+        completionData->bShowLogo = true;
+        completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
+        completionData->iPad = ProfileManager.GetPrimaryPad();
+        loadingParams->completionData = completionData;
+
+        ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
+                           eUIScene_FullscreenProgress, loadingParams);
+    }
+    if (button->id == 6) {
+        // 4J macOS - open the dedicated username editor.
+        app.DebugPrintf(
+            "TitleScreen::buttonClicked() 'Username' if (button->id == 6)\n");
+        minecraft->setScreen(new UsernameScreen(this));
     }
 }
 

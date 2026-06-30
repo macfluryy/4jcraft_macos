@@ -132,6 +132,8 @@ private:
 public:
     virtual void SystemFlagSet(INetworkPlayer* pNetworkPlayer, int index);
     virtual bool SystemFlagGet(INetworkPlayer* pNetworkPlayer, int index);
+    // 4J macOS task 5.2 (Req 4.5) - clear a per-system flag on unload.
+    virtual void SystemFlagClear(INetworkPlayer* pNetworkPlayer, int index);
 
     // For telemetry
 private:

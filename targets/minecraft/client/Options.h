@@ -102,6 +102,9 @@ public:
     bool thirdPersonView;
     bool renderDebug;
     std::wstring lastMpIp;
+    // 4J macOS - last nickname used for multiplayer direct-connect. Saved to
+    // Options.txt so it persists across launches.
+    std::wstring lastMpNickname;
 
     bool isFlying;
     bool smoothCamera;

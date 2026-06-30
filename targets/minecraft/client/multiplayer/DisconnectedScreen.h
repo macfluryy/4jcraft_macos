@@ -10,6 +10,8 @@ private:
 public:
     DisconnectedScreen(const std::wstring& title, const std::wstring reason,
                        void* reasonObjects, ...);
+    DisconnectedScreen(const std::wstring& title, const std::wstring& reason,
+                       bool bRawText);
     virtual void tick() override;
 
 protected:

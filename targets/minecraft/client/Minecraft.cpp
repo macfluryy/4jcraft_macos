@@ -406,6 +406,15 @@ void Minecraft::init() {
         new McRegionLevelStorageSource(File(workingDirectory, L"saves"));
     //        levelSource = new MemoryLevelStorageSource();
     options = new Options(this, workingDirectory);
+    // The sound engine was init(nullptr)'d above (before options existed), so
+    // its master volumes defaulted to full. Now that options are loaded from
+    // disk, push the saved Music / Sound volumes into the engine so the title
+    // and menu audio honour them immediately - not only after entering a world
+    // (ApplyGameSettingsChanged) or touching a slider.
+    if (soundEngine != nullptr) {
+        soundEngine->updateMusicVolume(options->music);
+        soundEngine->updateSoundEffectVolume(options->sound);
+    }
     skins = new TexturePackRepository(workingDirectory, this);
     skins->addDebugPacks();
     textures = new Textures(skins, options);
@@ -1149,7 +1158,10 @@ void Minecraft::run_middle() {
 
 #if defined(ENABLE_JAVA_GUIS)
     // 4jcraft: while the java ui is leaving world, don't run the rest of
-    // run_middle
+    // run_middle - just keep drawing the current screen during teardown. The
+    // screen is guaranteed non-null here: the eAppAction_ExitWorld handler
+    // assigns a DisconnectedScreen synchronously (on this same main thread,
+    // earlier in the loop) before it ever sets exitingWorldRightNow.
     if (exitingWorldRightNow) {
         screen->render(0, 0, 1);
         return;
@@ -2130,6 +2142,11 @@ void Minecraft::levelTickThreadInitFunc() {
 // textures are to be updated - this will be true for the last time this tick
 // runs with bFirst true
 void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
+    // 4J macOS - guard against ticking before a player is wired up. This
+    // happens during slow remote direct-connect joins between the time
+    // ConnectScreen finishes and handleLogin actually runs setLevel.
+    // Without this, accessing `player->GetXboxPad()` crashes the client.
+    if (player == nullptr) return;
     int iPad = player->GetXboxPad();
     // OutputDebugString("Minecraft::tick\n");
 
@@ -3882,7 +3899,13 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
     std::lock_guard<std::recursive_mutex> lock(m_setLevelCS);
     bool playerAdded = false;
     int iPrimaryPlayer = InputManager.GetPrimaryPad();
-    this->cameraTargetPlayer = nullptr;
+    // 4J macOS - Do NOT null cameraTargetPlayer at the top of setLevel.
+    // The render thread does not take m_setLevelCS, so a render frame
+    // running concurrently would see a null camera target and either
+    // render a black void or null-deref. We only need to clear the camera
+    // target on the EXIT path (level == nullptr), and we do that below
+    // inside the explicit `if (level == nullptr)` block. For the level-set
+    // path the new player is assigned at the end as before.
 
     if (progressRenderer != nullptr) {
         this->progressRenderer->progressStart(message);
@@ -3925,6 +3948,35 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
     // 4J If we are setting the level to nullptr then we are exiting, so delete
     // the levels
     if (level == nullptr) {
+        // 4J macOS - Clear every render-thread-visible reference to the level's
+        // entities BEFORE the level and its players are freed. The render thread
+        // deliberately does not take m_setLevelCS, so leaving cameraTargetPlayer
+        // / cameraEntity pointing at an entity we are about to delete is a
+        // use-after-free + render-thread race (SIGSEGV on a server disconnect).
+        // Null them first: a concurrent frame then sees null (handled) instead
+        // of a dangling pointer. The owning shared_ptrs in localplayers[] keep
+        // the objects alive until they are explicitly released below.
+        cameraTargetPlayer = nullptr;
+        if (EntityRenderDispatcher::instance != nullptr)
+            EntityRenderDispatcher::instance->cameraEntity = nullptr;
+        if (TileEntityRenderDispatcher::instance != nullptr)
+            TileEntityRenderDispatcher::instance->cameraEntity = nullptr;
+        // Also drop the Minecraft-level current-level pointer BEFORE freeing
+        // levels[0] below. `this->level` aliases levels[0]; it was only being
+        // reassigned at the very end of setLevel (after the delete), so the
+        // render thread could read a dangling level pointer mid-teardown.
+        this->level = nullptr;
+        // And drop player / gameMode now, BEFORE the player objects are freed.
+        // GameRenderer (pickCamera, ~line 249) RESURRECTS cameraTargetPlayer
+        // from mc->player whenever it is null, so leaving a dangling mc->player
+        // would let the render thread re-acquire and deref a freed player even
+        // after we cleared cameraTargetPlayer. forceStatsSave (the only earlier
+        // use of player) already ran in the loop above, so this is safe. The
+        // owning shared_ptrs in localplayers[] keep the objects alive until
+        // they are explicitly released below.
+        gameMode = nullptr;
+        player = nullptr;
+
         if (levels[0] != nullptr) {
             delete levels[0];
             levels[0] = nullptr;
@@ -3961,15 +4013,9 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
 
             localplayers[idx] = nullptr;
         }
-        // If we are removing the primary player then there can't be a valid
-        // gamemode left anymore, this pointer will be referring to the one
-        // we've just deleted
-        gameMode = nullptr;
-        // Remove references to player
-        player = nullptr;
-        cameraTargetPlayer = nullptr;
-        EntityRenderDispatcher::instance->cameraEntity = nullptr;
-        TileEntityRenderDispatcher::instance->cameraEntity = nullptr;
+        // gameMode / player / cameraTargetPlayer / this->level were already
+        // nulled at the top of this block (before the frees) so the render
+        // thread can never observe a dangling pointer during teardown.
     }
     this->level = level;
 
@@ -4029,6 +4075,18 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
         if (player->input != nullptr) delete player->input;
         player->input = new Input();
 
+        // 4J macOS - Set cameraTargetPlayer BEFORE LevelRenderer::setLevel
+        // runs. LevelRenderer::setLevel triggers allChanged() which builds
+        // the per-player chunk grid centred on cameraTargetPlayer; if it's
+        // still nullptr at that point the grid is built at the world origin
+        // and the player drops into a black void of unloaded chunks. This
+        // was previously patched up in ClientConnection::handleMovePlayer
+        // ("dark zone" workaround) and again in handleLogin for non-host
+        // clients, but doing it here at the source removes the need for
+        // those scattered workarounds and fixes second-client joins where
+        // those gates didn't fire correctly.
+        this->cameraTargetPlayer = player;
+
         if (levelRenderer != nullptr)
             levelRenderer->setLevel(player->GetXboxPad(), level);
         if (particleEngine != nullptr) particleEngine->setLevel(level);
@@ -4041,6 +4099,7 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
         updatePlayerViewportAssignments();
 
         setLocalPlayerIdx(iPrimaryPlayer);
+        // (cameraTargetPlayer was already set above before setLevel.)
         this->cameraTargetPlayer = player;
 
         // 4J - allow update thread to start processing the level now both it &
@@ -4410,6 +4469,43 @@ bool Minecraft::renderDebug() {
 }
 
 bool Minecraft::handleClientSideCommand(const std::wstring& chatMessage) {
+    // 4J macOS - client-only commands handled without a server round-trip.
+    // Returning true means "handled, don't forward to the server"; false
+    // forwards the message to the server's CommandDispatcher (or broadcasts
+    // it as normal chat). We keep this list tiny - gameplay commands
+    // (/weather, /time, /give, /tp, ...) all live server-side.
+    if (chatMessage.empty() || chatMessage[0] != L'/') return false;
+
+    // Extract the bare command word (lowercased).
+    std::wstring rest = chatMessage.substr(1);
+    std::wstring cmd;
+    for (wchar_t c : rest) {
+        if (c == L' ') break;
+        cmd.push_back((c >= L'A' && c <= L'Z') ? (wchar_t)(c + 32) : c);
+    }
+
+    if (cmd == L"help" || cmd == L"?") {
+        int iPad = (player != nullptr) ? player->GetXboxPad()
+                                       : InputManager.GetPrimaryPad();
+        auto say = [this, iPad](const std::wstring& s) {
+            if (gui != nullptr) gui->addMessage(s, iPad);
+        };
+        say(L"\u00A7e--- Commands ---");
+        say(L"\u00A7e/weather <clear|rain|thunder> \u00A77- set weather");
+        say(L"\u00A7e/time set <0-24000> | day | night \u00A77- set time");
+        say(L"\u00A7e/gamemode <0|1|2> [player] \u00A77- change mode");
+        say(L"\u00A7e/give <player> <item> [count] \u00A77- give items");
+        say(L"\u00A7e/tp <player> | <x> <y> <z> \u00A77- teleport");
+        say(L"\u00A7e/kill [target] \u00A77- kill entities");
+        say(L"\u00A7e/seed \u00A77- show world seed");
+        say(L"\u00A7e/list \u00A77- list online players");
+        say(L"\u00A7e/spawn /home /sethome /back \u00A77- movement");
+        say(L"\u00A7e/heal /feed \u00A77- restore health / hunger");
+        say(L"\u00A7e/op /deop /kick /ban /pardon \u00A77- admin");
+        return true;  // handled locally
+    }
+
+    // Not a client-only command - forward to the server.
     return false;
 }
 

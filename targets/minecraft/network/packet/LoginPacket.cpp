@@ -33,6 +33,7 @@ LoginPacket::LoginPacket() {
     m_uiGamePrivileges = 0;
     m_xzSize = LEVEL_MAX_WIDTH;
     m_hellScale = HELL_LEVEL_MAX_SCALE;
+    serverViewDistance = 0;  // 4J macOS - Server -> Client only; unused here
 }
 
 // Client -> Server
@@ -65,6 +66,7 @@ LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion,
     m_uiGamePrivileges = 0;
     m_xzSize = LEVEL_MAX_WIDTH;
     m_hellScale = HELL_LEVEL_MAX_SCALE;
+    serverViewDistance = 0;  // 4J macOS - Server -> Client only; unused here
 }
 
 // Server -> Client
@@ -74,7 +76,7 @@ LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion,
                          std::uint8_t maxPlayers, char difficulty,
                          int multiplayerInstanceId, std::uint8_t playerIndex,
                          bool newSeaLevel, unsigned int uiGamePrivileges,
-                         int xzSize, int hellScale) {
+                         int xzSize, int hellScale, int serverViewDistance) {
     this->userName = userName;
     this->clientVersion = clientVersion;
     this->seed = seed;
@@ -99,6 +101,7 @@ LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion,
     m_uiGamePrivileges = uiGamePrivileges;
     m_xzSize = xzSize;
     m_hellScale = hellScale;
+    this->serverViewDistance = serverViewDistance;
 }
 
 void LoginPacket::read(DataInputStream* dis)  // throws IOException
@@ -131,6 +134,10 @@ void LoginPacket::read(DataInputStream* dis)  // throws IOException
     m_xzSize = dis->readShort();
     m_hellScale = dis->read();
 #endif
+    // 4J macOS - Server_View_Distance (chunks). MUST stay the LAST field on the
+    // wire so the existing field layout is unchanged; appended unconditionally
+    // (NOT under _LARGE_WORLDS) and symmetric with write() so it round-trips.
+    serverViewDistance = dis->readInt();
     app.DebugPrintf("LoginPacket::read - Difficulty = %d\n", difficulty);
 }
 
@@ -164,6 +171,11 @@ void LoginPacket::write(DataOutputStream* dos)  // throws IOException
     dos->writeShort(m_xzSize);
     dos->write(m_hellScale);
 #endif
+    // 4J macOS - Server_View_Distance (chunks). MUST stay the LAST field on the
+    // wire for wire-compat: it is appended after every existing field so the
+    // prior layout is untouched; written unconditionally and symmetric with
+    // read().
+    dos->writeInt(serverViewDistance);
 }
 
 void LoginPacket::handle(PacketListener* listener) {
@@ -179,5 +191,6 @@ int LoginPacket::getEstimatedSize() {
     return (int)(sizeof(int) + userName.length() + 4 + 6 + sizeof(int64_t) +
                  sizeof(char) + sizeof(int) + (2 * sizeof(PlayerUID)) + 1 +
                  sizeof(char) + sizeof(std::uint8_t) + sizeof(bool) +
-                 sizeof(bool) + length + sizeof(unsigned int));
+                 sizeof(bool) + length + sizeof(unsigned int) +
+                 sizeof(int) /* serverViewDistance */);
 }

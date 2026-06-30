@@ -19,6 +19,7 @@
 #include "platform/PlatformServices.h"
 #include "java/Random.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/util/Mth.h"
@@ -168,8 +169,17 @@ void SoundEngine::init(Options* pOptions) {
 
     ma_engine_set_volume(&m_engine, 1.0f);
 
-    m_MasterMusicVolume = 1.0f;
-    m_MasterEffectsVolume = 1.0f;
+    if (pOptions != nullptr) {
+        float musicVol = pOptions->music;
+        float soundVol = pOptions->sound;
+        m_MasterMusicVolume = musicVol < 0.0f ? 0.0f
+                              : (musicVol > 1.0f ? 1.0f : musicVol);
+        m_MasterEffectsVolume = soundVol < 0.0f ? 0.0f
+                                : (soundVol > 1.0f ? 1.0f : soundVol);
+    } else {
+        m_MasterMusicVolume = 1.0f;
+        m_MasterEffectsVolume = 1.0f;
+    }
 
     m_validListenerCount = 1;
 
@@ -598,10 +608,10 @@ void SoundEngine::playMusicTick() {
                 if (needsStop) m_StreamState = eMusicStreamState_Stop;
 
                 // volume change required?
-                if (m_musicStreamActive)
-                    ma_sound_set_volume(
-                        &m_musicStream,
-                        m_StreamingAudioInfo.volume * fMusicVol);
+                if (m_musicStreamActive) {
+                    float fFinal = m_StreamingAudioInfo.volume * fMusicVol;
+                    ma_sound_set_volume(&m_musicStream, fFinal);
+                }
 
             } else if (m_StreamingAudioInfo.bIs3D && m_validListenerCount > 1 &&
                        m_musicStreamActive) {

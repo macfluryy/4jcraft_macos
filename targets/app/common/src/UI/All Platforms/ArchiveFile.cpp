@@ -123,6 +123,18 @@ std::vector<uint8_t> ArchiveFile::getFile(const std::wstring& filename) {
 
         if (readResult.status != IPlatformFileIO::ReadStatus::Ok) {
             app.DebugPrintf("Failed to read archive file segment\n");
+            // 4J macOS - show which file actually fails so we can
+            // diagnose the post-exit FatalLoadError on the home menu
+            // navigation. The base error message above doesn't carry
+            // any context.
+            std::wstring archivePath =
+                m_sourcefile.getPath();
+            fprintf(stderr,
+                    "[archive] read FAILED: src=%ls file=%ls "
+                    "ptr=%llu size=%llu\n",
+                    archivePath.c_str(), filename.c_str(),
+                    (unsigned long long)data->ptr,
+                    (unsigned long long)data->filesize);
             app.FatalLoadError();
         }
 #endif

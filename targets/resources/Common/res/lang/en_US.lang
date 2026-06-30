@@ -76,6 +76,7 @@ selectWorld.mapType.normal=Normal
 selectWorld.mapType.flat=Superflat
 selectWorld.mapType.largeBiomes=Large Biomes
 selectWorld.mapType.amplified=Amplified
+selectWorld.mapType.triple=Triple
 selectWorld.allowCommands=Allow Cheats:
 selectWorld.allowCommands.info=Commands like /gamemode, /xp
 selectWorld.hardcoreMode=Hardcore:

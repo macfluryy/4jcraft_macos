@@ -1,5 +1,7 @@
 #include "Gui.h"
 
+#include <SDL2/SDL.h>
+
 #include <cmath>
 #include <algorithm>
 
@@ -969,6 +971,18 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
         // TERRAIN FEATURES
         int iYPos = 82;
 
+        // 4J macOS - read player coords for the structure-distance
+        // calculation. Coords themselves are already shown by the
+        // existing x:/y:/z:/f: block further down, so don't render
+        // them here - just compute the values.
+        int playerX = 0, playerY = 0, playerZ = 0;
+        (void)playerY;
+        if (minecraft->player != nullptr) {
+            playerX = (int)std::floor(minecraft->player->x);
+            playerY = (int)std::floor(minecraft->player->y);
+            playerZ = (int)std::floor(minecraft->player->z);
+        }
+
         if (minecraft->level->dimension->id == 0) {
             std::wstring wfeature[eTerrainFeature_Count];
 
@@ -977,12 +991,25 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
             wfeature[eTerrainFeature_Village] = L"Village: ";
             wfeature[eTerrainFeature_Ravine] = L"Ravine: ";
 
-            for (int i = 0; i < app.m_vTerrainFeatures.size(); i++) {
+            for (int i = 0; i < (int)app.m_vTerrainFeatures.size(); i++) {
                 FEATURE_DATA* pFeatureData = app.m_vTerrainFeatures[i];
 
+                // 4J macOS - convert stored chunk coordinates to the
+                // block-space centre of the chunk (chunk*16 + 8) and
+                // show the straight-line distance from the player so
+                // the entry is actually navigable. Was raw chunk*16
+                // before, which read as the NW corner of the chunk -
+                // off by a few blocks and offered no scale reference.
+                int featX = pFeatureData->x * 16 + 8;
+                int featZ = pFeatureData->z * 16 + 8;
+                int dx = featX - playerX;
+                int dz = featZ - playerZ;
+                int dist = (int)std::sqrt((double)dx * dx + (double)dz * dz);
+
                 std::wstring itemInfo =
-                    L"[" + toWString<int>(pFeatureData->x * 16) + L", " +
-                    toWString<int>(pFeatureData->z * 16) + L"] ";
+                    L"[" + toWString<int>(featX) + L", " +
+                    toWString<int>(featZ) + L" | d=" + toWString<int>(dist) +
+                    L"] ";
                 wfeature[pFeatureData->eTerrainFeature] += itemInfo;
             }
 
@@ -1100,7 +1127,12 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
     unsigned int max = 10;
     bool isChatting = false;
     if (dynamic_cast<ChatScreen*>(minecraft->screen) != nullptr) {
-        max = 20;
+        // 4J macOS - ChatScreen renders its own scrollable log overlay
+        // (with mouse-wheel / PgUp / PgDn scrolling). The vanilla Java
+        // Gui::render path below would draw a second, non-scrollable
+        // 20-line stack on top of it. Skip the duplicate here; we still
+        // hide the Iggy/Flash chat via getOpacity().
+        max = 0;
         isChatting = true;
     }
 
@@ -1164,6 +1196,35 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
         // pop the scaled matrix
         glPopMatrix();
     }
+
+    // 4J macOS - Tab-key player list overlay. Drawn last so it sits on
+    // top of the rest of the HUD. Only show when the player has the
+    // TAB-bound key held and we're actually in a world with a screen
+    // dismissed (no inventory/menu open).
+    {
+        // Tab can come from either path: the engine's mirror in
+        // JavaKeyInput::keysCurrent (driven by SDL_KEYDOWN events) or a
+        // direct query of SDL's keyboard state. We accept either, because
+        // on macOS the SDL_KEYDOWN path can be swallowed when other
+        // windows steal focus, while SDL_GetKeyboardState() still
+        // reflects the physical key.
+        bool tabDown = Keyboard::isKeyDown(Keyboard::KEY_TAB);
+        if (!tabDown) {
+            const Uint8* sdlState = SDL_GetKeyboardState(nullptr);
+            if (sdlState != nullptr && sdlState[SDL_SCANCODE_TAB] != 0) {
+                tabDown = true;
+            }
+        }
+        if (bDisplayGui && minecraft->screen == nullptr && tabDown) {
+            renderPlayerList(screenWidth, screenHeight);
+        }
+    }
+
+    // 4J macOS - tutorial popup overlay was rendered here. Removed at
+    // user request - the bundled Tutorial.mcs world remains usable
+    // without the on-screen prompts; players who specifically want
+    // tutorial guidance can still play the world, just without the
+    // hint banner.
 
     glColor4f(1, 1, 1, 1);
     glDisable(GL_BLEND);
@@ -1288,6 +1349,145 @@ void Gui::renderTp(float br, int w, int h) {
     glDepthMask(true);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_ALPHA_TEST);
+    glColor4f(1, 1, 1, 1);
+}
+
+// 4J macOS - Vanilla-style player list shown while TAB is held. We pull
+// the current set of players directly from the level (Level::players is a
+// public std::vector of shared_ptr<Player>) so this works for both the
+// host (server tick keeps the list up-to-date) and remote direct-connect
+// clients (handleAddPlayer / handleRemoveEntity drive the same list).
+void Gui::renderPlayerList(int screenWidth, int screenHeight) {
+    if (minecraft == nullptr || minecraft->level == nullptr) return;
+    Font* font = minecraft->font;
+    if (font == nullptr) return;
+
+    // Snapshot the players so we never iterate while another thread
+    // (network thread on join/leave) mutates the vector. The shared_ptrs
+    // keep entries alive even if removed mid-frame.
+    std::vector<std::shared_ptr<Player> > players = minecraft->level->players;
+
+    // Drop nulls and the local player's split-screen siblings so each
+    // gamer appears once. We only want LivingEntity-style player rows.
+    std::vector<std::shared_ptr<Player> > visible;
+    visible.reserve(players.size());
+    for (auto& p : players) {
+        if (p == nullptr) continue;
+        // Skip remote shadows of our own local players if any sneak in.
+        bool isOurOwn = false;
+        for (int i = 0; i < XUSER_MAX_COUNT; ++i) {
+            if (minecraft->localplayers[i] != nullptr &&
+                minecraft->localplayers[i]->getXuid() == p->getXuid() &&
+                p != minecraft->localplayers[i]) {
+                isOurOwn = true;
+                break;
+            }
+        }
+        if (isOurOwn) continue;
+        visible.push_back(p);
+    }
+
+    if (visible.empty()) {
+        // At minimum show ourselves so the panel isn't a confusing void.
+        if (minecraft->player != nullptr) {
+            visible.push_back(minecraft->player);
+        } else {
+            return;
+        }
+    }
+
+    // Sort alphabetically - vanilla also sorts by display name
+    std::sort(visible.begin(), visible.end(),
+              [](const std::shared_ptr<Player>& a,
+                 const std::shared_ptr<Player>& b) {
+                  return a->getName() < b->getName();
+              });
+
+    const int lineHeight = 9;
+    const int padding = 4;
+
+    // Header: "Players online: N"
+    std::wstring header = L"Players online: " + std::to_wstring(visible.size());
+    int headerWidth = font->width(header);
+
+    // Row width = the widest name column. Name + a 4px gutter on each
+    // side. Cap to 220 so it never overflows narrow split-screen windows.
+    int nameColWidth = headerWidth;
+    for (auto& p : visible) {
+        int w = font->width(p->getName());
+        if (w > nameColWidth) nameColWidth = w;
+    }
+    if (nameColWidth > 220) nameColWidth = 220;
+
+    int totalWidth = nameColWidth + padding * 2;
+    int totalHeight = padding * 2 + lineHeight + 1 +
+                      ((int)visible.size()) * lineHeight + 1;
+
+    int x0 = (screenWidth - totalWidth) / 2;
+    int y0 = 10;
+    int x1 = x0 + totalWidth;
+    int y1 = y0 + totalHeight;
+
+    // 4J macOS - Re-establish the full GUI projection / state.
+    // Gui::render goes through many sub-paths (HUD, status bars, item
+    // tooltips, debug overlay, ENABLE_JAVA_GUIS chat block) that each
+    // fiddle with matrix mode, blend, alpha and texture state. By the
+    // time we get here at the very end of Gui::render, glOrtho /
+    // glLoadIdentity / alpha-func are not necessarily what Font::draw
+    // expects. setupGuiScreen() resets the lot in one shot, exactly the
+    // way the chat-screen path does (which renders text reliably).
+    minecraft->gameRenderer->setupGuiScreen(-1);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Translucent dark background, vanilla uses ~0x80000000.
+    fill(x0, y0, x1, y1, 0xC0000000);
+    // 1px border so it's obvious the overlay is there even on a dark scene.
+    fill(x0, y0, x1, y0 + 1, 0xFFFFFFFF);
+    fill(x0, y1 - 1, x1, y1, 0xFFFFFFFF);
+    fill(x0, y0, x0 + 1, y1, 0xFFFFFFFF);
+    fill(x1 - 1, y0, x1, y1, 0xFFFFFFFF);
+    // Header strip a little brighter so it visually separates.
+    fill(x0 + 1, y0 + 1, x1 - 1, y0 + lineHeight + 1, 0xC0202060);
+
+    // 4J macOS - re-establish GL state for text after fill(). fill() ends
+    // with glDisable(GL_BLEND) and the texture unit pointed at whatever
+    // was last used; Font::draw expects blending to be ON and color set
+    // to (1,1,1,1) before it overrides it per-character. Without these
+    // resets the glyphs would silently render with the wrong blend mode
+    // (or get culled entirely by the alpha test path).
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_ALPHA_TEST);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+    // Header text - centre it inside the panel.
+    drawString(font, header, x0 + (totalWidth - headerWidth) / 2,
+               y0 + padding - 2, 0xFFFFFF);
+
+    // Each row: highlight current/local player in green.
+    int yRow = y0 + padding + lineHeight;
+    for (auto& p : visible) {
+        int colour = 0xCCCCCC;
+        if (minecraft->player != nullptr &&
+            p->getXuid() == minecraft->player->getXuid()) {
+            colour = 0x55FF55;
+        }
+        std::wstring name = p->getName();
+        // Truncate names that would overflow the column.
+        while (font->width(name) > nameColWidth - 2 && !name.empty()) {
+            name.pop_back();
+        }
+        // Re-prime colour each iteration. Font::draw set colour state
+        // based on the previous string's tint; without the reset the
+        // first call after a coloured row could come out wrong.
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        drawString(font, name, x0 + padding, yRow, colour);
+        yRow += lineHeight;
+    }
+
     glColor4f(1, 1, 1, 1);
 }
 
@@ -1484,6 +1684,15 @@ void Gui::addMessage(const std::wstring& _string, int iPad,
 
 // 4J Added
 float Gui::getOpacity(int iPad, std::size_t index) {
+    // 4J macOS - hide Iggy/Flash HUD chat lines while the Java
+    // ChatScreen is open. ChatScreen renders its own scrollable
+    // overlay (which lets the player read /help, /list etc.) and
+    // without this we get a duplicate stack of lines on screen.
+    if (minecraft != nullptr &&
+        dynamic_cast<ChatScreen*>(minecraft->screen) != nullptr) {
+        return 0.0f;
+    }
+
     float opacityPercentage = 0;
     if (guiMessages[iPad].size() > index &&
         guiMessages[iPad][index].ticks < 20 * 10) {

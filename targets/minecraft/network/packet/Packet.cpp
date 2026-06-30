@@ -32,6 +32,7 @@
 #include "minecraft/network/packet/ChunkVisibilityAreaPacket.h"
 #include "minecraft/network/packet/ChunkVisibilityPacket.h"
 #include "minecraft/network/packet/ClientCommandPacket.h"
+#include "minecraft/network/packet/ClientInformationPacket.h"
 #include "minecraft/network/packet/ComplexItemDataPacket.h"
 #include "minecraft/network/packet/ContainerAckPacket.h"
 #include "minecraft/network/packet/ContainerButtonClickPacket.h"
@@ -326,7 +327,8 @@ void Packet::staticCtor() {
         PlayerAbilitiesPacket::create);
     // 4J Stu - These added 1.3.2, but don't think we need them
     // map(203, true, true, true, false, ChatAutoCompletePacket.class);
-    // map(204, false, true, true, false, ClientInformationPacket.class);
+    map(204, false, true, true, false, typeid(ClientInformationPacket),
+        ClientInformationPacket::create);
     map(205, false, true, true, false, typeid(ClientCommandPacket),
         ClientCommandPacket::create);
 
@@ -515,7 +517,13 @@ std::shared_ptr<Packet> Packet::readPacket(
          serverReceivedPackets.find(id) == serverReceivedPackets.end()) ||
         (!isServer &&
          clientReceivedPackets.find(id) == clientReceivedPackets.end())) {
-        // app.DebugPrintf("Bad packet id %d\n", id);
+        // 4J macOS - more useful crash output: which side, which id was
+        // unexpected, what was actually expected. Helps debug stream-split
+        // bugs (e.g. when prelogin or login parsers desync).
+        fprintf(stderr,
+                "[NET] Bad packet id=%d (0x%02x) on %s side. Stream is out "
+                "of sync.\n",
+                id, id & 0xff, isServer ? "server" : "client");
         __debugbreak();
         assert(false);
         //            throw new IOException(wstring(L"Bad packet id ") +

@@ -52,7 +52,10 @@ enum EGameHostOptionLevelType {
     e_levelType_Normal = 0,
     e_levelType_Superflat = 1,
     e_levelType_LargeBiomes = 2,
-    e_levelType_Amplified = 3
+    e_levelType_Amplified = 3,
+    // 4J macOS - "Triple" world type. Only three biomes (forest /
+    // ice plains / extreme hills) generate. Same chunk shape as Normal.
+    e_levelType_Triple = 4
 };
 
 enum EGameHostOptionWorldSize {

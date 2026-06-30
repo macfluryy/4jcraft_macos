@@ -1473,7 +1473,12 @@ bool LocalPlayer::handleMouseClick(int button) {
             std::dynamic_pointer_cast<MultiplayerLocalPlayer>(
                 shared_from_this());
 
-        if (mplp && mplp->connection) mplp->StopSleeping();
+        if (mplp && mplp->connection) {
+            mplp->StopSleeping();
+        } else {
+            stopSleepInBed(false, true, true);
+        }
+        return false;
     }
     // 4J Stu - We should not accept any input while asleep, except the above to
     // wake up

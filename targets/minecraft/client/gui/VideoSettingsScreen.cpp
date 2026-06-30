@@ -12,7 +12,7 @@
 #include "minecraft/locale/Language.h"
 
 // 4jcraft
-#define ITEM_COUNT 10
+#define ITEM_COUNT 12
 
 VideoSettingsScreen::VideoSettingsScreen(Screen* lastScreen, Options* options) {
     this->title = L"Video Settings";  // 4J - added
@@ -34,7 +34,14 @@ void VideoSettingsScreen::init() {
         Options::Option::GUI_SCALE,
         Options::Option::ADVANCED_OPENGL,
         Options::Option::GAMMA,
-        Options::Option::FOV};
+        Options::Option::FOV,
+        // 4J macOS - performance toggles. Both options were defined
+        // on Options::Option but never wired into the visible menu;
+        // adding them here lets the player turn off cloud rendering
+        // (free FPS over big amplified maps) and dial particles down
+        // to "minimal" without editing options.txt by hand.
+        Options::Option::RENDER_CLOUDS,
+        Options::Option::PARTICLES};
 
     for (int i = 0; i < ITEM_COUNT; i++) {
         const Options::Option* item = items[i];

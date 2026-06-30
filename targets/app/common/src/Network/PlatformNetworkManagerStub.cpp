@@ -5,7 +5,9 @@
 
 #include <compare>
 
+#include "app/common/src/BuildVer/BuildVer.h"
 #include "app/common/src/Network/GameNetworkManager.h"
+#include "app/common/src/Network/LanDiscovery.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
 #include "app/mac/MacGame.h"
 #include "app/mac/Stubs/winapi_stubs.h"
@@ -143,11 +145,16 @@ bool IPlatformNetworkStub::Initialise(
         m_currentSearchResultsCount[i] = 0;
     }
 
+    // 4J macOS - bring up the LAN-discovery UDP listener so the JoinMenu
+    // server-browser can populate even when no Xbox Live equivalent exists.
+    LanDiscovery::Start();
+
     // Success!
     return true;
 }
 
 void IPlatformNetworkStub::Terminate() {
+    LanDiscovery::Stop();
     // TODO: 4jcraft, no release of ressources
 }
 
@@ -212,16 +219,34 @@ bool IPlatformNetworkStub::LeaveGame(bool bMigrateHost) {
         m_pIQNet->EndGame();
         g_NetworkManager.ServerStoppedWait();
         g_NetworkManager.ServerStoppedDestroy();
+    } else {
+        // 4J macOS - For a direct-connect client, the IQNet stub stays in
+        // QNET_STATE_GAME_PLAY forever unless we explicitly tell it to
+        // end. Without this, IUIScene_PauseMenu::_ExitWorld busy-waits on
+        // IsInSession() forever (the "stuck on disconnect" we kept seeing
+        // when leaving a server). EndGame just flips _bQNetStubGameRunning
+        // back to false so GetState() returns QNET_STATE_IDLE.
+        m_pIQNet->EndGame();
+        // Clean up the TCP socket and reset state so a subsequent
+        // direct-connect can succeed without a process restart.
+        _LeaveGame(bMigrateHost, /*bLeaveRoom*/ true);
+        // Reset the leaving flag now - we're done leaving for this session.
+        m_bLeavingGame = false;
     }
     return true;
 }
 
 bool IPlatformNetworkStub::_LeaveGame(bool bMigrateHost,
                                              bool bLeaveRoom) {
+    LanDiscovery::StopHostBeacon();
     if (Socket::IsTcpListenerRunning()) {
         fprintf(stderr, "[TCP] Stopping listener on leave-game.\n");
         Socket::StopTcpListener();
     }
+    // 4J macOS - Drop the direct-connect remote-host override so that a
+    // subsequent JoinMultiplayer attempt or return to MainMenu doesn't
+    // dereference a stale RemoteNetworkPlayer pointer.
+    s_pRemoteHostOverride = nullptr;
     return true;
 }
 
@@ -249,15 +274,17 @@ void IPlatformNetworkStub::HostGame(
 void IPlatformNetworkStub::_HostGame(
     int usersMask, unsigned char publicSlots /*= MINECRAFT_NET_MAX_PLAYERS*/,
     unsigned char privateSlots /*= 0*/) {
-    // 4J macOS - start the direct-connect TCP listener.
-    //   * For "online" games (m_bIsOfflineGame=false) we always listen.
-    //   * For offline games we only listen when MC_LISTEN_PORT is explicitly
-    //     set, so accidental local worlds don't expose a port.
-    const char* env = std::getenv("MC_LISTEN_PORT");
-    if (m_bIsOfflineGame && env == nullptr) return;
+    // 4J macOS - the original Xbox Live flow only opened a network listener
+    // for games explicitly flagged "Online". On this port we have no working
+    // sign-in UI, so m_bIsOfflineGame is always true and the listener never
+    // came up. Flip the default: always listen unless MC_NO_LISTEN is set.
+    // The host doesn't pay much for an idle TCP socket on a non-routable
+    // network, and it makes "Singleplayer" worlds joinable from another
+    // machine on the LAN out of the box.
+    if (std::getenv("MC_NO_LISTEN") != nullptr) return;
 
     int port = 25565;
-    if (env != nullptr) {
+    if (const char* env = std::getenv("MC_LISTEN_PORT")) {
         int p = atoi(env);
         if (p > 0 && p < 65536) port = p;
     }
@@ -271,6 +298,16 @@ void IPlatformNetworkStub::_HostGame(
                 "[TCP] Direct-connect listener ready on port %d. Tell "
                 "clients to set MC_DIRECT_CONNECT=<your-ip>:%d\n",
                 port, port);
+        // 4J macOS - start advertising this session over LAN UDP so other
+        // clients on the same network can discover it without manual IP
+        // entry. The actual payload (player count / world name) is filled
+        // in once the world is ready; this just opens the broadcast socket
+        // and starts the periodic sender.
+        LanDiscovery::SetBeaconPayload(
+            (uint16_t)port, (uint16_t)VER_NETWORK,
+            /*playerCount*/ 1, /*maxPlayers*/ MINECRAFT_NET_MAX_PLAYERS,
+            /*gameMode*/ 0, /*privateGame*/ m_bIsPrivateGame, L"");
+        LanDiscovery::StartHostBeacon();
     }
 }
 
@@ -460,6 +497,25 @@ void IPlatformNetworkStub::SystemFlagSet(INetworkPlayer* pNetworkPlayer,
     }
 }
 
+// 4J macOS task 5.2 (Req 4.5) - clear a per system flag - mirror of
+// SystemFlagSet but clearing the bit on every player that shares that system.
+// Unlike SystemFlagSet we do NOT add a player entry if none exists: if a system
+// has no flags storage yet then there is nothing to clear. This is used when a
+// chunk is unloaded for a Remote_Client so that re-entering its view distance
+// re-sends the BRUP.
+void IPlatformNetworkStub::SystemFlagClear(INetworkPlayer* pNetworkPlayer,
+                                                  int index) {
+    if ((index < 0) || (index >= m_flagIndexSize)) return;
+    if (pNetworkPlayer == nullptr) return;
+
+    for (unsigned int i = 0; i < m_playerFlags.size(); i++) {
+        if (m_playerFlags[i]->m_pNetworkPlayer == pNetworkPlayer ||
+            pNetworkPlayer->IsSameSystem(m_playerFlags[i]->m_pNetworkPlayer)) {
+            m_playerFlags[i]->flags[index / 8] &= ~(128 >> (index % 8));
+        }
+    }
+}
+
 // Get value of a per system flag - can be read from the flags of the passed in
 // player as anything else sent to that system should also have been duplicated
 // here
@@ -516,7 +572,59 @@ std::vector<FriendSessionInfo*>* IPlatformNetworkStub::GetSessionList(
     int iPad, int localPlayers, bool partyOnly) {
     std::vector<FriendSessionInfo*>* filteredList =
         new std::vector<FriendSessionInfo*>();
-    ;
+
+    // 4J macOS - hand back live entries from the LAN UDP discoverer. The UI
+    // (UIScene_LoadOrJoinMenu / UIScene_JoinMenu) takes ownership of the
+    // outer vector and the FriendSessionInfo* it contains.
+    if (partyOnly) return filteredList;
+
+    auto found = LanDiscovery::GetActiveServers();
+    int idx = 0;
+    for (const auto& s : found) {
+        FriendSessionInfo* info = new FriendSessionInfo();
+
+        // Pack {host:port} into sessionId so we can recover it later for
+        // the JoinGame() path. High 16 bits = port, low 48 bits = packed
+        // IPv4 ASCII (we only get IPv4 from inet_ntop on a v4 socket).
+        // The actual mapping is opaque to the UI; we just need a value
+        // that round-trips.
+        SessionID id = 0;
+        sockaddr_in tmp{};
+        if (inet_pton(AF_INET, s.host.c_str(), &tmp.sin_addr) == 1) {
+            id = ((SessionID)ntohl(tmp.sin_addr.s_addr) << 16) |
+                 (SessionID)s.tcpPort;
+        } else {
+            id = (SessionID)(0xDEADBEEF00000000ULL | (uint32_t)idx);
+        }
+        info->sessionId = id;
+
+        // displayLabel is "WorldName (host:port)  N/M" - leak-free since
+        // FriendSessionInfo's destructor deletes it.
+        wchar_t buf[160] = {0};
+        std::wstring worldName =
+            s.worldName.empty() ? std::wstring(L"4jcraft") : s.worldName;
+        std::wstring hostW;
+        for (char c : s.host) hostW.push_back((wchar_t)c);
+        swprintf(buf, 160, L"%ls (%ls:%u)  %u/%u", worldName.c_str(),
+                 hostW.c_str(), (unsigned)s.tcpPort, (unsigned)s.playerCount,
+                 (unsigned)s.maxPlayers);
+        size_t labelLen = wcslen(buf);
+        info->displayLabel = new wchar_t[labelLen + 1];
+        wmemcpy(info->displayLabel, buf, labelLen);
+        info->displayLabel[labelLen] = 0;
+        info->displayLabelLength = (unsigned char)std::min<size_t>(labelLen, 255);
+        info->displayLabelViewableStartIndex = 0;
+
+        info->data.netVersion = s.netVersion;
+        info->data.m_uiGameHostSettings = (unsigned int)s.gameMode;
+        info->data.texturePackParentId = 0;
+        info->data.subTexturePackId = 0;
+        info->data.isReadyToJoin = true;
+        info->hasPartyMember = false;
+
+        filteredList->push_back(info);
+        ++idx;
+    }
     return filteredList;
 }
 

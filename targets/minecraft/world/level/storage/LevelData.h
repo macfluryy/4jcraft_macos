@@ -46,6 +46,12 @@ private:
     bool initialized;
     bool newSeaLevel;        // 4J added
     bool hasBeenInCreative;  // 4J added
+    // 4J macOS - persisted host game-rule bitmask (PVP, TNT, fire spread,
+    // mob griefing, keep-inventory, daylight cycle, etc). Mirror of
+    // Game::m_uiGameHostSettings (eGameHostOption_All). 0 means "not
+    // stored" (older saves) - in that case we keep whatever the host
+    // picked in the create/load screen.
+    unsigned int m_gameHostSettings = 0;  // 4J macOS added
     bool spawnBonusChest;    // 4J added
     int m_xzSize;            // 4J Added
 #ifdef _LARGE_WORLDS
@@ -138,6 +144,9 @@ public:
     virtual bool useNewSeaLevel();
     virtual bool getHasBeenInCreative();            // 4J Added
     virtual void setHasBeenInCreative(bool value);  // 4J Added
+    // 4J macOS - persisted host game-rule bitmask accessors.
+    unsigned int getGameHostSettings() { return m_gameHostSettings; }
+    void setGameHostSettings(unsigned int v) { m_gameHostSettings = v; }
     virtual LevelType* getGenerator();
     virtual void setGenerator(LevelType* generator);
     virtual std::wstring getGeneratorOptions();

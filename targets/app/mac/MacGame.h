@@ -5,6 +5,8 @@
 #include "app/common/Game.h"
 
 class C4JStringTable;
+struct _NetworkGameInitData;
+typedef struct _NetworkGameInitData NetworkGameInitData;
 
 class MacGame : public Game {
 public:
@@ -35,15 +37,17 @@ public:
                               eFileExtensionType eEXT =
                                       eFileExtensionType_PNG) override;
 
-    // ReadBannedList is a no-op on desktop platforms
     void ReadBannedList(int iPad, eTMSAction action = (eTMSAction)0,
                         bool bCallback = false) override {}
 
     C4JStringTable* GetStringTable() { return nullptr; }
 
-    // Temporary game-start helper (mirrors original Linux version)
     virtual void TemporaryCreateGameStart();
     bool TemporaryDirectConnectStart(const char* host, int port);
+    bool TemporaryDirectConnectStartEx(const char* host, int port,
+                                       bool spawnOwnThread,
+                                       const wchar_t* nickname = nullptr);
+    NetworkGameInitData* m_pendingDirectConnectParam = nullptr;
 };
 
 extern MacGame app;

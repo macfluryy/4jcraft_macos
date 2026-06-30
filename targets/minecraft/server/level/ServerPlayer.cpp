@@ -17,6 +17,7 @@
 #include "app/mac/MacGame.h"
 #include "ServerLevel.h"
 #include "ServerPlayerGameMode.h"
+#include "PlayerChunkMap.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
@@ -91,6 +92,7 @@
 #include "minecraft/world/level/GameRules.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSettings.h"
+#include "minecraft/world/level/ViewDistanceUtil.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/dimension/Dimension.h"
@@ -393,9 +395,34 @@ void ServerPlayer::doTickA() {
 // 4J - split off the chunk sending bit of the tick here from ::doTick so we can
 // do this exactly once per player per server tick
 void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
+    // 4J macOS task 9.1 - chunk-streaming limits enforced below (locked, do
+    // not retune without revisiting Requirement 8):
+    //   Req 8.1: hard per-tick BRUP cap - 64 for local, 16 for remote
+    //            (maxChunksThisTick + the while-loop decrement).
+    //   Req 8.2: slow-queue throttling via
+    //            MinecraftServer::chunkPacketManagement_CanSendTo /
+    //            _DidSendTo (remote bypasses the legacy slow-queue and relies
+    //            on the per-connection back-pressure below instead).
+    //   Req 8.3: early termination - `if (!nearestValid) break;` stops the
+    //            spin when no in-range finalised chunk qualifies (also gated
+    //            by per-player viewDistance, task 4.2).
+    //   Req 8.4: dedup + back-pressure - SystemFlagGet/Set stops re-sending /
+    //            duplicating a chunk to the same machine; countDelayedPackets
+    //            < 32 gates remote sends; the not-OK branch `break`s for the
+    //            rest of the tick.
+    //   Req 8.5: send-queue cap - GetSendQueueSizeMessages(nullptr, true) < 32
+    //            stops queueing new BRUP until the queue drains.
     //	printf("[%d] %s: sendChunks: %d, empty: %d\n",tickCount,
     // connection->getNetworkPlayer()->GetUID().getOnlineID(),sendChunks,chunksToSend.empty());
-    if (!chunksToSend.empty()) {
+    // 4J macOS - send up to N chunks per server tick instead of just one.
+    // The single-chunk-per-tick limit dating back to QNet plus the slow
+    // queue index meant remote direct-connect clients only got 4 chunks
+    // per second and the world appeared to "follow you in". With local
+    // TCP we can comfortably ship many more per tick; the existing
+    // canSendTo / queue gating below still throttles us if the network
+    // is genuinely saturated.
+    int maxChunksThisTick = connection->isLocal() ? 64 : 16;
+    while (maxChunksThisTick-- > 0 && !chunksToSend.empty()) {
         ChunkPos nearest = chunksToSend.front();
         bool nearestValid = false;
 
@@ -405,10 +432,28 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
         // doing this, but the player can quickly wander away from the centre of
         // the spiral of chunks that that method creates, long before
         // transmission of them is complete.
+        // 4J macOS task 4.2 - respect this player's effective view distance.
+        // viewDistance is the per-player effective radius (in chunks); the ctor
+        // seeds it from PlayerList::getViewDistance() and setEffectiveViewDistance
+        // keeps it within [MIN_VIEW_DISTANCE, serverCap], so it is always >= 3 and
+        // never needs an extra guard here.
+        int pcx = ((int)x) >> 4;
+        int pcz = ((int)z) >> 4;
         double dist = DBL_MAX;
         for (auto it = chunksToSend.begin(); it != chunksToSend.end(); it++) {
             ChunkPos chunk = *it;
             if (level->isChunkFinalised(chunk.x, chunk.z)) {
+                // 4J macOS task 4.2 - skip chunks farther than the player's view
+                // distance. Chebyshev (square) distance in chunk coords matches
+                // the |dx|<=radius && |dz|<=radius subscription model used by
+                // PlayerChunkMap. Out-of-range chunks stay queued (not stranded);
+                // task 5.x unsubscribes them. If nothing qualifies nearestValid
+                // stays false and the !nearestValid break below stops the spin.
+                int dcx = chunk.x - pcx;
+                if (dcx < 0) dcx = -dcx;
+                int dcz = chunk.z - pcz;
+                if (dcz < 0) dcz = -dcz;
+                if (dcx > viewDistance || dcz > viewDistance) continue;
                 double newDist = chunk.distanceToSqr(x, z);
                 if ((!nearestValid) || (newDist < dist)) {
                     nearest = chunk;
@@ -417,6 +462,10 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
                 }
             }
         }
+
+        // 4J macOS - if no chunk in the pending list is finalised yet we
+        // would loop forever otherwise. Stop sending for this tick.
+        if (!nearestValid) break;
 
         //        if (nearest != nullptr)		// 4J - removed as we
         //        don't have references here
@@ -448,9 +497,15 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
 
                 if (dontDelayChunks ||
                     (canSendToPlayer &&
-                     (connection->countDelayedPackets() < 4) &&
+                     // 4J macOS - was 4. With TCP direct-connect the
+                     // local socket has plenty of headroom and the old
+                     // limit was the main reason the world streamed in
+                     // very slowly to clients. Bumping to 32 keeps
+                     // back-pressure when the network is actually
+                     // saturated but lets us pipeline many more chunks.
+                     (connection->countDelayedPackets() < 32) &&
                      (g_NetworkManager.GetHostPlayer()
-                          ->GetSendQueueSizeMessages(nullptr, true) < 4) &&
+                          ->GetSendQueueSizeMessages(nullptr, true) < 32) &&
                      //(tickCount - lastBrupSendTickCount) >
                      //(connection->getNetworkPlayer()->GetCurrentRtt()>>4) &&
                      !connection->done)) {
@@ -472,6 +527,11 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
                 } else {
                     //					app.DebugPrintf(" - <NOT
                     // OK>\n");
+                    // 4J macOS - back off for the rest of this tick if the
+                    // queue / slow-queue gating refuses us. Otherwise we
+                    // would just re-pick the same nearest chunk on every
+                    // loop iteration and burn CPU.
+                    break;
                 }
             }
 
@@ -559,6 +619,16 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
                     }
                 }
                 // Don't send TileEntity data until we have sent the block data
+                // 4J macOS task 7.2 - satisfies Req 6.5: when a chunk first
+                // enters the player's view distance, every TileEntity update
+                // packet for that chunk follows its BRUP within the same tick.
+                // Sending is gated on chunkDataSent (the BRUP went out) or a
+                // local connection, and broadcast() below delays each packet so
+                // it arrives after the BRUP (preserves the #9169 "Awaiting
+                // approval" sign fix). Tile entities whose getUpdatePacket()
+                // returns null (chest/furnace/hopper/dispenser/brewing stand)
+                // are intentionally synced via container packets instead and
+                // are skipped by broadcast()'s null-check.
                 if (connection->isLocal() || chunkDataSent) {
                     std::vector<std::shared_ptr<TileEntity> >* tes =
                         level->getTileEntitiesInRegion(
@@ -1682,6 +1752,33 @@ bool ServerPlayer::hasPermission(EGameCommand command) {
 //}
 
 int ServerPlayer::getViewDistance() { return viewDistance; }
+
+// 4J macOS - apply a new effective view-distance (in chunks) for this player.
+// Clamp into [MIN_VIEW_DISTANCE, MAX_VIEW_DISTANCE] then cap at the server-wide
+// PlayerList view distance (the upper bound the PlayerChunkMap maintains
+// subscriptions for). On change, (un)subscribe chunks via the chunk map.
+//
+// IMPORTANT: this MUST be invoked from the server tick (main server thread)
+// only. Network packets requesting a view-distance change (task 6.3) only
+// stash the requested value; the tick routes it through here. Calling this
+// from the network thread would race PlayerChunkMap subscription state.
+void ServerPlayer::setEffectiveViewDistance(int chunks) {
+    int target = clampViewDistance(chunks);
+
+    // Never above the server-wide limit (already clamped in PlayerList). This
+    // enforces "not above PlayerList::getViewDistance()".
+    int serverCap = server->getPlayers()->getViewDistance();
+    if (target > serverCap) target = serverCap;
+
+    if (target == viewDistance) return;  // no change
+
+    int old = viewDistance;
+    viewDistance = target;
+
+    getLevel()->getChunkMap()->adjustPlayerViewDistance(
+        std::dynamic_pointer_cast<ServerPlayer>(shared_from_this()), old,
+        target);
+}
 
 // bool ServerPlayer::canChatInColor()
 //{

@@ -20,7 +20,9 @@
 #include "app/common/src/GameRules/GameRuleManager.h"
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "app/common/src/Network/GameNetworkManager.h"
+#include "app/common/src/Network/LanDiscovery.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
+#include "app/common/src/BuildVer/BuildVer.h"
 #include "app/mac/MacGame.h"
 #include "PlayerList.h"
 #include "Settings.h"
@@ -237,6 +239,10 @@ bool MinecraftServer::initServer(int64_t seed, NetworkGameInitData* initData,
         defaultLevelType = L"largeBiomes";
     } else if (levelTypeOption == e_levelType_Amplified) {
         defaultLevelType = L"amplified";
+    } else if (levelTypeOption == e_levelType_Triple) {
+        // 4J macOS - Triple world type. Same generator as default,
+        // BiomeInitLayer restricts to forest / ice plains / extreme hills.
+        defaultLevelType = L"triple";
     }
     levelTypeString = settings->getString(L"level-type", defaultLevelType);
 
@@ -532,6 +538,40 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
         gameType == GameType::CREATIVE || levels[0]->getHasBeenInCreative());
     app.SetGameHostOption(eGameHostOption_Structures,
                           levels[0]->isGenerateMapFeatures());
+
+    // 4J macOS - restore persisted host game-rules (PVP, TNT, fire spread,
+    // mob griefing, keep-inventory, daylight cycle, ...) for existing
+    // worlds. We only do this when the level is NOT new (loaded from disk)
+    // and actually carries a stored bitmask. We preserve the GameType and
+    // Difficulty the player picked on the load screen, since those are
+    // session-level choices rather than world rules.
+    if (!levels[0]->isNew) {
+        unsigned int persisted = levels[0]->getLevelData()->getGameHostSettings();
+        if (persisted != 0) {
+            unsigned int curGameType =
+                app.GetGameHostOption(eGameHostOption_GameType);
+            unsigned int curDifficulty =
+                app.GetGameHostOption(eGameHostOption_Difficulty);
+            app.SetGameHostOption(eGameHostOption_All, persisted);
+            // Re-apply the session GameType / Difficulty so loading a world
+            // in a different mode still works.
+            app.SetGameHostOption(eGameHostOption_GameType, curGameType);
+            app.SetGameHostOption(eGameHostOption_Difficulty, curDifficulty);
+            // Keep the live PVP flag in sync with the restored bitmask.
+            setPvpAllowed(app.GetGameHostOption(eGameHostOption_PvP) > 0);
+            app.DebugPrintf(
+                "[world] Restored persisted host settings 0x%08x\n",
+                app.GetGameHostOption(eGameHostOption_All));
+        }
+    }
+    // Stamp the (possibly just-restored) bitmask back into every level's
+    // LevelData so it gets written out on the next save.
+    for (unsigned int li = 0; li < levels.size(); ++li) {
+        if (levels[li] != nullptr && levels[li]->getLevelData() != nullptr) {
+            levels[li]->getLevelData()->setGameHostSettings(
+                app.GetGameHostOption(eGameHostOption_All));
+        }
+    }
 
     if (s_bServerHalted || !g_NetworkManager.IsInSession()) return false;
 
@@ -873,6 +913,43 @@ void MinecraftServer::saveGameRules() {
     }
 }
 
+// 4J macOS - graceful shutdown save invoked from atexit / SIGTERM /
+// Cmd+Q paths. Performs an immediate synchronous flush of every
+// connected player + the overworld level to disk, mirroring what
+// the Save & Exit UI flow would do but without any UI dependency.
+// Idempotent on the caller side - the Mac_Minecraft.cpp wrapper
+// guards with a std::atomic so we only run once per process exit.
+void MinecraftServer::forceShutdownSave() {
+    if (StorageManager.GetSaveDisabled()) return;
+    if (s_bServerHalted) return;
+
+    if (players != nullptr) {
+        // Stage every connected player's NBT into the in-memory
+        // ConsoleSaveFile cache. This includes inventory, position,
+        // XP, hunger, ender chest, spawn point, etc - everything
+        // Player::saveWithoutId persists.
+        PlayerIO* pio = players->getPlayerIO();
+        if (pio != nullptr) {
+            for (size_t i = 0; i < players->players.size(); i++) {
+                std::shared_ptr<ServerPlayer> p = players->players[i];
+                if (p != nullptr) pio->save(p);
+            }
+            // Push the cached map / player IO data into the save file too.
+            pio->saveAllCachedData();
+            pio->saveMapIdLookup();
+        }
+    }
+
+    // saveGameRules + saveAllChunks write into the in-memory
+    // ConsoleSaveFile, then saveToDisc on level 0 with autosave=true
+    // pushes the whole thing to the on-disk .mcs.
+    saveGameRules();
+    saveAllChunks();
+    if (!levels.empty() && levels[0] != nullptr) {
+        levels[0]->saveToDisc(nullptr, true);
+    }
+}
+
 void MinecraftServer::Suspend() {
     m_suspending = true;
     time_util::Timer timer;
@@ -1144,7 +1221,15 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                         chunkPacketManagement_PreTick();
                         //						int64_t
                         // before = System::currentTimeMillis();
+                        int64_t tickStartNs = System::nanoTime();
                         tick();
+                        int64_t tickElapsedNs =
+                            System::nanoTime() - tickStartNs;
+                        m_tickTimesNs[m_tickTimesIndex] = tickElapsedNs;
+                        m_tickTimesIndex =
+                            (m_tickTimesIndex + 1) % TPS_SAMPLE_COUNT;
+                        if (m_tickTimesFilled < TPS_SAMPLE_COUNT)
+                            m_tickTimesFilled++;
                         //						int64_t
                         // after = System::currentTimeMillis();
                         //						PIXReportCounter(L"Server
@@ -1437,6 +1522,49 @@ void MinecraftServer::tick() {
 
     tickCount++;
 
+    // 4J macOS - refresh the LAN-discovery beacon every 40 ticks (~2 s) so
+    // the player count and world name reflect reality. Cheap: just copies
+    // a few primitives under a mutex.
+    if ((tickCount % 40) == 0 && !levels.empty() && players != nullptr) {
+        LevelData* ld = levels[0]->getLevelData();
+        std::wstring worldName = ld ? ld->getLevelName() : std::wstring(L"");
+        unsigned int port = 25565;
+        if (const char* envP = std::getenv("MC_LISTEN_PORT")) {
+            int p = atoi(envP);
+            if (p > 0 && p < 65536) port = (unsigned int)p;
+        }
+        // 4J macOS - MOTD shown in the LAN server browser. Read from the
+        // "motd" server property; the MC_MOTD env var overrides it for
+        // quick testing. Falls back to empty (browser then shows just the
+        // world name).
+        std::wstring motd;
+        if (settings != nullptr) {
+            motd = settings->getString(L"motd", L"");
+        }
+        if (const char* envM = std::getenv("MC_MOTD")) {
+            std::string m(envM);
+            motd.assign(m.begin(), m.end());
+        }
+        LanDiscovery::SetBeaconPayload(
+            (uint16_t)port, (uint16_t)VER_NETWORK,
+            (uint8_t)std::min(players->getPlayerCount(), 255),
+            (uint8_t)std::min(players->getMaxPlayers(), 255),
+            (uint8_t)(ld && ld->getGameType() ? ld->getGameType()->getId() : 0),
+            g_NetworkManager.IsPrivateGame(), worldName, motd);
+
+        // 4J macOS - keep the persisted host game-rule bitmask current so an
+        // in-session change (Pause Menu -> More Options) is captured by the
+        // next world save.
+        unsigned int liveSettings =
+            app.GetGameHostOption(eGameHostOption_All);
+        for (unsigned int li = 0; li < levels.size(); ++li) {
+            if (levels[li] != nullptr &&
+                levels[li]->getLevelData() != nullptr) {
+                levels[li]->getLevelData()->setGameHostSettings(liveSettings);
+            }
+        }
+    }
+
     // 4J We need to update client difficulty levels based on the servers
     Minecraft* pMinecraft = Minecraft::GetInstance();
     // 4J-PB - sending this on the host changing the difficulty in the menus
@@ -1654,6 +1782,18 @@ void MinecraftServer::chunkPacketManagement_PostTick() {}
 // 4J Added
 bool MinecraftServer::chunkPacketManagement_CanSendTo(INetworkPlayer* player) {
     if (player == nullptr) return false;
+
+    // 4J macOS - bypass the global slow-queue gating altogether for
+    // remote direct-connect clients. The original throttle dates back to
+    // shared-bandwidth Xbox Live sessions where many clients had to take
+    // turns over a single QNet pipe. With TCP each client has its own
+    // socket, and the per-connection back-pressure (countDelayedPackets,
+    // GetSendQueueSizeMessages) already prevents us from over-running the
+    // network. Letting every client be "OK to send" every tick is what
+    // brings remote chunk streaming up to the same speed as the host.
+    if (!player->IsLocal()) {
+        return true;
+    }
 
     auto now = time_util::clock::now();
     if (player->GetSessionIndex() == s_slowQueuePlayerIndex &&

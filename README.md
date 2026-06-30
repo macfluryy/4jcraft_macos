@@ -266,6 +266,57 @@ The client skips the title screen and connects directly. All `[TCP] ...`
 lines printed to the console come from the multiplayer transport and are
 useful when reporting issues.
 
+### WAN / Public IP multiplayer
+
+Direct-connect uses raw TCP and binds to **all interfaces** by default,
+so hosting over the public Internet works the same as LAN — you only
+need to expose the listening port to the outside world.
+
+1. **Forward TCP port 25565** on your router to the host machine. The
+   exact UI varies by ISP / router model. Look for a "Port forwarding"
+   or "NAT" section, then add a rule: `External 25565 → Internal
+   25565 → <host machine's LAN IPv4>`.
+2. **Find your public IP** (e.g. `curl https://api.ipify.org`).
+3. Tell the joining client to connect to `<public-ip>:25565` via the
+   in-game UI or `MC_DIRECT_CONNECT=<public-ip>:25565`.
+
+If port 25565 is taken by another service or blocked by your ISP,
+host on a different port:
+
+```bash
+MC_LISTEN_PORT=25577 ./Minecraft.Client
+```
+
+…and forward that port instead. Joining clients pass the same port:
+`MC_DIRECT_CONNECT=<public-ip>:25577`.
+
+> ⚠️ **No authentication.** Anyone who can reach the listening port can
+> connect. The session is suitable for trusted peers only — there is no
+> Xbox Live / Realms identity layer. If you publish your IP, expect
+> uninvited connections.
+
+### Persistence (multiplayer)
+
+Player inventories, positions, XP, hunger, ender chest contents, and
+spawn points are stored per-XUID in `players/<xuid>.dat` inside the
+world's `.mcs` archive. The same file is reused on reconnect, so a
+player who logs back in restores exactly where they left off (provided
+the host's save file survived).
+
+The host runs three save layers in addition to manual Save & Exit:
+
+1. **On every disconnect** — the leaving player's `.dat` is staged into
+   the in-memory cache *and*, no more often than once per minute, the
+   whole level is flushed to disk. This protects against the host
+   crashing right after a player leaves.
+2. **Every 90 seconds while remote players are connected** — the level
+   is flushed to disk on a multiplayer-specific timer. Vanilla's host
+   autosave (5+ minutes) is too coarse for shared worlds.
+3. **At Save & Exit** — full level + all player .dats + game rules.
+
+You can verify the saves landed by inspecting the `.mcs` file in
+`~/Library/Application Support/4jcraft/Saves/<world-name>/`.
+
 ### Known limitations
 
 - **Dark spawn ring.** Skylight is not recomputed on the client when full

@@ -44,6 +44,20 @@ private:
     PerlinNoise* floatingIslandScale;
     PerlinNoise* floatingIslandNoise;
 
+    // 4J macOS - Phase 2 continental noise. Very low frequency (~660
+    // block period) Perlin sample used in amplified mode to bias the
+    // density field toward connected land masses. Without it the noise
+    // sampler produces lots of small isolated pillars; with it, terrain
+    // reads as "connected mountain range" instead of "scattered cliffs".
+    PerlinNoise* continentNoise;
+
+    // 4J macOS - Phase 3 mountain mask. Mid-frequency Perlin used as a
+    // ridge-fold mask to push neighbouring chunks of biomeScale up
+    // along the same line, producing TerraForged-style mountain chains
+    // instead of isolated peaks. Only sampled in amplified mode and
+    // only used where biomeDepth > 0 (so oceans aren't affected).
+    PerlinNoise* mountainMaskNoise;
+
 public:
     PerlinNoise* forestNoise;
 

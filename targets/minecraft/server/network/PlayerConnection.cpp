@@ -35,6 +35,7 @@
 #include "minecraft/network/packet/AnimatePacket.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/network/packet/ClientCommandPacket.h"
+#include "minecraft/network/packet/ClientInformationPacket.h"
 #include "minecraft/network/packet/ContainerAckPacket.h"
 #include "minecraft/network/packet/ContainerButtonClickPacket.h"
 #include "minecraft/network/packet/ContainerClickPacket.h"
@@ -96,6 +97,7 @@
 #include "minecraft/world/item/trading/MerchantRecipeList.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSettings.h"
+#include "minecraft/world/level/ViewDistanceUtil.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/saveddata/MapItemSavedData.h"
 #include "minecraft/world/level/tile/Tile.h"
@@ -157,6 +159,21 @@ void PlayerConnection::tick() {
     tickCount++;
     connection->tick();
     if (done) return;
+
+    // 4J macOS task 6.3 (Req 5.2/5.5/1.5) - apply any view-distance the client
+    // requested via ClientInformationPacket. This runs on the SERVER tick (not
+    // the network thread), so it is safe to mutate PlayerChunkMap subscription
+    // state through ServerPlayer::setEffectiveViewDistance. Drain the pending
+    // value atomically.
+    int pendingVD =
+        m_pendingClientViewDistance.exchange(-1, std::memory_order_relaxed);
+    if (pendingVD >= 0 && player != nullptr) {
+        // Effective = min(server limit, client request); setEffectiveViewDistance
+        // re-clamps and caps at the server view distance internally.
+        int serverVD = server->getPlayers()->getViewDistance();
+        int effective = pendingVD < serverVD ? pendingVD : serverVD;
+        player->setEffectiveViewDistance(effective);
+    }
 
     if ((tickCount - lastKeepAliveTick) > 20 * 1) {
         lastKeepAliveTick = tickCount;
@@ -684,16 +701,39 @@ void PlayerConnection::handleSetCarriedItem(
 }
 
 void PlayerConnection::handleChat(std::shared_ptr<ChatPacket> packet) {
+    if (packet->m_stringArgs.empty()) return;
     std::wstring message = packet->m_stringArgs[0];
+
+    // 4J - basic validation: drop oversized messages outright. The wire
+    // protocol does not advertise a length limit but the chat UI cannot
+    // display anything close to this anyway. 256 chars is the vanilla ceiling.
+    if (message.size() > 256) {
+        message.resize(256);
+    }
+
+    // 4J - very simple anti-spam: each non-command message charges
+    // chatSpamTickCount and we kick if it accumulates faster than ~5 messages
+    // per 5 seconds (100 ticks). chatSpamTickCount is decremented in tick().
+    if (!message.empty() && message[0] != L'/') {
+        chatSpamTickCount += 20;
+        if (chatSpamTickCount > 200) {
+            disconnect(DisconnectPacket::eDisconnect_Kicked);
+            return;
+        }
+    }
+
     if (!message.empty() && message[0] == L'/') {
         handleCommand(message);
-    } else {
-        // Broadcast chat
-        auto chatPacket = std::make_shared<ChatPacket>(player->getName(), ChatPacket::e_ChatCustom, -1);
+    } else if (!message.empty()) {
+        // 4J - route through PlayerList::broadcastAll so iteration is locked
+        // and missing/null connections are skipped. Previously this iterated
+        // server->getPlayers()->players directly, which crashed when a player
+        // disconnected mid-broadcast (PlayerList::remove nulls out
+        // connection before erasing the entry).
+        auto chatPacket = std::make_shared<ChatPacket>(
+            player->getName(), ChatPacket::e_ChatCustom, -1);
         chatPacket->m_stringArgs.push_back(message);
-        for (auto& p : server->getPlayers()->players) {
-            p->connection->send(chatPacket);
-        }
+        server->getPlayers()->broadcastAll(chatPacket);
     }
 }
 
@@ -846,31 +886,85 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
             }
             
             case eGameCommand_Kill: {
-                // /kill [target]
-                if (!arg1_orig.empty()) {
-                    dos.writeUTF(arg1_orig);  // Target player (original case)
+                // /kill [self|@s|@e|@a|mobs|monsters|animals|<player>]
+                int killType = 0;  // KILL_TARGET_SELF
+                std::wstring targetPlayer;
+                if (arg1.empty() || arg1 == L"@s" || arg1 == L"self" ||
+                    arg1 == L"me") {
+                    killType = 0;  // SELF
+                } else if (arg1 == L"@e" || arg1 == L"all" ||
+                           arg1 == L"entities") {
+                    killType = 4;  // ALL_ENTS
+                } else if (arg1 == L"@a") {
+                    killType = 5;  // ALL_PLAYERS
+                } else if (arg1 == L"mobs" || arg1 == L"monsters" ||
+                           arg1 == L"hostile") {
+                    killType = 2;  // MOBS
+                } else if (arg1 == L"animals" || arg1 == L"passive") {
+                    killType = 3;  // ANIMALS
                 } else {
-                    dos.writeUTF(L"@s");  // Default: self
+                    // Treat as player name
+                    killType = 1;  // PLAYER
+                    targetPlayer = arg1_orig;
+                }
+                dos.writeInt(killType);
+                if (killType == 1) {
+                    dos.writeUTF(targetPlayer);
                 }
                 break;
             }
             
             case eGameCommand_Teleport: {
-                // /teleport <x> <y> <z> [yaw] [pitch]
-                if (arg1.empty() || arg2.empty() || arg3.empty()) {
-                    player->sendMessage(L"Usage: /teleport <x> <y> <z> [yaw] [pitch]");
+                // /tp <player>
+                // /tp <x> <y> <z>
+                // /tp <subject> <target>
+                // /tp <subject> <x> <y> <z>
+                if (arg1_orig.empty()) {
+                    player->sendMessage(L"§cUsage: /tp <player> | <x> <y> <z> | <subject> <target> | <subject> <x> <y> <z>");
                     return;
                 }
-                try {
-                    double x = std::stod(arg1);
-                    double y = std::stod(arg2);
-                    double z = std::stod(arg3);
-                    dos.writeDouble(x);
-                    dos.writeDouble(y);
-                    dos.writeDouble(z);
-                } catch (...) {
-                    player->sendMessage(L"Invalid coordinates");
-                    return;
+
+                auto isNumeric = [](const std::wstring& s) {
+                    if (s.empty()) return false;
+                    try {
+                        std::stod(s);
+                        return true;
+                    } catch (...) {
+                        return false;
+                    }
+                };
+
+                if (arg2.empty()) {
+                    // /tp <player>
+                    dos.writeInt(0);  // TP_MODE_TO_PLAYER
+                    dos.writeUTF(arg1_orig);
+                } else if (arg3.empty()) {
+                    // 2 args: <subject> <target>
+                    dos.writeInt(2);  // TP_MODE_PLAYER_TO_PLAYER
+                    dos.writeUTF(arg1_orig);
+                    dos.writeUTF(arg2_orig);
+                } else {
+                    // 3+ args: either coords or player+coords
+                    std::wstring extra4;
+                    ss >> extra4;
+                    if (isNumeric(arg1) && isNumeric(arg2) && isNumeric(arg3)) {
+                        // /tp <x> <y> <z>
+                        dos.writeInt(1);  // TP_MODE_TO_COORDS
+                        dos.writeDouble(std::stod(arg1));
+                        dos.writeDouble(std::stod(arg2));
+                        dos.writeDouble(std::stod(arg3));
+                    } else if (!extra4.empty() && isNumeric(arg2) &&
+                               isNumeric(arg3) && isNumeric(extra4)) {
+                        // /tp <subject> <x> <y> <z>
+                        dos.writeInt(3);  // TP_MODE_PLAYER_TO_COORDS
+                        dos.writeUTF(arg1_orig);
+                        dos.writeDouble(std::stod(arg2));
+                        dos.writeDouble(std::stod(arg3));
+                        dos.writeDouble(std::stod(extra4));
+                    } else {
+                        player->sendMessage(L"§cInvalid /tp arguments");
+                        return;
+                    }
                 }
                 break;
             }
@@ -905,9 +999,230 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
                 break;
             }
             
+            case eGameCommand_Experience: {
+                // /xp <amount>[L|l] [player]
+                if (arg1.empty()) {
+                    player->sendMessage(L"§cUsage: /xp <amount>[L|l] [player]");
+                    return;
+                }
+                std::wstring amountStr = arg1;
+                bool levels = false;
+                if (!amountStr.empty()) {
+                    wchar_t last = amountStr.back();
+                    if (last == L'l' || last == L'L') {
+                        levels = true;
+                        amountStr.pop_back();
+                    }
+                }
+                int amount = 0;
+                try {
+                    amount = std::stoi(amountStr);
+                } catch (...) {
+                    player->sendMessage(L"§cInvalid xp amount: " + amountStr);
+                    return;
+                }
+                dos.writeInt(amount);
+                dos.writeBoolean(levels);
+                dos.writeUTF(arg2_orig);  // Optional target player (empty = self)
+                break;
+            }
+
+            case eGameCommand_Summon: {
+                // /summon <mob> [x] [y] [z]
+                if (arg1_orig.empty()) {
+                    player->sendMessage(L"§cUsage: /summon <mob> [x] [y] [z]");
+                    return;
+                }
+                dos.writeUTF(arg1_orig);
+
+                bool hasCoords = !arg2.empty() && !arg3.empty();
+                std::wstring extra4;
+                if (hasCoords) ss >> extra4;
+                hasCoords = hasCoords && !extra4.empty();
+
+                dos.writeBoolean(hasCoords);
+                if (hasCoords) {
+                    try {
+                        double x = std::stod(arg2);
+                        double y = std::stod(arg3);
+                        double z = std::stod(extra4);
+                        dos.writeDouble(x);
+                        dos.writeDouble(y);
+                        dos.writeDouble(z);
+                    } catch (...) {
+                        player->sendMessage(L"§cInvalid coordinates");
+                        return;
+                    }
+                }
+                break;
+            }
+
+            case eGameCommand_Help: {
+                // /help - listed below, intercepted directly without dispatch
+                player->sendMessage(L"§e--- Available commands ---");
+                player->sendMessage(L"§e/gamemode <s|c|a|sp>  §7- change gamemode");
+                player->sendMessage(L"§e/give <player> <item> [count]  §7- give items");
+                player->sendMessage(L"§e/time set <value>  §7- set world time");
+                player->sendMessage(L"§e/weather <clear|rain|thunder>  §7- set weather");
+                player->sendMessage(L"§e/kill [self|@e|@a|mobs|animals|<player>]");
+                player->sendMessage(L"§e/tp <player> | <x> <y> <z>");
+                player->sendMessage(L"§e/xp <amount>[L] [player]  §7- give xp");
+                player->sendMessage(L"§e/summon <mob> [x] [y] [z]");
+                player->sendMessage(L"§e/effect <player> <effect>");
+                player->sendMessage(L"§e/enchant <enchantmentId> <level>");
+                player->sendMessage(L"§e/say <message>  §7- broadcast a message");
+                player->sendMessage(L"§e--- Multiplayer ---");
+                player->sendMessage(L"§e/list  §7- list online players");
+                player->sendMessage(L"§e/msg <player> <message>  §7- private message");
+                player->sendMessage(L"§e/kick <player> [reason]  §7- kick a player");
+                player->sendMessage(L"§e/heal [player]  §7- restore health");
+                player->sendMessage(L"§e/feed [player]  §7- restore hunger");
+                player->sendMessage(L"§e/seed  §7- show world seed");
+                player->sendMessage(L"§e--- Admin ---");
+                player->sendMessage(L"§e/op <player>  §7- grant operator");
+                player->sendMessage(L"§e/deop <player>  §7- revoke operator");
+                player->sendMessage(L"§e/ban <player>  §7- ban player");
+                player->sendMessage(L"§e/pardon <player>  §7- unban player");
+                player->sendMessage(L"§e/tps  §7- server performance stats");
+                player->sendMessage(L"§e--- Movement ---");
+                player->sendMessage(L"§e/spawn  §7- teleport to world spawn");
+                player->sendMessage(L"§e/sethome  §7- save current location as home");
+                player->sendMessage(L"§e/home  §7- teleport to your home");
+                player->sendMessage(L"§e/back  §7- return to the previous location");
+                player->sendMessage(L"§e/r <message>  §7- reply to last whisper");
+                return;  // Don't dispatch
+            }
+
+            case eGameCommand_Say: {
+                // /say <message> - broadcast as server
+                std::wstring rest;
+                std::getline(ss, rest);
+                if (!rest.empty() && rest.front() == L' ') rest.erase(0, 1);
+                std::wstring full = arg1_orig;
+                if (!rest.empty()) {
+                    if (!full.empty()) full += L" ";
+                    full += rest;
+                }
+                if (full.empty()) {
+                    player->sendMessage(L"§cUsage: /say <message>");
+                    return;
+                }
+                auto chatPacket = std::make_shared<ChatPacket>(
+                    L"[Server] " + player->getName(),
+                    ChatPacket::e_ChatCustom, -1);
+                chatPacket->m_stringArgs.push_back(full);
+                // 4J - broadcastAll handles locking + null-connection skips
+                server->getPlayers()->broadcastAll(chatPacket);
+                return;  // Don't dispatch
+            }
+
+            case eGameCommand_List:
+            case eGameCommand_Seed:
+            case eGameCommand_Tps:
+            case eGameCommand_Spawn:
+            case eGameCommand_SetHome:
+            case eGameCommand_Home:
+            case eGameCommand_Back: {
+                // No arguments needed - dispatch with empty data
+                break;
+            }
+
+            case eGameCommand_Reply: {
+                // /r <message...>
+                if (arg1_orig.empty()) {
+                    player->sendMessage(L"§cUsage: /r <message>");
+                    return;
+                }
+                std::wstring msg = arg1_orig;
+                if (!arg2_orig.empty()) {
+                    msg += L" " + arg2_orig;
+                }
+                if (!arg3_orig.empty()) {
+                    msg += L" " + arg3_orig;
+                    std::wstring restOfLine;
+                    std::getline(ss, restOfLine);
+                    if (!restOfLine.empty() && restOfLine.front() == L' ') {
+                        restOfLine.erase(0, 1);
+                    }
+                    if (!restOfLine.empty()) msg += L" " + restOfLine;
+                }
+                dos.writeUTF(msg);
+                break;
+            }
+
+            case eGameCommand_Heal:
+            case eGameCommand_Feed: {
+                // /heal [player] - serialize optional player name
+                dos.writeUTF(arg1_orig);  // empty = self
+                break;
+            }
+
+            case eGameCommand_Op:
+            case eGameCommand_DeOp:
+            case eGameCommand_Ban:
+            case eGameCommand_Pardon: {
+                if (arg1_orig.empty()) {
+                    std::wstring name = L"Usage: /";
+                    name += (cmd == eGameCommand_Op       ? L"op"
+                             : cmd == eGameCommand_DeOp   ? L"deop"
+                             : cmd == eGameCommand_Ban    ? L"ban"
+                                                          : L"pardon");
+                    name += L" <player>";
+                    player->sendMessage(L"§c" + name);
+                    return;
+                }
+                dos.writeUTF(arg1_orig);
+                break;
+            }
+
+            case eGameCommand_Kick: {
+                // /kick <player> [reason...]
+                if (arg1_orig.empty()) {
+                    player->sendMessage(L"§cUsage: /kick <player> [reason]");
+                    return;
+                }
+                dos.writeUTF(arg1_orig);
+                // Build reason from remaining tokens
+                std::wstring reason;
+                if (!arg2_orig.empty()) {
+                    reason = arg2_orig;
+                    if (!arg3_orig.empty()) {
+                        reason += L" " + arg3_orig;
+                        std::wstring restOfLine;
+                        std::getline(ss, restOfLine);
+                        if (!restOfLine.empty() && restOfLine.front() == L' ') {
+                            restOfLine.erase(0, 1);
+                        }
+                        if (!restOfLine.empty()) reason += L" " + restOfLine;
+                    }
+                }
+                dos.writeUTF(reason);
+                break;
+            }
+
+            case eGameCommand_Msg: {
+                // /msg <player> <message...>
+                if (arg1_orig.empty() || arg2_orig.empty()) {
+                    player->sendMessage(L"§cUsage: /msg <player> <message>");
+                    return;
+                }
+                dos.writeUTF(arg1_orig);
+                std::wstring msg = arg2_orig;
+                if (!arg3_orig.empty()) {
+                    msg += L" " + arg3_orig;
+                    std::wstring restOfLine;
+                    std::getline(ss, restOfLine);
+                    if (!restOfLine.empty() && restOfLine.front() == L' ') {
+                        restOfLine.erase(0, 1);
+                    }
+                    if (!restOfLine.empty()) msg += L" " + restOfLine;
+                }
+                dos.writeUTF(msg);
+                break;
+            }
+
             case eGameCommand_DefaultGameMode:
             case eGameCommand_EnchantItem:
-            case eGameCommand_Experience:
             default: {
                 // Placeholder for unimplemented commands
                 player->sendMessage(L"This command is not yet implemented");
@@ -952,6 +1267,44 @@ EGameCommand PlayerConnection::parseCommandName(const std::wstring& cmdName) {
         return eGameCommand_Experience;
     } else if (cmdName == L"weather" || cmdName == L"toggledownfall") {
         return eGameCommand_ToggleDownfall;
+    } else if (cmdName == L"summon" || cmdName == L"spawn") {
+        return eGameCommand_Summon;
+    } else if (cmdName == L"help" || cmdName == L"?") {
+        return eGameCommand_Help;
+    } else if (cmdName == L"say" || cmdName == L"me") {
+        return eGameCommand_Say;
+    } else if (cmdName == L"list" || cmdName == L"players" || cmdName == L"who") {
+        return eGameCommand_List;
+    } else if (cmdName == L"kick") {
+        return eGameCommand_Kick;
+    } else if (cmdName == L"msg" || cmdName == L"tell" || cmdName == L"w" || cmdName == L"whisper") {
+        return eGameCommand_Msg;
+    } else if (cmdName == L"heal") {
+        return eGameCommand_Heal;
+    } else if (cmdName == L"feed") {
+        return eGameCommand_Feed;
+    } else if (cmdName == L"seed") {
+        return eGameCommand_Seed;
+    } else if (cmdName == L"op") {
+        return eGameCommand_Op;
+    } else if (cmdName == L"deop") {
+        return eGameCommand_DeOp;
+    } else if (cmdName == L"ban") {
+        return eGameCommand_Ban;
+    } else if (cmdName == L"pardon" || cmdName == L"unban") {
+        return eGameCommand_Pardon;
+    } else if (cmdName == L"tps" || cmdName == L"perf") {
+        return eGameCommand_Tps;
+    } else if (cmdName == L"spawn") {
+        return eGameCommand_Spawn;
+    } else if (cmdName == L"sethome") {
+        return eGameCommand_SetHome;
+    } else if (cmdName == L"home") {
+        return eGameCommand_Home;
+    } else if (cmdName == L"back") {
+        return eGameCommand_Back;
+    } else if (cmdName == L"r" || cmdName == L"reply") {
+        return eGameCommand_Reply;
     } else {
         // Command not recognized - return sentinel value
         return eGameCommand_COUNT;
@@ -1859,6 +2212,17 @@ void PlayerConnection::handlePlayerAbilities(
 //{
 //	player->updateOptions(packet);
 // }
+
+void PlayerConnection::handleClientInformation(
+    std::shared_ptr<ClientInformationPacket> packet) {
+    // 4J macOS task 6.3 (Req 5.2/5.5/1.5) - stash the client's requested
+    // view distance (chunks). Applied on the server tick (see tick()) to
+    // avoid racing PlayerChunkMap subscription state from the network thread.
+    // Clamp here defensively so an out-of-range value never propagates;
+    // the connection is NOT dropped (Req 1.5).
+    int requested = clampViewDistance(packet->viewDistance);
+    m_pendingClientViewDistance.store(requested, std::memory_order_relaxed);
+}
 
 void PlayerConnection::handleCustomPayload(
     std::shared_ptr<CustomPayloadPacket> customPayloadPacket) {

@@ -203,7 +203,17 @@ Dimension* Dimension::getNew(int id) {
 
 float Dimension::getCloudHeight() {
     if (levelType == LevelType::lvl_amplified) {
-        return (float)Level::genDepth * 0.74f;
+        // 4J macOS - amplified cloud lift. The old value was
+        // genDepth * 0.74 (= 94.7) which sat *below* the peaks the
+        // amplified pipeline produces, so the cloud plane visually
+        // sliced mountain silhouettes in half and crushed the
+        // cinematic scale built up by Phases 2/3. Vanilla returns
+        // genDepth (= 128). For amplified we lift the plane to
+        // genDepth + 48 so it sits above even the tallest ridge
+        // peaks (~110-115) while staying close enough to act as a
+        // depth cue. Cloud rendering / density / speed / weather
+        // are unchanged - only the vertical offset moves.
+        return (float)Level::genDepth + 48.0f;
     }
     return (float)Level::genDepth;
 }

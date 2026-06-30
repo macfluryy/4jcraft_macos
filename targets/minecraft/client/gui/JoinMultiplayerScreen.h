@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 #include "Screen.h"
 
@@ -10,6 +11,15 @@ class JoinMultiplayerScreen : public Screen {
 private:
     Screen* lastScreen;
     EditBox* ipEdit;
+
+    // 4J macOS - cached LAN-discovery snapshot. We refresh it from tick()
+    // and render it as clickable rows below the IP field.
+    struct LanRow {
+        std::wstring label;
+        std::string host;
+        unsigned short port;
+    };
+    std::vector<LanRow> lanRows;
 
 public:
     JoinMultiplayerScreen(Screen* lastScreen);
@@ -22,6 +32,9 @@ protected:
 
 private:
     virtual int parseInt(const std::wstring& str, int def);
+
+    void refreshLanRows();
+    bool tryConnect(const std::string& host, int port);
 
 protected:
     virtual void keyPressed(wchar_t ch, int eventKey) override;
