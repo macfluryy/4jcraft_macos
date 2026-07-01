@@ -11,6 +11,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <cstdio>
@@ -19,9 +20,14 @@
 #include <thread>
 
 #include "app/common/src/JavaEdition/JavaBlockIdMap.h"
+#include "app/common/src/JavaEdition/JavaRawTcpClient.h"
 #include "app/common/src/JavaEdition/JavaItemIdMap.h"
 #include "app/common/src/JavaEdition/JavaSoundIdMap.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "nbt/StringTag.h"
+#include "nbt/NbtIo.h"
 
 JavaServerProxy* g_activeJavaProxy = nullptr;
 
@@ -192,6 +198,32 @@ inline void appendLceUtf(std::vector<uint8_t>& buf, const std::wstring& s,
     }
 }
 
+// TexturePacket / TextureChangePacket read their string via
+// DataInputStream::readUTF (Java modified UTF-8: u16 byte-length + encoded
+// bytes), NOT the UTF-16 form appendLceUtf uses for chat/player names. Emit the
+// matching encoding so the client's readUTF recovers the exact texture name.
+inline void appendJavaModifiedUtf(std::vector<uint8_t>& buf,
+                                  const std::wstring& s) {
+    std::vector<uint8_t> enc;
+    for (wchar_t wc : s) {
+        unsigned int c = static_cast<unsigned int>(wc);
+        if (c >= 0x0001 && c <= 0x007F) {
+            enc.push_back(static_cast<uint8_t>(c));
+        } else if (c == 0 || c <= 0x07FF) {
+            enc.push_back(static_cast<uint8_t>(0xC0 | ((c >> 6) & 0x1F)));
+            enc.push_back(static_cast<uint8_t>(0x80 | (c & 0x3F)));
+        } else {
+            enc.push_back(static_cast<uint8_t>(0xE0 | ((c >> 12) & 0x0F)));
+            enc.push_back(static_cast<uint8_t>(0x80 | ((c >> 6) & 0x3F)));
+            enc.push_back(static_cast<uint8_t>(0x80 | (c & 0x3F)));
+        }
+    }
+    uint8_t tmp[2];
+    packBE16(tmp, static_cast<uint16_t>(enc.size()));
+    buf.insert(buf.end(), tmp, tmp + 2);
+    buf.insert(buf.end(), enc.begin(), enc.end());
+}
+
 }
 
 
@@ -206,6 +238,16 @@ JavaServerProxy::JavaServerProxy() {
 JavaServerProxy::~JavaServerProxy() {
     requestStop();
     if (m_worker.joinable()) m_worker.join();
+    // Event source stopped: no more requestSkinDownload calls. Drain skin
+    // threads (bounded by the 8s download timeout) without holding the mutex,
+    // so a thread waiting on m_skinMutex can't deadlock the join.
+    std::vector<std::thread> skinThreads;
+    {
+        std::lock_guard<std::mutex> lock(m_skinMutex);
+        skinThreads.swap(m_skinThreads);
+    }
+    for (auto& t : skinThreads)
+        if (t.joinable()) t.join();
     if (m_listenFd >= 0) ::close(m_listenFd);
     if (m_clientFd >= 0) ::close(m_clientFd);
     if (g_activeJavaProxy == this) g_activeJavaProxy = nullptr;
@@ -489,6 +531,10 @@ void JavaServerProxy::emitFlatFallback() {
 }
 
 bool JavaServerProxy::sendChatPacket(const std::wstring& text) {
+    fprintf(stderr, "[JCHAT] final LCE string len=%zu first=U+%04X: %ls\n",
+            text.size(),
+            text.empty() ? 0u : static_cast<unsigned>(text[0]) & 0xFFFFu,
+            text.c_str());
     std::vector<uint8_t> buf;
     buf.reserve(8 + text.size() * 2);
     buf.push_back(kLceIdChat);
@@ -948,6 +994,141 @@ bool JavaServerProxy::sendAddPlayerPacket(int id, const std::wstring& name,
     return writeAll(buf.data(), buf.size());
 }
 
+// ----------------------------------------------------------------------------
+// Runtime skin pipeline: proxy owns HTTP. Reuses the LCE memory-texture system:
+//   TexturePacket(154)  registers PNG bytes under a name on the client
+//   TextureChangePacket(157) points an entity's skin at that name
+// The client patch in ClientConnection::handleTextureChange routes such names
+// straight into Player::customTextureUrl (loadMemTexture's key).
+// ----------------------------------------------------------------------------
+
+// Deterministic mem-texture name from the Mojang texture URL. Same skin -> same
+// name, so identical skins share one mem texture and the cache dedupes.
+std::wstring JavaServerProxy::skinTexNameForUrl(const std::string& url) {
+    size_t slash = url.find_last_of('/');
+    std::string hash = (slash == std::string::npos) ? url : url.substr(slash + 1);
+    // Keep it ASCII-safe (hash is hex); readUTF wants modified UTF-8.
+    std::string name = "javaskin_" + hash + ".png";
+    return std::wstring(name.begin(), name.end());
+}
+
+// Plain HTTP GET (no TLS). textures.minecraft.net serves the texture files on
+// port 80; an https:// url is fetched over http. Returns the PNG body, or empty.
+std::vector<uint8_t> JavaServerProxy::httpGetSkin(const std::string& url) {
+    std::string u = url;
+    size_t scheme = u.find("://");
+    if (scheme != std::string::npos) u = u.substr(scheme + 3);
+    size_t slash = u.find('/');
+    std::string host = (slash == std::string::npos) ? u : u.substr(0, slash);
+    std::string path = (slash == std::string::npos) ? "/" : u.substr(slash);
+    if (host.empty()) return {};
+
+    JavaRawTcpClient tcp;
+    if (!tcp.connect(host, 80, 8000)) return {};
+    std::string req = "GET " + path + " HTTP/1.1\r\nHost: " + host +
+                      "\r\nUser-Agent: LCECrossPlay\r\nConnection: close\r\n\r\n";
+    if (!tcp.sendAll(reinterpret_cast<const uint8_t*>(req.data()), req.size())) {
+        tcp.close();
+        return {};
+    }
+    std::vector<uint8_t> resp;
+    uint8_t tmp[4096];
+    for (;;) {
+        size_t n = tcp.recv(tmp, sizeof(tmp), 8000);
+        if (n == 0) break;                                  // EOF (Connection: close)
+        resp.insert(resp.end(), tmp, tmp + n);
+        if (resp.size() > 2u * 1024 * 1024) break;          // sanity cap
+    }
+    tcp.close();
+
+    static const uint8_t sep[4] = {'\r', '\n', '\r', '\n'};
+    auto it = std::search(resp.begin(), resp.end(), sep, sep + 4);
+    if (it == resp.end()) return {};
+    std::string header(resp.begin(), it);
+    if (header.find(" 200") == std::string::npos) {
+        fprintf(stderr, "[SKIN] http not-200 url=%s hdr=%.40s\n",
+                url.c_str(), header.c_str());
+        return {};
+    }
+    return std::vector<uint8_t>(it + 4, resp.end());
+}
+
+bool JavaServerProxy::sendTexturePacket(const std::wstring& name,
+                                        const std::vector<uint8_t>& png) {
+    if (png.size() > 32000) {                               // readShort caps at 32767
+        fprintf(stderr, "[SKIN] texture too big (%zu) - skip\n", png.size());
+        return false;
+    }
+    std::vector<uint8_t> buf;
+    buf.reserve(8 + name.size() + png.size());
+    buf.push_back(154);                                     // TexturePacket
+    appendJavaModifiedUtf(buf, name);                       // dis->readUTF()
+    uint8_t tmp[2];
+    packBE16(tmp, static_cast<uint16_t>(png.size()));       // dis->readShort()
+    buf.insert(buf.end(), tmp, tmp + 2);
+    buf.insert(buf.end(), png.begin(), png.end());
+    return writeAll(buf.data(), buf.size());
+}
+
+bool JavaServerProxy::sendTextureChangePacket(int lceEntityId,
+                                              const std::wstring& name) {
+    std::vector<uint8_t> buf;
+    buf.reserve(8 + name.size());
+    buf.push_back(157);                                     // TextureChangePacket
+    uint8_t tmp[4];
+    packBE32(tmp, static_cast<uint32_t>(lceEntityId));      // dis->readInt()
+    buf.insert(buf.end(), tmp, tmp + 4);
+    buf.push_back(0);                                       // e_TextureChange_Skin
+    appendJavaModifiedUtf(buf, name);                       // dis->readUTF()
+    return writeAll(buf.data(), buf.size());
+}
+
+void JavaServerProxy::deliverSkin(int lceEntityId, const std::wstring& texName,
+                                  const std::vector<uint8_t>& png) {
+    if (png.empty()) return;
+    bool reg = sendTexturePacket(texName, png);             // register bytes first
+    bool asn = sendTextureChangePacket(lceEntityId, texName);  // then assign
+    fprintf(stderr, "[SKIN] registered=%d assigned=%d id=%d bytes=%zu name=%ls\n",
+            reg, asn, lceEntityId, png.size(), texName.c_str());
+}
+
+void JavaServerProxy::requestSkinDownload(int lceEntityId,
+                                          const std::string& url) {
+    if (url.empty()) return;
+    const std::wstring texName = skinTexNameForUrl(url);
+
+    {
+        std::lock_guard<std::mutex> lock(m_skinMutex);
+        auto it = m_skinCache.find(url);
+        if (it != m_skinCache.end()) {
+            fprintf(stderr, "[SKIN] cache-hit id=%d url=%s\n", lceEntityId,
+                    url.c_str());
+            std::vector<uint8_t> png = it->second;         // copy under lock
+            m_skinThreads.emplace_back(
+                [this, lceEntityId, texName, png]() {
+                    deliverSkin(lceEntityId, texName, png);
+                });
+            return;
+        }
+    }
+
+    // Not cached: download off-thread, cache, then deliver.
+    std::lock_guard<std::mutex> lock(m_skinMutex);
+    m_skinThreads.emplace_back([this, lceEntityId, url, texName]() {
+        fprintf(stderr, "[SKIN] downloading id=%d url=%s\n", lceEntityId,
+                url.c_str());
+        std::vector<uint8_t> png = httpGetSkin(url);
+        fprintf(stderr, "[SKIN] downloaded id=%d bytes=%zu url=%s\n",
+                lceEntityId, png.size(), url.c_str());
+        if (png.empty()) return;
+        {
+            std::lock_guard<std::mutex> lock(m_skinMutex);
+            m_skinCache[url] = png;
+        }
+        deliverSkin(lceEntityId, texName, png);
+    });
+}
+
 bool JavaServerProxy::sendTileUpdatePacket(int x, int y, int z,
                                            uint8_t block, uint8_t meta) {
     std::vector<uint8_t> buf;
@@ -1027,8 +1208,28 @@ void JavaServerProxy::appendLceItem(std::vector<uint8_t>& buf,
     buf.push_back(static_cast<uint8_t>(count));
     packBE16(tmp, static_cast<uint16_t>(damage));
     buf.insert(buf.end(), tmp, tmp + 2);
-    packBE16(tmp, static_cast<uint16_t>(static_cast<int16_t>(-1)));
-    buf.insert(buf.end(), tmp, tmp + 2);
+
+    if (!item.customName.empty() || !item.lore.empty()) {
+        CompoundTag* tag = new CompoundTag();
+        CompoundTag* display = new CompoundTag();
+        if (!item.customName.empty())
+            display->putString(L"Name", item.customName);
+        if (!item.lore.empty()) {
+            ListTag<StringTag>* loreList = new ListTag<StringTag>(L"Lore");
+            for (const std::wstring& line : item.lore)
+                loreList->add(new StringTag(L"", line));
+            display->put(L"Lore", loreList);
+        }
+        tag->putCompound(L"display", display);
+        std::vector<uint8_t> nbt = NbtIo::compress(tag);
+        delete tag;
+        packBE16(tmp, static_cast<uint16_t>(nbt.size()));
+        buf.insert(buf.end(), tmp, tmp + 2);
+        buf.insert(buf.end(), nbt.begin(), nbt.end());
+    } else {
+        packBE16(tmp, static_cast<uint16_t>(static_cast<int16_t>(-1)));
+        buf.insert(buf.end(), tmp, tmp + 2);
+    }
 }
 
 bool JavaServerProxy::sendContainerSetContentPacket(
@@ -2035,6 +2236,10 @@ void JavaServerProxy::runWorker() {
                                             ev.entity.headYaw,
                                             ev.equippedItemId);
                         sendRotateHeadPacket(lceId, ev.entity.headYaw);
+                        // GameProfile skin (from the tab-list entry): download
+                        // it and hand the client a runtime memory texture.
+                        if (!ev.entity.skinUrl.empty())
+                            requestSkinDownload(lceId, ev.entity.skinUrl);
                     }
                     break;
                 }

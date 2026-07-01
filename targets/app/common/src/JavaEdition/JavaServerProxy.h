@@ -171,6 +171,22 @@ private:
     int m_clientFd = -1;
     std::mutex m_sendMutex;
 
+    // ---- Runtime skin pipeline (proxy owns HTTP; reuses TexturePacket 154 +
+    // TextureChangePacket 157 + the LCE memory-texture system). ----
+    std::mutex m_skinMutex;
+    std::unordered_map<std::string, std::vector<uint8_t>> m_skinCache;  // url->PNG
+    std::vector<std::thread> m_skinThreads;
+    // Kick off (or reuse cached) skin: download url, register on the client as a
+    // memory texture, then assign it to the LCE entity via TextureChangePacket.
+    void requestSkinDownload(int lceEntityId, const std::string& url);
+    void deliverSkin(int lceEntityId, const std::wstring& texName,
+                     const std::vector<uint8_t>& png);
+    bool sendTexturePacket(const std::wstring& name,
+                           const std::vector<uint8_t>& png);
+    bool sendTextureChangePacket(int lceEntityId, const std::wstring& name);
+    static std::wstring skinTexNameForUrl(const std::string& url);
+    static std::vector<uint8_t> httpGetSkin(const std::string& url);
+
     std::string m_javaHost;
     uint16_t m_javaPort = 0;
     std::string m_nicknameUtf8;
