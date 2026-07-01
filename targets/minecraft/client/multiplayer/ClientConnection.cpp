@@ -2556,7 +2556,20 @@ void ClientConnection::handleTextureChange(
 
     switch (packet->action) {
         case TextureChangePacket::e_TextureChange_Skin:
-            player->setCustomSkin(app.getSkinIdFromPath(packet->path));
+            // 4J macOS - numeric skin ids use the dlcskin/ugcskin/defskin path
+            // form and round-trip through getSkinIdFromPath/getSkinPathFromId.
+            // A runtime memory-texture skin (e.g. a Java-edition NPC skin the
+            // proxy delivered via TexturePacket) is keyed by its raw NAME, which
+            // that conversion would collapse to a default skin. So for any other
+            // path, put it straight into customTextureUrl (the exact key
+            // loadMemTexture() looks up). Numeric-id skins are unchanged.
+            if (packet->path.compare(0, 7, L"dlcskin") == 0 ||
+                packet->path.compare(0, 7, L"ugcskin") == 0 ||
+                packet->path.compare(0, 7, L"defskin") == 0) {
+                player->setCustomSkin(app.getSkinIdFromPath(packet->path));
+            } else {
+                player->customTextureUrl = packet->path;
+            }
 #if !defined(_CONTENT_PACKAGE)
             wprintf(L"Skin for remote player %ls has changed to %ls (%d)\n",
                     player->name.c_str(), player->customTextureUrl.c_str(),
