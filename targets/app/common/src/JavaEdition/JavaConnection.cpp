@@ -38,7 +38,7 @@ std::string clipChatUtf8(const std::string& utf8) {
     return utf8.substr(0, i);
 }
 
-void p3_skipEntityMetadata(JavaPacketReader& r) {
+[[maybe_unused]] void p3_skipEntityMetadata(JavaPacketReader& r) {
     while (r.remaining() > 0) {
         const uint8_t key = r.readU8();
         if (key == 0x7F) return;
@@ -128,13 +128,83 @@ void p3_skipNbtPayload(JavaPacketReader& r, int type) {
     }
 }
 
-void p3_skipJavaItemNbt(JavaPacketReader& r) {
+std::wstring p3_decodeNbtUtf8(const std::string& s) {
+    std::wstring out;
+    out.reserve(s.size());
+    size_t i = 0;
+    const size_t n = s.size();
+    while (i < n) {
+        const unsigned char c = static_cast<unsigned char>(s[i++]);
+        uint32_t cp;
+        int extra;
+        if (c < 0x80) { cp = c; extra = 0; }
+        else if ((c & 0xE0) == 0xC0) { cp = c & 0x1F; extra = 1; }
+        else if ((c & 0xF0) == 0xE0) { cp = c & 0x0F; extra = 2; }
+        else if ((c & 0xF8) == 0xF0) { cp = c & 0x07; extra = 3; }
+        else { cp = c; extra = 0; }
+        for (int k = 0; k < extra && i < n; ++k)
+            cp = (cp << 6) | (static_cast<unsigned char>(s[i++]) & 0x3F);
+        out.push_back(static_cast<wchar_t>(cp));
+    }
+    return out;
+}
+
+std::wstring p3_readNbtString(JavaPacketReader& r) {
+    const uint16_t len = r.readU16();
+    std::string bytes(len, '\0');
+    if (len > 0) r.readBytes(reinterpret_cast<uint8_t*>(&bytes[0]), len);
+    return p3_decodeNbtUtf8(bytes);
+}
+
+std::string p3_readNbtName(JavaPacketReader& r) {
+    const uint16_t len = r.readU16();
+    std::string key(len, '\0');
+    if (len > 0) r.readBytes(reinterpret_cast<uint8_t*>(&key[0]), len);
+    return key;
+}
+
+void p3_readDisplayCompound(JavaPacketReader& r, JavaInvSlot& slot) {
+    for (;;) {
+        const uint8_t t = r.readU8();
+        if (t == 0) return;
+        const std::string key = p3_readNbtName(r);
+        if (t == 8 && key == "Name") {
+            slot.customName = p3_readNbtString(r);
+        } else if (t == 9 && key == "Lore") {
+            const uint8_t childType = r.readU8();
+            const int32_t cnt = r.readI32();
+            for (int32_t i = 0; i < cnt && i >= 0; ++i) {
+                if (childType == 8) slot.lore.push_back(p3_readNbtString(r));
+                else p3_skipNbtPayload(r, childType);
+            }
+        } else {
+            p3_skipNbtPayload(r, t);
+        }
+    }
+}
+
+void p3_readJavaItemNbt(JavaPacketReader& r, JavaInvSlot& slot) {
     if (r.remaining() < 1) return;
     const uint8_t rootType = r.readU8();
     if (rootType == 0) return;
-    const uint16_t nameLen = r.readU16();
-    if (nameLen > 0) r.skipBytes(nameLen);
-    p3_skipNbtPayload(r, rootType);
+    if (rootType != 10) {
+        const uint16_t nl = r.readU16();
+        if (nl > 0) r.skipBytes(nl);
+        p3_skipNbtPayload(r, rootType);
+        return;
+    }
+    const uint16_t rootNameLen = r.readU16();
+    if (rootNameLen > 0) r.skipBytes(rootNameLen);
+    for (;;) {
+        const uint8_t t = r.readU8();
+        if (t == 0) return;
+        const std::string key = p3_readNbtName(r);
+        if (t == 10 && key == "display") {
+            p3_readDisplayCompound(r, slot);
+        } else {
+            p3_skipNbtPayload(r, t);
+        }
+    }
 }
 
 JavaInvSlot p3_readJavaSlot(JavaPacketReader& r) {
@@ -143,7 +213,7 @@ JavaInvSlot p3_readJavaSlot(JavaPacketReader& r) {
     if (slot.id != -1) {
         slot.count = r.readU8();
         slot.damage = static_cast<int16_t>(r.readU16());
-        p3_skipJavaItemNbt(r);
+        p3_readJavaItemNbt(r, slot);
     }
     return slot;
 }
@@ -163,19 +233,52 @@ int p3_mapWindowType(const std::string& invType) {
     return 0;
 }
 
-bool p3_extractMetadataItem(JavaPacketReader& r, JavaInvSlot& outItem) {
+bool p3_extractMetadataItem(JavaPacketReader& r, JavaInvSlot& outItem,
+                            int* outFlags = nullptr,
+                            std::string* outEntries = nullptr,
+                            std::vector<JavaMetaEntry>* outMeta = nullptr) {
     bool found = false;
     while (r.remaining() > 0) {
         const uint8_t key = r.readU8();
         if (key == 0x7F) break;
         const int type = (key >> 5) & 0x07;
         const int index = key & 0x1F;
+        if (outEntries) {
+            char tmp[16];
+            snprintf(tmp, sizeof(tmp), "%s%d:%d", outEntries->empty() ? "" : ",",
+                     index, type);
+            outEntries->append(tmp);
+        }
+        JavaMetaEntry entry;
+        entry.index = static_cast<uint8_t>(index);
+        entry.type = static_cast<uint8_t>(type);
+        bool haveEntry = false;
         switch (type) {
-            case 0: (void)r.readU8();                    break;
-            case 1: (void)r.readU16();                   break;
-            case 2: (void)r.readI32();                   break;
-            case 3: (void)r.readI32();                   break;
-            case 4: (void)r.readUtf8(kMaxStringBytes);   break;
+            case 0: {
+                const uint8_t v = r.readU8();
+                if (index == 0 && outFlags) *outFlags = v;
+                entry.intVal = static_cast<int8_t>(v);
+                haveEntry = true;
+                break;
+            }
+            case 1:
+                entry.intVal = static_cast<int16_t>(r.readU16());
+                haveEntry = true;
+                break;
+            case 2:
+                entry.intVal = r.readI32();
+                haveEntry = true;
+                break;
+            case 3: {
+                const int32_t bits = r.readI32();
+                std::memcpy(&entry.floatVal, &bits, sizeof(entry.floatVal));
+                haveEntry = true;
+                break;
+            }
+            case 4:
+                entry.strVal = p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
+                haveEntry = true;
+                break;
             case 5: {
                 JavaInvSlot s = p3_readJavaSlot(r);
                 if (index == 10) { outItem = s; found = true; }
@@ -188,6 +291,7 @@ bool p3_extractMetadataItem(JavaPacketReader& r, JavaInvSlot& outItem) {
             default:
                 throw JavaProtocolError("p3_extractMetadataItem: bad type");
         }
+        if (haveEntry && outMeta) outMeta->push_back(std::move(entry));
     }
     return found;
 }
@@ -195,7 +299,7 @@ bool p3_extractMetadataItem(JavaPacketReader& r, JavaInvSlot& outItem) {
 int p3_javaMobToLce(uint8_t javaType) {
     if (javaType >= 50 && javaType <= 99) return javaType;
     if (javaType == 120) return 120;
-    return 90;
+    return -1;
 }
 
 bool p3_decodeOneChunk(JavaPacketReader& r,
@@ -666,6 +770,63 @@ std::string readUuidBytes(JavaPacketReader& r) {
     return out;
 }
 
+std::string p3_uuidHex(const std::string& uuid) {
+    static const char* hx = "0123456789abcdef";
+    std::string out;
+    out.reserve(uuid.size() * 2);
+    for (unsigned char c : uuid) {
+        out.push_back(hx[c >> 4]);
+        out.push_back(hx[c & 0x0F]);
+    }
+    return out;
+}
+
+std::string p3_base64Decode(const std::string& in) {
+    auto dec = [](unsigned char c) -> int {
+        if (c >= 'A' && c <= 'Z') return c - 'A';
+        if (c >= 'a' && c <= 'z') return c - 'a' + 26;
+        if (c >= '0' && c <= '9') return c - '0' + 52;
+        if (c == '+') return 62;
+        if (c == '/') return 63;
+        return -1;
+    };
+    std::string out;
+    int val = 0, bits = -8;
+    for (unsigned char c : in) {
+        if (c == '=') break;
+        const int d = dec(c);
+        if (d < 0) continue;
+        val = (val << 6) | d;
+        bits += 6;
+        if (bits >= 0) {
+            out.push_back(static_cast<char>((val >> bits) & 0xFF));
+            bits -= 8;
+        }
+    }
+    return out;
+}
+
+std::string p3_extractSkinUrl(const std::string& json) {
+    const size_t skin = json.find("\"SKIN\"");
+    if (skin == std::string::npos) return "";
+    const size_t urlKey = json.find("\"url\"", skin);
+    if (urlKey == std::string::npos) return "";
+    size_t q1 = json.find('"', json.find(':', urlKey));
+    if (q1 == std::string::npos) return "";
+    ++q1;
+    std::string url;
+    for (size_t i = q1; i < json.size(); ++i) {
+        const char c = json[i];
+        if (c == '"') break;
+        if (c == '\\' && i + 1 < json.size()) {
+            url.push_back(json[++i]);
+        } else {
+            url.push_back(c);
+        }
+    }
+    return url;
+}
+
 void applyPlayerListItem(JavaPacketReader& r,
                          std::vector<JavaTabListEntry>& list) {
     const int32_t action = r.readVarInt();
@@ -677,12 +838,30 @@ void applyPlayerListItem(JavaPacketReader& r,
             case 0: {
                 std::string name = r.readUtf8(kMaxStringBytes);
                 const int32_t props = r.readVarInt();
+                fprintf(stderr, "[SKIN]\n");
+                fprintf(stderr, "[SKIN] uuid=%s\n", p3_uuidHex(uuid).c_str());
+                fprintf(stderr, "[SKIN] username=%s\n", name.c_str());
+                fprintf(stderr, "[SKIN] propertyCount=%d\n", props);
+                std::string skinB64;
                 for (int32_t p = 0; p < props && p >= 0; ++p) {
-                    (void)r.readUtf8(kMaxStringBytes);
-                    (void)r.readUtf8(kMaxStringBytes);
+                    const std::string propName = r.readUtf8(kMaxStringBytes);
+                    const std::string propValue = r.readUtf8(kMaxStringBytes);
                     const uint8_t isSigned = r.readU8();
                     if (isSigned) {
                         (void)r.readUtf8(kMaxStringBytes);
+                    }
+                    fprintf(stderr, "[SKIN]   name=%s\n", propName.c_str());
+                    fprintf(stderr, "[SKIN]   value(first 64 chars)=%.64s\n",
+                            propValue.c_str());
+                    fprintf(stderr, "[SKIN]   signed=%s\n",
+                            isSigned ? "yes" : "no");
+                    if (propName == "textures") {
+                        skinB64 = propValue;
+                        const std::string decoded = p3_base64Decode(propValue);
+                        fprintf(stderr, "[SKIN]   decoded JSON=%s\n",
+                                decoded.c_str());
+                        fprintf(stderr, "[SKIN]   textures.SKIN.url=%s\n",
+                                p3_extractSkinUrl(decoded).c_str());
                     }
                 }
                 const int32_t gamemode = r.readVarInt();
@@ -696,6 +875,10 @@ void applyPlayerListItem(JavaPacketReader& r,
                 entry.name.reserve(name.size());
                 for (unsigned char c : name) entry.name.push_back((wchar_t)c);
                 entry.ping = ping;
+                if (!skinB64.empty()) {
+                    entry.skinUrl =
+                        p3_extractSkinUrl(p3_base64Decode(skinB64));
+                }
                 fprintf(stderr,
                         "[TABDBG] PlayerListItem ADD plainName='%s' "
                         "hadDisplayName=%d uuid=%02x%02x%02x%02x..\n",
@@ -708,6 +891,7 @@ void applyPlayerListItem(JavaPacketReader& r,
                     if (e.uuid == uuid) {
                         e.name = entry.name;
                         e.ping = entry.ping;
+                        if (!entry.skinUrl.empty()) e.skinUrl = entry.skinUrl;
                         replaced = true;
                         break;
                     }
@@ -798,6 +982,14 @@ bool JavaConnection::handlePlayFrame(
                 }
                 if (position == 2) return true;
                 std::wstring text = flattenChatComponent(json);
+                fprintf(stderr, "[JCHAT] raw JSON len=%zu: %s\n", json.size(),
+                        json.c_str());
+                fprintf(stderr,
+                        "[JCHAT] flattened len=%zu first=U+%04X: %ls\n",
+                        text.size(),
+                        text.empty() ? 0u
+                                     : static_cast<unsigned>(text[0]) & 0xFFFFu,
+                        text.c_str());
                 if (text.empty()) return true;
                 JavaConnectionEvent ev;
                 ev.type = JavaConnectionEventType::Chat;
@@ -926,11 +1118,29 @@ bool JavaConnection::handlePlayFrame(
                 const int16_t vx = static_cast<int16_t>(r.readU16());
                 const int16_t vy = static_cast<int16_t>(r.readU16());
                 const int16_t vz = static_cast<int16_t>(r.readU16());
-                p3_skipEntityMetadata(r);
+                std::vector<JavaMetaEntry> mdList;
+                {
+                    JavaInvSlot mdItem;
+                    int mdFlags = -1;
+                    std::string mdEntries;
+                    p3_extractMetadataItem(r, mdItem, &mdFlags, &mdEntries,
+                                           &mdList);
+                    fprintf(stderr,
+                            "[JNPC] SpawnMob eid=%d javaType=%u -> lceType=%d%s "
+                            "pos=(%.1f,%.1f,%.1f) flags=%d invisible=%d "
+                            "entries=[%s]\n",
+                            eid, jtype, p3_javaMobToLce(jtype),
+                            p3_javaMobToLce(jtype) < 0
+                                ? " (unsupported: no LCE spawn)" : "",
+                            x / 32.0, y / 32.0, z / 32.0, mdFlags,
+                            mdFlags >= 0 ? ((mdFlags & 0x20) != 0) : -1,
+                            mdEntries.c_str());
+                }
                 JavaConnectionEvent ev;
                 ev.type = JavaConnectionEventType::SpawnMob;
                 ev.entity.id = eid;
                 ev.entity.entityType = p3_javaMobToLce(jtype);
+                ev.entity.rawJavaType = jtype;
                 ev.entity.x = x;
                 ev.entity.y = y;
                 ev.entity.z = z;
@@ -941,6 +1151,13 @@ bool JavaConnection::handlePlayFrame(
                 ev.entity.vy = vy;
                 ev.entity.vz = vz;
                 pushEvent(std::move(ev));
+                if (!mdList.empty()) {
+                    JavaConnectionEvent mev;
+                    mev.type = JavaConnectionEventType::EntityMeta;
+                    mev.entity.id = eid;
+                    mev.metaEntries = std::move(mdList);
+                    pushEvent(std::move(mev));
+                }
                 return true;
             }
             case JavaPlayClientboundId::SpawnObject: {
@@ -990,6 +1207,17 @@ bool JavaConnection::handlePlayFrame(
                 ev.destroyIds.reserve(count);
                 for (int i = 0; i < count; ++i) {
                     ev.destroyIds.push_back(r.readVarInt());
+                }
+                {
+                    std::string ids;
+                    for (int32_t d : ev.destroyIds) {
+                        char tmp[16];
+                        snprintf(tmp, sizeof(tmp), "%s%d",
+                                 ids.empty() ? "" : ",", d);
+                        ids.append(tmp);
+                    }
+                    fprintf(stderr, "[JNPC] DestroyEntities count=%u ids=[%s]\n",
+                            count, ids.c_str());
                 }
                 pushEvent(std::move(ev));
                 return true;
@@ -1093,8 +1321,16 @@ bool JavaConnection::handlePlayFrame(
                 const uint8_t hiHand = r.readU8();
                 const uint8_t loHand = r.readU8();
                 const int16_t handItem = static_cast<int16_t>((hiHand << 8) | loHand);
-                p3_skipEntityMetadata(r);
+                int spFlags = -1;
+                std::string spEntries;
+                std::vector<JavaMetaEntry> spMeta;
+                {
+                    JavaInvSlot mdItem;
+                    p3_extractMetadataItem(r, mdItem, &spFlags, &spEntries,
+                                           &spMeta);
+                }
                 std::wstring playerName;
+                std::string skinUrl;
                 bool nameFound = false;
                 {
                     const std::string uuidStr(
@@ -1102,6 +1338,7 @@ bool JavaConnection::handlePlayFrame(
                     for (const auto& e : m_tabList) {
                         if (e.uuid == uuidStr) {
                             playerName = e.name;
+                            skinUrl = e.skinUrl;
                             nameFound = true;
                             break;
                         }
@@ -1113,9 +1350,22 @@ bool JavaConnection::handlePlayFrame(
                         eid, playerName.c_str(), (int)nameFound,
                         m_tabList.size(), uuidBytes[0], uuidBytes[1],
                         uuidBytes[2], uuidBytes[3]);
+                fprintf(stderr,
+                        "[JNPC] SpawnPlayer eid=%d uuid=%s name='%ls' "
+                        "skinUrl=%d flags=%d invisible=%d entries=[%s]\n",
+                        eid,
+                        p3_uuidHex(std::string(
+                                       reinterpret_cast<const char*>(uuidBytes),
+                                       16))
+                            .c_str(),
+                        playerName.c_str(),
+                        (int)!skinUrl.empty(), spFlags,
+                        spFlags >= 0 ? ((spFlags & 0x20) != 0) : -1,
+                        spEntries.c_str());
                 JavaConnectionEvent ev;
                 ev.type = JavaConnectionEventType::SpawnPlayer;
                 ev.entity.playerName = playerName;
+                ev.entity.skinUrl = skinUrl;
                 ev.entity.id = eid;
                 ev.entity.x = x;
                 ev.entity.y = y;
@@ -1125,6 +1375,13 @@ bool JavaConnection::handlePlayFrame(
                 ev.entity.headYaw = yaw;
                 ev.equippedItemId = handItem;
                 pushEvent(std::move(ev));
+                if (!spMeta.empty()) {
+                    JavaConnectionEvent mev;
+                    mev.type = JavaConnectionEventType::EntityMeta;
+                    mev.entity.id = eid;
+                    mev.metaEntries = std::move(spMeta);
+                    pushEvent(std::move(mev));
+                }
                 return true;
             }
             case JavaPlayClientboundId::EntityLook: {
@@ -1195,7 +1452,26 @@ bool JavaConnection::handlePlayFrame(
             case JavaPlayClientboundId::EntityMetadata: {
                 const int32_t eid = r.readVarInt();
                 JavaInvSlot item;
-                if (p3_extractMetadataItem(r, item) && item.id != -1) {
+                int metaFlags = -1;
+                std::string metaEntries;
+                std::vector<JavaMetaEntry> metaList;
+                const bool gotItem = p3_extractMetadataItem(
+                    r, item, &metaFlags, &metaEntries, &metaList);
+                fprintf(stderr,
+                        "[JNPC] EntityMetadata eid=%d flags=%d invisible=%d "
+                        "entries=[%s]\n",
+                        eid, metaFlags,
+                        metaFlags >= 0 ? ((metaFlags & 0x20) != 0) : -1,
+                        metaEntries.c_str());
+                if (!metaList.empty()) {
+                    JavaConnectionEvent mev;
+                    mev.type = JavaConnectionEventType::EntityMeta;
+                    mev.entity.id = eid;
+                    mev.entityIsSelf = (eid == m_javaPlayerEntityId);
+                    mev.metaEntries = std::move(metaList);
+                    pushEvent(std::move(mev));
+                }
+                if (gotItem && item.id != -1) {
                     JavaConnectionEvent ev;
                     ev.type = JavaConnectionEventType::EntityItemData;
                     ev.entity.id = eid;
@@ -1358,10 +1634,74 @@ bool JavaConnection::handlePlayFrame(
                 pushEvent(std::move(ev));
                 return true;
             }
+            case JavaPlayClientboundId::ScoreboardObjective: {
+                JavaConnectionEvent ev;
+                ev.type = JavaConnectionEventType::ScoreObjective;
+                ev.scoreObjective =
+                    p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
+                ev.scoreMode = r.readU8();
+                if (ev.scoreMode == 0 || ev.scoreMode == 2) {
+                    ev.scoreDisplayName =
+                        p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
+                    (void)r.readUtf8(kMaxStringBytes);
+                }
+                pushEvent(std::move(ev));
+                return true;
+            }
+            case JavaPlayClientboundId::UpdateScore: {
+                JavaConnectionEvent ev;
+                ev.type = JavaConnectionEventType::ScoreUpdate;
+                ev.scoreOwner = p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
+                ev.scoreMode = r.readU8();
+                ev.scoreObjective =
+                    p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
+                if (ev.scoreMode != 1) ev.scoreValue = r.readVarInt();
+                pushEvent(std::move(ev));
+                return true;
+            }
+            case JavaPlayClientboundId::DisplayScoreboard: {
+                JavaConnectionEvent ev;
+                ev.type = JavaConnectionEventType::ScoreDisplay;
+                ev.scoreSlot = r.readU8();
+                ev.scoreObjective =
+                    p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
+                pushEvent(std::move(ev));
+                return true;
+            }
+            case JavaPlayClientboundId::Teams: {
+                JavaConnectionEvent ev;
+                ev.type = JavaConnectionEventType::ScoreTeam;
+                ev.scoreObjective =
+                    p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
+                ev.scoreMode = r.readU8();
+                if (ev.scoreMode == 0 || ev.scoreMode == 2) {
+                    ev.scoreDisplayName =
+                        p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
+                    ev.teamPrefix =
+                        p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
+                    ev.teamSuffix =
+                        p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
+                    ev.scoreValue = r.readU8();         // friendly-fire bits
+                    (void)r.readUtf8(kMaxStringBytes);  // name tag visibility
+                    (void)r.readU8();                   // color (prefix wins)
+                }
+                if (ev.scoreMode == 0 || ev.scoreMode == 3 ||
+                    ev.scoreMode == 4) {
+                    const int32_t count = r.readVarInt();
+                    for (int32_t i = 0; i < count; ++i)
+                        ev.teamPlayers.push_back(
+                            p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes)));
+                }
+                pushEvent(std::move(ev));
+                return true;
+            }
             case JavaPlayClientboundId::AttachEntity: {
                 const int32_t rider = r.readI32();
                 const int32_t vehicle = r.readI32();
                 const bool leash = r.readU8() != 0;
+                fprintf(stderr,
+                        "[JNPC] AttachEntity rider=%d vehicle=%d leash=%d\n",
+                        rider, vehicle, (int)leash);
                 JavaConnectionEvent ev;
                 ev.type = JavaConnectionEventType::AttachEntity;
                 ev.entity.id = rider;

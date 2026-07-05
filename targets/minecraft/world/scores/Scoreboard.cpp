@@ -1,41 +1,37 @@
 #include "Scoreboard.h"
 
+#include "minecraft/world/scores/Objective.h"
+#include "minecraft/world/scores/PlayerTeam.h"
+#include "minecraft/world/scores/Score.h"
+
 class Player;
 
 Objective* Scoreboard::getObjective(const std::wstring& name) {
-    return nullptr;
-    // return objectivesByName.find(name)->second;
+    auto it = objectivesByName.find(name);
+    return it == objectivesByName.end() ? nullptr : it->second;
 }
 
 Objective* Scoreboard::addObjective(const std::wstring& name,
                                     ObjectiveCriteria* criteria) {
-    return nullptr;
-    //	Objective *objective = getObjective(name);
-    //	if (objective != nullptr)
-    //	{
-    // #indef _CONTENT_PACKAGE
-    //		__debugbreak();
-    // #endif
-    //		//throw new IllegalArgumentException("An objective with the name
-    //'" + name + "' already exists!");
-    //	}
-    //
-    //	objective = new Objective(this, name, criteria);
-    //
-    //	vector<Objective *> *criteriaList =
-    // objectivesByCriteria.find(criteria)->second;
-    //
-    //	if (criteriaList == nullptr)
-    //	{
-    //		criteriaList = new vector<Objective *>();
-    //		objectivesByCriteria[criteria] = criteriaList;
-    //	}
-    //
-    //	criteriaList->push_back(objective);
-    //	objectivesByName[name] = objective;
-    //	onObjectiveAdded(objective);
-    //
-    //	return objective;
+    Objective* objective = getObjective(name);
+    if (objective != nullptr) {
+        // Java throws here; a remote server resending a name is survivable,
+        // so treat it as a lookup instead.
+        return objective;
+    }
+
+    objective = new Objective(this, name, criteria);
+
+    if (criteria != nullptr) {
+        std::vector<Objective*>*& criteriaList = objectivesByCriteria[criteria];
+        if (criteriaList == nullptr)
+            criteriaList = new std::vector<Objective*>();
+        criteriaList->push_back(objective);
+    }
+    objectivesByName[name] = objective;
+    onObjectiveAdded(objective);
+
+    return objective;
 }
 
 std::vector<Objective*>* Scoreboard::findObjectiveFor(
@@ -50,25 +46,13 @@ std::vector<Objective*>* Scoreboard::findObjectiveFor(
 
 Score* Scoreboard::getPlayerScore(const std::wstring& name,
                                   Objective* objective) {
-    return nullptr;
-    // unordered_map<Objective *, Score *> *scores =
-    // playerScores.find(name)->it;
-
-    // if (scores == nullptr)
-    //{
-    //	scores = new unordered_map<Objective *, Score *>();
-    //	playerScores.put(name, scores);
-    // }
-
-    // Score *score = scores->get(objective);
-
-    // if (score == nullptr)
-    //{
-    //	score = new Score(this, objective, name);
-    //	scores->put(objective, score);
-    // }
-
-    // return score;
+    std::unordered_map<Objective*, Score*>& scores = playerScores[name];
+    Score*& score = scores[objective];
+    if (score == nullptr) {
+        score = new Score(this, objective, name);
+        onScoreChanged(score);
+    }
+    return score;
 }
 
 std::vector<Score*>* Scoreboard::getPlayerScores(Objective* objective) {
@@ -97,13 +81,12 @@ std::vector<std::wstring>* Scoreboard::getTrackedPlayers() {
 }
 
 void Scoreboard::resetPlayerScore(const std::wstring& player) {
-    // unordered_map<Objective *, Score *> *removed =
-    // playerScores.remove(player);
-
-    // if (removed != nullptr)
-    //{
-    //	onPlayerRemoved(player);
-    // }
+    auto it = playerScores.find(player);
+    if (it != playerScores.end()) {
+        for (auto& entry : it->second) delete entry.second;
+        playerScores.erase(it);
+        onPlayerRemoved(player);
+    }
 }
 
 std::vector<Score*>* Scoreboard::getScores() {
@@ -120,16 +103,13 @@ std::vector<Score*>* Scoreboard::getScores() {
 }
 
 std::vector<Score*>* Scoreboard::getScores(Objective* objective) {
-    return nullptr;
-    // Collection<Map<Objective, Score>> values = playerScores.values();
-    // List<Score> result = new ArrayList<Score>();
-
-    // for (Map<Objective, Score> map : values) {
-    //	Score score = map.get(objective);
-    //	if (score != null) result.add(score);
-    // }
-
-    // return result;
+    std::vector<Score*>* result = new std::vector<Score*>();
+    for (auto& player : playerScores) {
+        auto it = player.second.find(objective);
+        if (it != player.second.end() && it->second != nullptr)
+            result->push_back(it->second);
+    }
+    return result;
 }
 
 std::unordered_map<Objective*, Score*>* Scoreboard::getPlayerScores(
@@ -141,102 +121,124 @@ std::unordered_map<Objective*, Score*>* Scoreboard::getPlayerScores(
 }
 
 void Scoreboard::removeObjective(Objective* objective) {
-    // objectivesByName.remove(objective.getName());
+    if (objective == nullptr) return;
+    objectivesByName.erase(objective->getName());
 
-    // for (int i = 0; i < DISPLAY_SLOTS; i++) {
-    //	if (getDisplayObjective(i) == objective) setDisplayObjective(i, null);
-    // }
+    for (int i = 0; i < DISPLAY_SLOTS; i++) {
+        if (getDisplayObjective(i) == objective)
+            setDisplayObjective(i, nullptr);
+    }
 
-    // List<Objective> objectives =
-    // objectivesByCriteria.get(objective.getCriteria()); if (objectives !=
-    // null) objectives.remove(objective);
+    auto critIt = objectivesByCriteria.find(objective->getCriteria());
+    if (critIt != objectivesByCriteria.end() && critIt->second != nullptr) {
+        std::vector<Objective*>& list = *critIt->second;
+        for (auto it = list.begin(); it != list.end(); ++it) {
+            if (*it == objective) {
+                list.erase(it);
+                break;
+            }
+        }
+    }
 
-    // for (Map<Objective, Score> objectiveScoreMap : playerScores.values()) {
-    //	objectiveScoreMap.remove(objective);
-    // }
+    for (auto& player : playerScores) {
+        auto it = player.second.find(objective);
+        if (it != player.second.end()) {
+            delete it->second;
+            player.second.erase(it);
+        }
+    }
 
-    // onObjectiveRemoved(objective);
+    onObjectiveRemoved(objective);
+    delete objective;
 }
 
 void Scoreboard::setDisplayObjective(int slot, Objective* objective) {
-    // displayObjectives[slot] = objective;
+    if (slot < 0 || slot >= DISPLAY_SLOTS) return;
+    displayObjectives[slot] = objective;
+    ++m_revision;
 }
 
 Objective* Scoreboard::getDisplayObjective(int slot) {
-    return nullptr;
-    // return displayObjectives[slot];
+    if (slot < 0 || slot >= DISPLAY_SLOTS) return nullptr;
+    return displayObjectives[slot];
 }
 
 PlayerTeam* Scoreboard::getPlayerTeam(const std::wstring& name) {
-    return nullptr;
-    // return teamsByName.get(name);
+    auto it = teamsByName.find(name);
+    return it == teamsByName.end() ? nullptr : it->second;
 }
 
 PlayerTeam* Scoreboard::addPlayerTeam(const std::wstring& name) {
-    return nullptr;
-    // PlayerTeam team = getPlayerTeam(name);
-    // if (team != null) throw new IllegalArgumentException("An objective with
-    // the name '" + name + "' already exists!");
+    PlayerTeam* team = getPlayerTeam(name);
+    if (team != nullptr) {
+        // Java throws; a remote server resending a create is survivable, so
+        // treat it as a lookup instead.
+        return team;
+    }
 
-    // team = new PlayerTeam(this, name);
-    // teamsByName.put(name, team);
-    // onTeamAdded(team);
+    team = new PlayerTeam(this, name);
+    teamsByName[name] = team;
+    onTeamAdded(team);
 
-    // return team;
+    return team;
 }
 
 void Scoreboard::removePlayerTeam(PlayerTeam* team) {
-    // teamsByName.remove(team.getName());
+    if (team == nullptr) return;
+    teamsByName.erase(team->getName());
 
-    //// [TODO]: Loop through scores, remove.
+    for (const std::wstring& player : *team->getPlayers()) {
+        teamsByPlayer.erase(player);
+    }
 
-    // for (String player : team.getPlayers()) {
-    //	teamsByPlayer.remove(player);
-    // }
-
-    // onTeamRemoved(team);
+    onTeamRemoved(team);
+    delete team;
 }
 
 void Scoreboard::addPlayerToTeam(const std::wstring& player, PlayerTeam* team) {
-    // if (getPlayersTeam(player) != null) {
-    //	removePlayerFromTeam(player);
-    // }
+    if (team == nullptr) return;
+    if (getPlayersTeam(player) != nullptr) {
+        removePlayerFromTeam(player);
+    }
 
-    // teamsByPlayer.put(player, team);
-    // team.getPlayers().add(player);
+    teamsByPlayer[player] = team;
+    team->getPlayers()->insert(player);
+    onTeamChanged(team);
 }
 
 bool Scoreboard::removePlayerFromTeam(const std::wstring& player) {
-    return false;
-    // PlayerTeam team = getPlayersTeam(player);
+    PlayerTeam* team = getPlayersTeam(player);
 
-    // if (team != null) {
-    //	removePlayerFromTeam(player, team);
-    //	return true;
-    // } else {
-    //	return false;
-    // }
+    if (team != nullptr) {
+        removePlayerFromTeam(player, team);
+        return true;
+    }
+    return false;
 }
 
 void Scoreboard::removePlayerFromTeam(const std::wstring& player,
                                       PlayerTeam* team) {
-    // if (getPlayersTeam(player) != team) {
-    //	throw new IllegalStateException("Player is either on another team or not
-    // on any team. Cannot remove from team '" + team.getName() + "'.");
-    // }
+    // Java throws when the player is on a different team; tolerate it and
+    // only detach when the membership actually matches.
+    if (team == nullptr || getPlayersTeam(player) != team) return;
 
-    // teamsByPlayer.remove(player);
-    // team.getPlayers().remove(player);
+    teamsByPlayer.erase(player);
+    team->getPlayers()->erase(player);
+    onTeamChanged(team);
 }
 
 std::vector<std::wstring>* Scoreboard::getTeamNames() {
-    return nullptr;
-    // return teamsByName.keySet();
+    std::vector<std::wstring>* result = new std::vector<std::wstring>();
+    result->reserve(teamsByName.size());
+    for (auto& entry : teamsByName) result->push_back(entry.first);
+    return result;
 }
 
 std::vector<PlayerTeam*>* Scoreboard::getPlayerTeams() {
-    return nullptr;
-    // return teamsByName.values();
+    std::vector<PlayerTeam*>* result = new std::vector<PlayerTeam*>();
+    result->reserve(teamsByName.size());
+    for (auto& entry : teamsByName) result->push_back(entry.second);
+    return result;
 }
 
 std::shared_ptr<Player> Scoreboard::getPlayer(const std::wstring& name) {
@@ -245,25 +247,25 @@ std::shared_ptr<Player> Scoreboard::getPlayer(const std::wstring& name) {
 }
 
 PlayerTeam* Scoreboard::getPlayersTeam(const std::wstring& name) {
-    return nullptr;
-    // return teamsByPlayer.get(name);
+    auto it = teamsByPlayer.find(name);
+    return it == teamsByPlayer.end() ? nullptr : it->second;
 }
 
-void Scoreboard::onObjectiveAdded(Objective* objective) {}
+void Scoreboard::onObjectiveAdded(Objective* objective) { ++m_revision; }
 
-void Scoreboard::onObjectiveChanged(Objective* objective) {}
+void Scoreboard::onObjectiveChanged(Objective* objective) { ++m_revision; }
 
-void Scoreboard::onObjectiveRemoved(Objective* objective) {}
+void Scoreboard::onObjectiveRemoved(Objective* objective) { ++m_revision; }
 
-void Scoreboard::onScoreChanged(Score* score) {}
+void Scoreboard::onScoreChanged(Score* score) { ++m_revision; }
 
-void Scoreboard::onPlayerRemoved(const std::wstring& player) {}
+void Scoreboard::onPlayerRemoved(const std::wstring& player) { ++m_revision; }
 
-void Scoreboard::onTeamAdded(PlayerTeam* team) {}
+void Scoreboard::onTeamAdded(PlayerTeam* team) { ++m_revision; }
 
-void Scoreboard::onTeamChanged(PlayerTeam* team) {}
+void Scoreboard::onTeamChanged(PlayerTeam* team) { ++m_revision; }
 
-void Scoreboard::onTeamRemoved(PlayerTeam* team) {}
+void Scoreboard::onTeamRemoved(PlayerTeam* team) { ++m_revision; }
 
 std::wstring Scoreboard::getDisplaySlotName(int slot) {
     switch (slot) {

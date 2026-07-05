@@ -10,6 +10,8 @@ public:
     virtual BufferedImage* process(BufferedImage* in);
 
 private:
+    void copyOverlay(const int* src, int srcX, int srcY,
+                     int dstX, int dstY, int w, int h);
     void setForceAlpha(int x0, int y0, int x1, int y1);
     void setNoAlpha(int x0, int y0, int x1, int y1);
     bool hasAlpha(int x0, int y0, int x1, int y1);

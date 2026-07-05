@@ -20,6 +20,7 @@
 #include <thread>
 
 #include "app/common/src/JavaEdition/JavaBlockIdMap.h"
+#include "app/common/src/JavaEdition/JavaChatJson.h"
 #include "app/common/src/JavaEdition/JavaRawTcpClient.h"
 #include "app/common/src/JavaEdition/JavaItemIdMap.h"
 #include "app/common/src/JavaEdition/JavaSoundIdMap.h"
@@ -47,6 +48,7 @@ constexpr uint8_t kLceIdBRUP          = 51;
 constexpr uint8_t kLceIdAddMob        = 24;
 constexpr uint8_t kLceIdAddEntity     = 23;
 constexpr uint8_t kLceIdEntityData    = 40;
+constexpr int kJavaTypePlayer = -1000;
 constexpr uint8_t kLceIdRemoveEntity  = 29;
 constexpr uint8_t kLceIdMoveEntity_PR = 33;
 constexpr uint8_t kLceIdTeleportEnt   = 34;
@@ -198,10 +200,6 @@ inline void appendLceUtf(std::vector<uint8_t>& buf, const std::wstring& s,
     }
 }
 
-// TexturePacket / TextureChangePacket read their string via
-// DataInputStream::readUTF (Java modified UTF-8: u16 byte-length + encoded
-// bytes), NOT the UTF-16 form appendLceUtf uses for chat/player names. Emit the
-// matching encoding so the client's readUTF recovers the exact texture name.
 inline void appendJavaModifiedUtf(std::vector<uint8_t>& buf,
                                   const std::wstring& s) {
     std::vector<uint8_t> enc;
@@ -238,9 +236,6 @@ JavaServerProxy::JavaServerProxy() {
 JavaServerProxy::~JavaServerProxy() {
     requestStop();
     if (m_worker.joinable()) m_worker.join();
-    // Event source stopped: no more requestSkinDownload calls. Drain skin
-    // threads (bounded by the 8s download timeout) without holding the mutex,
-    // so a thread waiting on m_skinMutex can't deadlock the join.
     std::vector<std::thread> skinThreads;
     {
         std::lock_guard<std::mutex> lock(m_skinMutex);
@@ -994,26 +989,13 @@ bool JavaServerProxy::sendAddPlayerPacket(int id, const std::wstring& name,
     return writeAll(buf.data(), buf.size());
 }
 
-// ----------------------------------------------------------------------------
-// Runtime skin pipeline: proxy owns HTTP. Reuses the LCE memory-texture system:
-//   TexturePacket(154)  registers PNG bytes under a name on the client
-//   TextureChangePacket(157) points an entity's skin at that name
-// The client patch in ClientConnection::handleTextureChange routes such names
-// straight into Player::customTextureUrl (loadMemTexture's key).
-// ----------------------------------------------------------------------------
-
-// Deterministic mem-texture name from the Mojang texture URL. Same skin -> same
-// name, so identical skins share one mem texture and the cache dedupes.
 std::wstring JavaServerProxy::skinTexNameForUrl(const std::string& url) {
     size_t slash = url.find_last_of('/');
     std::string hash = (slash == std::string::npos) ? url : url.substr(slash + 1);
-    // Keep it ASCII-safe (hash is hex); readUTF wants modified UTF-8.
     std::string name = "javaskin_" + hash + ".png";
     return std::wstring(name.begin(), name.end());
 }
 
-// Plain HTTP GET (no TLS). textures.minecraft.net serves the texture files on
-// port 80; an https:// url is fetched over http. Returns the PNG body, or empty.
 std::vector<uint8_t> JavaServerProxy::httpGetSkin(const std::string& url) {
     std::string u = url;
     size_t scheme = u.find("://");
@@ -1035,9 +1017,9 @@ std::vector<uint8_t> JavaServerProxy::httpGetSkin(const std::string& url) {
     uint8_t tmp[4096];
     for (;;) {
         size_t n = tcp.recv(tmp, sizeof(tmp), 8000);
-        if (n == 0) break;                                  // EOF (Connection: close)
+        if (n == 0) break;
         resp.insert(resp.end(), tmp, tmp + n);
-        if (resp.size() > 2u * 1024 * 1024) break;          // sanity cap
+        if (resp.size() > 2u * 1024 * 1024) break;
     }
     tcp.close();
 
@@ -1055,16 +1037,16 @@ std::vector<uint8_t> JavaServerProxy::httpGetSkin(const std::string& url) {
 
 bool JavaServerProxy::sendTexturePacket(const std::wstring& name,
                                         const std::vector<uint8_t>& png) {
-    if (png.size() > 32000) {                               // readShort caps at 32767
+    if (png.size() > 32000) {
         fprintf(stderr, "[SKIN] texture too big (%zu) - skip\n", png.size());
         return false;
     }
     std::vector<uint8_t> buf;
     buf.reserve(8 + name.size() + png.size());
-    buf.push_back(154);                                     // TexturePacket
-    appendJavaModifiedUtf(buf, name);                       // dis->readUTF()
+    buf.push_back(154);
+    appendJavaModifiedUtf(buf, name);
     uint8_t tmp[2];
-    packBE16(tmp, static_cast<uint16_t>(png.size()));       // dis->readShort()
+    packBE16(tmp, static_cast<uint16_t>(png.size()));
     buf.insert(buf.end(), tmp, tmp + 2);
     buf.insert(buf.end(), png.begin(), png.end());
     return writeAll(buf.data(), buf.size());
@@ -1074,20 +1056,20 @@ bool JavaServerProxy::sendTextureChangePacket(int lceEntityId,
                                               const std::wstring& name) {
     std::vector<uint8_t> buf;
     buf.reserve(8 + name.size());
-    buf.push_back(157);                                     // TextureChangePacket
+    buf.push_back(157);
     uint8_t tmp[4];
-    packBE32(tmp, static_cast<uint32_t>(lceEntityId));      // dis->readInt()
+    packBE32(tmp, static_cast<uint32_t>(lceEntityId));
     buf.insert(buf.end(), tmp, tmp + 4);
-    buf.push_back(0);                                       // e_TextureChange_Skin
-    appendJavaModifiedUtf(buf, name);                       // dis->readUTF()
+    buf.push_back(0);
+    appendJavaModifiedUtf(buf, name);
     return writeAll(buf.data(), buf.size());
 }
 
 void JavaServerProxy::deliverSkin(int lceEntityId, const std::wstring& texName,
                                   const std::vector<uint8_t>& png) {
     if (png.empty()) return;
-    bool reg = sendTexturePacket(texName, png);             // register bytes first
-    bool asn = sendTextureChangePacket(lceEntityId, texName);  // then assign
+    bool reg = sendTexturePacket(texName, png);
+    bool asn = sendTextureChangePacket(lceEntityId, texName);
     fprintf(stderr, "[SKIN] registered=%d assigned=%d id=%d bytes=%zu name=%ls\n",
             reg, asn, lceEntityId, png.size(), texName.c_str());
 }
@@ -1103,7 +1085,7 @@ void JavaServerProxy::requestSkinDownload(int lceEntityId,
         if (it != m_skinCache.end()) {
             fprintf(stderr, "[SKIN] cache-hit id=%d url=%s\n", lceEntityId,
                     url.c_str());
-            std::vector<uint8_t> png = it->second;         // copy under lock
+            std::vector<uint8_t> png = it->second;
             m_skinThreads.emplace_back(
                 [this, lceEntityId, texName, png]() {
                     deliverSkin(lceEntityId, texName, png);
@@ -1112,7 +1094,6 @@ void JavaServerProxy::requestSkinDownload(int lceEntityId,
         }
     }
 
-    // Not cached: download off-thread, cache, then deliver.
     std::lock_guard<std::mutex> lock(m_skinMutex);
     m_skinThreads.emplace_back([this, lceEntityId, url, texName]() {
         fprintf(stderr, "[SKIN] downloading id=%d url=%s\n", lceEntityId,
@@ -1302,6 +1283,498 @@ bool JavaServerProxy::sendSetItemDataPacket(int entityId,
     buf.insert(buf.end(), tmp, tmp + 2);
     buf.push_back(0x7F);
     return writeAll(buf.data(), buf.size());
+}
+
+bool JavaServerProxy::sendEntityDataPacket(
+    int lceId, const std::vector<LceMetaItem>& items) {
+    if (items.empty()) return true;
+    std::vector<uint8_t> buf;
+    buf.reserve(8 + items.size() * 8);
+    buf.push_back(kLceIdEntityData);
+    uint8_t tmp[4];
+    packBE32(tmp, static_cast<uint32_t>(lceId));
+    buf.insert(buf.end(), tmp, tmp + 4);
+    for (const LceMetaItem& it : items) {
+        buf.push_back(static_cast<uint8_t>((it.type << 5) | (it.index & 0x1F)));
+        switch (it.type) {
+            case 0:
+                buf.push_back(static_cast<uint8_t>(it.i));
+                break;
+            case 1:
+                packBE16(tmp, static_cast<uint16_t>(it.i));
+                buf.insert(buf.end(), tmp, tmp + 2);
+                break;
+            case 2:
+                packBE32(tmp, static_cast<uint32_t>(it.i));
+                buf.insert(buf.end(), tmp, tmp + 4);
+                break;
+            case 3: {
+                uint32_t bits;
+                memcpy(&bits, &it.f, sizeof(bits));
+                packBE32(tmp, bits);
+                buf.insert(buf.end(), tmp, tmp + 4);
+                break;
+            }
+            case 4:
+                appendLceUtf(buf, it.s, 64);
+                break;
+            default:
+                return true;
+        }
+    }
+    buf.push_back(0x7F);
+    return writeAll(buf.data(), buf.size());
+}
+
+void JavaServerProxy::handleEntityMeta(const JavaConnectionEvent& ev) {
+    const int32_t jid = ev.entity.id;
+    if (ev.entityIsSelf) return;
+    auto kindIt = m_javaEntityKind.find(jid);
+    if (kindIt == m_javaEntityKind.end()) return;
+    const int javaType = kindIt->second.javaType;
+    const bool isPlayer = (javaType == kJavaTypePlayer);
+    const bool isMob = !isPlayer;
+    const bool ageable =
+        javaType == 90 || javaType == 91 || javaType == 92 || javaType == 93 ||
+        javaType == 95 || javaType == 96 || javaType == 98 ||
+        javaType == 100 || javaType == 120;
+
+    auto translate = [&](const JavaMetaEntry& in, LceMetaItem& out) -> bool {
+        switch (in.index) {
+            case 0:
+                if (in.type != 0) return false;
+                out = {0, 0, in.intVal & 0x3B, 0, {}};
+                return true;
+            case 1:
+                if (in.type != 1) return false;
+                out = {1, 1, in.intVal, 0, {}};
+                return true;
+            case 2:
+                if (!isMob || in.type != 4) return false;
+                out = {4, 10, 0, 0, in.strVal};
+                return true;
+            case 3:
+                if (!isMob || in.type != 0) return false;
+                out = {0, 11, in.intVal, 0, {}};
+                return true;
+            case 6:
+                if (in.type != 3) return false;
+                out = {3, 6, 0, in.floatVal, {}};
+                return true;
+            case 7:
+                if (in.type != 2) return false;
+                out = {2, 7, in.intVal, 0, {}};
+                return true;
+            case 8:
+                if (in.type != 0) return false;
+                out = {0, 8, in.intVal, 0, {}};
+                return true;
+            case 9:
+                if (in.type != 0) return false;
+                out = {0, 9, in.intVal, 0, {}};
+                return true;
+            case 12:
+                if ((javaType == 54 || javaType == 57) && in.type == 0) {
+                    out = {0, 12, in.intVal, 0, {}};
+                    return true;
+                }
+                if (ageable && in.type == 0) {
+                    out = {2, 12, in.intVal, 0, {}};
+                    return true;
+                }
+                return false;
+            case 13:
+            case 14:
+                if ((javaType == 54 || javaType == 57) && in.type == 0) {
+                    out = {0, in.index, in.intVal, 0, {}};
+                    return true;
+                }
+                return false;
+            case 16:
+                switch (javaType) {
+                    case 91:
+                    case 95:
+                    case 55:
+                    case 62:
+                        if (in.type != 0) return false;
+                        out = {0, 16, in.intVal, 0, {}};
+                        return true;
+                    case 100:
+                    case 120:
+                        if (in.type != 2) return false;
+                        out = {2, 16, in.intVal, 0, {}};
+                        return true;
+                    default:
+                        return false;
+                }
+            case 18:
+                if (javaType == 95 && in.type == 3) {
+                    out = {3, 18, 0, in.floatVal, {}};
+                    return true;
+                }
+                return false;
+            case 19:
+                if (javaType == 95 && in.type == 0) {
+                    out = {0, 19, in.intVal, 0, {}};
+                    return true;
+                }
+                if (javaType == 100 && in.type == 0) {
+                    out = {0, 19, in.intVal, 0, {}};
+                    return true;
+                }
+                return false;
+            case 20:
+                if (javaType == 95 && in.type == 0) {
+                    out = {0, 20, in.intVal, 0, {}};
+                    return true;
+                }
+                if (javaType == 100 && in.type == 2) {
+                    out = {2, 20, in.intVal, 0, {}};
+                    return true;
+                }
+                return false;
+            case 21:
+                if (javaType == 100 && in.type == 4) {
+                    out = {4, 21, 0, 0, in.strVal};
+                    return true;
+                }
+                return false;
+            case 22:
+                if (javaType == 100 && in.type == 2) {
+                    out = {2, 22, in.intVal, 0, {}};
+                    return true;
+                }
+                return false;
+            default:
+                return false;
+        }
+    };
+
+    std::vector<LceMetaItem> changed;
+    for (const JavaMetaEntry& in : ev.metaEntries) {
+        LceMetaItem out;
+        const bool ok = translate(in, out);
+        char valBuf[48];
+        if (in.type == 3)
+            snprintf(valBuf, sizeof(valBuf), "%.2f", in.floatVal);
+        else if (in.type == 4)
+            snprintf(valBuf, sizeof(valBuf), "str(len=%zu)", in.strVal.size());
+        else
+            snprintf(valBuf, sizeof(valBuf), "%d", in.intVal);
+        fprintf(stderr,
+                "[JMETA] entity=%d javaIndex=%u javaValue=%s translated=%s\n",
+                jid, in.index, valBuf,
+                ok ? (std::string("lceIdx=") + std::to_string(out.index) +
+                      " type=" + std::to_string(out.type))
+                         .c_str()
+                   : "ignored");
+        if (!ok) continue;
+        LceMetaItem& slot = m_metaCache[jid][out.index];
+        if (slot == out) continue;
+        slot = out;
+        changed.push_back(out);
+    }
+    if (changed.empty()) return;
+    if (!kindIt->second.spawned) {
+        fprintf(stderr, "[JMETA] entity=%d packetSent=no (no LCE entity)\n",
+                jid);
+        return;
+    }
+    const int lceId = lookupLceEntityId(jid);
+    if (lceId <= 0) return;
+    const bool sent = sendEntityDataPacket(lceId, changed);
+    fprintf(stderr, "[JMETA] entity=%d lce=%d items=%zu packetSent=%s\n", jid,
+            lceId, changed.size(), sent ? "yes" : "no");
+}
+
+namespace {
+constexpr uint8_t kLceIdSetObjective        = 206;
+constexpr uint8_t kLceIdSetScore            = 207;
+constexpr uint8_t kLceIdSetDisplayObjective = 208;
+constexpr size_t kLceObjectiveNameMax = 16;
+constexpr size_t kLceObjectiveDispMax = 32;
+constexpr size_t kLceScoreOwnerMax    = 20;
+}
+
+bool JavaServerProxy::sendSetObjectivePacket(const std::wstring& name,
+                                             const std::wstring& displayName,
+                                             uint8_t method) {
+    std::vector<uint8_t> buf;
+    buf.reserve(8 + 2 * (name.size() + displayName.size()));
+    buf.push_back(kLceIdSetObjective);
+    appendLceUtf(buf, name, kLceObjectiveNameMax);
+    appendLceUtf(buf, displayName, kLceObjectiveDispMax);
+    buf.push_back(method);
+    return writeAll(buf.data(), buf.size());
+}
+
+bool JavaServerProxy::sendSetScorePacket(const std::wstring& owner,
+                                         uint8_t method,
+                                         const std::wstring& objective,
+                                         int32_t value) {
+    std::vector<uint8_t> buf;
+    buf.reserve(12 + 2 * (owner.size() + objective.size()));
+    buf.push_back(kLceIdSetScore);
+    appendLceUtf(buf, owner, kLceScoreOwnerMax);
+    buf.push_back(method);
+    if (method != 1) {
+        appendLceUtf(buf, objective, kLceObjectiveNameMax);
+        uint8_t tmp[4];
+        packBE32(tmp, static_cast<uint32_t>(value));
+        buf.insert(buf.end(), tmp, tmp + 4);
+    }
+    return writeAll(buf.data(), buf.size());
+}
+
+bool JavaServerProxy::sendSetDisplayObjectivePacket(uint8_t slot,
+                                                    const std::wstring& name) {
+    std::vector<uint8_t> buf;
+    buf.reserve(6 + 2 * name.size());
+    buf.push_back(kLceIdSetDisplayObjective);
+    buf.push_back(slot);
+    appendLceUtf(buf, name, kLceObjectiveNameMax);
+    return writeAll(buf.data(), buf.size());
+}
+
+void JavaServerProxy::handleScoreEvent(const JavaConnectionEvent& ev) {
+    switch (ev.type) {
+        case JavaConnectionEventType::ScoreObjective: {
+            const std::wstring& name = ev.scoreObjective;
+            if (ev.scoreMode == 1) {
+                if (m_scoreObjectives.erase(name) == 0) return;
+                m_scoreValues.erase(name);
+                if (m_sidebarObjective == name) {
+                    m_sidebarObjective.clear();
+                    m_sidebarSet = false;
+                }
+                fprintf(stderr, "[JSCORE] objective removed '%ls'\n",
+                        name.c_str());
+                sendSetObjectivePacket(name, L"", 1);
+                return;
+            }
+            const std::wstring display =
+                normalizeLegacyFormatting(ev.scoreDisplayName);
+            auto it = m_scoreObjectives.find(name);
+            if (it == m_scoreObjectives.end()) {
+                m_scoreObjectives[name] = display;
+                fprintf(stderr, "[JSCORE] objective created '%ls' ('%ls')\n",
+                        name.c_str(), display.c_str());
+                sendSetObjectivePacket(name, display, 0);
+            } else if (it->second != display) {
+                it->second = display;
+                fprintf(stderr, "[JSCORE] objective updated '%ls' ('%ls')\n",
+                        name.c_str(), display.c_str());
+                sendSetObjectivePacket(name, display, 2);
+            }
+            return;
+        }
+        case JavaConnectionEventType::ScoreUpdate: {
+            if (ev.scoreMode == 1) {
+                bool had = false;
+                for (auto& obj : m_scoreValues)
+                    had |= obj.second.erase(ev.scoreOwner) > 0;
+                if (!had) return;
+                fprintf(stderr, "[JSCORE] score removed '%ls'\n",
+                        ev.scoreOwner.c_str());
+                sendSetScorePacket(ev.scoreOwner, 1, L"", 0);
+                return;
+            }
+            if (m_scoreObjectives.find(ev.scoreObjective) ==
+                m_scoreObjectives.end())
+                return;
+            auto& values = m_scoreValues[ev.scoreObjective];
+            auto it = values.find(ev.scoreOwner);
+            if (it != values.end() && it->second == ev.scoreValue)
+                return;
+            values[ev.scoreOwner] = ev.scoreValue;
+            fprintf(stderr, "[JSCORE] score updated '%ls' = %d ('%ls')\n",
+                    ev.scoreOwner.c_str(), ev.scoreValue,
+                    ev.scoreObjective.c_str());
+            sendSetScorePacket(ev.scoreOwner, 0, ev.scoreObjective,
+                               ev.scoreValue);
+            return;
+        }
+        case JavaConnectionEventType::ScoreDisplay: {
+            if (ev.scoreSlot != 1) {
+                fprintf(stderr, "[JSCORE] display slot %u ignored\n",
+                        ev.scoreSlot);
+                return;
+            }
+            if (m_sidebarSet && m_sidebarObjective == ev.scoreObjective)
+                return;
+            m_sidebarObjective = ev.scoreObjective;
+            m_sidebarSet = true;
+            fprintf(stderr, "[JSCORE] display slot sidebar -> '%ls'\n",
+                    ev.scoreObjective.c_str());
+            sendSetDisplayObjectivePacket(1, ev.scoreObjective);
+            return;
+        }
+        default:
+            return;
+    }
+}
+
+namespace {
+constexpr uint8_t kLceIdSetPlayerTeam = 209;
+constexpr size_t kLceTeamNameMax   = 16;  // PlayerTeam::MAX_NAME_LENGTH
+constexpr size_t kLceTeamDispMax   = 32;  // PlayerTeam::MAX_DISPLAY_NAME_LENGTH
+constexpr size_t kLceTeamAffixMax  = 16;  // PlayerTeam::MAX_PREFIX/SUFFIX_LENGTH
+}
+
+bool JavaServerProxy::sendSetPlayerTeamPacket(
+    const std::wstring& name, uint8_t method, const TeamState* info,
+    const std::vector<std::wstring>& players) {
+    std::vector<uint8_t> buf;
+    buf.reserve(32 + 2 * name.size());
+    buf.push_back(kLceIdSetPlayerTeam);
+    appendLceUtf(buf, name, kLceTeamNameMax);
+    buf.push_back(method);
+    uint8_t tmp[2];
+    if (method == 0 || method == 2) {  // METHOD_ADD / METHOD_CHANGE
+        appendLceUtf(buf, info->displayName, kLceTeamDispMax);
+        appendLceUtf(buf, info->prefix, kLceTeamAffixMax);
+        appendLceUtf(buf, info->suffix, kLceTeamAffixMax);
+        buf.push_back(static_cast<uint8_t>(info->options));
+    }
+    if (method == 0 || method == 3 || method == 4) {  // ADD / JOIN / LEAVE
+        packBE16(tmp, static_cast<uint16_t>(players.size()));
+        buf.insert(buf.end(), tmp, tmp + 2);
+        for (const std::wstring& p : players)
+            appendLceUtf(buf, p, kLceScoreOwnerMax);
+    }
+    return writeAll(buf.data(), buf.size());
+}
+
+void JavaServerProxy::handleTeamEvent(const JavaConnectionEvent& ev) {
+    const std::wstring& name = ev.scoreObjective;
+    auto it = m_teams.find(name);
+
+    switch (ev.scoreMode) {
+        case 0: {  // create (Java resends this for existing teams too)
+            TeamState incoming;
+            incoming.displayName =
+                normalizeLegacyFormatting(ev.scoreDisplayName);
+            incoming.prefix = normalizeLegacyFormatting(ev.teamPrefix);
+            incoming.suffix = normalizeLegacyFormatting(ev.teamSuffix);
+            // Java friendly-fire byte: bit0 = friendly fire, bit1 = see
+            // friendly invisibles - same bit layout as PlayerTeam options.
+            incoming.options = ev.scoreValue & 0x03;
+
+            if (it == m_teams.end()) {
+                // New team: filter duplicate names inside the join list and
+                // move players out of any previous team in our state.
+                std::vector<std::wstring> joins;
+                for (const std::wstring& p : ev.teamPlayers) {
+                    if (incoming.players.insert(p).second) {
+                        joins.push_back(p);
+                        for (auto& other : m_teams) other.second.players.erase(p);
+                    }
+                }
+                m_teams[name] = std::move(incoming);
+                fprintf(stderr,
+                        "[JSCORE] team created '%ls' players=%zu\n",
+                        name.c_str(), joins.size());
+                sendSetPlayerTeamPacket(name, 0, &m_teams[name], joins);
+                return;
+            }
+
+            // Existing team: decompose into info update + joins so nothing
+            // gets recreated client-side.
+            TeamState& state = it->second;
+            if (state.displayName != incoming.displayName ||
+                state.prefix != incoming.prefix ||
+                state.suffix != incoming.suffix ||
+                state.options != incoming.options) {
+                state.displayName = incoming.displayName;
+                state.prefix = incoming.prefix;
+                state.suffix = incoming.suffix;
+                state.options = incoming.options;
+                fprintf(stderr, "[JSCORE] team updated '%ls' (re-create)\n",
+                        name.c_str());
+                sendSetPlayerTeamPacket(name, 2, &state, {});
+            }
+            std::vector<std::wstring> joins;
+            for (const std::wstring& p : ev.teamPlayers) {
+                if (state.players.insert(p).second) {
+                    joins.push_back(p);
+                    for (auto& other : m_teams)
+                        if (&other.second != &state)
+                            other.second.players.erase(p);
+                }
+            }
+            if (!joins.empty()) {
+                fprintf(stderr, "[JSCORE] team join '%ls' +%zu (re-create)\n",
+                        name.c_str(), joins.size());
+                sendSetPlayerTeamPacket(name, 3, nullptr, joins);
+            }
+            return;
+        }
+        case 1: {  // remove
+            if (it == m_teams.end()) return;  // duplicate remove: suppressed
+            m_teams.erase(it);
+            fprintf(stderr, "[JSCORE] team removed '%ls'\n", name.c_str());
+            sendSetPlayerTeamPacket(name, 1, nullptr, {});
+            return;
+        }
+        case 2: {  // update info
+            if (it == m_teams.end()) return;  // unknown team
+            TeamState& state = it->second;
+            TeamState incoming;
+            incoming.displayName =
+                normalizeLegacyFormatting(ev.scoreDisplayName);
+            incoming.prefix = normalizeLegacyFormatting(ev.teamPrefix);
+            incoming.suffix = normalizeLegacyFormatting(ev.teamSuffix);
+            incoming.options = ev.scoreValue & 0x03;
+            if (state.displayName == incoming.displayName &&
+                state.prefix == incoming.prefix &&
+                state.suffix == incoming.suffix &&
+                state.options == incoming.options) {
+                return;  // duplicate update: suppressed
+            }
+            state.displayName = incoming.displayName;
+            state.prefix = incoming.prefix;
+            state.suffix = incoming.suffix;
+            state.options = incoming.options;
+            fprintf(stderr, "[JSCORE] team updated '%ls'\n", name.c_str());
+            sendSetPlayerTeamPacket(name, 2, &state, {});
+            return;
+        }
+        case 3: {  // join
+            if (it == m_teams.end()) return;
+            TeamState& state = it->second;
+            std::vector<std::wstring> joins;
+            for (const std::wstring& p : ev.teamPlayers) {
+                if (state.players.insert(p).second) {  // idempotent
+                    joins.push_back(p);
+                    for (auto& other : m_teams)
+                        if (&other.second != &state)
+                            other.second.players.erase(p);
+                }
+            }
+            if (joins.empty()) return;
+            fprintf(stderr, "[JSCORE] team join '%ls' +%zu\n", name.c_str(),
+                    joins.size());
+            sendSetPlayerTeamPacket(name, 3, nullptr, joins);
+            return;
+        }
+        case 4: {  // leave
+            if (it == m_teams.end()) return;
+            TeamState& state = it->second;
+            std::vector<std::wstring> leaves;
+            for (const std::wstring& p : ev.teamPlayers) {
+                if (state.players.erase(p) > 0) {  // idempotent
+                    leaves.push_back(p);
+                }
+            }
+            if (leaves.empty()) return;
+            fprintf(stderr, "[JSCORE] team leave '%ls' -%zu\n", name.c_str(),
+                    leaves.size());
+            sendSetPlayerTeamPacket(name, 4, nullptr, leaves);
+            return;
+        }
+        default:
+            return;
+    }
 }
 
 bool JavaServerProxy::sendContainerClosePacket(uint8_t windowId) {
@@ -2128,19 +2601,30 @@ void JavaServerProxy::runWorker() {
                 }
                 case JavaConnectionEventType::SpawnMob: {
                     int lceId = allocateLceEntityId(ev.entity.id);
-                    if (lceId > 0 && ev.entity.entityType > 0 &&
-                        ev.entity.entityType < 256) {
+                    fprintf(stderr,
+                            "[JNPC] proxy SpawnMob jid=%d -> lce=%d "
+                            "renderer=%s(type=%d)\n",
+                            ev.entity.id, lceId,
+                            ev.entity.entityType > 0 ? "AddMob" : "none",
+                            ev.entity.entityType);
+                    m_javaEntityKind[ev.entity.id] = {
+                        ev.entity.rawJavaType, ev.entity.entityType > 0};
+                    if (lceId > 0) {
                         EntityState st;
                         st.x = ev.entity.x; st.y = ev.entity.y;
                         st.z = ev.entity.z;
                         st.yaw = ev.entity.yaw; st.pitch = ev.entity.pitch;
                         st.headYaw = ev.entity.headYaw;
                         m_entityState[ev.entity.id] = st;
-                        sendAddMobPacket(
-                            lceId,
-                            static_cast<uint8_t>(ev.entity.entityType),
-                            ev.entity.x, ev.entity.y, ev.entity.z,
-                            ev.entity.yaw, ev.entity.pitch, ev.entity.headYaw);
+                        if (ev.entity.entityType > 0 &&
+                            ev.entity.entityType < 256) {
+                            sendAddMobPacket(
+                                lceId,
+                                static_cast<uint8_t>(ev.entity.entityType),
+                                ev.entity.x, ev.entity.y, ev.entity.z,
+                                ev.entity.yaw, ev.entity.pitch,
+                                ev.entity.headYaw);
+                        }
                     }
                     break;
                 }
@@ -2169,9 +2653,14 @@ void JavaServerProxy::runWorker() {
                     lceIds.reserve(ev.destroyIds.size());
                     for (int32_t jid : ev.destroyIds) {
                         int lceId = lookupLceEntityId(jid);
+                        fprintf(stderr,
+                                "[JNPC] proxy Destroy jid=%d lce=%d\n", jid,
+                                lceId);
                         if (lceId > 0) lceIds.push_back(lceId);
                         releaseJavaEntityId(jid);
                         m_entityState.erase(jid);
+                        m_javaEntityKind.erase(jid);
+                        m_metaCache.erase(jid);
                     }
                     if (!lceIds.empty()) sendRemoveEntitiesPacket(lceIds);
                     break;
@@ -2219,6 +2708,12 @@ void JavaServerProxy::runWorker() {
                 }
                 case JavaConnectionEventType::SpawnPlayer: {
                     int lceId = allocateLceEntityId(ev.entity.id);
+                    fprintf(stderr,
+                            "[JNPC] proxy SpawnPlayer jid=%d -> lce=%d "
+                            "renderer=AddPlayer name='%ls' skinUrl=%d\n",
+                            ev.entity.id, lceId, ev.entity.playerName.c_str(),
+                            (int)!ev.entity.skinUrl.empty());
+                    m_javaEntityKind[ev.entity.id] = {kJavaTypePlayer, true};
                     if (lceId > 0) {
                         std::wstring name = ev.entity.playerName.empty()
                                                 ? L"Player"
@@ -2236,8 +2731,6 @@ void JavaServerProxy::runWorker() {
                                             ev.entity.headYaw,
                                             ev.equippedItemId);
                         sendRotateHeadPacket(lceId, ev.entity.headYaw);
-                        // GameProfile skin (from the tab-list entry): download
-                        // it and hand the client a runtime memory texture.
                         if (!ev.entity.skinUrl.empty())
                             requestSkinDownload(lceId, ev.entity.skinUrl);
                     }
@@ -2284,6 +2777,20 @@ void JavaServerProxy::runWorker() {
                                                   ev.equippedItemCount,
                                                   ev.equippedItemDamage);
                     }
+                    break;
+                }
+                case JavaConnectionEventType::EntityMeta: {
+                    handleEntityMeta(ev);
+                    break;
+                }
+                case JavaConnectionEventType::ScoreObjective:
+                case JavaConnectionEventType::ScoreUpdate:
+                case JavaConnectionEventType::ScoreDisplay: {
+                    handleScoreEvent(ev);
+                    break;
+                }
+                case JavaConnectionEventType::ScoreTeam: {
+                    handleTeamEvent(ev);
                     break;
                 }
                 case JavaConnectionEventType::EntityItemData: {
@@ -2407,6 +2914,8 @@ void JavaServerProxy::runWorker() {
                         sendRemoveEntitiesPacket(ids);
                         m_entityMap.clear();
                         m_entityState.clear();
+                        m_javaEntityKind.clear();
+                        m_metaCache.clear();
                     }
                     sendRespawnPacket(ev.joinDimension, ev.joinGameMode,
                                       ev.respawnDifficulty);
@@ -2472,6 +2981,11 @@ void JavaServerProxy::runWorker() {
                         vehicleLce = lookupLceEntityId(ev.vehicleId);
                         if (vehicleLce <= 0) vehicleLce = -1;
                     }
+                    fprintf(stderr,
+                            "[JNPC] proxy AttachEntity riderJid=%d riderLce=%d "
+                            "vehicleJid=%d vehicleLce=%d leash=%d\n",
+                            ev.entity.id, riderLce, ev.vehicleId, vehicleLce,
+                            (int)ev.attachLeash);
                     sendSetEntityLinkPacket(riderLce, vehicleLce,
                                             ev.attachLeash ? 1 : 0);
                     break;

@@ -21,6 +21,7 @@ struct JavaTabListEntry {
     std::string uuid;
     std::wstring name;
     int ping = -1;
+    std::string skinUrl;
 };
 
 enum class JavaConnectionEventType {
@@ -44,6 +45,7 @@ enum class JavaConnectionEventType {
     EntityVelocity,
     EntityEquipment,
     EntityItemData,
+    EntityMeta,
     Animation,
     EntityStatus,
     SoundEffect,
@@ -66,23 +68,39 @@ enum class JavaConnectionEventType {
     OpenWindow,
     CloseWindow,
     ConfirmTransaction,
+    ScoreObjective,
+    ScoreUpdate,
+    ScoreDisplay,
+    ScoreTeam,
 };
 
 struct JavaInvSlot {
     int16_t id = -1;
     uint8_t count = 0;
     int16_t damage = 0;
+    std::wstring customName;
+    std::vector<std::wstring> lore;
+};
+
+struct JavaMetaEntry {
+    uint8_t index = 0;
+    uint8_t type = 0;
+    int32_t intVal = 0;
+    float floatVal = 0;
+    std::wstring strVal;
 };
 
 struct JavaEntityInfo {
     int32_t id = 0;
     int entityType = 0;
+    int rawJavaType = -1;
     int32_t x = 0, y = 0, z = 0;
     int8_t yaw = 0, pitch = 0;
     int8_t headYaw = 0;
     int8_t dx = 0, dy = 0, dz = 0;
     int16_t vx = 0, vy = 0, vz = 0;
     std::wstring playerName;
+    std::string skinUrl;
     int objectData = -1;
 };
 
@@ -151,6 +169,16 @@ struct JavaConnectionEvent {
     int craftValue = 0;
     int winEntityId = 0;
     bool winAccepted = false;
+    std::vector<JavaMetaEntry> metaEntries;
+    std::wstring scoreObjective;
+    std::wstring scoreDisplayName;
+    std::wstring scoreOwner;
+    int32_t scoreValue = 0;
+    uint8_t scoreMode = 0;
+    uint8_t scoreSlot = 0;
+    std::wstring teamPrefix;
+    std::wstring teamSuffix;
+    std::vector<std::wstring> teamPlayers;
 };
 
 enum class JavaConnectionCommandType {

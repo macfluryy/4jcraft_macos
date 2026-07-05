@@ -41,6 +41,7 @@ class DamageSource;
 class Merchant;
 class PlayerEnderChestContainer;
 class GameType;
+class PlayerTeam;
 class Scoreboard;
 class Level;
 class ModelPart;
@@ -91,6 +92,13 @@ public:
 
     std::wstring name;
     int takeXpDelay;
+    // Reusable buffer for the per-tick item-pickup entity query.
+    std::vector<std::shared_ptr<Entity> > m_pickupScratch;
+    // Team-formatted display name, cached against the scoreboard revision so
+    // it is never rebuilt per frame (nametag/tab render call getDisplayName
+    // every frame).
+    int m_teamNameRevision = -1;
+    std::wstring m_teamFormattedName;
 
     // 4J-PB - track custom skin
     std::wstring customTextureUrl;

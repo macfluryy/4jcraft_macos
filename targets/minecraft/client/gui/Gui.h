@@ -49,6 +49,20 @@ private:
     int remainingHighlightTicks;
     std::shared_ptr<ItemInstance> highlightingItemStack;
 
+    // 4jcraft: sidebar scoreboard render cache - rebuilt only when the
+    // scoreboard revision changes. Strings, ordering, widths and offsets are
+    // all precomputed there; the per-frame path only draws.
+    struct SidebarLine {
+        std::wstring text;
+        std::wstring value;
+        int valueWidth = 0;  // font width of `value`, cached at rebuild
+    };
+    int m_sidebarRevision = -1;
+    std::wstring m_sidebarTitle;
+    std::vector<SidebarLine> m_sidebarLines;
+    int m_sidebarWidth = 0;
+    int m_sidebarTitleOffset = 0;  // centered title x offset, cached
+
 public:
     static float currentGuiBlendFactor;  // 4J added
     static float currentGuiScaleFactor;  // 4J added
@@ -70,6 +84,7 @@ private:
     void renderTp(float br, int w, int h);
     void renderSlot(int slot, int x, int y, float a);
     void renderPlayerList(int screenWidth, int screenHeight);
+    void renderSidebar(int screenWidth, int screenHeight);
 
 public:
     void tick();

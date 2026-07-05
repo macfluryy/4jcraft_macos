@@ -147,10 +147,10 @@ void TripWireTile::checkPressed(Level* level, int x, int y, int z) {
     ThreadStorage* tls = m_tlsShape;
     AABB offs_aabb(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
                    y + tls->yy1, z + tls->zz1);
-    std::vector<std::shared_ptr<Entity> >* entities =
-        level->getEntities(nullptr, &offs_aabb);
-    if (!entities->empty()) {
-        for (auto it = entities->begin(); it != entities->end(); ++it) {
+    std::vector<std::shared_ptr<Entity> > entities;
+    level->getEntities(nullptr, &offs_aabb, entities);
+    if (!entities.empty()) {
+        for (auto it = entities.begin(); it != entities.end(); ++it) {
             std::shared_ptr<Entity> e = *it;
             if (!e->isIgnoringTileTriggers()) {
                 shouldBePressed = true;

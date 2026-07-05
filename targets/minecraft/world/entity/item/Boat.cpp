@@ -327,12 +327,12 @@ void Boat::tick() {
     if (level->isClientSide) return;
 
     AABB grown = bb.grow(0.2, 0, 0.2);
-    std::vector<std::shared_ptr<Entity> >* entities =
-        level->getEntities(shared_from_this(), &grown);
-    if (entities != nullptr && !entities->empty()) {
-        auto itEnd = entities->end();
-        for (auto it = entities->begin(); it != itEnd; it++) {
-            std::shared_ptr<Entity> e = (*it);  // entities->at(i);
+    std::vector<std::shared_ptr<Entity> >& entities = m_pushScratch;
+    level->getEntities(shared_from_this(), &grown, entities);
+    if (!entities.empty()) {
+        auto itEnd = entities.end();
+        for (auto it = entities.begin(); it != itEnd; it++) {
+            std::shared_ptr<Entity> e = (*it);  // entities.at(i);
             if (e != rider.lock() && e->isPushable() &&
                 e->GetType() == eTYPE_BOAT) {
                 e->push(shared_from_this());

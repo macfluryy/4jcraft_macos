@@ -26,11 +26,16 @@ private:
         objectivesByCriteria;
     std::unordered_map<std::wstring, std::unordered_map<Objective*, Score*> >
         playerScores;
-    Objective* displayObjectives[DISPLAY_SLOTS];
+    Objective* displayObjectives[DISPLAY_SLOTS] = {};
     std::unordered_map<std::wstring, PlayerTeam*> teamsByName;
     std::unordered_map<std::wstring, PlayerTeam*> teamsByPlayer;
+    // Bumped on every mutation; lets the HUD cache its rendered sidebar and
+    // rebuild only when something actually changed.
+    int m_revision = 0;
 
 public:
+    int getRevision() const { return m_revision; }
+
     Objective* getObjective(const std::wstring& name);
     Objective* addObjective(const std::wstring& name,
                             ObjectiveCriteria* criteria);

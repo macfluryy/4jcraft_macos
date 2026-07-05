@@ -1768,9 +1768,11 @@ std::vector<AABB>* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
 
     double r = 0.25;
     AABB grown = box->grow(r, r, r);
-    std::vector<std::shared_ptr<Entity> >* ee = getEntities(source, &grown);
-    std::vector<std::shared_ptr<Entity> >::iterator itEnd = ee->end();
-    for (auto it = ee->begin(); it != itEnd; it++) {
+    std::vector<std::shared_ptr<Entity> > ee;
+    ee.reserve(16);  // hot path (every Entity::move); skip regrowth churn
+    getEntities(source, &grown, ee);
+    std::vector<std::shared_ptr<Entity> >::iterator itEnd = ee.end();
+    for (auto it = ee.begin(); it != itEnd; it++) {
         AABB* collideBox = (*it)->getCollideBox();
         if (collideBox != nullptr && collideBox->intersects(*box)) {
             boxes.push_back(*collideBox);
@@ -2301,9 +2303,10 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
 bool Level::isUnobstructed(AABB* aabb) { return isUnobstructed(aabb, nullptr); }
 
 bool Level::isUnobstructed(AABB* aabb, std::shared_ptr<Entity> ignore) {
-    std::vector<std::shared_ptr<Entity> >* ents = getEntities(nullptr, aabb);
-    auto itEnd = ents->end();
-    for (auto it = ents->begin(); it != itEnd; it++) {
+    std::vector<std::shared_ptr<Entity> > ents;
+    getEntities(nullptr, aabb, ents);
+    auto itEnd = ents.end();
+    for (auto it = ents.begin(); it != itEnd; it++) {
         std::shared_ptr<Entity> e = *it;
         if (!e->removed && e->blocksBuilding && e != ignore) return false;
     }
@@ -3333,14 +3336,15 @@ std::vector<TickNextTickData>* Level::fetchTicksInChunk(LevelChunk* chunk,
     return nullptr;
 }
 
-std::vector<std::shared_ptr<Entity> >* Level::getEntities(
-    std::shared_ptr<Entity> except, AABB* bb) {
-    return getEntities(except, bb, nullptr);
+void Level::getEntities(std::shared_ptr<Entity> except, AABB* bb,
+                        std::vector<std::shared_ptr<Entity> >& out) {
+    getEntities(except, bb, nullptr, out);
 }
 
-std::vector<std::shared_ptr<Entity> >* Level::getEntities(
-    std::shared_ptr<Entity> except, AABB* bb, const EntitySelector* selector) {
-    es.clear();
+void Level::getEntities(std::shared_ptr<Entity> except, AABB* bb,
+                        const EntitySelector* selector,
+                        std::vector<std::shared_ptr<Entity> >& out) {
+    out.clear();
     int xc0 = Mth::floor((bb->x0 - 2) / 16);
     int xc1 = Mth::floor((bb->x1 + 2) / 16);
     int zc0 = Mth::floor((bb->z0 - 2) / 16);
@@ -3349,11 +3353,9 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
     for (int xc = xc0; xc <= xc1; xc++)
         for (int zc = zc0; zc <= zc1; zc++) {
             if (hasChunk(xc, zc)) {
-                getChunk(xc, zc)->getEntities(except, bb, es, selector);
+                getChunk(xc, zc)->getEntities(except, bb, out, selector);
             }
         }
-
-    return &es;
 }
 
 std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(

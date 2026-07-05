@@ -18,6 +18,8 @@ public:
 private:
     // 4J - added for common ctor code
     void _init();
+    // Reusable buffer for the per-tick entity-push query.
+    std::vector<std::shared_ptr<Entity> > m_pushScratch;
 
 public:
     static const int serialVersionUID = 0;

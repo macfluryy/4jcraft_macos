@@ -5,8 +5,10 @@
 #include <algorithm>
 #include <cmath>
 #include <compare>
+#include <cstdio>
 #include <mutex>
 #include <string>
+#include <typeinfo>
 #include <utility>
 
 #include "platform/PlatformTypes.h"
@@ -474,6 +476,10 @@ void MultiPlayerLevel::entityRemoved(std::shared_ptr<Entity> e) {
 void MultiPlayerLevel::putEntity(int id, std::shared_ptr<Entity> e) {
     std::shared_ptr<Entity> old = getEntity(id);
     if (old != nullptr) {
+        fprintf(stderr,
+                "[JNPC] putEntity REPLACING id=%d old=%s new=%s (same id)\n",
+                id, typeid(*old).name(),
+                e ? typeid(*e).name() : "(null)");
         removeEntity(old);
     }
 

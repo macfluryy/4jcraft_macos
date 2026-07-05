@@ -12,6 +12,138 @@ bool cj_isDigit(int c)  { return c >= '0' && c <= '9'; }
 
 constexpr wchar_t kSectionSign = L'§';
 
+struct CjRgb { unsigned char r, g, b; };
+constexpr CjRgb cj_kLegacyPalette[16] = {
+    {0x00, 0x00, 0x00}, {0x00, 0x00, 0xAA}, {0x00, 0xAA, 0x00},
+    {0x00, 0xAA, 0xAA}, {0xAA, 0x00, 0x00}, {0xAA, 0x00, 0xAA},
+    {0xFF, 0xAA, 0x00}, {0xAA, 0xAA, 0xAA}, {0x55, 0x55, 0x55},
+    {0x55, 0x55, 0xFF}, {0x55, 0xFF, 0x55}, {0x55, 0xFF, 0xFF},
+    {0xFF, 0x55, 0x55}, {0xFF, 0x55, 0xFF}, {0xFF, 0xFF, 0x55},
+    {0xFF, 0xFF, 0xFF},
+};
+
+int cj_hexVal(wchar_t c) {
+    if (c >= L'0' && c <= L'9') return c - L'0';
+    if (c >= L'a' && c <= L'f') return (c - L'a') + 10;
+    if (c >= L'A' && c <= L'F') return (c - L'A') + 10;
+    return -1;
+}
+
+wchar_t cj_nearestLegacyColor(int r, int g, int b) {
+    int best = 0;
+    long bestDist = -1;
+    for (int i = 0; i < 16; ++i) {
+        const long dr = r - cj_kLegacyPalette[i].r;
+        const long dg = g - cj_kLegacyPalette[i].g;
+        const long db = b - cj_kLegacyPalette[i].b;
+        const long dist = dr * dr + dg * dg + db * db;
+        if (bestDist < 0 || dist < bestDist) {
+            bestDist = dist;
+            best = i;
+        }
+    }
+    return best < 10 ? static_cast<wchar_t>(L'0' + best)
+                     : static_cast<wchar_t>(L'a' + (best - 10));
+}
+
+std::wstring cj_normalizeToLegacy(const std::wstring& in) {
+    std::wstring out;
+    out.reserve(in.size());
+    wchar_t pending = 0;
+    wchar_t active = 0;
+    for (size_t i = 0; i < in.size(); ++i) {
+        const wchar_t c = in[i];
+        if (c != kSectionSign) {
+            if (pending && pending != active) {
+                out.push_back(kSectionSign);
+                out.push_back(pending);
+                active = pending;
+            }
+            pending = 0;
+            out.push_back(c);
+            continue;
+        }
+        if (i + 1 >= in.size()) break;
+        const wchar_t code = in[i + 1];
+        if (cj_hexVal(code) >= 0) {
+            pending = static_cast<wchar_t>(
+                code >= L'A' && code <= L'F' ? code - L'A' + L'a' : code);
+            ++i;
+        } else if (code == L'x' || code == L'X') {
+            int digits[6];
+            int got = 0;
+            size_t j = i + 2;
+            while (got < 6 && j + 1 < in.size() && in[j] == kSectionSign &&
+                   cj_hexVal(in[j + 1]) >= 0) {
+                digits[got++] = cj_hexVal(in[j + 1]);
+                j += 2;
+            }
+            if (got == 6) {
+                pending = cj_nearestLegacyColor(digits[0] * 16 + digits[1],
+                                                digits[2] * 16 + digits[3],
+                                                digits[4] * 16 + digits[5]);
+                i = j - 1;
+            } else {
+                ++i;
+            }
+        } else if (code == L'r' || code == L'R') {
+            pending = L'f';
+            ++i;
+        } else {
+            ++i;
+        }
+    }
+    return out;
+}
+
+
+void cj_logFormattingCodes(const std::wstring& out) {
+    const wchar_t kSection = L'§';
+    for (size_t i = 0; i + 1 < out.size(); ++i) {
+        if (out[i] != kSection) continue;
+        const wchar_t code = out[i + 1];
+        const bool isHexDigit = (code >= L'0' && code <= L'9') ||
+                                (code >= L'a' && code <= L'f') ||
+                                (code >= L'A' && code <= L'F');
+        if (code == L'x' || code == L'X') {
+            std::string hex;
+            size_t j = i + 2;
+            while (hex.size() < 6 && j + 1 < out.size() &&
+                   out[j] == kSection) {
+                const wchar_t h = out[j + 1];
+                const bool hOk = (h >= L'0' && h <= L'9') ||
+                                 (h >= L'a' && h <= L'f') ||
+                                 (h >= L'A' && h <= L'F');
+                if (!hOk) break;
+                hex.push_back(static_cast<char>(h));
+                j += 2;
+            }
+            fprintf(stderr,
+                    "[JHEX] raw='\xc2\xa7x' +%zu hex pairs (#%s) parsed=RGB-HEX "
+                    "lce=nearest-legacy-color\n",
+                    hex.size(), hex.c_str());
+            i = j - 1;
+            continue;
+        }
+        const char codeA =
+            (code >= 0x20 && code <= 0x7E) ? static_cast<char>(code) : '?';
+        if (isHexDigit) {
+            fprintf(stderr,
+                    "[JHEX] raw='\xc2\xa7%c' parsed=legacy-color "
+                    "lce='\xc2\xa7%c' fontEffect=color-set\n",
+                    codeA, codeA);
+        } else {
+            fprintf(stderr,
+                    "[JHEX] raw='\xc2\xa7%c' (U+%04X) parsed=format/reset "
+                    "lce=%s\n",
+                    codeA, static_cast<unsigned>(code) & 0xFFFFu,
+                    (code == L'r' || code == L'R') ? "\xc2\xa7""f (reset->default)"
+                                                   : "removed");
+        }
+        ++i;
+    }
+}
+
 wchar_t cj_colorCode(const std::wstring& name) {
     struct M { const wchar_t* n; wchar_t c; };
     static const M kMap[] = {
@@ -122,7 +254,31 @@ private:
             if (key == L"color") {
                 std::wstring cname;
                 if (!parseValue(depth + 1, &cname, inherited)) return false;
-                const wchar_t cc = cj_colorCode(cname);
+                wchar_t cc = cj_colorCode(cname);
+                if (!cc && cname.size() == 7 && cname[0] == L'#') {
+                    int v[6];
+                    bool ok = true;
+                    for (int k = 0; k < 6; ++k) {
+                        v[k] = cj_hexVal(cname[1 + k]);
+                        if (v[k] < 0) { ok = false; break; }
+                    }
+                    if (ok) {
+                        cc = cj_nearestLegacyColor(v[0] * 16 + v[1],
+                                                   v[2] * 16 + v[3],
+                                                   v[4] * 16 + v[5]);
+                    }
+                }
+                {
+                    std::string nameA;
+                    for (wchar_t wc : cname)
+                        nameA.push_back(
+                            (wc >= 0x20 && wc <= 0x7E) ? (char)wc : '?');
+                    fprintf(stderr,
+                            "[JHEX] color-key raw='%s' mapped=%s%c\n",
+                            nameA.c_str(),
+                            cc ? "\xc2\xa7" : "(none - dropped",
+                            cc ? (char)cc : ')');
+                }
                 if (cc) {
                     ownColor.clear();
                     ownColor.push_back(kSectionSign);
@@ -371,5 +527,15 @@ std::wstring flattenChatComponent(const std::string& json) {
     ChatScanner scanner(json);
     std::wstring out;
     if (!scanner.flatten(out)) return {};
-    return out;
+    cj_logFormattingCodes(out);
+    std::wstring legacy = cj_normalizeToLegacy(out);
+    if (legacy.size() != out.size()) {
+        fprintf(stderr, "[JHEX] normalized len %zu -> %zu\n", out.size(),
+                legacy.size());
+    }
+    return legacy;
+}
+
+std::wstring normalizeLegacyFormatting(const std::wstring& text) {
+    return cj_normalizeToLegacy(text);
 }

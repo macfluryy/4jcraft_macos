@@ -34,11 +34,13 @@ int PressurePlateTile::getSignalForData(int data) {
 }
 
 int PressurePlateTile::getSignalStrength(Level* level, int x, int y, int z) {
+    std::vector<std::shared_ptr<Entity> > allEntities;
     std::vector<std::shared_ptr<Entity> >* entities = nullptr;
     AABB at_bb = getSensitiveAABB(x, y, z);
-    if (sensitivity == everything)
-        entities = level->getEntities(nullptr, &at_bb);
-    else if (sensitivity == mobs)
+    if (sensitivity == everything) {
+        level->getEntities(nullptr, &at_bb, allEntities);
+        entities = &allEntities;
+    } else if (sensitivity == mobs)
         entities = level->getEntitiesOfClass(typeid(LivingEntity), &at_bb);
     else if (sensitivity == players)
         entities = level->getEntitiesOfClass(typeid(Player), &at_bb);

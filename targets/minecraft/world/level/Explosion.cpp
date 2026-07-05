@@ -115,10 +115,11 @@ void Explosion::explode() {
     // here instead of directly using the shared one
 
     AABB source_bb(x0, y0, z0, x1, y1, z1);
-    std::vector<std::shared_ptr<Entity> >* levelEntities =
-        level->getEntities(source, &source_bb);
-    std::vector<std::shared_ptr<Entity> > entities(levelEntities->begin(),
-                                                   levelEntities->end());
+    // getEntities now fills our own vector, so the nested EnderCrystal
+    // explosion described above can no longer overwrite it - the previous
+    // defensive copy of the shared level vector is no longer needed.
+    std::vector<std::shared_ptr<Entity> > entities;
+    level->getEntities(source, &source_bb, entities);
     Vec3 center(x, y, z);
 
     auto itEnd = entities.end();

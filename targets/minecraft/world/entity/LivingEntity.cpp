@@ -1601,14 +1601,12 @@ void LivingEntity::newServerAiStep() {}
 
 void LivingEntity::pushEntities() {
     AABB grown = bb.grow(0.2, 0, 0.2);
-    std::vector<std::shared_ptr<Entity>>* entities =
-        level->getEntities(shared_from_this(), &grown);
-    if (entities != nullptr && !entities->empty()) {
-        auto itEnd = entities->end();
-        for (auto it = entities->begin(); it != itEnd; it++) {
-            std::shared_ptr<Entity> e = *it;  // entities->at(i);
-            if (e and !e->removed and e->isPushable()) push(e);
-        }
+    std::vector<std::shared_ptr<Entity>>& entities = m_pushEntitiesScratch;
+    level->getEntities(shared_from_this(), &grown, entities);
+    auto itEnd = entities.end();
+    for (auto it = entities.begin(); it != itEnd; it++) {
+        std::shared_ptr<Entity> e = *it;  // entities.at(i);
+        if (e and !e->removed and e->isPushable()) push(e);
     }
 }
 

@@ -403,12 +403,13 @@ std::shared_ptr<Container> HopperTileEntity::getContainerAt(Level* level,
 
     if (result == nullptr) {
         AABB block_above{x, y, z, x + 1, y + 1, z + 1};
-        std::vector<std::shared_ptr<Entity>>* entities = level->getEntities(
-            nullptr, &block_above, EntitySelector::CONTAINER_ENTITY_SELECTOR);
+        std::vector<std::shared_ptr<Entity>> entities;
+        level->getEntities(nullptr, &block_above,
+                           EntitySelector::CONTAINER_ENTITY_SELECTOR, entities);
 
-        if ((entities != nullptr) && (entities->size() > 0)) {
+        if (entities.size() > 0) {
             result = std::dynamic_pointer_cast<Container>(
-                entities->at(level->random->nextInt(entities->size())));
+                entities.at(level->random->nextInt(entities.size())));
         }
     }
 

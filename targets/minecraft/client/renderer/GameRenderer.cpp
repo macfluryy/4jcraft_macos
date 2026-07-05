@@ -343,13 +343,14 @@ void GameRenderer::pick(float a) {
                      .expand(b.x * (range), b.y * (range), b.z * (range))
                      .grow(overlap, overlap, overlap);
 
-    std::vector<std::shared_ptr<Entity> >* objects =
-        mc->level->getEntities(mc->cameraTargetPlayer, &grown);
+    std::vector<std::shared_ptr<Entity> > objects;
+    objects.reserve(16);  // per-frame entity pick
+    mc->level->getEntities(mc->cameraTargetPlayer, &grown, objects);
     double nearest = dist;
 
-    auto itEnd = objects->end();
-    for (auto it = objects->begin(); it != itEnd; it++) {
-        std::shared_ptr<Entity> e = *it;  // objects->at(i);
+    auto itEnd = objects.end();
+    for (auto it = objects.begin(); it != itEnd; it++) {
+        std::shared_ptr<Entity> e = *it;  // objects.at(i);
         if (!e->isPickable()) continue;
 
         float rr = e->getPickRadius();

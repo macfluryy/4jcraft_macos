@@ -456,10 +456,10 @@ std::shared_ptr<EntityHorse> EntityHorse::getClosestMommy(
 
     std::shared_ptr<Entity> mommy = nullptr;
     AABB expanded = baby->bb.expand(searchRadius, searchRadius, searchRadius);
-    std::vector<std::shared_ptr<Entity> >* list =
-        level->getEntities(baby, &expanded, PARENT_HORSE_SELECTOR);
+    std::vector<std::shared_ptr<Entity> > list;
+    level->getEntities(baby, &expanded, PARENT_HORSE_SELECTOR, list);
 
-    for (auto it = list->begin(); it != list->end(); ++it) {
+    for (auto it = list.begin(); it != list.end(); ++it) {
         std::shared_ptr<Entity> horse = *it;
         double distanceSquared =
             horse->distanceToSqr(baby->x, baby->y, baby->z);
@@ -469,7 +469,6 @@ std::shared_ptr<EntityHorse> EntityHorse::getClosestMommy(
             closestDistance = distanceSquared;
         }
     }
-    delete list;
 
     return std::dynamic_pointer_cast<EntityHorse>(mommy);
 }

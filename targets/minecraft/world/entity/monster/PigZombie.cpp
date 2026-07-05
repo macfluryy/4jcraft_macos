@@ -107,11 +107,11 @@ bool PigZombie::hurt(DamageSource* source, float dmg) {
     std::shared_ptr<Entity> sourceEntity = source->getEntity();
     if (sourceEntity != nullptr && sourceEntity->instanceof(eTYPE_PLAYER)) {
         AABB grown = bb.grow(32, 32, 32);
-        std::vector<std::shared_ptr<Entity> >* nearby =
-            level->getEntities(shared_from_this(), &grown);
-        auto itEnd = nearby->end();
-        for (auto it = nearby->begin(); it != itEnd; it++) {
-            std::shared_ptr<Entity> e = *it;  // nearby->at(i);
+        std::vector<std::shared_ptr<Entity> > nearby;
+        level->getEntities(shared_from_this(), &grown, nearby);
+        auto itEnd = nearby.end();
+        for (auto it = nearby.begin(); it != itEnd; it++) {
+            std::shared_ptr<Entity> e = *it;  // nearby.at(i);
             if (e->instanceof(eTYPE_PIGZOMBIE)) {
                 std::shared_ptr<PigZombie> pigZombie =
                     std::dynamic_pointer_cast<PigZombie>(e);

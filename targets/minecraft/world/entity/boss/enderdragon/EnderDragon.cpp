@@ -477,10 +477,10 @@ void EnderDragon::aiStep() {
         if (getSynchedAction() == e_EnderdragonAction_Sitting_Flaming ||
             getSynchedAction() == e_EnderdragonAction_Landing) {
             if (m_actionTicks < (FLAME_TICKS - 10)) {
-                std::vector<std::shared_ptr<Entity> >* targets =
-                    level->getEntities(shared_from_this(), &m_acidArea);
+                std::vector<std::shared_ptr<Entity> > targets;
+                level->getEntities(shared_from_this(), &m_acidArea, targets);
 
-                for (auto it = targets->begin(); it != targets->end(); ++it) {
+                for (auto it = targets.begin(); it != targets.end(); ++it) {
                     if ((*it)->instanceof(eTYPE_LIVINGENTITY)) {
                         // app.DebugPrintf("Attacking entity with acid\n");
                         std::shared_ptr<LivingEntity> e =
@@ -660,15 +660,20 @@ void EnderDragon::aiStep() {
 
     if (!level->isClientSide) checkAttack();
     if (!level->isClientSide && hurtDuration == 0) {
+        std::vector<std::shared_ptr<Entity> > nearby;
         AABB wing_mov = wing1->bb.grow(4, 2, 4).move(0, -2, 0);
-        knockBack(level->getEntities(shared_from_this(), &wing_mov));
+        level->getEntities(shared_from_this(), &wing_mov, nearby);
+        knockBack(&nearby);
         wing_mov = wing2->bb.grow(4, 2, 4).move(0, -2, 0);
-        knockBack(level->getEntities(shared_from_this(), &wing_mov));
+        level->getEntities(shared_from_this(), &wing_mov, nearby);
+        knockBack(&nearby);
 
         AABB neck_bb = neck->bb.grow(1, 1, 1);
         AABB head_bb = head->bb.grow(1, 1, 1);
-        hurt(level->getEntities(shared_from_this(), &neck_bb));
-        hurt(level->getEntities(shared_from_this(), &head_bb));
+        level->getEntities(shared_from_this(), &neck_bb, nearby);
+        hurt(&nearby);
+        level->getEntities(shared_from_this(), &head_bb, nearby);
+        hurt(&nearby);
     }
 
     double p1components[3];

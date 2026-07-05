@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "app/mac/MacGame.h"
+#include "minecraft/util/FormatCodes.h"
 #include "util/StringHelpers.h"
 
 HtmlString::HtmlString(std::wstring text, eMinecraftColour hexColor,
@@ -29,8 +30,22 @@ std::wstring HtmlString::ToString() {
     eMinecraftColour color =
         this->color == eMinecraftColour_NOT_SET ? eHTMLColor_7 : this->color;
 
-    ss << L"<font color=\"#" << std::setfill(L'0') << std::setw(6) << std::hex
-       << app.GetHTMLColor(color) << L"\">" << text << "</font>";
+    // Legacy palette for embedded § codes, resolved once from the existing
+    // HTML colour table (eHTMLColor_0..f are contiguous).
+    static uint32_t s_palette[16];
+    static bool s_paletteInit = false;
+    if (!s_paletteInit) {
+        for (int i = 0; i < 16; ++i) {
+            s_palette[i] = static_cast<uint32_t>(app.GetHTMLColor(
+                static_cast<eMinecraftColour>(eHTMLColor_0 + i)));
+        }
+        s_paletteInit = true;
+    }
+
+    // Translate embedded § formatting (server-sent item names/lore) into the
+    // HTML the UI actually renders; literal codes never reach the label.
+    ss << formatCodesToHtml(
+        text, static_cast<uint32_t>(app.GetHTMLColor(color)), s_palette);
 
     if (italics) {
         ss << "</i>";

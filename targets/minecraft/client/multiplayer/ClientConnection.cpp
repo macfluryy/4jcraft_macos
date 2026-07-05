@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <format>
 #include <limits>
+#include <typeinfo>
 #include <unordered_set>
 
 #include "platform/PlatformTypes.h"
@@ -181,8 +182,16 @@
 #include "minecraft/world/item/MapItem.h"
 #include "minecraft/world/item/trading/Merchant.h"
 #include "minecraft/world/item/trading/MerchantRecipeList.h"
+#include "minecraft/network/packet/SetDisplayObjectivePacket.h"
+#include "minecraft/network/packet/SetObjectivePacket.h"
+#include "minecraft/network/packet/SetPlayerTeamPacket.h"
+#include "minecraft/network/packet/SetScorePacket.h"
 #include "minecraft/world/level/Explosion.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/scores/Objective.h"
+#include "minecraft/world/scores/PlayerTeam.h"
+#include "minecraft/world/scores/Score.h"
+#include "minecraft/world/scores/Scoreboard.h"
 #include "minecraft/world/level/LevelSettings.h"
 #include "minecraft/world/level/ViewDistanceUtil.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
@@ -2540,6 +2549,13 @@ void ClientConnection::handleTextureAndGeometry(
 void ClientConnection::handleTextureChange(
     std::shared_ptr<TextureChangePacket> packet) {
     std::shared_ptr<Entity> e = getEntity(packet->id);
+    fprintf(stderr,
+            "[JNPC] TextureChange target id=%d class=%s player=%d mob=%d "
+            "pig=%d path=%ls\n",
+            packet->id, e ? typeid(*e).name() : "(none)",
+            e ? (int)e->instanceof(eTYPE_PLAYER) : -1,
+            e ? (int)e->instanceof(eTYPE_MOB) : -1,
+            e ? (int)e->instanceof(eTYPE_PIG) : -1, packet->path.c_str());
     if ((e == nullptr) || !e->instanceof(eTYPE_PLAYER)) return;
     std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(e);
 
@@ -3697,15 +3713,95 @@ std::wstring ClientConnection::GetDisplayNameByGamertag(std::wstring gamertag) {
 }
 
 void ClientConnection::handleAddObjective(
-    std::shared_ptr<SetObjectivePacket> packet) {}
+    std::shared_ptr<SetObjectivePacket> packet) {
+    if (level == nullptr || level->getScoreboard() == nullptr) return;
+    Scoreboard* scoreboard = level->getScoreboard();
+    fprintf(stderr, "[JSCORE] client objective method=%d name='%ls'\n",
+            packet->method, packet->objectiveName.c_str());
+    if (packet->method == 0) {
+        Objective* objective =
+            scoreboard->addObjective(packet->objectiveName, nullptr);
+        objective->setDisplayName(packet->displayName);
+    } else {
+        Objective* objective = scoreboard->getObjective(packet->objectiveName);
+        if (objective == nullptr) return;
+        if (packet->method == 1) {
+            scoreboard->removeObjective(objective);
+        } else if (packet->method == 2) {
+            objective->setDisplayName(packet->displayName);
+        }
+    }
+}
 
-void ClientConnection::handleSetScore(std::shared_ptr<SetScorePacket> packet) {}
+void ClientConnection::handleSetScore(std::shared_ptr<SetScorePacket> packet) {
+    if (level == nullptr || level->getScoreboard() == nullptr) return;
+    Scoreboard* scoreboard = level->getScoreboard();
+    fprintf(stderr, "[JSCORE] client score method=%d owner='%ls' value=%d\n",
+            packet->method, packet->owner.c_str(), packet->score);
+    if (packet->method == SetScorePacket::METHOD_REMOVE) {
+        scoreboard->resetPlayerScore(packet->owner);
+        return;
+    }
+    Objective* objective = scoreboard->getObjective(packet->objectiveName);
+    if (objective == nullptr) return;
+    scoreboard->getPlayerScore(packet->owner, objective)
+        ->setScore(packet->score);
+}
 
 void ClientConnection::handleSetDisplayObjective(
-    std::shared_ptr<SetDisplayObjectivePacket> packet) {}
+    std::shared_ptr<SetDisplayObjectivePacket> packet) {
+    if (level == nullptr || level->getScoreboard() == nullptr) return;
+    Scoreboard* scoreboard = level->getScoreboard();
+    fprintf(stderr, "[JSCORE] client display slot=%d name='%ls'\n",
+            packet->slot, packet->objectiveName.c_str());
+    if (packet->objectiveName.empty()) {
+        scoreboard->setDisplayObjective(packet->slot, nullptr);
+    } else {
+        scoreboard->setDisplayObjective(
+            packet->slot, scoreboard->getObjective(packet->objectiveName));
+    }
+}
 
 void ClientConnection::handleSetPlayerTeamPacket(
-    std::shared_ptr<SetPlayerTeamPacket> packet) {}
+    std::shared_ptr<SetPlayerTeamPacket> packet) {
+    if (level == nullptr || level->getScoreboard() == nullptr) return;
+    Scoreboard* scoreboard = level->getScoreboard();
+    fprintf(stderr, "[JSCORE] client team method=%d name='%ls' players=%zu\n",
+            packet->method, packet->name.c_str(), packet->players.size());
+
+    if (packet->method == SetPlayerTeamPacket::METHOD_ADD) {
+        PlayerTeam* team = scoreboard->addPlayerTeam(packet->name);
+        team->setDisplayName(packet->displayName);
+        team->setPrefix(packet->prefix);
+        team->setSuffix(packet->suffix);
+        team->unpackOptions(packet->options);
+        for (const std::wstring& player : packet->players)
+            scoreboard->addPlayerToTeam(player, team);
+        return;
+    }
+
+    PlayerTeam* team = scoreboard->getPlayerTeam(packet->name);
+    if (team == nullptr) return;
+    switch (packet->method) {
+        case SetPlayerTeamPacket::METHOD_REMOVE:
+            scoreboard->removePlayerTeam(team);
+            break;
+        case SetPlayerTeamPacket::METHOD_CHANGE:
+            team->setDisplayName(packet->displayName);
+            team->setPrefix(packet->prefix);
+            team->setSuffix(packet->suffix);
+            team->unpackOptions(packet->options);
+            break;
+        case SetPlayerTeamPacket::METHOD_JOIN:
+            for (const std::wstring& player : packet->players)
+                scoreboard->addPlayerToTeam(player, team);
+            break;
+        case SetPlayerTeamPacket::METHOD_LEAVE:
+            for (const std::wstring& player : packet->players)
+                scoreboard->removePlayerFromTeam(player, team);
+            break;
+    }
+}
 
 void ClientConnection::handleParticleEvent(
     std::shared_ptr<LevelParticlesPacket> packet) {

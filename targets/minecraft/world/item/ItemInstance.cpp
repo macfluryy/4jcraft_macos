@@ -48,7 +48,7 @@ int sanitizeItemId(int id) {
         id >= 256 || (Tile::tiles != nullptr && Tile::tiles[id] != nullptr);
     return (hasItem && tileOkForBlock) ? id : 1;  // 1 = stone
 }
-}  // namespace
+}
 
 void ItemInstance::_init(int id, int count, int auxValue) {
     this->popTime = 0;
@@ -613,38 +613,19 @@ std::vector<HtmlString>* ItemInstance::getHoverText(
         }
 
         if (tag->contains(L"display")) {
-            // CompoundTag *display = tag->getCompound(L"display");
-
-            // if (display->contains(L"color"))
-            //{
-            //	if (advanced)
-            //	{
-            //		wchar_t text [256];
-            //		swprintf(text, 256, L"Color: LOCALISE #%08X",
-            // display->getInt(L"color"));
-            // lines->push_back(HtmlString(text));
-            //	}
-            //	else
-            //	{
-            //		lines->push_back(HtmlString(L"Dyed LOCALISE",
-            // eMinecraftColour_NOT_SET, true));
-            //	}
-            // }
-
-            // 4J: Lore isn't in use in game
-            /*if (display->contains(L"Lore"))
-            {
-                    ListTag<StringTag> *lore = (ListTag<StringTag> *)
-            display->getList(L"Lore"); if (lore->size() > 0)
-                    {
-                            for (int i = 0; i < lore->size(); i++)
-                            {
-                                    //lines->push_back(ChatFormatting::DARK_PURPLE
-            + "" + ChatFormatting::ITALIC + lore->get(i)->data);
-                                    lines->push_back(lore->get(i)->data);
-                            }
+            CompoundTag* display = tag->getCompound(L"display");
+            if (display->contains(L"Lore")) {
+                ListTag<StringTag>* lore =
+                    (ListTag<StringTag>*)display->getList(L"Lore");
+                if (lore != nullptr && lore->size() > 0) {
+                    // Blank separator between the title block and the lore,
+                    // matching the modern-server tooltip layout.
+                    lines->push_back(HtmlString(L""));
+                    for (int i = 0; i < lore->size(); i++) {
+                        lines->push_back(lore->get(i)->data);
                     }
-            }*/
+                }
+            }
         }
     }
 

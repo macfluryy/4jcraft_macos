@@ -41,6 +41,9 @@
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/effect/MobEffect.h"
+#include "minecraft/world/scores/Objective.h"
+#include "minecraft/world/scores/Score.h"
+#include "minecraft/world/scores/Scoreboard.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
@@ -1193,6 +1196,11 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
         }
     }
 
+    // 4jcraft: sidebar scoreboard (Java Edition servers) - native HUD overlay
+    if (bDisplayGui) {
+        renderSidebar(screenWidth, screenHeight);
+    }
+
     glColor4f(1, 1, 1, 1);
     glDisable(GL_BLEND);
     glEnable(GL_ALPHA_TEST);
@@ -1317,6 +1325,109 @@ void Gui::renderTp(float br, int w, int h) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_ALPHA_TEST);
     glColor4f(1, 1, 1, 1);
+}
+
+// 4jcraft: Java Edition sidebar scoreboard, rendered as a native HUD overlay
+// on the right edge (vanilla 1.8 layout: score-descending top to bottom, at
+// most 15 lines, owner-name tiebreak). The line list is cached and rebuilt
+// only when the scoreboard revision changes.
+void Gui::renderSidebar(int screenWidth, int screenHeight) {
+    if (minecraft == nullptr || minecraft->level == nullptr) return;
+    Scoreboard* scoreboard = minecraft->level->getScoreboard();
+    if (scoreboard == nullptr) return;
+    Objective* objective =
+        scoreboard->getDisplayObjective(Scoreboard::DISPLAY_SLOT_SIDEBAR);
+    Font* font = minecraft->font;
+    if (font == nullptr) return;
+    if (objective == nullptr) {
+        if (m_sidebarRevision != -1) {  // clear the cache exactly once
+            m_sidebarRevision = -1;
+            m_sidebarLines.clear();
+            m_sidebarTitle.clear();
+        }
+        return;
+    }
+
+    constexpr int kMaxLines = 15;   // vanilla sidebar cap
+    constexpr int kRowHeight = 9;   // font height + 1
+    constexpr int kPad = 2;
+
+    // State-change rebuild: strings, ordering, widths and offsets are all
+    // computed here; the per-frame path below only draws.
+    if (scoreboard->getRevision() != m_sidebarRevision) {
+        m_sidebarRevision = scoreboard->getRevision();
+        m_sidebarTitle = objective->getDisplayName();
+        m_sidebarLines.clear();
+
+        std::vector<Score*>* scores = scoreboard->getScores(objective);
+        if (scores != nullptr) {
+            // Vanilla ordering: sort ascending (score, then owner reversed)
+            // and render bottom-up, so the highest score is the top line.
+            std::sort(scores->begin(), scores->end(),
+                      [](Score* a, Score* b) {
+                          if (a->getScore() != b->getScore())
+                              return a->getScore() < b->getScore();
+                          return a->getOwner() > b->getOwner();
+                      });
+            const size_t first =
+                scores->size() > kMaxLines ? scores->size() - kMaxLines : 0;
+            for (size_t i = first; i < scores->size(); ++i) {
+                SidebarLine line;
+                line.text = (*scores)[i]->getOwner();
+                line.value = std::to_wstring((*scores)[i]->getScore());
+                line.valueWidth = font->width(line.value);
+                m_sidebarLines.push_back(std::move(line));
+            }
+            delete scores;
+        }
+
+        // Cache the box width; clamp so the sidebar can never overflow the
+        // screen, truncating owner text if a server sends absurd lines.
+        const int maxBox = screenWidth / 3;
+        int width = font->width(m_sidebarTitle);
+        for (auto& line : m_sidebarLines) {
+            while (!line.text.empty() &&
+                   font->width(line.text) + line.valueWidth + 3 * kPad >
+                       maxBox) {
+                line.text.pop_back();
+            }
+            const int w = font->width(line.text) + line.valueWidth + 3 * kPad;
+            if (w > width) width = w;
+        }
+        m_sidebarWidth = width > maxBox ? maxBox : width;
+        m_sidebarTitleOffset =
+            (m_sidebarWidth - font->width(m_sidebarTitle)) / 2 - kPad;
+
+        fprintf(stderr, "[JSCORE] render list rebuilt: '%ls' lines=%zu\n",
+                m_sidebarTitle.c_str(), m_sidebarLines.size());
+    }
+
+    if (m_sidebarLines.empty() && m_sidebarTitle.empty()) return;
+
+    const int lineCount = static_cast<int>(m_sidebarLines.size());
+    const int bodyHeight = lineCount * kRowHeight;
+    const int x1 = screenWidth - 3;
+    const int x0 = x1 - m_sidebarWidth;
+    const int yMid = screenHeight / 2;
+    const int yBottom = yMid + bodyHeight / 2;
+
+    glDisable(GL_ALPHA_TEST);
+    // Body rows, bottom-up (index 0 = lowest score). Draw-only: every string,
+    // width and offset comes from the rebuild cache above.
+    for (int i = 0; i < lineCount; ++i) {
+        const SidebarLine& line = m_sidebarLines[static_cast<size_t>(i)];
+        const int y = yBottom - (i + 1) * kRowHeight;
+        fill(x0 - kPad, y, x1, y + kRowHeight, 0x50000000);
+        drawString(font, line.text, x0, y + 1, 0xFFFFFF);
+        drawString(font, line.value, x1 - line.valueWidth - kPad, y + 1,
+                   0xFF5555);
+    }
+    // Title row above the body, centered (offset cached at rebuild).
+    const int titleY = yBottom - bodyHeight - kRowHeight;
+    fill(x0 - kPad, titleY, x1, titleY + kRowHeight, 0x60000000);
+    drawString(font, m_sidebarTitle, x0 + m_sidebarTitleOffset, titleY + 1,
+               0xFFFFFF);
+    glEnable(GL_ALPHA_TEST);
 }
 
 void Gui::renderPlayerList(int screenWidth, int screenHeight) {

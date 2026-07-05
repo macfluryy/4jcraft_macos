@@ -168,3 +168,56 @@ java_server_list_store_test = executable(
 )
 
 test('java_server_list_store', java_server_list_store_test)
+
+java_metadata_translation_test = executable(
+  'java_metadata_translation_test',
+  [
+    'common/src/JavaEdition/tests/JavaMetadataTranslationTest.cpp',
+    'common/src/JavaEdition/JavaServerProxy.cpp',
+    'common/src/JavaEdition/JavaConnection.cpp',
+    'common/src/JavaEdition/JavaProtocolCodec.cpp',
+    'common/src/JavaEdition/JavaPacketBuffer.cpp',
+    'common/src/JavaEdition/JavaRawTcpClient.cpp',
+    'common/src/JavaEdition/JavaChatJson.cpp',
+    '../minecraft/world/level/storage/ConsoleSaveFileIO/compression.cpp',
+  ],
+  include_directories: include_directories('include', '..'),
+  dependencies: [java_dep, nbt_dep, util_dep, dependency('zlib')],
+  cpp_args: global_cpp_args + global_cpp_defs,
+  build_by_default: false,
+)
+
+test('java_metadata_translation', java_metadata_translation_test)
+
+java_scoreboard_translation_test = executable(
+  'java_scoreboard_translation_test',
+  [
+    'common/src/JavaEdition/tests/JavaScoreboardTranslationTest.cpp',
+    'common/src/JavaEdition/JavaServerProxy.cpp',
+    'common/src/JavaEdition/JavaConnection.cpp',
+    'common/src/JavaEdition/JavaProtocolCodec.cpp',
+    'common/src/JavaEdition/JavaPacketBuffer.cpp',
+    'common/src/JavaEdition/JavaRawTcpClient.cpp',
+    'common/src/JavaEdition/JavaChatJson.cpp',
+    '../minecraft/world/level/storage/ConsoleSaveFileIO/compression.cpp',
+  ],
+  include_directories: include_directories('include', '..'),
+  dependencies: [java_dep, nbt_dep, util_dep, dependency('zlib')],
+  cpp_args: global_cpp_args + global_cpp_defs,
+  build_by_default: false,
+)
+
+test('java_scoreboard_translation', java_scoreboard_translation_test)
+
+format_codes_test = executable(
+  'format_codes_test',
+  [
+    'common/src/JavaEdition/tests/FormatCodesTest.cpp',
+    '../minecraft/util/FormatCodes.cpp',
+  ],
+  include_directories: include_directories('include', '..'),
+  cpp_args: global_cpp_args + global_cpp_defs,
+  build_by_default: false,
+)
+
+test('format_codes', format_codes_test)

@@ -508,17 +508,18 @@ public:
     virtual std::vector<TickNextTickData>* fetchTicksInChunk(LevelChunk* chunk,
                                                              bool remove);
 
-private:
-    std::vector<std::shared_ptr<Entity> > es;
-
 public:
     bool isClientSide;
 
-    std::vector<std::shared_ptr<Entity> >* getEntities(
-        std::shared_ptr<Entity> except, AABB* bb);
-    std::vector<std::shared_ptr<Entity> >* getEntities(
-        std::shared_ptr<Entity> except, AABB* bb,
-        const EntitySelector* selector);
+    // Fills the caller-owned `out` (cleared first) with the entities whose
+    // bounding boxes intersect bb. Caller ownership makes nested queries safe:
+    // an inner getEntities can never invalidate an outer caller's iteration
+    // (the old shared scratch buffer caused exactly that).
+    void getEntities(std::shared_ptr<Entity> except, AABB* bb,
+                     std::vector<std::shared_ptr<Entity> >& out);
+    void getEntities(std::shared_ptr<Entity> except, AABB* bb,
+                     const EntitySelector* selector,
+                     std::vector<std::shared_ptr<Entity> >& out);
     std::vector<std::shared_ptr<Entity> >* getEntitiesOfClass(
         const std::type_info& baseClass, AABB* bb);
     std::vector<std::shared_ptr<Entity> >* getEntitiesOfClass(

@@ -177,20 +177,18 @@ void FallingTile::causeFallDamage(float distance) {
     if (hurtEntities) {
         int dmg = Mth::ceil(distance - 1);
         if (dmg > 0) {
-            // 4J: Copy vector since it might be modified when we hurt the
-            // entities (invalidating our iterator)
-            std::vector<std::shared_ptr<Entity> >* entities =
-                new std::vector<std::shared_ptr<Entity> >(
-                    *level->getEntities(shared_from_this(), &bb));
+            // Caller-owned result: hurting entities can no longer invalidate
+            // this iteration (getEntities fills our local vector).
+            std::vector<std::shared_ptr<Entity> > entities;
+            level->getEntities(shared_from_this(), &bb, entities);
             DamageSource* source = tile == Tile::anvil_Id
                                        ? DamageSource::anvil
                                        : DamageSource::fallingBlock;
             // for (Entity entity : entities)
-            for (auto it = entities->begin(); it != entities->end(); ++it) {
+            for (auto it = entities.begin(); it != entities.end(); ++it) {
                 (*it)->hurt(source, std::min(Mth::floor(dmg * fallDamageAmount),
                                              fallDamageMax));
             }
-            delete entities;
 
             if (tile == Tile::anvil_Id &&
                 random->nextFloat() < 0.05f + (dmg * 0.05)) {

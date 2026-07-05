@@ -741,11 +741,11 @@ void ConsoleSchematicFile::generateSchematicFile(
     tag.put(L"TileEntities", tileEntitiesTag);
 
     AABB bb(xStart, yStart, zStart, xEnd, yEnd, zEnd);
-    std::vector<std::shared_ptr<Entity> >* entities =
-        level->getEntities(nullptr, &bb);
+    std::vector<std::shared_ptr<Entity> > entities;
+    level->getEntities(nullptr, &bb, entities);
     ListTag<CompoundTag>* entitiesTag = new ListTag<CompoundTag>(L"entities");
 
-    for (auto it = entities->begin(); it != entities->end(); ++it) {
+    for (auto it = entities.begin(); it != entities.end(); ++it) {
         std::shared_ptr<Entity> e = *it;
 
         bool mobCanBeSaved = false;

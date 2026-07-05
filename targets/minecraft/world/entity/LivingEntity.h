@@ -302,6 +302,9 @@ protected:
     virtual void newServerAiStep();
     virtual void pushEntities();
     virtual void doPush(std::shared_ptr<Entity> e);
+    // Reusable per-entity buffer for pushEntities() (runs every tick). Safe to
+    // reuse: nothing reachable from push() touches another entity's scratch.
+    std::vector<std::shared_ptr<Entity> > m_pushEntitiesScratch;
 
 public:
     virtual void rideTick();

@@ -91,20 +91,15 @@ void PistonPieceEntity::moveCollidedEntities(float progress, float amount) {
     auto aabb =
         Tile::pistonMovingPiece->getAABB(level, x, y, z, id, progress, facing);
     if (aabb.has_value()) {
-        std::vector<std::shared_ptr<Entity> >* entities =
-            level->getEntities(nullptr, &*aabb);
-        if (!entities->empty()) {
-            std::vector<std::shared_ptr<Entity> > collisionHolder;
-            for (auto it = entities->begin(); it != entities->end(); it++) {
-                collisionHolder.push_back(*it);
-            }
-
-            for (auto it = collisionHolder.begin(); it != collisionHolder.end();
-                 it++) {
-                (*it)->move(amount * Facing::STEP_X[facing],
-                            amount * Facing::STEP_Y[facing],
-                            amount * Facing::STEP_Z[facing]);
-            }
+        // getEntities fills our own vector, so Entity::move (which queries
+        // entities again through getCubes) can no longer invalidate this
+        // iteration - the old copy-before-move dance is no longer needed.
+        std::vector<std::shared_ptr<Entity> > entities;
+        level->getEntities(nullptr, &*aabb, entities);
+        for (auto it = entities.begin(); it != entities.end(); it++) {
+            (*it)->move(amount * Facing::STEP_X[facing],
+                        amount * Facing::STEP_Y[facing],
+                        amount * Facing::STEP_Z[facing]);
         }
     }
 }

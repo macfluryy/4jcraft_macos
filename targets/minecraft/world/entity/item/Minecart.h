@@ -30,6 +30,8 @@ public:
     static const int serialVersionUID = 0;
 
 private:
+    // Reusable buffer for the per-tick minecart-collision query.
+    std::vector<std::shared_ptr<Entity> > m_pushScratch;
     static const int DATA_ID_HURT = 17;
     static const int DATA_ID_HURTDIR = 18;
     static const int DATA_ID_DAMAGE = 19;

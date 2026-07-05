@@ -899,15 +899,13 @@ void Player::aiStep() {
             pickupArea = bb.grow(1, .5, 1);
         }
 
-        std::vector<std::shared_ptr<Entity>>* entities =
-            level->getEntities(shared_from_this(), &pickupArea);
-        if (entities != nullptr) {
-            auto itEnd = entities->end();
-            for (auto it = entities->begin(); it != itEnd; it++) {
-                std::shared_ptr<Entity> e = *it;  // entities->at(i);
-                if (!e->removed) {
-                    touch(e);
-                }
+        std::vector<std::shared_ptr<Entity>>& entities = m_pickupScratch;
+        level->getEntities(shared_from_this(), &pickupArea, entities);
+        auto itEnd = entities.end();
+        for (auto it = entities.begin(); it != itEnd; it++) {
+            std::shared_ptr<Entity> e = *it;  // entities.at(i);
+            if (!e->removed) {
+                touch(e);
             }
         }
     }
@@ -2209,10 +2207,22 @@ void Player::setGameMode(GameType* mode) {}
 std::wstring Player::getName() { return name; }
 
 std::wstring Player::getDisplayName() {
-    // PlayerTeam.formatNameForTeam(getTeam(), name);
+    // If player display name is not set, use the plain name.
+    const std::wstring& base = m_displayName.size() > 0 ? m_displayName : name;
+    Scoreboard* scoreboard =
+        level != nullptr ? level->getScoreboard() : nullptr;
+    if (scoreboard == nullptr) return base;
 
-    // If player display name is not set, return name
-    return m_displayName.size() > 0 ? m_displayName : name;
+    // Team prefix/suffix formatting, cached against the scoreboard revision:
+    // rebuilt only when a team (or any scoreboard state) changes, never per
+    // frame. Team removal restores the plain name on the next call because
+    // getPlayersTeam() then returns null.
+    if (scoreboard->getRevision() != m_teamNameRevision) {
+        m_teamNameRevision = scoreboard->getRevision();
+        m_teamFormattedName = PlayerTeam::formatNameForTeam(
+            scoreboard->getPlayersTeam(name), base);
+    }
+    return m_teamFormattedName;
 }
 
 std::wstring Player::getNetworkName() {

@@ -191,12 +191,12 @@ void Fireball::tick() {
     }
     std::shared_ptr<Entity> hitEntity = nullptr;
     AABB grown = bb.expand(xd, yd, zd).grow(1, 1, 1);
-    std::vector<std::shared_ptr<Entity> >* objects =
-        level->getEntities(shared_from_this(), &grown);
+    std::vector<std::shared_ptr<Entity> > objects;
+    level->getEntities(shared_from_this(), &grown, objects);
     double nearest = 0;
-    auto itEnd = objects->end();
-    for (auto it = objects->begin(); it != itEnd; it++) {
-        std::shared_ptr<Entity> e = *it;  // objects->at(i);
+    auto itEnd = objects.end();
+    for (auto it = objects.begin(); it != itEnd; it++) {
+        std::shared_ptr<Entity> e = *it;  // objects.at(i);
         if (!e->isPickable() || (e->is(owner)))
             continue;  // 4J Stu - Never collide with the owner (Enderdragon) //
                        // && flightTime < 25)) continue;

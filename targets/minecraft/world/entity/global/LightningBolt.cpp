@@ -117,11 +117,11 @@ void LightningBolt::tick() {
         } else {
             double r = 3;
             AABB aoe_bb = AABB(x, y, z, x, y + 6, z).grow(r, r, r);
-            std::vector<std::shared_ptr<Entity> >* entities =
-                level->getEntities(shared_from_this(), &aoe_bb);
-            auto itEnd = entities->end();
-            for (auto it = entities->begin(); it != itEnd; it++) {
-                std::shared_ptr<Entity> e = (*it);  // entities->at(i);
+            std::vector<std::shared_ptr<Entity> > entities;
+            level->getEntities(shared_from_this(), &aoe_bb, entities);
+            auto itEnd = entities.end();
+            for (auto it = entities.begin(); it != itEnd; it++) {
+                std::shared_ptr<Entity> e = (*it);  // entities.at(i);
                 e->thunderHit(this);
             }
         }

@@ -99,10 +99,10 @@ std::shared_ptr<ItemInstance> BoatItem::use(
     float overlap = 1;
     AABB grown = player->bb.expand(b.x * (range), b.y * (range), b.z * (range))
                      .grow(overlap, overlap, overlap);
-    std::vector<std::shared_ptr<Entity> >* objects =
-        level->getEntities(player, &grown);
+    std::vector<std::shared_ptr<Entity> > objects;
+    level->getEntities(player, &grown, objects);
     // for (int i = 0; i < objects.size(); i++) {
-    for (auto it = objects->begin(); it != objects->end(); ++it) {
+    for (auto it = objects.begin(); it != objects.end(); ++it) {
         std::shared_ptr<Entity> e = *it;  // objects.get(i);
         if (!e->isPickable()) continue;
 
