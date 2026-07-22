@@ -59,7 +59,7 @@
 
 C4JRender RenderManager;
 
-// MARK: Shaders
+
 
 #define CPP_GLSL_INCLUDE
 
@@ -81,7 +81,7 @@ static const char* FRAG_SRC =
 
 #undef CPP_GLSL_INCLUDE
 
-// MARK: OpenGL state
+
 
 static SDL_Window*    s_window      = nullptr;
 static SDL_GLContext  s_glContext   = nullptr;
@@ -302,9 +302,9 @@ static inline void markDirty(unsigned int bit) { s_rs_dirty_mask |= bit; }
 static thread_local RenderState s_rs;
 static GLuint s_boundProgram = 0;
 
-// ---------------------------------------------------------------------------
-// Shadow-state helpers
-// ---------------------------------------------------------------------------
+
+
+
 
 static void glShadowSetBlend(bool e) {
     if (!(s_gl_shadow_mask & SHADOW_BLEND) || s_gl_state.blend != e) {
@@ -454,9 +454,9 @@ static void pushRenderState() {
     flushMatrices();
 }
 
-// ---------------------------------------------------------------------------
-// Vertex / chunk buffers
-// ---------------------------------------------------------------------------
+
+
+
 
 static GLuint      s_sVAO_std = 0, s_sVBO_std = 0;
 static GLsizeiptr  s_streamVBOSize = 0;
@@ -886,9 +886,9 @@ bool C4JRender::CBuffCall(int index, bool) {
     return true;
 }
 
-// ---------------------------------------------------------------------------
-// Matrix API
-// ---------------------------------------------------------------------------
+
+
+
 
 void C4JRender::MatrixMode(int t) {
     if      (t == GL_PROJECTION) s_matMode = 1;
@@ -934,9 +934,9 @@ void C4JRender::Set_matrixDirty() {
     if (s_shader.prog) { glUseProgram(s_shader.prog); s_boundProgram = s_shader.prog; }
 }
 
-// ---------------------------------------------------------------------------
-// State API
-// ---------------------------------------------------------------------------
+
+
+
 
 void C4JRender::Clear(int f) { glClear(f); }
 void C4JRender::SetClearColour(const float c[4]) { glClearColor(c[0],c[1],c[2],c[3]); }
@@ -1011,12 +1011,12 @@ void C4JRender::StateSetTextureEnable(bool e) {
     if (s_rs.activeTexture==0 && s_rs.useTexture!=e) { s_rs.useTexture=e; markDirty(DIRTY_TEXTURE); }
 }
 void C4JRender::StateSetActiveTexture(int tex) {
-    s_rs.activeTexture = (tex==0x84C1/*GL_TEXTURE1*/)?1:0;
+    s_rs.activeTexture = (tex==0x84C1)?1:0;
 }
 
-// ---------------------------------------------------------------------------
-// Texture API
-// ---------------------------------------------------------------------------
+
+
+
 
 int  C4JRender::TextureCreate()   { GLuint id; glGenTextures(1,&id); return (int)id; }
 void C4JRender::TextureFree(int i){ GLuint id=(GLuint)i; glDeleteTextures(1,&id); }
@@ -1050,7 +1050,7 @@ void C4JRender::TextureSetTextureLevels(int l) {
 int C4JRender::TextureGetTextureLevels() { return 1; }
 
 void C4JRender::TextureData(int w, int h, void* d, int lvl, eTextureFormat) {
-    // GL_BGRA + GL_UNSIGNED_BYTE
+    
     glTexImage2D(GL_TEXTURE_2D, lvl, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, d);
     if (lvl == 0) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -1065,9 +1065,9 @@ void C4JRender::TextureDataUpdate(int xo, int yo, int w, int h, void* d, int lvl
 }
 void C4JRender::TextureSetParam(int p, int v) { glTexParameteri(GL_TEXTURE_2D, p, v); }
 
-// ---------------------------------------------------------------------------
-// Image loading
-// ---------------------------------------------------------------------------
+
+
+
 
 static int stbLoad(unsigned char* data, int w, int h, D3DXIMAGE_INFO* info, int** out) {
     int* px = new int[w * h];
@@ -1101,9 +1101,9 @@ void C4JRender::UpdateGamma(unsigned short usGamma) {
     s_rs.gamma = 0.5f + ((float)(usGamma) * (1.0f / GAMMA_MAX));
 }
 
-// ---------------------------------------------------------------------------
-// C hooks (GL compatibility shims)
-// ---------------------------------------------------------------------------
+
+
+
 
 int  glGenTextures_4J()                        { GLuint id=0; ::glGenTextures(1,&id); return (int)id; }
 void glGenTextures_4J(int n, unsigned int* t)  { ::glGenTextures(n,t); }

@@ -1,5 +1,5 @@
 #pragma once
-// using namespace std;
+
 #include <chrono>
 #include <cstdint>
 #include <memory>
@@ -26,14 +26,14 @@ class TutorialConstraint;
 class TutorialHint;
 class TutorialTask;
 
-// #define TUTORIAL_HINT_DELAY_TIME 14000 // How long we should wait from
-// displaying one hint to the next #define TUTORIAL_DISPLAY_MESSAGE_TIME 7000
-// #define TUTORIAL_MINIMUM_DISPLAY_MESSAGE_TIME 2000
-// #define TUTORIAL_REMINDER_TIME (TUTORIAL_DISPLAY_MESSAGE_TIME + 20000)
-// #define TUTORIAL_CONSTRAINT_DELAY_REMOVE_TICKS 15
-//
-// // 0-24000
-// #define TUTORIAL_FREEZE_TIME_VALUE 8000
+
+
+
+
+
+
+
+
 
 class UIScene;
 class Level;
@@ -99,8 +99,8 @@ protected:
     std::vector<std::pair<TutorialConstraint*, unsigned char> >
         constraintsToRemove[e_Tutorial_State_Max];
     std::vector<TutorialTask*>
-        tasks;  // We store a copy of the tasks for the main gameplay tutorial
-                // so that we could display an overview menu
+        tasks;  
+                
     std::vector<TutorialTask*> activeTasks[e_Tutorial_State_Max];
     std::vector<TutorialHint*> hints[e_Tutorial_State_Max];
     TutorialTask* currentTask[e_Tutorial_State_Max];
@@ -108,7 +108,7 @@ protected:
 
     bool m_freezeTime;
     bool m_timeFrozen;
-    // D3DXVECTOR3 m_OriginalPosition;
+    
 
 public:
     time_util::time_point lastMessageTime;
@@ -151,7 +151,7 @@ public:
     void setHintCompleted(eTutorial_Hint hint);
     void setHintCompleted(TutorialHint* hint);
 
-    // completableId will be either a eTutorial_State value or eTutorial_Hint
+    
     void setCompleted(int completableId);
     bool getCompleted(int completableId);
 
@@ -203,15 +203,15 @@ public:
         return m_iTutorialDisplayMessageTime;
     }
 
-    // Only for the main gameplay tutorial
+    
     std::vector<TutorialTask*>* getTasks();
     unsigned int getCurrentTaskIndex();
 
     UIScene* getScene() { return m_UIScene; }
     eTutorial_State getCurrentState() { return m_CurrentState; }
 
-    // These are required so that we have a consistent mapping of the completion
-    // bits stored in the profile data
+    
+    
     static void staticCtor();
     static std::vector<int> s_completableTasks;
 

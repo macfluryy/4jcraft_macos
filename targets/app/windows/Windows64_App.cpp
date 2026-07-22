@@ -37,28 +37,28 @@ void WindowsGame::GetScreenshot(int iPad,
                                          unsigned int* screenshotSize) {}
 
 void WindowsGame::TemporaryCreateGameStart() {
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    /// From CScene_Main::OnInit
+    
+    
 
     app.setLevelGenerationOptions(nullptr);
 
-    // From CScene_Main::RunPlayGame
+    
     Minecraft* pMinecraft = Minecraft::GetInstance();
     app.ReleaseSaveThumbnail();
     ProfileManager.SetLockedProfile(0);
     pMinecraft->user->name = L"Windows";
     app.ApplyGameSettingsChanged(0);
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    /// From CScene_MultiGameJoinLoad::OnInit
+    
+    
     MinecraftServer::resetFlags();
 
-    // From CScene_MultiGameJoinLoad::OnNotifyPressEx
+    
     app.SetTutorialMode(false);
     app.SetCorruptSaveDeleted(false);
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    /// From CScene_MultiGameCreate::CreateGame
+    
+    
 
     app.ClearTerrainFeaturePosition();
     std::wstring wWorldName = L"TestWorld";
@@ -68,9 +68,9 @@ void WindowsGame::TemporaryCreateGameStart() {
 
     bool isFlat = false;
     int64_t seedValue =
-        0;  // BiomeSource::findSeed(isFlat?LevelType::lvl_flat:LevelType::lvl_normal);
-            // // 4J - was (new Random())->nextLong() - now trying to actually
-            // find a seed to suit our requirements
+        0;  
+            
+            
 
     NetworkGameInitData* param = new NetworkGameInitData();
     param->seed = seedValue;
@@ -83,7 +83,7 @@ void WindowsGame::TemporaryCreateGameStart() {
 
     app.SetGameHostOption(
         eGameHostOption_GameType,
-        GameType::CREATIVE->getId());  // LevelSettings::GAMETYPE_SURVIVAL
+        GameType::CREATIVE->getId());  
     app.SetGameHostOption(eGameHostOption_LevelType, 0);
     app.SetGameHostOption(eGameHostOption_Structures, 1);
     app.SetGameHostOption(eGameHostOption_BonusChest, 0);
@@ -104,7 +104,7 @@ void WindowsGame::TemporaryCreateGameStart() {
     loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
     loadingParams->lpParam = param;
 
-    // Reset the autosave time
+    
     app.SetAutosaveTimerTime();
 
     C4JThread* thread = new C4JThread(loadingParams->func,

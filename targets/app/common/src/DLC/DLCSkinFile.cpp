@@ -27,8 +27,8 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
                                const std::wstring& value) {
     switch (type) {
         case DLCManager::e_DLCParamType_DisplayName: {
-            // 4J Stu - In skin pack 2, the name for Zap is mis-spelt with two
-            // p's as Zapp dlcskin00000109.png
+            
+            
             if (m_path.compare(L"dlcskin00000109.png") == 0) {
                 m_displayName = L"Zap";
             } else {
@@ -38,20 +38,20 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
         case DLCManager::e_DLCParamType_ThemeName:
             m_themeName = value;
             break;
-        case DLCManager::e_DLCParamType_Free:  // If this parameter exists, then
-                                               // mark this as free
+        case DLCManager::e_DLCParamType_Free:  
+                                               
             m_bIsFree = true;
             break;
-        case DLCManager::e_DLCParamType_Credit:  // If this parameter exists,
-                                                 // then mark this as free
-                                                 // add it to the DLC credits
-                                                 // list
+        case DLCManager::e_DLCParamType_Credit:  
+                                                 
+                                                 
+                                                 
 
-            // we'll need to justify this text since we don't have a lot of room
-            // for lines of credits
+            
+            
             {
                 if (app.AlreadySeenCreditText(value)) break;
-                // first add a blank string for spacing
+                
                 app.AddCreditText(L"");
 
                 int maximumChars = 55;
@@ -91,7 +91,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
                             break;
                     }
 
-                    // if a space was found, include the space on this line
+                    
                     if (iLast != i) {
                         iLast++;
                     }
@@ -128,7 +128,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
                 pSkinBox->ePart = eBodyPart_Leg1;
             }
 
-            // add this to the skin's vector of parts
+            
             m_AdditionalBoxes.push_back(pSkinBox);
         } break;
         case DLCManager::e_DLCParamType_Anim: {
@@ -143,10 +143,10 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
     }
 }
 
-// std::vector<ModelPart *> *DLCSkinFile::getAdditionalModelParts()
-// {
-// 	return &m_AdditionalModelParts;
-// }
+
+
+
+
 
 int DLCSkinFile::getAdditionalBoxesCount() {
     return (int)m_AdditionalBoxes.size();

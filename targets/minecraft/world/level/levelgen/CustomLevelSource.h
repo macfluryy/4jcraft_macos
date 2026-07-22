@@ -35,7 +35,7 @@ public:
 private:
 #ifdef _OVERRIDE_HEIGHTMAP
     Random* random;
-    Random* pprandom;  // 4J - added
+    Random* pprandom;  
     PerlinNoise* perlinNoise3;
     LargeFeature* caveFeature;
     StrongholdFeature* strongholdFeature;
@@ -68,7 +68,7 @@ private:
 
 public:
     virtual LevelChunk* getChunk(int xOffs, int zOffs);
-    virtual void lightChunk(LevelChunk* lc);  // 4J added
+    virtual void lightChunk(LevelChunk* lc);  
 
 public:
     virtual bool hasChunk(int x, int y);

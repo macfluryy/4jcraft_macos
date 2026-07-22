@@ -15,11 +15,11 @@ class ResourceLocation;
 
 class PlayerRenderer : public LivingEntityRenderer {
 public:
-    // 4J: Made public for use in skull renderer
+    
     static ResourceLocation DEFAULT_LOCATION;
 
 private:
-    // 4J Added
+    
     static const unsigned int s_nametagColors[MINECRAFT_NET_MAX_PLAYERS];
 
     HumanoidModel* humanoidModel;
@@ -65,7 +65,7 @@ protected:
 private:
     virtual void renderShadow(std::shared_ptr<Entity> e, double x, double y,
                               double z, float pow,
-                              float a);  // 4J Added override
+                              float a);  
 
 public:
     virtual ResourceLocation* getTextureLocation(
@@ -73,5 +73,5 @@ public:
 
     using LivingEntityRenderer::bindTexture;
     virtual void bindTexture(
-        std::shared_ptr<Entity> entity);  // 4J Added override
+        std::shared_ptr<Entity> entity);  
 };

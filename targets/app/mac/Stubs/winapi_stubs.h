@@ -50,19 +50,19 @@ typedef struct {
 
 typedef long long LONGLONG;
 typedef wchar_t *LPWSTR, *PWSTR;
-typedef unsigned char boolean;  // java brainrot
+typedef unsigned char boolean;  
 #define __debugbreak()
 #define CONST const
 typedef unsigned long ULONG;
-// typedef unsigned char byte;
+
 typedef short SHORT;
 typedef float FLOAT;
 
 #define ERROR_SUCCESS 0L
-#define ERROR_IO_PENDING 997L  // dderror
+#define ERROR_IO_PENDING 997L  
 #define ERROR_CANCELLED 1223L
 
-#define INFINITE 0xFFFFFFFF  // Infinite timeout
+#define INFINITE 0xFFFFFFFF  
 
 #define PAGE_READWRITE 0x04
 #define MEM_LARGE_PAGES 0x20000000
@@ -135,10 +135,10 @@ typedef float FLOAT;
 #define MEM_16MB_PAGES 0x80000000
 
 #define THREAD_BASE_PRIORITY_LOWRT \
-    15                              // value that gets a thread to LowRealtime-1
-#define THREAD_BASE_PRIORITY_MAX 2  // maximum thread base priority boost
-#define THREAD_BASE_PRIORITY_MIN -2    // minimum thread base priority boost
-#define THREAD_BASE_PRIORITY_IDLE -15  // value that gets a thread to idle
+    15                              
+#define THREAD_BASE_PRIORITY_MAX 2  
+#define THREAD_BASE_PRIORITY_MIN -2    
+#define THREAD_BASE_PRIORITY_IDLE -15  
 
 #define THREAD_PRIORITY_LOWEST THREAD_BASE_PRIORITY_MIN
 #define THREAD_PRIORITY_BELOW_NORMAL (THREAD_PRIORITY_LOWEST + 1)
@@ -150,8 +150,8 @@ typedef float FLOAT;
 #define THREAD_PRIORITY_TIME_CRITICAL THREAD_BASE_PRIORITY_LOWRT
 #define THREAD_PRIORITY_IDLE THREAD_BASE_PRIORITY_IDLE
 
-#define IGNORE 0             // Ignore signal
-#define INFINITE 0xFFFFFFFF  // Infinite timeout
+#define IGNORE 0             
+#define INFINITE 0xFFFFFFFF  
 #define STATUS_WAIT_0 ((DWORD)0x00000000L)
 #define WAIT_OBJECT_0 ((STATUS_WAIT_0) + 0)
 #define STATUS_PENDING ((DWORD)0x00000103L)
@@ -159,7 +159,7 @@ typedef float FLOAT;
 
 #define INVALID_HANDLE_VALUE ((HANDLE)(ULONG_PTR) - 1)
 
-// https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-filetime
+
 typedef struct _FILETIME {
     DWORD dwLowDateTime;
     DWORD dwHighDateTime;
@@ -184,7 +184,7 @@ typedef enum _GET_FILEEX_INFO_LEVELS {
 typedef void* XMEMCOMPRESSION_CONTEXT;
 typedef void* XMEMDECOMPRESSION_CONTEXT;
 
-// https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-systemtime
+
 typedef struct _SYSTEMTIME {
     WORD wYear;
     WORD wMonth;
@@ -197,7 +197,7 @@ typedef struct _SYSTEMTIME {
 } SYSTEMTIME, *PSYSTEMTIME, *LPSYSTEMTIME;
 
 #define TLS_OUT_OF_INDEXES ((DWORD)0xFFFFFFFF)
-// https://learn.microsoft.com/en-us/cpp/c-runtime-library/truncate?view=msvc-170
+
 #define _TRUNCATE ((size_t)-1)
 
 #define DECLARE_HANDLE(name) typedef HANDLE name
@@ -218,10 +218,10 @@ typedef HINSTANCE HMODULE;
 #define E_ABORT _HRESULT_TYPEDEF_(0x80004004L)
 #define E_NOINTERFACE _HRESULT_TYPEDEF_(0x80004002L)
 
-// https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-globalmemorystatus
+
 static inline void GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) {
-    // TODO: Parse /proc/meminfo and set lpBuffer based on that. Probably will
-    // also need another different codepath for macOS too.
+    
+    
 }
 
 static inline DWORD GetLastError(void) { return errno; }
@@ -244,8 +244,8 @@ static inline int64_t InterlockedCompareExchangeRelease(
 }
 #endif
 
-// internal helper: convert time_t to FILETIME (100ns intervals since
-// 1601-01-01)
+
+
 static inline FILETIME _TimeToFileTime(time_t t) {
     const uint64_t EPOCH_DIFF = 11644473600ULL;
     uint64_t val = ((uint64_t)t + EPOCH_DIFF) * 10000000ULL;
@@ -359,17 +359,17 @@ static inline bool ReadFile(HANDLE hFile, void* lpBuffer,
     return n >= 0;
 }
 
-// internal helper: convert FILETIME (100ns since 1601) to time_t (seconds since
-// 1970)
+
+
 static inline time_t _FileTimeToTimeT(const FILETIME& ft) {
     uint64_t val = ((uint64_t)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
     const uint64_t EPOCH_DIFF =
-        116444736000000000ULL;  // 100ns intervals between 1601-01-01 and
-                                // 1970-01-01
+        116444736000000000ULL;  
+                                
     return (time_t)((val - EPOCH_DIFF) / 10000000ULL);
 }
 
-// internal helper: read the current wall clock into a timespec
+
 static inline void _CurrentTimeSpec(struct timespec* ts) {
 #ifdef CLOCK_REALTIME
     clock_gettime(CLOCK_REALTIME, ts);
@@ -381,29 +381,29 @@ static inline void _CurrentTimeSpec(struct timespec* ts) {
 #endif
 }
 
-// internal helper: fill SYSTEMTIME from a broken-down tm + nanosecond remainder
+
 static inline void _FillSystemTime(const struct tm* tm, long tv_nsec,
                                    LPSYSTEMTIME lpSystemTime) {
     lpSystemTime->wYear = tm->tm_year + 1900;
     lpSystemTime->wMonth = tm->tm_mon + 1;
-    lpSystemTime->wDayOfWeek = tm->tm_wday;  // 0 = Sunday
+    lpSystemTime->wDayOfWeek = tm->tm_wday;  
     lpSystemTime->wDay = tm->tm_mday;
     lpSystemTime->wHour = tm->tm_hour;
     lpSystemTime->wMinute = tm->tm_min;
     lpSystemTime->wSecond = tm->tm_sec;
-    lpSystemTime->wMilliseconds = (WORD)(tv_nsec / 1000000);  // ns to ms
+    lpSystemTime->wMilliseconds = (WORD)(tv_nsec / 1000000);  
 }
 
-// https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlocaltime
+
 static inline void GetLocalTime(LPSYSTEMTIME lpSystemTime) {
     struct timespec ts;
     _CurrentTimeSpec(&ts);
     struct tm tm;
-    localtime_r(&ts.tv_sec, &tm);  // local time
+    localtime_r(&ts.tv_sec, &tm);  
     _FillSystemTime(&tm, ts.tv_nsec, lpSystemTime);
 }
 
-// https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-filetimetosystemtime
+
 static inline bool FileTimeToSystemTime(const FILETIME* lpFileTime,
                                         LPSYSTEMTIME lpSystemTime) {
     uint64_t ft = ((uint64_t)lpFileTime->dwHighDateTime << 32) |
@@ -412,18 +412,18 @@ static inline bool FileTimeToSystemTime(const FILETIME* lpFileTime,
     long remainder_ns = (long)((ft % 10000000ULL) * 100);
 
     struct tm tm;
-    gmtime_r(&t, &tm);  // UTC
+    gmtime_r(&t, &tm);  
     _FillSystemTime(&tm, remainder_ns, lpSystemTime);
     return true;
 }
 
-// https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringa
+
 static inline void OutputDebugStringA(const char* lpOutputString) {
     if (!lpOutputString) return;
     fputs(lpOutputString, stderr);
 }
 
-// https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringw
+
 static inline void OutputDebugStringW(const wchar_t* lpOutputString) {
     if (!lpOutputString) return;
     fprintf(stderr, "%ls", lpOutputString);
@@ -516,8 +516,8 @@ static inline DWORD _WaitForThread(struct LinuxThread* lt,
 
 static inline DWORD WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds) {
     if (!hHandle) return WAIT_FAILED;
-    // Check if this is a thread handle (LinuxThread has magic number as first
-    // field)
+    
+    
     if (*(int*)hHandle == HANDLE_TYPE_THREAD) {
         return _WaitForThread((struct LinuxThread*)hHandle, dwMilliseconds);
     }
@@ -577,7 +577,7 @@ static inline void* _linux_thread_entry(void* arg) {
         pthread_cond_wait(&lt->suspendCond, &lt->suspendMutex);
     pthread_mutex_unlock(&lt->suspendMutex);
     lt->exitCode = lt->func(lt->param);
-    // Signal completion
+    
     pthread_mutex_lock(&lt->completionMutex);
     lt->completed = 1;
     pthread_cond_broadcast(&lt->completionCond);
@@ -699,16 +699,16 @@ static inline HMODULE GetModuleHandle(const char* lpModuleName) { return 0; }
 
 static inline void* VirtualAlloc(void* lpAddress, size_t dwSize,
                                  DWORD flAllocationType, DWORD flProtect) {
-    // MEM_COMMIT | MEM_RESERVE → mmap anonymous
+    
     int prot = 0;
-    if (flProtect == 0x04 /*PAGE_READWRITE*/)
+    if (flProtect == 0x04 )
         prot = PROT_READ | PROT_WRITE;
-    else if (flProtect == 0x40 /*PAGE_EXECUTE_READWRITE*/)
+    else if (flProtect == 0x40 )
         prot = PROT_READ | PROT_WRITE | PROT_EXEC;
-    else if (flProtect == 0x02 /*PAGE_READONLY*/)
+    else if (flProtect == 0x02 )
         prot = PROT_READ;
     else
-        prot = PROT_READ | PROT_WRITE;  // default
+        prot = PROT_READ | PROT_WRITE;  
 
     int flags = MAP_PRIVATE | MAP_ANONYMOUS;
     if (lpAddress != nullptr) flags |= MAP_FIXED;
@@ -721,15 +721,15 @@ static inline void* VirtualAlloc(void* lpAddress, size_t dwSize,
 static inline bool VirtualFree(void* lpAddress, size_t dwSize,
                                DWORD dwFreeType) {
     if (lpAddress == nullptr) return false;
-    // MEM_RELEASE (0x8000) frees the whole region
-    if (dwFreeType == 0x8000 /*MEM_RELEASE*/) {
-        // dwSize should be 0 for MEM_RELEASE per Win32 API, but we don't track
-        // allocation sizes Use dwSize if provided, otherwise this is a
-        // best-effort
-        if (dwSize == 0) dwSize = 4096;  // minimum page
+    
+    if (dwFreeType == 0x8000 ) {
+        
+        
+        
+        if (dwSize == 0) dwSize = 4096;  
         munmap(lpAddress, dwSize);
     } else {
-        // MEM_DECOMMIT (0x4000) - just decommit (make inaccessible)
+        
         madvise(lpAddress, dwSize, MADV_DONTNEED);
     }
     return true;
@@ -737,4 +737,4 @@ static inline bool VirtualFree(void* lpAddress, size_t dwSize,
 
 #define _wcsicmp wcscasecmp
 
-#endif  // WINAPISTUBS_H
+#endif  

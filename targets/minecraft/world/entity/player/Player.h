@@ -59,7 +59,7 @@ public:
     static const int CHAT_VISIBILITY_SYSTEM = 1;
     static const int CHAT_VISIBILITY_HIDDEN = 2;
 
-    // 4J-PB - added for a red death fade in the gui
+    
     static const int DEATHFADE_DURATION = 21;
 
 private:
@@ -92,39 +92,39 @@ public:
 
     std::wstring name;
     int takeXpDelay;
-    // Reusable buffer for the per-tick item-pickup entity query.
+    
     std::vector<std::shared_ptr<Entity> > m_pickupScratch;
-    // Team-formatted display name, cached against the scoreboard revision so
-    // it is never rebuilt per frame (nametag/tab render call getDisplayName
-    // every frame).
+    
+    
+    
     int m_teamNameRevision = -1;
     std::wstring m_teamFormattedName;
 
-    // 4J-PB - track custom skin
+    
     std::wstring customTextureUrl;
     std::wstring customTextureUrl2;
     unsigned int m_uiPlayerCurrentSkin;
     void ChangePlayerSkin();
 
-    // 4J-PB - not needed, since cutomtextureurl2 is the same thing wstring
-    // cloakTexture;
+    
+    
 
     double xCloakO, yCloakO, zCloakO;
     double xCloak, yCloak, zCloak;
 
-    // 4J-HG: store display name, added for Xbox One "game display name"
+    
     std::wstring m_displayName;
 
 protected:
-    // player sleeping in bed?
+    
     bool m_isSleeping;
 
 public:
     Pos* bedPosition;
 
 private:
-    int sleepCounter;      // animation timer
-    int deathFadeCounter;  // animation timer
+    int sleepCounter;      
+    int deathFadeCounter;  
 
 public:
     float bedOffsetX, bedOffsetY, bedOffsetZ;
@@ -135,8 +135,8 @@ private:
     bool respawnForced;
     Pos* minecartAchievementPos;
 
-    // 4J Gordon: These are in cms, every time they go > 1m they are entered
-    // into the stats
+    
+    
     int distanceWalk, distanceSwim, distanceFall, distanceClimb,
         distanceMinecart, distanceBoat, distancePig;
 
@@ -146,8 +146,8 @@ public:
     int experienceLevel, totalExperience;
     float experienceProgress;
 
-    // 4J Stu - Made protected so that we can access it from
-    // MultiPlayerLocalPlayer
+    
+    
 protected:
     std::shared_ptr<ItemInstance> useItem;
     int useItemDuration;
@@ -162,7 +162,7 @@ private:
 public:
     eINSTANCEOF GetType() { return eTYPE_PLAYER; }
 
-    // 4J Added to default init
+    
     void _init();
 
     Player(Level* level, const std::wstring& name);
@@ -181,8 +181,8 @@ public:
     void stopUsingItem();
     virtual bool isBlocking();
 
-    // 4J Stu - Added for things that should only be ticked once per simulation
-    // frame
+    
+    
     virtual void updateFrameTick();
 
     virtual void tick();
@@ -239,21 +239,21 @@ public:
     virtual void readAdditionalSaveData(CompoundTag* entityTag);
     virtual void addAdditonalSaveData(CompoundTag* entityTag);
     virtual bool openContainer(
-        std::shared_ptr<Container> container);  // 4J - added bool return
+        std::shared_ptr<Container> container);  
     virtual bool openHopper(std::shared_ptr<HopperTileEntity> container);
     virtual bool openHopper(std::shared_ptr<MinecartHopper> container);
     virtual bool openHorseInventory(std::shared_ptr<EntityHorse> horse,
                                     std::shared_ptr<Container> container);
     virtual bool startEnchanting(
         int x, int y, int z,
-        const std::wstring& name);                     // 4J - added bool return
-    virtual bool startRepairing(int x, int y, int z);  // 4J - added bool return
-    virtual bool startCrafting(int x, int y, int z);   // 4J - added bool return
-    virtual bool openFireworks(int x, int y, int z);   // 4J - added
+        const std::wstring& name);                     
+    virtual bool startRepairing(int x, int y, int z);  
+    virtual bool startCrafting(int x, int y, int z);   
+    virtual bool openFireworks(int x, int y, int z);   
     virtual float getHeadHeight();
 
-    // 4J-PB - added to keep the code happy with the change to make the third
-    // person view per player
+    
+    
     virtual int ThirdPersonView() { return 0; }
     virtual void SetThirdPersonView(int val) {}
 
@@ -266,8 +266,8 @@ public:
     virtual bool hurt(DamageSource* source, float dmg);
     virtual bool canHarmPlayer(std::shared_ptr<Player> target);
     virtual bool canHarmPlayer(
-        std::wstring targetName);  // 4J: Added for ServerPlayer when only
-                                   // player name is provided
+        std::wstring targetName);  
+                                   
 
 protected:
     virtual void hurtArmor(float damage);
@@ -283,16 +283,16 @@ public:
     using Entity::interact;
 
     virtual bool openFurnace(std::shared_ptr<FurnaceTileEntity>
-                                 container);  // 4J - added bool return
+                                 container);  
     virtual bool openTrap(std::shared_ptr<DispenserTileEntity>
-                              container);  // 4J - added bool return
+                              container);  
     virtual void openTextEdit(std::shared_ptr<TileEntity> sign);
     virtual bool openBrewingStand(std::shared_ptr<BrewingStandTileEntity>
-                                      brewingStand);  // 4J - added bool return
+                                      brewingStand);  
     virtual bool openBeacon(std::shared_ptr<BeaconTileEntity> beacon);
     virtual bool openTrading(
         std::shared_ptr<Merchant> traderTarget,
-        const std::wstring& name);  // 4J - added bool return
+        const std::wstring& name);  
     virtual void openItemInstanceGui(
         std::shared_ptr<ItemInstance> itemInstance);
     virtual bool interact(std::shared_ptr<Entity> entity);
@@ -329,18 +329,18 @@ private:
     void setBedOffset(int bedDirection);
 
 public:
-    /**
-     *
-     * @param forcefulWakeUp
-     *            If the player has been forced to wake up. When this happens,
-     *            the client will skip the wake-up animation. For example, when
-     *            the player is hurt or the bed is destroyed.
-     * @param updateLevelList
-     *            If the level's sleeping player list needs to be updated. This
-     *            is usually the case.
-     * @param saveRespawnPoint
-     *            TODO
-     */
+    
+
+
+
+
+
+
+
+
+
+
+
     virtual void stopSleepInBed(bool forcefulWakeUp, bool updateLevelList,
                                 bool saveRespawnPoint);
 
@@ -361,11 +361,11 @@ protected:
     void setPlayerFlag(int flag, bool value);
 
 public:
-    /**
-     * This method is currently only relevant to client-side players. It will
-     * try to load the messageId from the language file and display it to the
-     * client.
-     */
+    
+
+
+
+
     virtual void displayClientMessage(int messageId);
     virtual Pos* getRespawnPosition();
     virtual bool isRespawnForced();
@@ -425,7 +425,7 @@ public:
     void setGameMode(GameType* mode);
     std::wstring getName();
     virtual std::wstring getDisplayName();
-    virtual std::wstring getNetworkName();  // 4J: Added
+    virtual std::wstring getNetworkName();  
 
     virtual Level* getCommandSenderWorld();
 
@@ -443,18 +443,18 @@ public:
     virtual void setAbsorptionAmount(float absorptionAmount);
     virtual float getAbsorptionAmount();
 
-    //////// 4J /////////////////
+    
 
     static int hash_fnct(const std::shared_ptr<Player> k);
     static bool eq_test(const std::shared_ptr<Player> x,
                         const std::shared_ptr<Player> y);
 
-    // 4J Stu - Added to allow callback to tutorial to stay within
-    // Minecraft.Client Overidden in LocalPlayer
+    
+    
     virtual void onCrafted(std::shared_ptr<ItemInstance> item) {}
 
-    // 4J Overriding this so that we can have some different default skins
-    virtual int getTexture();  // 4J changed from std::wstring to int
+    
+    virtual int getTexture();  
     void setPlayerDefaultSkin(EDefaultSkins skin);
     EDefaultSkins getPlayerDefaultSkin() { return m_skinIndex; }
     virtual void setCustomSkin(std::uint32_t skinId);
@@ -466,8 +466,12 @@ public:
     static std::wstring getCapePathFromId(std::uint32_t capeId);
     static unsigned int getSkinAnimOverrideBitmask(std::uint32_t skinId);
 
-    // 4J Added
+    
     void setXuid(PlayerUID xuid);
+    
+    
+    void setJavaUuid(const std::string& uuid) { m_javaUuid = uuid; }
+    const std::string& getJavaUuid() const { return m_javaUuid; }
     PlayerUID getXuid() { return m_xuid; }
     void setOnlineXuid(PlayerUID xuid) { m_OnlineXuid = xuid; }
     PlayerUID getOnlineXuid() { return m_OnlineXuid; }
@@ -491,6 +495,7 @@ public:
 
 private:
     PlayerUID m_xuid;
+    std::string m_javaUuid;
     PlayerUID m_OnlineXuid;
 
 protected:
@@ -502,11 +507,11 @@ private:
     EDefaultSkins m_skinIndex;
     std::uint32_t m_dwSkinId, m_dwCapeId;
 
-    // 4J Added - Used to show which colour the player is on the map/behind
-    // their name
+    
+    
     std::uint8_t m_playerIndex;
 
-    // 4J-PB - to track debug options from the server player
+    
     unsigned int m_uiDebugOptions;
 
 public:
@@ -516,48 +521,48 @@ public:
     void StopSleeping() {}
 
 public:
-    // If you add things here, you should also add a message to
-    // ClientConnection::displayPrivilegeChanges to alert players to changes
+    
+    
     enum EPlayerGamePrivileges {
         ePlayerGamePrivilege_CannotMine =
-            0,                             // Only checked if trust system is on
-        ePlayerGamePrivilege_CannotBuild,  // Only checked if trust system is on
-        ePlayerGamePrivilege_CannotAttackMobs,  // Only checked if trust system
-                                                // is on
-        ePlayerGamePrivilege_CannotAttackPlayers,  // Only checked if trust
-                                                   // system is on
+            0,                             
+        ePlayerGamePrivilege_CannotBuild,  
+        ePlayerGamePrivilege_CannotAttackMobs,  
+                                                
+        ePlayerGamePrivilege_CannotAttackPlayers,  
+                                                   
         ePlayerGamePrivilege_Op,
         ePlayerGamePrivilege_CanFly,
         ePlayerGamePrivilege_ClassicHunger,
         ePlayerGamePrivilege_Invisible,
         ePlayerGamePrivilege_Invulnerable,
 
-        ePlayerGamePrivilege_CreativeMode,  // Used only to transfer across
-                                            // network, should never be used to
-                                            // determine if a player is in
-                                            // creative mode
+        ePlayerGamePrivilege_CreativeMode,  
+                                            
+                                            
+                                            
 
-        ePlayerGamePrivilege_CannotAttackAnimals,     // Only checked if trust
-                                                      // system is on
-        ePlayerGamePrivilege_CanUseDoorsAndSwitches,  // Only checked if trust
-                                                      // system is on
-        ePlayerGamePrivilege_CanUseContainers,  // Only checked if trust system
-                                                // is on
+        ePlayerGamePrivilege_CannotAttackAnimals,     
+                                                      
+        ePlayerGamePrivilege_CanUseDoorsAndSwitches,  
+                                                      
+        ePlayerGamePrivilege_CanUseContainers,  
+                                                
 
         ePlayerGamePrivilege_CanToggleInvisible,
         ePlayerGamePrivilege_CanToggleFly,
         ePlayerGamePrivilege_CanToggleClassicHunger,
         ePlayerGamePrivilege_CanTeleport,
 
-        // Currently enum is used to bitshift into an unsigned int
+        
         ePlayerGamePrivilege_MAX = 32,
         ePlayerGamePrivilege_All = 33,
         ePlayerGamePrivilege_HOST,
     };
 
 private:
-    // 4J Added - Used to track what actions players have been allowed to
-    // perform by the host
+    
+    
     unsigned int m_uiGamePrivileges;
 
     unsigned int getPlayerGamePrivilege(EPlayerGamePrivileges privilege);
@@ -596,7 +601,7 @@ public:
     virtual bool canCreateParticles();
 
 public:
-    // 4J Stu - Added hooks for the game rules
+    
     virtual void handleCollectItem(std::shared_ptr<ItemInstance> item) {}
 
     std::vector<ModelPart*>* GetAdditionalModelParts();

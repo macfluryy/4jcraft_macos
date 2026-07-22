@@ -23,7 +23,7 @@ class Packet;
 class PacketListener;
 class SocketAddress;
 
-// 4J JEV, size of the threads (bytes).
+
 #define READ_STACK_SIZE 0
 #define WRITE_STACK_SIZE 0
 
@@ -55,28 +55,28 @@ private:
     const SocketAddress* address;
     DataInputStream* dis;
     DataOutputStream*
-        bufferedDos;  // 4J This is the same type of dos the java game has
+        bufferedDos;  
 
-    // 4J Added
-    DataOutputStream* byteArrayDos;  // 4J This dos allows us to write
-                                     // individual packets to the socket
+    
+    DataOutputStream* byteArrayDos;  
+                                     
     ByteArrayOutputStream* baos;
     Socket::SocketOutputStream* sos;
 
-    // 4J - made atomic; flipped between server tick / read thread / write
-    // thread without an external lock. Using atomic gives us a defined
-    // memory model and rules out tearing on weakly-ordered platforms.
+    
+    
+    
     std::atomic<bool> running;
 
     std::queue<std::shared_ptr<Packet> >
-        incoming;            // 4J - was using synchronizedList...
-    std::mutex incoming_cs;  // ... now has this mutex
+        incoming;            
+    std::mutex incoming_cs;  
     std::queue<std::shared_ptr<Packet> >
-        outgoing;  // 4J - was using synchronizedList - but don't think it is
-                   // required as usage is wrapped in writeLock
+        outgoing;  
+                   
     std::queue<std::shared_ptr<Packet> >
-        outgoing_slow;  // 4J - was using synchronizedList - but don't think it
-                        // is required as usage is wrapped in writeLock
+        outgoing_slow;  
+                        
 
     PacketListener* packetListener;
     std::atomic<bool> quitting;
@@ -91,12 +91,12 @@ private:
 
     std::atomic<bool> disconnected;
     DisconnectPacket::eDisconnectReason disconnectReason;
-    void** disconnectReasonObjects;  // 4J a pointer to an array.
+    void** disconnectReasonObjects;  
 
     int noInputTicks;
     int estimatedRemaining;
 
-    int tickCount;  // 4J Added
+    int tickCount;  
 
 public:
     static int readSizes[256];
@@ -107,14 +107,14 @@ public:
 private:
     void _init();
 
-    // 4J Jev, these might be better of as private
+    
     std::mutex threadCounterLock;
     std::mutex writeLock;
 
 public:
     ~Connection();
     Connection(Socket* socket, const std::wstring& id,
-               PacketListener* packetListener);  // throws IOException
+               PacketListener* packetListener);  
 
     void setListener(PacketListener* packetListener);
     void send(std::shared_ptr<Packet> packet);
@@ -134,12 +134,12 @@ private:
     bool readTick();
 
 private:
-    /* 4J JEV, removed try/catch
-    void handleException(Exception e)
-    {
-    e.printStackTrace();
-    close("disconnect.genericReason", "Internal exception: " + e.toString());
-    }*/
+    
+
+
+
+
+
 
 public:
     void close(DisconnectPacket::eDisconnectReason reason);

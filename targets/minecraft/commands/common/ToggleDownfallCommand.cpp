@@ -25,7 +25,7 @@ int ToggleDownfallCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
 
 void ToggleDownfallCommand::execute(std::shared_ptr<CommandSender> source,
                                     std::vector<uint8_t>& commandData) {
-    // 4J - FIX: Handle weather command with proper type deserialization
+    
     if (commandData.empty()) {
         source->sendMessage(L"§cUsage: /weather [clear|rain|thunder|thunderstorm]");
         return;
@@ -42,7 +42,7 @@ void ToggleDownfallCommand::execute(std::shared_ptr<CommandSender> source,
         std::wstring weatherNames[] = { L"Clear", L"Rain", L"Thunderstorm" };
         std::wstring weatherMsg = weatherNames[weatherType >= 0 && weatherType <= 2 ? weatherType : 0];
         source->sendMessage(L"§aWeather set to: " + weatherMsg);
-        //logAdminAction(source, ChatPacket::e_ChatCustom, L"commands.weather.set");
+        
         
     } catch (const std::exception& e) {
         source->sendMessage(L"§cError executing weather command");

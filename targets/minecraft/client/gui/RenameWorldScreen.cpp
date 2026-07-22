@@ -34,7 +34,7 @@ void RenameWorldScreen::init() {
     buttons.push_back(new Button(1, width / 2 + 2, height / 4 + 96 + 12, 98, 20,
                                  language->getElement(L"gui.cancel")));
 
-    // Pre-fill with the existing levelId so the user can edit it directly.
+    
     nameEdit = new EditBox(this, font, width / 2 - 100, 60, 200, 20, levelId);
     nameEdit->setMaxLength(32);
     nameEdit->focus(true);
@@ -82,7 +82,7 @@ void RenameWorldScreen::mouseClicked(int x, int y, int buttonNum) {
 void RenameWorldScreen::render(int xm, int ym, float a) {
     Language* language = Language::getInstance();
 
-    // fill(0, 0, width, height, 0x40000000);
+    
     renderBackground();
 
     drawCenteredString(font, language->getElement(L"selectWorld.renameTitle"),

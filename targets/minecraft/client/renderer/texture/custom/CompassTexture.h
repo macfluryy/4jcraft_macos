@@ -22,6 +22,6 @@ public:
     virtual int getSourceWidth() const;
     virtual int getSourceHeight() const;
     virtual int getFrames();
-    virtual void freeFrameTextures();  // 4J added
-    virtual bool hasOwnData();         // 4J Added
+    virtual void freeFrameTextures();  
+    virtual bool hasOwnData();         
 };

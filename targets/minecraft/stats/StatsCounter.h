@@ -28,7 +28,7 @@ private:
 
     typedef std::unordered_map<Stat*, StatContainer> StatsMap;
 
-    // static const int STAT_DATA_OFFSET = 32;
+    
     static const int LARGE_STATS_COUNT = 8;
     static Stat** LARGE_STATS[LARGE_STATS_COUNT];
     static const int SAVE_DELAY = 30 * 60;

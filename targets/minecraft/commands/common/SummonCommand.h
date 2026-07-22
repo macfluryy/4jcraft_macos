@@ -17,7 +17,7 @@ public:
     virtual void execute(std::shared_ptr<CommandSender> source,
                          std::vector<uint8_t>& commandData);
 
-    // Resolve a mob name (case-insensitive) to its EntityIO numeric id.
-    // Returns -1 if not found.
+    
+    
     static int resolveEntityIdByName(const std::wstring& name);
 };

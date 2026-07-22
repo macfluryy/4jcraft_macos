@@ -11,7 +11,7 @@ class Entity;
 class LivingEntity;
 class PathfinderMob;
 
-// Anonymous class from NearestAttackableTargetGoal
+
 class SubselectEntitySelector : public EntitySelector {
 private:
     EntitySelector* m_subselector;

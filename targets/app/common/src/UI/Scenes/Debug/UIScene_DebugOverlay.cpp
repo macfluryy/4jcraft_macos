@@ -45,7 +45,7 @@ class UILayer;
 UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void* initData,
                                            UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -151,7 +151,7 @@ void UIScene_DebugOverlay::customDraw(IggyCustomDrawCallbackRegion* region) {
         return;
 
     int itemId = -1;
-    // 4jcraft TODO: UB on our platform since this casts char16_t* to wchar_t*
+    
     swscanf((wchar_t*)region->name, L"item_%d", &itemId);
     if (itemId == -1 || itemId > Item::ITEM_NUM_COUNT ||
         Item::items[itemId] == nullptr) {
@@ -196,8 +196,8 @@ void UIScene_DebugOverlay::handlePress(F64 controlId, F64 childId) {
                 "UIScene_DebugOverlay::handlePress for itemsList: %f\n",
                 childId);
             int id = childId;
-            // app.SetXuiServerAction(m_iPad, eXuiServerAction_DropItem, (void
-            // *)m_itemIds[id]);
+            
+            
             ClientConnection* conn = Minecraft::GetInstance()->getConnection(
                 ProfileManager.GetPrimaryPad());
             conn->send(GiveItemCommand::preparePacket(
@@ -240,7 +240,7 @@ void UIScene_DebugOverlay::handlePress(F64 controlId, F64 childId) {
 #endif
         } break;
         case eControl_Rain: {
-            // app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),eXuiServerAction_ToggleRain);
+            
             ClientConnection* conn = Minecraft::GetInstance()->getConnection(
                 ProfileManager.GetPrimaryPad());
             conn->send(ToggleDownfallCommand::preparePacket());
@@ -271,9 +271,9 @@ void UIScene_DebugOverlay::handleSliderMove(F64 sliderId, F64 currentValue) {
         case eControl_Time: {
             Minecraft* pMinecraft = Minecraft::GetInstance();
 
-            // Need to set the time on both levels to stop the flickering as the
-            // local level tries to predict the time Only works if we are on the
-            // host machine, but shouldn't break if not
+            
+            
+            
             MinecraftServer::SetTime(currentValue * 100);
             pMinecraft->level->getLevelData()->setGameTime(currentValue * 100);
 

@@ -7,7 +7,7 @@ class Icon;
 
 class PistonExtensionTile : public Tile {
 public:
-    // i'm reusing this block for the sticky pistons
+    
     static const int STICKY_BIT = 8;
 
 private:
@@ -34,7 +34,7 @@ public:
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
-            TileEntity>());  // 4J added forceData, forceEntity param
+            TileEntity>());  
     virtual void neighborChanged(Level* level, int x, int y, int z, int type);
     static int getFacing(int data);
     virtual int cloneTileId(Level* level, int x, int y, int z);

@@ -12,8 +12,8 @@
 TheEndBiome::TheEndBiome(int id) : Biome(id) {
     enemies.clear();
     friendlies.clear();
-    friendlies_chicken.clear();  // 4J added
-    friendlies_wolf.clear();     // 4J added
+    friendlies_chicken.clear();  
+    friendlies_wolf.clear();     
     waterFriendlies.clear();
     ambientFriendlies.clear();
 
@@ -24,8 +24,7 @@ TheEndBiome::TheEndBiome(int id) : Biome(id) {
     decorator = new TheEndBiomeDecorator(this);
 }
 
-// 4J Stu - Don't need override
-// int TheEndBiome::getSkyColor(float temp)
-//{
-//	return 0x000000;
-//}
+
+
+
+

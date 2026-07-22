@@ -23,7 +23,7 @@ public:
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
-            TileEntity>());  // 4J added forceData, forceEntity param
+            TileEntity>());  
     virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual bool mayPlace(Level* level, int x, int y, int z, int face);
 
@@ -35,7 +35,7 @@ public:
     virtual int getColor() const;
     virtual int getColor(int auxData);
     virtual int getColor(LevelSource* level, int x, int y, int z,
-                         int data);  // 4J added
+                         int data);  
     virtual int getColor(LevelSource* level, int x, int y, int z);
     virtual void neighborChanged(Level* level, int x, int y, int z, int type);
     virtual void tick(Level* level, int x, int y, int z, Random* random);

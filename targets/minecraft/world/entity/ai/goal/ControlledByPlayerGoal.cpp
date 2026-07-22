@@ -44,8 +44,8 @@ ControlledByPlayerGoal::ControlledByPlayerGoal(Mob* mob, float maxSpeed,
 void ControlledByPlayerGoal::start() {
     speed = 0;
 
-    // 4J Stu - Need to initialise this otherwise the pig will never move if you
-    // jump on before another goal has made it move and set the speed
+    
+    
     if (mob->getSpeed() < walkSpeed) mob->setSpeed(walkSpeed);
 }
 

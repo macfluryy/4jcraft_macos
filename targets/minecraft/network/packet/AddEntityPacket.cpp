@@ -8,17 +8,17 @@
 void AddEntityPacket::_init(std::shared_ptr<Entity> e, int type, int data,
                             int xp, int yp, int zp, int yRotp, int xRotp) {
     id = e->entityId;
-    // 4J Stu - We should add entities at their "last sent" position so that the
-    // relative update packets put them in the correct place
-    x = xp;  //(int) floor(e->x * 32);
-    y = yp;  //(int) floor(e->y * 32);
-    z = zp;  //(int) floor(e->z * 32);
+    
+    
+    x = xp;  
+    y = yp;  
+    z = zp;  
     yRot = static_cast<uint8_t>(yRotp);
     xRot = static_cast<uint8_t>(xRotp);
     this->type = type;
     this->data = data;
-    if (data > -1)  // 4J - changed "no data" value to be -1, we can have a
-                    // valid entity id of 0
+    if (data > -1)  
+                    
     {
         double xd = e->xd;
         double yd = e->yd;
@@ -41,8 +41,8 @@ AddEntityPacket::AddEntityPacket() {}
 AddEntityPacket::AddEntityPacket(std::shared_ptr<Entity> e, int type, int yRotp,
                                  int xRotp, int xp, int yp, int zp) {
     _init(e, type, -1, xp, yp, zp, yRotp,
-          xRotp);  // 4J - changed "no data" value to be -1, we can have a valid
-                   // entity id of 0
+          xRotp);  
+                   
 }
 
 AddEntityPacket::AddEntityPacket(std::shared_ptr<Entity> e, int type, int data,
@@ -50,8 +50,8 @@ AddEntityPacket::AddEntityPacket(std::shared_ptr<Entity> e, int type, int data,
     _init(e, type, data, xp, yp, zp, yRotp, xRotp);
 }
 
-void AddEntityPacket::read(DataInputStream* dis)  // throws IOException  TODO 4J
-                                                  // JEV add throws statement
+void AddEntityPacket::read(DataInputStream* dis)  
+                                                  
 {
     id = dis->readShort();
     type = dis->readByte();
@@ -67,8 +67,8 @@ void AddEntityPacket::read(DataInputStream* dis)  // throws IOException  TODO 4J
     yRot = dis->readByte();
     xRot = dis->readByte();
     data = dis->readInt();
-    if (data > -1)  // 4J - changed "no data" value to be -1, we can have a
-                    // valid entity id of 0
+    if (data > -1)  
+                    
     {
         xa = dis->readShort();
         ya = dis->readShort();
@@ -78,7 +78,7 @@ void AddEntityPacket::read(DataInputStream* dis)  // throws IOException  TODO 4J
 
 void AddEntityPacket::write(
     DataOutputStream*
-        dos)  // throws IOException TODO 4J JEV add throws statement
+        dos)  
 {
     dos->writeShort(id);
     dos->writeByte(static_cast<uint8_t>(type));
@@ -94,8 +94,8 @@ void AddEntityPacket::write(
     dos->writeByte(yRot);
     dos->writeByte(xRot);
     dos->writeInt(data);
-    if (data > -1)  // 4J - changed "no data" value to be -1, we can have a
-                    // valid entity id of 0
+    if (data > -1)  
+                    
     {
         dos->writeShort(xa);
         dos->writeShort(ya);

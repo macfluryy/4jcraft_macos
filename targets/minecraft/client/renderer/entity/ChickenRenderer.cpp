@@ -24,8 +24,8 @@ void ChickenRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
 }
 
 float ChickenRenderer::getBob(std::shared_ptr<LivingEntity> _mob, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Chicken> mob = std::dynamic_pointer_cast<Chicken>(_mob);
 
     float flap = mob->oFlap + (mob->flap - mob->oFlap) * a;

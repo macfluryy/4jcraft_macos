@@ -19,7 +19,7 @@ class BaseRailTile : public Tile {
 public:
     static const int DIR_FLAT_Z = 0;
     static const int DIR_FLAT_X = 1;
-    // the data bit is used by boosters and detectors, so they can't turn
+    
     static const int RAIL_DATA_BIT = 8;
     static const int RAIL_DIRECTION_MASK = 7;
 
@@ -38,7 +38,7 @@ protected:
         int x, y, z;
         bool usesDataBit;
         std::vector<TilePos*> connections;
-        bool m_bValidRail;  // 4J added
+        bool m_bValidRail;  
 
     public:
         Rail(Level* level, int x, int y, int z);
@@ -83,7 +83,7 @@ public:
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
-            TileEntity>());  // 4J added forceData, forceEntity param
+            TileEntity>());  
     virtual bool isCubeShaped();
     virtual int getRenderShape();
     virtual int getResourceCount(Random random);

@@ -33,10 +33,10 @@ public:
     bool setTile(int x, int y, int z, int _tile);
     int getData(int x, int y, int z);
     bool setData(int x, int y, int z, int val, int mask,
-                 bool* maskedBitsChanged);  // 4J added mask
+                 bool* maskedBitsChanged);  
     int getBrightness(LightLayer::variety layer, int x, int y, int z);
     void getNeighbourBrightnesses(int* brightnesses, LightLayer::variety layer,
-                                  int x, int y, int z);  // 4J added
+                                  int x, int y, int z);  
     void setBrightness(LightLayer::variety layer, int x, int y, int z,
                        int brightness);
     int getRawBrightness(int x, int y, int z, int skyDampen);
@@ -51,8 +51,8 @@ public:
                        std::shared_ptr<TileEntity> tileEntity);
     void removeTileEntity(int x, int y, int z);
     void load();
-    void unload(bool unloadTileEntities);  // 4J - added parameter
-    bool containsPlayer();                 // 4J added
+    void unload(bool unloadTileEntities);  
+    bool containsPlayer();                 
     void markUnsaved();
     void getEntities(std::shared_ptr<Entity> except, AABB bb,
                      std::vector<std::shared_ptr<Entity> >& es,
@@ -66,15 +66,15 @@ public:
     int getBlocksAndData(
         std::vector<uint8_t>& data, int x0, int y0, int z0, int x1, int y1,
         int z1, int p,
-        bool includeLighting = true);  // 4J - added includeLighting parameter
+        bool includeLighting = true);  
     int setBlocksAndData(
         std::vector<uint8_t>& data, int x0, int y0, int z0, int x1, int y1,
         int z1, int p,
-        bool includeLighting = true);  // 4J - added includeLighting parameter
+        bool includeLighting = true);  
     bool testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0,
                               int z0, int x1, int y1, int z1,
-                              int p);  // 4J added
+                              int p);  
     Random* getRandom(int64_t l);
     bool isEmpty();
-    virtual void reSyncLighting() {};  // 4J added
+    virtual void reSyncLighting() {};  
 };

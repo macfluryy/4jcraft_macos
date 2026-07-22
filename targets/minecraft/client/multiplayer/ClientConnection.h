@@ -39,15 +39,15 @@ private:
 
 public:
     std::wstring message;
-    bool createdOk;  // 4J added
+    bool createdOk;  
 private:
     Minecraft* minecraft;
     MultiPlayerLevel* level;
     bool started;
-    // 4J macOS - For TCP direct-connect we delay closing the
-    // ReceivingLevelScreen until enough chunks have arrived around the
-    // player's spawn position, otherwise the player drops into an
-    // unloaded chunk and gets stuck in a black void.
+    
+    
+    
+    
     bool m_pendingStart = false;
     double m_pendingStartX = 0;
     double m_pendingStartY = 0;
@@ -60,22 +60,22 @@ public:
     void tryFinishStartedHandshake();
 private:
 
-    // 4J Stu - I don't think we are interested in the PlayerInfo data, so I'm
-    // not going to use it at the moment
-    // Map<String, PlayerInfo> playerInfoMap = new HashMap<String,
-    // PlayerInfo>();
+    
+    
+    
+    
 public:
-    // List<PlayerInfo> playerInfos = new ArrayList<PlayerInfo>();
+    
 
     int maxPlayers;
 
 public:
-    bool isStarted() { return started; }                     // 4J Added
-    bool isClosed() { return done; }                         // 4J Added
-    Socket* getSocket() { return connection->getSocket(); }  // 4J Added
+    bool isStarted() { return started; }                     
+    bool isClosed() { return done; }                         
+    Socket* getSocket() { return connection->getSocket(); }  
 
 private:
-    int m_userIndex;  // 4J Added
+    int m_userIndex;  
 public:
     SavedDataStorage* savedDataStorage;
     ClientConnection(Minecraft* minecraft, const std::wstring& ip, int port);
@@ -109,7 +109,7 @@ public:
 
     Random* random;
 
-    // 4J Added
+    
     virtual void handleChunkVisibilityArea(
         std::shared_ptr<ChunkVisibilityAreaPacket> packet);
 
@@ -192,7 +192,7 @@ public:
         std::shared_ptr<CustomPayloadPacket> customPayloadPacket);
     virtual Connection* getConnection();
 
-    // 4J Added
+    
     virtual void handleServerSettingsChanged(
         std::shared_ptr<ServerSettingsChangedPacket> packet);
     virtual void handleTexture(std::shared_ptr<TexturePacket> packet);
@@ -201,7 +201,7 @@ public:
     virtual void handleUpdateProgress(
         std::shared_ptr<UpdateProgressPacket> packet);
 
-    // 4J Added
+    
     static int HostDisconnectReturned(void* pParam, int iPad,
                                       C4JStorage::EMessageResult result);
     static int ExitGameAndSaveReturned(void* pParam, int iPad,
@@ -223,13 +223,16 @@ public:
         std::shared_ptr<SetDisplayObjectivePacket> packet);
     virtual void handleSetPlayerTeamPacket(
         std::shared_ptr<SetPlayerTeamPacket> packet);
+    virtual void handleHudOverlay(std::shared_ptr<HudOverlayPacket> packet);
+    virtual void handleJavaTabList(
+        std::shared_ptr<JavaTabListPacket> packet);
     virtual void handleParticleEvent(
         std::shared_ptr<LevelParticlesPacket> packet);
     virtual void handleUpdateAttributes(
         std::shared_ptr<UpdateAttributesPacket> packet);
 
 private:
-    // 4J: Entity link packet deferred
+    
     class DeferredEntityLinkPacket {
     public:
         time_util::time_point m_recievedTick;

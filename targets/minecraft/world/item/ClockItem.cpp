@@ -14,8 +14,8 @@ const std::wstring ClockItem::TEXTURE_PLAYER_ICON[XUSER_MAX_COUNT] = {
 
 ClockItem::ClockItem(int id) : Item(id) { icons = nullptr; }
 
-// 4J Added so that we can override the icon id used to calculate the texture
-// UV's for each player
+
+
 Icon* ClockItem::getIcon(int auxValue) {
     Icon* icon = Item::getIcon(auxValue);
     Minecraft* pMinecraft = Minecraft::GetInstance();

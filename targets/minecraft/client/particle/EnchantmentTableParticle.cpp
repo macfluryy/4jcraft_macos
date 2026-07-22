@@ -19,7 +19,7 @@ EchantmentTableParticle::EchantmentTableParticle(Level* level, double x,
     this->zStart = this->z = z;
 
     unsigned int clr = Minecraft::GetInstance()->getColourTable()->getColor(
-        eMinecraftColour_Particle_EnchantmentTable);  // 0xE5E5FF
+        eMinecraftColour_Particle_EnchantmentTable);  
     double r = ((clr >> 16) & 0xFF) / 255.0f, g = ((clr >> 8) & 0xFF) / 255.0,
            b = (clr & 0xFF) / 255.0;
 

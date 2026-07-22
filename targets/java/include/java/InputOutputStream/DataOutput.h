@@ -20,5 +20,5 @@ public:
     virtual void writeChar(wchar_t v) = 0;
     virtual void writeChars(const std::wstring& s) = 0;
     virtual void writeUTF(const std::wstring& a) = 0;
-    virtual void writePlayerUID(unsigned long long player) = 0;  // 4J Added
+    virtual void writePlayerUID(unsigned long long player) = 0;  
 };

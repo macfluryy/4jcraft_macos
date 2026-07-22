@@ -18,8 +18,8 @@ TntRenderer::TntRenderer() {
 
 void TntRenderer::render(std::shared_ptr<Entity> _tnt, double x, double y,
                          double z, float rot, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<PrimedTnt> tnt = std::dynamic_pointer_cast<PrimedTnt>(_tnt);
 
     glPushMatrix();
@@ -36,7 +36,7 @@ void TntRenderer::render(std::shared_ptr<Entity> _tnt, double x, double y,
 
     float br = (1 - ((tnt->life - a + 1) / 100.0f)) * 0.8f;
     bindTexture(tnt);
-    // 4J - change brought forward from 1.8.2
+    
     float brightness =
         SharedConstants::TEXTURE_LIGHTING ? 1.0f : tnt->getBrightness(a);
     renderer->renderTile(Tile::tnt, 0, brightness);
@@ -46,11 +46,11 @@ void TntRenderer::render(std::shared_ptr<Entity> _tnt, double x, double y,
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
         glColor4f(1, 1, 1, br);
-        renderer->setColor = false;  // 4J added so that renderTile doesn't set
-                                     // its own colour here
+        renderer->setColor = false;  
+                                     
         renderer->renderTile(Tile::tnt, 0, 1);
-        renderer->setColor = true;  // 4J added so that renderTile doesn't set
-                                    // its own colour here
+        renderer->setColor = true;  
+                                    
         glColor4f(1, 1, 1, 1);
         glDisable(GL_BLEND);
         glEnable(GL_LIGHTING);

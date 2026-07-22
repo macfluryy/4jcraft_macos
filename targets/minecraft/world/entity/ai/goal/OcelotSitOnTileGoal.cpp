@@ -55,13 +55,13 @@ void OcelotSitOnTileGoal::start() {
                SIT_TICKS;
     ocelot->getSitGoal()->wantToSit(false);
 
-    ocelot->setSittingOnTile(true);  // 4J-Added.
+    ocelot->setSittingOnTile(true);  
 }
 
 void OcelotSitOnTileGoal::stop() {
     ocelot->setSitting(false);
 
-    ocelot->setSittingOnTile(false);  // 4J-Added.
+    ocelot->setSittingOnTile(false);  
 }
 
 void OcelotSitOnTileGoal::tick() {

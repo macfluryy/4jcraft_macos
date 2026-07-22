@@ -28,8 +28,8 @@
 #include "minecraft/world/level/tile/Tile.h"
 
 SnowMan::SnowMan(Level* level) : Golem(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -88,7 +88,7 @@ void SnowMan::aiStep() {
 int SnowMan::getDeathLoot() { return Item::snowBall_Id; }
 
 void SnowMan::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
-    // drop some feathers
+    
     int count = random->nextInt(16);
     for (int i = 0; i < count; i++) {
         spawnAtLocation(Item::snowBall_Id, 1);

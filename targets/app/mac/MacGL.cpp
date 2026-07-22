@@ -1,4 +1,4 @@
-//   - LinuxGLLogLightmapState renamed to MacGLLogLightmapState.
+
 
 #if defined(__APPLE__)
 
@@ -17,9 +17,9 @@
 
 extern C4JRender RenderManager;
 
-// ---------------------------------------------------------------------------
-// Internal helpers
-// ---------------------------------------------------------------------------
+
+
+
 
 inline int* getIntPtr(IntBuffer* buf) {
     return buf ? (int*)buf->getBuffer() + buf->position() : nullptr;
@@ -29,9 +29,9 @@ inline void* getBytePtr(ByteBuffer* buf) {
     return buf ? (char*)buf->getBuffer() + buf->position() : nullptr;
 }
 
-// ---------------------------------------------------------------------------
-// Texture helpers
-// ---------------------------------------------------------------------------
+
+
+
 
 void glGenTextures_4J(IntBuffer* buf) {
     if (!buf) return;
@@ -59,9 +59,9 @@ void glTexImage2D_4J(int target, int level, int internalformat, int width,
                               C4JRender::TEXTURE_FORMAT_RxGyBzAw);
 }
 
-// ---------------------------------------------------------------------------
-// Lighting / fog / matrix helpers
-// ---------------------------------------------------------------------------
+
+
+
 
 void glLight_4J(int light, int pname, FloatBuffer* params) {
     const float* p   = params->_getDataPointer();
@@ -91,9 +91,9 @@ void glGetFloat_4J(int pname, FloatBuffer* params) {
     if (m) memcpy(params->_getDataPointer(), m, 16 * sizeof(float));
 }
 
-// ---------------------------------------------------------------------------
-// Display-list / misc helpers
-// ---------------------------------------------------------------------------
+
+
+
 
 void glCallLists_4J(IntBuffer* lists) {
     if (!lists) return;
@@ -135,17 +135,17 @@ void glGetQueryObjectuARB_4J(int id, int pname, IntBuffer* params) {
                               (GLuint*)getIntPtr(params));
 }
 
-// ---------------------------------------------------------------------------
-// Public wrapper (matches header declaration)
-// ---------------------------------------------------------------------------
+
+
+
 
 void glGetFloat(int pname, FloatBuffer* params) {
     glGetFloat_4J(pname, params);
 }
 
-// ---------------------------------------------------------------------------
-// Debug helper (renamed from Linux* to Mac*)
-// ---------------------------------------------------------------------------
+
+
+
 
 void MacGLLogLightmapState(const char* stage, int textureId, bool scaleLight) {
     static int logCount = 0;
@@ -157,4 +157,4 @@ void MacGLLogLightmapState(const char* stage, int textureId, bool scaleLight) {
 
 #pragma clang diagnostic pop
 
-#endif /* __APPLE__ */
+#endif 

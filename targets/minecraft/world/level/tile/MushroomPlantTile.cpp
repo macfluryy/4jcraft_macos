@@ -12,7 +12,7 @@ Mushroom::Mushroom(int id) : Bush(id) {
     this->setTicking(true);
 }
 
-// 4J Added override
+
 void Mushroom::updateDefaultShape() {
     float ss = 0.2f;
     this->setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, ss * 2, 0.5f + ss);

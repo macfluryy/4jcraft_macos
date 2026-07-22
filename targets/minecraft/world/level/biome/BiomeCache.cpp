@@ -7,23 +7,23 @@
 #include "minecraft/world/level/biome/Biome.h"
 
 BiomeCache::Block::Block(int x, int z, BiomeCache* parent) {
-    // 	temps = std::vector<float>(ZONE_SIZE * ZONE_SIZE, false);
-    // // MGH - added "no clear" flag to arrayWithLength 	downfall =
-    // std::vector<float>(ZONE_SIZE
-    // * ZONE_SIZE, false); 	biomes = std::vector<Biome*>(ZONE_SIZE *
-    // ZONE_SIZE, false);
+    
+    
+    
+    
+    
     biomeIndices = std::vector<uint8_t>(ZONE_SIZE * ZONE_SIZE, false);
 
     lastUse = 0;
     this->x = x;
     this->z = z;
-    // 	parent->source->getTemperatureBlock(temps, x << ZONE_SIZE_BITS, z <<
-    // ZONE_SIZE_BITS, ZONE_SIZE, ZONE_SIZE);
-    // 	parent->source->getDownfallBlock(downfall, x << ZONE_SIZE_BITS, z <<
-    // ZONE_SIZE_BITS, ZONE_SIZE, ZONE_SIZE);
-    // 	parent->source->getBiomeBlock(biomes, x << ZONE_SIZE_BITS, z <<
-    // ZONE_SIZE_BITS, ZONE_SIZE, ZONE_SIZE, false); 4jcraft added cast to
-    // unsigned
+    
+    
+    
+    
+    
+    
+    
     parent->source->getBiomeIndexBlock(
         biomeIndices, (unsigned)x << ZONE_SIZE_BITS,
         (unsigned)z << ZONE_SIZE_BITS, ZONE_SIZE, ZONE_SIZE, false);
@@ -32,8 +32,8 @@ BiomeCache::Block::Block(int x, int z, BiomeCache* parent) {
 BiomeCache::Block::~Block() {}
 
 Biome* BiomeCache::Block::getBiome(int x, int z) {
-    //	return biomes[(x & ZONE_SIZE_MASK) | ((z & ZONE_SIZE_MASK) <<
-    // ZONE_SIZE_BITS)];
+    
+    
 
     int biomeIndex = biomeIndices[(x & ZONE_SIZE_MASK) |
                                   ((z & ZONE_SIZE_MASK) << ZONE_SIZE_BITS)];
@@ -41,8 +41,8 @@ Biome* BiomeCache::Block::getBiome(int x, int z) {
 }
 
 float BiomeCache::Block::getTemperature(int x, int z) {
-    //	return temps[(x & ZONE_SIZE_MASK) | ((z & ZONE_SIZE_MASK) <<
-    // ZONE_SIZE_BITS)];
+    
+    
 
     int biomeIndex = biomeIndices[(x & ZONE_SIZE_MASK) |
                                   ((z & ZONE_SIZE_MASK) << ZONE_SIZE_BITS)];
@@ -50,8 +50,8 @@ float BiomeCache::Block::getTemperature(int x, int z) {
 }
 
 float BiomeCache::Block::getDownfall(int x, int z) {
-    // 	return downfall[(x & ZONE_SIZE_MASK) | ((z & ZONE_SIZE_MASK) <<
-    // ZONE_SIZE_BITS)];
+    
+    
 
     int biomeIndex = biomeIndices[(x & ZONE_SIZE_MASK) |
                                   ((z & ZONE_SIZE_MASK) << ZONE_SIZE_BITS)];
@@ -59,15 +59,15 @@ float BiomeCache::Block::getDownfall(int x, int z) {
 }
 
 BiomeCache::BiomeCache(BiomeSource* source) {
-    // 4J Initialisors
+    
     lastUpdateTime = 0;
 
     this->source = source;
 }
 
 BiomeCache::~BiomeCache() {
-    // 4J Stu - Delete source?
-    // delete source;
+    
+    
 
     for (auto it = all.begin(); it != all.end(); ++it) {
         delete (*it);

@@ -37,7 +37,7 @@ void DLCGameRulesHeader::setGrfData(std::uint8_t* fData, std::uint32_t dataSize,
     if (!m_hasData) {
         m_hasData = true;
 
-        // app.m_gameRules.loadGameRules(lgo, fData, fSize);
+        
 
         app.m_gameRules.readRuleFile(lgo, fData, dataSize, st);
     }

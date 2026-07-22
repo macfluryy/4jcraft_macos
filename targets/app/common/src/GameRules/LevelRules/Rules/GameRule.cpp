@@ -64,7 +64,7 @@ void GameRule::onCollectItem(std::shared_ptr<ItemInstance> item) {
 }
 
 void GameRule::write(DataOutputStream* dos) {
-    // Find required parameters.
+    
     dos->writeInt(m_parameters.size());
     for (auto it = m_parameters.begin(); it != m_parameters.end(); it++) {
         std::wstring pName = (*it).first;

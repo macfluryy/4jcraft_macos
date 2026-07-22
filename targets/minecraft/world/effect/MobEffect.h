@@ -84,8 +84,8 @@ public:
 private:
     std::unordered_map<Attribute*, AttributeModifier*> attributeModifiers;
     int descriptionId;
-    int m_postfixDescriptionId;  // 4J added
-    EMobEffectIcon icon;         // 4J changed type
+    int m_postfixDescriptionId;  
+    EMobEffectIcon icon;         
     const bool _isHarmful;
     double durationModifier;
     bool _isDisabled;
@@ -94,7 +94,7 @@ private:
 protected:
     MobEffect(int id, bool isHarmful, eMinecraftColour color);
 
-    // MobEffect *setIcon(int xPos, int yPos);
+    
     MobEffect* setIcon(EMobEffectIcon icon);
 
 public:
@@ -110,12 +110,12 @@ public:
     MobEffect* setDescriptionId(unsigned int id);
     unsigned int getDescriptionId(int iData = -1);
 
-    // 4J Added
+    
     MobEffect* setPostfixDescriptionId(unsigned int id);
     unsigned int getPostfixDescriptionId(int iData = -1);
 
     bool hasIcon();
-    EMobEffectIcon getIcon();  // 4J changed return type
+    EMobEffectIcon getIcon();  
     bool isHarmful();
     static std::wstring formatDuration(MobEffectInstance* instance);
 
@@ -142,5 +142,5 @@ public:
     virtual double getAttributeModifierValue(int amplifier,
                                              AttributeModifier* original);
     static int javaId(
-        int id);  // 4jcraft: helper for inventoryscreen and beaconscreen
+        int id);  
 };

@@ -21,10 +21,10 @@
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
-// 4J : WESTY : Added for new achievements.
+
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/tile/Tile.h"
-// 4J Stu - Added for tutorial callbacks
+
 #include "platform/InputActions.h"
 #include "platform/sdl2/Input.h"
 #include "platform/sdl2/Profile.h"
@@ -89,7 +89,7 @@
 LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
                          int dimension)
     : Player(level, user->name) {
-    flyX = flyY = flyZ = 0.0f;  // 4J added
+    flyX = flyY = flyZ = 0.0f;  
     m_awardedThisSession = 0;
 
     sprintTriggerTime = 0;
@@ -113,8 +113,8 @@ LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
     }
     if (user != nullptr) {
         this->name = user->name;
-        // wprintf(L"Created LocalPlayer with name %ls\n", name.c_str() );
-        //  check to see if this player's xuid is in the list of special players
+        
+        
         MOJANG_DATA* pMojangData = app.GetMojangDataForXuid(getOnlineXuid());
         if (pMojangData) {
             customTextureUrl = pMojangData->wchSkin;
@@ -123,13 +123,13 @@ LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
     input = nullptr;
     m_iPad = -1;
     m_iScreenSection =
-        C4JRender::VIEWPORT_TYPE_FULLSCREEN;  // assume singleplayer default
+        C4JRender::VIEWPORT_TYPE_FULLSCREEN;  
     m_bPlayerRespawned = false;
     ullButtonsPressed = 0LL;
     ullDpad_last = ullDpad_this = ullDpad_filtered = 0;
 
-    // 4J-PB - moved in from the minecraft structure
-    // ticks=0;
+    
+    
     missTime = 0;
     lastClickTick[0] = 0;
     lastClickTick[1] = 0;
@@ -138,10 +138,10 @@ LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
     m_bIsIdle = false;
     m_iThirdPersonView = 0;
 
-    // 4J Stu - Added for telemetry
+    
     SetSessionTimerStart();
 
-    // 4J - added for auto repeat in creative mode
+    
     lastClickState = lastClick_invalid;
     lastClickTolerance = 0.0f;
 
@@ -169,23 +169,23 @@ void LocalPlayer::serverAiStep() {
     Player::serverAiStep();
 
     if (abilities.flying && abilities.mayfly) {
-        // snap y rotation for flying to nearest 90 degrees in world space
+        
         float fMag = sqrtf(input->xa * input->xa + input->ya * input->ya);
-        // Don't bother for tiny inputs
+        
         if (fMag >= 0.1f) {
-            // Get angle (in player rotated space) of input controls
+            
             float yRotInput =
                 atan2f(input->ya, input->xa) * (180.0f / std::numbers::pi);
-            // Now get in world space
+            
             float yRotFinal = yRotInput + yRot;
-            // Snap this to nearest 90 degrees
+            
             float yRotSnapped = floorf((yRotFinal / 45.0f) + 0.5f) * 45.0f;
-            // Find out how much we had to move to do this snap
+            
             float yRotDiff = yRotSnapped - yRotFinal;
-            // Apply the same difference to the player rotated space angle
+            
             float yRotInputAdjust = yRotInput + yRotDiff;
 
-            // Calculate final x/y player-space movement required
+            
             this->xxa =
                 cos(yRotInputAdjust * (std::numbers::pi / 180.0f)) * fMag;
             this->yya =
@@ -205,9 +205,9 @@ void LocalPlayer::serverAiStep() {
     xBob += (xRot - xBob) * 0.5;
     yBob += (yRot - yBob) * 0.5;
 
-    // TODO 4J - Remove
-    // if (input->jumping)
-    //	mapPlayerChunk(8);
+    
+    
+    
 }
 
 bool LocalPlayer::isEffectiveAi() { return true; }
@@ -262,17 +262,17 @@ void LocalPlayer::aiStep() {
     float runTreshold = 0.8f;
 
     bool wasRunning = input->ya >= runTreshold;
-    // input->tick( std::dynamic_pointer_cast<Player>( shared_from_this() ) );
-    //  4J-PB - make it a localplayer
+    
+    
     input->tick(this);
     if (isUsingItem() && !isRiding()) {
         input->xa *= 0.2f;
         input->ya *= 0.2f;
         sprintTriggerTime = 0;
     }
-    // this.heightOffset = input.sneaking?1.30f:1.62f;	// 4J - this was already
-    // commented out
-    if (input->sneaking)  // 4J - removed - TODO replace
+    
+    
+    if (input->sneaking)  
     {
         if (ySlideOffset < 0.2f) ySlideOffset = 0.2f;
     }
@@ -286,13 +286,13 @@ void LocalPlayer::aiStep() {
         getFoodData()->getFoodLevel() >
         FoodConstants::MAX_FOOD * FoodConstants::FOOD_SATURATION_LOW;
 
-    // 4J Stu - If we can fly, then we should be able to sprint without
-    // requiring food. This is particularly a problem for people who save a
-    // survival world with low food, then reload it in creative.
+    
+    
+    
     if (abilities.mayfly || isAllowedToFly()) enoughFoodToSprint = true;
 
-    // 4J - altered this slightly to make sure that the joypad returns to below
-    // returnTreshold in between registering two movements up to runThreshold
+    
+    
     if (onGround && !isSprinting() && enoughFoodToSprint && !isUsingItem() &&
         !hasEffect(MobEffect::blindness)) {
         if (!wasRunning && (input->ya >= runTreshold)) {
@@ -307,8 +307,8 @@ void LocalPlayer::aiStep() {
                 }
             }
         } else if ((sprintTriggerTime > 0) &&
-                   (input->ya == 0.0f))  // ya of 0.0f here signifies that we
-                                         // have returned to the deadzone
+                   (input->ya == 0.0f))  
+                                         
         {
             sprintTriggerRegisteredReturn = true;
         } else if (input->sprintKey) {
@@ -316,22 +316,22 @@ void LocalPlayer::aiStep() {
         }
     }
     if (isSneaking()) sprintTriggerTime = 0;
-    // 4J-PB - try not stopping sprint on collision
-    // if (isSprinting() && (input->ya < runTreshold || horizontalCollision ||
-    // !enoughFoodToSprint))
+    
+    
+    
     if (isSprinting() && ((input->ya < runTreshold && !input->sprintKey) ||
                           !enoughFoodToSprint)) {
         setSprinting(false);
     }
 
-    // 4J Stu - Fix for #52705 - Customer Encountered: Player can fly in bed
-    // while being in Creative mode.
+    
+    
     if (!isSleeping() && (abilities.mayfly || isAllowedToFly())) {
-        // 4J altered to require jump button to released after being tapped
-        // twice to trigger move between flying / not flying
+        
+        
         if (!wasJumping && input->jumping) {
             if (jumpTriggerTime == 0) {
-                jumpTriggerTime = 10;  // was 7
+                jumpTriggerTime = 10;  
                 twoJumpsRegistered = false;
             } else {
                 twoJumpsRegistered = true;
@@ -349,8 +349,8 @@ void LocalPlayer::aiStep() {
             twoJumpsRegistered = false;
             if (abilities.flying)
                 input->sneaking =
-                    false;  // 4J added - would we ever intentially want to go
-                            // into flying mode whilst sneaking?
+                    false;  
+                            
         }
     } else if (abilities.flying) {
 #if defined(_DEBUG_MENUS_ENABLED)
@@ -362,21 +362,21 @@ void LocalPlayer::aiStep() {
     }
 
     if (abilities.flying) {
-        //            yd = 0;
-        // 4J - note that the 0.42 added for going down is to make it match with
-        // what happens when you jump - jumping itself adds 0.42 to yd in
-        // Mob::jumpFromGround
+        
+        
+        
+        
         if (ullButtonsPressed & (1LL << MINECRAFT_ACTION_SNEAK_TOGGLE))
             yd -=
-                (0.15 + 0.42);  // 4J - for flying mode,
-                                // MINECRAFT_ACTION_SNEAK_TOGGLE isn't a toggle
-                                // but just indicates that this button is down
+                (0.15 + 0.42);  
+                                
+                                
         if (input->jumping) {
             noJumpDelay = 0;
             yd += 0.15;
         }
 
-        // snap y rotation to nearest 90 degree axis aligned value
+        
         float yRotSnapped = floorf((yRot / 90.0f) + 0.5f) * 90.0f;
 
         if (InputManager.GetJoypadMapVal(m_iPad) == 0) {
@@ -394,20 +394,20 @@ void LocalPlayer::aiStep() {
         if (jumpRidingTicks < 0) {
             jumpRidingTicks++;
             if (jumpRidingTicks == 0) {
-                // reset scale (for gui)
+                
                 jumpRidingScale = 0;
             }
         }
         if (wasJumping && !input->jumping) {
-            // jump release
+            
             jumpRidingTicks = -10;
             sendRidingJump();
         } else if (!wasJumping && input->jumping) {
-            // jump press
+            
             jumpRidingTicks = 0;
             jumpRidingScale = 0;
         } else if (wasJumping) {
-            // calc jump scale
+            
             jumpRidingTicks++;
             if (jumpRidingTicks < 10) {
                 jumpRidingScale = (float)jumpRidingTicks * .1f;
@@ -422,7 +422,7 @@ void LocalPlayer::aiStep() {
 
     Player::aiStep();
 
-    // 4J-PB - If we're in Creative Mode, allow flying on ground
+    
     if (!abilities.mayfly && !isAllowedToFly()) {
         if (onGround && abilities.flying) {
 #if defined(_DEBUG_MENUS_ENABLED)
@@ -434,12 +434,12 @@ void LocalPlayer::aiStep() {
         }
     }
 
-    if (abilities.flying)  // minecraft->options->isFlying )
+    if (abilities.flying)  
     {
         Vec3 viewVector = getViewVector(1.0f);
 
-        // 4J-PB - To let the player build easily while flying, we need to
-        // change this
+        
+        
 
 #if defined(_DEBUG_MENUS_ENABLED)
         if (abilities.debugflying) {
@@ -450,8 +450,8 @@ void LocalPlayer::aiStep() {
 #endif
         {
             if (isSprinting()) {
-                // Accelrate up to full speed if we are sprinting, moving in the
-                // direction of the view vector
+                
+                
                 flyX = (float)viewVector.x * input->ya;
                 flyY = (float)viewVector.y * input->ya;
                 flyZ = (float)viewVector.z * input->ya;
@@ -482,16 +482,16 @@ void LocalPlayer::aiStep() {
         onGround = true;
     }
 
-    // Check if the player is idle and the rich presence needs updated
+    
     if (!m_bIsIdle && InputManager.GetIdleSeconds(m_iPad) > PLAYER_IDLE_TIME) {
         ProfileManager.SetCurrentGameActivity(m_iPad, CONTEXT_PRESENCE_IDLE,
                                               false);
         m_bIsIdle = true;
     } else if (m_bIsIdle &&
                InputManager.GetIdleSeconds(m_iPad) < PLAYER_IDLE_TIME) {
-        // Are we offline or online, and how many players are there
+        
         if (g_NetworkManager.GetPlayerCount() > 1) {
-            // only do it for this player here - each player will run this code
+            
             if (g_NetworkManager.IsLocalGame()) {
                 ProfileManager.SetCurrentGameActivity(
                     m_iPad, CONTEXT_PRESENCE_MULTIPLAYEROFFLINE, false);
@@ -517,7 +517,7 @@ void LocalPlayer::changeDimension(int i) {
     if (!level->isClientSide) {
         if (dimension == 1 && i == 1) {
             awardStat(GenericStats::winGame(), GenericStats::param_noArgs());
-            // minecraft.setScreen(new WinScreen());
+            
 #if !defined(_CONTENT_PACKAGE)
             app.DebugPrintf(
                 "LocalPlayer::changeDimension from 1 to 1 but WinScreen has "
@@ -536,14 +536,14 @@ void LocalPlayer::changeDimension(int i) {
 float LocalPlayer::getFieldOfViewModifier() {
     float targetFov = 1.0f;
 
-    // modify for movement
+    
     if (abilities.flying) targetFov *= 1.1f;
 
     AttributeInstance* speed =
         getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
     targetFov *= (speed->getValue() / abilities.getWalkingSpeed() + 1) / 2;
 
-    // modify for bow =)
+    
     if (isUsingItem() && getUseItem()->id == Item::bow->id) {
         int ticksHeld = getTicksUsingItem();
         float scale = (float)ticksHeld / BowItem::MAX_DRAW_DURATION;
@@ -560,21 +560,21 @@ float LocalPlayer::getFieldOfViewModifier() {
 
 void LocalPlayer::addAdditonalSaveData(CompoundTag* entityTag) {
     Player::addAdditonalSaveData(entityTag);
-    // entityTag->putInt(L"Score", score);
+    
 }
 
 void LocalPlayer::readAdditionalSaveData(CompoundTag* entityTag) {
     Player::readAdditionalSaveData(entityTag);
-    // score = entityTag->getInt(L"Score");
+    
 }
 
 void LocalPlayer::closeContainer() {
     Player::closeContainer();
     minecraft->setScreen(nullptr);
 
-    // 4J - Close any xui here
-    // Fix for #9164 - CRASH: MP: Title crashes upon opening a chest and having
-    // another user destroy it.
+    
+    
+    
     ui.PlayUISFX(eSFX_Back);
     ui.CloseUIScenes(m_iPad);
 }
@@ -611,7 +611,7 @@ bool LocalPlayer::openContainer(std::shared_ptr<Container> container) {
     bool success = app.LoadContainerMenu(GetXboxPad(), inventory, container);
     if (success) ui.PlayUISFX(eSFX_Press);
 #endif
-    // minecraft->setScreen(new ContainerScreen(inventory, container));
+    
     return success;
 }
 
@@ -659,8 +659,8 @@ bool LocalPlayer::startCrafting(int x, int y, int z) {
         std::dynamic_pointer_cast<LocalPlayer>(shared_from_this()), x, y, z);
     if (success) ui.PlayUISFX(eSFX_Press);
 #endif
-    // app.LoadXuiCraftMenu(0,inventory, level, x, y, z);
-    // minecraft->setScreen(new CraftingScreen(inventory, level, x, y, z));
+    
+    
     return success;
 }
 
@@ -801,7 +801,7 @@ void LocalPlayer::hurtTo(float newHealth, uint8_t damageSource) {
                             ? 0
                             : inventory->getSelected()->id;
 
-        // if there are any xuiscenes up for this player, close them
+        
         if (ui.GetMenuDisplayed(GetXboxPad())) {
             ui.CloseUIScenes(GetXboxPad());
         }
@@ -809,12 +809,12 @@ void LocalPlayer::hurtTo(float newHealth, uint8_t damageSource) {
 }
 
 void LocalPlayer::respawn() {
-    // Select the right payer to respawn
+    
     minecraft->respawnPlayer(GetXboxPad(), 0, 0);
 }
 
 void LocalPlayer::animateRespawn() {
-    //        Player.animateRespawn(this, level);
+    
 }
 
 void LocalPlayer::displayClientMessage(int messageId) {
@@ -829,25 +829,25 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
 
     if (stat->isAchievement()) {
         Achievement* ach = (Achievement*)stat;
-        // 4J-PB - changed to attempt to award everytime - the award may need a
-        // storage device, so needs a primary player, and the player may not
-        // have been a primary player when they first 'got' the award so let the
-        // award manager figure it out
+        
+        
+        
+        
         if (!minecraft->stats[m_iPad]->hasTaken(ach)) {
-            // 4J-PB - Don't display the java popup
+            
 #if defined(ENABLE_JAVA_GUIS)
             minecraft->achievementPopup->popup(ach);
 #endif
 
-            // 4J Stu - Added this function in the libraries as some
-            // achievements don't get awarded to all players e.g. Splitscreen
-            // players cannot get theme/avatar/gamerpic and Trial players cannot
-            // get any This causes some extreme flooding of some awards
+            
+            
+            
+            
             if (ProfileManager.CanBeAwarded(m_iPad, ach->getAchievementID())) {
-                // 4J Stu - Some awards cause a menu to popup. This can be bad,
-                // especially if you are surrounded by mobs! We cannot pause the
-                // game unless in offline single player, but lets at least do it
-                // then
+                
+                
+                
+                
                 if (g_NetworkManager.IsLocalGame() &&
                     g_NetworkManager.GetPlayerCount() == 1 &&
                     ProfileManager.GetAwardType(ach->getAchievementID()) !=
@@ -857,7 +857,7 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
                 }
             }
 
-            // 4J-JEV: To stop spamming trophies.
+            
             unsigned long long achBit = ((unsigned long long)1)
                                         << ach->getAchievementID();
             if (!(achBit & m_awardedThisSession)) {
@@ -867,16 +867,16 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
         }
         minecraft->stats[m_iPad]->award(stat, level->difficulty, count);
     } else {
-        // 4J : WESTY : Added for new achievements.
+        
         StatsCounter* pStats = minecraft->stats[m_iPad];
         pStats->award(stat, level->difficulty, count);
 
-        // 4J-JEV: Check achievements for unlocks.
+        
 
-        // LEADER OF THE PACK
+        
         if (stat == GenericStats::tamedEntity(eTYPE_WOLF)) {
-            // Check to see if we have befriended 5 wolves! Is this really the
-            // best place to do this??!!
+            
+            
             if (pStats->getTotalValue(GenericStats::tamedEntity(eTYPE_WOLF)) >=
                 5) {
                 awardStat(GenericStats::leaderOfThePack(),
@@ -884,7 +884,7 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
             }
         }
 
-        // MOAR TOOLS
+        
         {
             Stat* toolStats[4][5];
             toolStats[0][0] = GenericStats::itemsCrafted(Item::shovel_wood->id);
@@ -954,7 +954,7 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
 
 #if defined(_EXTENDED_ACHIEVEMENTS)
 
-        // AWARD : Porkchop, cook and eat a porkchop.
+        
         {
             Stat *cookPorkchop, *eatPorkchop;
             cookPorkchop = GenericStats::itemsCrafted(Item::porkChop_cooked_Id);
@@ -977,7 +977,7 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
             }
         }
 
-        // AWARD : Passing the Time, play for 100 minecraft days.
+        
         {
             Stat* timePlayed = GenericStats::timePlayed();
 
@@ -986,11 +986,11 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
                 iPlayedTicks = pStats->getTotalValue(timePlayed);
                 iRequiredTicks = Level::TICKS_PER_DAY * 100;
 
-                /* app.DebugPrintf(
-                        "[AwardStat] Check unlock 'Passing the Time': "
-                        "total_ticks=%i, req=%i.\n",
-                        iPlayedTicks, iRequiredTicks
-                        ); */
+                
+
+
+
+
 
                 if (iPlayedTicks >= iRequiredTicks) {
                     awardStat(GenericStats::passingTheTime(),
@@ -999,7 +999,7 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
             }
         }
 
-        // AWARD : The Haggler, Acquire 30 emeralds.
+        
         {
             Stat *emeraldMined, *emeraldBought;
             emeraldMined = GenericStats::blocksMined(Tile::emeraldOre_Id);
@@ -1022,7 +1022,7 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
             }
         }
 
-        // AWARD : Pot Planter, craft and place a flowerpot.
+        
         {
             Stat *craftFlowerpot, *placeFlowerpot;
             craftFlowerpot = GenericStats::itemsCrafted(Item::flowerPot_Id);
@@ -1037,7 +1037,7 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
             }
         }
 
-        // AWARD : It's a Sign, craft and place a sign.
+        
         {
             Stat *craftSign, *placeWallsign, *placeSignpost;
             craftSign = GenericStats::itemsCrafted(Item::sign_Id);
@@ -1064,7 +1064,7 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
             }
         }
 
-        // AWARD : Rainbow Collection, collect all different colours of wool.
+        
         {
             bool justPickedupWool = false;
 
@@ -1087,7 +1087,7 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
             }
         }
 
-        // AWARD : Adventuring Time, visit at least 17 biomes
+        
         {
             bool justEnteredBiome = false;
 
@@ -1180,11 +1180,11 @@ void LocalPlayer::setExperienceValues(float experienceProgress, int totalExp,
     this->experienceLevel = experienceLevel;
 }
 
-// 4J: removed
-// void LocalPlayer::sendMessage(ChatMessageComponent *message)
-//{
-//	minecraft->gui->getChat()->addMessage(message.toString(true));
-//}
+
+
+
+
+
 
 Pos LocalPlayer::getCommandSenderWorldPosition() {
     return new Pos(floor(x + .5), floor(y + .5), floor(z + .5));
@@ -1227,7 +1227,7 @@ void LocalPlayer::setAndBroadcastCustomCape(std::uint32_t capeId) {
     setCustomCape(capeId);
 }
 
-// 4J TODO - Remove
+
 #include "minecraft/world/level/chunk/LevelChunk.h"
 
 class ModelPart;
@@ -1271,8 +1271,8 @@ void LocalPlayer::mapPlayerChunk(const unsigned int flagTileType) {
 }
 
 void LocalPlayer::handleMouseDown(int button, bool down) {
-    // 4J Stu - We should not accept any input while asleep, except the above to
-    // wake up
+    
+    
     if (isSleeping() && level != nullptr && level->isClientSide) {
         return;
     }
@@ -1285,8 +1285,8 @@ void LocalPlayer::handleMouseDown(int button, bool down) {
         int y = minecraft->hitResult->y;
         int z = minecraft->hitResult->z;
 
-        // 4J - addition to stop layer mining out of the top or bottom of the
-        // world 4J Stu - Allow this for The End
+        
+        
         if (((y == 0) || ((y == 127) && level->dimension->hasCeiling)) &&
             level->dimension->id != 1)
             return;
@@ -1309,23 +1309,23 @@ bool LocalPlayer::creativeModeHandleMouseClick(int button, bool buttonPressed) {
             return false;
         }
 
-        // Are we in an auto-repeat situation? - If so only tell the game that
-        // we've clicked if we move more than a unit away from our last click
-        // position in any axis
+        
+        
+        
         if (lastClickState != lastClick_invalid) {
-            // If we're in disabled mode already (set when sprinting) then don't
-            // do anything - if we're sprinting, we don't auto-repeat at all.
-            // With auto repeat on, we can quickly place fires causing
-            // photosensitivity issues due to rapid flashing
+            
+            
+            
+            
             if (lastClickState == lastClick_disabled) return false;
-            // If we've started sprinting, go into this mode & also don't do
-            // anything Ignore repeate when sleeping
+            
+            
             if (isSprinting()) {
                 lastClickState = lastClick_disabled;
                 return false;
             }
 
-            // Get distance from last click point in each axis
+            
             float dX = (float)x - lastClickX;
             float dY = (float)y - lastClickY;
             float dZ = (float)z - lastClickZ;
@@ -1359,11 +1359,11 @@ bool LocalPlayer::creativeModeHandleMouseClick(int button, bool buttonPressed) {
             lastClickdY = dY;
             lastClickdZ = dZ;
 
-            // If we have moved more than one unit in any one axis, then
-            // register a new click The new click position is normalised at one
-            // unit in the direction of movement, so that we don't gradually
-            // drift away if we detect the movement a fraction over the unit
-            // distance each time
+            
+            
+            
+            
+            
 
             if (fabsf(dX) >= 1.0f) {
                 dX = (dX < 0.0f) ? ceilf(dX) : floorf(dX);
@@ -1389,10 +1389,10 @@ bool LocalPlayer::creativeModeHandleMouseClick(int button, bool buttonPressed) {
                 lastClickY += dY;
                 lastClickZ += dZ;
 
-                // Get a more accurate pick from the position where the new
-                // click should ideally have come from, rather than where we
-                // happen to be now (ie a rounded number of units from the last
-                // Click position)
+                
+                
+                
+                
                 double oldX = x;
                 double oldY = y;
                 double oldZ = z;
@@ -1417,17 +1417,17 @@ bool LocalPlayer::creativeModeHandleMouseClick(int button, bool buttonPressed) {
                 }
             }
         } else {
-            // First click - just record position & handle
+            
             lastClickX = (float)x;
             lastClickY = (float)y;
             lastClickZ = (float)z;
-            // If we actually placed an item, then move into the init state as
-            // we are going to be doing the special creative mode auto repeat
+            
+            
             bool itemPlaced = handleMouseClick(button);
-            // If we're sprinting or riding, don't auto-repeat at all. With auto
-            // repeat on, we can quickly place fires causing photosensitivity
-            // issues due to rapid flashing Also ignore repeats when the player
-            // is sleeping
+            
+            
+            
+            
             if (isSprinting() || isRiding() || isSleeping()) {
                 lastClickState = lastClick_disabled;
             } else {
@@ -1435,9 +1435,9 @@ bool LocalPlayer::creativeModeHandleMouseClick(int button, bool buttonPressed) {
                     lastClickState = lastClick_init;
                     lastClickTolerance = 0.0f;
                 } else {
-                    // Didn't place an item - might actually be activating a
-                    // switch or door or something - just do a standard auto
-                    // repeat in this case
+                    
+                    
+                    
                     lastClickState = lastClick_oldRepeat;
                 }
             }
@@ -1454,16 +1454,16 @@ bool LocalPlayer::handleMouseClick(int button) {
 
     if (button == 0 && missTime > 0) return false;
     if (button == 0) {
-        // app.DebugPrintf("handleMouseClick - Player %d is
-        // swinging\n",GetXboxPad());
+        
+        
         swing();
     }
 
     bool mayUse = true;
 
-    // 4J-PB - Adding a special case in here for sleeping in a bed in a
-    // multiplayer game - we need to wake up, and we don't have the
-    // inbedchatscreen with a button
+    
+    
+    
 
     if (button == 1 &&
         (isSleeping() && level != nullptr && level->isClientSide)) {
@@ -1480,8 +1480,8 @@ bool LocalPlayer::handleMouseClick(int button) {
         }
         return false;
     }
-    // 4J Stu - We should not accept any input while asleep, except the above to
-    // wake up
+    
+    
     if (isSleeping() && level != nullptr && level->isClientSide) {
         return false;
     }
@@ -1498,15 +1498,15 @@ bool LocalPlayer::handleMouseClick(int button) {
                                         minecraft->hitResult->entity);
         }
         if (button == 1) {
-            // 4J-PB - if we milk a cow here, and end up with a bucket of milk,
-            // the if (mayUse && button == 1) further down will then empty our
-            // bucket if we're pointing at a tile It looks like interact really
-            // should be returning a result so we can check this, but it's
-            // possibly just the milk bucket that causes a problem
+            
+            
+            
+            
+            
 
             if (minecraft->hitResult->entity->GetType() == eTYPE_COW) {
-                // If I have an empty bucket in my hand, it's going to be filled
-                // with milk, so turn off mayUse
+                
+                
                 std::shared_ptr<ItemInstance> item = inventory->getSelected();
                 if (item && (item->id == Item::bucket_empty_Id)) {
                     mayUse = false;
@@ -1525,8 +1525,8 @@ bool LocalPlayer::handleMouseClick(int button) {
         int face = minecraft->hitResult->f;
 
         if (button == 0) {
-            // 4J - addition to stop layer mining out of the top or bottom of
-            // the world 4J Stu - Allow this for The End
+            
+            
             if (!((y == 0) || ((y == 127) && level->dimension->hasCeiling)) ||
                 level->dimension->id == 1) {
                 minecraft->gameMode->startDestroyBlock(x, y, z,
@@ -1539,13 +1539,13 @@ bool LocalPlayer::handleMouseClick(int button) {
             if (minecraft->gameMode->useItemOn(
                     minecraft->localplayers[GetXboxPad()], level, item, x, y, z,
                     face, &minecraft->hitResult->pos, false, &usedItem)) {
-                // Presume that if we actually used the held item, then we've
-                // placed it
+                
+                
                 if (usedItem) {
                     returnItemPlaced = true;
                 }
                 mayUse = false;
-                // app.DebugPrintf("Player %d is swinging\n",GetXboxPad());
+                
                 swing();
             }
             if (item == nullptr) {
@@ -1575,7 +1575,7 @@ bool LocalPlayer::handleMouseClick(int button) {
 }
 
 void LocalPlayer::updateRichPresence() {
-    if ((m_iPad != -1) /* && !ui.GetMenuDisplayed(m_iPad)*/) {
+    if ((m_iPad != -1) ) {
         std::shared_ptr<ItemInstance> selectedItem = inventory->getSelected();
         if (selectedItem != nullptr &&
             selectedItem->id == Item::fishingRod_Id) {
@@ -1600,7 +1600,7 @@ void LocalPlayer::updateRichPresence() {
     }
 }
 
-// 4J Stu - Added for telemetry
+
 void LocalPlayer::SetSessionTimerStart(void) {
     m_sessionTimeStart = app.getAppTime();
     m_dimensionTimeStart = m_sessionTimeStart;
@@ -1623,7 +1623,7 @@ void LocalPlayer::handleCollectItem(std::shared_ptr<ItemInstance> item) {
         unsigned int itemCountThisAux = 0;
         for (unsigned int k = 0; k < inventory->items.size(); ++k) {
             if (inventory->items[k] != nullptr) {
-                // do they have the item
+                
                 if (inventory->items[k]->id == item->id) {
                     unsigned int quantity = inventory->items[k]->GetCount();
 

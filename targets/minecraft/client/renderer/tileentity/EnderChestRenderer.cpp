@@ -18,7 +18,7 @@ ResourceLocation EnderChestRenderer::ENDER_CHEST_LOCATION =
 void EnderChestRenderer::render(std::shared_ptr<TileEntity> _chest, double x,
                                 double y, double z, float a, bool setColor,
                                 float alpha, bool useCompiled) {
-    // 4J Convert as we aren't using a templated class
+    
     std::shared_ptr<EnderChestTileEntity> chest =
         std::dynamic_pointer_cast<EnderChestTileEntity>(_chest);
 
@@ -32,7 +32,7 @@ void EnderChestRenderer::render(std::shared_ptr<TileEntity> _chest, double x,
 
     glPushMatrix();
     glEnable(GL_RESCALE_NORMAL);
-    // glColor4f(1, 1, 1, 1);
+    
     if (setColor) glColor4f(1, 1, 1, alpha);
     glTranslatef((float)x, (float)y + 1, (float)z + 1);
     glScalef(1, -1, -1);

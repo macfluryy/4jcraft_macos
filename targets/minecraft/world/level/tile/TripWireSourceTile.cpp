@@ -111,14 +111,14 @@ void TripWireSourceTile::neighborChanged(Level* level, int x, int y, int z,
 
 void TripWireSourceTile::calculateState(
     Level* level, int x, int y, int z, int id, int data, bool canUpdate,
-    /*4J-Jev, these parameters only used with 'updateSource' -->*/
+    
     int wireSource, int wireSourceData) {
     int dir = data & MASK_DIR;
     bool wasAttached = (data & MASK_ATTACHED) == MASK_ATTACHED;
     bool wasPowered = (data & MASK_POWERED) == MASK_POWERED;
     bool attached =
-        id == Tile::tripWireSource_Id;  // id is only != TripwireSource_id when
-                                        // 'onRemove'
+        id == Tile::tripWireSource_Id;  
+                                        
     bool powered = false;
     bool suspended = !level->isTopSolidBlocking(x, y - 1, z);
     int stepX = Direction::STEP_X[dir];
@@ -126,8 +126,8 @@ void TripWireSourceTile::calculateState(
     int receiverPos = 0;
     int wiresData[WIRE_DIST_MAX];
 
-    // Loop over each tile down the wire, from this tile, to the expected
-    // opposing src tile.
+    
+    
     for (int i = 1; i < WIRE_DIST_MAX; i++) {
         int xx = x + stepX * i;
         int zz = z + stepZ * i;
@@ -142,8 +142,8 @@ void TripWireSourceTile::calculateState(
 
             break;
         } else if (tile == Tile::tripWire_Id ||
-                   i == wireSource)  // wireSource is the wiretile that caused
-                                     // an 'updateSource'
+                   i == wireSource)  
+                                     
         {
             int wireData =
                 i == wireSource ? wireSourceData : level->getData(xx, y, zz);
@@ -162,7 +162,7 @@ void TripWireSourceTile::calculateState(
                 level->addToTickNextTick(x, y, z, id, getTickDelay(level));
                 attached &= wireArmed;
             }
-        } else  // Non-wire or src tile encountered.
+        } else  
         {
             wiresData[i] = -1;
             attached = false;
@@ -174,8 +174,8 @@ void TripWireSourceTile::calculateState(
     int state = (attached ? MASK_ATTACHED : 0) | (powered ? MASK_POWERED : 0);
     data = dir | state;
 
-    if (receiverPos > 0)  // If a receiver is detected update it's state and
-                          // notify it's neighbours.
+    if (receiverPos > 0)  
+                          
     {
         int xx = x + stepX * receiverPos;
         int zz = z + stepZ * receiverPos;
@@ -188,7 +188,7 @@ void TripWireSourceTile::calculateState(
 
     playSound(level, x, y, z, attached, powered, wasAttached, wasPowered);
 
-    if (id > 0)  // ie. it isn't being removed.
+    if (id > 0)  
     {
         level->setData(x, y, z, data, Tile::UPDATE_ALL);
         if (canUpdate) notifyNeighbors(level, x, y, z, dir);
@@ -284,8 +284,8 @@ void TripWireSourceTile::onRemove(Level* level, int x, int y, int z, int id,
     bool powered = (data & MASK_POWERED) == MASK_POWERED;
 
     if (attached || powered) {
-        calculateState(level, x, y, z, 0, data, false, -1, 0);  // Disconnect
-        // the other end.
+        calculateState(level, x, y, z, 0, data, false, -1, 0);  
+        
     }
 
     if (powered) {

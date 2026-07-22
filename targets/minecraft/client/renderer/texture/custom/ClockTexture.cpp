@@ -38,8 +38,8 @@ void ClockTexture::cycleFrames() {
             rott = Math::random();
         }
     } else {
-        // 4J Stu - For the static version, pretend we are already on a frame
-        // other than 0
+        
+        
         frame = 1;
     }
 
@@ -53,7 +53,7 @@ void ClockTexture::cycleFrames() {
 
     rot += rota;
 
-    // 4J Stu - We share data with another texture
+    
     if (m_dataTexture != nullptr) {
         int newFrame = (int)((rot + 1.0) * m_dataTexture->frames->size()) %
                        m_dataTexture->frames->size();

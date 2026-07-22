@@ -16,7 +16,7 @@
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"
 
 TextEditScreen::TextEditScreen(std::shared_ptr<SignTileEntity> sign) {
-    // 4J - added initialisers
+    
     line = 0;
     frame = 0;
     title = L"Edit sign message:";

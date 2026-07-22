@@ -23,14 +23,14 @@ void ContainerAckPacket::handle(PacketListener* listener) {
     listener->handleContainerAck(shared_from_this());
 }
 
-void ContainerAckPacket::read(DataInputStream* dis)  // throws IOException
+void ContainerAckPacket::read(DataInputStream* dis)  
 {
     containerId = (int)dis->readByte();
     uid = dis->readShort();
     accepted = (int)dis->readByte() != 0;
 }
 
-void ContainerAckPacket::write(DataOutputStream* dos)  // throws IOException
+void ContainerAckPacket::write(DataOutputStream* dos)  
 {
     dos->writeByte((uint8_t)containerId);
     dos->writeShort(uid);

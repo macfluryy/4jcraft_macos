@@ -28,10 +28,10 @@ HugeExplosionParticle::HugeExplosionParticle(Textures* textures, Level* level,
     this->textures = textures;
     lifeTime = 6 + random->nextInt(4);
 
-    // rCol = gCol = bCol = random->nextFloat() * 0.6f + 0.4f;
+    
 
     unsigned int clr = Minecraft::GetInstance()->getColourTable()->getColor(
-        eMinecraftColour_Particle_HugeExplosion);  // 0x999999
+        eMinecraftColour_Particle_HugeExplosion);  
     double r = ((clr >> 16) & 0xFF) / 255.0f, g = ((clr >> 8) & 0xFF) / 255.0,
            b = (clr & 0xFF) / 255.0;
 
@@ -60,9 +60,9 @@ void HugeExplosionParticle::render(Tesselator* t, float a, float xa, float ya,
     float y = (float)(yo + (this->y - yo) * a - yOff);
     float z = (float)(zo + (this->z - zo) * a - zOff);
 
-    // 4J - don't render explosion particles that are less than 3 metres away,
-    // to try and avoid large particles that are causing us problems with
-    // photosensitivity testing
+    
+    
+    
     float distSq = (x * x + y * y + z * z);
     if (distSq < (3.0f * 3.0f)) return;
 

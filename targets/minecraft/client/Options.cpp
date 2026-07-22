@@ -27,8 +27,8 @@
 #include "minecraft/network/packet/ClientInformationPacket.h"
 #include "minecraft/world/level/ViewDistanceUtil.h"
 
-// 4J - the Option sub-class used to be an java enumerated type, trying to
-// emulate that functionality here
+
+
 const Options::Option Options::Option::options[17] = {
     Options::Option(L"options.music", true, false),
     Options::Option(L"options.sound", true, false),
@@ -116,7 +116,7 @@ const std::wstring Options::PARTICLES[] = {L"options.particles.all",
                                            L"options.particles.decreased",
                                            L"options.particles.minimal"};
 
-// 4J added
+
 void Options::init() {
     music = 1;
     sound = 1;
@@ -127,7 +127,7 @@ void Options::init() {
     anaglyph3d = false;
     advancedOpengl = false;
 
-// 4JCRAFT V-Sync / VSync
+
 #if defined(ENABLE_VSYNC)
     framerateLimit = 2;
 #else
@@ -169,7 +169,7 @@ void Options::init() {
     keyMappings[13] = keyToggleFog;
 
     minecraft = nullptr;
-    // optionsFile = nullptr;
+    
 
     difficulty = 2;
     hideGui = false;
@@ -258,13 +258,13 @@ void Options::toggle(const Options::Option* option, int dir) {
     if (option == Option::GUI_SCALE) guiScale = (guiScale + dir) & 3;
     if (option == Option::PARTICLES) particles = (particles + dir) % 3;
 
-    // 4J-PB - changing
-    // 4jcraft: uncommented this so that the view bobbing option works
+    
+    
     if (option == Option::VIEW_BOBBING) bobView = !bobView;
     if (option == Option::RENDER_CLOUDS) renderClouds = !renderClouds;
     if (option == Option::ADVANCED_OPENGL) {
         advancedOpengl = !advancedOpengl;
-        // 4jcraft: ensure level exists before applying
+        
         if (minecraft->level) minecraft->levelRenderer->allChanged();
     }
     if (option == Option::ANAGLYPH) {
@@ -278,18 +278,18 @@ void Options::toggle(const Options::Option* option, int dir) {
         framerateLimit = (framerateLimit + dir + 4) % 4;
 #endif
 
-    // 4J-PB - Change for Xbox: the original Java toggle behaviour was an
-    // increment of dir (1 = next state). 4J switched it to assignment
-    // because the Xbox / Iggy slider passes an absolute 0..3 value
-    // through ActionGameSettings(eGameSetting_Difficulty). However the
-    // Java-style menus (OptionsScreen / VideoSettingsScreen) call
-    // toggle(DIFFICULTY, 1), which under the assignment form pegs the
-    // value at 1 ("Easy") on every click - meaning the Difficulty
-    // button in the in-game Options menu never advances. The Xbox/Iggy
-    // path now sets options->difficulty directly in Game.cpp instead
-    // of routing through toggle, so we can restore the original
-    // increment semantics here and the Difficulty button cycles
-    // Peaceful -> Easy -> Normal -> Hard -> Peaceful as expected.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     if (option == Option::DIFFICULTY)
         difficulty = (difficulty + dir) & 3;
 
@@ -297,17 +297,17 @@ void Options::toggle(const Options::Option* option, int dir) {
 
     if (option == Option::GRAPHICS) {
         fancyGraphics = !fancyGraphics;
-        // 4jcraft: ensure level exists before applying
+        
         if (minecraft->level) minecraft->levelRenderer->allChanged();
     }
     if (option == Option::AMBIENT_OCCLUSION) {
         ambientOcclusion = !ambientOcclusion;
-        // 4jcraft: ensure level exists before applying
+        
         if (minecraft->level) minecraft->levelRenderer->allChanged();
     }
 
-    // 4J-PB - don't do the file save on the xbox
-    // save();
+    
+    
 }
 
 float Options::getProgressValue(const Options::Option* item) {
@@ -320,8 +320,8 @@ float Options::getProgressValue(const Options::Option* item) {
 }
 
 bool Options::getBooleanValue(const Options::Option* item) {
-    // 4J - was a switch statement which we can't do with our Option:: pointer
-    // types
+    
+    
     if (item == Option::INVERT_MOUSE) return invertYMouse;
     if (item == Option::VIEW_BOBBING) return bobView;
     if (item == Option::ANAGLYPH) return anaglyph3d;
@@ -332,7 +332,7 @@ bool Options::getBooleanValue(const Options::Option* item) {
 }
 
 std::wstring Options::getMessage(const Options::Option* item) {
-    // 4J TODO, should these std::wstrings append rather than add?
+    
 
     Language* language = Language::getInstance();
     std::wstring caption = language->getElement(item->getCaptionId()) + L": ";
@@ -401,10 +401,10 @@ std::wstring Options::getMessage(const Options::Option* item) {
 }
 
 void Options::load() {
-    // 4J - removed try/catch
-    //    try {
+    
+    
     if (!optionsFile.exists()) return;
-    // 4J - was new BufferedReader(new FileReader(optionsFile));
+    
     BufferedReader* br = new BufferedReader(
         new InputStreamReader(new FileInputStream(optionsFile)));
 
@@ -420,8 +420,8 @@ void Options::load() {
     };
 
     while ((line = br->readLine()) !=
-           L"")  // 4J - was check against nullptr - do we need to distinguish
-                 // between empty lines and a fail here?
+           L"")  
+                 
     {
         if (line.find(L'\0') != std::wstring::npos) {
             std::wstring filtered;
@@ -481,8 +481,8 @@ void Options::load() {
 
         for (const auto& rawPair : pairs) {
             std::wstring pair = rawPair;
-            // 4J - removed try/catch
-            //            try {
+            
+            
             std::wstring cmds[2];
             int splitpos = (int)pair.find(L":");
             if (splitpos == (int)std::wstring::npos) {
@@ -532,23 +532,23 @@ void Options::load() {
                     keyMappings[i]->key = fromWString<int>(cmds[1]);
                 }
             }
-            //            } catch (Exception e) {
-            //                System.out.println("Skipping bad option: " +
-            //                line);
-            //            }
+            
+            
+            
+            
         }
     }
-    // KeyMapping.resetMapping(); // 4J Not implemented
+    
     br->close();
     if (!lastMpNickname.empty()) {
         for (int p = 0; p < XUSER_MAX_COUNT; ++p) {
             SetUserGamertag(p, lastMpNickname);
         }
     }
-    //    } catch (Exception e) {
-    //        System.out.println("Failed to load options");
-    //        e.printStackTrace();
-    //    }
+    
+    
+    
+    
 }
 
 float Options::readFloat(std::wstring string) {
@@ -558,14 +558,14 @@ float Options::readFloat(std::wstring string) {
 }
 
 void Options::save() {
-    // 4J - try/catch removed
-    //    try {
+    
+    
 
-    // 4J - original used a PrintWriter & FileWriter, but seems a bit much
-    // implementing these just to do this
+    
+    
     FileOutputStream fos = FileOutputStream(optionsFile);
     DataOutputStream dos = DataOutputStream(&fos);
-    //        PrintWriter pw = new PrintWriter(new FileWriter(optionsFile));
+    
 
     auto writeAscii = [&dos](const std::wstring& s) {
         for (wchar_t wc : s) {
@@ -607,10 +607,10 @@ void Options::save() {
     }
 
     dos.close();
-    //    } catch (Exception e) {
-    //        System.out.println("Failed to save options");
-    //        e.printStackTrace();
-    //    }
+    
+    
+    
+    
 }
 
 bool Options::isCloudsOn() { return viewDistance < 2 && renderClouds; }

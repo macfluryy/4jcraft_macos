@@ -1,6 +1,6 @@
 #pragma once
-// 4J Stu - Represents Java standard library class (although we miss out an
-// intermediate inheritance class that we don't care about)
+
+
 
 #include <stdint.h>
 
@@ -14,13 +14,13 @@ private:
     OutputStream* stream;
 
 protected:
-    int written;  // The number of bytes written to the data output stream so
-                  // far.
+    int written;  
+                  
 
 public:
     DataOutputStream(OutputStream* out);
 
-    // 4J Stu Added
+    
     void deleteChildStream();
 
     virtual void write(unsigned int b);

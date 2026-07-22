@@ -11,20 +11,20 @@
 #include "minecraft/world/level/tile/TreeTile.h"
 
 bool PineFeature::place(Level* level, Random* random, int x, int y, int z) {
-    // pines can be quite tall
+    
     int treeHeight = random->nextInt(5) + 7;
     int trunkHeight = treeHeight - random->nextInt(2) - 3;
     int topHeight = treeHeight - trunkHeight;
     int topRadius = 1 + random->nextInt(topHeight + 1);
 
     bool free = true;
-    // may not be outside of y boundaries
+    
     if (y < 1 || y + treeHeight + 1 > Level::genDepth) {
         return false;
     }
 
-    // 4J Stu Added to stop tree features generating areas previously place by
-    // game rule generation
+    
+    
     if (app.getLevelGenerationOptions() != nullptr) {
         LevelGenerationOptions* levelGenOptions =
             app.getLevelGenerationOptions();
@@ -32,13 +32,13 @@ bool PineFeature::place(Level* level, Random* random, int x, int y, int z) {
             x - topRadius, y - 1, z - topRadius, x + topRadius, y + treeHeight,
             z + topRadius);
         if (intersects) {
-            // app.DebugPrintf("Skipping reeds feature generation as it overlaps
-            // a game rule structure\n");
+            
+            
             return false;
         }
     }
 
-    // make sure there is enough space
+    
     for (int yy = y; yy <= y + 1 + treeHeight && free; yy++) {
         int r = 1;
         if ((yy - y) < trunkHeight) {
@@ -60,7 +60,7 @@ bool PineFeature::place(Level* level, Random* random, int x, int y, int z) {
 
     if (!free) return false;
 
-    // must stand on ground
+    
     int belowTile = level->getTile(x, y - 1, z);
     if ((belowTile != Tile::grass_Id && belowTile != Tile::dirt_Id) ||
         y >= Level::genDepth - treeHeight - 1)
@@ -68,7 +68,7 @@ bool PineFeature::place(Level* level, Random* random, int x, int y, int z) {
 
     placeBlock(level, x, y - 1, z, Tile::dirt_Id);
 
-    // place leaf top
+    
     int currentRadius = 0;
     for (int yy = y + treeHeight; yy >= y + trunkHeight; yy--) {
         for (int xx = x - currentRadius; xx <= x + currentRadius; xx++) {

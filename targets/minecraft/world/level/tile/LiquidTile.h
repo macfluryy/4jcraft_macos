@@ -32,7 +32,7 @@ public:
     virtual int getColor() const;
     virtual int getColor(LevelSource* level, int x, int y, int z);
     virtual int getColor(LevelSource* level, int x, int y, int z,
-                         int data);  // 4J added
+                         int data);  
     static float getHeight(int d);
     virtual Icon* getTexture(int face, int data);
 
@@ -61,7 +61,7 @@ public:
     virtual int getTickDelay(Level* level);
     virtual int getLightColor(
         LevelSource* level, int x, int y, int z,
-        int tileId = -1);  // 4J - brought forward from 1.8.2
+        int tileId = -1);  
     virtual float getBrightness(LevelSource* level, int x, int y, int z);
     virtual int getRenderLayer();
     virtual void animateTick(Level* level, int x, int y, int z, Random* random);

@@ -15,7 +15,7 @@
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/Tile.h"
 
-// FlatLevelSource::villageFeature = new VillageFeature(1);
+
 
 FlatLevelSource::FlatLevelSource(Level* level, int64_t seed,
                                  bool generateStructures) {
@@ -25,8 +25,8 @@ FlatLevelSource::FlatLevelSource(Level* level, int64_t seed,
     this->generateStructures = generateStructures;
     this->random = new Random(seed);
     this->pprandom = new Random(
-        seed);  // 4J - added, so that we can have a separate random for doing
-                // post-processing in parallel with creation
+        seed);  
+                
 
     villageFeature = new VillageFeature(m_XZSize);
 }
@@ -60,29 +60,29 @@ void FlatLevelSource::prepareHeights(std::vector<uint8_t>& blocks) {
 LevelChunk* FlatLevelSource::create(int x, int z) { return getChunk(x, z); }
 
 LevelChunk* FlatLevelSource::getChunk(int xOffs, int zOffs) {
-    // 4J - now allocating this with a physical alloc & bypassing general memory
-    // management so that it will get cleanly freed
+    
+    
     int chunksSize = Level::genDepth * 16 * 16;
     uint8_t* tileData = (uint8_t*)malloc(chunksSize);
     memset(tileData, 0, chunksSize);
     std::vector<uint8_t> blocks =
         std::vector<uint8_t>(tileData, tileData + chunksSize);
-    //	std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth *
-    // 16);
+    
+    
     prepareHeights(blocks);
 
-    //	LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
-    //// 4J - moved below
-    //        double[] temperatures = level.getBiomeSource().temperatures;
+    
+    
+    
 
     if (generateStructures) {
         villageFeature->apply(this, level, xOffs, zOffs, blocks);
     }
 
-    // 4J - this now creates compressed block data from the blocks array passed
-    // in, so moved it until after the blocks are actually finalised. We also
-    // now need to free the passed in blocks as the LevelChunk doesn't use the
-    // passed in allocation anymore.
+    
+    
+    
+    
     LevelChunk* levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     free(tileData);
 
@@ -94,8 +94,8 @@ LevelChunk* FlatLevelSource::getChunk(int xOffs, int zOffs) {
 bool FlatLevelSource::hasChunk(int x, int y) { return true; }
 
 void FlatLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
-    // 4J - changed from random to pprandom so we can run in parallel with
-    // getChunk etc.
+    
+    
     pprandom->setSeed(level->getSeed());
     int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
     int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
@@ -134,5 +134,5 @@ TilePos* FlatLevelSource::findNearestMapFeature(Level* level,
 }
 
 void FlatLevelSource::recreateLogicStructuresForChunk(int chunkX, int chunkZ) {
-    // TODO
+    
 }

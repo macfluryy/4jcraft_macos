@@ -6,7 +6,7 @@
 #include <thread>
 #include <vector>
 
-// 4jcraft TODO
+
 #include "platform/ShutdownManager.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
@@ -123,8 +123,8 @@ Socket::Socket(bool response) {
     networkPlayerSmallId = g_NetworkManager.GetHostPlayer()->GetSmallId();
 }
 
-Socket::Socket(INetworkPlayer* player, bool response /* = false*/,
-               bool hostLocal /*= false*/) {
+Socket::Socket(INetworkPlayer* player, bool response ,
+               bool hostLocal ) {
     m_isTcp = false;
     m_tcpFd = -1;
     m_tcpReaderThread = nullptr;
@@ -150,7 +150,7 @@ Socket::Socket(INetworkPlayer* player, bool response /* = false*/,
         m_end = SOCKET_SERVER_END;
     }
     m_socketClosedEvent = new C4JThread::Event;
-    // printf("New socket made %s\n", player->GetGamertag() );
+    
     networkPlayerSmallId = player->GetSmallId();
     createdOk = true;
 }
@@ -169,14 +169,14 @@ Socket::Socket(INetworkPlayer* player, int tcpFd, bool response) {
     }
 
     if (response) {
-        // Host / server-side socket.
+        
         m_end = SOCKET_SERVER_END;
         m_inputStream[SOCKET_SERVER_END] =
             new SocketInputStreamNetwork(this, SOCKET_SERVER_END);
         m_outputStream[SOCKET_SERVER_END] =
             new SocketOutputStreamNetwork(this, SOCKET_SERVER_END);
     } else {
-        // Client-side socket.
+        
         m_end = SOCKET_CLIENT_END;
         m_inputStream[SOCKET_CLIENT_END] =
             new SocketInputStreamNetwork(this, SOCKET_CLIENT_END);
@@ -290,7 +290,7 @@ Socket* Socket::ConnectTcp(const std::string& host, int port,
 
     fprintf(stderr, "[TCP] Connected to %s:%d (fd=%d)\n", host.c_str(), port,
             fd);
-    return new Socket(player, fd, /*response=*/false);
+    return new Socket(player, fd, false);
 }
 
 bool Socket::StartTcpListener(int port) {
@@ -363,7 +363,7 @@ bool Socket::StartTcpListener(int port) {
                 }
 
                 Socket* serverSock =
-                    new Socket(remote, clientFd, /*response=*/true);
+                    new Socket(remote, clientFd, true);
                 remote->SetSocket(serverSock);
                 g_NetworkManager.DirectConnectPlayerJoining(remote);
                 Socket::addIncomingSocket(serverSock);
@@ -416,7 +416,7 @@ void Socket::setPlayer(INetworkPlayer* player) {
 }
 
 void Socket::pushDataToQueue(const std::uint8_t* pbData, std::size_t dataSize,
-                             bool fromHost /*= true*/) {
+                             bool fromHost ) {
     int queueIdx = SOCKET_CLIENT_END;
     if (!fromHost) queueIdx = SOCKET_SERVER_END;
 
@@ -788,26 +788,26 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(
                            NON_QNET_SENDDATA_ACK_REQUIRED);
 
         if (m_queueIdx == SOCKET_SERVER_END) {
-            // printf( "Sent %u bytes of data from \"%ls\" to \"%ls\"\n",
-            // buffer.dwDataSize,
-            // hostPlayer->GetGamertag(),
-            // m_socket->networkPlayer->GetGamertag());
+            
+            
+            
+            
 
             hostPlayer->SendData(socketPlayer, buffer.pbyData,
                                  buffer.dwDataSize, lowPriority, requireAck);
 
-            // 		uint32_t queueSize = hostPlayer->GetSendQueueSize(
-            // nullptr, QNET_GETSENDQUEUESIZE_BYTES  ); 		if(
-            // queueSize > 24000 )
-            // 		{
-            // 			//printf("Queue size is: %d, forcing
-            // doWork()\n",queueSize); g_NetworkManager.DoWork();
-            // 		}
+            
+            
+            
+            
+            
+            
+            
         } else {
-            // printf( "Sent %u bytes of data from \"%ls\" to \"%ls\"\n",
-            // buffer.dwDataSize,
-            // m_socket->networkPlayer->GetGamertag(),
-            // hostPlayer->GetGamertag());
+            
+            
+            
+            
 
             socketPlayer->SendData(hostPlayer, buffer.pbyData,
                                    buffer.dwDataSize, lowPriority, requireAck);

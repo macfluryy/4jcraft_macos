@@ -39,10 +39,10 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum,
             level->getSavedData(typeid(MapItemSavedData), id));
 
     if (mapItemSavedData == nullptr) {
-        // 4J Stu - This call comes from ClientConnection, but i don't see why
-        // we should be trying to work out the id again when it's passed as a
-        // param. In any case that won't work with the new map setup
-        // int aux = level->getFreeAuxValueFor(L"map");
+        
+        
+        
+        
         int aux = idNum;
 
         id = std::wstring(L"map_") + toWString(aux);
@@ -64,10 +64,10 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(
 
     bool newData = false;
     if (mapItemSavedData == nullptr) {
-        // 4J Stu - I don't see why we should be trying to work out the id again
-        // when it's passed as a param. In any case that won't work with the new
-        // map setup
-        // itemInstance->setAuxValue(level->getFreeAuxValueFor(L"map"));
+        
+        
+        
+        
 
         id = std::wstring(L"map_") + toWString(itemInstance->getAuxValue());
         mapItemSavedData = std::make_shared<MapItemSavedData>(id);
@@ -77,8 +77,8 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(
 
     mapItemSavedData->scale = 3;
 #ifndef _LARGE_WORLDS
-    // 4J-PB - for Xbox maps, we'll centre them on the origin of the world,
-    // since we can fit the whole world in our map
+    
+    
     mapItemSavedData->x = 0;
     mapItemSavedData->z = 0;
 #endif
@@ -107,7 +107,7 @@ void MapItem::update(Level* level, std::shared_ptr<Entity> player,
                      std::shared_ptr<MapItemSavedData> data) {
     if ((level->dimension->id != data->dimension) ||
         !player->instanceof(eTYPE_PLAYER)) {
-        // Wrong dimension, abort
+        
         return;
     }
 
@@ -271,8 +271,8 @@ void MapItem::inventoryTick(std::shared_ptr<ItemInstance> itemInstance,
         std::shared_ptr<Player> player =
             std::dynamic_pointer_cast<Player>(owner);
 
-        // 4J Stu - If the player has a map that belongs to another player, then
-        // merge the data over and change this map id to the owners id
+        
+        
         int ownersAuxValue = level->getAuxValueForMap(
             player->getXuid(), data->dimension, data->x, data->z, data->scale);
         if (ownersAuxValue != itemInstance->getAuxValue()) {
@@ -323,8 +323,8 @@ void MapItem::onCraftedBy(std::shared_ptr<ItemInstance> itemInstance,
     int centreXC = (int)(Math::round(player->x / scale) * scale);
     int centreZC = (int)(Math::round(player->z / scale) * scale);
 #else
-    // 4J-PB - for Xbox maps, we'll centre them on the origin of the world,
-    // since we can fit the whole world in our map
+    
+    
     int centreXC = 0;
     int centreZC = 0;
 #endif
@@ -337,36 +337,36 @@ void MapItem::onCraftedBy(std::shared_ptr<ItemInstance> itemInstance,
 
     std::shared_ptr<MapItemSavedData> data =
         getSavedData(itemInstance->getAuxValue(), level);
-    // 4J Stu - We only have one map per player per dimension, so don't reset
-    // the one that they have when a new one is created
+    
+    
     if (data == nullptr) {
         data = std::make_shared<MapItemSavedData>(id);
     }
     level->setSavedData(id, (std::shared_ptr<SavedData>)data);
 
     data->scale = mapScale;
-    // 4J-PB - for Xbox maps, we'll centre them on the origin of the world,
-    // since we can fit the whole world in our map
+    
+    
     data->x = centreXC;
     data->z = centreZC;
     data->dimension = (uint8_t)level->dimension->id;
     data->setDirty();
 }
 
-// 4J - Don't want
-/*
-void appendHoverText(ItemInstance itemInstance, Player player, List<String>
-lines, bool advanced) { MapItemSavedData data = getSavedData(itemInstance,
-player.level);
 
-        if (advanced) {
-                if (data == null) {
-                        lines.add("Unknown map");
-                } else {
-                        lines.add("Scaling at 1:" + (1 << data.scale));
-                        lines.add("(Level " + data.scale + "/" +
-MapItemSavedData.MAX_SCALE + ")");
-                }
-        }
-}
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

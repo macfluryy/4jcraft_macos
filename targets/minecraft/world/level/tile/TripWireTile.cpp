@@ -22,9 +22,9 @@ TripWireTile::TripWireTile(int id) : Tile(id, Material::decoration, false) {
 }
 
 int TripWireTile::getTickDelay(Level* level) {
-    // 4J:	Increased (x2); quick update caused problems with shared
-    //		data between client and server.
-    return 20;  // 10;
+    
+    
+    return 20;  
 }
 
 std::optional<AABB> TripWireTile::getAABB(Level* level, int x, int y, int z) {

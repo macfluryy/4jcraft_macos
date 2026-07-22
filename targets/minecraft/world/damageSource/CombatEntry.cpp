@@ -13,7 +13,7 @@ CombatEntry::CombatEntry(DamageSource* source, int time, float health,
                          float fallDistance) {
     this->source = nullptr;
     if (source != nullptr) {
-        // 4J: this might actually be a derived damage source so use copy func
+        
         this->source = source->copy();
     }
     this->time = time;

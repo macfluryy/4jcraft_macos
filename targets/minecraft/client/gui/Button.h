@@ -17,14 +17,14 @@ public:
     int id;
     bool active;
     bool visible;
-    bool hovered; // 4J macOS - add hover state tracking
+    bool hovered; 
 
     Button(int id, int x, int y, const std::wstring& msg);
     Button(int id, int x, int y, int w, int h, const std::wstring& msg);
     
     void init(int id, int x, int y, int w, int h, const std::wstring& msg);
     
-    // 4J macOS - improved methods
+    
     int getWidth() const { return w; }
     int getHeight() const { return h; }
     

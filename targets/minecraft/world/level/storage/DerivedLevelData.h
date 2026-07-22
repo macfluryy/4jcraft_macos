@@ -20,7 +20,7 @@ public:
     DerivedLevelData(LevelData* wrapped);
 
 protected:
-    virtual void setTagData(CompoundTag* tag);  // 4J Added
+    virtual void setTagData(CompoundTag* tag);  
 
 public:
     CompoundTag* createTag();
@@ -67,6 +67,6 @@ public:
     bool isInitialized();
     void setInitialized(bool initialized);
     GameRules* getGameRules();
-    int getXZSize();     // 4J Added
-    int getHellScale();  // 4J Addded
+    int getXZSize();     
+    int getHellScale();  
 };

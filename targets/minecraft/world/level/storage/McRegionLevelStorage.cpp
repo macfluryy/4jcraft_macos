@@ -26,14 +26,14 @@ McRegionLevelStorage::McRegionLevelStorage(ConsoleSaveFile* saveFile, File dir,
 }
 
 McRegionLevelStorage::~McRegionLevelStorage() {
-    // Make sure cache is clear, as the DirectoryLevelStorage destructor is
-    // going to be deleting the underlying ConsoleSaveFile reference so we don't
-    // want the RegionFileCache to still be referencing it either
+    
+    
+    
     RegionFileCache::clear();
 }
 
 ChunkStorage* McRegionLevelStorage::createChunkStorage(Dimension* dimension) {
-    // File folder = getFolder();
+    
 
     if (dynamic_cast<HellDimension*>(dimension) != nullptr) {
         if (app.GetResetNether()) {
@@ -68,17 +68,17 @@ ChunkStorage* McRegionLevelStorage::createChunkStorage(Dimension* dimension) {
     }
 
     if (dynamic_cast<TheEndDimension*>(dimension)) {
-        // File dir2 = new File(folder, LevelStorage.ENDER_FOLDER);
-        // dir2.mkdirs();
-        // return new ThreadedMcRegionChunkStorage(dir2);
+        
+        
+        
 
-        // 4J-PB - save version 0 at this point means it's a create new world
+        
         int iSaveVersion = m_saveFile->getSaveVersion();
 
         if ((iSaveVersion != 0) && (iSaveVersion < SAVE_FILE_VERSION_NEW_END)) {
-            // For versions before TU9 (TU7 and 8) we generate a part of The
-            // End, but we want to scrap it if it exists so that it is replaced
-            // with the TU9+ version
+            
+            
+            
             app.DebugPrintf(
                 "Loaded save version number is: %d, required to keep The End "
                 "is: %d\n",
@@ -87,7 +87,7 @@ ChunkStorage* McRegionLevelStorage::createChunkStorage(Dimension* dimension) {
             std::vector<FileEntry*>* endFiles =
                 m_saveFile->getFilesWithPrefix(LevelStorage::ENDER_FOLDER);
 
-            // 4J-PB - There will be no End in early saves
+            
             if (endFiles != nullptr) {
                 for (auto it = endFiles->begin(); it != endFiles->end(); ++it) {
                     m_saveFile->deleteFile(*it);

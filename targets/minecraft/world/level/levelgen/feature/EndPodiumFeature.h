@@ -4,7 +4,7 @@
 class EndPodiumFeature : public Feature {
 private:
     int tile;
-    // int m_iIndex;
+    
 
 public:
     EndPodiumFeature(int tile);

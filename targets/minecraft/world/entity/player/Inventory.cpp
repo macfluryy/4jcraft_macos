@@ -24,9 +24,9 @@ const int Inventory::MAX_INVENTORY_STACK_SIZE = 64;
 const int Inventory::INVENTORY_SIZE = 4 * 9;
 const int Inventory::SELECTION_SIZE = 9;
 
-// 4J Stu - The Pllayer is managed by shared_ptrs elsewhere, but it owns us so
-// we don't want to also keep a shared_ptr of it. If we pass it on we should use
-// shared_from_this() though
+
+
+
 Inventory::Inventory(Player* player) {
     items = std::vector<std::shared_ptr<ItemInstance>>(INVENTORY_SIZE);
     armor = std::vector<std::shared_ptr<ItemInstance>>(4);
@@ -43,16 +43,16 @@ Inventory::Inventory(Player* player) {
 Inventory::~Inventory() {}
 
 std::shared_ptr<ItemInstance> Inventory::getSelected() {
-    // sanity checking to prevent exploits
+    
     if (selected < SELECTION_SIZE && selected >= 0) {
         return items[selected];
     }
     return nullptr;
 }
 
-// 4J-PB - Added for the in-game tooltips
+
 bool Inventory::IsHeldItem() {
-    // sanity checking to prevent exploits
+    
     if (selected < SELECTION_SIZE && selected >= 0) {
         if (items[selected]) {
             return true;
@@ -170,7 +170,7 @@ int Inventory::clearInventory(int id, int data) {
 
 void Inventory::replaceSlot(Item* item, int data) {
     if (item != nullptr) {
-        // It's too easy to accidentally pick block and lose enchanted items.
+        
         if (heldItem != nullptr && heldItem->isEnchantable() &&
             getSlot(heldItem->id, heldItem->getDamageValue()) == selected) {
             return;
@@ -193,7 +193,7 @@ int Inventory::addResource(std::shared_ptr<ItemInstance> itemInstance) {
     int type = itemInstance->id;
     int count = itemInstance->count;
 
-    // 4J Stu - Brought forward from 1.2
+    
     if (itemInstance->getMaxStackSize() == 1) {
         int slot = getFreeSlot();
         if (slot < 0) return count;
@@ -210,7 +210,7 @@ int Inventory::addResource(std::shared_ptr<ItemInstance> itemInstance) {
     if (items[slot] == nullptr) {
         items[slot] = std::shared_ptr<ItemInstance>(
             new ItemInstance(type, 0, itemInstance->getAuxValue()));
-        // 4J Stu - Brought forward from 1.2
+        
         if (itemInstance->hasTag()) {
             items[slot]->setTag((CompoundTag*)itemInstance->getTag()->copy());
             player->handleCollectItem(itemInstance);
@@ -315,7 +315,7 @@ bool Inventory::add(std::shared_ptr<ItemInstance> item) {
             item->count = addResource(item);
         } while (item->count > 0 && item->count < lastSize);
         if (item->count == lastSize && player->abilities.instabuild) {
-            // silently destroy the item when having a full inventory
+            
             item->count = 0;
             return true;
         }
@@ -343,7 +343,7 @@ bool Inventory::add(std::shared_ptr<ItemInstance> item) {
         item->count = 0;
         return true;
     } else if (player->abilities.instabuild) {
-        // silently destroy the item when having a full inventory
+        
         item->count = 0;
         return true;
     }
@@ -393,7 +393,7 @@ void Inventory::setItem(unsigned int slot, std::shared_ptr<ItemInstance> item) {
         std::wstring itemstring = item->toString();
         app.DebugPrintf("Inventory::setItem - slot = %d,\t item = %d ", slot,
                         item->id);
-        // OutputDebugStringW(itemstring.c_str());
+        
         app.DebugPrintf("\n");
     }
 #else
@@ -403,23 +403,23 @@ void Inventory::setItem(unsigned int slot, std::shared_ptr<ItemInstance> item) {
             item->id, item->getAuxValue());
     }
 #endif
-    // 4J Stu - Changed this a little from Java to be less funn
+    
     if (slot >= items.size()) {
         armor[slot - items.size()] = item;
     } else {
         items[slot] = item;
     }
     player->handleCollectItem(item);
-    /*
-    std::vector<std::shared_ptr<ItemInstance>>& pile = items;
-    if (slot >= pile.size())
-    {
-    slot -= pile.size();
-    pile = armor;
-    }
+    
 
-    pile[slot] = item;
-    */
+
+
+
+
+
+
+
+
 }
 
 float Inventory::getDestroySpeed(Tile* tile) {
@@ -470,22 +470,22 @@ void Inventory::load(ListTag<CompoundTag>* inventoryList) {
 unsigned int Inventory::getContainerSize() { return items.size() + 4; }
 
 std::shared_ptr<ItemInstance> Inventory::getItem(unsigned int slot) {
-    // 4J Stu - Changed this a little from the Java so it's less funny
+    
     if (slot >= items.size()) {
         return armor[slot - items.size()];
     } else {
         return items[slot];
     }
-    /*
-    std::vector<std::shared_ptr<ItemInstance>> pile = items;
-    if (slot >= pile.size())
-    {
-    slot -= pile.size();
-    pile = armor;
-    }
+    
 
-    return pile[slot];
-    */
+
+
+
+
+
+
+
+
 }
 
 std::wstring Inventory::getName() { return app.GetString(IDS_INVENTORY); }
@@ -614,11 +614,11 @@ bool Inventory::contains(std::shared_ptr<ItemInstance> itemInstance) {
 }
 
 void Inventory::startOpen() {
-    // TODO Auto-generated method stub
+    
 }
 
 void Inventory::stopOpen() {
-    // TODO Auto-generated method stub
+    
 }
 
 bool Inventory::canPlaceItem(int slot, std::shared_ptr<ItemInstance> item) {
@@ -639,11 +639,11 @@ void Inventory::replaceWith(std::shared_ptr<Inventory> other) {
 int Inventory::countMatches(std::shared_ptr<ItemInstance> itemInstance) {
     if (itemInstance == nullptr) return 0;
     int count = 0;
-    // for (unsigned int i = 0; i < armor.size(); i++)
-    //{
-    //	if (armor[i] != nullptr && armor[i]->sameItem(itemInstance)) count +=
-    // items[i]->count;
-    // }
+    
+    
+    
+    
+    
     for (unsigned int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr && items[i]->sameItemWithTags(itemInstance))
             count += items[i]->count;

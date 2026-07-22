@@ -37,6 +37,7 @@ constexpr int32_t UpdateSign = 0x12;
 constexpr int32_t ClientSettings = 0x15;
 constexpr int32_t ClientStatus = 0x16;
 constexpr int32_t PluginMessage = 0x17;
+constexpr int32_t ResourcePackStatus = 0x19;
 }
 
 namespace JavaPlayClientboundId {
@@ -89,5 +90,7 @@ constexpr int32_t DisplayScoreboard = 0x3D;
 constexpr int32_t Teams = 0x3E;
 constexpr int32_t PluginMessage = 0x3F;
 constexpr int32_t Disconnect = 0x40;
+constexpr int32_t Title = 0x45;
 constexpr int32_t PlayerListHeaderFooter = 0x47;
+constexpr int32_t ResourcePackSend = 0x48;
 }

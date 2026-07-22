@@ -20,10 +20,10 @@ class Font;
 class Model;
 class TileRenderer;
 
-// 4J - this was originally a generic of type EntityRenderer<T extends Entity>
+
 class EntityRenderer {
-    friend class PlayerRenderer;  // 4J Added to allow PlayerRenderer to call
-                                  // renderShadow
+    friend class PlayerRenderer;  
+                                  
 protected:
     EntityRenderDispatcher* entityRenderDispatcher;
 
@@ -31,19 +31,19 @@ private:
     static ResourceLocation SHADOW_LOCATION;
 
 protected:
-    Model* model;  // TODO 4J: Check why exactly this is here, it seems to get
-                   // shadowed by classes inheriting from this by their own
+    Model* model;  
+                   
 
 protected:
-    TileRenderer* tileRenderer;  // 4J - changed to protected so derived classes
-                                 // can use instead of shadowing their own
+    TileRenderer* tileRenderer;  
+                                 
 
 protected:
     float shadowRadius;
     float shadowStrength;
 
 public:
-    EntityRenderer();  // 4J - added
+    EntityRenderer();  
     virtual ~EntityRenderer();
 
 public:
@@ -83,7 +83,7 @@ public:
     virtual void registerTerrainTextures(IconRegister* iconRegister);
 
 public:
-    // 4J Added
+    
     virtual Model* getModel() { return model; }
     virtual void SetItemFrame(bool bSet) {}
 };

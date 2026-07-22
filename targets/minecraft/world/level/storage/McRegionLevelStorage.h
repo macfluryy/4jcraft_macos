@@ -8,10 +8,10 @@
 class ConsoleSaveFile;
 
 class McRegionLevelStorage : public DirectoryLevelStorage {
-    //    private static final Logger logger = Logger.getLogger("Minecraft");
+    
 
-    friend class McRegionLevelStorageSource;  // 4J Jev, needs access to
-                                              // protected members.
+    friend class McRegionLevelStorageSource;  
+                                              
 
 protected:
     static const int MCREGION_VERSION_ID = 0x4abc;

@@ -15,5 +15,5 @@ void LockedChestTile::tick(Level* level, int x, int y, int z, Random* random) {
 }
 
 void LockedChestTile::registerIcons(IconRegister* iconRegister) {
-    // None
+    
 }

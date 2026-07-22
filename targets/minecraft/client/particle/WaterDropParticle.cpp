@@ -22,8 +22,8 @@ WaterDropParticle::WaterDropParticle(Level* level, double x, double y, double z)
     this->setSize(0.01f, 0.01f);
     gravity = 0.06f;
 
-    noPhysics = true;  // 4J - optimisation - do we really need collision on
-                       // these? its really slow...
+    noPhysics = true;  
+                       
     lifetime = (int)(8 / (Math::random() * 0.8 + 0.2));
 }
 

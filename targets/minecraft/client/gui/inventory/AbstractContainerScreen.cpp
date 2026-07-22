@@ -24,7 +24,7 @@
 ItemRenderer* AbstractContainerScreen::itemRenderer = new ItemRenderer();
 
 AbstractContainerScreen::AbstractContainerScreen(AbstractContainerMenu* menu) {
-    // 4J - added initialisers
+    
     imageWidth = 176;
     imageHeight = 166;
 
@@ -34,12 +34,12 @@ AbstractContainerScreen::AbstractContainerScreen(AbstractContainerMenu* menu) {
 void AbstractContainerScreen::init() {
     Screen::init();
     minecraft->player->containerMenu = menu;
-    // 	leftPos = (width - imageWidth) / 2;
-    // 	topPos = (height - imageHeight) / 2;
+    
+    
 }
 
 void AbstractContainerScreen::render(int xm, int ym, float a) {
-    // 4J Stu - Not used
+    
 #ifdef ENABLE_JAVA_GUIS
     renderBackground();
     int xo = (width - imageWidth) / 2;
@@ -62,7 +62,7 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
 
     auto itEnd = menu->slots.end();
     for (auto it = menu->slots.begin(); it != itEnd; it++) {
-        Slot* slot = *it;  // menu->slots.at(i);
+        Slot* slot = *it;  
 
         renderSlot(slot);
 
@@ -83,15 +83,15 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
     std::shared_ptr<Inventory> inventory = minecraft->player->inventory;
     if (inventory->getCarried() != nullptr) {
         glTranslatef(0, 0, 32);
-        // Slot old = carriedSlot;
-        // carriedSlot = null;
+        
+        
         itemRenderer->renderGuiItem(font, minecraft->textures,
                                     inventory->getCarried(), xm - xo - 8,
                                     ym - yo - 8);
         itemRenderer->renderGuiItemDecorations(font, minecraft->textures,
                                                inventory->getCarried(),
                                                xm - xo - 8, ym - yo - 8);
-        // carriedSlot = old;
+        
     }
     Lighting::turnOff();
     glDisable(GL_RESCALE_NORMAL);
@@ -101,7 +101,7 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
 
     renderLabels();
 
-    // 4jcraft: newer tooltips backported from java edition 1.3.x (MCP 7.x)
+    
     if (inventory->getCarried() == nullptr && hoveredSlot != nullptr &&
         hoveredSlot->hasItem()) {
         std::shared_ptr<ItemInstance> item = hoveredSlot->getItem();
@@ -109,7 +109,7 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
         int xo = (width - imageWidth) / 2;
         int yo = (height - imageHeight) / 2;
 
-        // 4jcraft: abstracted tooltip rendering into a new method
+        
         renderTooltip(item, xm - xo, ym - yo);
     }
 
@@ -121,10 +121,10 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
 #endif
 }
 
-// 4jcraft: extracted from render() into a standalone method so this can be used
-// in other derived classes
-// update: also added 1.6.x era overloads (for the creative inventory and other
-// places)
+
+
+
+
 void AbstractContainerScreen::renderTooltipInternal(
     const std::vector<std::wstring>& cleanedLines,
     const std::vector<int>& lineColors, int xm, int ym) {
@@ -203,11 +203,11 @@ void AbstractContainerScreen::renderTooltip(std::shared_ptr<ItemInstance> item,
             std::wstring clean = L"";
             int lineColor = 0xffffffff;
 
-            // 4jcraft: LCE is using HTML font elements for its tooltip
-            // colors, so make sure to parse them for parity w iggy UI
-            //
-            // examples would be enchantment books, potions and music
-            // discs
+            
+            
+            
+            
+            
             size_t fontPos = rawLine.find(L"<font");
             if (fontPos != std::wstring::npos) {
                 size_t colorPos = rawLine.find(L"color=\"", fontPos);
@@ -287,18 +287,18 @@ void AbstractContainerScreen::renderSlot(Slot* slot) {
     int y = slot->y;
     std::shared_ptr<ItemInstance> item = slot->getItem();
 
-    // if (item == nullptr)
-    // {
-    //     int icon = slot->getNoItemIcon();
-    //     if (icon >= 0)
-    // 	{
-    //         glDisable(GL_LIGHTING);
-    //         minecraft->textures->bind(minecraft->textures->loadTexture(TN_GUI_ITEMS));//L"/gui/items.png"));
-    //         blit(x, y, icon % 16 * 16, icon / 16 * 16, 16, 16);
-    //         glEnable(GL_LIGHTING);
-    //         return;
-    //     }
-    // }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     if (item == nullptr) {
         return;
@@ -313,14 +313,14 @@ void AbstractContainerScreen::renderSlot(Slot* slot) {
 Slot* AbstractContainerScreen::findSlot(int x, int y) {
     auto itEnd = menu->slots.end();
     for (auto it = menu->slots.begin(); it != itEnd; it++) {
-        Slot* slot = *it;  // menu->slots.at(i);
+        Slot* slot = *it;  
         if (isHovering(slot, x, y)) return slot;
     }
     return nullptr;
 }
 
-// 4jcraft: equivalent to MCP 8.11 (1.6.x)'s GuiContainer.isPointInRegion() for
-// use in other derived classes
+
+
 bool AbstractContainerScreen::isHoveringOver(int x, int y, int w, int h, int xm,
                                              int ym) {
     int xo = (width - imageWidth) / 2;

@@ -6,7 +6,7 @@ class Villager;
 
 class LookAtTradingPlayerGoal : public LookAtPlayerGoal {
 private:
-    Villager* villager;  // This is the owner of this goal
+    Villager* villager;  
 
 public:
     LookAtTradingPlayerGoal(Villager* villager);

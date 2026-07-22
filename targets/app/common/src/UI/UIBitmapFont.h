@@ -13,16 +13,16 @@ class CFontData;
 
 #define VERBOSE_FONT_OUTPUT 0
 
-// const int BITMAP_FONT_LANGUAGES = XC_LANGUAGE_ENGLISH
-// 								|
-// XC_LANGUAGE_GERMAN
-// | XC_LANGUAGE_FRENCH
-// | XC_LANGUAGE_SPANISH
-// | XC_LANGUAGE_ITALIAN
-// | XC_LANGUAGE_PORTUGUESE
-// | XC_LANGUAGE_BRAZILIAN;
 
-// using namespace std;
+
+
+
+
+
+
+
+
+
 
 class UIAbstractBitmapFont {
 protected:
@@ -40,7 +40,7 @@ public:
 
     void registerFont();
 
-    // Virtual Functions.
+    
     virtual IggyFontMetrics* GetFontMetrics(IggyFontMetrics* metrics) = 0;
     virtual S32 GetCodepointGlyph(U32 codepoint) = 0;
     virtual IggyGlyphMetrics* GetGlyphMetrics(S32 glyph,
@@ -53,8 +53,8 @@ public:
     virtual void FreeGlyphBitmap(S32 glyph, F32 pixel_scale,
                                  IggyBitmapCharacter* bitmap) = 0;
 
-    // Static Callbacks
-    // Just wrappers for the virtual functions.
+    
+    
     static IggyFontMetrics* RADLINK
     GetFontMetrics_Callback(void* user_context, IggyFontMetrics* metrics);
     static S32 RADLINK GetCodepointGlyph_Callback(void* user_context,

@@ -156,7 +156,7 @@ EntityRenderDispatcher::EntityRenderDispatcher() {
     renderers[eTYPE_LARGE_FIREBALL] = new FireballRenderer(2.0f);
     renderers[eTYPE_SMALL_FIREBALL] = new FireballRenderer(0.5f);
     renderers[eTYPE_DRAGON_FIREBALL] =
-        new FireballRenderer(2.0f);  // 4J Added TU9
+        new FireballRenderer(2.0f);  
     renderers[eTYPE_WITHER_SKULL] = new WitherSkullRenderer();
     renderers[eTYPE_ITEMENTITY] = new ItemRenderer();
     renderers[eTYPE_EXPERIENCEORB] = new ExperienceOrbRenderer();
@@ -185,30 +185,30 @@ EntityRenderDispatcher::EntityRenderDispatcher() {
         it->second->init(this);
     }
 
-    isGuiRender = false;  // 4J added
+    isGuiRender = false;  
 }
 
 EntityRenderer* EntityRenderDispatcher::getRenderer(eINSTANCEOF e) {
     if ((e & eTYPE_PLAYER) == eTYPE_PLAYER) e = eTYPE_PLAYER;
-    // EntityRenderer * r = renderers[e];
-    auto it = renderers.find(e);  // 4J Stu - The .at and [] accessors
-                                  // insert elements if they don't exist
+    
+    auto it = renderers.find(e);  
+                                  
 
     if (it == renderers.end()) {
         app.DebugPrintf("Couldn't find renderer for entity of type %d\n", e);
-        // New renderer mapping required in above table
-        // __debugbreak();
+        
+        
         assert(0);
     }
-    /* 4J - not doing this hierarchical search anymore. We need to explicitly
-    add renderers for any eINSTANCEOF type that we want to be able to render if
-    (it == renderers.end() && e != Entity::_class)
-    {
-    EntityRenderer *r = getRenderer(dynamic_cast<Entity::Class *>(
-    e->getSuperclass() )); renderers.insert( classToRendererMap::value_type( e,
-    r ) ); return r;
-    //assert(false);
-    }*/
+    
+
+
+
+
+
+
+
+
     return it->second;
 }
 
@@ -259,9 +259,9 @@ void EntityRenderDispatcher::render(std::shared_ptr<Entity> entity, float a) {
     double y = entity->yOld + (entity->y - entity->yOld) * a;
     double z = entity->zOld + (entity->z - entity->zOld) * a;
 
-    // Fix for #61057 - TU7: Gameplay: Boat is glitching when player float
-    // forward and turning. Fix to handle the case that yRot and yRotO wrap over
-    // the 0/360 line
+    
+    
+    
     float rotDiff = entity->yRot - entity->yRotO;
     if (rotDiff > 180 || rotDiff < -180) {
         if (entity->yRot > entity->yRotO) {
@@ -307,7 +307,7 @@ Font* EntityRenderDispatcher::getFont() { return font; }
 
 void EntityRenderDispatcher::registerTerrainTextures(
     IconRegister* iconRegister) {
-    // for (EntityRenderer<? extends Entity> renderer : renderers.values())
+    
     for (auto it = renderers.begin(); it != renderers.end(); ++it) {
         EntityRenderer* renderer = it->second;
         renderer->registerTerrainTextures(iconRegister);

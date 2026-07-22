@@ -32,9 +32,9 @@ protected:
 private:
     UIControl_CheckBox m_checkboxViewBob, m_checkboxShowHints,
         m_checkboxShowTooltips, m_checkboxInGameGamertags,
-        m_checkboxMashupWorlds;                             // Checkboxes
-    UIControl_Slider m_sliderAutosave, m_sliderDifficulty;  // Sliders
-    UIControl_Label m_labelDifficultyText;                  // Text
+        m_checkboxMashupWorlds;                             
+    UIControl_Slider m_sliderAutosave, m_sliderDifficulty;  
+    UIControl_Label m_labelDifficultyText;                  
     UIControl_Button m_buttonLanguageSelect;
 
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
@@ -65,11 +65,11 @@ public:
     virtual void updateComponents();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
     virtual void handlePress(F64 controlId, F64 childId);

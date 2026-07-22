@@ -1,6 +1,6 @@
 #pragma once
-// 4J Stu - Represents Java standard library class (although we miss out an
-// intermediate inheritance class that we don't care about)
+
+
 
 #include <cstdint>
 #include <string>
@@ -35,7 +35,7 @@ public:
     virtual std::wstring readUTF();
     void deleteChildStream();
     virtual int readUTFChar();
-    virtual unsigned long long readPlayerUID();  // 4J Added
+    virtual unsigned long long readPlayerUID();  
     virtual int64_t skip(int64_t n);
     virtual int skipBytes(int n);
 };

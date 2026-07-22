@@ -14,7 +14,7 @@ IUIScene_HorseInventoryMenu::GetSectionAndSlotInDirection(
     int xOffset = 0;
     int yOffset = 0;
 
-    // Find the new section if there is one
+    
     switch (eSection) {
         case eSectionHorseUsing:
             if (eTapDirection == eTapStateDown) {
@@ -122,8 +122,8 @@ IUIScene_HorseInventoryMenu::GetSectionAndSlotInDirection(
     return newSection;
 }
 
-// TODO: Offset will vary by type of horse, add in once horse menu and horse
-// entity are implemented
+
+
 int IUIScene_HorseInventoryMenu::getSectionStartOffset(ESceneSection eSection) {
     int offset = 0;
     switch (eSection) {

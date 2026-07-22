@@ -25,15 +25,15 @@ void MenuBackup::save(short changeUid) {
     for (unsigned int i = 0; i < menu->slots.size(); i++) {
         (*backup)[i + 1] = ItemInstance::clone(menu->slots.at(i)->getItem());
     }
-    // TODO Is unordered_map use correct?
-    // Was backups.put(changeUid, backup);
+    
+    
     (*backups)[changeUid] = backup;
 }
 
-// Cannot use delete as function name as it is a reserved keyword
+
 void MenuBackup::deleteBackup(short changeUid) {
-    // TODO Is the unordered_map use correct?
-    // 4J Was backups.remove(changeUid);
+    
+    
     backups->erase(changeUid);
 }
 

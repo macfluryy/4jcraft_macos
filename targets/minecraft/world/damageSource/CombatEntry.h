@@ -12,7 +12,7 @@ private:
     float damage;
     float health;
     CombatTracker::eLOCATION
-        location;  // 4J: Location is now an enum, not a std::string
+        location;  
     float fallDistance;
 
 public:

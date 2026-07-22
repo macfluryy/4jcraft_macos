@@ -144,7 +144,7 @@ GameType* LevelSettings::validateGameType(int gameType) {
 
 bool LevelSettings::useNewSeaLevel() { return newSeaLevel; }
 
-// 4J Added
+
 int LevelSettings::getXZSize() { return m_xzSize; }
 
 int LevelSettings::getHellScale() { return m_hellScale; }

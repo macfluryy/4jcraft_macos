@@ -65,10 +65,10 @@ void ChestTile::onPlace(Level* level, int x, int y, int z) {
     BaseEntityTile::onPlace(level, x, y, z);
     recalcLockDir(level, x, y, z);
 
-    int n = level->getTile(x, y, z - 1);  // face = 2
-    int s = level->getTile(x, y, z + 1);  // face = 3
-    int w = level->getTile(x - 1, y, z);  // face = 4
-    int e = level->getTile(x + 1, y, z);  // face = 5
+    int n = level->getTile(x, y, z - 1);  
+    int s = level->getTile(x, y, z + 1);  
+    int w = level->getTile(x - 1, y, z);  
+    int e = level->getTile(x + 1, y, z);  
     if (n == id) recalcLockDir(level, x, y, z - 1);
     if (s == id) recalcLockDir(level, x, y, z + 1);
     if (w == id) recalcLockDir(level, x - 1, y, z);
@@ -78,10 +78,10 @@ void ChestTile::onPlace(Level* level, int x, int y, int z) {
 void ChestTile::setPlacedBy(Level* level, int x, int y, int z,
                             std::shared_ptr<LivingEntity> by,
                             std::shared_ptr<ItemInstance> itemInstance) {
-    int n = level->getTile(x, y, z - 1);  // face = 2
-    int s = level->getTile(x, y, z + 1);  // face = 3
-    int w = level->getTile(x - 1, y, z);  // face = 4
-    int e = level->getTile(x + 1, y, z);  // face = 5
+    int n = level->getTile(x, y, z - 1);  
+    int s = level->getTile(x, y, z + 1);  
+    int w = level->getTile(x - 1, y, z);  
+    int e = level->getTile(x + 1, y, z);  
 
     int facing = 0;
     int dir = (Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3;
@@ -124,12 +124,12 @@ void ChestTile::recalcLockDir(Level* level, int x, int y, int z) {
         return;
     }
 
-    int n = level->getTile(x, y, z - 1);  // face = 2
-    int s = level->getTile(x, y, z + 1);  // face = 3
-    int w = level->getTile(x - 1, y, z);  // face = 4
-    int e = level->getTile(x + 1, y, z);  // face = 5
+    int n = level->getTile(x, y, z - 1);  
+    int s = level->getTile(x, y, z + 1);  
+    int w = level->getTile(x - 1, y, z);  
+    int e = level->getTile(x + 1, y, z);  
 
-    // Long!
+    
     int lockDir = 4;
     if (n == id || s == id) {
         int w2 = level->getTile(x - 1, y, n == id ? z - 1 : z + 1);
@@ -249,7 +249,7 @@ void ChestTile::onRemove(Level* level, int x, int y, int z, int id, int data) {
                     level->addEntity(itemEntity);
                 }
 
-                // 4J Stu - Fix for duplication glitch
+                
                 container->setItem(i, nullptr);
             }
         }
@@ -258,14 +258,14 @@ void ChestTile::onRemove(Level* level, int x, int y, int z, int id, int data) {
     BaseEntityTile::onRemove(level, x, y, z, id, data);
 }
 
-// 4J-PB - Adding a TestUse for tooltip display
+
 bool ChestTile::TestUse() { return true; }
 
-// 4J-PB - changing to 1.5 equivalent
+
 bool ChestTile::use(Level* level, int x, int y, int z,
                     std::shared_ptr<Player> player, int clickedFace,
                     float clickX, float clickY, float clickZ,
-                    bool soundOnly /*=false*/)  // 4J added soundOnly param
+                    bool soundOnly )  
 {
     if (soundOnly) return true;
 
@@ -383,7 +383,7 @@ int ChestTile::getAnalogOutputSignal(Level* level, int x, int y, int z,
 }
 
 void ChestTile::registerIcons(IconRegister* iconRegister) {
-    // Register wood as the chest's icon, because it's used by the particles
-    // when destroying the chest
+    
+    
     icon = iconRegister->registerIcon(L"planks_oak");
 }

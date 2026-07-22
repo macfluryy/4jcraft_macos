@@ -27,7 +27,7 @@ class Biome {
     friend class ChunkRebuildData;
 
 public:
-    // 4J JEV, replaces the static blocks.
+    
     static void staticCtor();
 
     static Biome* biomes[256];
@@ -56,7 +56,7 @@ public:
     static Biome* jungle;
     static Biome* jungleHills;
 
-    static const int BIOME_COUNT = 23;  // 4J Stu added
+    static const int BIOME_COUNT = 23;  
 
 public:
     std::wstring m_name;
@@ -68,7 +68,7 @@ public:
     float scale;
     float temperature;
     float downfall;
-    // int waterColor; // 4J Stu removed
+    
 
     BiomeDecorator* decorator;
 
@@ -110,7 +110,7 @@ private:
     bool snowCovered;
     bool _hasRain;
 
-    // 4J Added
+    
     eMinecraftColour m_grassColor;
     eMinecraftColour m_foliageColor;
     eMinecraftColour m_waterColor;
@@ -119,11 +119,11 @@ private:
     Biome* setNoRain();
 
 protected:
-    /* removing these so that we can consistently return newly created trees via
-    getTreeFeature, and let the calling function be resposible for deleting the
-    returned tree TreeFeature *normalTree; BasicTree *fancyTree; BirchFeature
-    *birchTree; SwampTreeFeature *swampTree;
-    */
+    
+
+
+
+
 
 public:
     virtual Feature* getTreeFeature(Random* random);
@@ -135,7 +135,7 @@ protected:
     Biome* setLeafColor(int leafColor);
     Biome* setColor(int color);
 
-    // 4J Added
+    
     Biome* setLeafFoliageWaterSkyColor(eMinecraftColour grassColor,
                                        eMinecraftColour foliageColor,
                                        eMinecraftColour waterColour,
@@ -153,12 +153,12 @@ public:
     virtual float getCreatureProbability();
     virtual int getDownfallInt();
     virtual int getTemperatureInt();
-    virtual float getDownfall();     // 4J - brought forward from 1.2.3
-    virtual float getTemperature();  // 4J - brought forward from 1.2.3
+    virtual float getDownfall();     
+    virtual float getTemperature();  
 
     virtual void decorate(Level* level, Random* random, int xo, int zo);
 
     virtual int getGrassColor();
     virtual int getFolageColor();
-    virtual int getWaterColor();  // 4J Added
+    virtual int getWaterColor();  
 };

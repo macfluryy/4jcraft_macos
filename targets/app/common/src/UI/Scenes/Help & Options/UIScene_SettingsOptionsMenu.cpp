@@ -34,7 +34,7 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad,
     : UIScene(iPad, parentLayer) {
     m_bNavigateToLanguageSelector = false;
 
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_bNotInGame = (Minecraft::GetInstance()->level == nullptr);
@@ -52,14 +52,14 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad,
         IDS_IN_GAME_GAMERTAGS, eControl_InGameGamertags,
         (app.GetGameSettings(m_iPad, eGameSetting_GamertagsVisible) != 0));
 
-    // check if we should display the mash-up option
+    
     if (m_bNotInGame && app.GetMashupPackWorlds(m_iPad) != 0xFFFFFFFF) {
-        // the mash-up option is needed
+        
         m_bMashUpWorldsUnhideOption = true;
         m_checkboxMashupWorlds.init(IDS_UNHIDE_MASHUP_WORLDS,
                                     eControl_ShowMashUpWorlds, false);
     } else {
-        // m_checkboxMashupWorlds.init(L"",eControl_ShowMashUpWorlds,false);
+        
         removeControl(&m_checkboxMashupWorlds, true);
         m_bMashUpWorldsUnhideOption = false;
     }
@@ -106,9 +106,9 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad,
 
     m_labelDifficultyText.init(wsText);
 
-    // If you are in-game, only the game host can change in-game gamertags, and
-    // you can't change difficulty only the primary player gets to change the
-    // autosave and difficulty settings
+    
+    
+    
     bool bRemoveDifficulty = false;
     bool bRemoveAutosave = false;
     bool bRemoveInGameGamertags = false;
@@ -121,7 +121,7 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad,
         bRemoveInGameGamertags = true;
     }
 
-    if (!bNotInGame)  // in the game
+    if (!bNotInGame)  
     {
         bRemoveDifficulty = true;
         if (!g_NetworkManager.IsHost()) {
@@ -142,10 +142,10 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad,
         removeControl(&m_checkboxInGameGamertags, true);
     }
 
-    // 4J-JEV: Changing languages in-game will produce many a bug.
-    // MGH - disabled the language select for the patch build, we'll re-enable
-    // afterwards 4J Stu - Removed it with a preprocessor def as we turn this
-    // off in various places
+    
+    
+    
+    
 #if defined(_ENABLE_LANGUAGE_SELECT)
     if (app.GetGameStarted()) {
         removeControl(&m_buttonLanguageSelect, false);
@@ -231,7 +231,7 @@ void UIScene_SettingsOptionsMenu::handleInput(int iPad, int key, bool repeat,
 }
 
 void UIScene_SettingsOptionsMenu::handlePress(F64 controlId, F64 childId) {
-    // CD - Added for audio
+    
     ui.PlayUISFX(eSFX_Press);
 
     switch ((int)controlId) {
@@ -257,12 +257,12 @@ void UIScene_SettingsOptionsMenu::handleReload() {
         IDS_IN_GAME_GAMERTAGS, eControl_InGameGamertags,
         (app.GetGameSettings(m_iPad, eGameSetting_GamertagsVisible) != 0));
 
-    // check if we should display the mash-up option
+    
     if (m_bNotInGame && app.GetMashupPackWorlds(m_iPad) != 0xFFFFFFFF) {
-        // the mash-up option is needed
+        
         m_bMashUpWorldsUnhideOption = true;
     } else {
-        // m_checkboxMashupWorlds.init(L"",eControl_ShowMashUpWorlds,false);
+        
         removeControl(&m_checkboxMashupWorlds, true);
         m_bMashUpWorldsUnhideOption = false;
     }
@@ -310,9 +310,9 @@ void UIScene_SettingsOptionsMenu::handleReload() {
 
     m_labelDifficultyText.init(wsText);
 
-    // If you are in-game, only the game host can change in-game gamertags, and
-    // you can't change difficulty only the primary player gets to change the
-    // autosave and difficulty settings
+    
+    
+    
     bool bRemoveDifficulty = false;
     bool bRemoveAutosave = false;
     bool bRemoveInGameGamertags = false;
@@ -325,7 +325,7 @@ void UIScene_SettingsOptionsMenu::handleReload() {
         bRemoveInGameGamertags = true;
     }
 
-    if (!bNotInGame)  // in the game
+    if (!bNotInGame)  
     {
         bRemoveDifficulty = true;
         if (!g_NetworkManager.IsHost()) {
@@ -346,11 +346,11 @@ void UIScene_SettingsOptionsMenu::handleReload() {
         removeControl(&m_checkboxInGameGamertags, true);
     }
 
-    // MGH - disabled the language select for the patch build, we'll re-enable
-    // afterwards 4J Stu - Removed it with a preprocessor def as we turn this
-    // off in various places
+    
+    
+    
 #if defined(_ENABLE_LANGUAGE_SELECT)
-    // 4J-JEV: Changing languages in-game will produce many a bug.
+    
     if (app.GetGameStarted()) {
         removeControl(&m_buttonLanguageSelect, false);
     } else {
@@ -370,7 +370,7 @@ void UIScene_SettingsOptionsMenu::handleSliderMove(F64 sliderId,
             m_sliderAutosave.handleSliderMove(value);
 
             app.SetGameSettings(m_iPad, eGameSetting_Autosave, value);
-            // Update the autosave timer
+            
             app.SetAutosaveTimerTime();
 
             break;
@@ -394,7 +394,7 @@ void UIScene_SettingsOptionsMenu::handleSliderMove(F64 sliderId,
 }
 
 void UIScene_SettingsOptionsMenu::setGameSettings() {
-    // check the checkboxes
+    
     app.SetGameSettings(m_iPad, eGameSetting_ViewBob,
                         m_checkboxViewBob.IsChecked() ? 1 : 0);
     app.SetGameSettings(m_iPad, eGameSetting_GamertagsVisible,
@@ -404,15 +404,15 @@ void UIScene_SettingsOptionsMenu::setGameSettings() {
     app.SetGameSettings(m_iPad, eGameSetting_Tooltips,
                         m_checkboxShowTooltips.IsChecked() ? 1 : 0);
 
-    // the mashup option will only be shown if some worlds have been previously
-    // hidden
+    
+    
     if (m_bMashUpWorldsUnhideOption && m_checkboxMashupWorlds.IsChecked()) {
-        // unhide all worlds
+        
         app.EnableMashupPackWorlds(m_iPad);
     }
 
-    // 4J-PB - don't action changes here or we might write to the profile on
-    // backing out here and then get a change in the settings all, and write
-    // again on backing out there
-    // app.CheckGameSettingsChanged(true,pInputData->UserIndex);
+    
+    
+    
+    
 }

@@ -27,7 +27,7 @@ void CommandBlockEntity::setCommand(const std::wstring& command) {
 std::wstring CommandBlockEntity::getCommand() { return command; }
 
 int CommandBlockEntity::performCommand(Level* level) {
-    // 4J-JEV: Cannot decide what to do with the command field.
+    
     assert(false);
     return 0;
 }
@@ -78,7 +78,7 @@ void CommandBlockEntity::setSuccessCount(int successCount) {
     this->successCount = successCount;
 }
 
-// 4J Added
+
 std::shared_ptr<TileEntity> CommandBlockEntity::clone() {
     std::shared_ptr<CommandBlockEntity> result =
         std::make_shared<CommandBlockEntity>();

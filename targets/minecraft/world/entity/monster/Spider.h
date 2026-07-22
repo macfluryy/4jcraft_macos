@@ -47,7 +47,7 @@ public:
     virtual void setClimbing(bool value);
     virtual MobGroupData* finalizeMobSpawn(
         MobGroupData* groupData,
-        int extraData = 0);  // 4J Added extraData param
+        int extraData = 0);  
 
 private:
     static const float SPIDER_SPECIAL_EFFECT_CHANCE;

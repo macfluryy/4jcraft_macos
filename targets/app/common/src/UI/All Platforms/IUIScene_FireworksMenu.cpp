@@ -14,7 +14,7 @@ IUIScene_FireworksMenu::GetSectionAndSlotInDirection(ESceneSection eSection,
     int xOffset = 0;
     int yOffset = 0;
 
-    // Find the new section if there is one
+    
     switch (eSection) {
         case eSectionFireworksIngredients:
             if (eTapDirection == eTapStateDown) {

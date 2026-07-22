@@ -51,10 +51,10 @@ void TpsCommand::execute(std::shared_ptr<CommandSender> source,
     double avgMs = (double)totalNs / (double)samples / 1.0e6;
     double maxMs = (double)maxNs / 1.0e6;
     double targetMs =
-        1000.0 / (double)SharedConstants::TICKS_PER_SECOND;  // 50ms at 20 TPS
+        1000.0 / (double)SharedConstants::TICKS_PER_SECOND;  
 
-    // Effective TPS: never exceeds the target rate. If a tick is slow, the
-    // server cannot tick faster than 1000ms / actualTickMs.
+    
+    
     double tps =
         avgMs < targetMs ? (double)SharedConstants::TICKS_PER_SECOND
                          : 1000.0 / avgMs;

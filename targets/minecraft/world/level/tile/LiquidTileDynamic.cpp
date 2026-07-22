@@ -58,9 +58,9 @@ void LiquidTileDynamic::tick(Level* level, int x, int y, int z,
     }
 }
 
-// 4J Stu - Split off what was the tick function to be able to change between
-// recursive and iterative ticking This is to fix the stack overflow that occurs
-// sometimes when instaticking on level gen.
+
+
+
 void LiquidTileDynamic::mainTick(Level* level, int x, int y, int z,
                                  Random* random) {
     int depth = getDepth(level, x, y, z);
@@ -90,8 +90,8 @@ void LiquidTileDynamic::mainTick(Level* level, int x, int y, int z,
                 newDepth = above + 8;
         }
         if (maxCount >= 2 && material == Material::water) {
-            // Only spread spring if it's on top of an existing spring, or
-            // on top of solid ground.
+            
+            
             if (level->getMaterial(x, y - 1, z)->isSolid()) {
                 newDepth = 0;
             } else if (level->getMaterial(x, y - 1, z) == material &&
@@ -271,13 +271,13 @@ int LiquidTileDynamic::getHighest(Level* level, int x, int y, int z,
 }
 
 bool LiquidTileDynamic::canSpreadTo(Level* level, int x, int y, int z) {
-    // 4J added - don't try and spread out of our restricted map. If we don't do
-    // this check then tiles at the edge of the world will try and spread
-    // outside as the outside tiles report that they contain only air. The fact
-    // that this successfully spreads then updates the neighbours of the tile
-    // outside of the map, one of which is the original tile just inside the
-    // map, which gets set back to being dynamic, and added to the pending ticks
-    // array.
+    
+    
+    
+    
+    
+    
+    
     int xc = x >> 4;
     int zc = z >> 4;
     int ix = xc + (level->chunkSourceXZSize / 2);

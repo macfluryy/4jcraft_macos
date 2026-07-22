@@ -33,7 +33,7 @@
 
 MultiPlayerGameMode::MultiPlayerGameMode(Minecraft* minecraft,
                                          ClientConnection* connection) {
-    // 4J - added initialisers
+    
     xDestroyBlock = -1;
     yDestroyBlock = -1;
     zDestroyBlock = -1;
@@ -149,8 +149,8 @@ void MultiPlayerGameMode::startDestroyBlock(int x, int y, int z, int face) {
         if (t > 0 &&
             (Tile::tiles[t]->getDestroyProgress(
                  minecraft->player, minecraft->player->level, x, y, z) >= 1
-             // ||(app.DebugSettingsOn() &&
-             // app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad())&(1L<<eDebugSetting_InstantDestroy))
+             
+             
              )) {
             destroyBlock(x, y, z, face);
         } else {
@@ -185,9 +185,9 @@ void MultiPlayerGameMode::stopDestroyBlock() {
 void MultiPlayerGameMode::continueDestroyBlock(int x, int y, int z, int face) {
     if (!minecraft->player->isAllowedToMine()) return;
     ensureHasSentCarriedItem();
-    //        connection.send(new
-    //        PlayerActionPacket(PlayerActionPacket.CONTINUE_DESTROY_BLOCK, x,
-    //        y, z, face));
+    
+    
+    
 
     if (destroyDelay > 0) {
         destroyDelay--;
@@ -253,7 +253,7 @@ float MultiPlayerGameMode::getPickRange() {
 
 void MultiPlayerGameMode::tick() {
     ensureHasSentCarriedItem();
-    // minecraft->soundEngine->playMusicTick();
+    
 }
 
 bool MultiPlayerGameMode::sameDestroyTarget(int x, int y, int z) {
@@ -284,9 +284,9 @@ bool MultiPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
                                     std::shared_ptr<ItemInstance> item, int x,
                                     int y, int z, int face, Vec3* hit,
                                     bool bTestUseOnly, bool* pbUsedItem) {
-    if (pbUsedItem) *pbUsedItem = false;  // Did we actually use the held item?
+    if (pbUsedItem) *pbUsedItem = false;  
 
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
     if (!bTestUseOnly) {
         ensureHasSentCarriedItem();
     }
@@ -301,15 +301,15 @@ bool MultiPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
             if (bTestUseOnly) {
                 switch (t) {
                     case Tile::jukebox_Id:
-                    case Tile::bed_Id:  // special case for a bed
+                    case Tile::bed_Id:  
                         if (Tile::tiles[t]->TestUse(level, x, y, z, player)) {
                             return true;
                         } else if (t ==
-                                   Tile::bed_Id)  // 4J-JEV: You can still use
-                                                  // items on record players
-                                                  // (ie. set fire to them).
+                                   Tile::bed_Id)  
+                                                  
+                                                  
                         {
-                            // bed is too far away, or something
+                            
                             return false;
                         }
                         break;
@@ -331,9 +331,9 @@ bool MultiPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
         if (!tile->mayPlace(level, x, y, z, face, player, item)) return false;
     }
 
-    // 4J Stu - In Java we send the use packet before the above check for item
-    // being nullptr so the following never gets executed but the packet still
-    // gets sent (for opening chests etc)
+    
+    
+    
     if (item != nullptr) {
         if (!didSomething && player->isAllowedToUse(item)) {
             if (localPlayerMode->isCreative()) {
@@ -353,17 +353,17 @@ bool MultiPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
         }
     } else {
         int t = level->getTile(x, y, z);
-        // 4J - Bit of a hack, however seems preferable to any larger changes
-        // which would have more chance of causing unwanted side effects. If we
-        // aren't going to be actually performing the use method locally, then
-        // call this method with its "soundOnly" parameter set to true. This is
-        // an addition from the java version, and as its name suggests, doesn't
-        // actually perform the use locally but just makes any sounds that are
-        // meant to be directly caused by this. If we don't do this, then the
-        // sounds never happen as the tile's use method is only called on the
-        // server, and that won't allow any sounds that are directly made, or
-        // broadcast back level events to us that would make the sound, since we
-        // are the source of the event.
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         if ((t > 0) && (!bTestUseOnly) &&
             player->isAllowedToUse(Tile::tiles[t])) {
             Tile::tiles[t]->use(level, x, y, z, player, face, clickX, clickY,
@@ -371,10 +371,10 @@ bool MultiPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
         }
     }
 
-    // 4J Stu - Do the action before we send the packet, so that our predicted
-    // count is sent in the packet and the server doesn't think it has to update
-    // us Fix for #7904 - Gameplay: Players can dupe torches by throwing them
-    // repeatedly into water.
+    
+    
+    
+    
     if (!bTestUseOnly) {
         connection->send(std::shared_ptr<UseItemPacket>(
             new UseItemPacket(x, y, z, face, player->inventory->getSelected(),
@@ -388,19 +388,19 @@ bool MultiPlayerGameMode::useItem(std::shared_ptr<Player> player, Level* level,
                                   bool bTestUseOnly) {
     if (!player->isAllowedToUse(item)) return false;
 
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
     if (!bTestUseOnly) {
         ensureHasSentCarriedItem();
     }
 
-    // 4J Stu - Do the action before we send the packet, so that our predicted
-    // count is sent in the packet and the server doesn't think it has to update
-    // us, or can update us if we are wrong Fix for #13120 - Using a bucket of
-    // water or lava in the spawn area (centre of the map) causes the inventory
-    // to get out of sync
+    
+    
+    
+    
+    
     bool result = false;
 
-    // 4J-PB added for tooltips to test use only
+    
     if (bTestUseOnly) {
         result = item->TestUse(item, level, player);
     } else {
@@ -508,8 +508,8 @@ bool MultiPlayerGameMode::hasFarPickRange() {
     return localPlayerMode->isCreative();
 }
 
-// Returns true when the inventory is opened from the server-side. Currently
-// only happens when the player is riding a horse.
+
+
 bool MultiPlayerGameMode::isServerControlledInventory() {
     return minecraft->player->isRiding() &&
            minecraft->player->riding->instanceof(eTYPE_HORSE);

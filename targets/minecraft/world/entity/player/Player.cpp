@@ -1,11 +1,11 @@
-// 4J TODO
 
-// All the instanceof s from Java have been converted to dynamic_cast in this
-// file Once all the classes are finished it may be that we do not need to use
-// dynamic_cast for every test and a simple virtual function should suffice. We
-// probably only need dynamic_cast to find one of the classes that an object
-// derives from, and not to find the derived class itself (which should own the
-// virtual GetType function)
+
+
+
+
+
+
+
 
 #include "Player.h"
 
@@ -153,8 +153,8 @@ void Player::_init() {
 }
 
 Player::Player(Level* level, const std::wstring& name) : LivingEntity(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     this->name = name;
@@ -177,29 +177,29 @@ Player::Player(Level* level, const std::wstring& name) : LivingEntity(level) {
     m_dwSkinId = 0;
     m_dwCapeId = 0;
 
-    // 4J Added
+    
     m_xuid = INVALID_XUID;
     m_OnlineXuid = INVALID_XUID;
-    // m_bShownOnMaps = true;
+    
     setShowOnMaps(
         app.GetGameHostOption(eGameHostOption_Gamertags) != 0 ? true : false);
     m_bIsGuest = false;
 
-    // 4J: Set UUID to name on none-XB1 consoles, may change in future but for
-    // now ownership of animals on these consoles is done by name
+    
+    
     setUUID(name);
 }
 
 Player::~Player() {
-    // TODO 4J
-    // printf("A player has been destroyed.\n");
+    
+    
     delete inventoryMenu;
 
-    // 4J Stu - Fix for #10938 - CRASH - Game hardlocks when client has an open
-    // chest and Xbox Guide while host exits without saving. If the container
-    // menu is not the inventory menu, then the player has a menu open. These
-    // get deleted when the xui scene is destroyed, so we can not delete it here
-    // if( containerMenu != inventoryMenu ) delete containerMenu;
+    
+    
+    
+    
+    
 }
 
 void Player::registerAttributes() {
@@ -237,8 +237,8 @@ void Player::releaseUsingItem() {
             level, std::dynamic_pointer_cast<Player>(shared_from_this()),
             useItemDuration);
 
-        // 4J Stu - Fix for various bugs where an incorrect bow was displayed
-        // when it broke (#70859,#93972,#93974)
+        
+        
         if (useItem->count == 0) {
             removeSelectedItem();
         }
@@ -259,19 +259,19 @@ bool Player::isBlocking() {
            Item::items[useItem->id]->getUseAnimation(useItem) == UseAnim_block;
 }
 
-// 4J Stu - Added for things that should only be ticked once per simulation
-// frame
+
+
 void Player::updateFrameTick() {
     if (useItem != nullptr) {
         std::shared_ptr<ItemInstance> item = inventory->getSelected();
-        // 4J Stu - Fix for #45508 - TU5: Gameplay: Eating one piece of food
-        // will result in a second piece being eaten as well Original code was
-        // item != useItem. Changed this now to use the equals function, and add
-        // the nullptr check as well for the other possible not equals (useItem
-        // is not nullptr if we are here) This is because the useItem and item
-        // could be different objects due to an inventory update from the
-        // server, but still be the same item (with the same id,count and
-        // auxvalue)
+        
+        
+        
+        
+        
+        
+        
+        
         if (item == nullptr || !item->equals(useItem)) {
             stopUsingItem();
         } else {
@@ -318,8 +318,8 @@ void Player::updateFrameTick() {
 
 void Player::tick() {
     if (level->isClientSide) {
-        // 4J Stu - Server player calls this differently so that it only happens
-        // once per simulation tick
+        
+        
         updateFrameTick();
     }
 
@@ -369,76 +369,76 @@ void Player::tick() {
         foodData.tick(std::dynamic_pointer_cast<Player>(shared_from_this()));
     }
 
-    // 4J Stu Debugging
+    
     if (!level->isClientSide) {
         static int count = 0;
         if (count++ == 100) {
-            // 4J-PB - Throw items out at the start of the level
-            // this->drop( new ItemInstance( Item::pickAxe_diamond, 1 ) );
-            // this->drop( new ItemInstance( Tile::workBench, 1 ) );
-            // this->drop( new ItemInstance( Tile::treeTrunk, 8 ) );
-            // this->drop( shared_ptr<ItemInstance>( new ItemInstance(
-            // Item::milk, 3 ) ) ); this->drop( shared_ptr<ItemInstance>( new
-            // ItemInstance( Item::sugar, 2 ) ) ); this->drop( new ItemInstance(
-            // Tile::stoneBrick, 8 ) ); this->drop( shared_ptr<ItemInstance>(
-            // new ItemInstance( Item::wheat, 3 ) ) ); this->drop(
-            // shared_ptr<ItemInstance>( new ItemInstance( Item::egg, 1 ) ) );
-            // this->drop( new ItemInstance( Item::bow, 1 ) );
-            // this->drop( new ItemInstance( Item::arrow, 10 ) );
-            // this->drop( shared_ptr<ItemInstance>( new ItemInstance(
-            // Item::saddle, 10 ) ) ); this->drop( shared_ptr<ItemInstance>( new
-            // ItemInstance( Tile::fence, 64 ) ) ); this->drop(
-            // shared_ptr<ItemInstance>( new ItemInstance( Tile::fence, 64 ) )
-            // ); this->drop( shared_ptr<ItemInstance>( new ItemInstance(
-            // Tile::fence, 64 ) ) );
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
-            // shared_ptr<Mob> mob =
-            // std::dynamic_pointer_cast<Mob>(Pig::_class->newInstance( level
-            // )); mob->moveTo(x+1, y, z+1, level->random->nextFloat() * 360,
-            // 0); level->addEntity(mob);
+            
+            
+            
+            
 
-            // 4J : WESTY : Spawn some wolves to befriend!
-            /*
-            shared_ptr<Mob> mob1 =
-            std::dynamic_pointer_cast<Mob>(Wolf::_class->newInstance( level ));
-            mob1->moveTo(x+1, y, z+1, level->random->nextFloat() * 360, 0);
-            level->addEntity(mob1);
+            
+            
 
-            shared_ptr<Mob> mob2 =
-            std::dynamic_pointer_cast<Mob>(Wolf::_class->newInstance( level ));
-            mob2->moveTo(x+2, y, z+1, level->random->nextFloat() * 360, 0);
-            level->addEntity(mob2);
 
-            shared_ptr<Mob> mob3 =
-            std::dynamic_pointer_cast<Mob>(Wolf::_class->newInstance( level ));
-            mob3->moveTo(x+1, y, z+2, level->random->nextFloat() * 360, 0);
-            level->addEntity(mob3);
 
-            shared_ptr<Mob> mob4 =
-            std::dynamic_pointer_cast<Mob>(Wolf::_class->newInstance( level ));
-            mob4->moveTo(x+3, y, z+1, level->random->nextFloat() * 360, 0);
-            level->addEntity(mob4);
 
-            shared_ptr<Mob> mob5 =
-            std::dynamic_pointer_cast<Mob>(Wolf::_class->newInstance( level ));
-            mob5->moveTo(x+1, y, z+3, level->random->nextFloat() * 360, 0);
-            level->addEntity(mob5);
-            */
 
-            //        inventory.add(new ItemInstance(Item.potion, 1,
-            //        PotionBrewing.THROWABLE_MASK | 0xc)); addEffect(new
-            //        MobEffectInstance(MobEffect.blindness.id, 60));
-            //        increaseXp(10);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            
+            
+            
 
             {
-                //            ItemInstance itemInstance = new
-                //            ItemInstance(Item.pickAxe_diamond);
-                //            itemInstance.enchant(Enchantment.diggingBonus, 3);
-                //            inventory.add(itemInstance);
+                
+                
+                
+                
             }
         }
     }
-    // End 4J sTU
+    
 }
 
 int Player::getPortalWaitTime() {
@@ -450,8 +450,8 @@ int Player::getDimensionChangingDelay() {
 }
 
 void Player::playSound(int iSound, float volume, float pitch) {
-    // this sound method will play locally for the local player, and
-    // broadcast to remote players
+    
+    
     level->playPlayerSound(
         std::dynamic_pointer_cast<Player>(shared_from_this()), iSound, volume,
         pitch);
@@ -481,7 +481,7 @@ void Player::spawnEatParticles(std::shared_ptr<ItemInstance> useItem,
                                p.x, p.y, p.z, d.x, d.y + 0.05, d.z);
         }
 
-        // 4J Stu - Was L"mob.eat" which doesnt exist
+        
         playSound(eSoundType_RANDOM_EAT, 0.5f + 0.5f * random->nextInt(2),
                   (random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f);
     }
@@ -545,13 +545,13 @@ void Player::setCustomSkin(std::uint32_t skinId) {
 #endif
     EDefaultSkins playerSkin = EDefaultSkins::ServerSelected;
 
-    // reset the idle
+    
     setIsIdle(false);
 
     setAnimOverrideBitmask(getSkinAnimOverrideBitmask(skinId));
     if (!GET_IS_DLC_SKIN_FROM_BITMASK(skinId)) {
-        // GET_UGC_SKIN_ID_FROM_BITMASK will always be zero - this was for a
-        // possible custom skin editor skin
+        
+        
         std::uint32_t ugcSkinIndex = GET_UGC_SKIN_ID_FROM_BITMASK(skinId);
         std::uint32_t defaultSkinIndex =
             GET_DEFAULT_SKIN_ID_FROM_BITMASK(skinId);
@@ -564,54 +564,54 @@ void Player::setCustomSkin(std::uint32_t skinId) {
         playerSkin = static_cast<EDefaultSkins>(m_playerIndex + 1);
     }
 
-    // We always set a default skin, since we may be waiting for the player's
-    // custom skin to be transmitted
+    
+    
     setPlayerDefaultSkin(playerSkin);
 
     m_dwSkinId = skinId;
     this->customTextureUrl = app.getSkinPathFromId(skinId);
 
-    // set the new player additional boxes
-    /*vector<ModelPart *> *pvModelParts=app.GetAdditionalModelParts(m_dwSkinId);
+    
+    
 
-    if(pvModelParts==nullptr)
-    {
-    // we don't have the data from the dlc skin yet
-    app.DebugPrintf("Couldn't get model parts for skin %X\n",m_dwSkinId);
 
-    // do we have it from the DLC pack?
-    DLCSkinFile *pDLCSkinFile =
-    app.m_dlcManager.getSkinFile(this->customTextureUrl);
 
-    if(pDLCSkinFile!=nullptr)
-    {
-            const int additionalBoxCount =
-    pDLCSkinFile->getAdditionalBoxesCount(); if(additionalBoxCount != 0)
-    {
-    app.DebugPrintf("Got model parts from DLCskin for skin %X\n",m_dwSkinId);
-    pvModelParts=app.SetAdditionalSkinBoxes(m_dwSkinId,pDLCSkinFile->getAdditionalBoxes());
-    this->SetAdditionalModelParts(pvModelParts);
-    }
-    else
-    {
-    this->SetAdditionalModelParts(nullptr);
-    }
-    app.SetAnimOverrideBitmask(pDLCSkinFile->getSkinID(),pDLCSkinFile->getAnimOverrideBitmask());
-    }
-    else
-    {
-    this->SetAdditionalModelParts(nullptr);
-    }
-    }
-    else
-    {
-    app.DebugPrintf("Got model parts from app.GetAdditionalModelParts for skin
-    %X\n",m_dwSkinId);
 
-    this->SetAdditionalModelParts(pvModelParts);
-    }*/
 
-    // reset the check for model parts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     m_bCheckedForModelParts = false;
     m_bCheckedDLCForModelParts = false;
     this->SetAdditionalModelParts(nullptr);
@@ -620,36 +620,36 @@ void Player::setCustomSkin(std::uint32_t skinId) {
 unsigned int Player::getSkinAnimOverrideBitmask(std::uint32_t skinId) {
     unsigned long bitmask = 0L;
     if (GET_IS_DLC_SKIN_FROM_BITMASK(skinId)) {
-        // Temp check for anim override
+        
         switch (GET_DLC_SKIN_ID_FROM_BITMASK(skinId)) {
-            case 0x2:    // SP1_ZOMBIE:
-            case 0x3:    // SP1_HEROBRINE:
-            case 0xc8:   // SP3_ZOMBIE_PIGMAN:
-            case 0xc9:   // SP3_ZOMBIE_HEROBRINE:
-            case 0x1f8:  // SPH_4JMUMMY
-            case 0x220:  // SPH_AOT_MUMMY
-            case 0x23a:  // SPH_CLIMAX_ZOMBIEBUSINESSMAN
-            case 0x23d:  // SPH_CLIMAX_EVILROBOT
-            case 0x247:  // SPH_CLIMAX_ZOMBIE
-            case 0x194:  // SOA_DEADLIGHT_SKINNY_ZOMBIE
-            case 0x195:  // SOA_DEADLIGHT_FEMALE_ZOMBIE
+            case 0x2:    
+            case 0x3:    
+            case 0xc8:   
+            case 0xc9:   
+            case 0x1f8:  
+            case 0x220:  
+            case 0x23a:  
+            case 0x23d:  
+            case 0x247:  
+            case 0x194:  
+            case 0x195:  
                 bitmask = 1 << HumanoidModel::eAnim_ArmsOutFront;
                 break;
-            case 0x1fa:  // SPH_GHOST:
+            case 0x1fa:  
                 bitmask = 1 << HumanoidModel::eAnim_ArmsOutFront |
                           1 << HumanoidModel::eAnim_NoLegAnim;
                 break;
-            case 0x1f4:  // SPH_GRIMREAPER:
+            case 0x1f4:  
                 bitmask = 1 << HumanoidModel::eAnim_ArmsDown |
                           1 << HumanoidModel::eAnim_NoLegAnim;
                 break;
-            case 0x1f7:  // SPH_4J_FRANKENSTEIN
-                // bitmask = 1<<HumanoidModel::eAnim_HasIdle;
+            case 0x1f7:  
+                
                 break;
                 break;
             default:
-                // This is not one of the prefined skins
-                // Does the app have an anim override for this skin?
+                
+                
                 bitmask = app.GetAnimOverrideBitmask(skinId);
                 break;
         }
@@ -672,7 +672,7 @@ void Player::setCustomCape(std::uint32_t capeId) {
     } else {
         MOJANG_DATA* pMojangData = app.GetMojangDataForXuid(getOnlineXuid());
         if (pMojangData) {
-            // Cape
+            
             if (pMojangData->wchCape[0] != 0) {
                 this->customTextureUrl2 = pMojangData->wchCape;
             } else {
@@ -684,7 +684,7 @@ void Player::setCustomCape(std::uint32_t capeId) {
             }
 
         } else {
-            // if there is a custom default cloak, then set it here
+            
             if (app.DefaultCapeExists()) {
                 this->customTextureUrl2 = std::wstring(L"Special_Cape.png");
             } else {
@@ -705,9 +705,9 @@ std::uint32_t Player::getCapeIdFromPath(const std::wstring& cape) {
         capeValue = capeValue.substr(0, capeValue.find_first_of(L'.'));
 
         std::wstringstream ss;
-        // 4J Stu - dlc skins are numbered using decimal to make it easier for
-        // artists/people to number manually Everything else is numbered using
-        // hex
+        
+        
+        
         if (dlcCape)
             ss << std::dec << capeValue.c_str();
         else
@@ -720,13 +720,13 @@ std::uint32_t Player::getCapeIdFromPath(const std::wstring& cape) {
 }
 
 std::wstring Player::getCapePathFromId(std::uint32_t capeId) {
-    // 4J Stu - This function maps the encoded uint32_t we store in the player
-    // profile to a filename that is stored as a memory texture and shared
-    // between systems in game
+    
+    
+    
     wchar_t chars[256];
     if (GET_IS_DLC_SKIN_FROM_BITMASK(capeId)) {
-        // 4J Stu - DLC skins are numbered using decimal rather than hex to make
-        // it easier to number manually
+        
+        
         swprintf(chars, 256, L"dlccape%08d.png",
                  GET_DLC_SKIN_ID_FROM_BITMASK(capeId));
 
@@ -751,7 +751,7 @@ void Player::ChangePlayerSkin() {
             this->customTextureUrl = L"";
         } else {
             if (m_uiPlayerCurrentSkin > 0) {
-                // change this players custom texture url
+                
                 this->customTextureUrl =
                     app.vSkinNames[m_uiPlayerCurrentSkin - 1];
             }
@@ -763,46 +763,46 @@ void Player::prepareCustomTextures() {
     MOJANG_DATA* pMojangData = app.GetMojangDataForXuid(getOnlineXuid());
 
     if (pMojangData) {
-        // Skin
+        
         if (pMojangData->wchSkin[0] != 0) {
             this->customTextureUrl = pMojangData->wchSkin;
         }
 
-        // 4J Stu - Don't update the cape here, it gets set elsewhere
-        // Cape
-        // if(pMojangData->wchCape)
-        //{
-        //	this->customTextureUrl2= pMojangData->wchCape;
-        //}
-        // else
-        //{
-        //	if(app.DefaultCapeExists())
-        //	{
-        //		this->customTextureUrl2= wstring(L"Default_Cape.png");
-        //	}
-        //	else
-        //	{
-        //		this->customTextureUrl2= wstring(L"");
-        //	}
-        //}
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
     } else {
-        // 4J Stu - Don't update the cape here, it gets set elsewhere
-        // if there is a custom default cloak, then set it here
-        // if(app.DefaultCapeExists())
-        //{
-        //	this->customTextureUrl2= wstring(L"Default_Cape.png");
-        //}
-        // else
-        //{
-        //	this->customTextureUrl2 =wstring(L"");
-        //}
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
-    /*cloakTexture =
-     * wstring(L"http://s3.amazonaws.com/MinecraftCloaks/").append( name
-     * ).append( L".png" );*/
-    // this->customTextureUrl2 = cloakTexture;
+    
+
+
+    
 }
 
 void Player::rideTick() {
@@ -821,12 +821,12 @@ void Player::rideTick() {
 
     checkRidingStatistiscs(x - preX, y - preY, z - preZ);
 
-    // riding can be set to null inside 'Entity::rideTick()'.
+    
     if (riding != nullptr && (riding->GetType() & eTYPE_PIG) == eTYPE_PIG) {
-        // 4J Stu - I don't know why we would want to do this, but it means that
-        // the players head is locked in position and can't move around
-        // xRot = preXRot;
-        // yRot = preYRot;
+        
+        
+        
+        
 
         std::shared_ptr<Pig> pig = std::dynamic_pointer_cast<Pig>(riding);
         yBodyRot = pig->yBodyRot;
@@ -875,7 +875,7 @@ void Player::aiStep() {
 
     float tBob = (float)sqrt(xd * xd + zd * zd);
 
-    // 4J added - we were getting a NaN with zero xd & zd
+    
     if ((xd * xd + zd * zd) < 0.00001f) {
         tBob = 0.0f;
     }
@@ -892,8 +892,8 @@ void Player::aiStep() {
     if (getHealth() > 0) {
         AABB pickupArea;
         if (riding != nullptr && !riding->removed) {
-            // if the player is riding, also touch entities under the
-            // pig/horse
+            
+            
             pickupArea = bb.minmax(riding->bb).grow(1, 0, 1);
         } else {
             pickupArea = bb.grow(1, .5, 1);
@@ -903,7 +903,7 @@ void Player::aiStep() {
         level->getEntities(shared_from_this(), &pickupArea, entities);
         auto itEnd = entities.end();
         for (auto it = entities.begin(); it != itEnd; it++) {
-            std::shared_ptr<Entity> e = *it;  // entities.at(i);
+            std::shared_ptr<Entity> e = *it;  
             if (!e->removed) {
                 touch(e);
             }
@@ -930,7 +930,7 @@ void Player::die(DamageSource* source) {
     setPos(x, y, z);
     yd = 0.1f;
 
-    // 4J - TODO need to use a xuid
+    
     if (app.isXuidNotch(m_xuid)) {
         drop(std::make_shared<ItemInstance>(Item::apple, 1), true);
     }
@@ -952,15 +952,15 @@ void Player::awardKillScore(std::shared_ptr<Entity> victim, int awardPoints) {
     std::vector<Objective*>* objectives =
         getScoreboard()->findObjectiveFor(ObjectiveCriteria::KILL_COUNT_ALL);
 
-    // if (victim instanceof Player)
-    //{
-    //	awardStat(Stats::playerKills, 1);
-    //	objectives.addAll(getScoreboard().findObjectiveFor(ObjectiveCriteria::KILL_COUNT_PLAYERS));
-    // }
-    // else
-    //{
-    //	awardStat(Stats::mobKills, 1);
-    // }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     if (objectives) {
         for (auto it = objectives->begin(); it != objectives->end(); ++it) {
@@ -1065,10 +1065,10 @@ float Player::getDestroySpeed(Tile* tile, bool hasProperTool) {
             std::dynamic_pointer_cast<LivingEntity>(shared_from_this())))
         speed /= 5;
 
-    // 4J Stu - onGround is set to true on the client when we are flying, which
-    // means the dig speed is out of sync with the server. Removing this speed
-    // change when flying so that we always dig as the same speed
-    // if (!onGround) speed /= 5;
+    
+    
+    
+    
 
     return speed;
 }
@@ -1111,7 +1111,7 @@ void Player::readAdditionalSaveData(CompoundTag* entityTag) {
         enderChestInventory->setItemsByTag(enderItemsList);
     }
 
-    // 4J Added
+    
     m_uiGamePrivileges = entityTag->getInt(L"GamePrivileges");
 }
 
@@ -1139,7 +1139,7 @@ void Player::addAdditonalSaveData(CompoundTag* entityTag) {
 
     entityTag->put(L"EnderItems", enderChestInventory->createTag());
 
-    // 4J Added
+    
     entityTag->putInt(L"GamePrivileges", m_uiGamePrivileges);
 }
 
@@ -1180,8 +1180,8 @@ bool Player::hurt(DamageSource* source, float dmg) {
         (abilities.invulnerable && !source->isBypassInvul()))
         return false;
 
-    // 4J-JEV: Fix for PSVita: #3987 - [IN GAME] The user can take damage/die,
-    // when attempting to re-enter fly mode when falling from a height.
+    
+    
     if (source == DamageSource::fall && isAllowedToFly() && abilities.flying)
         return false;
 
@@ -1284,11 +1284,11 @@ bool Player::openTrading(std::shared_ptr<Merchant> traderTarget,
     return true;
 }
 
-/**
- * Opens an iteminstance-dependent user interface.
- *
- * @param itemInstance
- */
+
+
+
+
+
 void Player::openItemInstanceGui(std::shared_ptr<ItemInstance> itemInstance) {}
 
 bool Player::interact(std::shared_ptr<Entity> entity) {
@@ -1299,9 +1299,9 @@ bool Player::interact(std::shared_ptr<Entity> entity) {
     std::shared_ptr<ItemInstance> itemClone =
         (item != nullptr) ? item->copy() : nullptr;
     if (entity->interact(thisPlayer)) {
-        // [EB]: Added rude check to see if we're still talking about the
-        // same item; this code caused bucket->milkbucket to be deleted because
-        // the milkbuckets' stack got decremented to 0.
+        
+        
+        
         if (item != nullptr && item == getSelectedItem()) {
             if (item->count <= 0 && !abilities.instabuild) {
                 removeSelectedItem();
@@ -1313,15 +1313,15 @@ bool Player::interact(std::shared_ptr<Entity> entity) {
     }
 
     if ((item != nullptr) && entity->instanceof(eTYPE_LIVINGENTITY)) {
-        // 4J - PC Comments
-        // Hack to prevent item stacks from decrementing if the player has
-        // the ability to instabuild
+        
+        
+        
         if (this->abilities.instabuild) item = itemClone;
         if (item->interactEnemy(
                 thisPlayer, std::dynamic_pointer_cast<LivingEntity>(entity))) {
-            // 4J - PC Comments
-            // Don't remove the item in hand if the player has the ability
-            // to instabuild
+            
+            
+            
             if ((item->count <= 0) && !abilities.instabuild) {
                 removeSelectedItem();
             }
@@ -1378,8 +1378,8 @@ void Player::attack(std::shared_ptr<Entity> entity) {
         }
         dmg += magicBoost;
 
-        // Ensure we put the entity on fire if we're hitting with a
-        // fire-enchanted weapon
+        
+        
         bool setOnFireTemporatily = false;
         int fireAspect = EnchantmentHelper::getFireAspect(
             std::dynamic_pointer_cast<LivingEntity>(shared_from_this()));
@@ -1445,7 +1445,7 @@ void Player::attack(std::shared_ptr<Entity> entity) {
             }
         }
         if (entity->instanceof(eTYPE_LIVINGENTITY)) {
-            // awardStat(Stats.damageDealt, (int) Math.round(dmg * 10));
+            
 
             if (fireAspect > 0 && wasHurt) {
                 entity->setOnFire(fireAspect * 4);
@@ -1457,11 +1457,11 @@ void Player::attack(std::shared_ptr<Entity> entity) {
         causeFoodExhaustion(FoodConstants::EXHAUSTION_ATTACK);
     }
 
-    // if (SharedConstants::INGAME_DEBUG_OUTPUT)
-    // {
-    // 		//sendMessage(ChatMessageComponent.forPlainText("DMG " + dmg +
-    // ", " + magicBoost + ", " + knockback));
-    // }
+    
+    
+    
+    
+    
 }
 
 void Player::crit(std::shared_ptr<Entity> entity) {}
@@ -1506,23 +1506,23 @@ Player::BedSleepingResult Player::startSleepInBed(int x, int y, int z,
         }
 
         if (!level->dimension->isNaturalDimension()) {
-            // may not sleep in this dimension
+            
             return NOT_POSSIBLE_HERE;
         }
 
-        // 4J-PB - I'm going to move the position of these tests below
-        // The distance check should be before the day check, otherwise you can
-        // use the bed in daytime from far away and you'll get the message about
-        // only sleeping at night
+        
+        
+        
+        
 
         if (abs(this->x - x) > 3 || abs(this->y - y) > 2 ||
             abs(this->z - z) > 3) {
-            // too far away
+            
             return TOO_FAR_AWAY;
         }
 
         if (!bTestUse) {
-            // 4J-PB - We still want the tooltip for Sleep
+            
 
             double hRange = 8;
             double vRange = 5;
@@ -1537,17 +1537,17 @@ Player::BedSleepingResult Player::startSleepInBed(int x, int y, int z,
             delete monsters;
         }
 
-        // This causes a message to be displayed, so we do want to show the
-        // tooltip in test mode
+        
+        
         if (!bTestUse && level->isDay()) {
-            // may not sleep during day
+            
             return NOT_POSSIBLE_NOW;
         }
     }
 
     if (bTestUse) {
-        // 4J-PB - we're just testing use, and we get here, then the bed can be
-        // used
+        
+        
         return OK;
     }
 
@@ -1594,7 +1594,7 @@ Player::BedSleepingResult Player::startSleepInBed(int x, int y, int z,
 }
 
 void Player::setBedOffset(int bedDirection) {
-    // place position on pillow and feet at bottom
+    
     bedOffsetX = 0;
     bedOffsetZ = 0;
 
@@ -1614,18 +1614,18 @@ void Player::setBedOffset(int bedDirection) {
     }
 }
 
-/**
- *
- * @param forcefulWakeUp
- *            If the player has been forced to wake up. When this happens,
- *            the client will skip the wake-up animation. For example, when
- *            the player is hurt or the bed is destroyed.
- * @param updateLevelList
- *            If the level's sleeping player list needs to be updated. This
- *            is usually the case.
- * @param saveRespawnPoint
- *            TODO
- */
+
+
+
+
+
+
+
+
+
+
+
+
 void Player::stopSleepInBed(bool forcefulWakeUp, bool updateLevelList,
                             bool saveRespawnPoint) {
     setSize(0.6f, 1.8f);
@@ -1666,14 +1666,14 @@ bool Player::checkBed() {
 }
 
 Pos* Player::checkBedValidRespawnPosition(Level* level, Pos* pos, bool forced) {
-    // make sure the chunks around the bed exist
+    
     ChunkSource* chunkSource = level->getChunkSource();
     chunkSource->create((pos->x - 3) >> 4, (pos->z - 3) >> 4);
     chunkSource->create((pos->x + 3) >> 4, (pos->z - 3) >> 4);
     chunkSource->create((pos->x - 3) >> 4, (pos->z + 3) >> 4);
     chunkSource->create((pos->x + 3) >> 4, (pos->z + 3) >> 4);
 
-    // make sure the bed is still standing
+    
     if (level->getTile(pos->x, pos->y, pos->z) != Tile::bed_Id) {
         Material* bottomMaterial = level->getMaterial(pos->x, pos->y, pos->z);
         Material* topMaterial = level->getMaterial(pos->x, pos->y + 1, pos->z);
@@ -1686,7 +1686,7 @@ Pos* Player::checkBedValidRespawnPosition(Level* level, Pos* pos, bool forced) {
         }
         return nullptr;
     }
-    // make sure the bed still has a stand-up position
+    
     Pos* standUp =
         BedTile::findStandUpPosition(level, pos->x, pos->y, pos->z, 0);
     return standUp;
@@ -1720,7 +1720,7 @@ bool Player::isSleepingLongEnough() {
 
 int Player::getSleepTimer() { return sleepCounter; }
 
-// 4J-PB - added for death fade
+
 int Player::getDeathFadeTimer() { return deathFadeCounter; }
 
 bool Player::getPlayerFlag(int flag) {
@@ -1738,11 +1738,11 @@ void Player::setPlayerFlag(int flag, bool value) {
     }
 }
 
-/**
- * This method is currently only relevant to client-side players. It will
- * try to load the messageId from the language file and display it to the
- * client.
- */
+
+
+
+
+
 void Player::displayClientMessage(int messageId) {}
 
 Pos* Player::getRespawnPosition() { return respawnPosition; }
@@ -1760,14 +1760,14 @@ void Player::setRespawnPosition(Pos* respawnPosition, bool forced) {
 }
 
 void Player::awardStat(Stat* stat, const std::vector<uint8_t>& paramBlob) {
-    // Intentionally empty - base implementation does nothing
+    
 }
 
 void Player::jumpFromGround() {
     LivingEntity::jumpFromGround();
 
-    // 4J Stu - This seems to have been missed from 1.7.3, but do we care?
-    // awardStat(Stats::jump, 1);
+    
+    
 
     if (isSprinting()) {
         causeFoodExhaustion(FoodConstants::EXHAUSTION_SPRINT_JUMP);
@@ -1806,7 +1806,7 @@ void Player::checkMovementStatistiscs(double dx, double dy, double dz) {
         int distance =
             (int)Math::round(sqrt(dx * dx + dy * dy + dz * dz) * 100.0f);
         if (distance > 0) {
-            // awardStat(Stats::diveOneCm, distance);
+            
             causeFoodExhaustion(FoodConstants::EXHAUSTION_SWIM * distance *
                                 .01f);
         }
@@ -1876,11 +1876,11 @@ void Player::checkRidingStatistiscs(double dx, double dy, double dz) {
                     minecartAchievementPos =
                         new Pos(Mth::floor(x), Mth::floor(y), Mth::floor(z));
                 }
-                // 4J-PB - changed this because our world isn't big enough to go
-                // 1000m
+                
+                
                 else {
-                    // 4-JEV, changed slightly to add extra parameters for event
-                    // on durango.
+                    
+                    
                     int dist = minecartAchievementPos->dist(
                         Mth::floor(x), Mth::floor(y), Mth::floor(z));
                     if ((m_bAwardedOnARail == false) && (dist >= 500)) {
@@ -1927,9 +1927,9 @@ void Player::causeFallDamage(float distance) {
 }
 
 void Player::killed(std::shared_ptr<LivingEntity> mob) {
-    // 4J-PB - added the lavaslime enemy - fix for #64007 - TU7: Code:
-    // Achievements: TCR#073: Killing Magma Cubes doesn't unlock "Monster
-    // Hunter" Achievement.
+    
+    
+    
     if (mob->instanceof(eTYPE_ENEMY) || mob->GetType() == eTYPE_GHAST ||
         mob->GetType() == eTYPE_SLIME || mob->GetType() == eTYPE_LAVASLIME ||
         mob->GetType() == eTYPE_ENDERDRAGON) {
@@ -2053,7 +2053,7 @@ void Player::giveExperienceLevels(int amount) {
 }
 
 int Player::getXpNeededForNextLevel() {
-    // Update xp calculations from 1.3
+    
     if (experienceLevel >= 30) {
         return 17 + 15 * 3 + (experienceLevel - 30) * 7;
     }
@@ -2063,22 +2063,22 @@ int Player::getXpNeededForNextLevel() {
     return 17;
 }
 
-/**
- * This method adds on to the player's exhaustion, which may decrease the
- * player's food level.
- *
- * @param amount
- *            Amount of exhaustion to add, between 0 and 20 (setting it to
- *            20 will guarantee that at least 1, and at most 4, food points
- *            are deducted). See FoodConstants for cost suggestions.
- */
+
+
+
+
+
+
+
+
+
 void Player::causeFoodExhaustion(float amount) {
     if (isAllowedToIgnoreExhaustion() || (isAllowedToFly() && abilities.flying))
         return;
     if (abilities.invulnerable || hasInvulnerablePrivilege()) return;
 
-    // 4J Stu - Added 1.8.2 bug fix (TU6) - If players cannot eat, then their
-    // food bar should not decrease due to exhaustion
+    
+    
     if (app.GetGameHostOption(eGameHostOption_TrustPlayers) == 0 &&
         getPlayerGamePrivilege(Player::ePlayerGamePrivilege_CannotBuild) != 0)
         return;
@@ -2108,7 +2108,7 @@ void Player::startUsingItem(std::shared_ptr<ItemInstance> instance,
         setUsingItemFlag(true);
     }
 
-    // 4J-JEV, hook for ItemUsed event, and ironbelly achievement.
+    
     awardStat(
         GenericStats::itemsUsed(instance->getItem()->id),
         GenericStats::param_itemsUsed(
@@ -2165,7 +2165,7 @@ int Player::getExperienceReward(std::shared_ptr<Player> killedBy) {
 }
 
 bool Player::isAlwaysExperienceDropper() {
-    // players always drop experience
+    
     return true;
 }
 
@@ -2207,16 +2207,16 @@ void Player::setGameMode(GameType* mode) {}
 std::wstring Player::getName() { return name; }
 
 std::wstring Player::getDisplayName() {
-    // If player display name is not set, use the plain name.
+    
     const std::wstring& base = m_displayName.size() > 0 ? m_displayName : name;
     Scoreboard* scoreboard =
         level != nullptr ? level->getScoreboard() : nullptr;
     if (scoreboard == nullptr) return base;
 
-    // Team prefix/suffix formatting, cached against the scoreboard revision:
-    // rebuilt only when a team (or any scoreboard state) changes, never per
-    // frame. Team removal restores the plain name on the next call because
-    // getPlayersTeam() then returns null.
+    
+    
+    
+    
     if (scoreboard->getRevision() != m_teamNameRevision) {
         m_teamNameRevision = scoreboard->getRevision();
         m_teamFormattedName = PlayerTeam::formatNameForTeam(
@@ -2226,7 +2226,7 @@ std::wstring Player::getDisplayName() {
 }
 
 std::wstring Player::getNetworkName() {
-    // 4J: We can only transmit gamertag in network packets
+    
     return name;
 }
 
@@ -2277,38 +2277,38 @@ float Player::getAbsorptionAmount() {
 int Player::getTexture() {
     switch (m_skinIndex) {
         case EDefaultSkins::Skin0:
-            return TN_MOB_CHAR;  // 4J - was L"/mob/char.png";
+            return TN_MOB_CHAR;  
         case EDefaultSkins::Skin1:
-            return TN_MOB_CHAR1;  // 4J - was L"/mob/char1.png";
+            return TN_MOB_CHAR1;  
         case EDefaultSkins::Skin2:
-            return TN_MOB_CHAR2;  // 4J - was L"/mob/char2.png";
+            return TN_MOB_CHAR2;  
         case EDefaultSkins::Skin3:
-            return TN_MOB_CHAR3;  // 4J - was L"/mob/char3.png";
+            return TN_MOB_CHAR3;  
         case EDefaultSkins::Skin4:
-            return TN_MOB_CHAR4;  // 4J - was L"/mob/char4.png";
+            return TN_MOB_CHAR4;  
         case EDefaultSkins::Skin5:
-            return TN_MOB_CHAR5;  // 4J - was L"/mob/char5.png";
+            return TN_MOB_CHAR5;  
         case EDefaultSkins::Skin6:
-            return TN_MOB_CHAR6;  // 4J - was L"/mob/char6.png";
+            return TN_MOB_CHAR6;  
         case EDefaultSkins::Skin7:
-            return TN_MOB_CHAR7;  // 4J - was L"/mob/char7.png";
+            return TN_MOB_CHAR7;  
 
         default:
-            return TN_MOB_CHAR;  // 4J - was L"/mob/char.png";
+            return TN_MOB_CHAR;  
     }
 }
 
 int Player::hash_fnct(const std::shared_ptr<Player> k) {
-    // TODO 4J Stu - Should we just be using the pointers and hashing them?
+    
     return (int)std::hash<std::wstring>()(k->name);
 }
 
 bool Player::eq_test(const std::shared_ptr<Player> x,
                      const std::shared_ptr<Player> y) {
-    // TODO 4J Stu - Should we just be using the pointers and comparing them for
-    // equality?
+    
+    
     return x->name.compare(y->name) ==
-           0;  // 4J Stu - Names are completely unique?
+           0;  
 }
 
 unsigned int Player::getPlayerGamePrivilege(EPlayerGamePrivileges privilege) {
@@ -2356,7 +2356,7 @@ void Player::setPlayerGamePrivilege(unsigned int& uiGamePrivileges,
         if (value != 0) {
             uiGamePrivileges |= (1 << privilege);
         } else {
-            // Some privileges will turn other things off as well
+            
             switch (privilege) {
                 case ePlayerGamePrivilege_CanToggleInvisible:
                     Player::setPlayerGamePrivilege(
@@ -2388,7 +2388,7 @@ void Player::setPlayerGamePrivilege(unsigned int& uiGamePrivileges,
                 default:
                     break;
             }
-            // off
+            
             uiGamePrivileges &= ~(1 << privilege);
         }
     }
@@ -2474,10 +2474,10 @@ bool Player::isAllowedToUse(std::shared_ptr<ItemInstance> item) {
             allowed = false;
         }
 
-        // 4J Stu - TU8 Players should always be able to eat food items, even if
-        // the build option is turned of
+        
+        
         switch (item->id) {
-                // food
+                
             case Item::mushroomStew_Id:
             case Item::apple_Id:
             case Item::bread_Id:
@@ -2493,7 +2493,7 @@ bool Player::isAllowedToUse(std::shared_ptr<ItemInstance> item) {
             case Item::chicken_raw_Id:
             case Item::melon_Id:
             case Item::rotten_flesh_Id:
-                // bow
+                
             case Item::bow_Id:
             case Item::sword_diamond_Id:
             case Item::sword_gold_Id:
@@ -2579,9 +2579,9 @@ bool Player::isAllowedToHurtEntity(std::shared_ptr<Entity> target) {
             case eTYPE_PAINTING:
             case eTYPE_ITEM_FRAME:
 
-                // 4J-JEV: Fix for #88212,
-                // Untrusted players shouldn't be able to damage minecarts or
-                // boats.
+                
+                
+                
             case eTYPE_BOAT:
             case eTYPE_MINECART:
 
@@ -2680,12 +2680,12 @@ std::vector<ModelPart*>* Player::GetAdditionalModelParts() {
         bool customTextureIsDefaultSkin =
             customTextureUrl.substr(0, 3).compare(L"def") == 0;
 
-        // see if we can find the parts
+        
         m_ppAdditionalModelParts = app.GetAdditionalModelParts(m_dwSkinId);
 
-        // If it's a default texture (which has no parts), we have the parts, or
-        // we already have the texture (in which case we should have parts if
-        // there are any) then we are done
+        
+        
+        
         if (!hasCustomTexture || customTextureIsDefaultSkin ||
             m_ppAdditionalModelParts != nullptr ||
             app.IsFileInMemoryTextures(customTextureUrl)) {
@@ -2695,13 +2695,13 @@ std::vector<ModelPart*>* Player::GetAdditionalModelParts() {
             !m_bCheckedDLCForModelParts) {
             m_bCheckedDLCForModelParts = true;
 
-            // we don't have the data from the dlc skin yet
+            
             app.DebugPrintf(
                 "m_bCheckedForModelParts Couldn't get model parts for skin "
                 "%X\n",
                 m_dwSkinId);
 
-            // do we have it from the DLC pack?
+            
             DLCSkinFile* pDLCSkinFile =
                 app.m_dlcManager.getSkinFile(this->customTextureUrl);
 

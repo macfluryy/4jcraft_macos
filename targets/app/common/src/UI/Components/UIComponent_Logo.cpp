@@ -7,7 +7,7 @@
 UIComponent_Logo::UIComponent_Logo(int iPad, void* initData,
                                    UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 }
 

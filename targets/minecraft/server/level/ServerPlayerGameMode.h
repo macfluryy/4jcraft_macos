@@ -29,7 +29,7 @@ private:
     int lastSentState;
 
 private:
-    // 4J Added
+    
     GameRulesInstance* m_gameRules;
 
 public:

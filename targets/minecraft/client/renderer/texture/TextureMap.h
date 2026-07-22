@@ -27,16 +27,16 @@ private:
     typedef std::unordered_map<std::wstring, StitchedTexture*>
         stringStitchedTextureMap;
     stringStitchedTextureMap
-        texturesByName;  //  = new HashMap<String, StitchedTexture>();
-    BufferedImage* missingTexture;  // = new BufferedImage(64, 64,
-                                    // BufferedImage.TYPE_INT_ARGB);
+        texturesByName;  
+    BufferedImage* missingTexture;  
+                                    
     StitchedTexture* missingPosition;
     Texture* stitchResult;
     std::vector<StitchedTexture*>
-        animatedTextures;  // = new ArrayList<StitchedTexture>();
+        animatedTextures;  
 
     stringStitchedTextureMap
-        texturesToRegister;  // = new HashMap<String, StitchedTexture>();
+        texturesToRegister;  
 
 public:
     TextureMap(int type, const std::wstring& name, const std::wstring& path,
@@ -47,7 +47,7 @@ public:
     void cycleAnimationFrames();
     Texture* getStitchedTexture();
 
-    // 4J Stu - register is a reserved keyword in C++
+    
     Icon* registerIcon(const std::wstring& name);
 
     int getIconType();

@@ -25,11 +25,11 @@ void ProgressRenderer::progressStartNoAbort(int string) {
 }
 
 void ProgressRenderer::_progressStart(int title) {
-    // 4J Stu - Removing all progressRenderer rendering. This will be replaced
-    // on the xbox
+    
+    
     if (!minecraft->running) {
         if (noAbort) return;
-        //        throw new StopGameException();		// 4J - removed
+        
     }
 
     {
@@ -43,7 +43,7 @@ void ProgressRenderer::_progressStart(int title) {
 void ProgressRenderer::progressStage(int status) {
     if (!minecraft->running) {
         if (noAbort) return;
-        //        throw new StopGameException();		// 4J - removed
+        
     }
 
     lastTime = 0;
@@ -58,8 +58,8 @@ void ProgressRenderer::progressStage(int status) {
 }
 
 void ProgressRenderer::progressStagePercentage(int i) {
-    // 4J Stu - Removing all progressRenderer rendering. This will be replaced
-    // on the xbox
+    
+    
     {
         std::lock_guard<std::recursive_mutex> lock(
             ProgressRenderer::s_progress);

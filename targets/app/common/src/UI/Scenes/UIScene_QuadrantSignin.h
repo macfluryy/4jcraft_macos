@@ -107,14 +107,14 @@ public:
     void tick();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
-    // 4jcraft: made public for thumbnail thunk
+    
     static int AvatarReturned(void* lpParam, uint8_t* pbThumbnail,
                               uint32_t dwThumbnailBytes);
 

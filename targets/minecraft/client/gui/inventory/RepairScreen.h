@@ -26,8 +26,8 @@ public:
     void keyPressed(char ch, int eventKey);
     void mouseClicked(int mouseX, int mouseY, int buttonNum);
 
-    // 4jcraft: these 3 are to implement Containerlistener (see
-    // IUIScene_AnvilMenu and net.minecraft.world.inventory.ContainerListener)
+    
+    
     void refreshContainer(AbstractContainerMenu* container,
                           std::vector<std::shared_ptr<ItemInstance> >* items);
     void slotChanged(AbstractContainerMenu* container, int slotIndex,

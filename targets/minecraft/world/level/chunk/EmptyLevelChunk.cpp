@@ -13,8 +13,8 @@ class EntitySelector;
 EmptyLevelChunk::EmptyLevelChunk(Level* level, int x, int z)
     : LevelChunk(level, x, z) {
     dontSave = true;
-    // Set this as fully post-processed, so we don't try and run post-processing
-    // on any edge chunks that will overlap into real chunks
+    
+    
     terrainPopulated = LevelChunk::sTerrainPopulatedAllNeighbours |
                        LevelChunk::sTerrainPostPostProcessed;
 }
@@ -23,8 +23,8 @@ EmptyLevelChunk::EmptyLevelChunk(Level* level, std::vector<uint8_t>& blocks,
                                  int x, int z)
     : LevelChunk(level, blocks, x, z) {
     dontSave = true;
-    // Set this as fully post-processed, so we don't try and run post-processing
-    // on any edge chunks that will overlap into real chunks
+    
+    
     terrainPopulated = LevelChunk::sTerrainPopulatedAllNeighbours |
                        LevelChunk::sTerrainPostPostProcessed;
 }
@@ -65,7 +65,7 @@ int EmptyLevelChunk::getBrightness(LightLayer::variety layer, int x, int y,
     return 0;
 }
 
-// 4J added
+
 void EmptyLevelChunk::getNeighbourBrightnesses(int* brightnesses,
                                                LightLayer::variety layer, int x,
                                                int y, int z) {
@@ -105,7 +105,7 @@ void EmptyLevelChunk::removeTileEntity(int x, int y, int z) {}
 
 void EmptyLevelChunk::load() {}
 
-void EmptyLevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
+void EmptyLevelChunk::unload(bool unloadTileEntities)  
 {}
 
 bool EmptyLevelChunk::containsPlayer() { return false; }
@@ -128,7 +128,7 @@ void EmptyLevelChunk::setBlocks(std::vector<uint8_t>& newBlocks, int sub) {}
 
 int EmptyLevelChunk::getBlocksAndData(std::vector<uint8_t>& data, int x0,
                                       int y0, int z0, int x1, int y1, int z1,
-                                      int p, bool includeLighting /* = true*/) {
+                                      int p, bool includeLighting ) {
     int xs = x1 - x0;
     int ys = y1 - y0;
     int zs = z1 - z0;
@@ -147,7 +147,7 @@ int EmptyLevelChunk::getBlocksAndData(std::vector<uint8_t>& data, int x0,
 
 int EmptyLevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0,
                                       int y0, int z0, int x1, int y1, int z1,
-                                      int p, bool includeLighting /* = true*/) {
+                                      int p, bool includeLighting ) {
     int xs = x1 - x0;
     int ys = y1 - y0;
     int zs = z1 - z0;

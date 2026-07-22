@@ -24,8 +24,8 @@ void CanyonFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
 
     float yRota = 0;
     float xRota = 0;
-    //        int dist = CAVE_RADIUS * 16 - 16;
-    //        if (step>0) dist = step*2;
+    
+    
 
     if (dist <= 0) {
         int max = radius * 16 - 16;
@@ -188,7 +188,7 @@ void CanyonFeature::addFeature(Level* level, int x, int z, int xOffs, int zOffs,
         addTunnel(random->nextLong(), xOffs, zOffs, blocks, xCave, yCave, zCave,
                   thickness, yRot, xRot, 0, 0, amplified ? 5.0 : 3.0);
 
-        // 4J Add to feature list
+        
         app.AddTerrainFeaturePosition(eTerrainFeature_Ravine,
                                       (int)(xCave / 16.0), (int)(yCave / 16.0));
     }

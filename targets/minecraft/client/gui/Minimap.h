@@ -14,10 +14,10 @@ class Minimap {
 private:
     static const int w = MapItem::IMAGE_WIDTH;
     static const int h = MapItem::IMAGE_HEIGHT;
-    static int LUT[256];  // 4J added
-    static bool genLUT;   // 4J added
-    int renderCount;      // 4J added
-    bool m_optimised;     // 4J Added
+    static int LUT[256];  
+    static bool genLUT;   
+    int renderCount;      
+    bool m_optimised;     
     std::vector<int> pixels;
     int mapTexture;
     Options* options;
@@ -25,9 +25,9 @@ private:
 
 public:
     Minimap(Font* font, Options* options, Textures* textures,
-            bool optimised = true);  // 4J Added optimised param
+            bool optimised = true);  
     static void reloadColours();
     void render(std::shared_ptr<Player> player, Textures* textures,
                 std::shared_ptr<MapItemSavedData> data,
-                int entityId);  // 4J added entityId param
+                int entityId);  
 };

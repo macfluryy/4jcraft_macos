@@ -16,7 +16,7 @@ class Level;
 class Stat;
 class User;
 
-// #define STRESS_TEST_MOVE
+
 
 class MultiplayerLocalPlayer : public LocalPlayer {
 private:
@@ -66,10 +66,10 @@ public:
 protected:
     virtual void actuallyHurt(DamageSource* source, float dmg);
 
-    // 4J Added override to capture event for tutorial messages
+    
     virtual void completeUsingItem();
 
-    // 4J Added overrides to capture events for tutorial
+    
     virtual void onEffectAdded(MobEffectInstance* effect);
     virtual void onEffectUpdated(MobEffectInstance* effect,
                                  bool doRefreshAttributes);
@@ -90,20 +90,20 @@ protected:
 public:
     virtual void sendOpenInventory();
 
-    // 4J - send the custom skin texture data if there is one
-    // void CustomSkin(uint8_t* pbData, uint32_t dwBytes);
+    
+    
 
-    // 4J Overriding this so we can flag an event for the tutorial
+    
     virtual void ride(std::shared_ptr<Entity> e);
 
-    // 4J - added for the Stop Sleeping
+    
     virtual void StopSleeping();
 
-    // 4J Added
+    
     virtual void setAndBroadcastCustomSkin(uint32_t skinId);
     virtual void setAndBroadcastCustomCape(uint32_t capeId);
 
-    // 4J added for testing
+    
 #ifdef STRESS_TEST_MOVE
     void StressTestMove(double* tempX, double* tempY, double* tempZ);
 #endif

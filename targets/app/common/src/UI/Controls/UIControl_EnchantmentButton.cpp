@@ -42,7 +42,7 @@ bool UIControl_EnchantmentButton::setupControl(UIScene* scene,
     UIControl::setControlType(UIControl::eEnchantmentButton);
     bool success = UIControl_Button::setupControl(scene, parent, controlName);
 
-    // Button specific initialisers
+    
     m_funcChangeState = registerFastName(L"ChangeState");
 
     return success;
@@ -73,9 +73,9 @@ void UIControl_EnchantmentButton::render(IggyCustomDrawCallbackRegion* region) {
     float height = region->y1 - region->y0;
     float xo = width / 2;
     float yo = height;
-    // glTranslatef(xo, yo, 50.0f);
+    
 
-    // Revert the scale from the setup
+    
     float ssX = width / m_width;
     float ssY = height / m_height;
     glScalef(ssX, ssY, 1.0f);
@@ -100,10 +100,10 @@ void UIControl_EnchantmentButton::render(IggyCustomDrawCallbackRegion* region) {
 
     int cost = menu->costs[m_index];
 
-    // if(cost != m_lastCost)
-    //{
-    //	updateState();
-    // }
+    
+    
+    
+    
 
     glColor4f(1, 1, 1, 1);
     if (cost != 0) {
@@ -112,7 +112,7 @@ void UIControl_EnchantmentButton::render(IggyCustomDrawCallbackRegion* region) {
         Minecraft* pMinecraft = Minecraft::GetInstance();
         std::wstring line = toWString<int>(cost);
         Font* font = pMinecraft->altFont;
-        // int col = 0x685E4A;
+        
         unsigned int col = m_textColour;
         if (pMinecraft->localplayers[enchantingScene->getPad()]
                     ->experienceLevel < cost &&
@@ -122,24 +122,24 @@ void UIControl_EnchantmentButton::render(IggyCustomDrawCallbackRegion* region) {
             font->drawWordWrap(m_enchantmentString, 0, 0, (float)m_width / ss,
                                col, (float)m_height / ss);
             font = pMinecraft->font;
-            // col = (0x80ff20 & 0xfefefe) >> 1;
-            // font->drawShadow(line, (bwidth - font->width(line))/ss, 7, col);
+            
+            
         } else {
             if (m_bHasFocus) {
-                // col = 0xffff80;
+                
                 col = m_textFocusColour;
             }
             font->drawWordWrap(m_enchantmentString, 0, 0, (float)m_width / ss,
                                col, (float)m_height / ss);
             font = pMinecraft->font;
-            // col = 0x80ff20;
-            // font->drawShadow(line, (bwidth - font->width(line))/ss, 7, col);
+            
+            
         }
         glDisable(GL_ALPHA_TEST);
     } else {
     }
 
-    // Lighting::turnOff();
+    
     glDisable(GL_RESCALE_NORMAL);
 }
 
@@ -157,10 +157,10 @@ void UIControl_EnchantmentButton::updateState() {
                    ->experienceLevel &&
         !pMinecraft->localplayers[enchantingScene->getPad()]
              ->abilities.instabuild) {
-        // Dark background
+        
         state = eState_Inactive;
     } else {
-        // Light background and focus background
+        
         if (m_bHasFocus) {
             state = eState_Selected;
         } else {
@@ -174,7 +174,7 @@ void UIControl_EnchantmentButton::updateState() {
         m_enchantmentString = EnchantmentNames::instance.getRandomName();
     }
     if (cost == 0) {
-        // Dark background
+        
         state = eState_Inactive;
         setLabel(L"");
     }

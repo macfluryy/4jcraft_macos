@@ -39,7 +39,7 @@ ItemRenderer::ItemRenderer() : EntityRenderer() {
     shadowRadius = 0.15f;
     shadowStrength = 0.75f;
 
-    // 4J added
+    
     m_bItemFrame = false;
 }
 
@@ -54,16 +54,16 @@ ResourceLocation* ItemRenderer::getTextureLocation(
 
 ResourceLocation* ItemRenderer::getTextureLocation(int iconType) {
     if (iconType == Icon::TYPE_TERRAIN) {
-        return &TextureAtlas::LOCATION_BLOCKS;  // L"/terrain.png"));
+        return &TextureAtlas::LOCATION_BLOCKS;  
     } else {
-        return &TextureAtlas::LOCATION_ITEMS;  // L"/gui/items.png"));
+        return &TextureAtlas::LOCATION_ITEMS;  
     }
 }
 
 void ItemRenderer::render(std::shared_ptr<Entity> _itemEntity, double x,
                           double y, double z, float rot, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<ItemEntity> itemEntity =
         std::dynamic_pointer_cast<ItemEntity>(_itemEntity);
     bindTexture(itemEntity);
@@ -115,7 +115,7 @@ void ItemRenderer::render(std::shared_ptr<Entity> _itemEntity, double x,
                 float zo = (random->nextFloat() * 2 - 1) * 0.2f / s;
                 glTranslatef(xo, yo, zo);
             }
-            // 4J - change brought forward from 1.8.2
+            
             float br = SharedConstants::TEXTURE_LIGHTING
                            ? 1.0f
                            : itemEntity->getBrightness(a);
@@ -132,7 +132,7 @@ void ItemRenderer::render(std::shared_ptr<Entity> _itemEntity, double x,
             glScalef(1 / 2.0f, 1 / 2.0f, 1 / 2.0f);
         }
 
-        bindTexture(&TextureAtlas::LOCATION_ITEMS);  // 4J was "/gui/items.png"
+        bindTexture(&TextureAtlas::LOCATION_ITEMS);  
 
         for (int layer = 0; layer <= 1; layer++) {
             random->setSeed(187);
@@ -164,8 +164,8 @@ void ItemRenderer::render(std::shared_ptr<Entity> _itemEntity, double x,
             glScalef(1 / 2.0f, 1 / 2.0f, 1 / 2.0f);
         }
 
-        // 4J Stu - For rendering the static compass, we give it a non-zero aux
-        // value
+        
+        
         if (item->id == Item::compass_Id) item->setAuxValue(255);
         if (item->id == Item::compass_Id) item->setAuxValue(0);
 
@@ -211,16 +211,16 @@ void ItemRenderer::renderItemBillboard(std::shared_ptr<ItemEntity> entity,
     float yo = 0.25f;
 
     if (entityRenderDispatcher->options->fancyGraphics) {
-        // Consider forcing the mipmap LOD level to use, if this is to be
-        // rendered from a larger than standard source texture.
+        
+        
         int iconWidth = icon->getWidth();
-        int LOD = -1;  // Default to not doing anything special with LOD forcing
+        int LOD = -1;  
         if (iconWidth == 32) {
-            LOD = 1;  // Force LOD level 1 to achieve texture reads from 256x256
-                      // map
+            LOD = 1;  
+                      
         } else if (iconWidth == 64) {
-            LOD = 2;  // Force LOD level 2 to achieve texture reads from 256x256
-                      // map
+            LOD = 2;  
+                      
         }
         RenderManager.StateSetForceLOD(LOD);
 
@@ -257,17 +257,17 @@ void ItemRenderer::renderItemBillboard(std::shared_ptr<ItemEntity> entity,
             if (item->getIconType() == Icon::TYPE_TERRAIN &&
                 Tile::tiles[item->id] != nullptr) {
                 bIsTerrain = true;
-                bindTexture(&TextureAtlas::LOCATION_BLOCKS);  // TODO: Do this
-                                                              // sanely by Icon
+                bindTexture(&TextureAtlas::LOCATION_BLOCKS);  
+                                                              
             } else {
-                bindTexture(&TextureAtlas::LOCATION_ITEMS);  // TODO: Do this
-                                                             // sanely by Icon
+                bindTexture(&TextureAtlas::LOCATION_ITEMS);  
+                                                             
             }
 
             glColor4f(red, green, blue, 1);
-            // 4J Stu - u coords were swapped in Java
-            // ItemInHandRenderer::renderItem3D(t, u1, v0, u0, v1,
-            // icon->getSourceWidth(), icon->getSourceHeight(), width, false);
+            
+            
+            
             ItemInHandRenderer::renderItem3D(
                 t, u0, v0, u1, v1, icon->getSourceWidth(),
                 icon->getSourceHeight(), width, false, bIsTerrain);
@@ -347,8 +347,8 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
     renderGuiItem(font, textures, item, x, y, fScale, fScale, fAlpha, true);
 }
 
-// 4J - this used to take x and y as ints, and no scale and alpha - but this
-// interface is now implemented as a wrapper round this more fully featured one
+
+
 void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
                                  std::shared_ptr<ItemInstance> item, float x,
                                  float y, float fScaleX, float fScaleY,
@@ -363,8 +363,8 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
 
         Tile* tile = Tile::tiles[itemId];
         glPushMatrix();
-        // 4J - original code left here for reference
-        // 4jcraft: original code reused for proper lighting
+        
+        
         glTranslatef((float)(x), (float)(y), 0.0f);
         glScalef(fScaleX, fScaleY, 1.0f);
         glTranslatef(-2.0f, 3.0f, -3.0f + blitOffset);
@@ -373,9 +373,9 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         glScalef(1.0f, 1.0f, -1.0f);
         glRotatef(180.0f + 30.0f, 1.0f, 0.0f, 0.0f);
         glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
-        // 4J-PB - pass the alpha value in - the grass block
-        // render has the top surface coloured differently to
-        // the rest of the block
+        
+        
+        
         glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
 
         tileRenderer->renderTile(tile, itemAuxValue, 1, fAlpha, useCompiled);
@@ -383,7 +383,7 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         glPopMatrix();
 
     } else if (Item::items[itemId]->hasMultipleSpriteLayers()) {
-        // special double-layered
+        
         glDisable(GL_LIGHTING);
 
         ResourceLocation* location = getTextureLocation(item->getIconType());
@@ -399,7 +399,7 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
             float b = ((col) & 0xff) / 255.0f;
 
             if (setColor) glColor4f(r, g, b, fAlpha);
-            // scale the x and y by the scale factor
+            
             if ((fScaleX != 1.0f) || (fScaleY != 1.0f)) {
                 blit(x, y, fillingIcon, 16 * fScaleX, 16 * fScaleY);
             } else {
@@ -412,10 +412,10 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         glDisable(GL_LIGHTING);
         if (item->getIconType() == Icon::TYPE_TERRAIN) {
             textures->bindTexture(
-                &TextureAtlas::LOCATION_BLOCKS);  // L"/terrain.png"));
+                &TextureAtlas::LOCATION_BLOCKS);  
         } else {
             textures->bindTexture(
-                &TextureAtlas::LOCATION_ITEMS);  // L"/gui/items.png"));
+                &TextureAtlas::LOCATION_ITEMS);  
         }
 
         if (itemIcon == nullptr) {
@@ -429,7 +429,7 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
 
         if (setColor) glColor4f(r, g, b, fAlpha);
 
-        // scale the x and y by the scale factor
+        
         if ((fScaleX != 1.0f) || (fScaleY != 1.0f)) {
             blit(x, y, itemIcon, 16 * fScaleX, 16 * fScaleY);
         } else {
@@ -440,16 +440,16 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
     glEnable(GL_CULL_FACE);
 }
 
-// 4J - original interface, now just a wrapper for preceding overload
+
 void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
                                  std::shared_ptr<ItemInstance> item, int x,
                                  int y) {
     renderGuiItem(font, textures, item, (float)x, (float)y, 1.0f, 1.0f);
 }
 
-// 4J - this used to take x and y as ints, and no scale, alpha or foil - but
-// this interface is now implemented as a wrapper round this more fully featured
-// one
+
+
+
 void ItemRenderer::renderAndDecorateItem(
     Font* font, Textures* textures, const std::shared_ptr<ItemInstance> item,
     float x, float y, float fScale, float fAlpha, bool isFoil) {
@@ -458,11 +458,11 @@ void ItemRenderer::renderAndDecorateItem(
                           isFoil, true);
 }
 
-// 4J - added isConstantBlended and blendFactor parameters. This is true if the
-// gui item is being rendered from a context where it already has blending
-// enabled to do general interface fading (ie from the gui rather than xui). In
-// this case we dno't want to enable/disable blending, and do need to restore
-// the blend state when we are done.
+
+
+
+
+
 void ItemRenderer::renderAndDecorateItem(
     Font* font, Textures* textures, const std::shared_ptr<ItemInstance> item,
     float x, float y, float fScaleX, float fScaleY, float fAlpha, bool isFoil,
@@ -480,29 +480,29 @@ void ItemRenderer::renderAndDecorateItem(
         glDepthMask(false);
         textures->bindTexture(
             &ItemInHandRenderer::
-                ENCHANT_GLINT_LOCATION);  // 4J was "%blur%/misc/glint.png"
+                ENCHANT_GLINT_LOCATION);  
         blitOffset -= 50;
         if (!isConstantBlended) glEnable(GL_BLEND);
 
         glBlendFunc(GL_DST_COLOR,
-                    GL_ONE);  // 4J - changed blend equation from GL_DST_COLOR,
-                              // GL_DST_COLOR so we can fade this out
+                    GL_ONE);  
+                              
 
         float blendFactor =
             isConstantBlended ? Gui::currentGuiBlendFactor : 1.0f;
 
         glColor4f(0.5f * blendFactor, 0.25f * blendFactor, 0.8f * blendFactor,
-                  1);  // 4J - scale back colourisation with blendFactor
-        // scale the x and y by the scale factor
+                  1);  
+        
         if ((fScaleX != 1.0f) || (fScaleY != 1.0f)) {
-            // 4J Stu - Scales were multiples of 20, making 16 to not overlap in
-            // xui scenes
+            
+            
             blitGlint(x * 431278612.0f + y * 32178161.0f, x - 2, y - 2,
                       16 * fScaleX, 16 * fScaleY);
         } else {
             blitGlint(x * 431278612.0f + y * 32178161.0f, x - 2, y - 2, 20, 20);
         }
-        glColor4f(1.0f, 1.0f, 1.0f, 1);  // 4J added
+        glColor4f(1.0f, 1.0f, 1.0f, 1);  
         if (!isConstantBlended) glDisable(GL_BLEND);
 
         glDepthMask(true);
@@ -515,7 +515,7 @@ void ItemRenderer::renderAndDecorateItem(
     }
 }
 
-// 4J - original interface, now just a wrapper for preceding overload
+
 void ItemRenderer::renderAndDecorateItem(
     Font* font, Textures* textures, const std::shared_ptr<ItemInstance> item,
     int x, int y) {
@@ -523,14 +523,14 @@ void ItemRenderer::renderAndDecorateItem(
                           item->isFoil());
 }
 
-// 4J - a few changes here to get x, y, w, h in as floats (for xui rendering
-// accuracy), and to align final pixels to the final screen resolution
+
+
 void ItemRenderer::blitGlint(int id, float x, float y, float w, float h) {
     float us = 1.0f / 64.0f / 4;
     float vs = 1.0f / 64.0f / 4;
 
-    // 4J - calculate what the pixel coordinates will be in final screen
-    // coordinates
+    
+    
     float sfx = (float)Minecraft::GetInstance()->width /
                 (float)Minecraft::GetInstance()->width_phys;
     float sfy = (float)Minecraft::GetInstance()->height /
@@ -539,19 +539,19 @@ void ItemRenderer::blitGlint(int id, float x, float y, float w, float h) {
     float xx1 = (x + w) * sfx;
     float yy0 = y * sfy;
     float yy1 = (y + h) * sfy;
-    // Round to whole pixels - rounding inwards so that we don't overlap any
-    // surrounding graphics
+    
+    
     xx0 = ceilf(xx0);
     xx1 = floorf(xx1);
     yy0 = ceilf(yy0);
     yy1 = floorf(yy1);
-    // Offset by half to get actual centre of pixel - again moving inwards to
-    // avoid overlap with surrounding graphics
+    
+    
     xx0 += 0.5f;
     xx1 -= 0.5f;
     yy0 += 0.5f;
     yy1 -= 0.5f;
-    // Convert back to game coordinate space
+    
     float xx0f = xx0 / sfx;
     float xx1f = xx1 / sfx;
     float yy0f = yy0 / sfy;
@@ -640,7 +640,7 @@ void ItemRenderer::renderGuiItemDecorations(Font* font, Textures* textures,
         Tesselator* t = Tesselator::getInstance();
 
         fillRect(t, x + 3, y + 13, 11, 2, 0x000000);
-        // fillRect(t, x + 2, y + 13, 13, 1, 0x1dabc0);
+        
         fillRect(t, x + 3, y + 13,
                  m_iPotionStrengthBarWidth[item->GetPotionStrength()], 2,
                  0x00e1eb);
@@ -668,16 +668,16 @@ void ItemRenderer::fillRect(Tesselator* t, int x, int y, int w, int h, int c) {
     t->end();
 }
 
-// 4J - a few changes here to get x, y, w, h in as floats (for xui rendering
-// accuracy), and to align final pixels to the final screen resolution
+
+
 void ItemRenderer::blit(float x, float y, int sx, int sy, float w, float h) {
     float us = 1 / 256.0f;
     float vs = 1 / 256.0f;
     Tesselator* t = Tesselator::getInstance();
     t->begin();
 
-    // 4J - calculate what the pixel coordinates will be in final screen
-    // coordinates
+    
+    
     float sfx = (float)Minecraft::GetInstance()->width /
                 (float)Minecraft::GetInstance()->width_phys;
     float sfy = (float)Minecraft::GetInstance()->height /
@@ -686,27 +686,27 @@ void ItemRenderer::blit(float x, float y, int sx, int sy, float w, float h) {
     float xx1 = (x + w) * sfx;
     float yy0 = y * sfy;
     float yy1 = (y + h) * sfy;
-    // Round to whole pixels - rounding inwards so that we don't overlap any
-    // surrounding graphics
+    
+    
     xx0 = ceilf(xx0);
     xx1 = floorf(xx1);
     yy0 = ceilf(yy0);
     yy1 = floorf(yy1);
-    // Offset by half to get actual centre of pixel - again moving inwards to
-    // avoid overlap with surrounding graphics
+    
+    
     xx0 += 0.5f;
     xx1 -= 0.5f;
     yy0 += 0.5f;
     yy1 -= 0.5f;
-    // Convert back to game coordinate space
+    
     float xx0f = xx0 / sfx;
     float xx1f = xx1 / sfx;
     float yy0f = yy0 / sfy;
     float yy1f = yy1 / sfy;
 
-    // 4J - subtracting 0.5f (actual screen pixels, so need to compensate for
-    // physical & game width) from each x & y coordinate to compensate for
-    // centre of pixels in directx vs openGL
+    
+    
+    
     float f = (0.5f * (float)Minecraft::GetInstance()->width) /
               (float)Minecraft::GetInstance()->width_phys;
 
@@ -725,8 +725,8 @@ void ItemRenderer::blit(float x, float y, Icon* tex, float w, float h) {
     Tesselator* t = Tesselator::getInstance();
     t->begin();
 
-    // 4J - calculate what the pixel coordinates will be in final screen
-    // coordinates
+    
+    
     float sfx = (float)Minecraft::GetInstance()->width /
                 (float)Minecraft::GetInstance()->width_phys;
     float sfy = (float)Minecraft::GetInstance()->height /
@@ -735,27 +735,27 @@ void ItemRenderer::blit(float x, float y, Icon* tex, float w, float h) {
     float xx1 = (x + w) * sfx;
     float yy0 = y * sfy;
     float yy1 = (y + h) * sfy;
-    // Round to whole pixels - rounding inwards so that we don't overlap any
-    // surrounding graphics
+    
+    
     xx0 = ceilf(xx0);
     xx1 = floorf(xx1);
     yy0 = ceilf(yy0);
     yy1 = floorf(yy1);
-    // Offset by half to get actual centre of pixel - again moving inwards to
-    // avoid overlap with surrounding graphics
+    
+    
     xx0 += 0.5f;
     xx1 -= 0.5f;
     yy0 += 0.5f;
     yy1 -= 0.5f;
-    // Convert back to game coordinate space
+    
     float xx0f = xx0 / sfx;
     float xx1f = xx1 / sfx;
     float yy0f = yy0 / sfy;
     float yy1f = yy1 / sfy;
 
-    // 4J - subtracting 0.5f (actual screen pixels, so need to compensate for
-    // physical & game width) from each x & y coordinate to compensate for
-    // centre of pixels in directx vs openGL
+    
+    
+    
     float f = (0.5f * (float)Minecraft::GetInstance()->width) /
               (float)Minecraft::GetInstance()->width_phys;
 

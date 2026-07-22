@@ -3,8 +3,8 @@
 #include <cstdint>
 #include <cstdlib>
 
-// Shared value types used by platform interfaces. These are NOT interfaces
-// themselves — they are data carriers that cross the platform boundary.
+
+
 
 struct ImageFileBuffer {
     enum EImageType { e_typePNG, e_typeJPG };
@@ -47,7 +47,7 @@ enum class EKeyboardResult {
     ResultDecline,
 };
 
-// Profile-related enums at file scope.
+
 enum class EAwardType {
     Achievement = 0,
     GamerPic,

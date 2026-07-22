@@ -23,7 +23,7 @@
 #include "minecraft/world/level/tile/Tile.h"
 
 ServerPlayerGameMode::ServerPlayerGameMode(Level* level) {
-    // 4J - added initialisers
+    
     isDestroyingBlock = false;
     destroyProgressStart = 0;
     xDestroyBlock = yDestroyBlock = zDestroyBlock = 0;
@@ -36,7 +36,7 @@ ServerPlayerGameMode::ServerPlayerGameMode(Level* level) {
 
     this->level = level;
 
-    // 4J Added
+    
     m_gameRules = nullptr;
 }
 
@@ -151,9 +151,9 @@ void ServerPlayerGameMode::startDestroyBlock(int x, int y, int z, int face) {
 
     if (t > 0 &&
         (progress >=
-         1))  //|| (app.DebugSettingsOn() &&
-              //(player->GetDebugOptions()&(1L<<eDebugSetting_InstantDestroy)
-              //) )))
+         1))  
+              
+              
     {
         destroyBlock(x, y, z);
     } else {
@@ -169,34 +169,34 @@ void ServerPlayerGameMode::startDestroyBlock(int x, int y, int z, int face) {
 
 void ServerPlayerGameMode::stopDestroyBlock(int x, int y, int z) {
     if (x == xDestroyBlock && y == yDestroyBlock && z == zDestroyBlock) {
-        //         int ticksSpentDestroying = gameTicks - destroyProgressStart;
+        
 
         int t = level->getTile(x, y, z);
         if (t != 0) {
             Tile* tile = Tile::tiles[t];
 
-            // MGH -	removed checking for the destroy progress here, it has
-            // already been checked on the client before it sent the packet.
-            //			fixes issues with this failing to destroy
-            // because of packets bunching up
-            //             float destroyProgress =
-            //             tile->getDestroyProgress(player, player->level, x, y,
-            //             z) * (ticksSpentDestroying + 1); if (destroyProgress
-            //             >= .7f || bIgnoreDestroyProgress)
+            
+            
+            
+            
+            
+            
+            
+            
             {
                 isDestroyingBlock = false;
                 level->destroyTileProgress(player->entityId, x, y, z, -1);
                 destroyBlock(x, y, z);
             }
-            // 			else if (!hasDelayedDestroy)
-            // 			{
-            // 				isDestroyingBlock = false;
-            //                 hasDelayedDestroy = true;
-            //                 delayedDestroyX = x;
-            //                 delayedDestroyY = y;
-            //                 delayedDestroyZ = z;
-            //                 delayedTickStart = destroyProgressStart;
-            //             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
         }
     }
 }
@@ -243,35 +243,35 @@ bool ServerPlayerGameMode::destroyBlock(int x, int y, int z) {
     level->levelEvent(player, LevelEvent::PARTICLES_DESTROY_BLOCK, x, y, z,
                       t + (level->getData(x, y, z) << Tile::TILE_NUM_SHIFT));
 
-    // 4J - In creative mode, the point where we need to tell the renderer that
-    // we are about to destroy a tile via destroyingTileAt is quite complicated.
-    // If the player being told is remote, then we always want the client to do
-    // it as it does the final update. If the player being told is local, then
-    // we need to update the renderer Here if we are sharing data between host &
-    // client as this is the final point where the original data is still
-    // intact. If the player being told is local, and we aren't sharing data
-    // between host & client, then we can just treat it as if it is a remote
-    // player and it can update the renderer.
+    
+    
+    
+    
+    
+    
+    
+    
+    
     bool clientToUpdateRenderer = false;
     if (isCreative()) {
         clientToUpdateRenderer = true;
         if (std::dynamic_pointer_cast<ServerPlayer>(player)
                 ->connection->isLocal()) {
-            // Establish whether we are sharing this chunk between client &
-            // server
+            
+            
             MultiPlayerLevel* clientLevel =
                 Minecraft::GetInstance()->getLevel(level->dimension->id);
             if (clientLevel) {
                 LevelChunk* lc = clientLevel->getChunkAt(x, z);
 #ifdef SHARING_ENABLED
                 if (lc->sharingTilesAndData) {
-                    // We are sharing - this is the last point we can tell the
-                    // renderer
+                    
+                    
                     Minecraft::GetInstance()
                         ->levelRenderer->destroyedTileManager->destroyingTileAt(
                             clientLevel, x, y, z);
 
-                    // Don't need to ask the client to do this too
+                    
                     clientToUpdateRenderer = false;
                 }
 #endif
@@ -285,10 +285,10 @@ bool ServerPlayerGameMode::destroyBlock(int x, int y, int z) {
         std::shared_ptr<TileUpdatePacket> tup =
             std::shared_ptr<TileUpdatePacket>(
                 new TileUpdatePacket(x, y, z, level));
-        // 4J - a bit of a hack here, but if we want to tell the client that it
-        // needs to inform the renderer of a block being destroyed, then send a
-        // block 255 instead of a 0. This is handled in
-        // ClientConnection::handleTileUpdate
+        
+        
+        
+        
         if (tup->block == 0) {
             if (clientToUpdateRenderer) tup->block = 255;
         }
@@ -345,7 +345,7 @@ bool ServerPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
                                      int y, int z, int face, float clickX,
                                      float clickY, float clickZ,
                                      bool bTestUseOnOnly, bool* pbUsedItem) {
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
     int t = level->getTile(x, y, z);
     if (!player->isSneaking() || player->getCarriedItem() == nullptr) {
         if (t > 0 && player->isAllowedToUse(Tile::tiles[t])) {
@@ -379,7 +379,7 @@ bool ServerPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
 
 void ServerPlayerGameMode::setLevel(ServerLevel* newLevel) { level = newLevel; }
 
-// 4J Added
+
 void ServerPlayerGameMode::setGameRules(GameRulesInstance* rules) {
     if (m_gameRules != nullptr) delete m_gameRules;
     m_gameRules = rules;

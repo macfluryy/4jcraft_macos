@@ -80,7 +80,7 @@ File OldChunkStorage::getFile(int x, int z) {
     wchar_t xRadix36[64];
     wchar_t zRadix36[64];
 #if defined(__linux__) || defined(__APPLE__)
-    // Cross-platform radix-36 conversion (no _itow on POSIX systems)
+    
     auto itow36 = [](int val, wchar_t* buf, size_t bufSize) {
         static const wchar_t digits[] = L"0123456789abcdefghijklmnopqrstuvwxyz";
         bool neg = val < 0;
@@ -105,7 +105,7 @@ File OldChunkStorage::getFile(int x, int z) {
     _itow(x & 63, path1, 36);
     _itow(z & 63, path2, 36);
 #endif
-    // sprintf(file,"%s\\%s",dir,path1);
+    
     File file(dir, std::wstring(path1));
     if (!file.exists()) {
         if (create)
@@ -115,8 +115,8 @@ File OldChunkStorage::getFile(int x, int z) {
         }
     }
 
-    // strcat(file,"\\");
-    // strcat(file,path2);
+    
+    
     file = File(file, std::wstring(path2));
     if (!file.exists()) {
         if (create)
@@ -126,9 +126,9 @@ File OldChunkStorage::getFile(int x, int z) {
         }
     }
 
-    // strcat(file,"\\");
-    // strcat(file,name);
-    // sprintf(file,"%s\\%s",file,name);
+    
+    
+    
     file = File(file, std::wstring(name));
     if (!file.exists()) {
         if (!create) {
@@ -141,9 +141,9 @@ File OldChunkStorage::getFile(int x, int z) {
 LevelChunk* OldChunkStorage::load(Level* level, int x, int z) {
     File file = getFile(x, z);
     if (!file.getPath().empty() && file.exists()) {
-        // 4J - removed try/catch
-        //		try {
-        //                System.out.println("Loading chunk "+x+", "+z);
+        
+        
+        
         FileInputStream fis = FileInputStream(file);
         CompoundTag* tag = NbtIo::readCompressed(&fis);
         if (!tag->contains(L"Level")) {
@@ -178,9 +178,9 @@ LevelChunk* OldChunkStorage::load(Level* level, int x, int z) {
         }
 
         return levelChunk;
-        //		} catch (Exception e) {
-        //			e.printStackTrace();
-        //		}
+        
+        
+        
     }
     return nullptr;
 }
@@ -193,13 +193,13 @@ void OldChunkStorage::save(Level* level, LevelChunk* levelChunk) {
         levelData->setSizeOnDisk(levelData->getSizeOnDisk() - file.length());
     }
 
-    // 4J - removed try/catch
-    //    try {
-    // char tmpFileName[MAX_PATH_SIZE];
-    // sprintf(tmpFileName,"%s\\%s",dir,"tmp_chunk.dat");
+    
+    
+    
+    
     File tmpFile(dir, L"tmp_chunk.dat");
-    //            System.out.println("Saving chunk "+levelChunk.x+",
-    //            "+levelChunk.z);
+    
+    
 
     FileOutputStream fos = FileOutputStream(tmpFile);
     CompoundTag* tag = new CompoundTag();
@@ -210,23 +210,23 @@ void OldChunkStorage::save(Level* level, LevelChunk* levelChunk) {
     fos.close();
 
     if (file.exists()) {
-        // DeleteFile(file);
+        
         file._delete();
     }
-    // MoveFile(tmpFile,file);
+    
     tmpFile.renameTo(file);
 
     LevelData* levelInfo = level->getLevelData();
     levelInfo->setSizeOnDisk(levelInfo->getSizeOnDisk() + file.length());
-    //    } catch (Exception e) {
-    //        e.printStackTrace();
-    //    }
+    
+    
+    
 }
 
 bool OldChunkStorage::saveEntities(LevelChunk* lc, Level* level,
                                    CompoundTag* tag) {
-    // If we saved and it had no entities, and nothing has been added since skip
-    // this one
+    
+    
     if (!lc->lastSaveHadEntities) return false;
 
     lc->lastSaveHadEntities = false;
@@ -323,30 +323,30 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
     tag->putInt(L"zPos", lc->z);
     tag->putLong(L"LastUpdate", level->getGameTime());
     tag->putLong(L"InhabitedTime", lc->inhabitedTime);
-    // 4J - changes here for new storage. Now have static storage for getting
-    // lighting data for block, data, and sky & block lighting. This wasn't
-    // required in the original version as we could just reference the
-    // information in the level itself, but with our new storage system the full
-    // data doesn't normally exist & so getSkyLightData/getBlockLightData etc.
-    // need somewhere to output this data. Making this static so that we aren't
-    // dynamically allocating memory in the server thread when writing chunks as
-    // this causes serious stalling on the main thread. Will be fine so long as
-    // we only actually create tags for once chunk at a time.
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
-    // 4J Stu - As we now save on multiple threads, the static data has been
-    // moved to TLS
+    
+    
     ThreadStorage* tls = m_tlsStorage;
 
-    // static std::vector<uint8_t> blockData = std::vector<uint8_t>(32768);
+    
     lc->getBlockData(tls->blockData);
     tag->putByteArray(L"Blocks", tls->blockData);
 
-    // static std::vector<uint8_t> dataData = std::vector<uint8_t>(16384);
+    
     lc->getDataData(tls->dataData);
     tag->putByteArray(L"Data", tls->dataData);
 
-    // static std::vector<uint8_t> skyLightData = std::vector<uint8_t>(16384);
-    // static std::vector<uint8_t> blockLightData = std::vector<uint8_t>(16384);
+    
+    
     lc->getSkyLightData(tls->skyLightData);
     lc->getBlockLightData(tls->blockLightData);
     tag->putByteArray(L"SkyLight", tls->skyLightData);
@@ -355,9 +355,9 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
     tag->putByteArray(L"HeightMap", lc->heightmap);
     tag->putShort(
         L"TerrainPopulatedFlags",
-        lc->terrainPopulated);  // 4J - changed from "TerrainPopulated" to
-                                // "TerrainPopulatedFlags" as now stores a
-                                // bitfield, java stores a bool
+        lc->terrainPopulated);  
+                                
+                                
     std::vector<uint8_t> biomeData = lc->getBiomes();
     tag->putByteArray(L"Biomes", biomeData);
 
@@ -450,11 +450,11 @@ LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
     dis->readFully(levelChunk->heightmap);
 
     levelChunk->terrainPopulated = dis->readShort();
-    // If all neighbours have been post-processed, then we should have done the
-    // post-post-processing now. Check that this is set as if it isn't then we
-    // won't be able to send network data for chunks, and we won't ever try and
-    // set it again as all the directional flags are now already set - should
-    // only be an issue for old maps before this flag was added.
+    
+    
+    
+    
+    
     if ((levelChunk->terrainPopulated &
          LevelChunk::sTerrainPopulatedAllNeighbours) ==
         LevelChunk::sTerrainPopulatedAllNeighbours) {
@@ -465,7 +465,7 @@ LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
-        // Read the biome data from the stream, but don't use it
+        
         std::vector<uint8_t> dummyBiomes(levelChunk->biomes.size());
         dis->readFully(dummyBiomes);
     } else
@@ -504,24 +504,24 @@ LevelChunk* OldChunkStorage::load(Level* level, CompoundTag* tag) {
     int z = tag->getInt(L"zPos");
 
     LevelChunk* levelChunk = new LevelChunk(level, x, z);
-    // 4J - the original code uses the data in the tag directly, but this is now
-    // just used as a source when creating the compressed data, so we need to
-    // free up the data in the tag once we are done
+    
+    
+    
     {
         auto blocks = tag->getByteArray(L"Blocks");
         levelChunk->setBlockData(blocks);
     }
-    //	levelChunk->blocks = tag->getByteArray(L"Blocks");
+    
 
-    // 4J - the original code uses the data in the tag directly, but this is now
-    // just used as a source when creating the compressed data, so we need to
-    // free up the data in the tag once we are done
+    
+    
+    
     {
         auto data = tag->getByteArray(L"Data");
         levelChunk->setDataData(data);
     }
 
-    // 4J - changed to use our new methods for accessing lighting
+    
     {
         auto skyLight = tag->getByteArray(L"SkyLight");
         levelChunk->setSkyLightData(skyLight);
@@ -531,36 +531,36 @@ LevelChunk* OldChunkStorage::load(Level* level, CompoundTag* tag) {
         levelChunk->setBlockLightData(blockLight);
     }
 
-    // In the original code (commented out below) constructing DataLayers from
-    // these arrays uses the data directly and so it doesn't need deleted. The
-    // new setSkyLightData/setBlockLightData take a copy of the data so we need
-    // to delete the local one now
+    
+    
+    
+    
 
-    //	levelChunk->skyLight = new DataLayer(tag->getByteArray(L"SkyLight"),
-    // level->depthBits); 	levelChunk->blockLight = new
-    // DataLayer(tag->getByteArray(L"BlockLight"), level->depthBits);
+    
+    
+    
 
     levelChunk->heightmap = tag->getByteArray(L"HeightMap");
-    // 4J - TerrainPopulated was a bool (java), then changed to be a byte
-    // bitfield, then replaced with TerrainPopulatedShort to store a wider
-    // bitfield
+    
+    
+    
     if (tag->get(L"TerrainPopulated")) {
-        // Java bool type or byte bitfield
+        
         levelChunk->terrainPopulated = tag->getByte(L"TerrainPopulated");
         if (levelChunk->terrainPopulated >= 1)
             levelChunk->terrainPopulated =
                 LevelChunk::sTerrainPopulatedAllNeighbours |
-                LevelChunk::sTerrainPostPostProcessed;  // Convert from old bool
-                                                        // type to new bitfield
+                LevelChunk::sTerrainPostPostProcessed;  
+                                                        
     } else {
-        // New style short
+        
         levelChunk->terrainPopulated = tag->getShort(L"TerrainPopulatedFlags");
-        // If all neighbours have been post-processed, then we should have done
-        // the post-post-processing now. Check that this is set as if it isn't
-        // then we won't be able to send network data for chunks, and we won't
-        // ever try and set it again as all the directional flags are now
-        // already set - should only be an issue for old maps before this flag
-        // was added.
+        
+        
+        
+        
+        
+        
         if ((levelChunk->terrainPopulated &
              LevelChunk::sTerrainPopulatedAllNeighbours) ==
             LevelChunk::sTerrainPopulatedAllNeighbours) {
@@ -569,13 +569,13 @@ LevelChunk* OldChunkStorage::load(Level* level, CompoundTag* tag) {
         }
     }
 
-    // 4J removed - we shouldn't need this any more
+    
 
 #if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
-        // Do nothing
+        
     } else
 #endif
     {

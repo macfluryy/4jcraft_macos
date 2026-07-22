@@ -13,7 +13,7 @@ Stat::DefaultFormat* Stat::defaultFormatter = new DefaultFormat();
 Stat::TimeFormatter* Stat::timeFormatter = new TimeFormatter();
 Stat::DistanceFormatter* Stat::distanceFormatter = new DistanceFormatter();
 
-// 4J Stu - Changed this to take in a printf format string instead
+
 DecimalFormat* Stat::decimalFormat = new DecimalFormat(L"%0(3).2f");
 
 void Stat::_init() { awardLocallyOnly = false; }
@@ -34,12 +34,12 @@ Stat* Stat::setAwardLocallyOnly() {
 }
 
 Stat* Stat::postConstruct() {
-    // if (Stats::statsById->containsKey(id))
-    //{
-    // throw new RuntimeException("Duplicate stat id: \"" +
-    // Stats::statsById->get(id)->name + "\" and \"" + name + "\" at id " + id);
-    // 4J - TODO
-    //}
+    
+    
+    
+    
+    
+    
     Stats::all->push_back(this);
 
     std::pair<int, Stat*> id1(id, this);
@@ -77,7 +77,7 @@ std::wstring Stat::TimeFormatter::format(int value) {
 }
 
 std::wstring Stat::DefaultFormat::format(int value) {
-    return NumberFormat::format(value);  // numberFormat->format(value);
+    return NumberFormat::format(value);  
 }
 
 std::wstring Stat::DistanceFormatter::format(int cm) {

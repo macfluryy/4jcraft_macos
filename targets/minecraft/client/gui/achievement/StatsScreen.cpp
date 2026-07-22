@@ -23,7 +23,7 @@ const float StatsScreen::SLOT_TEX_SIZE = 128.0f;
 ItemRenderer* StatsScreen::itemRenderer = nullptr;
 
 StatsScreen::StatsScreen(Screen* lastScreen, StatsCounter* stats) {
-    // 4J - added initialisers
+    
     itemRenderer = new ItemRenderer();
     statsList = nullptr;
     itemStatsList = nullptr;
@@ -121,7 +121,7 @@ int StatsScreen::GeneralStatisticsList::getMaxPosition() {
 
 void StatsScreen::GeneralStatisticsList::renderBackground() {
     parent
-        ->renderBackground();  // 4J - was StatsScreen.this.renderBackground();
+        ->renderBackground();  
 }
 
 void StatsScreen::GeneralStatisticsList::renderItem(int i, int x, int y, int h,
@@ -136,20 +136,20 @@ void StatsScreen::GeneralStatisticsList::renderItem(int i, int x, int y, int h,
 }
 
 void StatsScreen::blitSlot(int x, int y, int item) {
-    // 4J Unused
+    
 }
 
 void StatsScreen::blitSlotBg(int x, int y) { blitSlotIcon(x, y, 0, 0); }
 
 void StatsScreen::blitSlotIcon(int x, int y, int sx, int sy) {
-    // 4J Unused
+    
 }
 
-// 4J - added parameter so we can access parent
+
 StatsScreen::StatisticsList::StatisticsList(StatsScreen* ss)
     : ScrolledSelectionList(ss->minecraft, ss->width, ss->height, 32,
                             ss->height - 64, SLOT_STAT_HEIGHT) {
-    // 4J - added initialisers
+    
     parent = ss;
     headerPressed = -1;
     sortColumn = -1;
@@ -164,8 +164,8 @@ void StatsScreen::StatisticsList::selectItem(int item, bool doubleClick) {}
 bool StatsScreen::StatisticsList::isSelectedItem(int item) { return false; }
 
 void StatsScreen::StatisticsList::renderBackground() {
-    parent->renderBackground();  // 4J - was
-                                 // StatsScreen.this.renderBackground();
+    parent->renderBackground();  
+                                 
 }
 
 void StatsScreen::StatisticsList::renderHeader(int x, int y, Tesselator* t) {
@@ -303,7 +303,7 @@ void StatsScreen::StatisticsList::renderDecorations(int mouseX, int mouseY) {
 
 void StatsScreen::StatisticsList::renderMousehoverTooltip(ItemStat* stat, int x,
                                                           int y) {
-    // 4J Stu - Unused
+    
 }
 
 void StatsScreen::StatisticsList::sortByColumn(int column) {
@@ -317,78 +317,78 @@ void StatsScreen::StatisticsList::sortByColumn(int column) {
         sortOrder = SORT_NONE;
     }
 
-    //    Collections.sort(statItemList, itemStatSorter);		// 4J -
-    //    TODO
+    
+    
 }
 
 StatsScreen::ItemStatisticsList::ItemStatisticsList(StatsScreen* ss)
     : StatsScreen::StatisticsList(ss) {
-    // 4J Gordon: Removed, not used anyway
-    /*for(std::vector<ItemStat *>::iterator it = Stats::itemStats->begin(); it
-!= Stats::itemStats->end(); it++ )
-    {
-            ItemStat *stat = *it;
+    
+    
 
-    bool addToList = false;
-    int id = stat->getItemId();
 
-    if (parent->stats->getTotalValue(stat) > 0)
-            {
-        addToList = true;
-    }
-            else if (Stats::itemBroke[id] != nullptr &&
-parent->stats->getTotalValue(Stats::itemBroke[id]) > 0)
-            {
-        addToList = true;
-    }
-            else if (Stats::itemCrafted[id] != nullptr &&
-parent->stats->getTotalValue(Stats::itemCrafted[id]) > 0)
-            {
-        addToList = true;
-    }
-    if (addToList)
-            {
-        statItemList.push_back(stat);
-    }
-}*/
 
-    /* 4J - TODO
-itemStatSorter = new Comparator<ItemStat>() {
-    public int compare(ItemStat o1, ItemStat o2) {
-        int id1 = o1.getItemId();
-        int id2 = o2.getItemId();
 
-        Stat stat1 = null;
-        Stat stat2 = null;
-        if (sortColumn == COLUMN_DEPLETED) {
-            stat1 = Stats.itemBroke[id1];
-            stat2 = Stats.itemBroke[id2];
-        } else if (sortColumn == COLUMN_CRAFTED) {
-            stat1 = Stats.itemCrafted[id1];
-            stat2 = Stats.itemCrafted[id2];
-        } else if (sortColumn == COLUMN_USED) {
-            stat1 = Stats.itemUsed[id1];
-            stat2 = Stats.itemUsed[id2];
-        }
 
-        if (stat1 != null || stat2 != null) {
-            if (stat1 == null) {
-                return 1;
-            } else if (stat2 == null) {
-                return -1;
-            } else {
-                int value1 = stats.getValue(stat1);
-                int value2 = stats.getValue(stat2);
-                if (value1 != value2) {
-                    return (value1 - value2) * sortOrder;
-                }
-            }
-        }
 
-        return id1 - id2;
-    }
-};
-    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void StatsScreen::ItemStatisticsList::renderHeader(int x, int y,
@@ -423,15 +423,15 @@ void StatsScreen::ItemStatisticsList::renderHeader(int x, int y,
 
 void StatsScreen::ItemStatisticsList::renderItem(int i, int x, int y, int h,
                                                  Tesselator* t) {
-    // 4J Gordon: Removed, not used anyway
-    /*ItemStat *stat = getSlotStat(i);
-    int id = stat->getItemId();
+    
+    
 
-    parent->blitSlot(x + SLOT_LEFT_INSERT, y, id);
 
-    renderStat((ItemStat *) Stats::itemBroke[id], x + ROW_COL_1, y, i % 2 == 0);
-    renderStat((ItemStat *) Stats::itemCrafted[id], x + ROW_COL_2, y, i % 2 ==
-    0); renderStat((ItemStat *) stat, x + ROW_COL_3, y, i % 2 == 0);*/
+
+
+
+
+
 }
 
 std::wstring StatsScreen::ItemStatisticsList::getHeaderDescriptionId(
@@ -447,72 +447,72 @@ std::wstring StatsScreen::ItemStatisticsList::getHeaderDescriptionId(
 
 StatsScreen::BlockStatisticsList::BlockStatisticsList(StatsScreen* ss)
     : StatisticsList(ss) {
-    // 4J Gordon: Removed, not used anyway
-    /*for(std::vector<ItemStat *>::iterator it = Stats::blockStats->begin(); it
-!= Stats::blockStats->end(); it++ )
-    {
-            ItemStat *stat = *it;
+    
+    
 
-    bool addToList = false;
-    int id = stat->getItemId();
 
-    if (parent->stats->getTotalValue(stat) > 0)
-            {
-        addToList = true;
-    }
-            else if (Stats::itemUsed[id] != nullptr &&
-parent->stats->getTotalValue(Stats::itemUsed[id]) > 0)
-            {
-        addToList = true;
-    }
-            else if (Stats::itemCrafted[id] != nullptr &&
-parent->stats->getTotalValue(Stats::itemCrafted[id]) > 0)
-            {
-        addToList = true;
-    }
-    if (addToList)
-            {
-        statItemList.push_back(stat);
-    }
-}*/
 
-    /* 4J - TODO
-        itemStatSorter = new Comparator<ItemStat>() {
-            public int compare(ItemStat o1, ItemStat o2) {
-                int id1 = o1.getItemId();
-                int id2 = o2.getItemId();
 
-                Stat stat1 = null;
-                Stat stat2 = null;
-                if (sortColumn == COLUMN_MINED) {
-                    stat1 = Stats.blockMined[id1];
-                    stat2 = Stats.blockMined[id2];
-                } else if (sortColumn == COLUMN_CRAFTED) {
-                    stat1 = Stats.itemCrafted[id1];
-                    stat2 = Stats.itemCrafted[id2];
-                } else if (sortColumn == COLUMN_USED) {
-                    stat1 = Stats.itemUsed[id1];
-                    stat2 = Stats.itemUsed[id2];
-                }
 
-                if (stat1 != null || stat2 != null) {
-                    if (stat1 == null) {
-                        return 1;
-                    } else if (stat2 == null) {
-                        return -1;
-                    } else {
-                        int value1 = stats.getValue(stat1);
-                        int value2 = stats.getValue(stat2);
-                        if (value1 != value2) {
-                            return (value1 - value2) * sortOrder;
-                        }
-                    }
-                }
 
-                return id1 - id2;
-            }
-        };
-    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void StatsScreen::BlockStatisticsList::renderHeader(int x, int y,
@@ -547,15 +547,15 @@ void StatsScreen::BlockStatisticsList::renderHeader(int x, int y,
 
 void StatsScreen::BlockStatisticsList::renderItem(int i, int x, int y, int h,
                                                   Tesselator* t) {
-    // 4J Gordon: Removed, not used anyway
-    /*ItemStat *mineCount = getSlotStat(i);
-    int id = mineCount->getItemId();
+    
+    
 
-    parent->blitSlot(x + SLOT_LEFT_INSERT, y, id);
 
-    renderStat((ItemStat *) Stats::itemCrafted[id], x + ROW_COL_1, y, i % 2 ==
-    0); renderStat((ItemStat *) Stats::itemUsed[id], x + ROW_COL_2, y, i % 2 ==
-    0); renderStat((ItemStat *) mineCount, x + ROW_COL_3, y, i % 2 == 0);*/
+
+
+
+
+
 }
 
 std::wstring StatsScreen::BlockStatisticsList::getHeaderDescriptionId(

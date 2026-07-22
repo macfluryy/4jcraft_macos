@@ -55,8 +55,8 @@ public:
         int* slotProtections;
         int enchantmentValue;
 
-        // 4J Stu - Had to make this public but was private
-        // We shouldn't be creating these except the static initialisation
+        
+        
     public:
         ArmorMaterial(int durabilityMultiplier, const int slotProtections[],
                       int enchantmentValue);

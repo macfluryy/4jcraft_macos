@@ -21,7 +21,7 @@ bool FlintAndSteelItem::useOn(std::shared_ptr<ItemInstance> instance,
                               std::shared_ptr<Player> player, Level* level,
                               int x, int y, int z, int face, float clickX,
                               float clickY, float clickZ, bool bTestUseOnOnly) {
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
     if (face == 0) y--;
     if (face == 1) y++;
     if (face == 2) z--;
@@ -40,7 +40,7 @@ bool FlintAndSteelItem::useOn(std::shared_ptr<ItemInstance> instance,
                     player->awardStat(GenericStats::portalsCreated(),
                                       GenericStats::param_noArgs());
 
-                    // 4J : WESTY : Added for achievement.
+                    
                     player->awardStat(GenericStats::InToTheNether(),
                                       GenericStats::param_InToTheNether());
                 }
@@ -61,9 +61,9 @@ bool FlintAndSteelItem::useOn(std::shared_ptr<ItemInstance> instance,
         }
     }
 
-    // 4J-PB - this function shouldn't really return true all the time, but I've
-    // added a special case for my test use for the tooltips display and will
-    // leave it as is for the game use
+    
+    
+    
 
     return true;
 }

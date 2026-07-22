@@ -21,7 +21,7 @@ void ProcedureCompoundTask::AddTask(TutorialTask* task) {
 int ProcedureCompoundTask::getDescriptionId() {
     if (bIsCompleted) return -1;
 
-    // Return the id of the first task not completed
+    
     int descriptionId = -1;
     auto itEnd = m_taskSequence.end();
     for (auto it = m_taskSequence.begin(); it < itEnd; ++it) {
@@ -42,7 +42,7 @@ int ProcedureCompoundTask::getDescriptionId() {
 int ProcedureCompoundTask::getPromptId() {
     if (bIsCompleted) return -1;
 
-    // Return the id of the first task not completed
+    
     int promptId = -1;
     auto itEnd = m_taskSequence.end();
     for (auto it = m_taskSequence.begin(); it < itEnd; ++it) {
@@ -56,7 +56,7 @@ int ProcedureCompoundTask::getPromptId() {
 }
 
 bool ProcedureCompoundTask::isCompleted() {
-    // Return whether all tasks are completed
+    
 
     bool allCompleted = true;
     bool isCurrentTask = true;
@@ -82,7 +82,7 @@ bool ProcedureCompoundTask::isCompleted() {
     }
 
     if (allCompleted) {
-        // Disable all constraints
+        
         itEnd = m_taskSequence.end();
         for (auto it = m_taskSequence.begin(); it < itEnd; ++it) {
             TutorialTask* task = *it;
@@ -109,7 +109,7 @@ void ProcedureCompoundTask::handleUIInput(int iAction) {
     }
 }
 
-void ProcedureCompoundTask::setAsCurrentTask(bool active /*= true*/) {
+void ProcedureCompoundTask::setAsCurrentTask(bool active ) {
     bool allCompleted = true;
     auto itEnd = m_taskSequence.end();
     for (auto it = m_taskSequence.begin(); it < itEnd; ++it) {

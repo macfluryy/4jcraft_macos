@@ -8,19 +8,19 @@
 class Level;
 
 MinecartChest::MinecartChest(Level* level) : MinecartContainer(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 }
 
 MinecartChest::MinecartChest(Level* level, double x, double y, double z)
     : MinecartContainer(level, x, y, z) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 }
 
-// 4J Added
+
 int MinecartChest::getContainerType() {
     return ContainerOpenPacket::MINECART_CHEST;
 }

@@ -18,14 +18,14 @@ ChunkVisibilityPacket::ChunkVisibilityPacket(int x, int z, bool visible) {
     this->visible = visible;
 }
 
-void ChunkVisibilityPacket::read(DataInputStream* dis)  // throws IOException
+void ChunkVisibilityPacket::read(DataInputStream* dis)  
 {
     x = dis->readInt();
     z = dis->readInt();
     visible = dis->read() != 0;
 }
 
-void ChunkVisibilityPacket::write(DataOutputStream* dos)  // throws IOException
+void ChunkVisibilityPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(x);
     dos->writeInt(z);

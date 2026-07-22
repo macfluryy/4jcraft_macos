@@ -14,6 +14,6 @@ void Model::setMapTex(std::wstring id, int x, int y) {
 }
 
 TexOffs* Model::getMapTex(std::wstring id) {
-    // 4J-PB - assuming there will always be this one
+    
     return mappedTexOffs[id];
 }

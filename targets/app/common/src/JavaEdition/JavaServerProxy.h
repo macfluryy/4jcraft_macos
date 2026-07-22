@@ -160,20 +160,33 @@ private:
     std::wstring m_sidebarObjective;
     bool m_sidebarSet = false;
 
-    // ---- Team translation (Java 0x3E -> LCE 209). Same incremental-state
-    // pattern: duplicate/idempotent packets are suppressed.
+    
+    
     struct TeamState {
-        std::wstring displayName;  // translated
-        std::wstring prefix;       // translated
-        std::wstring suffix;       // translated
+        std::wstring displayName;  
+        std::wstring prefix;       
+        std::wstring suffix;       
         int options = 0;
         std::unordered_set<std::wstring> players;
     };
     void handleTeamEvent(const JavaConnectionEvent& ev);
+    
+    
+    
+    bool sendTabListPacket(uint8_t action, const std::string& uuid,
+                           const std::wstring& name, int ping, int entityId);
+    void syncTabList(const std::vector<JavaTabListEntry>& list);
+    bool sendHudOverlayPacket(uint8_t action, const std::wstring& text,
+                              int32_t fadeIn, int32_t stay, int32_t fadeOut);
     bool sendSetPlayerTeamPacket(const std::wstring& name, uint8_t method,
                                  const TeamState* info,
                                  const std::vector<std::wstring>& players);
     std::unordered_map<std::wstring, TeamState> m_teams;
+    struct SentTabEntry {
+        std::wstring name;
+        int ping = 0;
+    };
+    std::unordered_map<std::string, SentTabEntry> m_sentTab;
 
     int m_listenFd = -1;
     int m_listenPort = -1;

@@ -1,4 +1,6 @@
 #include "app/common/src/JavaEdition/JavaServerProxy.h"
+#include "app/common/src/JavaEdition/JavaProxyDebug.h"
+
 
 #include <arpa/inet.h>
 #include <errno.h>
@@ -252,7 +254,7 @@ JavaServerProxy::~JavaServerProxy() {
 int JavaServerProxy::startListening() {
     m_listenFd = ::socket(AF_INET, SOCK_STREAM, 0);
     if (m_listenFd < 0) {
-        fprintf(stderr, "[JEProxy] socket() failed: %s\n", strerror(errno));
+        JPROXY_LOGF( "[JEProxy] socket() failed: %s\n", strerror(errno));
         return -1;
     }
     int yes = 1;
@@ -264,21 +266,21 @@ int JavaServerProxy::startListening() {
     addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
     addr.sin_port = 0;
     if (::bind(m_listenFd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0) {
-        fprintf(stderr, "[JEProxy] bind() failed: %s\n", strerror(errno));
+        JPROXY_LOGF( "[JEProxy] bind() failed: %s\n", strerror(errno));
         ::close(m_listenFd);
         m_listenFd = -1;
         return -1;
     }
     socklen_t alen = sizeof(addr);
     if (::getsockname(m_listenFd, reinterpret_cast<sockaddr*>(&addr), &alen) != 0) {
-        fprintf(stderr, "[JEProxy] getsockname() failed\n");
+        JPROXY_LOGF( "[JEProxy] getsockname() failed\n");
         ::close(m_listenFd);
         m_listenFd = -1;
         return -1;
     }
     m_listenPort = ntohs(addr.sin_port);
     if (::listen(m_listenFd, 1) != 0) {
-        fprintf(stderr, "[JEProxy] listen() failed: %s\n", strerror(errno));
+        JPROXY_LOGF( "[JEProxy] listen() failed: %s\n", strerror(errno));
         ::close(m_listenFd);
         m_listenFd = -1;
         return -1;
@@ -331,7 +333,7 @@ bool JavaServerProxy::writeAll(const uint8_t* buf, size_t n) {
     if (m_clientFd < 0) return false;
     static const bool s_txlog = (getenv("JEPROXY_TXLOG") != nullptr);
     if (s_txlog && n > 0) {
-        fprintf(stderr, "[JTX] -> LCE id=%u (%s) len=%zu\n",
+        JPROXY_LOGF( "[JTX] -> LCE id=%u (%s) len=%zu\n",
                 static_cast<unsigned>(buf[0]), jsp_lceName(buf[0]), n);
     }
     size_t sent = 0;
@@ -473,11 +475,11 @@ bool JavaServerProxy::sendBlockRegionUpdatePacket(int32_t chunkX, int32_t chunkZ
         compressed.data(), &destSize,
         const_cast<uint8_t*>(lceBuf.data()), srcSize);
     if (rc != 0) {
-        fprintf(stderr, "[JEProxy] CompressLZXRLE failed rc=%d\n", rc);
+        JPROXY_LOGF( "[JEProxy] CompressLZXRLE failed rc=%d\n", rc);
         return false;
     }
     if (destSize > 0x3fffffff) {
-        fprintf(stderr, "[JEProxy] compressed chunk > 1GiB?? (%u)\n", destSize);
+        JPROXY_LOGF( "[JEProxy] compressed chunk > 1GiB?? (%u)\n", destSize);
         return false;
     }
     std::vector<uint8_t> buf;
@@ -526,7 +528,26 @@ void JavaServerProxy::emitFlatFallback() {
 }
 
 bool JavaServerProxy::sendChatPacket(const std::wstring& text) {
-    fprintf(stderr, "[JCHAT] final LCE string len=%zu first=U+%04X: %ls\n",
+    
+    
+    
+    if (text.find(L'\n') != std::wstring::npos ||
+        text.find(L'\r') != std::wstring::npos) {
+        bool ok = true;
+        std::wstring line;
+        line.reserve(text.size());
+        for (wchar_t c : text) {
+            if (c == L'\n') {
+                if (!line.empty()) ok = sendChatPacket(line) && ok;
+                line.clear();
+            } else if (c != L'\r') {
+                line.push_back(c);
+            }
+        }
+        if (!line.empty()) ok = sendChatPacket(line) && ok;
+        return ok;
+    }
+    JPROXY_LOGF( "[JCHAT] final LCE string len=%zu first=U+%04X: %ls\n",
             text.size(),
             text.empty() ? 0u : static_cast<unsigned>(text[0]) & 0xFFFFu,
             text.c_str());
@@ -1028,7 +1049,7 @@ std::vector<uint8_t> JavaServerProxy::httpGetSkin(const std::string& url) {
     if (it == resp.end()) return {};
     std::string header(resp.begin(), it);
     if (header.find(" 200") == std::string::npos) {
-        fprintf(stderr, "[SKIN] http not-200 url=%s hdr=%.40s\n",
+        JPROXY_LOGF( "[SKIN] http not-200 url=%s hdr=%.40s\n",
                 url.c_str(), header.c_str());
         return {};
     }
@@ -1038,7 +1059,7 @@ std::vector<uint8_t> JavaServerProxy::httpGetSkin(const std::string& url) {
 bool JavaServerProxy::sendTexturePacket(const std::wstring& name,
                                         const std::vector<uint8_t>& png) {
     if (png.size() > 32000) {
-        fprintf(stderr, "[SKIN] texture too big (%zu) - skip\n", png.size());
+        JPROXY_LOGF( "[SKIN] texture too big (%zu) - skip\n", png.size());
         return false;
     }
     std::vector<uint8_t> buf;
@@ -1070,7 +1091,7 @@ void JavaServerProxy::deliverSkin(int lceEntityId, const std::wstring& texName,
     if (png.empty()) return;
     bool reg = sendTexturePacket(texName, png);
     bool asn = sendTextureChangePacket(lceEntityId, texName);
-    fprintf(stderr, "[SKIN] registered=%d assigned=%d id=%d bytes=%zu name=%ls\n",
+    JPROXY_LOGF( "[SKIN] registered=%d assigned=%d id=%d bytes=%zu name=%ls\n",
             reg, asn, lceEntityId, png.size(), texName.c_str());
 }
 
@@ -1083,7 +1104,7 @@ void JavaServerProxy::requestSkinDownload(int lceEntityId,
         std::lock_guard<std::mutex> lock(m_skinMutex);
         auto it = m_skinCache.find(url);
         if (it != m_skinCache.end()) {
-            fprintf(stderr, "[SKIN] cache-hit id=%d url=%s\n", lceEntityId,
+            JPROXY_LOGF( "[SKIN] cache-hit id=%d url=%s\n", lceEntityId,
                     url.c_str());
             std::vector<uint8_t> png = it->second;
             m_skinThreads.emplace_back(
@@ -1096,10 +1117,10 @@ void JavaServerProxy::requestSkinDownload(int lceEntityId,
 
     std::lock_guard<std::mutex> lock(m_skinMutex);
     m_skinThreads.emplace_back([this, lceEntityId, url, texName]() {
-        fprintf(stderr, "[SKIN] downloading id=%d url=%s\n", lceEntityId,
+        JPROXY_LOGF( "[SKIN] downloading id=%d url=%s\n", lceEntityId,
                 url.c_str());
         std::vector<uint8_t> png = httpGetSkin(url);
-        fprintf(stderr, "[SKIN] downloaded id=%d bytes=%zu url=%s\n",
+        JPROXY_LOGF( "[SKIN] downloaded id=%d bytes=%zu url=%s\n",
                 lceEntityId, png.size(), url.c_str());
         if (png.empty()) return;
         {
@@ -1190,18 +1211,53 @@ void JavaServerProxy::appendLceItem(std::vector<uint8_t>& buf,
     packBE16(tmp, static_cast<uint16_t>(damage));
     buf.insert(buf.end(), tmp, tmp + 2);
 
-    if (!item.customName.empty() || !item.lore.empty()) {
-        CompoundTag* tag = new CompoundTag();
-        CompoundTag* display = new CompoundTag();
-        if (!item.customName.empty())
-            display->putString(L"Name", item.customName);
-        if (!item.lore.empty()) {
-            ListTag<StringTag>* loreList = new ListTag<StringTag>(L"Lore");
-            for (const std::wstring& line : item.lore)
-                loreList->add(new StringTag(L"", line));
-            display->put(L"Lore", loreList);
+    
+    
+    
+    auto appendEnchList = [](CompoundTag* root, const std::wstring& key,
+                             const std::vector<JavaEnch>& src) -> bool {
+        ListTag<CompoundTag>* list = nullptr;
+        for (const JavaEnch& e : src) {
+            if (e.id < 0 || e.id > 255) continue;
+            if (list == nullptr) list = new ListTag<CompoundTag>(key);
+            CompoundTag* c = new CompoundTag();
+            c->putShort(L"id", e.id);
+            c->putShort(L"lvl", e.lvl);
+            list->add(c);
         }
-        tag->putCompound(L"display", display);
+        if (list == nullptr) return false;
+        root->put(key, list);
+        return true;
+    };
+
+    const bool hasDisplay = !item.customName.empty() || !item.lore.empty();
+    const bool hasEnch = !item.ench.empty() || !item.storedEnch.empty();
+    if (hasDisplay || hasEnch || item.hideFlags != 0) {
+        CompoundTag* tag = new CompoundTag();
+        if (hasDisplay) {
+            CompoundTag* display = new CompoundTag();
+            
+            
+            
+            
+            if (!item.customName.empty())
+                display->putString(L"Name",
+                                   normalizeLegacyFormatting(item.customName));
+            if (!item.lore.empty()) {
+                ListTag<StringTag>* loreList = new ListTag<StringTag>(L"Lore");
+                for (const std::wstring& line : item.lore)
+                    loreList->add(
+                        new StringTag(L"", normalizeLegacyFormatting(line)));
+                display->put(L"Lore", loreList);
+            }
+            tag->putCompound(L"display", display);
+        }
+        
+        
+        
+        appendEnchList(tag, L"ench", item.ench);
+        appendEnchList(tag, L"StoredEnchantments", item.storedEnch);
+        if (item.hideFlags != 0) tag->putInt(L"HideFlags", item.hideFlags);
         std::vector<uint8_t> nbt = NbtIo::compress(tag);
         delete tag;
         packBE16(tmp, static_cast<uint16_t>(nbt.size()));
@@ -1461,7 +1517,7 @@ void JavaServerProxy::handleEntityMeta(const JavaConnectionEvent& ev) {
             snprintf(valBuf, sizeof(valBuf), "str(len=%zu)", in.strVal.size());
         else
             snprintf(valBuf, sizeof(valBuf), "%d", in.intVal);
-        fprintf(stderr,
+        JPROXY_LOGF(
                 "[JMETA] entity=%d javaIndex=%u javaValue=%s translated=%s\n",
                 jid, in.index, valBuf,
                 ok ? (std::string("lceIdx=") + std::to_string(out.index) +
@@ -1476,14 +1532,14 @@ void JavaServerProxy::handleEntityMeta(const JavaConnectionEvent& ev) {
     }
     if (changed.empty()) return;
     if (!kindIt->second.spawned) {
-        fprintf(stderr, "[JMETA] entity=%d packetSent=no (no LCE entity)\n",
+        JPROXY_LOGF( "[JMETA] entity=%d packetSent=no (no LCE entity)\n",
                 jid);
         return;
     }
     const int lceId = lookupLceEntityId(jid);
     if (lceId <= 0) return;
     const bool sent = sendEntityDataPacket(lceId, changed);
-    fprintf(stderr, "[JMETA] entity=%d lce=%d items=%zu packetSent=%s\n", jid,
+    JPROXY_LOGF( "[JMETA] entity=%d lce=%d items=%zu packetSent=%s\n", jid,
             lceId, changed.size(), sent ? "yes" : "no");
 }
 
@@ -1547,7 +1603,7 @@ void JavaServerProxy::handleScoreEvent(const JavaConnectionEvent& ev) {
                     m_sidebarObjective.clear();
                     m_sidebarSet = false;
                 }
-                fprintf(stderr, "[JSCORE] objective removed '%ls'\n",
+                JPROXY_LOGF( "[JSCORE] objective removed '%ls'\n",
                         name.c_str());
                 sendSetObjectivePacket(name, L"", 1);
                 return;
@@ -1557,12 +1613,12 @@ void JavaServerProxy::handleScoreEvent(const JavaConnectionEvent& ev) {
             auto it = m_scoreObjectives.find(name);
             if (it == m_scoreObjectives.end()) {
                 m_scoreObjectives[name] = display;
-                fprintf(stderr, "[JSCORE] objective created '%ls' ('%ls')\n",
+                JPROXY_LOGF( "[JSCORE] objective created '%ls' ('%ls')\n",
                         name.c_str(), display.c_str());
                 sendSetObjectivePacket(name, display, 0);
             } else if (it->second != display) {
                 it->second = display;
-                fprintf(stderr, "[JSCORE] objective updated '%ls' ('%ls')\n",
+                JPROXY_LOGF( "[JSCORE] objective updated '%ls' ('%ls')\n",
                         name.c_str(), display.c_str());
                 sendSetObjectivePacket(name, display, 2);
             }
@@ -1574,7 +1630,7 @@ void JavaServerProxy::handleScoreEvent(const JavaConnectionEvent& ev) {
                 for (auto& obj : m_scoreValues)
                     had |= obj.second.erase(ev.scoreOwner) > 0;
                 if (!had) return;
-                fprintf(stderr, "[JSCORE] score removed '%ls'\n",
+                JPROXY_LOGF( "[JSCORE] score removed '%ls'\n",
                         ev.scoreOwner.c_str());
                 sendSetScorePacket(ev.scoreOwner, 1, L"", 0);
                 return;
@@ -1587,7 +1643,7 @@ void JavaServerProxy::handleScoreEvent(const JavaConnectionEvent& ev) {
             if (it != values.end() && it->second == ev.scoreValue)
                 return;
             values[ev.scoreOwner] = ev.scoreValue;
-            fprintf(stderr, "[JSCORE] score updated '%ls' = %d ('%ls')\n",
+            JPROXY_LOGF( "[JSCORE] score updated '%ls' = %d ('%ls')\n",
                     ev.scoreOwner.c_str(), ev.scoreValue,
                     ev.scoreObjective.c_str());
             sendSetScorePacket(ev.scoreOwner, 0, ev.scoreObjective,
@@ -1596,7 +1652,7 @@ void JavaServerProxy::handleScoreEvent(const JavaConnectionEvent& ev) {
         }
         case JavaConnectionEventType::ScoreDisplay: {
             if (ev.scoreSlot != 1) {
-                fprintf(stderr, "[JSCORE] display slot %u ignored\n",
+                JPROXY_LOGF( "[JSCORE] display slot %u ignored\n",
                         ev.scoreSlot);
                 return;
             }
@@ -1604,7 +1660,7 @@ void JavaServerProxy::handleScoreEvent(const JavaConnectionEvent& ev) {
                 return;
             m_sidebarObjective = ev.scoreObjective;
             m_sidebarSet = true;
-            fprintf(stderr, "[JSCORE] display slot sidebar -> '%ls'\n",
+            JPROXY_LOGF( "[JSCORE] display slot sidebar -> '%ls'\n",
                     ev.scoreObjective.c_str());
             sendSetDisplayObjectivePacket(1, ev.scoreObjective);
             return;
@@ -1616,9 +1672,9 @@ void JavaServerProxy::handleScoreEvent(const JavaConnectionEvent& ev) {
 
 namespace {
 constexpr uint8_t kLceIdSetPlayerTeam = 209;
-constexpr size_t kLceTeamNameMax   = 16;  // PlayerTeam::MAX_NAME_LENGTH
-constexpr size_t kLceTeamDispMax   = 32;  // PlayerTeam::MAX_DISPLAY_NAME_LENGTH
-constexpr size_t kLceTeamAffixMax  = 16;  // PlayerTeam::MAX_PREFIX/SUFFIX_LENGTH
+constexpr size_t kLceTeamNameMax   = 16;  
+constexpr size_t kLceTeamDispMax   = 32;  
+constexpr size_t kLceTeamAffixMax  = 16;  
 }
 
 bool JavaServerProxy::sendSetPlayerTeamPacket(
@@ -1630,13 +1686,13 @@ bool JavaServerProxy::sendSetPlayerTeamPacket(
     appendLceUtf(buf, name, kLceTeamNameMax);
     buf.push_back(method);
     uint8_t tmp[2];
-    if (method == 0 || method == 2) {  // METHOD_ADD / METHOD_CHANGE
+    if (method == 0 || method == 2) {  
         appendLceUtf(buf, info->displayName, kLceTeamDispMax);
         appendLceUtf(buf, info->prefix, kLceTeamAffixMax);
         appendLceUtf(buf, info->suffix, kLceTeamAffixMax);
         buf.push_back(static_cast<uint8_t>(info->options));
     }
-    if (method == 0 || method == 3 || method == 4) {  // ADD / JOIN / LEAVE
+    if (method == 0 || method == 3 || method == 4) {  
         packBE16(tmp, static_cast<uint16_t>(players.size()));
         buf.insert(buf.end(), tmp, tmp + 2);
         for (const std::wstring& p : players)
@@ -1650,19 +1706,19 @@ void JavaServerProxy::handleTeamEvent(const JavaConnectionEvent& ev) {
     auto it = m_teams.find(name);
 
     switch (ev.scoreMode) {
-        case 0: {  // create (Java resends this for existing teams too)
+        case 0: {  
             TeamState incoming;
             incoming.displayName =
                 normalizeLegacyFormatting(ev.scoreDisplayName);
             incoming.prefix = normalizeLegacyFormatting(ev.teamPrefix);
             incoming.suffix = normalizeLegacyFormatting(ev.teamSuffix);
-            // Java friendly-fire byte: bit0 = friendly fire, bit1 = see
-            // friendly invisibles - same bit layout as PlayerTeam options.
+            
+            
             incoming.options = ev.scoreValue & 0x03;
 
             if (it == m_teams.end()) {
-                // New team: filter duplicate names inside the join list and
-                // move players out of any previous team in our state.
+                
+                
                 std::vector<std::wstring> joins;
                 for (const std::wstring& p : ev.teamPlayers) {
                     if (incoming.players.insert(p).second) {
@@ -1671,15 +1727,15 @@ void JavaServerProxy::handleTeamEvent(const JavaConnectionEvent& ev) {
                     }
                 }
                 m_teams[name] = std::move(incoming);
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[JSCORE] team created '%ls' players=%zu\n",
                         name.c_str(), joins.size());
                 sendSetPlayerTeamPacket(name, 0, &m_teams[name], joins);
                 return;
             }
 
-            // Existing team: decompose into info update + joins so nothing
-            // gets recreated client-side.
+            
+            
             TeamState& state = it->second;
             if (state.displayName != incoming.displayName ||
                 state.prefix != incoming.prefix ||
@@ -1689,7 +1745,7 @@ void JavaServerProxy::handleTeamEvent(const JavaConnectionEvent& ev) {
                 state.prefix = incoming.prefix;
                 state.suffix = incoming.suffix;
                 state.options = incoming.options;
-                fprintf(stderr, "[JSCORE] team updated '%ls' (re-create)\n",
+                JPROXY_LOGF( "[JSCORE] team updated '%ls' (re-create)\n",
                         name.c_str());
                 sendSetPlayerTeamPacket(name, 2, &state, {});
             }
@@ -1703,21 +1759,21 @@ void JavaServerProxy::handleTeamEvent(const JavaConnectionEvent& ev) {
                 }
             }
             if (!joins.empty()) {
-                fprintf(stderr, "[JSCORE] team join '%ls' +%zu (re-create)\n",
+                JPROXY_LOGF( "[JSCORE] team join '%ls' +%zu (re-create)\n",
                         name.c_str(), joins.size());
                 sendSetPlayerTeamPacket(name, 3, nullptr, joins);
             }
             return;
         }
-        case 1: {  // remove
-            if (it == m_teams.end()) return;  // duplicate remove: suppressed
+        case 1: {  
+            if (it == m_teams.end()) return;  
             m_teams.erase(it);
-            fprintf(stderr, "[JSCORE] team removed '%ls'\n", name.c_str());
+            JPROXY_LOGF( "[JSCORE] team removed '%ls'\n", name.c_str());
             sendSetPlayerTeamPacket(name, 1, nullptr, {});
             return;
         }
-        case 2: {  // update info
-            if (it == m_teams.end()) return;  // unknown team
+        case 2: {  
+            if (it == m_teams.end()) return;  
             TeamState& state = it->second;
             TeamState incoming;
             incoming.displayName =
@@ -1729,22 +1785,22 @@ void JavaServerProxy::handleTeamEvent(const JavaConnectionEvent& ev) {
                 state.prefix == incoming.prefix &&
                 state.suffix == incoming.suffix &&
                 state.options == incoming.options) {
-                return;  // duplicate update: suppressed
+                return;  
             }
             state.displayName = incoming.displayName;
             state.prefix = incoming.prefix;
             state.suffix = incoming.suffix;
             state.options = incoming.options;
-            fprintf(stderr, "[JSCORE] team updated '%ls'\n", name.c_str());
+            JPROXY_LOGF( "[JSCORE] team updated '%ls'\n", name.c_str());
             sendSetPlayerTeamPacket(name, 2, &state, {});
             return;
         }
-        case 3: {  // join
+        case 3: {  
             if (it == m_teams.end()) return;
             TeamState& state = it->second;
             std::vector<std::wstring> joins;
             for (const std::wstring& p : ev.teamPlayers) {
-                if (state.players.insert(p).second) {  // idempotent
+                if (state.players.insert(p).second) {  
                     joins.push_back(p);
                     for (auto& other : m_teams)
                         if (&other.second != &state)
@@ -1752,22 +1808,22 @@ void JavaServerProxy::handleTeamEvent(const JavaConnectionEvent& ev) {
                 }
             }
             if (joins.empty()) return;
-            fprintf(stderr, "[JSCORE] team join '%ls' +%zu\n", name.c_str(),
+            JPROXY_LOGF( "[JSCORE] team join '%ls' +%zu\n", name.c_str(),
                     joins.size());
             sendSetPlayerTeamPacket(name, 3, nullptr, joins);
             return;
         }
-        case 4: {  // leave
+        case 4: {  
             if (it == m_teams.end()) return;
             TeamState& state = it->second;
             std::vector<std::wstring> leaves;
             for (const std::wstring& p : ev.teamPlayers) {
-                if (state.players.erase(p) > 0) {  // idempotent
+                if (state.players.erase(p) > 0) {  
                     leaves.push_back(p);
                 }
             }
             if (leaves.empty()) return;
-            fprintf(stderr, "[JSCORE] team leave '%ls' -%zu\n", name.c_str(),
+            JPROXY_LOGF( "[JSCORE] team leave '%ls' -%zu\n", name.c_str(),
                     leaves.size());
             sendSetPlayerTeamPacket(name, 4, nullptr, leaves);
             return;
@@ -1775,6 +1831,90 @@ void JavaServerProxy::handleTeamEvent(const JavaConnectionEvent& ev) {
         default:
             return;
     }
+}
+
+
+
+
+
+
+bool JavaServerProxy::sendTabListPacket(uint8_t action,
+                                        const std::string& uuid,
+                                        const std::wstring& name, int ping,
+                                        int entityId) {
+    constexpr uint8_t kActionAdd = 0;
+    constexpr uint8_t kActionClear = 2;
+    constexpr uint8_t kActionBind = 3;
+    constexpr size_t kTabNameMax = 64;  
+
+    std::vector<uint8_t> buf;
+    buf.reserve(64 + name.size() * 2);
+    buf.push_back(211);
+    buf.push_back(action);
+    if (action == kActionClear) return writeAll(buf.data(), buf.size());
+
+    uint8_t tmp[4];
+    if (action == kActionBind) {
+        packBE32(tmp, static_cast<uint32_t>(entityId));
+        buf.insert(buf.end(), tmp, tmp + 4);
+    }
+    std::string id = uuid;
+    id.resize(16, '\0');
+    buf.insert(buf.end(), id.begin(), id.end());
+
+    if (action == kActionAdd) {
+        appendLceUtf(buf, name, kTabNameMax);
+        packBE32(tmp, static_cast<uint32_t>(ping));
+        buf.insert(buf.end(), tmp, tmp + 4);
+    }
+    return writeAll(buf.data(), buf.size());
+}
+
+
+
+void JavaServerProxy::syncTabList(const std::vector<JavaTabListEntry>& list) {
+    std::unordered_map<std::string, SentTabEntry> next;
+    next.reserve(list.size());
+    for (const JavaTabListEntry& e : list) {
+        if (e.uuid.empty()) continue;
+        SentTabEntry cur;
+        cur.name = e.name;
+        cur.ping = e.ping;
+        next[e.uuid] = cur;
+        auto old = m_sentTab.find(e.uuid);
+        if (old == m_sentTab.end() || old->second.name != cur.name ||
+            old->second.ping != cur.ping) {
+            sendTabListPacket(0 , e.uuid, cur.name, cur.ping, 0);
+        }
+    }
+    for (const auto& kv : m_sentTab) {
+        if (next.find(kv.first) == next.end())
+            sendTabListPacket(1 , kv.first, L"", 0, 0);
+    }
+    m_sentTab.swap(next);
+}
+
+bool JavaServerProxy::sendHudOverlayPacket(uint8_t action,
+                                           const std::wstring& text,
+                                           int32_t fadeIn, int32_t stay,
+                                           int32_t fadeOut) {
+    constexpr size_t kHudTextMax = 128;  
+    std::vector<uint8_t> buf;
+    buf.reserve(16 + 2 * text.size());
+    buf.push_back(210);
+    buf.push_back(action);
+    if (action <= 2) {  
+        appendLceUtf(buf, text, kHudTextMax);
+    } else if (action == 3) {  
+        uint8_t tmp[4];
+        packBE32(tmp, static_cast<uint32_t>(fadeIn));
+        buf.insert(buf.end(), tmp, tmp + 4);
+        packBE32(tmp, static_cast<uint32_t>(stay));
+        buf.insert(buf.end(), tmp, tmp + 4);
+        packBE32(tmp, static_cast<uint32_t>(fadeOut));
+        buf.insert(buf.end(), tmp, tmp + 4);
+    }
+    return writeAll(buf.data(), buf.size());
 }
 
 bool JavaServerProxy::sendContainerClosePacket(uint8_t windowId) {
@@ -2316,7 +2456,7 @@ bool JavaServerProxy::runSpawnHandshake(
                     m_haveSpawn = true;
                     break;
                 case JavaConnectionEventType::Disconnected:
-                    fprintf(stderr,
+                    JPROXY_LOGF(
                             "[JLOGIN] handshake aborting: Java side reported "
                             "Disconnected -> reason: %ls\n",
                             ev.text.c_str());
@@ -2328,7 +2468,7 @@ bool JavaServerProxy::runSpawnHandshake(
             if (m_haveSpawn) break;
         }
         if (m_java->state() == JavaConnectionState::Disconnected && !m_haveSpawn) {
-            fprintf(stderr,
+            JPROXY_LOGF(
                     "[JLOGIN] handshake aborting: Java connection entered "
                     "Disconnected state before spawn (no PlayerPositionAndLook "
                     "received)\n");
@@ -2339,7 +2479,7 @@ bool JavaServerProxy::runSpawnHandshake(
         }
     }
     if (!m_haveSpawn) {
-        fprintf(stderr,
+        JPROXY_LOGF(
                 "[JLOGIN] handshake aborting: 20s deadline reached without a "
                 "PlayerPositionAndLook (Java state=%d). Server reached login but "
                 "never streamed a spawn.\n",
@@ -2389,7 +2529,7 @@ void JavaServerProxy::runWorker() {
     socklen_t clen = sizeof(cli);
     m_clientFd = ::accept(m_listenFd, reinterpret_cast<sockaddr*>(&cli), &clen);
     if (m_clientFd < 0) {
-        fprintf(stderr, "[JEProxy] accept() failed: %s\n", strerror(errno));
+        JPROXY_LOGF( "[JEProxy] accept() failed: %s\n", strerror(errno));
         m_stopped.store(true);
         return;
     }
@@ -2398,7 +2538,7 @@ void JavaServerProxy::runWorker() {
 
     uint8_t id;
     if (!readU8(id) || id != kLceIdPreLogin) {
-        fprintf(stderr, "[JEProxy] expected PreLoginPacket, got id=%d\n", id);
+        JPROXY_LOGF( "[JEProxy] expected PreLoginPacket, got id=%d\n", id);
         m_stopped.store(true);
         return;
     }
@@ -2434,12 +2574,12 @@ void JavaServerProxy::runWorker() {
     m_java->start();
 
     if (!sendPreLoginPacket(loginKey)) {
-        fprintf(stderr, "[JEProxy] PreLogin response write failed\n");
+        JPROXY_LOGF( "[JEProxy] PreLogin response write failed\n");
         m_stopped.store(true); return;
     }
 
     if (!readU8(id) || id != kLceIdLogin) {
-        fprintf(stderr, "[JEProxy] expected LoginPacket (id=1), got id=%d\n",
+        JPROXY_LOGF( "[JEProxy] expected LoginPacket (id=1), got id=%d\n",
                 id);
         m_stopped.store(true); return;
     }
@@ -2483,7 +2623,7 @@ void JavaServerProxy::runWorker() {
 
     std::vector<JavaConnectionEvent> pendingChunks;
     if (!runSpawnHandshake(userName, pendingChunks)) {
-        fprintf(stderr, "[JEProxy] spawn handshake failed; disconnecting\n");
+        JPROXY_LOGF( "[JEProxy] spawn handshake failed; disconnecting\n");
         if (!m_pendingDisconnectReason.empty()) {
             sendDisconnectWithTextPacket(m_pendingDisconnectReason);
         } else {
@@ -2539,6 +2679,10 @@ void JavaServerProxy::runWorker() {
                 case JavaConnectionEventType::JoinGame: {
                     m_javaGameMode = ev.joinGameMode;
                     m_javaDimension = ev.joinDimension;
+                    
+                    
+                    m_sentTab.clear();
+                    sendTabListPacket(2 , std::string(), L"", 0, 0);
                     const bool canFly =
                         (m_javaGameMode == 1 || m_javaGameMode == 3);
                     sendPlayerAbilitiesPacket(false, false, canFly,
@@ -2601,7 +2745,7 @@ void JavaServerProxy::runWorker() {
                 }
                 case JavaConnectionEventType::SpawnMob: {
                     int lceId = allocateLceEntityId(ev.entity.id);
-                    fprintf(stderr,
+                    JPROXY_LOGF(
                             "[JNPC] proxy SpawnMob jid=%d -> lce=%d "
                             "renderer=%s(type=%d)\n",
                             ev.entity.id, lceId,
@@ -2653,7 +2797,7 @@ void JavaServerProxy::runWorker() {
                     lceIds.reserve(ev.destroyIds.size());
                     for (int32_t jid : ev.destroyIds) {
                         int lceId = lookupLceEntityId(jid);
-                        fprintf(stderr,
+                        JPROXY_LOGF(
                                 "[JNPC] proxy Destroy jid=%d lce=%d\n", jid,
                                 lceId);
                         if (lceId > 0) lceIds.push_back(lceId);
@@ -2708,7 +2852,7 @@ void JavaServerProxy::runWorker() {
                 }
                 case JavaConnectionEventType::SpawnPlayer: {
                     int lceId = allocateLceEntityId(ev.entity.id);
-                    fprintf(stderr,
+                    JPROXY_LOGF(
                             "[JNPC] proxy SpawnPlayer jid=%d -> lce=%d "
                             "renderer=AddPlayer name='%ls' skinUrl=%d\n",
                             ev.entity.id, lceId, ev.entity.playerName.c_str(),
@@ -2730,6 +2874,12 @@ void JavaServerProxy::runWorker() {
                                             ev.entity.yaw, ev.entity.pitch,
                                             ev.entity.headYaw,
                                             ev.equippedItemId);
+                        
+                        
+                        
+                        if (!ev.entity.uuid.empty())
+                            sendTabListPacket(3 , ev.entity.uuid, L"",
+                                              0, lceId);
                         sendRotateHeadPacket(lceId, ev.entity.headYaw);
                         if (!ev.entity.skinUrl.empty())
                             requestSkinDownload(lceId, ev.entity.skinUrl);
@@ -2791,6 +2941,15 @@ void JavaServerProxy::runWorker() {
                 }
                 case JavaConnectionEventType::ScoreTeam: {
                     handleTeamEvent(ev);
+                    break;
+                }
+                case JavaConnectionEventType::HudText: {
+                    JPROXY_LOGF(
+                            "[JHUD] action=%u text='%ls' times=%d/%d/%d\n",
+                            ev.scoreMode, ev.text.c_str(), ev.blockX,
+                            ev.blockY, ev.blockZ);
+                    sendHudOverlayPacket(ev.scoreMode, ev.text, ev.blockX,
+                                         ev.blockY, ev.blockZ);
                     break;
                 }
                 case JavaConnectionEventType::EntityItemData: {
@@ -2981,7 +3140,7 @@ void JavaServerProxy::runWorker() {
                         vehicleLce = lookupLceEntityId(ev.vehicleId);
                         if (vehicleLce <= 0) vehicleLce = -1;
                     }
-                    fprintf(stderr,
+                    JPROXY_LOGF(
                             "[JNPC] proxy AttachEntity riderJid=%d riderLce=%d "
                             "vehicleJid=%d vehicleLce=%d leash=%d\n",
                             ev.entity.id, riderLce, ev.vehicleId, vehicleLce,
@@ -3000,6 +3159,8 @@ void JavaServerProxy::runWorker() {
                     break;
                 case JavaConnectionEventType::StateChanged:
                 case JavaConnectionEventType::TabListReplaced:
+                    syncTabList(ev.tabList);
+                    break;
                 case JavaConnectionEventType::TabHeaderFooter:
                     break;
             }
@@ -3009,7 +3170,7 @@ void JavaServerProxy::runWorker() {
         for (int budget = 0; budget < 256; ++budget) {
             int rr = waitReadable(m_clientFd, budget == 0 ? 25 : 0);
             if (rr < 0) {
-                fprintf(stderr, "[JEProxy] LCE socket error/closed\n");
+                JPROXY_LOGF( "[JEProxy] LCE socket error/closed\n");
                 lceClosed = true;
                 break;
             }
@@ -3018,7 +3179,7 @@ void JavaServerProxy::runWorker() {
             if (!readU8(pktId)) { lceClosed = true; break; }
             bool consumed = false;
             if (!consumeLceBody(pktId, consumed)) {
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[JEProxy] socket error reading LCE body for id=%d\n",
                         pktId);
                 m_stopRequested.store(true);
@@ -3026,7 +3187,7 @@ void JavaServerProxy::runWorker() {
                 break;
             }
             if (!consumed) {
-                fprintf(stderr, "[JEProxy] dropping unknown LCE pkt id=%d\n",
+                JPROXY_LOGF( "[JEProxy] dropping unknown LCE pkt id=%d\n",
                         pktId);
                 m_stopRequested.store(true);
                 lceClosed = true;

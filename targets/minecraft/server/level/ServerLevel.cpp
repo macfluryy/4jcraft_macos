@@ -109,7 +109,7 @@ void ServerLevel::staticCtor() {
         new WeighedTreasure(Item::pickAxe_wood_Id, 0, 1, 1, 5);
     RANDOM_BONUS_ITEMS[7] = new WeighedTreasure(Item::apple_Id, 0, 2, 3, 5);
     RANDOM_BONUS_ITEMS[8] = new WeighedTreasure(Item::bread_Id, 0, 2, 3, 3);
-    // 4J-PB - new items
+    
     RANDOM_BONUS_ITEMS[9] = new WeighedTreasure(Tile::sapling_Id, 0, 4, 4, 2);
     RANDOM_BONUS_ITEMS[10] = new WeighedTreasure(Tile::sapling_Id, 1, 4, 4, 2);
     RANDOM_BONUS_ITEMS[11] = new WeighedTreasure(Tile::sapling_Id, 2, 4, 4, 2);
@@ -136,21 +136,21 @@ ServerLevel::ServerLevel(MinecraftServer* server,
     m_fallingTileCount = 0;
     m_primedTntCount = 0;
 
-    // 4J - this this used to be called in parent ctor via a virtual fn
+    
     chunkSource = createChunkSource();
-    // 4J - optimisation - keep direct reference of underlying cache here
+    
     chunkSourceCache = chunkSource->getCache();
     chunkSourceXZSize = chunkSource->m_XZSize;
 
-    // 4J - The listener used to be added in MinecraftServer::loadLevel but we
-    // need it to be set up before we do the next couple of things, or else
-    // chunks get loaded before we have the entity tracker set up to listen to
-    // them
+    
+    
+    
+    
     this->server = server;
     server->setLevel(dimension,
-                     this);  // The listener needs the server to have the level
-                             // set up... this will be set up anyway on return
-                             // of this ctor but setting up early here
+                     this);  
+                             
+                             
     addListener(new ServerLevelListener(server, this));
 
     tracker = new EntityTracker(this);
@@ -161,39 +161,39 @@ ServerLevel::ServerLevel(MinecraftServer* server,
     portalForcer = new PortalForcer(this);
     scoreboard = new ServerScoreboard(server);
 
-    // shared_ptr<ScoreboardSaveData> scoreboardSaveData =
-    // std::dynamic_pointer_cast<ScoreboardSaveData>(
-    // savedDataStorage->get(typeid(ScoreboardSaveData),
-    // ScoreboardSaveData::FILE_ID) ); if (scoreboardSaveData == nullptr)
-    //{
-    //	scoreboardSaveData = shared_ptr<ScoreboardSaveData>( new
-    // ScoreboardSaveData() );
-    // savedDataStorage->set(ScoreboardSaveData::FILE_ID, scoreboardSaveData);
-    // }
-    // scoreboardSaveData->setScoreboard(scoreboard);
-    //((ServerScoreboard *) scoreboard)->setSaveData(scoreboardSaveData);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
-    // This also used to be called in parent ctor, but can't be called until
-    // chunkSource is created. Call now if required.
+    
+    
     if (!levelData->isInitialized()) {
         initializeLevel(levelSettings);
         levelData->setInitialized(true);
     } else if ((dimension == 0) &&
-               levelData->getSpawnBonusChest())  // 4J-JEV, still would like
-                                                 // bonus chests to respawn.
+               levelData->getSpawnBonusChest())  
+                                                 
     {
-        // 4J - added isFindingSpawn as we want any chunks we are looking in
-        // here for suitable locations for the bonus chest to actually create
-        // those chunks rather than just get emptychunks if they aren't loaded
+        
+        
+        
         isFindingSpawn = true;
         generateBonusItemsNearSpawn();
         isFindingSpawn = false;
     }
 
-    // 4J - added initialisers
-    // 4J Stu - Allowing spawn edit for our game, and consider a better solution
-    // for the possible griefing
-    canEditSpawn = true;  // false;
+    
+    
+    
+    canEditSpawn = true;  
     noSave = false;
     allPlayersSleeping = false;
     m_bAtLeastOnePlayerSleeping = false;
@@ -220,12 +220,12 @@ ServerLevel::~ServerLevel() {
         }
         m_queuedSendTileUpdates.clear();
 
-        delete this->tracker;  // MGH - added, we were losing about 500K going
-                               // in and out the menus
+        delete this->tracker;  
+                               
         delete this->chunkMap;
     }
 
-    // Make sure that the update thread isn't actually doing any updating
+    
     {
         std::lock_guard<std::recursive_mutex> lock(m_updateCS[0]);
     }
@@ -248,37 +248,37 @@ void ServerLevel::tick() {
 
     if (allPlayersAreSleeping()) {
         if (getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT)) {
-            // skip time until new day
+            
             int64_t newTime = levelData->getDayTime() + TICKS_PER_DAY;
 
-            // 4J : WESTY : Changed so that time update goes through stats
-            // tracking update code.
-            // levelData->setTime(newTime - (newTime % TICKS_PER_DAY));
+            
+            
+            
             setDayTime(newTime - (newTime % TICKS_PER_DAY));
         }
         awakenAllPlayers();
     }
 
-    // for Minecraft 1.8, spawn friendlies really rarely	- 4J - altered
-    // from once every 400 ticks to 40 ticks as we depend on this a more than
-    // the original since we don't have chunk post-process spawning
+    
+    
+    
     if (getGameRules()->getBoolean(GameRules::RULE_DOMOBSPAWNING)) {
-        // Note - these flags are used logically in an inverted way. Mob
-        // spawning is not performed if: (1) finalSpawnEnemies isn't set, and
-        // mob category isn't friendly (2) finalSpawnFriendlies isn't set, and
-        // mob category is friendly (3) finalSpawnPersistent isn't set, and mob
-        // category is persistent
+        
+        
+        
+        
+        
         bool finalSpawnEnemies =
             spawnEnemies && ((levelData->getGameTime() % 2) ==
-                             0);  // Spawn enemies every other tick
+                             0);  
         bool finalSpawnFriendlies =
             spawnFriendlies && ((levelData->getGameTime() % 40) ==
-                                0);  // Spawn friendlies once per 40 ticks
+                                0);  
         bool finalSpawnPersistent =
             finalSpawnFriendlies &&
             ((levelData->getGameTime() % 80) ==
-             0);  // All persistents are also friendly - do them once every
-                  // other friendly spawning, ie once per 80 ticks
+             0);  
+                  
         mobSpawner->tick(this, finalSpawnEnemies, finalSpawnFriendlies,
                          finalSpawnPersistent);
     }
@@ -288,8 +288,8 @@ void ServerLevel::tick() {
     int newDark = getOldSkyDarken(1);
     if (newDark != skyDarken) {
         skyDarken = newDark;
-        if (!SharedConstants::TEXTURE_LIGHTING)  // 4J - change brought forward
-                                                 // from 1.8.2
+        if (!SharedConstants::TEXTURE_LIGHTING)  
+                                                 
         {
             auto itEnd = listeners.end();
             for (auto it = listeners.begin(); it != itEnd; it++) {
@@ -298,12 +298,12 @@ void ServerLevel::tick() {
         }
     }
 
-    // 4J - temporarily disabling saves as they are causing gameplay to
-    // generally stutter quite a lot
+    
+    
 
     int64_t time = levelData->getGameTime() + 1;
-    // 4J Stu - Putting this back in, but I have reduced the number of chunks
-    // that save when not forced
+    
+    
 #if defined(_LARGE_WORLDS)
     if (time % (saveInterval) == (dimension->id + 1))
 #else
@@ -311,16 +311,16 @@ void ServerLevel::tick() {
         (dimension->id * dimension->id * (saveInterval / 2)))
 #endif
     {
-        // app.DebugPrintf("Incremental save\n");
+        
         save(false, nullptr);
     }
 
-    // 4J : WESTY : Changed so that time update goes through stats tracking
-    // update code.
-    // levelData->setTime(time);
+    
+    
+    
     setGameTime(levelData->getGameTime() + 1);
     if (getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT)) {
-        // 4J: Debug setting added to keep it at day time
+        
 #if !defined(_FINAL_BUILD)
         bool freezeTime =
             app.DebugSettingsOn() &&
@@ -333,7 +333,7 @@ void ServerLevel::tick() {
         }
     }
 
-    // if (tickCount % 5 == 0) {
+    
     tickPendingTicks(false);
 
     tickTiles();
@@ -345,10 +345,10 @@ void ServerLevel::tick() {
 
     portalForcer->tick(getGameTime());
 
-    // repeat after tile ticks
+    
     runTileEvents();
 
-    // 4J Added
+    
     runQueuedSendTileUpdates();
 }
 
@@ -370,7 +370,7 @@ void ServerLevel::updateSleepingPlayerList() {
     for (auto it = players.begin(); it != itEnd; it++) {
         if (!(*it)->isSleeping()) {
             allPlayersSleeping = false;
-            // break;
+            
         } else {
             m_bAtLeastOnePlayerSleeping = true;
         }
@@ -402,18 +402,18 @@ void ServerLevel::stopWeather() {
 
 bool ServerLevel::allPlayersAreSleeping() {
     if (allPlayersSleeping && !isClientSide) {
-        // all players are sleeping, but have they slept long enough?
+        
         auto itEnd = players.end();
         for (std::vector<std::shared_ptr<Player> >::iterator it =
                  players.begin();
              it != itEnd; it++) {
-            //                System.out.println(player->entityId + ": " +
-            //                player->getSleepTimer());
+            
+            
             if (!(*it)->isSleepingLongEnough()) {
                 return false;
             }
         }
-        // yep
+        
         return true;
     }
     return false;
@@ -435,16 +435,16 @@ void ServerLevel::validateSpawn() {
     levelData->setZSpawn(zSpawn);
 }
 
-// 4J - Changes made here to move a section of code (which randomly determines
-// which tiles in the current chunks to tick, and is very cache unfriendly by
-// nature) This code now has a thread of its own so it can wait all it wants on
-// the cache without holding the main game thread up. This slightly changes how
-// things are processed, as we now tick the tiles that were determined in the
-// previous tick. Have also limited the amount of tiles to be ticked to 256 (it
-// never seemed to creep up much beyond this in normal play anyway, and we need
-// some finite limit).
+
+
+
+
+
+
+
+
 void ServerLevel::tickTiles() {
-    // Index into the arrays used by the update thread
+    
     int iLev = 0;
     if (dimension->id == -1) {
         iLev = 1;
@@ -457,12 +457,12 @@ void ServerLevel::tickTiles() {
 
     {
         std::lock_guard<std::recursive_mutex> lock(m_updateCS[iLev]);
-        // This section processes the tiles that need to be ticked, which we
-        // worked out in the previous tick (or haven't yet, if this is the first
-        // frame)
-        /*int grassTicks = 0;
-        int lavaTicks = 0;
-        int otherTicks = 0;*/
+        
+        
+        
+        
+
+
         for (int i = 0; i < m_updateTileCount[iLev]; i++) {
             int x = m_updateTileX[iLev][i];
             int y = m_updateTileY[iLev][i];
@@ -471,23 +471,23 @@ void ServerLevel::tickTiles() {
                 int id = getTile(x, y, z);
                 if (Tile::tiles[id] != nullptr &&
                     Tile::tiles[id]->isTicking()) {
-                    /*if(id == 2) ++grassTicks;
-                    else if(id == 11) ++lavaTicks;
-                    else ++otherTicks;*/
+                    
+
+
                     Tile::tiles[id]->tick(this, x, y, z, random);
                 }
             }
         }
-        // printf("Total ticks - Grass: %d, Lava: %d, Other: %d, Total: %d\n",
-        // grassTicks, lavaTicks, otherTicks, grassTicks + lavaTicks +
-        // otherTicks);
+        
+        
+        
         m_updateTileCount[iLev] = 0;
         m_updateChunkCount[iLev] = 0;
     }
 
     Level::tickTiles();
 
-    // AP moved this outside of the loop
+    
     int prob = 100000;
     if (app.GetGameSettingsDebugMask() & (1L << eDebugSetting_RegularLightning))
         prob = 100;
@@ -498,26 +498,26 @@ void ServerLevel::tickTiles() {
         int xo = cp.x * 16;
         int zo = cp.z * 16;
 
-        // 4J added - don't let this actually load/create any chunks, we'll let
-        // the normal updateDirtyChunks etc. processes do that, so it can happen
-        // on another thread
+        
+        
+        
         if (!this->hasChunk(cp.x, cp.z)) continue;
 
-        // 4J Stu - When adding a 5th player to the game, the number of
-        // chunksToPoll is greater than the size of the m_updateChunkX &
-        // m_updateChunkZ arrays (19*19*4 at time of writing). It doesn't seem
-        // like there should ever be that many chunks needing polled, so this
-        // needs looked at in more detail. For now I have enlarged the size of
-        // the array to 19*19*8 but this seems way to big for our needs.
+        
+        
+        
+        
+        
+        
 
-        // The cause of this is largely because the chunksToPoll vector does not
-        // enforce unique elements The java version used a HashSet which would,
-        // although if our world size gets a lot larger then we may have no
-        // overlaps of players surrounding chunks
-        // assert(false);
+        
+        
+        
+        
+        
 
-        // If you hit this assert, then a memory overwrite will occur when you
-        // continue
+        
+        
         assert(m_updateChunkCount[iLev] < LEVEL_CHUNKS_TO_UPDATE_MAX);
 
         m_updateChunkX[iLev][m_updateChunkCount[iLev]] = cp.x;
@@ -539,7 +539,7 @@ void ServerLevel::tickTiles() {
             }
         }
 
-        // 4J - changes here brought forrward from 1.2.3
+        
         if (random->nextInt(16) == 0) {
             randValue = randValue * 3 + addend;
             int val = (randValue >> 2);
@@ -564,14 +564,14 @@ void ServerLevel::tickTiles() {
             }
         }
 
-        // 4J - lighting change brought forward from 1.8.2
+        
         checkLight(xo + random->nextInt(16), random->nextInt(128),
                    zo + random->nextInt(16));
     }
 
     m_level[iLev] = this;
     m_randValue[iLev] = randValue;
-    // We've set up everything that the udpate thread needs, so kick it off
+    
     m_updateTrigger->set(iLev);
 }
 
@@ -656,8 +656,8 @@ bool ServerLevel::tickPendingTicks(bool force) {
     int count = (int)tickNextTickList.size();
     int count2 = (int)tickNextTickSet.size();
     if (count != tickNextTickSet.size()) {
-        // TODO 4J Stu - Add new exception types
-        // throw new IllegalStateException("TickNextTick list out of synch");
+        
+        
     }
     if (count > MAX_TICK_TILES_PER_TICK) count = MAX_TICK_TILES_PER_TICK;
 
@@ -705,7 +705,7 @@ std::vector<TickNextTickData>* ServerLevel::fetchTicksInChunk(LevelChunk* chunk,
     std::vector<TickNextTickData>* results = new std::vector<TickNextTickData>;
 
     ChunkPos* pos = chunk->getPos();
-    // 4jcraft added cast to unsigned
+    
     int xMin = ((unsigned)pos->x << 4) - 2;
     int xMax = (xMin + 16) + 2;
     int zMin = ((unsigned)pos->z << 4) - 2;
@@ -798,15 +798,15 @@ std::vector<std::shared_ptr<TileEntity> >* ServerLevel::getTileEntitiesInRegion(
 
 bool ServerLevel::mayInteract(std::shared_ptr<Player> player, int xt, int yt,
                               int zt, int content) {
-    // 4J-PB - This will look like a bug to players, and we really should have a
-    // message to explain why we're not allowing lava to be placed at or near a
-    // spawn point We'll need to do this in a future update
+    
+    
+    
 
-    // 4J-PB - Let's allow water near the spawn point, but not lava
+    
     if (content != Tile::lava_Id) {
-        // allow this to be used
+        
         return true;
-    } else if (dimension->id == 0)  // 4J Stu - Only limit this in the overworld
+    } else if (dimension->id == 0)  
     {
         return !server->isUnderSpawnProtection(this, xt, yt, zt, player);
     }
@@ -819,10 +819,10 @@ void ServerLevel::initializeLevel(LevelSettings* settings) {
     Level::initializeLevel(settings);
 }
 
-/**
- * Sets the initial spawn, created this method so we could do a special
- * location for the demo version.
- */
+
+
+
+
 void ServerLevel::setInitialSpawn(LevelSettings* levelSettings) {
     if (!dimension->mayRespawn()) {
         levelData->setSpawn(0, dimension->getSpawnYPosition(), 0);
@@ -838,9 +838,9 @@ void ServerLevel::setInitialSpawn(LevelSettings* levelSettings) {
     TilePos* findBiome =
         biomeSource->findBiome(0, 0, 16 * 16, playerSpawnBiomes, &random);
 
-    int xSpawn = 0;  // (Level.MAX_LEVEL_SIZE - 100) * 0;
+    int xSpawn = 0;  
     int ySpawn = dimension->getSpawnYPosition();
-    int zSpawn = 0;  // (Level.MAX_LEVEL_SIZE - 100) * 0;
+    int zSpawn = 0;  
     int minXZ = -(dimension->getXZSize() * 16) / 2;
     int maxXZ = (dimension->getXZSize() * 16) / 2 - 1;
 
@@ -856,7 +856,7 @@ void ServerLevel::setInitialSpawn(LevelSettings* levelSettings) {
     int tries = 0;
 
     while (!dimension->isValidSpawn(xSpawn, zSpawn)) {
-        // 4J-PB changed to stay within our level limits
+        
         xSpawn += random.nextInt(64) - random.nextInt(64);
         if (xSpawn > maxXZ) xSpawn = 0;
         if (xSpawn < minXZ) xSpawn = 0;
@@ -874,12 +874,12 @@ void ServerLevel::setInitialSpawn(LevelSettings* levelSettings) {
     isFindingSpawn = false;
 }
 
-// 4J - brought forward from 1.3.2
+
 void ServerLevel::generateBonusItemsNearSpawn() {
-    // once we've found the initial spawn, try to find a location for the
-    // starting bonus chest
-    // 4J - added - scan the spawn area first to see if there's already a chest
-    // near here
+    
+    
+    
+    
 
     static const int r = 20;
     int xs = levelData->getXSpawn();
@@ -921,7 +921,7 @@ Pos* ServerLevel::getDimensionSpecificSpawn() {
     return dimension->getSpawnPos();
 }
 
-// 4j Added for XboxOne PLM
+
 void ServerLevel::Suspend() {
     if (StorageManager.GetSaveDisabled()) return;
     saveLevelData();
@@ -932,7 +932,7 @@ void ServerLevel::save(bool force, ProgressListener* progressListener,
                        bool bAutosave) {
     if (!chunkSource->shouldSave()) return;
 
-    // 4J-PB - check that saves are enabled
+    
     if (StorageManager.GetSaveDisabled()) return;
 
     if (progressListener != nullptr) {
@@ -952,10 +952,10 @@ void ServerLevel::save(bool force, ProgressListener* progressListener,
         chunkSource->save(force, progressListener);
 
 #if defined(_LARGE_WORLDS)
-        // 4J Stu - Only do this if there are players in the level
+        
         if (chunkMap->players.size() > 0) {
-            // 4J Stu - This will come in a later change anyway
-            // clean cache
+            
+            
             std::vector<LevelChunk*>* loadedChunkList =
                 cache->getLoadedChunkList();
             for (auto it = loadedChunkList->begin();
@@ -969,22 +969,22 @@ void ServerLevel::save(bool force, ProgressListener* progressListener,
 #endif
     }
 
-    // if( force && !isClientSide )
-    //{
-    //	if (progressListener != nullptr)
-    // progressListener->progressStage(IDS_PROGRESS_SAVING_TO_DISC);
-    //	levelStorage->flushSaveFile();
-    // }
+    
+    
+    
+    
+    
+    
 }
 
-// 4J Added
+
 void ServerLevel::saveToDisc(ProgressListener* progressListener,
                              bool autosave) {
-    // 4J-PB - check that saves are enabled
+    
     if (StorageManager.GetSaveDisabled()) return;
 
-    // Check if we are using a trial version of a texture pack (which will be
-    // the case for going into the mash-up pack world with a trial version)
+    
+    
     if (!Minecraft::GetInstance()->skins->isUsingDefaultSkin()) {
         TexturePack* tPack = Minecraft::GetInstance()->skins->getSelected();
         DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
@@ -1013,13 +1013,13 @@ void ServerLevel::entityAdded(std::shared_ptr<Entity> e) {
     entitiesById[e->entityId] = e;
     std::vector<std::shared_ptr<Entity> >* es = e->getSubEntities();
     if (es != nullptr) {
-        // for (int i = 0; i < es.size(); i++)
+        
         for (auto it = es->begin(); it != es->end(); ++it) {
             entitiesById.insert(
                 intEntityMap::value_type((*it)->entityId, (*it)));
         }
     }
-    entityAddedExtra(e);  // 4J added
+    entityAddedExtra(e);  
 }
 
 void ServerLevel::entityRemoved(std::shared_ptr<Entity> e) {
@@ -1027,12 +1027,12 @@ void ServerLevel::entityRemoved(std::shared_ptr<Entity> e) {
     entitiesById.erase(e->entityId);
     std::vector<std::shared_ptr<Entity> >* es = e->getSubEntities();
     if (es != nullptr) {
-        // for (int i = 0; i < es.size(); i++)
+        
         for (auto it = es->begin(); it != es->end(); ++it) {
             entitiesById.erase((*it)->entityId);
         }
     }
-    entityRemovedExtra(e);  // 4J added
+    entityRemovedExtra(e);  
 }
 
 std::shared_ptr<Entity> ServerLevel::getEntity(int id) {
@@ -1060,8 +1060,8 @@ std::shared_ptr<Explosion> ServerLevel::explode(std::shared_ptr<Entity> source,
                                                 double x, double y, double z,
                                                 float r, bool fire,
                                                 bool destroyBlocks) {
-    // instead of calling super, we run the same explosion code here except
-    // we don't generate any particles
+    
+    
     std::shared_ptr<Explosion> explosion =
         std::make_shared<Explosion>(this, source, x, y, z, r);
     explosion->fire = fire;
@@ -1099,10 +1099,10 @@ std::shared_ptr<Explosion> ServerLevel::explode(std::shared_ptr<Entity> source,
 
         if (player->distanceToSqr(x, y, z) < 64 * 64) {
             Vec3 knockbackVec = explosion->getHitPlayerKnockback(player);
-            // app.DebugPrintf("Sending %s with knockback (%f,%f,%f)\n",
-            // knockbackOnly?"knockbackOnly":"allExplosion",knockbackVec->x,knockbackVec->y,knockbackVec->z);
-            //  If the player is not the primary on the system, then we only
-            //  want to send info for the knockback
+            
+            
+            
+            
             player->connection->send(std::shared_ptr<ExplodePacket>(
                 new ExplodePacket(x, y, z, r, &explosion->toBlow, &knockbackVec,
                                   knockbackOnly)));
@@ -1114,11 +1114,11 @@ std::shared_ptr<Explosion> ServerLevel::explode(std::shared_ptr<Entity> source,
 }
 
 void ServerLevel::tileEvent(int x, int y, int z, int tile, int b0, int b1) {
-    //        super.tileEvent(x, y, z, b0, b1);
-    //        server.getPlayers().broadcast(x, y, z, 64, dimension.id, new
-    //        TileEventPacket(x, y, z, b0, b1));
+    
+    
+    
     TileEventData newEvent(x, y, z, tile, b0, b1);
-    // for (TileEventData te : tileEvents[activeTileEventsList])
+    
     for (auto it = tileEvents[activeTileEventsList].begin();
          it != tileEvents[activeTileEventsList].end(); ++it) {
         if ((*it).equals(newEvent)) {
@@ -1129,13 +1129,13 @@ void ServerLevel::tileEvent(int x, int y, int z, int tile, int b0, int b1) {
 }
 
 void ServerLevel::runTileEvents() {
-    // use two lists until both are empty, intended to avoid concurrent
-    // modifications
+    
+    
     while (!tileEvents[activeTileEventsList].empty()) {
         int runList = activeTileEventsList;
         activeTileEventsList ^= 1;
 
-        // for (TileEventData te : tileEvents[runList])
+        
         for (auto it = tileEvents[runList].begin();
              it != tileEvents[runList].end(); ++it) {
             if (doTileEvent(&(*it))) {
@@ -1184,10 +1184,10 @@ EntityTracker* ServerLevel::getTracker() { return tracker; }
 
 void ServerLevel::setTimeAndAdjustTileTicks(int64_t newTime) {
     int64_t delta = newTime - levelData->getGameTime();
-    // 4J - can't directly adjust m_delay in a set as it has a const interator,
-    // since changing values in here might change the ordering of the elements
-    // in the set. Instead move to a vector, do the adjustment, put back in the
-    // set.
+    
+    
+    
+    
     std::vector<TickNextTickData> temp;
     for (auto it = tickNextTickList.begin(); it != tickNextTickList.end();
          ++it) {
@@ -1225,8 +1225,8 @@ void ServerLevel::sendParticles(const std::wstring& name, double x, double y,
     }
 }
 
-// 4J Stu - Sometimes we want to update tiles on the server from the main thread
-// (eg SignTileEntity when string verify returns)
+
+
 void ServerLevel::queueSendTileUpdate(int x, int y, int z) {
     std::lock_guard<std::recursive_mutex> lock(m_csQueueSendTileUpdates);
     m_queuedSendTileUpdates.push_back(new Pos(x, y, z));
@@ -1243,63 +1243,63 @@ void ServerLevel::runQueuedSendTileUpdates() {
     m_queuedSendTileUpdates.clear();
 }
 
-// 4J - added special versions of addEntity and extra processing on entity
-// removed and added so we can limit the number of itementities created
+
+
 bool ServerLevel::addEntity(std::shared_ptr<Entity> e) {
-    // If its an item entity, and we've got to our capacity, delete the oldest
+    
     if (e->instanceof(eTYPE_ITEMENTITY)) {
-        //		printf("Adding item entity count
-        //%d\n",m_itemEntities.size());
+        
+        
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         if (m_itemEntities.size() >= MAX_ITEM_ENTITIES) {
-            //			printf("Adding - doing remove\n");
+            
             removeEntityImmediately(m_itemEntities.front());
         }
     }
-    // If its an hanging entity, and we've got to our capacity, delete the
-    // oldest
+    
+    
     else if (e->instanceof(eTYPE_HANGING_ENTITY)) {
-        //		printf("Adding item entity count
-        //%d\n",m_itemEntities.size());
+        
+        
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         if (m_hangingEntities.size() >= MAX_HANGING_ENTITIES) {
-            //			printf("Adding - doing remove\n");
+            
 
-            // 4J-PB - refuse to add the entity, since we'll be removing one
-            // already there, and it may be an item frame with something in it.
+            
+            
             return false;
 
-            // removeEntityImmediately(m_hangingEntities.front());
+            
         }
     }
-    // If its an arrow entity, and we've got to our capacity, delete the oldest
+    
     else if (e->instanceof(eTYPE_ARROW)) {
-        //		printf("Adding arrow entity count
-        //%d\n",m_arrowEntities.size());
+        
+        
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         if (m_arrowEntities.size() >= MAX_ARROW_ENTITIES) {
-            //			printf("Adding - doing remove\n");
+            
             removeEntityImmediately(m_arrowEntities.front());
         }
     }
-    // If its an experience orb entity, and we've got to our capacity, delete
-    // the oldest
+    
+    
     else if (e->instanceof(eTYPE_EXPERIENCEORB)) {
-        //		printf("Adding arrow entity count
-        //%d\n",m_arrowEntities.size());
+        
+        
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         if (m_experienceOrbEntities.size() >= MAX_EXPERIENCEORB_ENTITIES) {
-            //			printf("Adding - doing remove\n");
+            
             removeEntityImmediately(m_experienceOrbEntities.front());
         }
     }
     return Level::addEntity(e);
 }
 
-// 4J: Returns true if the level is at its limit for this type of entity (only
-// checks arrows, hanging, item and experience orbs)
+
+
 bool ServerLevel::atEntityLimit(std::shared_ptr<Entity> e) {
-    // TODO: This duplicates code from addEntity above, fix
+    
 
     bool atLimit = false;
 
@@ -1320,28 +1320,28 @@ bool ServerLevel::atEntityLimit(std::shared_ptr<Entity> e) {
     return atLimit;
 }
 
-// Maintain a cound of primed tnt & falling tiles in this level
+
 void ServerLevel::entityAddedExtra(std::shared_ptr<Entity> e) {
     if (e->instanceof(eTYPE_ITEMENTITY)) {
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_itemEntities.push_back(e);
-        //		printf("entity added: item entity count now
-        //%d\n",m_itemEntities.size());
+        
+        
     } else if (e->instanceof(eTYPE_HANGING_ENTITY)) {
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_hangingEntities.push_back(e);
-        //		printf("entity added: item entity count now
-        //%d\n",m_itemEntities.size());
+        
+        
     } else if (e->instanceof(eTYPE_ARROW)) {
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_arrowEntities.push_back(e);
-        //		printf("entity added: arrow entity count now
-        //%d\n",m_arrowEntities.size());
+        
+        
     } else if (e->instanceof(eTYPE_EXPERIENCEORB)) {
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_experienceOrbEntities.push_back(e);
-        //		printf("entity added: experience orb entity count now
-        //%d\n",m_arrowEntities.size());
+        
+        
     } else if (e->instanceof(eTYPE_PRIMEDTNT)) {
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_primedTntCount++;
@@ -1351,54 +1351,54 @@ void ServerLevel::entityAddedExtra(std::shared_ptr<Entity> e) {
     }
 }
 
-// Maintain a cound of primed tnt & falling tiles in this level, and remove any
-// item entities from our list
+
+
 void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e) {
     if (e->instanceof(eTYPE_ITEMENTITY)) {
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
-        //		printf("entity removed: item entity count
-        //%d\n",m_itemEntities.size());
+        
+        
         auto it = find(m_itemEntities.begin(), m_itemEntities.end(), e);
         if (it != m_itemEntities.end()) {
-            //			printf("Item to remove found\n");
+            
             m_itemEntities.erase(it);
         }
-        //		printf("entity removed: item entity count now
-        //%d\n",m_itemEntities.size());
+        
+        
     } else if (e->instanceof(eTYPE_HANGING_ENTITY)) {
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
-        //		printf("entity removed: item entity count
-        //%d\n",m_itemEntities.size());
+        
+        
         auto it = find(m_hangingEntities.begin(), m_hangingEntities.end(), e);
         if (it != m_hangingEntities.end()) {
-            //			printf("Item to remove found\n");
+            
             m_hangingEntities.erase(it);
         }
-        //		printf("entity removed: item entity count now
-        //%d\n",m_itemEntities.size());
+        
+        
     } else if (e->instanceof(eTYPE_ARROW)) {
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
-        //		printf("entity removed: arrow entity count
-        //%d\n",m_arrowEntities.size());
+        
+        
         auto it = find(m_arrowEntities.begin(), m_arrowEntities.end(), e);
         if (it != m_arrowEntities.end()) {
-            //			printf("Item to remove found\n");
+            
             m_arrowEntities.erase(it);
         }
-        //		printf("entity removed: arrow entity count now
-        //%d\n",m_arrowEntities.size());
+        
+        
     } else if (e->instanceof(eTYPE_EXPERIENCEORB)) {
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
-        //		printf("entity removed: experience orb entity count
-        //%d\n",m_arrowEntities.size());
+        
+        
         auto it = find(m_experienceOrbEntities.begin(),
                        m_experienceOrbEntities.end(), e);
         if (it != m_experienceOrbEntities.end()) {
-            //			printf("Item to remove found\n");
+            
             m_experienceOrbEntities.erase(it);
         }
-        //		printf("entity removed: experience orb entity count now
-        //%d\n",m_arrowEntities.size());
+        
+        
     } else if (e->instanceof(eTYPE_PRIMEDTNT)) {
         std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_primedTntCount--;
@@ -1429,18 +1429,18 @@ int ServerLevel::runUpdate(void* lpParam) {
         if (!ShutdownManager::ShouldRun(ShutdownManager::eRunUpdateThread))
             break;
 
-        // 4J Stu - Grass and Lava ticks currently take up the majority of all
-        // tile updates, so I am limiting them
+        
+        
         int grassTicks = 0;
         int lavaTicks = 0;
         for (unsigned int iLev = 0; iLev < 3; ++iLev) {
             std::lock_guard<std::recursive_mutex> lock(m_updateCS[iLev]);
             for (int i = 0; i < m_updateChunkCount[iLev]; i++) {
-                // 4J - some of these tile ticks will check things in
-                // neighbouring tiles, causing chunks to load/create that aren't
-                // yet in memory. Try and avoid this by limiting the min/max x &
-                // z values that we will try and inspect in this chunk according
-                // to what surround chunks are loaded
+                
+                
+                
+                
+                
                 int cx = m_updateChunkX[iLev][i];
                 int cz = m_updateChunkZ[iLev][i];
                 int minx = 0;
@@ -1481,7 +1481,7 @@ int ServerLevel::runUpdate(void* lpParam) {
                 LevelChunk* lc = m_level[iLev]->getChunk(cx, cz);
 
                 for (int j = 0; j < 80; j++) {
-                    // 4jcraft added cast to unsigned
+                    
                     m_randValue[iLev] = (unsigned)m_randValue[iLev] * 3 +
                                         (unsigned)m_level[iLev]->addend;
                     int val = (m_randValue[iLev] >> 2);
@@ -1491,21 +1491,21 @@ int ServerLevel::runUpdate(void* lpParam) {
                     if ((z < minz) || (z > maxz)) continue;
                     int y = ((val >> 16) & (Level::maxBuildHeight - 1));
 
-                    // This array access is a cache miss pretty much every time
+                    
                     int id = lc->getTile(x, y, z);
                     if (m_updateTileCount[iLev] >= MAX_UPDATES) break;
 
-                    // 4J Stu - Grass and Lava ticks currently take up the
-                    // majority of all tile updates, so I am limiting them
+                    
+                    
                     if ((id == Tile::grass_Id &&
                          grassTicks >= MAX_GRASS_TICKS) ||
                         (id == Tile::calmLava_Id &&
                          lavaTicks >= MAX_LAVA_TICKS))
                         continue;
 
-                    // 4J Stu - Added shouldTileTick as some tiles won't even do
-                    // anything if they are set to tick and use up one of our
-                    // updates
+                    
+                    
+                    
                     if (Tile::tiles[id] != nullptr &&
                         Tile::tiles[id]->isTicking() &&
                         Tile::tiles[id]->shouldTileTick(

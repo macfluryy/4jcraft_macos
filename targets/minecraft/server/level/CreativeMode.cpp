@@ -15,11 +15,11 @@ CreativeMode::CreativeMode(Minecraft* minecraft) : GameMode(minecraft) {
 }
 
 void CreativeMode::init() {
-    // initPlayer();
+    
 }
 
 void CreativeMode::enableCreativeForPlayer(std::shared_ptr<Player> player) {
-    // please check ServerPlayerGameMode.java if you change these
+    
     player->abilities.mayfly = true;
     player->abilities.instabuild = true;
     player->abilities.invulnerable = true;
@@ -40,8 +40,8 @@ void CreativeMode::adjustPlayer(std::shared_ptr<Player> player) {
             player->inventory->items[i] = std::shared_ptr<ItemInstance>(
                 new ItemInstance(User::allowedTiles[i]));
         } else {
-            // 4J-PB - this line is commented out in 1.0.1
-            // player->inventory->items[i]->count = 1;
+            
+            
         }
     }
 }

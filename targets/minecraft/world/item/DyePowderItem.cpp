@@ -101,9 +101,9 @@ bool DyePowderItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
                           float clickZ, bool bTestUseOnOnly) {
     if (!player->mayUseItemAt(x, y, z, face, itemInstance)) return false;
 
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
     if (itemInstance->getAuxValue() == WHITE) {
-        // bone meal is a fertilizer, so instantly grow trees and stuff
+        
 
         if (growCrop(itemInstance, level, x, y, z, bTestUseOnOnly)) {
             if (!level->isClientSide)
@@ -112,7 +112,7 @@ bool DyePowderItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
             return true;
         }
     } else if (itemInstance->getAuxValue() == BROWN) {
-        // plant cocoa
+        
 
         int tile = level->getTile(x, y, z);
         int data = level->getData(x, y, z);
@@ -246,7 +246,7 @@ bool DyePowderItem::growCrop(std::shared_ptr<ItemInstance> itemInstance,
                         }
                     }
 
-                    // 4J - Stops infinite loops.
+                    
                 mainloop:
                     continue;
                 }
@@ -284,7 +284,7 @@ bool DyePowderItem::interactEnemy(std::shared_ptr<ItemInstance> itemInstance,
                                   std::shared_ptr<LivingEntity> mob) {
     if (std::dynamic_pointer_cast<Sheep>(mob) != nullptr) {
         std::shared_ptr<Sheep> sheep = std::dynamic_pointer_cast<Sheep>(mob);
-        // convert to tile-based color value (0 is white instead of black)
+        
         int newColor = ColoredTile::getTileDataForItemAuxValue(
             itemInstance->getAuxValue());
         if (!sheep->isSheared() && sheep->getColor() != newColor) {

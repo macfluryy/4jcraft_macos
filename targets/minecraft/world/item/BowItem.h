@@ -34,7 +34,7 @@ public:
         std::shared_ptr<Player> player);
     virtual int getEnchantmentValue();
 
-    //@Override
+    
     void registerIcons(IconRegister* iconRegister);
     Icon* getDrawnIcon(int amount);
 };

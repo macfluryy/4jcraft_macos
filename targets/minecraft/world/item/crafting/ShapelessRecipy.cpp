@@ -1,9 +1,9 @@
-// package net.minecraft.world.item.crafting;
-//
-// import java.util.*;
-//
-// import net.minecraft.world.inventory.CraftingContainer;
-// import net.minecraft.world.item.ItemInstance;
+
+
+
+
+
+
 #include "ShapelessRecipy.h"
 
 #include <string.h>
@@ -69,22 +69,22 @@ std::shared_ptr<ItemInstance> ShapelessRecipy::assemble(
 
 int ShapelessRecipy::size() { return (int)ingredients->size(); }
 
-// 4J-PB
+
 bool ShapelessRecipy::requiresRecipe(int iRecipe) {
     std::vector<ItemInstance*>* tempList = new std::vector<ItemInstance*>;
 
     *tempList = *ingredients;
 
-    // printf("ShapelessRecipy %d\n",iRecipe);
+    
 
     auto citEnd = ingredients->end();
     int iCount = 0;
     for (std::vector<ItemInstance*>::iterator ingredient = ingredients->begin();
          ingredient != citEnd; ingredient++) {
-        // printf("\tIngredient %d is %d\n",iCount++,(*ingredient)->id);
-        // if (item->id == (*ingredient)->id && ((*ingredient)->getAuxValue() ==
-        // Recipes::ANY_AUX_VALUE || item->getAuxValue() ==
-        // (*ingredient)->getAuxValue()))
+        
+        
+        
+        
         tempList->erase(ingredient);
     }
 
@@ -98,10 +98,10 @@ void ShapelessRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
     int j;
     INGREDIENTS_REQUIRED TempIngReq;
 
-    // shapeless doesn't have the 3x3 shape, but we'll just use this to store
-    // the ingredients anyway
+    
+    
     TempIngReq.iIngC = 0;
-    TempIngReq.iType = RECIPE_TYPE_2x2;  // all the dyes can be made in a 2x2
+    TempIngReq.iType = RECIPE_TYPE_2x2;  
     TempIngReq.uiGridA = new unsigned int[9];
     TempIngReq.iIngIDA = new int[3 * 3];
     TempIngReq.iIngValA = new int[3 * 3];
@@ -122,8 +122,8 @@ void ShapelessRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
         if (expected != nullptr) {
             int iAuxVal = (*ingredient)->getAuxValue();
             TempIngReq.uiGridA[iCount++] = expected->id | iAuxVal << 24;
-            // 4J-PB - put the ingredients in boxes 1,2,4,5 so we can see them
-            // in a 2x2 crafting screen
+            
+            
             if (iCount == 2) iCount = 3;
             bFound = false;
             for (j = 0; j < TempIngReq.iIngC; j++) {

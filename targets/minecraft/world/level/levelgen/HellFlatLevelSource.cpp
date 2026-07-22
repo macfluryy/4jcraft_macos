@@ -59,7 +59,7 @@ void HellFlatLevelSource::buildSurfaces(int xOffs, int zOffs,
             for (int y = Level::genDepthMinusOne; y >= 0; y--) {
                 int offs = (z * 16 + x) * Level::genDepth + y;
 
-                // 4J Build walls around the level
+                
                 bool blockSet = false;
                 if (xOffs <= -(m_XZSize / 2)) {
                     if (z - random->nextInt(4) <= 0 ||
@@ -90,7 +90,7 @@ void HellFlatLevelSource::buildSurfaces(int xOffs, int zOffs,
                     }
                 }
                 if (blockSet) continue;
-                // End 4J Extra to build walls around the level
+                
 
                 if (y >= Level::genDepthMinusOne - random->nextInt(5)) {
                     blocks[offs] = (uint8_t)Tile::unbreakable_Id;
@@ -107,41 +107,41 @@ LevelChunk* HellFlatLevelSource::create(int x, int z) { return getChunk(x, z); }
 LevelChunk* HellFlatLevelSource::getChunk(int xOffs, int zOffs) {
     random->setSeed(xOffs * 341873128712l + zOffs * 132897987541l);
 
-    // 4J - now allocating this with a physical alloc & bypassing general memory
-    // management so that it will get cleanly freed
+    
+    
     int chunksSize = Level::genDepth * 16 * 16;
     uint8_t* tileData = (uint8_t*)malloc(chunksSize);
     memset(tileData, 0, chunksSize);
     std::vector<uint8_t> blocks =
         std::vector<uint8_t>(tileData, tileData + chunksSize);
-    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth *
-    //    16);
+    
+    
 
     prepareHeights(xOffs, zOffs, blocks);
     buildSurfaces(xOffs, zOffs, blocks);
 
-    //    caveFeature->apply(this, level, xOffs, zOffs, blocks);
-    // townFeature.apply(this, level, xOffs, zOffs, blocks);
-    // addCaves(xOffs, zOffs, blocks);
-    // addTowns(xOffs, zOffs, blocks);
+    
+    
+    
+    
 
-    // 4J - this now creates compressed block data from the blocks array passed
-    // in, so needs to be after data is finalised. Also now need to free the
-    // passed in blocks as the LevelChunk doesn't use the passed in allocation
-    // anymore.
+    
+    
+    
+    
     LevelChunk* levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     free(tileData);
     return levelChunk;
 }
 
-// 4J - removed & moved into its own method from getChunk, so we can call
-// recalcHeightmap after the chunk is added into the cache. Without doing this,
-// then loads of the lightgaps() calls will fail to add any lights, because
-// adding a light checks if the cache has this chunk in. lightgaps also does
-// light 1 block into the neighbouring chunks, and maybe that is somehow enough
-// to get lighting to propagate round the world, but this just doesn't seem
-// right - this isn't a new fault in the 360 version, have checked that java
-// does the same.
+
+
+
+
+
+
+
+
 void HellFlatLevelSource::lightChunk(LevelChunk* lc) { lc->recalcHeightmap(); }
 
 bool HellFlatLevelSource::hasChunk(int x, int y) { return true; }
@@ -151,12 +151,12 @@ void HellFlatLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     int xo = xt * 16;
     int zo = zt * 16;
 
-    // 4J - added. The original java didn't do any setting of the random seed
-    // here. We'll be running our postProcess in parallel with getChunk etc. so
-    // we need to use a separate random - have used the same initialisation code
-    // as used in RandomLevelSource::postProcess to make sure this random value
-    // is consistent for each world generation. Also changed all uses of random
-    // here to pprandom.
+    
+    
+    
+    
+    
+    
     pprandom->setSeed(level->getSeed());
     int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
     int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;

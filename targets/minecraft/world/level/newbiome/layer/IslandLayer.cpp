@@ -17,7 +17,7 @@ std::vector<int> IslandLayer::getArea(int xo, int yo, int w, int h) {
             result[x + y * w] = (nextRandom(10) == 0) ? 1 : 0;
         }
     }
-    // if (0, 0) is located here, place an island
+    
     if (xo > -w && xo <= 0 && yo > -h && yo <= 0) {
         result[-xo + -yo * w] = 1;
     }

@@ -35,8 +35,8 @@ DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {
     m_parentPack = nullptr;
     m_dlcMountIndex = -1;
 
-    // This pointer is for all the data used for this pack, so deleting it
-    // invalidates ALL of it's children.
+    
+    
     m_data = nullptr;
 }
 
@@ -51,15 +51,15 @@ DLCPack::~DLCPack() {
         }
     }
 
-    // This pointer is for all the data used for this pack, so deleting it
-    // invalidates ALL of it's children.
+    
+    
     if (m_data) {
 #if !defined(_CONTENT_PACKAGE)
         wprintf(L"Deleting data for DLC pack %ls\n", m_packName.c_str());
 #endif
-        // For the same reason, don't delete data pointer for any child pack as
-        // it just points to a region within the parent pack that has already
-        // been freed
+        
+        
+        
         if (m_parentPack == nullptr) {
             delete[] m_data;
         }
@@ -102,8 +102,8 @@ void DLCPack::addParameter(DLCManager::EDLCParameterType type,
             std::uint32_t packId = 0;
 
             std::wstringstream ss;
-            // 4J Stu - numbered using decimal to make it easier for
-            // artists/people to number manually
+            
+            
             ss << std::dec << value.c_str();
             ss >> packId;
 
@@ -113,8 +113,8 @@ void DLCPack::addParameter(DLCManager::EDLCParameterType type,
             std::uint32_t version = 0;
 
             std::wstringstream ss;
-            // 4J Stu - numbered using decimal to make it easier for
-            // artists/people to number manually
+            
+            
             ss << std::dec << value.c_str();
             ss >> version;
 
@@ -162,7 +162,7 @@ DLCFile* DLCPack::addFile(DLCManager::EDLCType type, const std::wstring& path) {
 
             newFile = new DLCSkinFile(strippedPath);
 
-            // check to see if we can get the full offer id using this skin name
+            
             uint64_t ullVal = 0LL;
 
             if (app.GetDLCFullOfferIDForSkinID(strippedPath, &ullVal)) {
@@ -206,8 +206,8 @@ DLCFile* DLCPack::addFile(DLCManager::EDLCType type, const std::wstring& path) {
     return newFile;
 }
 
-// MGH - added this comp func, as the embedded func in find_if was confusing the
-// PS3 compiler
+
+
 static const std::wstring* g_pathCmpString = nullptr;
 static bool pathCmp(DLCFile* val) {
     return (g_pathCmpString->compare(val->getPath()) == 0);
@@ -268,7 +268,7 @@ DLCFile* DLCPack::getFile(DLCManager::EDLCType type, const std::wstring& path) {
             std::find_if(m_files[type].begin(), m_files[type].end(), pathCmp);
 
         if (it == m_files[type].end()) {
-            // Not found
+            
             file = nullptr;
         } else {
             file = *it;
@@ -281,7 +281,7 @@ DLCFile* DLCPack::getFile(DLCManager::EDLCType type, const std::wstring& path) {
 }
 
 unsigned int DLCPack::getDLCItemsCount(
-    DLCManager::EDLCType type /*= DLCManager::e_DLCType_All*/) {
+    DLCManager::EDLCType type ) {
     unsigned int count = 0;
 
     switch (type) {
@@ -338,16 +338,16 @@ bool DLCPack::hasPurchasedFile(DLCManager::EDLCType type,
     } else
 #endif
         if (m_dwLicenseMask == 0) {
-        // not purchased.
+        
         return false;
     } else {
-        // purchased
+        
         return true;
     }
 }
 
 void DLCPack::UpdateLanguage() {
-    // find the language file
+    
     if (m_files[DLCManager::e_DLCType_LocalisationData].size() > 0) {
         DLCLocalisationFile* localisationFile = (DLCLocalisationFile*)getFile(
             DLCManager::e_DLCType_LocalisationData, L"languages.loc");

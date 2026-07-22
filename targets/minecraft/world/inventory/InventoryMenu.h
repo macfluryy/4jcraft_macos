@@ -13,7 +13,7 @@ class InventoryMenu : public AbstractContainerMenu {
 private:
     Player* owner;
 
-    // 4J Stu Made these public for UI menus, perhaps should make friend class?
+    
 public:
     static const int RESULT_SLOT;
     static const int CRAFT_SLOT_START;
@@ -38,8 +38,8 @@ private:
 
 public:
     virtual void
-    slotsChanged();  // 4J used to take a std::shared_ptr<Container> but wasn't
-                     // using it, so removed to simplify things
+    slotsChanged();  
+                     
     virtual void removed(std::shared_ptr<Player> player);
     virtual bool stillValid(std::shared_ptr<Player> player);
     virtual std::shared_ptr<ItemInstance> quickMoveStack(
@@ -48,7 +48,7 @@ public:
     virtual bool canTakeItemForPickAll(std::shared_ptr<ItemInstance> carried,
                                        Slot* target);
 
-    // 4J ADDED,
+    
     virtual std::shared_ptr<ItemInstance> clicked(
         int slotIndex, int buttonNum, int clickType,
         std::shared_ptr<Player> player, bool looped = false);

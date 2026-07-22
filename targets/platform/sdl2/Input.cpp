@@ -29,7 +29,7 @@ static const int KEY_COUNT = SDL_NUM_SCANCODES;
 static const int BTN_COUNT = SDL_CONTROLLER_BUTTON_MAX;
 static const int AXS_COUNT = SDL_CONTROLLER_AXIS_MAX;
 static const float MOUSE_SCALE = 0.015f;
-// Vars
+
 static bool s_sdlInitialized = false;
 static bool s_keysCurrent[KEY_COUNT] = {};
 static bool s_keysPrev[KEY_COUNT] = {};
@@ -49,10 +49,10 @@ static int s_mouseX = 0, s_mouseY = 0;
 
 static int s_scrollTicksForButtonPressed = 0;
 static int s_scrollTicksForGetValue = 0;
-// 4J macOS - separate accumulator that is only consumed by callers who
-// explicitly drain it (currently ChatScreen). Keeps the chat scroll
-// independent of the hotbar / inventory scroll snapshot pipeline that
-// zeroes s_scrollTicksForButtonPressed every tick.
+
+
+
+
 static int s_scrollTicksForChat = 0;
 static int s_scrollTicksSnap = 0;
 static bool s_scrollSnapTaken = false;
@@ -107,13 +107,13 @@ static void AppendUtf8TextInput(const char* text) {
     AppendRawTextInput(text);
 }
 
-// Text input state (non-blocking keyboard)
+
 static bool s_keyboardActive = false;
 static std::string s_textInputBuf;
 static std::function<int(bool)> s_keyboardCallback;
 
-// We set all the watched keys
-// I don't know if I'll need to change this if we add chat support soon.
+
+
 static const int s_watchedKeys[] = {
     SDL_SCANCODE_W,      SDL_SCANCODE_A,      SDL_SCANCODE_S,
     SDL_SCANCODE_D,      SDL_SCANCODE_SPACE,  SDL_SCANCODE_LSHIFT,
@@ -158,10 +158,10 @@ static inline bool MouseRReleased() {
     return !s_mouseRightCurrent && s_mouseRightPrev;
 }
 
-// holds controller object
+
 static SDL_GameController* controller = nullptr;
 
-// Watched controller buttons set
+
 static const SDL_GameControllerButton s_watchedBtns[] = {
     SDL_CONTROLLER_BUTTON_A,
     SDL_CONTROLLER_BUTTON_B,
@@ -193,10 +193,10 @@ static inline bool CReleased(int cb) {
                                        : false;
 }
 
-// Sets controller dead zone
+
 static int deadZone = 8000;
 
-// Watched controller axes set
+
 static const SDL_GameControllerAxis s_watchedAxis[] = {
     SDL_CONTROLLER_AXIS_LEFTX,       SDL_CONTROLLER_AXIS_LEFTY,
     SDL_CONTROLLER_AXIS_RIGHTX,      SDL_CONTROLLER_AXIS_RIGHTY,
@@ -216,8 +216,8 @@ static inline bool AReleased(int ca) {
                                        : false;
 }
 
-// get directly into SDL events before the game queue can steal them.
-// this took me a while.
+
+
 static int SDLCALL EventWatcher(void*, SDL_Event* e) {
     if (e->type == SDL_MOUSEWHEEL) {
         int y = e->wheel.y;
@@ -257,15 +257,15 @@ static int SDLCALL EventWatcher(void*, SDL_Event* e) {
         }
 
         AppendUtf8TextInput(e->text.text);
-    } else if (e->type == SDL_CONTROLLERDEVICEADDED) {  // Will search for
-                                                        // controller if none
+    } else if (e->type == SDL_CONTROLLERDEVICEADDED) {  
+                                                        
         for (int i = 0; i < SDL_NumJoysticks(); i++) {
             if (SDL_IsGameController(i)) {
                 controller = SDL_GameControllerOpen(i);
                 break;
             }
         }
-    } else if (controller) {  // only checks when a controller exists
+    } else if (controller) {  
         if (e->type == SDL_CONTROLLERDEVICEREMOVED) {
             SDL_Joystick* joy = SDL_GameControllerGetJoystick(controller);
             if (SDL_JoystickInstanceID(joy) == e->cdevice.which) {
@@ -304,7 +304,7 @@ static void TakeSnapIfNeeded() {
         s_snapTaken = true;
     }
 }
-// We initialize the SDL input
+
 void C_4JInput::Initialise(int, unsigned char, unsigned char, unsigned char) {
     if (!s_sdlInitialized) {
         if (SDL_WasInit(SDL_INIT_VIDEO) == 0) {
@@ -328,7 +328,7 @@ void C_4JInput::Initialise(int, unsigned char, unsigned char, unsigned char) {
     s_mouseLeftCurrent = s_mouseLeftPrev = s_mouseRightCurrent =
         s_mouseRightPrev = false;
     s_accumRelX = s_accumRelY = s_snapRelX = s_snapRelY = 0;
-    // i really gotta name these vars better..
+    
     s_scrollTicksForButtonPressed = s_scrollTicksForGetValue =
         s_scrollTicksSnap = 0;
     s_snapTaken = s_scrollSnapTaken = s_prevMenuDisplayed = false;
@@ -336,7 +336,7 @@ void C_4JInput::Initialise(int, unsigned char, unsigned char, unsigned char) {
     if (s_sdlInitialized) {
         SDL_SetRelativeMouseMode(SDL_TRUE);
 
-        // looks for controller
+        
         for (int i = 0; i < SDL_NumJoysticks(); i++) {
             if (SDL_IsGameController(i)) {
                 controller = SDL_GameControllerOpen(i);
@@ -345,7 +345,7 @@ void C_4JInput::Initialise(int, unsigned char, unsigned char, unsigned char) {
         }
     }
 }
-// Erase one UTF-8 codepoint from the end of a string.
+
 static void utf8_pop_back(std::string& str) {
     if (str.empty()) return;
     size_t i = str.size() - 1;
@@ -353,8 +353,8 @@ static void utf8_pop_back(std::string& str) {
     str.erase(i);
 }
 
-// Each tick we update the input state by polling SDL, this is where we get the
-// kbd and mouse state.
+
+
 void C_4JInput::Tick() {
     if (!s_sdlInitialized) return;
 
@@ -397,7 +397,7 @@ void C_4JInput::Tick() {
         }
     }
 
-    // If there is a controller update the buttons and sticks
+    
     if (controller) {
         for (int i = 0; i < s_watchedBtnsCount; ++i) {
             int cb = s_watchedBtns[i];
@@ -421,7 +421,7 @@ void C_4JInput::Tick() {
         }
     }
 
-    // Handle non-blocking keyboard input completion
+    
     if (s_keyboardActive) {
         if (KPressed(SDL_SCANCODE_BACKSPACE)) {
             utf8_pop_back(s_textInputBuf);
@@ -429,7 +429,7 @@ void C_4JInput::Tick() {
         if (KPressed(SDL_SCANCODE_RETURN) || KPressed(SDL_SCANCODE_KP_ENTER)) {
             s_keyboardActive = false;
             SDL_StopTextInput();
-            // Consume the key so it doesn't also trigger ACTION_MENU_OK
+            
             s_keysCurrent[SDL_SCANCODE_RETURN] = false;
             s_keysCurrent[SDL_SCANCODE_KP_ENTER] = false;
             if (s_keyboardCallback) {
@@ -440,7 +440,7 @@ void C_4JInput::Tick() {
             s_keyboardActive = false;
             s_textInputBuf.clear();
             SDL_StopTextInput();
-            // Consume the key so it doesn't also trigger ACTION_MENU_CANCEL
+            
             s_keysCurrent[SDL_SCANCODE_ESCAPE] = false;
             if (s_keyboardCallback) {
                 s_keyboardCallback(false);
@@ -471,7 +471,7 @@ int C_4JInput::GetHotbarSlotPressed(int iPad) {
     return -1;
 }
 
-// KFN = Keyboard functions, CFN = Controller functions, AFN = Axis functions
+
 #define ACTION_CASES(KFN, CFN, AFN)                                            \
     case ACTION_MENU_UP:                                                       \
         return KFN(SDL_SCANCODE_UP) || CFN(SDL_CONTROLLER_BUTTON_DPAD_UP);     \
@@ -565,7 +565,7 @@ bool C_4JInput::ButtonDown(int iPad, unsigned char ucAction) {
             ACTION_CASES(KDown, CDown, ADown)
     }
 }
-// The part that handles completing the action of pressing a button.
+
 bool C_4JInput::ButtonPressed(int iPad, unsigned char ucAction) {
     if (iPad != 0 || ucAction == 255) return false;
     if (s_keyboardActive) return false;
@@ -591,7 +591,7 @@ bool C_4JInput::ButtonPressed(int iPad, unsigned char ucAction) {
             ACTION_CASES(KPressed, CPressed, APressed)
     }
 }
-// The part that handles Releasing a button.
+
 bool C_4JInput::ButtonReleased(int iPad, unsigned char ucAction) {
     if (iPad != 0 || ucAction == 255) return false;
     if (s_keyboardActive) return false;
@@ -637,8 +637,8 @@ unsigned int C_4JInput::GetValue(int iPad, unsigned char ucAction, bool) {
     }
     return ButtonDown(iPad, ucAction) ? 1u : 0u;
 }
-// Left stick movement, the one that moves the player around or selects menu
-// options. (Soon be tested.)
+
+
 float C_4JInput::GetJoypadStick_LX(int, bool) {
     if (ADown(SDL_CONTROLLER_AXIS_LEFTX))
         return axisVal[SDL_CONTROLLER_AXIS_LEFTX];
@@ -651,13 +651,13 @@ float C_4JInput::GetJoypadStick_LY(int, bool) {
     return (KDown(SDL_SCANCODE_W) ? 1.f : 0.f) -
            (KDown(SDL_SCANCODE_S) ? 1.f : 0.f);
 }
-// We use mouse movement and convert it into a Right Stick output using
-// logarithmic scaling This is the most important mouse part. Yet it's so small.
+
+
 static float MouseAxis(float raw) {
-    if (fabsf(raw) < 0.0001f) return 0.f;  // from 4j previous code
+    if (fabsf(raw) < 0.0001f) return 0.f;  
     return (raw >= 0.f ? 1.f : -1.f) * sqrtf(fabsf(raw));
 }
-// We apply the Stick movement on the R(Right) X(2D Position)
+
 float C_4JInput::GetJoypadStick_RX(int, bool) {
     if (ADown(SDL_CONTROLLER_AXIS_RIGHTX))
         return axisVal[SDL_CONTROLLER_AXIS_RIGHTX];
@@ -665,7 +665,7 @@ float C_4JInput::GetJoypadStick_RX(int, bool) {
     TakeSnapIfNeeded();
     return MouseAxis(s_snapRelX * MOUSE_SCALE);
 }
-// Bis. but with Y(2D Position)
+
 float C_4JInput::GetJoypadStick_RY(int, bool) {
     if (ADown(SDL_CONTROLLER_AXIS_RIGHTY))
         return -axisVal[SDL_CONTROLLER_AXIS_RIGHTY];
@@ -690,8 +690,8 @@ unsigned char C_4JInput::GetJoypadRTrigger(int, bool) {
 int C_4JInput::GetMouseX() { return s_mouseX; }
 int C_4JInput::GetMouseY() { return s_mouseY; }
 
-// We detect if a Menu is visible on the player's screen to the mouse being
-// stuck.
+
+
 void C_4JInput::SetMenuDisplayed(int iPad, bool bVal) {
     if (iPad >= 0 && iPad < 4) s_menuDisplayed[iPad] = bVal;
     if (!s_sdlInitialized || bVal == s_prevMenuDisplayed) return;
@@ -705,10 +705,10 @@ int C_4JInput::GetScrollDelta() {
     return v;
 }
 
-// 4J macOS - Drain the chat-only scroll accumulator. ChatScreen polls
-// this every tick so its mouse-wheel scroll keeps working even when
-// other consumers (hotbar, creative inventory) drain the shared
-// snapshot pipeline first.
+
+
+
+
 int C_4JInput::GetChatScrollDelta() {
     int v = s_scrollTicksForChat;
     s_scrollTicksForChat = 0;
@@ -753,7 +753,7 @@ void C_4JInput::CancelQueuedVerifyStrings(
     std::function<int(STRING_VERIFY_RESPONSE*)>) {}
 void C_4JInput::CancelAllVerifyInProgress() {}
 
-// Primary pad (moved from Profile)
+
 namespace {
 int s_inputPrimaryPad = 0;
 }

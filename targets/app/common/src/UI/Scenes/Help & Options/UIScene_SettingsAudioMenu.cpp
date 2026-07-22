@@ -16,7 +16,7 @@
 UIScene_SettingsAudioMenu::UIScene_SettingsAudioMenu(int iPad, void* initData,
                                                      UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     wchar_t TempString[256];
@@ -71,9 +71,9 @@ void UIScene_SettingsAudioMenu::updateComponents() {
 void UIScene_SettingsAudioMenu::handleInput(int iPad, int key, bool repeat,
                                             bool pressed, bool released,
                                             bool& handled) {
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {

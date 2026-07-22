@@ -13,8 +13,8 @@
 AreaHint::AreaHint(eTutorial_Hint id, Tutorial* tutorial,
                    eTutorial_State displayState, eTutorial_State completeState,
                    int descriptionId, double x0, double y0, double z0,
-                   double x1, double y1, double z1, bool allowFade /*= false*/,
-                   bool contains /*= true*/)
+                   double x1, double y1, double z1, bool allowFade ,
+                   bool contains )
     : TutorialHint(id, tutorial, descriptionId, e_Hint_Area, allowFade) {
     area = AABB(x0, y0, z0, x1, y1, z1);
 

@@ -34,13 +34,13 @@
 #include "minecraft/world/phys/Vec3.h"
 #include "nbt/CompoundTag.h"
 
-// base damage, multiplied with velocity
+
 const double Arrow::ARROW_BASE_DAMAGE = 2.0f;
 
-// 4J - added common ctor code.
+
 void Arrow::_init() {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     xTile = -1;
@@ -254,7 +254,7 @@ void Arrow::tick() {
     double nearest = 0;
     auto itEnd = objects.end();
     for (auto it = objects.begin(); it != itEnd; it++) {
-        std::shared_ptr<Entity> e = *it;  // objects.at(i);
+        std::shared_ptr<Entity> e = *it;  
         if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
         float rr = 0.3f;
@@ -279,7 +279,7 @@ void Arrow::tick() {
         res->entity->instanceof(eTYPE_PLAYER)) {
         std::shared_ptr<Player> player =
             std::dynamic_pointer_cast<Player>(res->entity);
-        // 4J: Check for owner being null
+        
         if (player->abilities.invulnerable ||
             ((owner != nullptr) &&
              (owner->instanceof(eTYPE_PLAYER) &&
@@ -308,12 +308,12 @@ void Arrow::tick() {
             }
 
             if (res->entity->hurt(damageSource, dmg)) {
-                // Firx for #67839 - Customer Encountered: Bows enchanted with
-                // "Flame" still set things on fire if pvp/attack animals is
-                // turned off 4J Stu - We should not set the entity on fire
-                // unless we can cause some damage (this doesn't necessarily
-                // mean that the arrow hit lowered their health) set targets on
-                // fire first because we want cooked pork/chicken/steak
+                
+                
+                
+                
+                
+                
                 if (isOnFire() && res->entity->GetType() != eTYPE_ENDERMAN) {
                     res->entity->setOnFire(5);
                 }
@@ -348,13 +348,13 @@ void Arrow::tick() {
                     }
                 }
 
-                // 4J : WESTY : For award, need to track if creeper was killed
-                // by arrow from the player.
+                
+                
                 if (owner != nullptr &&
-                    owner->instanceof(eTYPE_PLAYER)  // arrow owner is a player
-                    && !res->entity->isAlive()       // target is now dead
+                    owner->instanceof(eTYPE_PLAYER)  
+                    && !res->entity->isAlive()       
                     && (res->entity->GetType() ==
-                        eTYPE_CREEPER))  // target is a creeper
+                        eTYPE_CREEPER))  
 
                 {
                     std::dynamic_pointer_cast<Player>(owner)->awardStat(
@@ -385,7 +385,7 @@ void Arrow::tick() {
             yd = (float)(res->pos.y - y);
             zd = (float)(res->pos.z - z);
             float dd = (float)sqrt(xd * xd + yd * yd + zd * zd);
-            // 4J added check - zero dd here was creating NaNs
+            
             if (dd > 0.0001f) {
                 x -= (xd / dd) * 0.05f;
                 y -= (yd / dd) * 0.05f;

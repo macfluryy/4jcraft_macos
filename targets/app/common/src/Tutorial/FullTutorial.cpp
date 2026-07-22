@@ -36,7 +36,7 @@
 
 class TutorialConstraint;
 
-FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
+FullTutorial::FullTutorial(int iPad, bool isTrial )
     : Tutorial(iPad, true) {
     m_isTrial = isTrial;
     m_freezeTime = true;
@@ -48,13 +48,13 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
 
     addMessage(IDS_TUTORIAL_COMPLETED);
 
-    /*
-     *
-     *
-     * GAMEPLAY
-     *
-     */
-    // START OF BASIC TUTORIAL
+    
+
+
+
+
+
+    
     if (m_isTrial) {
         addTask(e_Tutorial_State_Gameplay,
                 new ChoiceTask(this, IDS_TUTORIAL_TASK_OVERVIEW,
@@ -82,10 +82,10 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
     int moveMappings[] = {MINECRAFT_ACTION_FORWARD, MINECRAFT_ACTION_BACKWARD,
                           MINECRAFT_ACTION_LEFT, MINECRAFT_ACTION_RIGHT};
     int iLookCompletionMaskA[] = {
-        10,  // 1010
-        9,   // 1001
-        6,   // 0110
-        5    // 0101
+        10,  
+        9,   
+        6,   
+        5    
     };
     addTask(e_Tutorial_State_Gameplay,
             new ControllerTask(this, IDS_TUTORIAL_TASK_LOOK, false, false,
@@ -117,10 +117,10 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
 
     int scrollMappings[] = {MINECRAFT_ACTION_LEFT_SCROLL,
                             MINECRAFT_ACTION_RIGHT_SCROLL};
-    // int scrollMappings[] =
-    // {ACTION_MENU_LEFT_SCROLL,ACTION_MENU_RIGHT_SCROLL};
-    int iScrollCompletionMaskA[] = {2,   // 10
-                                    1};  // 01
+    
+    
+    int iScrollCompletionMaskA[] = {2,   
+                                    1};  
     addTask(e_Tutorial_State_Gameplay,
             new ControllerTask(this, IDS_TUTORIAL_TASK_SCROLL, false, false,
                                scrollMappings, 2, iScrollCompletionMaskA, 2));
@@ -145,8 +145,8 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                          IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
                          ACTION_MENU_A));
 
-    // While they should only eat the item we give them, includ the ability to
-    // complete this task with different items
+    
+    
     int foodItems[] = {Item::mushroomStew_Id,    Item::apple_Id,
                        Item::bread_Id,           Item::porkChop_raw_Id,
                        Item::porkChop_cooked_Id, Item::apple_gold_Id,
@@ -179,9 +179,9 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
             new CraftTask(Tile::workBench_Id, -1, 1, this,
                           IDS_TUTORIAL_TASK_CREATE_CRAFTING_TABLE));
 
-    // int useMappings[] = {MINECRAFT_ACTION_USE};
-    // addTask(e_Tutorial_State_Gameplay, new ControllerTask( this,
-    // IDS_TUTORIAL_TASK_USE, false, false, useMappings, 1) );
+    
+    
+    
     addTask(e_Tutorial_State_Gameplay,
             new InfoTask(this, IDS_TUTORIAL_TASK_USE,
                          IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
@@ -203,7 +203,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                          IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
                          ACTION_MENU_A));
 
-    // END OF BASIC TUTORIAL
+    
 
     addTask(
         e_Tutorial_State_Gameplay,
@@ -211,7 +211,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                        IDS_TUTORIAL_PROMPT_BASIC_COMPLETE, true, ACTION_MENU_A,
                        ACTION_MENU_B, e_Tutorial_Completion_Jump_To_Last_Task));
 
-    // START OF FULL TUTORIAL
+    
 
     addTask(e_Tutorial_State_Gameplay,
             new UseTileTask(Tile::workBench_Id, this,
@@ -304,18 +304,18 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    // This MUST be the last task in the e_Tutorial_State_Gameplay state. Some
-    // of the earlier tasks will skip to the last task when complete, and this
-    // is the one that we want the player to see.
+    
+    
+    
     ProcedureCompoundTask* finalTask = new ProcedureCompoundTask(this);
     finalTask->AddTask(new InfoTask(this, IDS_TUTORIAL_COMPLETED,
                                     IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE,
                                     true, ACTION_MENU_A));
-    // 4J Stu - Remove this string as it refers to things that don't exist in
-    // the current tutorial world!
-    // finalTask->AddTask( new InfoTask(this,
-    // IDS_TUTORIAL_FEATURES_IN_THIS_AREA,
-    // IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A) );
+    
+    
+    
+    
+    
     finalTask->AddTask(new InfoTask(
         this, IDS_TUTORIAL_FEATURES_OUTSIDE_THIS_AREA,
         IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -323,15 +323,15 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                                     IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE,
                                     true, ACTION_MENU_A));
     addTask(e_Tutorial_State_Gameplay, finalTask);
-    // END OF FULL TUTORIAL
+    
 
-    /*
-     *
-     *
-     * INVENTORY
-     *
-     */
-    // Some tasks already added in the super class ctor
+    
+
+
+
+
+
+    
     addTask(
         e_Tutorial_State_Inventory_Menu,
         new FullTutorialActiveTask(this, e_Tutorial_Completion_Complete_State));
@@ -339,18 +339,18 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
             new InfoTask(this, IDS_TUTORIAL_TASK_INV_EXIT, -1, false,
                          ACTION_MENU_B));
 
-    /*
-     *
-     *
-     * CRAFTING
-     *
-     */
-    // Some tasks already added in the super class ctor
+    
+
+
+
+
+
+    
 
     addTask(
         e_Tutorial_State_2x2Crafting_Menu,
         new FullTutorialActiveTask(this, e_Tutorial_Completion_Complete_State));
-    // To block progress
+    
     addTask(e_Tutorial_State_2x2Crafting_Menu,
             new ProgressFlagTask(&m_progressFlags,
                                  FULL_TUTORIAL_PROGRESS_2_X_2_Crafting,
@@ -379,7 +379,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
             new InfoTask(this, IDS_TUTORIAL_TASK_CRAFT_EXIT_AND_PLACE_TABLE, -1,
                          false, ACTION_MENU_B));
 
-    // 3x3 Crafting
+    
     addTask(
         e_Tutorial_State_3x3Crafting_Menu,
         new FullTutorialActiveTask(this, e_Tutorial_Completion_Complete_State));
@@ -414,7 +414,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
             new InfoTask(this, IDS_TUTORIAL_TASK_CRAFT_TOOLS_BUILT, -1, false,
                          ACTION_MENU_B));
 
-    // To block progress
+    
     addTask(e_Tutorial_State_3x3Crafting_Menu,
             new ProgressFlagTask(&m_progressFlags,
                                  FULL_TUTORIAL_PROGRESS_CRAFT_FURNACE,
@@ -427,8 +427,8 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
             new InfoTask(this, IDS_TUTORIAL_TASK_CRAFT_EXIT_AND_PLACE_FURNACE,
                          -1, false, ACTION_MENU_B));
 
-    // No need to block here, as it's fine if the player wants to do this out of
-    // order
+    
+    
     addTask(e_Tutorial_State_3x3Crafting_Menu,
             new CraftTask(Item::door_wood->id, -1, 1, this,
                           IDS_TUTORIAL_TASK_CREATE_WOODEN_DOOR));
@@ -436,19 +436,19 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
             new CraftTask(Tile::torch_Id, -1, 1, this,
                           IDS_TUTORIAL_TASK_CREATE_TORCH));
 
-    /*
-     *
-     *
-     * FURNACE
-     *
-     */
-    // Some tasks already added in the super class ctor
+    
+
+
+
+
+
+    
 
     addTask(
         e_Tutorial_State_Furnace_Menu,
         new FullTutorialActiveTask(this, e_Tutorial_Completion_Complete_State));
 
-    // Blocking
+    
     addTask(e_Tutorial_State_Furnace_Menu,
             new ProgressFlagTask(&m_progressFlags,
                                  FULL_TUTORIAL_PROGRESS_USE_FURNACE,
@@ -465,14 +465,14 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
             new CraftTask(Tile::glass_Id, -1, 1, this,
                           IDS_TUTORIAL_TASK_FURNACE_CREATE_GLASS));
 
-    /*
-     *
-     *
-     * BREWING
-     *
-     */
+    
 
-    // To block progress
+
+
+
+
+
+    
     addTask(e_Tutorial_State_Brewing_Menu,
             new ProgressFlagTask(&m_progressFlags,
                                  EXTENDED_TUTORIAL_PROGRESS_USE_BREWING_STAND,
@@ -499,12 +499,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
             new InfoTask(this, IDS_TUTORIAL_TASK_BREWING_MENU_EXIT, -1, false,
                          ACTION_MENU_B));
 
-    /*
-     *
-     *
-     * MINECART
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area =
             app.getGameRuleDefinitions()->getNamedArea(L"minecartArea");
@@ -518,12 +518,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * BOAT
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area = app.getGameRuleDefinitions()->getNamedArea(L"boatArea");
         if (area != nullptr) {
@@ -536,12 +536,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * FISHING
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area = app.getGameRuleDefinitions()->getNamedArea(L"fishingArea");
         if (area != nullptr) {
@@ -554,12 +554,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * M_PISTON - SELF-REPAIRING BRIDGE
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area =
             app.getGameRuleDefinitions()->getNamedArea(L"pistonBridgeArea");
@@ -574,12 +574,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * M_PISTON - PISTON AND REDSTONE CIRCUITS
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area = app.getGameRuleDefinitions()->getNamedArea(L"pistonArea");
         if (area != nullptr) {
@@ -629,12 +629,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * PORTAL
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area = app.getGameRuleDefinitions()->getNamedArea(L"portalArea");
         if (area != nullptr) {
@@ -673,12 +673,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * CREATIVE
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area =
             app.getGameRuleDefinitions()->getNamedArea(L"creativeArea");
@@ -712,9 +712,9 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     new StateChangeTask(
                         e_Tutorial_State_Creative_Inventory_Menu, this));
 
-            // This last task ensures that the player is still in creative mode
-            // until they exit the area (but could skip the previous
-            // instructional stuff)
+            
+            
+            
             ProcedureCompoundTask* creativeFinalTask =
                 new ProcedureCompoundTask(this);
 
@@ -750,12 +750,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * BREWING
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area = app.getGameRuleDefinitions()->getNamedArea(L"brewingArea");
         if (area != nullptr) {
@@ -812,12 +812,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * ENCHANTING
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area =
             app.getGameRuleDefinitions()->getNamedArea(L"enchantingArea");
@@ -863,12 +863,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * ANVIL
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area = app.getGameRuleDefinitions()->getNamedArea(L"anvilArea");
         if (area != nullptr) {
@@ -912,12 +912,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * TRADING
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area = app.getGameRuleDefinitions()->getNamedArea(L"tradingArea");
         if (area != nullptr) {
@@ -959,12 +959,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * FIREWORKS
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area =
             app.getGameRuleDefinitions()->getNamedArea(L"fireworksArea");
@@ -989,7 +989,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
             addTask(e_Tutorial_State_Fireworks,
                     new InfoTask(this, IDS_TUTORIAL_TASK_FIREWORK_CUSTOMISE,
                                  IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
-                                 ACTION_MENU_A));  //
+                                 ACTION_MENU_A));  
             addTask(e_Tutorial_State_Fireworks,
                     new InfoTask(this, IDS_TUTORIAL_TASK_FIREWORK_CRAFTING,
                                  IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
@@ -997,12 +997,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * BEACON
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area = app.getGameRuleDefinitions()->getNamedArea(L"beaconArea");
         if (area != nullptr) {
@@ -1034,12 +1034,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * HOPPER
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area = app.getGameRuleDefinitions()->getNamedArea(L"hopperArea");
         if (area != nullptr) {
@@ -1083,12 +1083,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * ENDERCHEST
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area =
             app.getGameRuleDefinitions()->getNamedArea(L"enderchestArea");
@@ -1121,12 +1121,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * FARMING
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area = app.getGameRuleDefinitions()->getNamedArea(L"farmingArea");
         if (area != nullptr) {
@@ -1188,12 +1188,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * BREEDING
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area =
             app.getGameRuleDefinitions()->getNamedArea(L"breedingArea");
@@ -1250,12 +1250,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
         }
     }
 
-    /*
-     *
-     *
-     * SNOW AND IRON GOLEM
-     *
-     */
+    
+
+
+
+
+
     if (app.getGameRuleDefinitions() != nullptr) {
         AABB* area = app.getGameRuleDefinitions()->getNamedArea(L"golemArea");
         if (area != nullptr) {
@@ -1292,8 +1292,8 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
     }
 }
 
-// 4J Stu - All tutorials are onby default in the full tutorial whether the
-// player has previously completed them or not
+
+
 bool FullTutorial::isStateCompleted(eTutorial_State state) {
     return m_completedStates[state];
 }

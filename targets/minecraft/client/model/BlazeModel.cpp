@@ -19,9 +19,9 @@ BlazeModel::BlazeModel() : Model() {
     head = new ModelPart(this, 0, 0);
     head->addBox(-4, -4, -4, 8, 8, 8);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered 4J Stu - Not just performance, but alpha+depth tests don't
-    // work right unless we compile here
+    
+    
+    
     for (unsigned int i = 0; i < upperBodyParts.size(); i++) {
         upperBodyParts[i]->compile(1.0f / 16.0f);
     }

@@ -77,7 +77,7 @@ void ThinFenceTile::updateDefaultShape() { setShape(0, 0, 0, 1, 1, 1); }
 void ThinFenceTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     float minX = 7.0f / 16.0f;
     float maxX = 9.0f / 16.0f;

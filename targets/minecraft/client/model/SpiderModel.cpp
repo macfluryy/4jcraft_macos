@@ -13,51 +13,51 @@ SpiderModel::SpiderModel() : Model() {
     int yo = 18 + 6 - 9;
 
     head = new ModelPart(this, 32, 4);
-    head->addBox(-4, -4, -8, 8, 8, 8, g);  // Head
+    head->addBox(-4, -4, -8, 8, 8, 8, g);  
     head->setPos(0, (float)(0 + yo), -3);
 
     body0 = new ModelPart(this, 0, 0);
-    body0->addBox(-3, -3, -3, 6, 6, 6, g);  // Body
+    body0->addBox(-3, -3, -3, 6, 6, 6, g);  
     body0->setPos(0, (float)(yo), 0);
 
     body1 = new ModelPart(this, 0, 12);
-    body1->addBox(-5, -4, -6, 10, 8, 12, g);  // Body
+    body1->addBox(-5, -4, -6, 10, 8, 12, g);  
     body1->setPos(0, (float)(0 + yo), 3 + 6);
 
     leg0 = new ModelPart(this, 18, 0);
-    leg0->addBox(-15, -1, -1, 16, 2, 2, g);  // Leg0
+    leg0->addBox(-15, -1, -1, 16, 2, 2, g);  
     leg0->setPos(-4, (float)(0 + yo), 2);
 
     leg1 = new ModelPart(this, 18, 0);
-    leg1->addBox(-1, -1, -1, 16, 2, 2, g);  // Leg1
+    leg1->addBox(-1, -1, -1, 16, 2, 2, g);  
     leg1->setPos(4, (float)(0 + yo), 2);
 
     leg2 = new ModelPart(this, 18, 0);
-    leg2->addBox(-15, -1, -1, 16, 2, 2, g);  // Leg2
+    leg2->addBox(-15, -1, -1, 16, 2, 2, g);  
     leg2->setPos(-4, (float)(0 + yo), 1);
 
     leg3 = new ModelPart(this, 18, 0);
-    leg3->addBox(-1, -1, -1, 16, 2, 2, g);  // Leg3
+    leg3->addBox(-1, -1, -1, 16, 2, 2, g);  
     leg3->setPos(4, (float)(0 + yo), 1);
 
     leg4 = new ModelPart(this, 18, 0);
-    leg4->addBox(-15, -1, -1, 16, 2, 2, g);  // Leg0
+    leg4->addBox(-15, -1, -1, 16, 2, 2, g);  
     leg4->setPos(-4, (float)(0 + yo), 0);
 
     leg5 = new ModelPart(this, 18, 0);
-    leg5->addBox(-1, -1, -1, 16, 2, 2, g);  // Leg1
+    leg5->addBox(-1, -1, -1, 16, 2, 2, g);  
     leg5->setPos(4, (float)(0 + yo), 0);
 
     leg6 = new ModelPart(this, 18, 0);
-    leg6->addBox(-15, -1, -1, 16, 2, 2, g);  // Leg2
+    leg6->addBox(-15, -1, -1, 16, 2, 2, g);  
     leg6->setPos(-4, (float)(0 + yo), -1);
 
     leg7 = new ModelPart(this, 18, 0);
-    leg7->addBox(-1, -1, -1, 16, 2, 2, g);  // Leg3
+    leg7->addBox(-1, -1, -1, 16, 2, 2, g);  
     leg7->setPos(4, (float)(0 + yo), -1);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     head->compile(1.0f / 16.0f);
     body0->compile(1.0f / 16.0f);
     body1->compile(1.0f / 16.0f);

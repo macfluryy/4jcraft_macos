@@ -76,7 +76,7 @@ void MobEffect::staticCtor() {
             ->addAttributeModifier(
                 SharedMonsterAttributes::MOVEMENT_SPEED,
                 eModifierId_POTION_MOVESPEED, 0.2f,
-                AttributeModifier::OPERATION_MULTIPLY_TOTAL);  // setIcon(0, 0);
+                AttributeModifier::OPERATION_MULTIPLY_TOTAL);  
     movementSlowdown =
         (new MobEffect(2, true, eMinecraftColour_Effect_MovementSlowDown))
             ->setDescriptionId(IDS_POTION_MOVESLOWDOWN)
@@ -85,20 +85,20 @@ void MobEffect::staticCtor() {
             ->addAttributeModifier(
                 SharedMonsterAttributes::MOVEMENT_SPEED,
                 eModifierId_POTION_MOVESLOWDOWN, -0.15f,
-                AttributeModifier::OPERATION_MULTIPLY_TOTAL);  //->setIcon(1,
-                                                               // 0);
+                AttributeModifier::OPERATION_MULTIPLY_TOTAL);  
+                                                               
     digSpeed =
         (new MobEffect(3, false, eMinecraftColour_Effect_DigSpeed))
             ->setDescriptionId(IDS_POTION_DIGSPEED)
             ->setPostfixDescriptionId(IDS_POTION_DIGSPEED_POSTFIX)
             ->setDurationModifier(1.5)
-            ->setIcon(MobEffect::e_MobEffectIcon_Haste);  //->setIcon(2, 0);
+            ->setIcon(MobEffect::e_MobEffectIcon_Haste);  
     digSlowdown =
         (new MobEffect(4, true, eMinecraftColour_Effect_DigSlowdown))
             ->setDescriptionId(IDS_POTION_DIGSLOWDOWN)
             ->setPostfixDescriptionId(IDS_POTION_DIGSLOWDOWN_POSTFIX)
             ->setIcon(
-                MobEffect::e_MobEffectIcon_MiningFatigue);  //->setIcon(3, 0);
+                MobEffect::e_MobEffectIcon_MiningFatigue);  
     damageBoost =
         (new AttackDamageMobEffect(5, false,
                                    eMinecraftColour_Effect_DamageBoost))
@@ -108,8 +108,8 @@ void MobEffect::staticCtor() {
             ->addAttributeModifier(
                 SharedMonsterAttributes::ATTACK_DAMAGE,
                 eModifierId_POTION_DAMAGEBOOST, 3,
-                AttributeModifier::OPERATION_MULTIPLY_TOTAL);  //->setIcon(4,
-                                                               // 0);
+                AttributeModifier::OPERATION_MULTIPLY_TOTAL);  
+                                                               
     heal = (new InstantenousMobEffect(6, false, eMinecraftColour_Effect_Heal))
                ->setDescriptionId(IDS_POTION_HEAL)
                ->setPostfixDescriptionId(IDS_POTION_HEAL_POSTFIX);
@@ -120,61 +120,61 @@ void MobEffect::staticCtor() {
         (new MobEffect(8, false, eMinecraftColour_Effect_Jump))
             ->setDescriptionId(IDS_POTION_JUMP)
             ->setPostfixDescriptionId(IDS_POTION_JUMP_POSTFIX)
-            ->setIcon(MobEffect::e_MobEffectIcon_JumpBoost);  //->setIcon(2, 1);
+            ->setIcon(MobEffect::e_MobEffectIcon_JumpBoost);  
     confusion =
         (new MobEffect(9, true, eMinecraftColour_Effect_Confusion))
             ->setDescriptionId(IDS_POTION_CONFUSION)
             ->setPostfixDescriptionId(IDS_POTION_CONFUSION_POSTFIX)
             ->setDurationModifier(.25)
-            ->setIcon(MobEffect::e_MobEffectIcon_Nausea);  //->setIcon(3, 1);
+            ->setIcon(MobEffect::e_MobEffectIcon_Nausea);  
     regeneration =
         (new MobEffect(10, false, eMinecraftColour_Effect_Regeneration))
             ->setDescriptionId(IDS_POTION_REGENERATION)
             ->setPostfixDescriptionId(IDS_POTION_REGENERATION_POSTFIX)
             ->setDurationModifier(.25)
             ->setIcon(
-                MobEffect::e_MobEffectIcon_Regeneration);  //->setIcon(7, 0);
+                MobEffect::e_MobEffectIcon_Regeneration);  
     damageResistance =
         (new MobEffect(11, false, eMinecraftColour_Effect_DamageResistance))
             ->setDescriptionId(IDS_POTION_RESISTANCE)
             ->setPostfixDescriptionId(IDS_POTION_RESISTANCE_POSTFIX)
             ->setIcon(
-                MobEffect::e_MobEffectIcon_Resistance);  //->setIcon(6, 1);
+                MobEffect::e_MobEffectIcon_Resistance);  
     fireResistance =
         (new MobEffect(12, false, eMinecraftColour_Effect_FireResistance))
             ->setDescriptionId(IDS_POTION_FIRERESISTANCE)
             ->setPostfixDescriptionId(IDS_POTION_FIRERESISTANCE_POSTFIX)
             ->setIcon(
-                MobEffect::e_MobEffectIcon_FireResistance);  //->setIcon(7, 1);
+                MobEffect::e_MobEffectIcon_FireResistance);  
     waterBreathing =
         (new MobEffect(13, false, eMinecraftColour_Effect_WaterBreathing))
             ->setDescriptionId(IDS_POTION_WATERBREATHING)
             ->setPostfixDescriptionId(IDS_POTION_WATERBREATHING_POSTFIX)
             ->setIcon(
-                MobEffect::e_MobEffectIcon_WaterBreathing);  //->setIcon(0, 2);
+                MobEffect::e_MobEffectIcon_WaterBreathing);  
     invisibility =
         (new MobEffect(14, false, eMinecraftColour_Effect_Invisiblity))
             ->setDescriptionId(IDS_POTION_INVISIBILITY)
             ->setPostfixDescriptionId(IDS_POTION_INVISIBILITY_POSTFIX)
             ->setIcon(
-                MobEffect::e_MobEffectIcon_Invisiblity);  //->setIcon(0, 1);
+                MobEffect::e_MobEffectIcon_Invisiblity);  
     blindness =
         (new MobEffect(15, true, eMinecraftColour_Effect_Blindness))
             ->setDescriptionId(IDS_POTION_BLINDNESS)
             ->setPostfixDescriptionId(IDS_POTION_BLINDNESS_POSTFIX)
             ->setDurationModifier(.25)
-            ->setIcon(MobEffect::e_MobEffectIcon_Blindness);  //->setIcon(5, 1);
+            ->setIcon(MobEffect::e_MobEffectIcon_Blindness);  
     nightVision =
         (new MobEffect(16, false, eMinecraftColour_Effect_NightVision))
             ->setDescriptionId(IDS_POTION_NIGHTVISION)
             ->setPostfixDescriptionId(IDS_POTION_NIGHTVISION_POSTFIX)
             ->setIcon(
-                MobEffect::e_MobEffectIcon_NightVision);  //->setIcon(4, 1);
+                MobEffect::e_MobEffectIcon_NightVision);  
     hunger =
         (new MobEffect(17, true, eMinecraftColour_Effect_Hunger))
             ->setDescriptionId(IDS_POTION_HUNGER)
             ->setPostfixDescriptionId(IDS_POTION_HUNGER_POSTFIX)
-            ->setIcon(MobEffect::e_MobEffectIcon_Hunger);  //->setIcon(1, 1);
+            ->setIcon(MobEffect::e_MobEffectIcon_Hunger);  
     weakness =
         (new AttackDamageMobEffect(18, true, eMinecraftColour_Effect_Weakness))
             ->setDescriptionId(IDS_POTION_WEAKNESS)
@@ -183,13 +183,13 @@ void MobEffect::staticCtor() {
             ->addAttributeModifier(
                 SharedMonsterAttributes::ATTACK_DAMAGE,
                 eModifierId_POTION_WEAKNESS, 2,
-                AttributeModifier::OPERATION_ADDITION);  //->setIcon(5, 0);
+                AttributeModifier::OPERATION_ADDITION);  
     poison =
         (new MobEffect(19, true, eMinecraftColour_Effect_Poison))
             ->setDescriptionId(IDS_POTION_POISON)
             ->setPostfixDescriptionId(IDS_POTION_POISON_POSTFIX)
             ->setDurationModifier(.25)
-            ->setIcon(MobEffect::e_MobEffectIcon_Poison);  //->setIcon(6, 0);
+            ->setIcon(MobEffect::e_MobEffectIcon_Poison);  
     wither = (new MobEffect(20, true, eMinecraftColour_Effect_Wither))
                  ->setDescriptionId(IDS_POTION_WITHER)
                  ->setPostfixDescriptionId(IDS_POTION_WITHER_POSTFIX)
@@ -239,12 +239,12 @@ MobEffect::MobEffect(int id, bool isHarmful, eMinecraftColour color)
     }
 }
 
-// 4J Removed as using different value for icon
-// MobEffect *MobEffect::setIcon(int xPos, int yPos)
-//{
-//	icon = xPos + yPos * 8;
-//	return this;
-//}
+
+
+
+
+
+
 
 MobEffect* MobEffect::setIcon(EMobEffectIcon icon) {
     this->icon = icon;
@@ -253,17 +253,17 @@ MobEffect* MobEffect::setIcon(EMobEffectIcon icon) {
 
 int MobEffect::getId() { return id; }
 
-/**
- * This method should perform periodic updates on the player. Mainly used
- * for regeneration effects and the like. Other effects, such as blindness,
- * are in effect for the whole duration of the effect.
- *
- * @param mob
- * @param amplification
- */
+
+
+
+
+
+
+
+
 void MobEffect::applyEffectTick(std::shared_ptr<LivingEntity> mob,
                                 int amplification) {
-    // Maybe move this to separate class implementations in the future?
+    
     if (id == regeneration->id) {
         if (mob->getHealth() < mob->getMaxHealth()) {
             mob->heal(1);
@@ -275,8 +275,8 @@ void MobEffect::applyEffectTick(std::shared_ptr<LivingEntity> mob,
     } else if (id == wither->id) {
         mob->hurt(DamageSource::wither, 1);
     } else if ((id == hunger->id) && mob->instanceof(eTYPE_PLAYER)) {
-        // every tick, cause the same amount of exhaustion as when removing
-        // a block, times amplification
+        
+        
         std::dynamic_pointer_cast<Player>(mob)->causeFoodExhaustion(
             FoodConstants::EXHAUSTION_MINE * (amplification + 1));
     } else if ((id == saturation->id) && mob->instanceof(eTYPE_PLAYER)) {
@@ -316,27 +316,27 @@ void MobEffect::applyInstantenousEffect(std::shared_ptr<LivingEntity> source,
 
 bool MobEffect::isInstantenous() { return false; }
 
-/**
- * This parameter says if the applyEffect method should be called depending
- * on the remaining duration ticker. For instance, the regeneration will be
- * activated every 8 ticks, healing one point of health.
- *
- * @param remainingDuration
- * @param amplification
- *            Effect amplification, starts at 0 (weakest)
- * @return
- */
+
+
+
+
+
+
+
+
+
+
 bool MobEffect::isDurationEffectTick(int remainingDuration, int amplification) {
-    // Maybe move this to separate class implementations in the future?
+    
     if (id == regeneration->id) {
-        // tick intervals are 50, 25, 12, 6..
+        
         int interval = 50 >> amplification;
         if (interval > 0) {
             return (remainingDuration % interval) == 0;
         }
         return true;
     } else if (id == poison->id) {
-        // tick intervals are 25, 12, 6..
+        
         int interval = 25 >> amplification;
         if (interval > 0) {
             return (remainingDuration % interval) == 0;
@@ -392,10 +392,10 @@ std::wstring MobEffect::formatDuration(MobEffectInstance* instance) {
 
     if (seconds < 10) {
         swprintf(temp, 8, L"%d:0%d", minutes, seconds);
-        // return minutes + ":0" + seconds;
+        
     } else {
         swprintf(temp, 8, L"%d:%d", minutes, seconds);
-        // return minutes + ":" + seconds;
+        
     }
 
     return temp;
@@ -467,9 +467,9 @@ double MobEffect::getAttributeModifierValue(int amplifier,
     return original->getAmount() * (amplifier + 1);
 }
 
-// 4jcraft: helper for inventoryscreen and beaconscreen
+
 int MobEffect::javaId(int id) {
-    // mapped to java based on the inventory texture (see gui/inventory.png)
+    
     switch (id) {
         case 1:
             return 0;

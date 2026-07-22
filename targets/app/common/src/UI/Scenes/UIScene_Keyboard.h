@@ -61,7 +61,7 @@ public:
     virtual void updateTooltips();
 
     virtual bool allowRepeat(int key);
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 
@@ -71,7 +71,7 @@ protected:
     void handlePress(F64 controlId, F64 childId);
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 private:
@@ -80,15 +80,15 @@ private:
 public:
     virtual EUIScene getSceneType() { return eUIScene_Keyboard; }
 
-    // Returns true if this scene handles input
-    // virtual bool stealsFocus() { return false; }
+    
+    
 
-    // Returns true if this scene has focus for the pad passed in
-    // virtual bool hasFocus(int iPad) { return false; }
-    // Returns true if this scene has focus for the pad passed in
+    
+    
+    
     virtual bool hasFocus(int iPad) { return bHasFocus; }
 
-    // Returns true if lower scenes in this scenes layer, or in any layer below
-    // this scenes layers should be hidden
+    
+    
     virtual bool hidesLowerScenes() { return false; }
 };

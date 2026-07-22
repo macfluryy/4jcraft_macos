@@ -43,12 +43,12 @@ DripParticle::DripParticle(Level* level, double x, double y, double z,
 int DripParticle::getLightColor(float a) {
     if (material == Material::water) return Particle::getLightColor(a);
 
-    // 4J-JEV: Looks like this value was never used on the java version,
-    // but it is on ours, so I've changed this to be bright manualy.
+    
+    
     int s = 0x0f;
     int b = 0x0f;
-    return s << 20 | b << 4;  // MGH changed this to a proper value as PS3
-                              // wasn't clamping the values.
+    return s << 20 | b << 4;  
+                              
 }
 
 float DripParticle::getBrightness(float a) {
@@ -64,9 +64,9 @@ void DripParticle::tick() {
     zo = z;
 
     if (material == Material::water) {
-        // rCol = 0.2f;
-        // gCol = 0.3f;
-        // bCol = 1.0f;
+        
+        
+        
 
         unsigned int clr = Minecraft::GetInstance()->getColourTable()->getColor(
             eMinecraftColour_Particle_DripWater);
@@ -74,9 +74,9 @@ void DripParticle::tick() {
         gCol = ((clr >> 8) & 0xFF) / 255.0;
         bCol = (clr & 0xFF) / 255.0;
     } else {
-        // rCol = 1.0f;
-        // gCol = 16.0f / (40 - stuckTime + 16);
-        // bCol = 4.0f / (40 - stuckTime + 8);
+        
+        
+        
 
         unsigned int cStart =
             Minecraft::GetInstance()->getColourTable()->getColor(

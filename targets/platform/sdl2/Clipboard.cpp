@@ -11,13 +11,13 @@ namespace Clipboard {
 
 namespace {
 
-// Encode one Unicode code point into a UTF-8 byte sequence (1-4 bytes).
-// We assume the platform wchar_t is 32-bit (true on macOS / Linux); if
-// the input contains an unpaired surrogate we just emit the replacement
-// character so the clipboard never receives invalid UTF-8.
+
+
+
+
 void appendUtf8(std::string& out, uint32_t cp) {
     if (cp >= 0xD800 && cp <= 0xDFFF) {
-        cp = 0xFFFD;  // surrogate -> replacement
+        cp = 0xFFFD;  
     }
     if (cp <= 0x7F) {
         out.push_back(static_cast<char>(cp));
@@ -34,16 +34,16 @@ void appendUtf8(std::string& out, uint32_t cp) {
         out.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
         out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
     } else {
-        // Out of Unicode range; replace.
+        
         appendUtf8(out, 0xFFFD);
     }
 }
 
-}  // namespace
+}  
 
 bool SetText(const std::wstring& text) {
     std::string utf8;
-    utf8.reserve(text.size() * 2);  // rough upper bound for ASCII-heavy input
+    utf8.reserve(text.size() * 2);  
     for (wchar_t wc : text) {
         appendUtf8(utf8, static_cast<uint32_t>(wc));
     }
@@ -55,4 +55,4 @@ bool SetText(const std::wstring& text) {
     return true;
 }
 
-}  // namespace Clipboard
+}  

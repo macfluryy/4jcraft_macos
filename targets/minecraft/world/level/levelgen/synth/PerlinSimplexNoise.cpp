@@ -98,8 +98,8 @@ std::vector<double> PerlinSimplexNoise::getRegion(
     double pow = 1;
 
     for (int i = 0; i < levels; i++) {
-        //            value += noiseLevels[i].getValue(x * pow, y * pow, z *
-        //            pow) / pow;
+        
+        
         noiseLevels[i]->add(buffer, x, y, z, xSize, ySize, zSize, xScale * pow,
                             yScale * pow, zScale * pow, 0.55 / pow);
         pow *= 0.5;

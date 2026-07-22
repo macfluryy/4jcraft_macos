@@ -39,10 +39,10 @@ std::vector<int> RiverMixerLayer::getArea(int xo, int yo, int w, int h) {
                          b[i] == Biome::mushroomIslandShore->id)
                     result[i] =
                         Biome::mushroomIsland
-                            ->id;  // 4J - don't make mushroom island shores as
-                                   // we don't have any island left once we do
-                                   // this as our islands are small (this used
-                                   // to change to mushroomIslandShore)
+                            ->id;  
+                                   
+                                   
+                                   
                 else
                     result[i] = r[i];
             } else {

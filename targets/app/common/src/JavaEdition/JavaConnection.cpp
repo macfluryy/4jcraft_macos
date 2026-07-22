@@ -1,4 +1,6 @@
 #include "app/common/src/JavaEdition/JavaConnection.h"
+#include "app/common/src/JavaEdition/JavaProxyDebug.h"
+
 
 #include <cstdlib>
 #include <cstring>
@@ -183,6 +185,36 @@ void p3_readDisplayCompound(JavaPacketReader& r, JavaInvSlot& slot) {
     }
 }
 
+
+
+
+void p3_readEnchList(JavaPacketReader& r, std::vector<JavaEnch>& out) {
+    const uint8_t childType = r.readU8();
+    const int32_t cnt = r.readI32();
+    for (int32_t i = 0; i < cnt && i >= 0; ++i) {
+        if (childType != 10) {  
+            p3_skipNbtPayload(r, childType);
+            continue;
+        }
+        JavaEnch e;
+        bool haveId = false;
+        for (;;) {
+            const uint8_t t = r.readU8();
+            if (t == 0) break;
+            const std::string k = p3_readNbtName(r);
+            if (t == 2 && k == "id") {
+                e.id = static_cast<int16_t>(r.readU16());
+                haveId = true;
+            } else if (t == 2 && k == "lvl") {
+                e.lvl = static_cast<int16_t>(r.readU16());
+            } else {
+                p3_skipNbtPayload(r, t);
+            }
+        }
+        if (haveId) out.push_back(e);
+    }
+}
+
 void p3_readJavaItemNbt(JavaPacketReader& r, JavaInvSlot& slot) {
     if (r.remaining() < 1) return;
     const uint8_t rootType = r.readU8();
@@ -201,6 +233,15 @@ void p3_readJavaItemNbt(JavaPacketReader& r, JavaInvSlot& slot) {
         const std::string key = p3_readNbtName(r);
         if (t == 10 && key == "display") {
             p3_readDisplayCompound(r, slot);
+        } else if (t == 9 && key == "ench") {
+            p3_readEnchList(r, slot.ench);
+        } else if (t == 9 && key == "StoredEnchantments") {
+            p3_readEnchList(r, slot.storedEnch);
+        } else if (key == "HideFlags") {
+            
+            if (t == 3) slot.hideFlags = r.readI32();
+            else if (t == 1) slot.hideFlags = r.readU8();
+            else p3_skipNbtPayload(r, t);
         } else {
             p3_skipNbtPayload(r, t);
         }
@@ -299,6 +340,13 @@ bool p3_extractMetadataItem(JavaPacketReader& r, JavaInvSlot& outItem,
 int p3_javaMobToLce(uint8_t javaType) {
     if (javaType >= 50 && javaType <= 99) return javaType;
     if (javaType == 120) return 120;
+    
+    
+    
+    
+    
+    
+    if (javaType == 30) return 94;
     return -1;
 }
 
@@ -662,7 +710,7 @@ bool JavaConnection::sendFrame(int32_t packetId,
         static const auto t0 = steady_clock::now();
         const long ms =
             duration_cast<milliseconds>(steady_clock::now() - t0).count();
-        fprintf(stderr, "[JC2S] t=%ldms C->S id=0x%02X (%s) len=%zu\n", ms,
+        JPROXY_LOGF( "[JC2S] t=%ldms C->S id=0x%02X (%s) len=%zu\n", ms,
                 static_cast<unsigned>(packetId) & 0xFF,
                 jc_serverboundName(packetId), body.size());
     }
@@ -678,7 +726,7 @@ bool JavaConnection::handleLoginFrame(
         switch (frame.packetId) {
             case JavaLoginClientboundId::Disconnect: {
                 std::string reason = r.readUtf8(kMaxStringBytes);
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[JLOGIN] S->C Disconnect (server kicked us) "
                         "reason-json=%s\n",
                         reason.c_str());
@@ -688,7 +736,7 @@ bool JavaConnection::handleLoginFrame(
                 if (!m_forwardingActive &&
                     (low.find("forwarding") != std::string::npos ||
                      low.find("bungeecord") != std::string::npos)) {
-                    fprintf(stderr,
+                    JPROXY_LOGF(
                             "[JLOGIN] -> looks like a BungeeCord backend; will "
                             "retry with legacy IP forwarding\n");
                     m_sawBungeeKick = true;
@@ -704,7 +752,7 @@ bool JavaConnection::handleLoginFrame(
                 return false;
             }
             case JavaLoginClientboundId::EncryptionRequest: {
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[JLOGIN] S->C EncryptionRequest (server is ONLINE-mode) "
                         "-> disconnecting (offline-only client)\n");
                 JavaConnectionEvent ev;
@@ -721,7 +769,7 @@ bool JavaConnection::handleLoginFrame(
             case JavaLoginClientboundId::LoginSuccess: {
                 std::string uuid = r.readUtf8(kMaxStringBytes);
                 std::string uname = r.readUtf8(kMaxStringBytes);
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[JLOGIN] S->C LoginSuccess uuid=%s name=%s -> entering "
                         "PLAY state\n",
                         uuid.c_str(), uname.c_str());
@@ -734,7 +782,7 @@ bool JavaConnection::handleLoginFrame(
             }
             case JavaLoginClientboundId::SetCompression: {
                 const int32_t threshold = r.readVarInt();
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[JLOGIN] S->C SetCompression threshold=%d\n", threshold);
                 m_codec.enableCompression(threshold);
                 return true;
@@ -838,10 +886,10 @@ void applyPlayerListItem(JavaPacketReader& r,
             case 0: {
                 std::string name = r.readUtf8(kMaxStringBytes);
                 const int32_t props = r.readVarInt();
-                fprintf(stderr, "[SKIN]\n");
-                fprintf(stderr, "[SKIN] uuid=%s\n", p3_uuidHex(uuid).c_str());
-                fprintf(stderr, "[SKIN] username=%s\n", name.c_str());
-                fprintf(stderr, "[SKIN] propertyCount=%d\n", props);
+                JPROXY_LOGF( "[SKIN]\n");
+                JPROXY_LOGF( "[SKIN] uuid=%s\n", p3_uuidHex(uuid).c_str());
+                JPROXY_LOGF( "[SKIN] username=%s\n", name.c_str());
+                JPROXY_LOGF( "[SKIN] propertyCount=%d\n", props);
                 std::string skinB64;
                 for (int32_t p = 0; p < props && p >= 0; ++p) {
                     const std::string propName = r.readUtf8(kMaxStringBytes);
@@ -850,17 +898,17 @@ void applyPlayerListItem(JavaPacketReader& r,
                     if (isSigned) {
                         (void)r.readUtf8(kMaxStringBytes);
                     }
-                    fprintf(stderr, "[SKIN]   name=%s\n", propName.c_str());
-                    fprintf(stderr, "[SKIN]   value(first 64 chars)=%.64s\n",
+                    JPROXY_LOGF( "[SKIN]   name=%s\n", propName.c_str());
+                    JPROXY_LOGF( "[SKIN]   value(first 64 chars)=%.64s\n",
                             propValue.c_str());
-                    fprintf(stderr, "[SKIN]   signed=%s\n",
+                    JPROXY_LOGF( "[SKIN]   signed=%s\n",
                             isSigned ? "yes" : "no");
                     if (propName == "textures") {
                         skinB64 = propValue;
                         const std::string decoded = p3_base64Decode(propValue);
-                        fprintf(stderr, "[SKIN]   decoded JSON=%s\n",
+                        JPROXY_LOGF( "[SKIN]   decoded JSON=%s\n",
                                 decoded.c_str());
-                        fprintf(stderr, "[SKIN]   textures.SKIN.url=%s\n",
+                        JPROXY_LOGF( "[SKIN]   textures.SKIN.url=%s\n",
                                 p3_extractSkinUrl(decoded).c_str());
                     }
                 }
@@ -879,7 +927,7 @@ void applyPlayerListItem(JavaPacketReader& r,
                     entry.skinUrl =
                         p3_extractSkinUrl(p3_base64Decode(skinB64));
                 }
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[TABDBG] PlayerListItem ADD plainName='%s' "
                         "hadDisplayName=%d uuid=%02x%02x%02x%02x..\n",
                         name.c_str(), (int)(hasDisplay != 0),
@@ -948,7 +996,7 @@ bool JavaConnection::handlePlayFrame(
                 w.writeVarInt(id);
                 if (!sendFrame(JavaPlayServerboundId::KeepAlive,
                                takeBytes(w))) {
-                    fprintf(stderr,
+                    JPROXY_LOGF(
                             "[JDISC] PROXY-initiated close: KeepAlive echo write "
                             "to server failed (serverbound socket broke)\n");
                     return false;
@@ -980,11 +1028,19 @@ bool JavaConnection::handlePlayFrame(
                 if (r.remaining() >= 1) {
                     position = r.readU8();
                 }
-                if (position == 2) return true;
+                if (position == 2) {
+                    
+                    JavaConnectionEvent ev;
+                    ev.type = JavaConnectionEventType::HudText;
+                    ev.scoreMode = 0;  
+                    ev.text = flattenChatComponent(json);
+                    if (!ev.text.empty()) pushEvent(std::move(ev));
+                    return true;
+                }
                 std::wstring text = flattenChatComponent(json);
-                fprintf(stderr, "[JCHAT] raw JSON len=%zu: %s\n", json.size(),
+                JPROXY_LOGF( "[JCHAT] raw JSON len=%zu: %s\n", json.size(),
                         json.c_str());
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[JCHAT] flattened len=%zu first=U+%04X: %ls\n",
                         text.size(),
                         text.empty() ? 0u
@@ -1125,7 +1181,7 @@ bool JavaConnection::handlePlayFrame(
                     std::string mdEntries;
                     p3_extractMetadataItem(r, mdItem, &mdFlags, &mdEntries,
                                            &mdList);
-                    fprintf(stderr,
+                    JPROXY_LOGF(
                             "[JNPC] SpawnMob eid=%d javaType=%u -> lceType=%d%s "
                             "pos=(%.1f,%.1f,%.1f) flags=%d invisible=%d "
                             "entries=[%s]\n",
@@ -1216,7 +1272,7 @@ bool JavaConnection::handlePlayFrame(
                                  ids.empty() ? "" : ",", d);
                         ids.append(tmp);
                     }
-                    fprintf(stderr, "[JNPC] DestroyEntities count=%u ids=[%s]\n",
+                    JPROXY_LOGF( "[JNPC] DestroyEntities count=%u ids=[%s]\n",
                             count, ids.c_str());
                 }
                 pushEvent(std::move(ev));
@@ -1278,7 +1334,7 @@ bool JavaConnection::handlePlayFrame(
             }
             case JavaPlayClientboundId::Disconnect: {
                 std::string json = r.readUtf8(kMaxStringBytes);
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[JDISC] SERVER-initiated: Disconnect packet (PLAY) "
                         "reason-json=%s\n",
                         json.c_str());
@@ -1344,13 +1400,13 @@ bool JavaConnection::handlePlayFrame(
                         }
                     }
                 }
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[TABDBG] SpawnPlayer eid=%d resolvedName='%ls' "
                         "found=%d tabSize=%zu uuid=%02x%02x%02x%02x..\n",
                         eid, playerName.c_str(), (int)nameFound,
                         m_tabList.size(), uuidBytes[0], uuidBytes[1],
                         uuidBytes[2], uuidBytes[3]);
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[JNPC] SpawnPlayer eid=%d uuid=%s name='%ls' "
                         "skinUrl=%d flags=%d invisible=%d entries=[%s]\n",
                         eid,
@@ -1366,6 +1422,8 @@ bool JavaConnection::handlePlayFrame(
                 ev.type = JavaConnectionEventType::SpawnPlayer;
                 ev.entity.playerName = playerName;
                 ev.entity.skinUrl = skinUrl;
+                ev.entity.uuid.assign(
+                    reinterpret_cast<const char*>(uuidBytes), 16);
                 ev.entity.id = eid;
                 ev.entity.x = x;
                 ev.entity.y = y;
@@ -1457,7 +1515,7 @@ bool JavaConnection::handlePlayFrame(
                 std::vector<JavaMetaEntry> metaList;
                 const bool gotItem = p3_extractMetadataItem(
                     r, item, &metaFlags, &metaEntries, &metaList);
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[JNPC] EntityMetadata eid=%d flags=%d invisible=%d "
                         "entries=[%s]\n",
                         eid, metaFlags,
@@ -1668,6 +1726,62 @@ bool JavaConnection::handlePlayFrame(
                 pushEvent(std::move(ev));
                 return true;
             }
+            case JavaPlayClientboundId::ResourcePackSend: {
+                
+                
+                const std::string url = r.readUtf8(kMaxStringBytes);
+                const std::string hash = r.readUtf8(kMaxStringBytes);
+                JPROXY_LOGF( "[JRPACK] url=%s hash=%s\n", url.c_str(),
+                        hash.c_str());
+                JavaPacketWriter w3;
+                w3.writeVarInt(3);  
+                if (!sendFrame(JavaPlayServerboundId::ResourcePackStatus,
+                               takeBytes(w3)))
+                    return false;
+                JPROXY_LOGF( "[JRPACK] reply=ACCEPTED\n");
+                JavaPacketWriter w0;
+                w0.writeVarInt(0);  
+                if (!sendFrame(JavaPlayServerboundId::ResourcePackStatus,
+                               takeBytes(w0)))
+                    return false;
+                JPROXY_LOGF( "[JRPACK] reply=SUCCESS\n");
+                return true;
+            }
+            case JavaPlayClientboundId::Title: {
+                
+                
+                const int32_t action = r.readVarInt();
+                JavaConnectionEvent ev;
+                ev.type = JavaConnectionEventType::HudText;
+                switch (action) {
+                    case 0:  
+                        ev.scoreMode = 1;
+                        ev.text = flattenChatComponent(
+                            r.readUtf8(kMaxStringBytes));
+                        break;
+                    case 1:  
+                        ev.scoreMode = 2;
+                        ev.text = flattenChatComponent(
+                            r.readUtf8(kMaxStringBytes));
+                        break;
+                    case 2:  
+                        ev.scoreMode = 3;
+                        ev.blockX = r.readI32();  
+                        ev.blockY = r.readI32();  
+                        ev.blockZ = r.readI32();  
+                        break;
+                    case 3:  
+                        ev.scoreMode = 4;
+                        break;
+                    case 4:  
+                        ev.scoreMode = 5;
+                        break;
+                    default:
+                        return true;  
+                }
+                pushEvent(std::move(ev));
+                return true;
+            }
             case JavaPlayClientboundId::Teams: {
                 JavaConnectionEvent ev;
                 ev.type = JavaConnectionEventType::ScoreTeam;
@@ -1681,9 +1795,9 @@ bool JavaConnection::handlePlayFrame(
                         p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
                     ev.teamSuffix =
                         p3_decodeNbtUtf8(r.readUtf8(kMaxStringBytes));
-                    ev.scoreValue = r.readU8();         // friendly-fire bits
-                    (void)r.readUtf8(kMaxStringBytes);  // name tag visibility
-                    (void)r.readU8();                   // color (prefix wins)
+                    ev.scoreValue = r.readU8();         
+                    (void)r.readUtf8(kMaxStringBytes);  
+                    (void)r.readU8();                   
                 }
                 if (ev.scoreMode == 0 || ev.scoreMode == 3 ||
                     ev.scoreMode == 4) {
@@ -1699,7 +1813,7 @@ bool JavaConnection::handlePlayFrame(
                 const int32_t rider = r.readI32();
                 const int32_t vehicle = r.readI32();
                 const bool leash = r.readU8() != 0;
-                fprintf(stderr,
+                JPROXY_LOGF(
                         "[JNPC] AttachEntity rider=%d vehicle=%d leash=%d\n",
                         rider, vehicle, (int)leash);
                 JavaConnectionEvent ev;
@@ -1884,7 +1998,7 @@ bool JavaConnection::handlePlayFrame(
                 return true;
         }
     } catch (const JavaProtocolError& e) {
-        fprintf(stderr,
+        JPROXY_LOGF(
                 "[JDISC] proxy parse error swallowed on PLAY id=0x%02X: %s "
                 "(session continues)\n",
                 static_cast<unsigned>(frame.packetId) & 0xFF, e.what());
@@ -2226,7 +2340,7 @@ void JavaConnection::runWorker() {
             handshake.writeUtf8(hsHost);
             handshake.writeU16(m_port);
             handshake.writeVarInt(kHandshakeNextStateLogin);
-            fprintf(stderr,
+            JPROXY_LOGF(
                     "[JLOGIN] C->S Handshake proto=%d host=%s port=%u "
                     "nextState=%d%s\n",
                     kProtocolVersion1_8, m_host.c_str(), (unsigned)m_port,
@@ -2246,7 +2360,7 @@ void JavaConnection::runWorker() {
 
             JavaPacketWriter loginStart;
             loginStart.writeUtf8(m_nicknameUtf8);
-            fprintf(stderr, "[JLOGIN] C->S LoginStart name=%s\n",
+            JPROXY_LOGF( "[JLOGIN] C->S LoginStart name=%s\n",
                     m_nicknameUtf8.c_str());
             if (!sendFrame(JavaLoginServerboundId::LoginStart,
                            takeBytes(loginStart))) {
@@ -2279,7 +2393,7 @@ void JavaConnection::runWorker() {
                 if (st == JavaProtocolCodec::DecodeStatus::NeedMoreData) break;
                 if (st == JavaProtocolCodec::DecodeStatus::ProtocolError ||
                     st == JavaProtocolCodec::DecodeStatus::ConnectionBroken) {
-                    fprintf(stderr, "[JDISC] %s in %s state -> %s\n",
+                    JPROXY_LOGF( "[JDISC] %s in %s state -> %s\n",
                             st == JavaProtocolCodec::DecodeStatus::ProtocolError
                                 ? "PROXY codec ProtocolError (framing/"
                                   "compression desync)"
@@ -2297,14 +2411,14 @@ void JavaConnection::runWorker() {
                     break;
                 }
                 if (inLoginState) {
-                    fprintf(stderr,
+                    JPROXY_LOGF(
                             "[JLOGIN] S->C LOGIN id=0x%02X (%s) len=%zu\n",
                             static_cast<unsigned>(frame.packetId) & 0xFF,
                             jc_loginPacketName(frame.packetId),
                             frame.body.size());
                 } else if (playLogged < 24) {
                     ++playLogged;
-                    fprintf(stderr,
+                    JPROXY_LOGF(
                             "[JLOGIN] S->C PLAY  id=0x%02X (%s) len=%zu\n",
                             static_cast<unsigned>(frame.packetId) & 0xFF,
                             jc_playPacketName(frame.packetId), frame.body.size());
@@ -2327,7 +2441,7 @@ void JavaConnection::runWorker() {
 
         if (!m_forwardingActive && m_sawBungeeKick &&
             !m_shutdownRequested.load()) {
-            fprintf(stderr,
+            JPROXY_LOGF(
                     "[JLOGIN] reconnecting with BungeeCord legacy IP forwarding "
                     "(offline uuid=%s)\n",
                     jc_offlineUuidHex(m_nicknameUtf8).c_str());

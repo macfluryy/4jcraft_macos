@@ -30,7 +30,7 @@ UIScene_HorseInventoryMenu::UIScene_HorseInventoryMenu(int iPad,
                                                        void* _initData,
                                                        UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     HorseScreenInput* initData = (HorseScreenInput*)_initData;
@@ -62,22 +62,22 @@ UIScene_HorseInventoryMenu::UIScene_HorseInventoryMenu(int iPad,
     m_slotArmor.addSlots(EntityHorse::INV_SLOT_ARMOR, 1);
 
     if (m_horse->isChestedHorse()) {
-        // also starts at one, because a donkey can't wear armor!
+        
         m_slotListChest.addSlots(EntityHorse::INV_BASE_COUNT,
                                  EntityHorse::INV_DONKEY_CHEST_COUNT);
     }
 
-    // remove horse inventory
+    
     if (!m_horse->isChestedHorse()) SetHasInventory(false);
 
-    // cannot wear armor? remove armor slot!
+    
     if (!m_horse->canWearArmor()) SetIsDonkey(true);
 
     if (initData) delete initData;
 
     setIgnoreInput(false);
 
-    // app.SetRichPresenceContext(iPad, CONTEXT_GAME_STATE_HORSE);
+    
 }
 
 std::wstring UIScene_HorseInventoryMenu::getMoviePath() {
@@ -100,15 +100,15 @@ void UIScene_HorseInventoryMenu::handleReload() {
     m_slotArmor.addSlots(EntityHorse::INV_SLOT_ARMOR, 1);
 
     if (m_horse->isChestedHorse()) {
-        // also starts at one, because a donkey can't wear armor!
+        
         m_slotListChest.addSlots(EntityHorse::INV_BASE_COUNT,
                                  EntityHorse::INV_DONKEY_CHEST_COUNT);
     }
 
-    // remove horse inventory
+    
     if (!m_horse->isChestedHorse()) SetHasInventory(false);
 
-    // cannot wear armor? remove armor slot!
+    
     if (!m_horse->canWearArmor()) SetIsDonkey(true);
 }
 
@@ -306,13 +306,13 @@ void UIScene_HorseInventoryMenu::customDraw(
         return;
 
     if (std::char_traits<char16_t>::compare(region->name, u"horse", 5) == 0) {
-        // Setup GDraw, normal game render states and matrices
+        
         CustomDrawData* customDrawRegion = ui.setupCustomDraw(this, region);
         delete customDrawRegion;
 
         m_horsePreview.render(region);
 
-        // Finish GDraw and anything else that needs to be finalised
+        
         ui.endCustomDraw(region);
     } else {
         UIScene_AbstractContainerMenu::customDraw(region);

@@ -1,5 +1,5 @@
 #pragma once
-// using namespace std;
+
 
 #include <format>
 #include <vector>
@@ -10,7 +10,7 @@
 class Tutorial;
 class TutorialConstraint;
 
-// A task that creates an maintains an area constraint until it is activated
+
 class AreaTask : public TutorialTask {
 public:
     enum EAreaTaskCompletionStates {

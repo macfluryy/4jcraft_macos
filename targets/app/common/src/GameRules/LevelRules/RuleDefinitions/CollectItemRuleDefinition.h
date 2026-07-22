@@ -13,7 +13,7 @@ class ItemInstance;
 
 class CollectItemRuleDefinition : public GameRuleDefinition {
 private:
-    // These values should map directly to the xsd definition for this Rule
+    
     int m_itemId;
     unsigned char m_auxValue;
     int m_quantity;
@@ -44,5 +44,5 @@ public:
     static std::wstring generateXml(std::shared_ptr<ItemInstance> item);
 
 private:
-    // static std::wstring generateXml(CollectItemRuleDefinition *ruleDef);
+    
 };

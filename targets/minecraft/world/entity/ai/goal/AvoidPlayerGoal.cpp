@@ -33,7 +33,7 @@ AvoidPlayerGoal::AvoidPlayerGoal(PathfinderMob* mob,
                                  double sprintSpeedModifier)
     : avoidType(avoidType) {
     this->mob = mob;
-    // this->avoidType = avoidType;
+    
     this->maxDist = maxDist;
     this->walkSpeedModifier = walkSpeedModifier;
     this->sprintSpeedModifier = sprintSpeedModifier;

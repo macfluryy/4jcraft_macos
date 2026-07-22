@@ -14,10 +14,10 @@
 #include "minecraft/world/level/material/Material.h"
 
 ChoiceTask::ChoiceTask(
-    Tutorial* tutorial, int descriptionId, int promptId /*= -1*/,
-    bool requiresUserInput /*= false*/, int iConfirmMapping /*= 0*/,
-    int iCancelMapping /*= 0*/,
-    eTutorial_CompletionAction cancelAction /*= e_Tutorial_Completion_None*/)
+    Tutorial* tutorial, int descriptionId, int promptId ,
+    bool requiresUserInput , int iConfirmMapping ,
+    int iCancelMapping ,
+    eTutorial_CompletionAction cancelAction )
     : TutorialTask(tutorial, descriptionId, false, nullptr, true, false,
                    false) {
     if (requiresUserInput == true) {
@@ -44,11 +44,11 @@ bool ChoiceTask::isCompleted() {
     }
 
     if (ui.GetMenuDisplayed(tutorial->getPad())) {
-        // If a menu is displayed, then we use the handleUIInput to complete the
-        // task
+        
+        
     } else {
-        // If the player is under water then allow all keypresses so they can
-        // jump out
+        
+        
         if (pMinecraft->localplayers[tutorial->getPad()]->isUnderLiquid(
                 Material::water))
             return false;
@@ -86,7 +86,7 @@ int ChoiceTask::getPromptId() {
         return -1;
 }
 
-void ChoiceTask::setAsCurrentTask(bool active /*= true*/) {
+void ChoiceTask::setAsCurrentTask(bool active ) {
     enableConstraints(active);
     TutorialTask::setAsCurrentTask(active);
 }

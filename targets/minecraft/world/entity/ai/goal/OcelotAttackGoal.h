@@ -25,7 +25,7 @@ public:
     virtual void stop();
     virtual void tick();
 
-    // 4J Added override to update ai elements when loading entity from
-    // schematics
+    
+    
     virtual void setLevel(Level* level) { this->level = level; }
 };

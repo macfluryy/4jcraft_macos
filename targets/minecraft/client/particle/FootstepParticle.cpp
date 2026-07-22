@@ -18,7 +18,7 @@ ResourceLocation FootstepParticle::FOOTPRINT_LOCATION =
 FootstepParticle::FootstepParticle(Textures* textures, Level* level, double x,
                                    double y, double z)
     : Particle(level, x, y, z, 0, 0, 0) {
-    // 4J added initialisers
+    
     life = 0;
     lifeTime = 0;
 

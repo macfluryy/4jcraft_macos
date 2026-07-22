@@ -90,21 +90,21 @@ void Village::tick(int tick) {
         }
     }
 
-    // 4J - All commented out in java
-    //        for (DoorInfo di : doorInfos) {
-    //            level.addParticle("heart", di.getIndoorX() + 0.5,
-    //            di.getIndoorY() + .5f, di.getIndoorZ() + 0.5, 0, 1, 0);
-    //        }
-    //
-    //        for (int i = 0; i < 8; ++i)
-    //            for (int j = 0; j < 8; ++j)
-    //                level.addParticle("heart", center.x + 0.5 + i, center.y +
-    //                .5f, center.z + 0.5 + j, 0, 1, 0);
-    //        for (float i = 0; i < Math.PI * 2; i += 0.1) {
-    //            int x = center.x + (int) (Math.cos(i) * radius);
-    //            int z = center.z + (int) (Math.sin(i) * radius);
-    //            level.addParticle("heart", x, center.y + .5f, z, 0, 1, 0);
-    //        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 std::optional<Vec3> Village::findRandomSpawnPos(int x, int y, int z, int sx,
@@ -134,7 +134,7 @@ bool Village::canSpawnAt(int x, int y, int z, int sx, int sy, int sz) {
 }
 
 void Village::countGolem() {
-    // Fix - let bots report themselves?
+    
     AABB village_golem_bb =
         AABB(center->x, center->y, center->z, center->x, center->y, center->z)
             .grow(radius, 4, radius);
@@ -154,7 +154,7 @@ void Village::countPopulation() {
     delete villagers;
 
     if (populationSize == 0) {
-        // forget standing
+        
         playerStanding.clear();
     }
 }
@@ -180,7 +180,7 @@ std::vector<std::shared_ptr<DoorInfo> >* Village::getDoorInfos() {
 std::shared_ptr<DoorInfo> Village::getClosestDoorInfo(int x, int y, int z) {
     std::shared_ptr<DoorInfo> closest = nullptr;
     int closestDistSqr = std::numeric_limits<int>::max();
-    // for (DoorInfo dm : doorInfos)
+    
     for (auto it = doorInfos.begin(); it != doorInfos.end(); ++it) {
         std::shared_ptr<DoorInfo> dm = *it;
         int distSqr = dm->distanceToSqr(x, y, z);
@@ -195,7 +195,7 @@ std::shared_ptr<DoorInfo> Village::getClosestDoorInfo(int x, int y, int z) {
 std::shared_ptr<DoorInfo> Village::getBestDoorInfo(int x, int y, int z) {
     std::shared_ptr<DoorInfo> closest = nullptr;
     int closestDist = std::numeric_limits<int>::max();
-    // for (DoorInfo dm : doorInfos)
+    
     for (auto it = doorInfos.begin(); it != doorInfos.end(); ++it) {
         std::shared_ptr<DoorInfo> dm = *it;
 
@@ -219,7 +219,7 @@ bool Village::hasDoorInfo(int x, int y, int z) {
 
 std::shared_ptr<DoorInfo> Village::getDoorInfo(int x, int y, int z) {
     if (center->distSqr(x, y, z) > radius * radius) return nullptr;
-    // for (DoorInfo di : doorInfos)
+    
     for (auto it = doorInfos.begin(); it != doorInfos.end(); ++it) {
         std::shared_ptr<DoorInfo> di = *it;
         if (di->x == x && di->z == z && abs(di->y - y) <= 1) return di;
@@ -239,7 +239,7 @@ void Village::addDoorInfo(std::shared_ptr<DoorInfo> di) {
 bool Village::canRemove() { return doorInfos.empty(); }
 
 void Village::addAggressor(std::shared_ptr<LivingEntity> mob) {
-    // for (Aggressor a : aggressors)
+    
     for (auto it = aggressors.begin(); it != aggressors.end(); ++it) {
         Aggressor* a = *it;
         if (a->mob == mob) {
@@ -254,9 +254,9 @@ std::shared_ptr<LivingEntity> Village::getClosestAggressor(
     std::shared_ptr<LivingEntity> from) {
     double closestSqr = std::numeric_limits<double>::max();
     Aggressor* closest = nullptr;
-    // for (int i = 0; i < aggressors.size(); ++i)
+    
     for (auto it = aggressors.begin(); it != aggressors.end(); ++it) {
-        Aggressor* a = *it;  // aggressors.get(i);
+        Aggressor* a = *it;  
         double distSqr = a->mob->distanceToSqr(from);
         if (distSqr > closestSqr) continue;
         closest = a;
@@ -270,7 +270,7 @@ std::shared_ptr<Player> Village::getClosestBadStandingPlayer(
     double closestSqr = std::numeric_limits<double>::max();
     std::shared_ptr<Player> closest = nullptr;
 
-    // for (String player : playerStanding.keySet())
+    
     for (auto it = playerStanding.begin(); it != playerStanding.end(); ++it) {
         std::wstring player = it->first;
         if (isVeryBadStanding(player)) {
@@ -288,13 +288,13 @@ std::shared_ptr<Player> Village::getClosestBadStandingPlayer(
 }
 
 void Village::updateAggressors() {
-    // for (Iterator<Aggressor> it = aggressors.iterator(); it.hasNext();)
+    
     for (auto it = aggressors.begin(); it != aggressors.end();) {
-        Aggressor* a = *it;  // it.next();
+        Aggressor* a = *it;  
         if (!a->mob->isAlive() || abs(_tick - a->timeStamp) > 300) {
             delete *it;
             it = aggressors.erase(it);
-            // it.remove();
+            
         } else {
             ++it;
         }
@@ -304,9 +304,9 @@ void Village::updateAggressors() {
 void Village::updateDoors() {
     bool removed = false;
     bool resetBookings = level->random->nextInt(50) == 0;
-    // for (Iterator<DoorInfo> it = doorInfos.iterator(); it.hasNext();)
+    
     for (auto it = doorInfos.begin(); it != doorInfos.end();) {
-        std::shared_ptr<DoorInfo> dm = *it;  // it.next();
+        std::shared_ptr<DoorInfo> dm = *it;  
         if (resetBookings) dm->resetBookingCount();
         if (!isDoor(dm->x, dm->y, dm->z) || abs(_tick - dm->timeStamp) > 1200) {
             accCenter->x -= dm->x;
@@ -316,7 +316,7 @@ void Village::updateDoors() {
             dm->removed = true;
 
             it = doorInfos.erase(it);
-            // it.remove();
+            
         } else {
             ++it;
         }
@@ -340,16 +340,16 @@ void Village::calcInfo() {
     }
     center->set(accCenter->x / s, accCenter->y / s, accCenter->z / s);
     int maxRadiusSqr = 0;
-    // for (DoorInfo dm : doorInfos)
+    
     for (auto it = doorInfos.begin(); it != doorInfos.end(); ++it) {
         std::shared_ptr<DoorInfo> dm = *it;
         maxRadiusSqr = std::max(
             dm->distanceToSqr(center->x, center->y, center->z), maxRadiusSqr);
     }
     int doorDist =
-        Villages::MaxDoorDist;  // Take into local int for PS4 as max takes a
-                                // reference to the const int there and then
-                                // needs the value to exist for the linker
+        Villages::MaxDoorDist;  
+                                
+                                
     radius = std::max(doorDist, (int)sqrt((float)maxRadiusSqr) + 1);
 }
 
@@ -429,7 +429,7 @@ void Village::addAdditonalSaveData(CompoundTag* tag) {
     tag->putInt(L"ACZ", accCenter->z);
 
     ListTag<CompoundTag>* doorTags = new ListTag<CompoundTag>(L"Doors");
-    // for (DoorInfo dm : doorInfos)
+    
     for (auto it = doorInfos.begin(); it != doorInfos.end(); ++it) {
         std::shared_ptr<DoorInfo> dm = *it;
         CompoundTag* doorTag = new CompoundTag(L"Door");
@@ -444,7 +444,7 @@ void Village::addAdditonalSaveData(CompoundTag* tag) {
     tag->put(L"Doors", doorTags);
 
     ListTag<CompoundTag>* playerTags = new ListTag<CompoundTag>(L"Players");
-    // for (String player : playerStanding.keySet())
+    
     for (auto it = playerStanding.begin(); it != playerStanding.end(); ++it) {
         std::wstring player = it->first;
         CompoundTag* playerTag = new CompoundTag(player);
@@ -458,15 +458,15 @@ void Village::addAdditonalSaveData(CompoundTag* tag) {
 void Village::resetNoBreedTimer() { noBreedTimer = _tick; }
 
 bool Village::isBreedTimerOk() {
-    // prevent new villagers if a villager was killed by a mob within 3
-    // minutes
+    
+    
     return noBreedTimer == 0 ||
            (_tick - noBreedTimer) >=
                (SharedConstants::TICKS_PER_SECOND * 60 * 3);
 }
 
 void Village::rewardAllPlayers(int amount) {
-    // for (String player : playerStanding.keySet())
+    
     for (auto it = playerStanding.begin(); it != playerStanding.end(); ++it) {
         modifyStanding(it->first, amount);
     }

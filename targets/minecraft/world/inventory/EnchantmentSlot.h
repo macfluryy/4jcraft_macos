@@ -1,7 +1,7 @@
 #pragma once
-// 4J Stu Added
-// In EnchantmentMenu.java they create an anoymous class while creating some
-// slot. I have moved the content of that anonymous class to here
+
+
+
 
 #include "Slot.h"
 
@@ -14,5 +14,5 @@ public:
     virtual bool mayPlace(std::shared_ptr<ItemInstance> item) { return true; }
     virtual bool mayCombine(std::shared_ptr<ItemInstance> item) {
         return false;
-    }  // 4J Added
+    }  
 };

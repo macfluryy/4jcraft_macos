@@ -59,9 +59,9 @@ public:
     ClipChunk* clipChunk;
     uint64_t computeConnectivity(const uint8_t* tileIds);
     int id;
-    // public:
-    //	std::vector<std::shared_ptr<TileEntity> > renderableTileEntities;
-    //// 4J - removed
+    
+    
+    
 
 private:
     LevelRenderer::rteMap* globalRenderableTileEntities;
@@ -95,6 +95,6 @@ public:
     void renderBB();
     bool isEmpty();
     void setDirty();
-    void clearDirty();  // 4J added
+    void clearDirty();  
     bool emptyFlagSet(int layer);
 };

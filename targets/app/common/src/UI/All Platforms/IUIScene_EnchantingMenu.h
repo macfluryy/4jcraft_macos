@@ -2,7 +2,7 @@
 
 #include "IUIScene_AbstractContainerMenu.h"
 
-// The 0-indexed slot in the inventory list that lines up with the result slot
+
 #define ENCHANT_SCENE_ENCHANT_BUTTONS_UP_OFFSET 3
 #define ENCHANT_SCENE_ENCHANT_BUTTONS_DOWN_OFFSET -7
 #define ENCHANT_SCENE_INGREDIENT_SLOT_UP_OFFSET 0

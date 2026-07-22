@@ -22,7 +22,7 @@ ContainerSetContentPacket::ContainerSetContentPacket(
 }
 
 void ContainerSetContentPacket::read(
-    DataInputStream* dis)  // throws IOException
+    DataInputStream* dis)  
 {
     containerId = (int)dis->readByte();
     int count = dis->readShort();
@@ -33,7 +33,7 @@ void ContainerSetContentPacket::read(
 }
 
 void ContainerSetContentPacket::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     dos->writeByte((uint8_t)containerId);
     dos->writeShort(items.size());

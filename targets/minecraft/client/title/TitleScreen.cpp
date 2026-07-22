@@ -180,15 +180,15 @@ public:
 }
 
 TitleScreen::TitleScreen() {
-    // 4J - added initialisers
+    
     vo = 0;
     multiplayerButton = nullptr;
 
     splash = L"missingno";
-    //    try {	// 4J - removed try/catch
+    
     std::vector<std::wstring> splashes;
 
-    // 4jcraft: copied over from UIScene_MainMenu
+    
     int splashIndex;
 
     std::wstring filename = L"splashes.txt";
@@ -213,7 +213,7 @@ TitleScreen::TitleScreen() {
         eSplashRandomStart + 1 +
         random->nextInt((int)splashes.size() - (eSplashRandomStart + 1));
 
-    // Override splash text on certain dates
+    
     SYSTEMTIME LocalSysTime;
     GetLocalTime(&LocalSysTime);
     if (LocalSysTime.wMonth == 11 && LocalSysTime.wDay == 9) {
@@ -221,8 +221,8 @@ TitleScreen::TitleScreen() {
     } else if (LocalSysTime.wMonth == 6 && LocalSysTime.wDay == 1) {
         splashIndex = eSplashHappyBirthdayNotch;
     } else if (LocalSysTime.wMonth == 12 &&
-               LocalSysTime.wDay == 24)  // the Java game shows this on
-                                         // Christmas Eve, so we will too
+               LocalSysTime.wDay == 24)  
+                                         
     {
         splashIndex = eSplashMerryXmas;
     } else if (LocalSysTime.wMonth == 1 && LocalSysTime.wDay == 1) {
@@ -234,8 +234,8 @@ TitleScreen::TitleScreen() {
 
 void TitleScreen::tick() {
     vo += 1.0f;
-    // if( vo > 100.0f ) minecraft->setScreen(new SelectWorldScreen(this));
-    // // 4J - temp testing
+    
+    
 }
 
 void TitleScreen::keyPressed(wchar_t eventCharacter, int eventKey) {}
@@ -243,22 +243,22 @@ void TitleScreen::keyPressed(wchar_t eventCharacter, int eventKey) {}
 void TitleScreen::init() {
     app.DebugPrintf("TitleScreen::init() START\n");
 
-    // 4jcraft: this is for the blured panorama background
+    
     viewportTexture =
         minecraft->textures->getTexture(new BufferedImage(256, 256, 2));
-    /* 4J - removed
-Calendar c = Calendar.getInstance();
-c.setTime(new Date());
+    
 
-if (c.get(Calendar.MONTH) + 1 == 11 && c.get(Calendar.DAY_OF_MONTH) == 9) {
-    splash = "Happy birthday, ez!";
-} else if (c.get(Calendar.MONTH) + 1 == 6 && c.get(Calendar.DAY_OF_MONTH) == 1)
-{ splash = "Happy birthday, Notch!"; } else if (c.get(Calendar.MONTH) + 1 == 12
-&& c.get(Calendar.DAY_OF_MONTH) == 24) { splash = "Merry X-mas!"; } else if
-(c.get(Calendar.MONTH) + 1 == 1 && c.get(Calendar.DAY_OF_MONTH) == 1) { splash =
-"Happy new year!";
-}
-    */
+
+
+
+
+
+
+
+
+
+
+
 
     Language* language = Language::getInstance();
 
@@ -325,7 +325,7 @@ void TitleScreen::buttonClicked(Button* button) {
     if (button->id == 4) {
         app.DebugPrintf(
             "TitleScreen::buttonClicked() Exit Game if (button->id == 4)\n");
-        RenderManager.Close();  // minecraft->stop();
+        RenderManager.Close();  
     }
     if (button->id == 5) {
         app.DebugPrintf(
@@ -336,7 +336,7 @@ void TitleScreen::buttonClicked(Button* button) {
         app.ClearTerrainFeaturePosition();
 
         StorageManager.ResetSaveData();
-        // Tutorial is read-only; a separate save would clutter Saves/.
+        
         StorageManager.SetSaveDisabled(true);
         app.SetGameHostOption(eGameHostOption_WasntSaveOwner, false);
         app.SetGameHostOption(eGameHostOption_DisableSaving, 1);
@@ -358,8 +358,8 @@ void TitleScreen::buttonClicked(Button* button) {
         if (generators != nullptr && !generators->empty()) {
             param->levelGen = generators->at(0);
         } else {
-            // No tutorial registered - bail without leaving the screen
-            // in a half-set-up state.
+            
+            
             app.DebugPrintf(
                 "TitleScreen::buttonClicked() Play Tutorial: no level "
                 "generators registered, aborting\n");
@@ -389,9 +389,9 @@ void TitleScreen::buttonClicked(Button* button) {
     }
 }
 
-// 4jcraft: render our panorama
-// uses the TU panorama instead of JE panorama and as such a different rendering
-// method
+
+
+
 void TitleScreen::renderPanorama(float a) {
 #ifdef ENABLE_JAVA_GUIS
 
@@ -534,7 +534,7 @@ void TitleScreen::renderPanorama(float a) {
 #endif
 }
 
-// 4jcraft
+
 void TitleScreen::renderSkybox(float a) {
 #ifdef ENABLE_JAVA_GUIS
 #ifdef CLASSIC_PANORAMA
@@ -568,7 +568,7 @@ void TitleScreen::renderSkybox(float a) {
 #endif
 }
 
-// 4jcraft
+
 void TitleScreen::rotateAndBlur(float a) {
 #if defined(ENABLE_JAVA_GUIS) && defined(CLASSIC_PANORAMA)
     glBindTexture(GL_TEXTURE_2D, viewportTexture);
@@ -596,7 +596,7 @@ void TitleScreen::rotateAndBlur(float a) {
 
 void TitleScreen::render(int xm, int ym, float a) {
 #ifdef ENABLE_JAVA_GUIS
-    // 4jcraft: panorama
+    
     renderSkybox(a);
 
     Tesselator* t = Tesselator::getInstance();
@@ -605,7 +605,7 @@ void TitleScreen::render(int xm, int ym, float a) {
     int logoX = width / 2 - logoWidth / 2;
     int logoY = 30;
 
-    // 4jcraft: gradient for classic panorama
+    
 #ifdef CLASSIC_PANORAMA
     fillGradient(0, 0, width, height, -2130706433, 16777215);
     fillGradient(0, 0, width, height, 0, INT_MIN);
@@ -632,7 +632,7 @@ void TitleScreen::render(int xm, int ym, float a) {
 
     drawString(
         font, ClientConstants::VERSION_STRING, 2, height - 10,
-        0xffffff);  // 4jcraft: use the same height as the copyright message
+        0xffffff);  
     std::wstring msg = L"Copyright Mojang AB. Do not distribute.";
     drawString(font, msg, width - font->width(msg) - 2, height - 10, 0xffffff);
 

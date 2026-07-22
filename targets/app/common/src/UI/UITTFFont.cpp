@@ -35,7 +35,7 @@ UITTFFont::UITTFFont(const std::string& name, const std::string& path,
         IggyFontInstallTruetypeFallbackCodepointUTF8(
             "Mojangles_TTF", -1, IGGY_FONTFLAG_none, fallbackCharacter);
 
-        // 4J Stu - These are so we can use the default flash controls
+        
         IggyFontInstallTruetypeUTF8((void*)pbData, IGGY_TTC_INDEX_none,
                                     "Times New Roman", -1, IGGY_FONTFLAG_none);
         IggyFontInstallTruetypeUTF8((void*)pbData, IGGY_TTC_INDEX_none, "Arial",

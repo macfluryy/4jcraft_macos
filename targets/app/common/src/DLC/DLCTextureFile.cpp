@@ -13,7 +13,7 @@ DLCTextureFile::DLCTextureFile(const std::wstring& path)
 }
 
 void DLCTextureFile::addData(std::uint8_t* pbData, std::uint32_t dataBytes) {
-    // app.AddMemoryTextureFile(m_path,pbData,dwBytes);
+    
     m_pbData = pbData;
     m_dataBytes = dataBytes;
 }

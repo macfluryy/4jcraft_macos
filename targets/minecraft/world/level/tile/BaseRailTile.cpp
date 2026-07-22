@@ -18,9 +18,9 @@ BaseRailTile::Rail::Rail(Level* level, int x, int y, int z) {
 
     int id = level->getTile(x, y, z);
 
-    // 4J Stu - We saw a random crash near the end of development on XboxOne
-    // orignal version where the id here isn't a tile any more Adding this check
-    // in to avoid that crash
+    
+    
+    
     m_bValidRail = isRail(id);
     if (m_bValidRail) {
         int direction = level->getData(x, y, z);
@@ -120,7 +120,7 @@ bool BaseRailTile::Rail::connectsTo(Rail* rail) {
     if (m_bValidRail) {
         auto itEnd = connections.end();
         for (auto it = connections.begin(); it != itEnd; it++) {
-            TilePos* p = *it;  // connections[i];
+            TilePos* p = *it;  
             if (p->x == rail->x && p->z == rail->z) {
                 return true;
             }
@@ -133,7 +133,7 @@ bool BaseRailTile::Rail::hasConnection(int x, int y, int z) {
     if (m_bValidRail) {
         auto itEnd = connections.end();
         for (auto it = connections.begin(); it != itEnd; it++) {
-            TilePos* p = *it;  // connections[i];
+            TilePos* p = *it;  
             if (p->x == x && p->z == z) {
                 return true;
             }
@@ -328,7 +328,7 @@ HitResult* BaseRailTile::clip(Level* level, int xt, int yt, int zt, Vec3* a,
 void BaseRailTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     int data = level->getData(x, y, z);
     if (data >= 2 && data <= 5) {
@@ -397,7 +397,7 @@ void BaseRailTile::updateDir(Level* level, int x, int y, int z, bool first) {
 }
 
 int BaseRailTile::getPistonPushReaction() {
-    // override the decoration material's reaction
+    
     return Material::PUSH_NORMAL;
 }
 

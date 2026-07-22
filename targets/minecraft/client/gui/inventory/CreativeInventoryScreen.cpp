@@ -30,39 +30,39 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/Tile.h"
 
-// Static member initialization
+
 int CreativeInventoryScreen::selectedTabIndex =
     IUIScene_CreativeMenu::eCreativeInventoryTab_BuildingBlocks;
 const int CreativeInventoryScreen::tabIconIds
     [IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT] = {
-        // Building Blocks
+        
         Tile::redBrick_Id,
 
-        // Decorations
+        
         Tile::rose_Id,
 
-        // Redstone & Transportation
+        
         Item::redStone_Id,
 
-        // Materials
+        
         Item::stick_Id,
 
-        // Food
+        
         Item::apple_Id,
 
-// Fix for it not compiling with shiggy
+
 #ifdef ENABLE_JAVA_GUIS
-        // Search Items
+        
         Item::compass_Id,
 #endif
 
-        // Tools, Weapons & Armor
+        
         Item::hatchet_iron_Id,
 
-        // Brewing
+        
         Item::potion_Id,
 
-        // Materials
+        
         Item::bucket_lava_Id};
 
 std::shared_ptr<SimpleContainer> CreativeInventoryScreen::basicInventory =
@@ -71,13 +71,13 @@ ItemRenderer* CreativeInventoryScreen::itemRenderer = new ItemRenderer();
 std::shared_ptr<ItemInstance> CreativeInventoryScreen::tabIcons
     [IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT];
 
-// ContainerCreative implementation
+
 CreativeInventoryScreen::ContainerCreative::ContainerCreative(
     std::shared_ptr<Player> player)
     : AbstractContainerMenu() {
     std::shared_ptr<Inventory> inventoryplayer = player->inventory;
 
-    // Add creative inventory slots (5 rows x 9 columns = 45 slots)
+    
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLUMNS; j++) {
             addSlot(new Slot(basicInventory, i * COLUMNS + j, 9 + j * 18,
@@ -85,7 +85,7 @@ CreativeInventoryScreen::ContainerCreative::ContainerCreative(
         }
     }
 
-    // Add hotbar slots (9 slots at bottom)
+    
     for (int k = 0; k < 9; ++k) {
         addSlot(new Slot(inventoryplayer, k, 9 + k * 18, 112));
     }
@@ -111,9 +111,9 @@ CreativeInventoryScreen::ContainerCreative::clicked(
     std::shared_ptr<Inventory> inventory = player->inventory;
     std::shared_ptr<ItemInstance> carried = inventory->getCarried();
 
-    // Handle clicks outside the GUI
+    
     if (slotIndex == SLOT_CLICKED_OUTSIDE) {
-        // Drop the carried item
+        
         if (carried != nullptr) {
             if (buttonNum == 0) {
                 player->drop(carried, true);
@@ -131,18 +131,18 @@ CreativeInventoryScreen::ContainerCreative::clicked(
         return std::shared_ptr<ItemInstance>();
     }
 
-    // Validate slot index
+    
     if (slotIndex < 0 || slotIndex >= (int)slots.size()) {
         return std::shared_ptr<ItemInstance>();
     }
 
     Slot* slot = slots.at(slotIndex);
 
-    // Handle creative inventory slots (0-44)
+    
     if (slotIndex >= 0 && slotIndex < ITEMS_PER_PAGE) {
         std::shared_ptr<ItemInstance> slotItem = slot->getItem();
 
-        // Handle SWAP (number key) - copy item to hotbar
+        
         if (clickType == CLICK_SWAP) {
             if (slotItem != nullptr && buttonNum >= 0 && buttonNum < 9) {
                 std::shared_ptr<ItemInstance> copy = slotItem->copy();
@@ -152,7 +152,7 @@ CreativeInventoryScreen::ContainerCreative::clicked(
             return std::shared_ptr<ItemInstance>();
         }
 
-        // Handle CLONE (middle click)
+        
         if (clickType == CLICK_CLONE) {
             if (slotItem != nullptr) {
                 std::shared_ptr<ItemInstance> copy = slotItem->copy();
@@ -162,29 +162,29 @@ CreativeInventoryScreen::ContainerCreative::clicked(
             return std::shared_ptr<ItemInstance>();
         }
 
-        // Handle normal clicks
+        
         if (slotItem != nullptr) {
-            if (buttonNum == 0)  // Left click
+            if (buttonNum == 0)  
             {
                 std::shared_ptr<ItemInstance> copy = slotItem->copy();
                 copy->count = copy->getMaxStackSize();
                 inventory->setCarried(copy);
-            } else if (buttonNum == 1)  // Right click
+            } else if (buttonNum == 1)  
             {
                 std::shared_ptr<ItemInstance> copy = slotItem->copy();
                 copy->count = 1;
                 inventory->setCarried(copy);
             }
         } else if (carried != nullptr) {
-            // Clicking on empty creative slot with item - clear the carried
-            // item
+            
+            
             inventory->setCarried(std::shared_ptr<ItemInstance>());
         }
 
         return std::shared_ptr<ItemInstance>();
     }
 
-    // For hotbar slots (45-53), use normal container behavior
+    
     return AbstractContainerMenu::clicked(slotIndex, buttonNum, clickType,
                                           player);
 }
@@ -241,12 +241,12 @@ void CreativeInventoryScreen::init() {
 
 void CreativeInventoryScreen::updateEvents() {
 #ifdef ENABLE_JAVA_GUIS
-    // Handle mouse wheel scrolling.
-    // We use ButtonDown with the scroll actions rather than GetScrollDelta()
-    // because both share s_scrollTicksForButtonPressed; whichever is called
-    // first in a tick zeroes it, so GetScrollDelta() would return 0 if hotbar
-    // scroll ran first. ButtonDown/ScrollSnap() snapshots once per tick so all
-    // callers see the same value.
+    
+    
+    
+    
+    
+    
     if (needsScrollBars()) {
         ContainerCreative* container = (ContainerCreative*)menu;
         int totalRows =
@@ -287,8 +287,8 @@ void CreativeInventoryScreen::mouseClicked(int x, int y, int buttonNum) {
         int mouseX = x - (width - imageWidth) / 2;
         int mouseY = y - (height - imageHeight) / 2;
 
-        // Check for tab clicks first; let mouseReleased handle the actual tab
-        // switch
+        
+        
         for (int tab = 0;
              tab < IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT; tab++) {
             if (isMouseOverTab(tab, mouseX, mouseY)) {
@@ -296,7 +296,7 @@ void CreativeInventoryScreen::mouseClicked(int x, int y, int buttonNum) {
             }
         }
 
-        // Determine which slot (if any) was clicked
+        
         Slot* slot = findSlot(x, y);
 
         int xo = (width - imageWidth) / 2;
@@ -317,23 +317,23 @@ void CreativeInventoryScreen::mouseClicked(int x, int y, int buttonNum) {
         int clickType = quickKey ? AbstractContainerMenu::CLICK_QUICK_MOVE
                                  : AbstractContainerMenu::CLICK_PICKUP;
 
-        // 4jcraft: bypass AbstractContainerScreen::mouseClicked /
-        // handleInventoryMouseClick here intentionally. The normal path sends a
-        // ContainerClickPacket to the server, where player->containerMenu is
-        // still the InventoryMenu (45 slots). Creative slot indices 0-44 are
-        // valid in ContainerCreative but not in InventoryMenu, and hotbar
-        // indices 45-53 exceed InventoryMenu's slot count entirely, causing an
-        // out-of-range crash in AbstractContainerMenu::clicked on the server
-        // side. Instead we apply the click locally and sync hotbar changes via
-        // SetCreativeModeSlotPacket.
+        
+        
+        
+        
+        
+        
+        
+        
+        
         menu->clicked(slotId, buttonNum, clickType, minecraft->player);
 
-        // 4jcraft: sync hotbar slot changes to the server using
-        // SetCreativeModeSlotPacket. The packet handler
-        // (PlayerConnection::handleSetCreativeModeSlot) validates slots against
-        // InventoryMenu coordinates where the hotbar starts at
-        // USE_ROW_SLOT_START (36), so we must offset the local hotbar index
-        // (0-8) accordingly.
+        
+        
+        
+        
+        
+        
         if (slotId >= ITEMS_PER_PAGE && slotId < ITEMS_PER_PAGE + 9) {
             int hotbarSlot = slotId - ITEMS_PER_PAGE;
             std::shared_ptr<ItemInstance> hotbarItem =
@@ -351,7 +351,7 @@ void CreativeInventoryScreen::mouseReleased(int x, int y, int buttonNum) {
         int mouseX = x - (width - imageWidth) / 2;
         int mouseY = y - (height - imageHeight) / 2;
 
-        // Check for tab clicks
+        
         for (int tab = 0;
              tab < IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT; tab++) {
             if (isMouseOverTab(tab, mouseX, mouseY)) {
@@ -365,10 +365,10 @@ void CreativeInventoryScreen::mouseReleased(int x, int y, int buttonNum) {
 }
 
 void CreativeInventoryScreen::render(int xm, int ym, float a) {
-    // Java: drawDefaultBackground()
+    
     renderBackground();
 
-    // Handle scrollbar dragging
+    
     bool mouseDown = isLeftMouseDown;
     int left = (width - imageWidth) / 2;
     int top = (height - imageHeight) / 2;
@@ -429,7 +429,7 @@ void CreativeInventoryScreen::renderBg(float a) {
         minecraft->textures->loadTexture(TN_GUI_CREATIVE_TAB_ITEM_SEARCH);
     static int scrollTex =
         minecraft->textures->loadTexture(TN_GUI_CREATIVE_TABS);
-    // Render all non-selected tabs first
+    
     for (int tab = 0; tab < IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT;
          tab++) {
         if (tab != selectedTabIndex) {
@@ -437,12 +437,12 @@ void CreativeInventoryScreen::renderBg(float a) {
         }
     }
 
-    // Load and render main creative inventory background
+    
     glColor4f(1, 1, 1, 1);
     minecraft->textures->bind((selectedTabIndex == 5) ? searchTex : itemsTex);
     blit(x, y, 0, 0, imageWidth, imageHeight);
 
-    // Render scrollbar
+    
     minecraft->textures->bind(scrollTex);
 
     int scrollX = x + 175;
@@ -456,7 +456,7 @@ void CreativeInventoryScreen::renderBg(float a) {
         blit(scrollX, scrollY, 244, 0, 12, 15);
     }
 
-    // Render selected tab last (on top)
+    
     renderTab(selectedTabIndex);
 #endif
 }
@@ -494,12 +494,12 @@ void CreativeInventoryScreen::setCurrentCreativeTab(int tab) {
     ContainerCreative* container = (ContainerCreative*)menu;
     container->itemList.clear();
 
-    // Populate itemList from the tab's category groups
+    
     if (IUIScene_CreativeMenu::specs && IUIScene_CreativeMenu::specs[tab]) {
         IUIScene_CreativeMenu::TabSpec* spec =
             IUIScene_CreativeMenu::specs[tab];
 
-        // Add items from static groups
+        
         for (int i = 0; i < spec->m_staticGroupsCount; ++i) {
             int groupIdx = spec->m_staticGroupsA[i];
             if (groupIdx >= 0 &&
@@ -553,7 +553,7 @@ void CreativeInventoryScreen::renderTab(int tab) {
         x += tabColumn;
     }
 
-    // Tabs are in the top row
+    
     if (tabFirstRow) {
         y -= 28;
     } else {
@@ -561,13 +561,13 @@ void CreativeInventoryScreen::renderTab(int tab) {
         y += imageHeight - 4;
     }
 
-    // Render tab background
+    
     glDisable(GL_LIGHTING);
     minecraft->textures->bind(tex);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     blit(x, y, tabColumn * 28, sy, 28, 32);
 
-    // Render tab icon
+    
     x += 6;
     y += 8 + (tabFirstRow ? 1 : -1);
     glEnable(GL_LIGHTING);

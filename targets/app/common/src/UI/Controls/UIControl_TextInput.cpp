@@ -17,7 +17,7 @@ bool UIControl_TextInput::setupControl(UIScene* scene, IggyValuePath* parent,
     UIControl::setControlType(UIControl::eTextInput);
     bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-    // TextInput specific initialisers
+    
     m_textName = registerFastName(L"text");
     m_funcChangeState = registerFastName(L"ChangeState");
     m_funcSetCharLimit = registerFastName(L"SetCharLimit");

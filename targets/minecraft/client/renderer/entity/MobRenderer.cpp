@@ -41,7 +41,7 @@ bool MobRenderer::shouldShowName(std::shared_ptr<LivingEntity> mob) {
 void MobRenderer::renderLeash(std::shared_ptr<Mob> entity, double x, double y,
                               double z, float rot, float a) {
     std::shared_ptr<Entity> roper = entity->getLeashHolder();
-    // roper = entityRenderDispatcher.cameraEntity;
+    
     if (roper != nullptr) {
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 

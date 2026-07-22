@@ -15,7 +15,7 @@ class DataOutputStream;
 class File;
 
 class RegionFile {
-    // 4J Stu TEMP FOR TESTING
+    
 private:
     FileEntry* fileEntry;
 
@@ -31,7 +31,7 @@ private:
     static std::vector<uint8_t> emptySector;
 
     File* fileName;
-    // void* file;
+    
     ConsoleSaveFile* m_saveFile;
 
     int* offsets;
@@ -39,22 +39,22 @@ private:
     std::vector<bool>* sectorFree;
     int sizeDelta;
     int64_t _lastModified;
-    bool m_bIsEmpty;  // 4J added
+    bool m_bIsEmpty;  
 
 public:
     RegionFile(ConsoleSaveFile* saveFile, File* path);
     ~RegionFile();
 
-    /* the modification date of the region file when it was first opened */
+    
     int64_t lastModified();
 
-    /* gets how much the region file has grown since it was last checked */
+    
     int getSizeDelta();
 
-    /*
-     * gets an (uncompressed) stream representing the chunk data returns null if
-     * the chunk is not found or an error occurs
-     */
+    
+
+
+
     DataInputStream* getChunkDataInputStream(int x, int z);
     DataOutputStream* getChunkDataOutputStream(int x, int z);
 
@@ -73,17 +73,17 @@ public:
         void close() { rf->write(x, z, buf.data(), count); }
     };
 
-    /* write a chunk at (x,z) with length bytes of data to disk */
+    
 protected:
     void write(int x, int z, uint8_t* data, int length);
 
-    /* write a chunk data to the region file at specified sector number */
+    
 private:
     void write(int sectorNumber, uint8_t* data, int length,
                unsigned int compLength);
-    void zero(int sectorNumber, int length);  // 4J added
+    void zero(int sectorNumber, int length);  
 
-    /* is this an invalid chunk coordinate? */
+    
     bool outOfBounds(int x, int z);
 
     int getOffset(int x, int z);
@@ -92,7 +92,7 @@ public:
     bool hasChunk(int x, int z);
 
 private:
-    void insertInitialSectors();  // 4J added
+    void insertInitialSectors();  
     void setOffset(int x, int z, int offset);
     void setTimestamp(int x, int z, int value);
 

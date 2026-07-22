@@ -21,18 +21,18 @@ private:
     BookModel* model;
     Random random;
 
-    // 4J JEV: Book animation variables.
+    
     int time;
     float flip, oFlip, flipT, flipA;
     float open, oOpen;
 
-    // bool m_bDirty;
-    // float m_fScale,m_fAlpha;
-    // int	m_iPad;
+    
+    
+    
     std::shared_ptr<ItemInstance> last;
 
-    // float m_fScreenWidth,m_fScreenHeight;
-    // float m_fRawWidth,m_fRawHeight;
+    
+    
 
     void tickBook();
 

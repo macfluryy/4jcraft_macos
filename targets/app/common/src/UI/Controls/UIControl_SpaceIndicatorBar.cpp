@@ -24,7 +24,7 @@ bool UIControl_SpaceIndicatorBar::setupControl(UIScene* scene,
     UIControl::setControlType(UIControl::eProgress);
     bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-    // Progress specific initialisers
+    
     m_setSaveSizeFunc = registerFastName(L"setSaveGameSize");
     m_setTotalSizeFunc = registerFastName(L"setTotalSize");
     m_setSaveGameOffsetFunc = registerFastName(L"setSaveGameOffset");

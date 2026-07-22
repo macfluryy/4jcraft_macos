@@ -149,7 +149,7 @@ int HopperTile::getRenderShape() { return SHAPE_HOPPER; }
 
 bool HopperTile::isCubeShaped() { return false; }
 
-bool HopperTile::isSolidRender(bool isServerLevel /*= false*/) { return false; }
+bool HopperTile::isSolidRender(bool isServerLevel ) { return false; }
 
 bool HopperTile::shouldRenderFace(LevelSource* level, int x, int y, int z,
                                   int face) {

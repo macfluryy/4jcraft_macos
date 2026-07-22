@@ -6,14 +6,14 @@
 class Mob;
 class Model;
 
-// This was used in MobRenderer but lots of code moved to LivingEntity and I
-// haven't put this back yet
-/*#define PLAYER_NAME_READABLE_FULLSCREEN 16
-#define PLAYER_NAME_READABLE_DISTANCE_SPLITSCREEN 8
-#define PLAYER_NAME_READABLE_DISTANCE_SD 8*/
 
-// 4J - this used to be a generic : public class MobRenderer<T extends Mob>
-// extends EntityRenderer<T>
+
+
+
+
+
+
+
 class MobRenderer : public LivingEntityRenderer {
 public:
     MobRenderer(Model* model, float shadow);

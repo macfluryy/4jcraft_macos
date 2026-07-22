@@ -21,9 +21,9 @@ bool EnderpearlItem::TestUse(std::shared_ptr<ItemInstance> itemInstance,
 std::shared_ptr<ItemInstance> EnderpearlItem::use(
     std::shared_ptr<ItemInstance> instance, Level* level,
     std::shared_ptr<Player> player) {
-    // 4J-PB - Not sure why this was disabled for creative mode, so commenting
-    // out
-    // if (player->abilities.instabuild) return instance;
+    
+    
+    
     if (player->riding != nullptr) return instance;
     if (!player->abilities.instabuild) {
         instance->count--;

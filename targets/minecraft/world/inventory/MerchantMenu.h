@@ -39,8 +39,8 @@ public:
     std::shared_ptr<MerchantContainer> getTradeContainer();
     void addSlotListener(ContainerListener* listener);
     void broadcastChanges();
-    void slotsChanged();  // 4J used to take a std::shared_ptr<Container> but
-                          // wasn't using it, so removed to simplify things
+    void slotsChanged();  
+                          
     void setSelectionHint(int hint);
     void setData(int id, int value);
     bool stillValid(std::shared_ptr<Player> player);
@@ -48,5 +48,5 @@ public:
                                                  int slotIndex);
     void removed(std::shared_ptr<Player> player);
 
-    std::shared_ptr<Merchant> getMerchant();  // 4J Added
+    std::shared_ptr<Merchant> getMerchant();  
 };

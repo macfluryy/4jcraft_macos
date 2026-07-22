@@ -51,13 +51,13 @@ public:
 
     virtual EUIScene getSceneType() { return eUIScene_MessageBox; }
 
-    // Returns true if lower scenes in this scenes layer, or in any layer below
-    // this scenes layers should be hidden
+    
+    
     virtual bool hidesLowerScenes() { return false; }
     virtual bool blocksInput() { return true; }
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
     virtual void updateTooltips();

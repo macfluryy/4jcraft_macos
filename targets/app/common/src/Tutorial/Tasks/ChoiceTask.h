@@ -1,12 +1,12 @@
 #pragma once
-// using namespace std;
+
 
 #include "app/common/src/Tutorial/TutorialEnum.h"
 #include "TutorialTask.h"
 
 class Tutorial;
 
-// Information messages with a choice
+
 class ChoiceTask : public TutorialTask {
 private:
     int m_iConfirmMapping, m_iCancelMapping;

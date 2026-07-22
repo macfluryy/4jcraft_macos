@@ -105,8 +105,8 @@ public:
 };
 
 class FlintAndSteelDispenseBehavior : public DefaultDispenseItemBehavior {
-    // bool success; // 4J-JEV: Removed because we have something cleaner for
-    // this now.
+    
+    
 public:
     std::shared_ptr<ItemInstance> execute(
         BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
@@ -117,8 +117,8 @@ protected:
 };
 
 class DyeDispenseBehavior : public DefaultDispenseItemBehavior {
-    // bool success; // 4J-JEV: Removed because we have something cleaner for
-    // this now.
+    
+    
 public:
     virtual std::shared_ptr<ItemInstance> execute(
         BlockSource* source, std::shared_ptr<ItemInstance> dispensed,

@@ -11,7 +11,7 @@ class Inventory;
 class Level;
 
 class EnchantmentMenu : public AbstractContainerMenu {
-    // 4J Stu Made these public for UI menus, perhaps should make friend class?
+    
 public:
     static const int INGREDIENT_SLOT = 0;
     static const int INV_SLOT_START = EnchantmentMenu::INGREDIENT_SLOT + 1;
@@ -27,7 +27,7 @@ private:
     int x, y, z;
     Random random;
 
-    bool m_costsChanged;  // 4J Added
+    bool m_costsChanged;  
 
 public:
     int64_t nameSeed;
@@ -42,8 +42,8 @@ public:
     virtual void broadcastChanges();
     virtual void setData(int id, int value);
     virtual void
-    slotsChanged();  // 4J used to take a std::shared_ptr<Container> container
-                     // but wasn't using it, so removed to simplify things
+    slotsChanged();  
+                     
     virtual bool clickMenuButton(std::shared_ptr<Player> player, int i);
     void removed(std::shared_ptr<Player> player);
     virtual bool stillValid(std::shared_ptr<Player> player);

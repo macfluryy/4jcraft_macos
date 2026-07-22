@@ -14,11 +14,11 @@
 #include "minecraft/world/level/Level.h"
 
 LavaSlime::LavaSlime(Level* level) : Slime(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called 4J Stu - The
-    // Slime ctor has already called this, and as we don't override it here
-    // don't need to call it
-    // this->defineSynchedData();
+    
+    
+    
+    
+    
     registerAttributes();
 
     fireImmune = true;
@@ -50,7 +50,7 @@ std::shared_ptr<Slime> LavaSlime::createChild() {
 }
 
 int LavaSlime::getDeathLoot() {
-    // 4J-PB - brought forward the magma cream drops
+    
     return Item::magmaCream_Id;
 }
 
@@ -102,8 +102,8 @@ int LavaSlime::getSquishSound() {
 }
 
 bool LavaSlime::isInLava() {
-    // hack that makes the lava slimes move freely on the bottom of the lava
-    // oceans
+    
+    
     return false;
 }
 

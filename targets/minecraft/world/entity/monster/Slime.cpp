@@ -35,8 +35,8 @@ void Slime::_init() {
 }
 
 Slime::Slime(Level* level) : Mob(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -113,7 +113,7 @@ void Slime::tick() {
         }
         targetSquish = -0.5f;
     }
-    // 4J Stu - Brought forward from 1.3 in TU7 to fix lava slime render
+    
     else if (!onGround && wasOnGround) {
         targetSquish = 1;
     }
@@ -145,8 +145,8 @@ void Slime::serverAiStep() {
                     0.8f);
         }
 
-        // 4J Removed TU7 to bring forward change to fix lava slime render in MP
-        // targetSquish = 1;
+        
+        
         xxa = 1 - random->nextFloat() * 2;
         yya = (float)1 * getSize();
     } else {
@@ -170,11 +170,11 @@ void Slime::remove() {
     if (!level->isClientSide && size > 1 && getHealth() <= 0) {
         int count = 2 + random->nextInt(3);
         for (int i = 0; i < count; i++) {
-            // The mob spawner can currently make a maximum of 25 slimes
-            // (limited to 50% of the total amount of monsters which is 50) and
-            // so limit to slightly more than this so we have some head room to
-            // make a few spawned children. Also always create at least one new
-            // slime since we are getting rid of this one anyway.
+            
+            
+            
+            
+            
             if (i == 0 || level->countInstanceOf(eTYPE_SLIME, true) < 35) {
                 float xd = (i % 2 - 0.5f) * size / 4.0f;
                 float zd = (i / 2 - 0.5f) * size / 4.0f;
@@ -230,9 +230,9 @@ bool Slime::canSpawn() {
         return false;
     }
     Random* lcr =
-        lc->getRandom(987234911l);  // 4J - separated out so we can delete
+        lc->getRandom(987234911l);  
     if ((getSize() == 1 || level->difficulty > Difficulty::PEACEFUL)) {
-        // spawn slime in swamplands at night
+        
         Biome* biome = level->getBiome(Mth::floor(x), Mth::floor(z));
 
         if (biome == Biome::swampland && y > 50 && y < 70 &&

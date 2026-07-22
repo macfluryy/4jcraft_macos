@@ -17,7 +17,7 @@ class BeaconTileEntity : public TileEntity, public Container {
 public:
     eINSTANCEOF GetType() { return eTYPE_BEACONTILEENTITY; }
     static TileEntity* create() { return new BeaconTileEntity(); }
-    // 4J Added
+    
     virtual std::shared_ptr<TileEntity> clone();
 
 private:
@@ -58,7 +58,7 @@ public:
     int getPrimaryPower();
     int getSecondaryPower();
     int getLevels();
-    // client-side method used by GUI
+    
     void setLevels(int levels);
     void setPrimaryPower(int primaryPower);
     void setSecondaryPower(int secondaryPower);
@@ -81,6 +81,6 @@ public:
     void stopOpen();
     bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item);
 
-    // 4J Stu - For container
+    
     virtual void setChanged() { TileEntity::setChanged(); }
 };

@@ -1,5 +1,5 @@
-// Minecraft.cpp : Defines the entry point for the application.
-//
+
+
 
 #include <assert.h>
 
@@ -22,10 +22,10 @@
 
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
-// #include "Social/SocialManager.h"
-// #include "app/common/src/Leaderboards/LeaderboardManager.h"
-// #include "../Common/XUI/XUI_Scene_Container.h"
-// #include "NetworkManager.h"
+
+
+
+
 #include "../Resource.h"
 #include "Sentient/SentientManager.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
@@ -43,25 +43,25 @@ uint16_t ui16GlobalText[256];
 #define THEME_NAME "584111F70AAAAAAA"
 #define THEME_FILESIZE 2797568
 
-// #define THREE_MB 3145728 // minimum save size (checking for this on a
-// selected device) #define FIVE_MB 5242880 // minimum save size (checking for
-// this on a selected device) #define FIFTY_TWO_MB (1024*1024*52) // Maximum TCR
-// space required for a save (checking for this on a selected device)
-#define FIFTY_ONE_MB \
-    (1000000 * 51)  // Maximum TCR space required for a save is 52MB (checking
-                    // for this on a selected device)
 
-// #define PROFILE_VERSION 3 // new version for the interim bug fix 166 TU
+
+
+
+#define FIFTY_ONE_MB \
+    (1000000 * 51)  
+                    
+
+
 #define NUM_PROFILE_VALUES 5
 #define NUM_PROFILE_SETTINGS 4
 uint32_t dwProfileSettingsA[NUM_PROFILE_VALUES] = {0, 0, 0, 0, 0};
 
-//-------------------------------------------------------------------------------------
-// Time             Since fAppTime is a float, we need to keep the quadword app
-// time
-//                  as a LARGE_INTEGER so that we don't lose precision after
-//                  running for a long time.
-//-------------------------------------------------------------------------------------
+
+
+
+
+
+
 
 bool g_bWidescreen = true;
 
@@ -69,10 +69,10 @@ int g_iScreenWidth = 1920;
 int g_iScreenHeight = 1080;
 
 void DefineActions(void) {
-    // The app needs to define the actions required, and the possible mappings
-    // for these
+    
+    
 
-    // Split into Menu actions, and in-game actions
+    
 
     InputManager.SetGameJoypadMaps(MAP_STYLE_0, ACTION_MENU_A,
                                    _360_JOY_BUTTON_A);
@@ -384,16 +384,16 @@ ID3D11RenderTargetView* g_pRenderTargetView = nullptr;
 ID3D11DepthStencilView* g_pDepthStencilView = nullptr;
 ID3D11Texture2D* g_pDepthStencilBuffer = nullptr;
 
-//
-//  FUNCTION: WndProc(HWND, uint32_t, WPARAM, LPARAM)
-//
-//  PURPOSE:  Processes messages for the main window.
-//
-//  WM_COMMAND	- process the application menu
-//  WM_PAINT	- Paint the main window
-//  WM_DESTROY	- post a quit message and return
-//
-//
+
+
+
+
+
+
+
+
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, uint32_t message, WPARAM wParam,
                          LPARAM lParam) {
     int wmId, wmEvent;
@@ -404,7 +404,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, uint32_t message, WPARAM wParam,
         case WM_COMMAND:
             wmId = LOWORD(wParam);
             wmEvent = HIWORD(wParam);
-            // Parse the menu selections:
+            
             switch (wmId) {
                 case IDM_EXIT:
                     DestroyWindow(hWnd);
@@ -416,7 +416,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, uint32_t message, WPARAM wParam,
             break;
         case WM_PAINT:
             hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code here...
+            
             EndPaint(hWnd, &ps);
             break;
         case WM_DESTROY:
@@ -428,11 +428,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, uint32_t message, WPARAM wParam,
     return 0;
 }
 
-//
-//  FUNCTION: MyRegisterClass()
-//
-//  PURPOSE: Registers the window class.
-//
+
+
+
+
+
 ATOM MyRegisterClass(HINSTANCE hInstance) {
     WNDCLASSEX wcex;
 
@@ -453,27 +453,27 @@ ATOM MyRegisterClass(HINSTANCE hInstance) {
     return RegisterClassEx(&wcex);
 }
 
-//
-//   FUNCTION: InitInstance(HINSTANCE, int)
-//
-//   PURPOSE: Saves instance handle and creates main window
-//
-//   COMMENTS:
-//
-//        In this function, we save the instance handle in a global variable and
-//        create and display the main program window.
-//
+
+
+
+
+
+
+
+
+
+
 bool InitInstance(HINSTANCE hInstance, int nCmdShow) {
-    g_hInst = hInstance;  // Store instance handle in our global variable
+    g_hInst = hInstance;  
 
     RECT wr = {0, 0, g_iScreenWidth,
-               g_iScreenHeight};  // set the size, but not the position
-    AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, false);  // adjust the size
+               g_iScreenHeight};  
+    AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, false);  
 
     g_hWnd = CreateWindow("MinecraftClass", "Minecraft", WS_OVERLAPPEDWINDOW,
                           CW_USEDEFAULT, 0,
-                          wr.right - wr.left,  // width of the window
-                          wr.bottom - wr.top,  // height of the window
+                          wr.right - wr.left,  
+                          wr.bottom - wr.top,  
                           nullptr, nullptr, hInstance, nullptr);
 
     if (!g_hWnd) {
@@ -486,15 +486,15 @@ bool InitInstance(HINSTANCE hInstance, int nCmdShow) {
     return true;
 }
 
-// 4J Stu - These functions are referenced from the Windows Input library
+
 void ClearGlobalText() {
-    // clear the global text
+    
     memset(chGlobalText, 0, 256);
     memset(ui16GlobalText, 0, 512);
 }
 
 uint16_t* GetGlobalText() {
-    // copy the ch text to ui16
+    
     char* pchBuffer = (char*)ui16GlobalText;
     for (int i = 0; i < 256; i++) {
         pchBuffer[i * 2] = chGlobalText[i];
@@ -506,7 +506,7 @@ void SeedEditBox() {
               reinterpret_cast<DLGPROC>(DlgProc));
 }
 
-//---------------------------------------------------------------------------
+
 LRESULT CALLBACK DlgProc(HWND hWndDlg, uint32_t Msg, WPARAM wParam,
                          LPARAM lParam) {
     switch (Msg) {
@@ -516,7 +516,7 @@ LRESULT CALLBACK DlgProc(HWND hWndDlg, uint32_t Msg, WPARAM wParam,
         case WM_COMMAND:
             switch (wParam) {
                 case IDOK:
-                    // Set the text
+                    
                     GetDlgItemText(hWndDlg, IDC_EDIT, chGlobalText, 256);
                     EndDialog(hWndDlg, 0);
                     return true;
@@ -527,9 +527,9 @@ LRESULT CALLBACK DlgProc(HWND hWndDlg, uint32_t Msg, WPARAM wParam,
     return false;
 }
 
-//--------------------------------------------------------------------------------------
-// Create Direct3D device and swap chain
-//--------------------------------------------------------------------------------------
+
+
+
 int32_t InitDevice() {
     int32_t hr = 0;
 
@@ -537,7 +537,7 @@ int32_t InitDevice() {
     GetClientRect(g_hWnd, &rc);
     uint32_t width = rc.right - rc.left;
     uint32_t height = rc.bottom - rc.top;
-    // app.DebugPrintf("width: %d, height: %d\n", width, height);
+    
     width = g_iScreenWidth;
     height = g_iScreenHeight;
     app.DebugPrintf("width: %d, height: %d\n", width, height);
@@ -586,13 +586,13 @@ int32_t InitDevice() {
     }
     if (FAILED(hr)) return hr;
 
-    // Create a render target view
+    
     ID3D11Texture2D* pBackBuffer = nullptr;
     hr = g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
                                  (void**)&pBackBuffer);
     if (FAILED(hr)) return hr;
 
-    // Create a depth stencil buffer
+    
     D3D11_TEXTURE2D_DESC descDepth;
 
     descDepth.Width = width;
@@ -625,7 +625,7 @@ int32_t InitDevice() {
     g_pImmediateContext->OMSetRenderTargets(1, &g_pRenderTargetView,
                                             g_pDepthStencilView);
 
-    // Setup the viewport
+    
     D3D11_VIEWPORT vp;
     vp.Width = (float)width;
     vp.Height = (float)height;
@@ -640,20 +640,20 @@ int32_t InitDevice() {
     return 0;
 }
 
-//--------------------------------------------------------------------------------------
-// Render the frame
-//--------------------------------------------------------------------------------------
+
+
+
 void Render() {
-    // Just clear the backbuffer
-    float ClearColor[4] = {0.0f, 0.125f, 0.3f, 1.0f};  // red,green,blue,alpha
+    
+    float ClearColor[4] = {0.0f, 0.125f, 0.3f, 1.0f};  
 
     g_pImmediateContext->ClearRenderTargetView(g_pRenderTargetView, ClearColor);
     g_pSwapChain->Present(0, 0);
 }
 
-//--------------------------------------------------------------------------------------
-// Clean up the objects we've created
-//--------------------------------------------------------------------------------------
+
+
+
 void CleanupDevice() {
     if (g_pImmediateContext) g_pImmediateContext->ClearState();
 
@@ -677,20 +677,20 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
             g_iScreenWidth = 640;
             g_iScreenHeight = 480;
         } else if (lpCmdLine[0] == '3') {
-            // Vita
+            
             g_iScreenWidth = 720;
             g_iScreenHeight = 408;
 
-            // Vita native
-            // g_iScreenWidth = 960;
-            // g_iScreenHeight = 544;
+            
+            
+            
         }
     }
 
-    // Initialize global strings
+    
     MyRegisterClass(hInstance);
 
-    // Perform application initialization:
+    
     if (!InitInstance(hInstance, nCmdShow)) {
         return false;
     }
@@ -712,48 +712,48 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
     ui.init(g_pd3dDevice, g_pImmediateContext, g_pRenderTargetView,
             g_pDepthStencilView, g_iScreenWidth, g_iScreenHeight);
 
-    ////////////////
-    // Initialise //
-    ////////////////
+    
+    
+    
 
-    // Set the number of possible joypad layouts that the user can switch
-    // between, and the number of actions
+    
+    
     InputManager.Initialise(1, 3, MINECRAFT_ACTION_MAX, ACTION_MAX_MENU);
 
-    // Set the default joypad action mappings for Minecraft
+    
     DefineActions();
     InputManager.SetJoypadMapVal(0, 0);
     InputManager.SetKeyRepeatRate(0.3f, 0.2f);
 
-    // Initialise the profile manager with the game Title ID, Offer ID, a
-    // profile version number, and the number of profile values and settings
+    
+    
     ProfileManager.Initialise(
         TITLEID_MINECRAFT, app.m_dwOfferID, PROFILE_VERSION_10,
         NUM_PROFILE_VALUES, NUM_PROFILE_SETTINGS, dwProfileSettingsA,
         app.GAME_DEFINED_PROFILE_DATA_BYTES * XUSER_MAX_COUNT,
         &app.uiGameDefinedDataChangedBitmask);
-    // Set a callback for the default player options to be set - when there is
-    // no profile data for the player
+    
+    
     ProfileManager.SetDefaultOptionsCallback(
         [](C_4JProfile::PROFILESETTINGS* pSettings, int iPad) {
             return Game::DefaultOptionsCallback(&app, pSettings,
                                                 iPad);
         });
-    // QNet needs to be setup after profile manager, as we do not want its
-    // Notify listener to handle XN_SYS_SIGNINCHANGED notifications. This does
-    // mean that we need to have a callback in the ProfileManager for
-    // XN_LIVE_INVITE_ACCEPTED for QNet.
+    
+    
+    
+    
     g_NetworkManager.Initialise();
 
-    // 4J-PB moved further down
-    // app.InitGameSettings();
+    
+    
 
-    // debug switch to trial version
+    
     ProfileManager.SetDebugFullOverride(true);
 
-    // Initialise TLS for tesselator, for this main thread
+    
     Tesselator::CreateNewThreadStorage(1024 * 1024);
-    // Initialise TLS for AABB and Vec3 pools, for this main thread
+    
     Compression::CreateNewThreadStorage();
     OldChunkStorage::CreateNewThreadStorage();
     Level::enableLightingCache();
@@ -766,13 +766,13 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
     app.InitialiseTips();
 
-    // Set the default sound levels
+    
     pMinecraft->options->set(Options::Option::MUSIC, 1.0f);
     pMinecraft->options->set(Options::Option::SOUND, 1.0f);
 
-    // app.TemporaryCreateGameStart();
+    
 
-    // Sleep(10000);
+    
     MSG msg = {0};
     while (WM_QUIT != msg.message) {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
@@ -782,32 +782,32 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
         }
         RenderManager.StartFrame();
 
-        // 		static bool bPlay=false;
-        // 		if(bPlay)
-        // 		{
-        // 			bPlay=false;
-        // 			app.audio.PlaySound();
-        // 		}
+        
+        
+        
+        
+        
+        
 
         app.UpdateTime();
         InputManager.Tick();
 
-        //		ProfileManager.Tick();
+        
 
         StorageManager.Tick();
 
         RenderManager.Tick();
 
-        // Tick the social networking manager.
-        //		CSocialManager::Instance()->Tick();
+        
+        
 
-        // Tick sentient.
-        //		SentientManager.Tick();
+        
+        
 
-        //		g_NetworkManager.DoWork();
+        
 
-        //		LeaderboardManager::Instance()->Tick();
-        // Render game graphics.
+        
+        
         if (app.GetGameStarted()) {
             pMinecraft->run_middle();
             app.SetAppPaused(
@@ -819,9 +819,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
             pMinecraft->textures->tick(true, false);
             if (app.GetReallyChangingSessionType()) {
                 pMinecraft
-                    ->tickAllConnections();  // Added to stop timing out when we
-                                             // are waiting after converting to
-                                             // an offline game
+                    ->tickAllConnections();  
+                                             
+                                             
             }
         }
 
@@ -829,23 +829,23 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
         ui.tick();
         ui.render();
-        // Present the frame.
+        
         RenderManager.Present();
 
         ui.CheckMenuDisplayed();
-        // Any threading type things to deal with from the xui side?
+        
         app.HandleXuiActions();
 
-        // need to turn off the trial timer if it was on
+        
         if (bTrialTimerDisplayed) {
             ui.ShowTrialTimer(false);
             bTrialTimerDisplayed = false;
         }
 
-        // Fix for #7318 - Title crashes after short soak in the leaderboards
+        
     }
 
-    // Free resources, unregister custom classes, and exit.
-    //	app.Uninit();
+    
+    
     g_pd3dDevice->Release();
 }

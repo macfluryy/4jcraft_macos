@@ -16,7 +16,7 @@ const wchar_t*
     UIScene_DebugOptionsMenu::m_DebugCheckboxTextA[eDebugSetting_Max + 1] = {
         L"Load Saves From Local Folder Mode",
         L"Write Saves To Local Folder Mode",
-        L"Freeze Players",  // L"Not Used",
+        L"Freeze Players",  
         L"Display Safe Area",
         L"Mobs don't attack",
         L"Freeze Time",
@@ -24,25 +24,25 @@ const wchar_t*
         L"Craft Anything",
         L"Use DPad for debug",
         L"Mobs don't tick",
-        L"Art tools",  // L"Instant Mine",
+        L"Art tools",  
         L"Show UI Console",
         L"Distributable Save",
         L"Debug Leaderboards",
         L"Height-Water Maps",
         L"Superflat Nether",
-        // L"Light/Dark background",
+        
         L"More lightning when thundering",
         L"Biome override",
-        // L"Go To End",
+        
         L"Go To Overworld",
-        L"Unlock All DLC",  // L"Toggle Font",
+        L"Unlock All DLC",  
         L"Show Marketing Guide",
 };
 
 UIScene_DebugOptionsMenu::UIScene_DebugOptionsMenu(int iPad, void* initData,
                                                    UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     unsigned int uiDebugBitmask = app.GetGameSettingsDebugMask(iPad);
@@ -66,9 +66,9 @@ std::wstring UIScene_DebugOptionsMenu::getMoviePath() {
 void UIScene_DebugOptionsMenu::handleInput(int iPad, int key, bool repeat,
                                            bool pressed, bool released,
                                            bool& handled) {
-    // app.DebugPrintf("UIScene_DebugOptionsMenu handling input for pad %d, key
-    // %d, repeat- %s, pressed- %s, released- %s\n", iPad, key,
-    // repeat?"true":"false", pressed?"true":"false", released?"true":"false");
+    
+    
+    
 
     switch (key) {
         case ACTION_MENU_CANCEL:
@@ -87,7 +87,7 @@ void UIScene_DebugOptionsMenu::handleInput(int iPad, int key, bool repeat,
                     if (app.DebugSettingsOn()) {
                         app.ActionDebugMask(iPad);
                     } else {
-                        // force debug mask off
+                        
                         app.ActionDebugMask(iPad, true);
                     }
 

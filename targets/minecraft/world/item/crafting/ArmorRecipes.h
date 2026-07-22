@@ -1,7 +1,7 @@
-// package net.minecraft.world.item.crafting;
 
-// import net.minecraft.world.item.*;
-// import net.minecraft.world.level.tile.Tile;
+
+
+
 #pragma once
 
 #include <format>
@@ -22,12 +22,12 @@ public:
         eArmorType_Boots,
     } eArmorType;
 
-    // 4J - added for common ctor code
+    
     void _init();
     ArmorRecipes() { _init(); }
 
 private:
-    // 4J-PB - this wasn't static in java, so might not be right
+    
     static std::wstring shapes[][4];
 
 private:

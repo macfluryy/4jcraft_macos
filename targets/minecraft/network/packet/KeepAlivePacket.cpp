@@ -12,12 +12,12 @@ void KeepAlivePacket::handle(PacketListener* listener) {
     listener->handleKeepAlive(shared_from_this());
 }
 
-void KeepAlivePacket::read(DataInputStream* dis)  // throws IOException
+void KeepAlivePacket::read(DataInputStream* dis)  
 {
     id = dis->readInt();
 }
 
-void KeepAlivePacket::write(DataOutputStream* dos)  // throws IOException
+void KeepAlivePacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(id);
 }

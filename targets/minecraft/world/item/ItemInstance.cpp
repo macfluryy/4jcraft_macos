@@ -46,7 +46,7 @@ int sanitizeItemId(int id) {
         id < static_cast<int>(Item::items.size()) && Item::items[id] != nullptr;
     const bool tileOkForBlock =
         id >= 256 || (Tile::tiles != nullptr && Tile::tiles[id] != nullptr);
-    return (hasItem && tileOkForBlock) ? id : 1;  // 1 = stone
+    return (hasItem && tileOkForBlock) ? id : 1;  
 }
 }
 
@@ -57,14 +57,14 @@ void ItemInstance::_init(int id, int count, int auxValue) {
     this->auxValue = auxValue;
     this->tag = nullptr;
     this->frame = nullptr;
-    // 4J-PB - for trading menu
+    
     this->m_bForceNumberDisplay = false;
 }
 
 ItemInstance::ItemInstance(Tile* tile) { _init(tile->id, 1, 0); }
 
 ItemInstance::ItemInstance(Tile* tile, int count) { _init(tile->id, count, 0); }
-// 4J-PB - added
+
 ItemInstance::ItemInstance(MapItem* item, int count) {
     _init(item->id, count, 0);
 }
@@ -105,7 +105,7 @@ std::shared_ptr<ItemInstance> ItemInstance::remove(int count) {
     if (tag != nullptr) ii->tag = (CompoundTag*)tag->copy();
     this->count -= count;
 
-    // 4J Stu Fix for duplication glitch, make sure that item count is in range
+    
     if (this->count <= 0) {
         this->count = 0;
     }
@@ -176,12 +176,12 @@ bool ItemInstance::isDamageableItem() {
     return Item::items[id]->getMaxDamage() > 0;
 }
 
-/**
- * Returns true if this item type only can be stacked with items that have
- * the same auxValue data.
- *
- * @return
- */
+
+
+
+
+
+
 
 bool ItemInstance::isStackedByData() {
     return Item::items[id]->isStackedByData();
@@ -238,7 +238,7 @@ void ItemInstance::hurtAndBreak(int dmg, std::shared_ptr<LivingEntity> owner) {
 
         count--;
         if (player != nullptr) {
-            // player->awardStat(Stats::itemBroke[id], 1);
+            
             if (count == 0 && dynamic_cast<BowItem*>(getItem()) != nullptr) {
                 player->removeSelectedItem();
             }
@@ -250,13 +250,13 @@ void ItemInstance::hurtAndBreak(int dmg, std::shared_ptr<LivingEntity> owner) {
 
 void ItemInstance::hurtEnemy(std::shared_ptr<LivingEntity> mob,
                              std::shared_ptr<Player> attacker) {
-    // bool used =
+    
     Item::items[id]->hurtEnemy(shared_from_this(), mob, attacker);
 }
 
 void ItemInstance::mineBlock(Level* level, int tile, int x, int y, int z,
                              std::shared_ptr<Player> owner) {
-    // bool used =
+    
     Item::items[id]->mineBlock(shared_from_this(), level, tile, x, y, z, owner);
 }
 
@@ -278,7 +278,7 @@ std::shared_ptr<ItemInstance> ItemInstance::copy() const {
     return copy;
 }
 
-// 4J Stu - Added this as we need it in the recipe code
+
 ItemInstance* ItemInstance::copy_not_shared() const {
     ItemInstance* copy = new ItemInstance(id, count, auxValue);
     if (tag != nullptr) {
@@ -290,7 +290,7 @@ ItemInstance* ItemInstance::copy_not_shared() const {
     return copy;
 }
 
-// 4J Brought forward from 1.2
+
 bool ItemInstance::tagMatches(std::shared_ptr<ItemInstance> a,
                               std::shared_ptr<ItemInstance> b) {
     if (a == nullptr && b == nullptr) return true;
@@ -325,13 +325,13 @@ bool ItemInstance::matches(std::shared_ptr<ItemInstance> b) {
     return true;
 }
 
-/**
- * Checks if this item is the same item as the other one, disregarding the
- * 'count' value.
- *
- * @param b
- * @return
- */
+
+
+
+
+
+
+
 bool ItemInstance::sameItem(std::shared_ptr<ItemInstance> b) {
     return id == b->id && auxValue == b->auxValue;
 }
@@ -348,8 +348,8 @@ bool ItemInstance::sameItemWithTags(std::shared_ptr<ItemInstance> b) {
     return true;
 }
 
-// 4J Stu - Added this for the one time when we compare with a non-shared
-// pointer
+
+
 bool ItemInstance::sameItem_not_shared(ItemInstance* b) {
     return id == b->id && auxValue == b->auxValue;
 }
@@ -358,13 +358,13 @@ unsigned int ItemInstance::getUseDescriptionId() {
     return Item::items[id]->getUseDescriptionId(shared_from_this());
 }
 
-unsigned int ItemInstance::getDescriptionId(int iData /*= -1*/) {
+unsigned int ItemInstance::getDescriptionId(int iData ) {
     return Item::items[id]->getDescriptionId(shared_from_this());
 }
 
 ItemInstance* ItemInstance::setDescriptionId(unsigned int id) {
-    // 4J Stu - I don't think this function is ever used. It if is, it should
-    // probably return shared_from_this()
+    
+    
     assert(false);
     return this;
 }
@@ -375,11 +375,11 @@ std::shared_ptr<ItemInstance> ItemInstance::clone(
 }
 
 std::wstring ItemInstance::toString() {
-    // return count + "x" + Item::items[id]->getDescriptionId() + "@" +
-    // auxValue;
+    
+    
 
     std::wostringstream oss;
-    // 4J-PB - TODO - temp fix until ore recipe issue is fixed
+    
     if (Item::items[id] == nullptr) {
         oss << std::dec << count << L"x" << L" Item::items[id] is nullptr "
             << L"@" << auxValue;
@@ -400,7 +400,7 @@ void ItemInstance::inventoryTick(Level* level, std::shared_ptr<Entity> owner,
 
 void ItemInstance::onCraftedBy(Level* level, std::shared_ptr<Player> player,
                                int craftCount) {
-    // 4J Stu Added for tutorial callback
+    
     player->onCrafted(shared_from_this());
 
     player->awardStat(
@@ -427,7 +427,7 @@ void ItemInstance::releaseUsing(Level* level, std::shared_ptr<Player> player,
     getItem()->releaseUsing(shared_from_this(), level, player, durationLeft);
 }
 
-// 4J Stu - Brought forward these functions for enchanting/game rules
+
 bool ItemInstance::hasTag() { return tag != nullptr; }
 
 CompoundTag* ItemInstance::getTag() { return tag; }
@@ -486,7 +486,7 @@ bool ItemInstance::hasCustomHoverName() {
     return tag->getCompound(L"display")->contains(L"Name");
 }
 
-// 4jcraft: re-added old TU18 overload for java gui
+
 std::vector<std::wstring>* ItemInstance::getHoverText(
     std::shared_ptr<Player> player, bool advanced,
     std::vector<std::wstring>& unformattedStrings) {
@@ -494,40 +494,40 @@ std::vector<std::wstring>* ItemInstance::getHoverText(
     Item* item = Item::items[id];
     std::wstring title = getHoverName();
 
-    // 4J Stu - We don't do italics, but do change colour. But handle this later
-    // in the process due to text length measuring on the Xbox360
-    // if (hasCustomHoverName())
-    //{
-    //	title = L"<i>" + title + L"</i>";
-    //}
+    
+    
+    
+    
+    
+    
 
-    // 4J Stu - Don't currently have this
-    // if (advanced)
-    //{
-    //	String suffix = "";
+    
+    
+    
+    
 
-    //	if (title.length() > 0) {
-    //		title += " (";
-    //		suffix = ")";
-    //	}
+    
+    
+    
+    
 
-    //	if (isStackedByData())
-    //	{
-    //		title += String.format("#%04d/%d%s", id, auxValue, suffix);
-    //	}
-    //	else
-    //	{
-    //		title += String.format("#%04d%s", id, suffix);
-    //	}
-    //}
-    // else
-    //	if (!hasCustomHoverName())
-    //{
-    //	if (id == Item::map_Id)
-    //	{
-    //		title += L" #" + toWString(auxValue);
-    //	}
-    //}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     lines->push_back(title);
     unformattedStrings.push_back(title);
@@ -550,6 +550,28 @@ std::vector<std::wstring>* ItemInstance::getHoverText(
                 }
             }
         }
+
+        
+        
+        
+        
+        if (tag->contains(L"display")) {
+            CompoundTag* display = tag->getCompound(L"display");
+            if (display->contains(L"Lore")) {
+                ListTag<StringTag>* lore =
+                    (ListTag<StringTag>*)display->getList(L"Lore");
+                if (lore != nullptr && lore->size() > 0) {
+                    
+                    
+                    lines->push_back(L"");
+                    unformattedStrings.push_back(L"");
+                    for (int i = 0; i < lore->size(); i++) {
+                        lines->push_back(lore->get(i)->data);
+                        unformattedStrings.push_back(lore->get(i)->data);
+                    }
+                }
+            }
+        }
     }
     return lines;
 }
@@ -564,42 +586,46 @@ std::vector<HtmlString>* ItemInstance::getHoverText(
         title.italics = true;
     }
 
-    // 4J: This is for showing aux values, not useful in console version
-    /*
-    if (advanced)
-    {
-            wstring suffix = L"";
+    
+    
 
-            if (title.length() > 0)
-            {
-                    title += L" (";
-                    suffix = L")";
-            }
 
-            if (isStackedByData())
-            {
-                    title += String.format("#%04d/%d%s", id, auxValue, suffix);
-            }
-            else
-            {
-                    title += String.format("#%04d%s", id, suffix);
-            }
-    }
-    else if (!hasCustomHoverName() && id == Item::map_Id)
-    */
 
-    /*if (!hasCustomHoverName() && id == Item::map_Id)
-    {
-            title.text += L" #" + toWString(auxValue);
-    }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
 
     lines->push_back(title);
 
     item->appendHoverText(shared_from_this(), player, lines, advanced);
 
     if (hasTag()) {
+        
+        
+        const int hideFlags =
+            tag->contains(L"HideFlags") ? tag->getInt(L"HideFlags") : 0;
         ListTag<CompoundTag>* list = getEnchantmentTags();
-        if (list != nullptr) {
+        if (!(hideFlags & 1) && list != nullptr) {
             for (int i = 0; i < list->size(); i++) {
                 int type = list->get(i)->getShort((wchar_t*)TAG_ENCH_ID);
                 int level = list->get(i)->getShort((wchar_t*)TAG_ENCH_LEVEL);
@@ -618,8 +644,8 @@ std::vector<HtmlString>* ItemInstance::getHoverText(
                 ListTag<StringTag>* lore =
                     (ListTag<StringTag>*)display->getList(L"Lore");
                 if (lore != nullptr && lore->size() > 0) {
-                    // Blank separator between the title block and the lore,
-                    // matching the modern-server tooltip layout.
+                    
+                    
                     lines->push_back(HtmlString(L""));
                     for (int i = 0; i < lore->size(); i++) {
                         lines->push_back(lore->get(i)->data);
@@ -632,17 +658,17 @@ std::vector<HtmlString>* ItemInstance::getHoverText(
     attrAttrModMap* modifiers = getAttributeModifiers();
 
     if (!modifiers->empty()) {
-        // New line
+        
         lines->push_back(HtmlString(L""));
 
-        // Modifier descriptions
+        
         for (auto it = modifiers->begin(); it != modifiers->end(); ++it) {
-            // 4J: Moved modifier string building to AttributeModifier
+            
             lines->push_back(it->second->getHoverText(it->first));
         }
     }
 
-    // Delete modifiers map
+    
     for (auto it = modifiers->begin(); it != modifiers->end(); ++it) {
         AttributeModifier* modifier = it->second;
         delete modifier;
@@ -662,7 +688,7 @@ std::vector<HtmlString>* ItemInstance::getHoverText(
     return lines;
 }
 
-// 4J Added
+
 std::vector<HtmlString>* ItemInstance::getHoverTextOnly(
     std::shared_ptr<Player> player, bool advanced) {
     std::vector<HtmlString>* lines = new std::vector<HtmlString>();
@@ -762,14 +788,14 @@ attrAttrModMap* ItemInstance::getAttributeModifiers() {
             AttributeModifier* attribute =
                 SharedMonsterAttributes::loadAttributeModifier(entry);
 
-            // 4J Not sure why but this is a check that the attribute ID is not
-            // empty
-            /*if (attribute->getId()->getLeastSignificantBits() != 0 &&
-            attribute->getId()->getMostSignificantBits() != 0)
-            {*/
+            
+            
+            
+
+
             result->insert(std::pair<eATTRIBUTE_ID, AttributeModifier*>(
                 static_cast<eATTRIBUTE_ID>(entry->getInt(L"ID")), attribute));
-            /*}*/
+            
         }
     } else {
         result = getItem()->getDefaultAttributeModifiers();
@@ -798,13 +824,13 @@ int ItemInstance::get4JData() {
         return dataTag->data;
     }
 }
-// 4J Added - to show strength on potions
+
 bool ItemInstance::hasPotionStrengthBar() {
-    // exclude a bottle of water from this
+    
     if ((id == Item::potion_Id) &&
-        (auxValue != 0))  // && (!MACRO_POTION_IS_AKWARD(auxValue))) 4J-PB
-                          // leaving the bar on an awkward potion so we can
-                          // differentiate it from a water bottle
+        (auxValue != 0))  
+                          
+                          
     {
         return true;
     }
@@ -815,7 +841,7 @@ bool ItemInstance::hasPotionStrengthBar() {
 int ItemInstance::GetPotionStrength() {
     if (MACRO_POTION_IS_INSTANTDAMAGE(auxValue) ||
         MACRO_POTION_IS_INSTANTHEALTH(auxValue)) {
-        // The two instant potions don't have extended versions
+        
         return (auxValue & MASK_LEVEL2) >> 5;
     } else {
         return (auxValue & MASK_LEVEL2EXTENDED) >> 5;

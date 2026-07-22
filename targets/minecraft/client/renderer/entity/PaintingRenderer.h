@@ -13,7 +13,7 @@ private:
     static ResourceLocation PAINTING_LOCATION;
 
 public:
-    PaintingRenderer();  // 4J -added
+    PaintingRenderer();  
     virtual void render(std::shared_ptr<Entity> _painting, double x, double y,
                         double z, float rot, float a);
 

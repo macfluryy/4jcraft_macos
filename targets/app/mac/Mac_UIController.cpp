@@ -40,7 +40,7 @@ static void restoreFixedFunctionStateAfterIggy() {
     glMatrixMode(GL_MODELVIEW);
 }
 
-// ---------------------------------------------------------------------------
+
 
 void ConsoleUIController::init(S32 w, S32 h) {
 #ifdef _ENABLEIGGY
@@ -116,7 +116,7 @@ void ConsoleUIController::setTileOrigin(S32 xPos, S32 yPos) {
 }
 
 GDrawTexture* ConsoleUIController::getSubstitutionTexture(int textureId) {
-    // TODO: implement
+    
     return nullptr;
 }
 

@@ -14,8 +14,8 @@ void CritParticle::_init(Level* level, std::shared_ptr<Entity> entity,
     this->entity = entity;
     lifeTime = 3;
     particleName = type;
-    // 4J-PB - can't use a shared_from_this in the constructor
-    // tick();
+    
+    
 }
 
 CritParticle::CritParticle(Level* level, std::shared_ptr<Entity> entity)
@@ -31,8 +31,8 @@ CritParticle::CritParticle(Level* level, std::shared_ptr<Entity> entity,
     _init(level, entity, type);
 }
 
-// 4J - Added this so that we can use some std::shared_ptr functions that were
-// needed in the ctor
+
+
 void CritParticle::CritParticlePostConstructor(void) { tick(); }
 
 void CritParticle::render(Tesselator* t, float a, float xa, float ya, float za,

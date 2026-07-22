@@ -3,20 +3,20 @@
 #include <string>
 
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
-/*
-4J - Both modifier uuid and name have been replaced by an id enum. Note that we
-have special value "eModifierId_ANONYMOUS" for attribute modifiers that
-previously didn't have a fixed UUID and are never removed.
 
-To all intents and purposes anonymous modifiers don't have an ID and so are
-handled differently in some cases, for instance:
-        1. You can have multiple modifiers with the anonymous ID on a single
-attribute instance
-        2. Anonymous modifiers can't be removed from attribute instance by ID
 
-IMPORTANT: Saved out to file so don't change order. All new values should be
-added at the end.
-*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 class HtmlString;
 
@@ -72,6 +72,6 @@ public:
     bool equals(AttributeModifier* modifier);
     std::wstring toString();
     HtmlString getHoverText(
-        eATTRIBUTE_ID attribute);  // 4J: Added to keep modifier readable
-                                   // std::string creation in one place
+        eATTRIBUTE_ID attribute);  
+                                   
 };

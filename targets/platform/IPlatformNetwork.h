@@ -35,7 +35,7 @@ public:
 
     virtual ~IPlatformNetwork() = default;
 
-    // Lifecycle
+    
     virtual bool Initialise(CGameNetworkManager* pGameNetworkManager,
                             int flagIndexSize) = 0;
     virtual void Terminate() = 0;
@@ -43,7 +43,7 @@ public:
     [[nodiscard]] virtual int GetJoiningReadyPercentage() = 0;
     [[nodiscard]] virtual int CorrectErrorIDS(int IDS) = 0;
 
-    // Players
+    
     [[nodiscard]] virtual int GetPlayerCount() = 0;
     [[nodiscard]] virtual int GetOnlinePlayerCount() = 0;
     [[nodiscard]] virtual int GetLocalPlayerMask(int playerIndex) = 0;
@@ -59,7 +59,7 @@ public:
     [[nodiscard]] virtual INetworkPlayer* GetHostPlayer() = 0;
     [[nodiscard]] virtual bool ShouldMessageForFullSession() = 0;
 
-    // Session state
+    
     [[nodiscard]] virtual bool IsHost() = 0;
     virtual bool JoinGameFromInviteInfo(int userIndex, int userMask,
                                         const INVITE_INFO* pInviteInfo) = 0;
@@ -73,7 +73,7 @@ public:
     virtual void SendInviteGUI(int quadrant) = 0;
     [[nodiscard]] virtual bool IsAddingPlayer() = 0;
 
-    // Hosting / joining
+    
     virtual void HostGame(int localUsersMask, bool bOnlineGame, bool bIsPrivate,
                           unsigned char publicSlots = MINECRAFT_NET_MAX_PLAYERS,
                           unsigned char privateSlots = 0) = 0;
@@ -87,7 +87,7 @@ public:
     [[nodiscard]] virtual bool IsLeavingGame() = 0;
     virtual void ResetLeavingGame() = 0;
 
-    // Callbacks
+    
     virtual void RegisterPlayerChangedCallback(
         int iPad,
         std::function<void(INetworkPlayer* pPlayer, bool leaving)>
@@ -96,7 +96,7 @@ public:
 
     virtual void HandleSignInChange() = 0;
 
-    // Game loop
+    
     virtual bool _RunNetworkGame() = 0;
     virtual bool _LeaveGame(bool bMigrateHost, bool bLeaveRoom) = 0;
     virtual void _HostGame(
@@ -104,29 +104,29 @@ public:
         unsigned char privateSlots = 0) = 0;
     virtual bool _StartGame() = 0;
 
-    // Session data
+    
     virtual void UpdateAndSetGameSessionData(
         INetworkPlayer* pNetworkPlayerLeaving = nullptr) = 0;
     virtual bool RemoveLocalPlayer(INetworkPlayer* pNetworkPlayer) = 0;
 
-    // System flags
+    
     virtual void SystemFlagSet(INetworkPlayer* pNetworkPlayer, int index) = 0;
     [[nodiscard]] virtual bool SystemFlagGet(INetworkPlayer* pNetworkPlayer,
                                               int index) = 0;
-    // 4J macOS task 5.2 (Req 4.5) - clear a per-system flag so a chunk
-    // unloaded for a Remote_Client is re-sent if the player re-enters range.
+    
+    
     virtual void SystemFlagClear(INetworkPlayer* pNetworkPlayer, int index) = 0;
 
-    // Stats
+    
     [[nodiscard]] virtual std::wstring GatherStats() = 0;
     [[nodiscard]] virtual std::wstring GatherRTTStats() = 0;
 
-    // Session internals
+    
     virtual void SetSessionTexturePackParentId(int id) = 0;
     virtual void SetSessionSubTexturePackId(int id) = 0;
     virtual void Notify(int ID, uintptr_t Param) = 0;
 
-    // Session list
+    
     [[nodiscard]] virtual std::vector<FriendSessionInfo*>* GetSessionList(
         int iPad, int localPlayers, bool partyOnly) = 0;
     [[nodiscard]] virtual bool GetGameSessionInfo(

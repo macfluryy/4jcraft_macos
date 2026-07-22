@@ -37,7 +37,7 @@ const std::vector<int> FurnaceTileEntity::SLOTS_FOR_SIDES =
 
 const int FurnaceTileEntity::BURN_INTERVAL = 10 * 20;
 
-// 4J Stu - Need a ctor to initialise member variables
+
 FurnaceTileEntity::~FurnaceTileEntity() {}
 
 FurnaceTileEntity::FurnaceTileEntity() : TileEntity() {
@@ -64,13 +64,13 @@ std::shared_ptr<ItemInstance> FurnaceTileEntity::removeItem(unsigned int slot,
         if (items[slot]->count <= count) {
             std::shared_ptr<ItemInstance> item = items[slot];
             items[slot] = nullptr;
-            // 4J Stu - Fix for duplication glitch
+            
             if (item->count <= 0) return nullptr;
             return item;
         } else {
             std::shared_ptr<ItemInstance> i = items[slot]->remove(count);
             if (items[slot]->count == 0) items[slot] = nullptr;
-            // 4J Stu - Fix for duplication glitch
+            
             if (i->count <= 0) return nullptr;
             return i;
         }
@@ -176,8 +176,8 @@ void FurnaceTileEntity::tick() {
             if (litTime > 0) {
                 changed = true;
                 if (items[SLOT_FUEL] != nullptr) {
-                    // 4J Added: Keep track of whether charcoal was used in
-                    // production of current stack.
+                    
+                    
                     if (items[SLOT_FUEL]->getItem()->id == Item::coal_Id &&
                         items[SLOT_FUEL]->getAuxValue() ==
                             CoalItem::CHAR_COAL) {
@@ -343,7 +343,7 @@ bool FurnaceTileEntity::canTakeItemThroughFace(
     return true;
 }
 
-// 4J Added
+
 std::shared_ptr<TileEntity> FurnaceTileEntity::clone() {
     std::shared_ptr<FurnaceTileEntity> result =
         std::make_shared<FurnaceTileEntity>();

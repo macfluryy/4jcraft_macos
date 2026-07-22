@@ -17,7 +17,7 @@ bool UIControl_LeaderboardList::setupControl(UIScene* scene,
     UIControl::setControlType(UIControl::eLeaderboardList);
     bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-    // UIControl_LeaderboardList specific initialisers
+    
     m_funcInitLeaderboard = registerFastName(L"InitLeaderboard");
     m_funcAddDataSet = registerFastName(L"AddDataSet");
     m_funcResetLeaderboard = registerFastName(L"ResetLeaderboard");

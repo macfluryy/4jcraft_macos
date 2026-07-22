@@ -14,7 +14,7 @@ class CustomPayloadPacket
     : public Packet,
       public std::enable_shared_from_this<CustomPayloadPacket> {
 public:
-    // Mojang-defined custom packets
+    
     static const std::wstring CUSTOM_BOOK_PACKET;
     static const std::wstring CUSTOM_BOOK_SIGN_PACKET;
     static const std::wstring TEXTURE_PACK_PACKET;

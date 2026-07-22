@@ -4,11 +4,11 @@
 #define VER_PRODUCTMAJORVERSION 0
 #define VER_PRODUCTMINORVERSION 0
 
-// This goes up with each build
-// 4J-JEV: This value is extracted with a regex so it can be placed as the
-// version in the AppX manifest on Durango.
+
+
+
 #define VER_PRODUCTBUILD 560
-// This goes up if there is any change to network traffic or code in a build
+
 #define VER_NETWORK 560
 #define VER_PRODUCTBUILD_QFE 0
 

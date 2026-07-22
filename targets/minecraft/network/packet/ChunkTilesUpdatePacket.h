@@ -19,7 +19,7 @@ public:
     std::vector<short> positions;
     std::vector<uint8_t> blocks;
     std::vector<uint8_t> data;
-    uint8_t count;  // 4J Was int but never has a value higher than 10
+    uint8_t count;  
     int levelIdx;
 
     ChunkTilesUpdatePacket();

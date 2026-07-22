@@ -11,8 +11,8 @@
 #include "minecraft/world/phys/HitResult.h"
 
 void ThrownEgg::_init() {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 }
 
@@ -38,8 +38,8 @@ void ThrownEgg::onHit(HitResult* res) {
     if (!level->isClientSide && random->nextInt(8) == 0) {
         if (level->canCreateMore(
                 eTYPE_CHICKEN,
-                Level::eSpawnType_Breed))  // 4J - added limit for number of
-                                           // chickens in world
+                Level::eSpawnType_Breed))  
+                                           
         {
             int count = 1;
             if (random->nextInt(32) == 0) count = 4;
@@ -49,8 +49,8 @@ void ThrownEgg::onHit(HitResult* res) {
                 chicken->setAge(-20 * 60 * 20);
 
                 chicken->moveTo(x, y, z, yRot, 0);
-                chicken->setDespawnProtected();  // 4J added, default to being
-                                                 // protected against despawning
+                chicken->setDespawnProtected();  
+                                                 
                 level->addEntity(chicken);
             }
         }

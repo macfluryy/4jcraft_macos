@@ -33,7 +33,7 @@ bool RecordingItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
                           std::shared_ptr<Player> player, Level* level, int x,
                           int y, int z, int face, float clickX, float clickY,
                           float clickZ, bool bTestUseOnOnly) {
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
     if (level->getTile(x, y, z) == Tile::jukebox_Id &&
         level->getData(x, y, z) == 0) {
         if (!bTestUseOnOnly) {

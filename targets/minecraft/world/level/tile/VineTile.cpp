@@ -34,7 +34,7 @@ bool VineTile::isCubeShaped() { return false; }
 void VineTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     const float thickness = 1.0f / 16.0f;
 
@@ -134,8 +134,8 @@ bool VineTile::updateSurvival(Level* level, int x, int y, int z) {
                 if (!isAcceptableNeighbor(
                         level->getTile(x + Direction::STEP_X[d], y,
                                        z + Direction::STEP_Z[d]))) {
-                    // no attachment in this direction,
-                    // verify that there is vines hanging above
+                    
+                    
                     if (level->getTile(x, y + 1, z) != id ||
                         (level->getData(x, y + 1, z) & facing) == 0) {
                         newFacings &= ~facing;
@@ -146,7 +146,7 @@ bool VineTile::updateSurvival(Level* level, int x, int y, int z) {
     }
 
     if (newFacings == 0) {
-        // the block will die unless it has a roof
+        
         if (!isAcceptableNeighbor(level->getTile(x, y + 1, z))) {
             return false;
         }
@@ -179,7 +179,7 @@ void VineTile::neighborChanged(Level* level, int x, int y, int z, int type) {
 void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
     if (!level->isClientSide) {
         if (level->random->nextInt(4) == 0) {
-            // 4J - Brought side spread check forward from 1.2.3
+            
             int r = 4;
             int max = 5;
             bool noSideSpread = false;
@@ -201,10 +201,10 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
 
             if (testFacing == Facing::UP && y < (Level::maxBuildHeight - 1) &&
                 level->isEmptyTile(x, y + 1, z)) {
-                // 4J - Brought side spread check forward from 1.2.3
+                
                 if (noSideSpread) return;
 
-                // grow upwards, but only if there is something to cling to
+                
                 int spawnFacings = level->random->nextInt(16) & currentFacings;
                 if (spawnFacings > 0) {
                     for (int d = 0; d <= 3; d++) {
@@ -222,7 +222,7 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
             } else if (testFacing >= Facing::NORTH &&
                        testFacing <= Facing::EAST &&
                        (currentFacings & (1 << testDirection)) == 0) {
-                // 4J - Brought side spread check forward from 1.2.3
+                
                 if (noSideSpread) return;
 
                 int edgeTile =
@@ -230,12 +230,12 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
                                    z + Direction::STEP_Z[testDirection]);
 
                 if (edgeTile == 0 || Tile::tiles[edgeTile] == nullptr) {
-                    // if the edge tile is air, we could possibly cling
-                    // to something
+                    
+                    
                     int left = (testDirection + 1) & 3;
                     int right = (testDirection + 3) & 3;
 
-                    // attempt to grow straight onto solid tiles
+                    
                     if ((currentFacings & (1 << left)) != 0 &&
                         isAcceptableNeighbor(level->getTile(
                             x + Direction::STEP_X[testDirection] +
@@ -259,8 +259,8 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
                             z + Direction::STEP_Z[testDirection], id,
                             1 << right, Tile::UPDATE_CLIENTS);
                     }
-                    // attempt to grow around corners, but only if the
-                    // base tile is solid
+                    
+                    
                     else if ((currentFacings & (1 << left)) != 0 &&
                              level->isEmptyTile(
                                  x + Direction::STEP_X[testDirection] +
@@ -298,7 +298,7 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
                             id, 1 << ((testDirection + 2) & 3),
                             Tile::UPDATE_CLIENTS);
                     }
-                    // attempt to grow onto the ceiling
+                    
                     else if (isAcceptableNeighbor(level->getTile(
                                  x + Direction::STEP_X[testDirection], y + 1,
                                  z + Direction::STEP_Z[testDirection]))) {
@@ -310,17 +310,17 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
 
                 } else if (Tile::tiles[edgeTile]->material->isSolidBlocking() &&
                            Tile::tiles[edgeTile]->isCubeShaped()) {
-                    // we have a wall that we can cling to
+                    
                     level->setData(x, y, z,
                                    currentFacings | (1 << testDirection),
                                    Tile::UPDATE_CLIENTS);
                 }
             }
-            // growing downwards happens more often than the other
-            // directions
+            
+            
             else if (y > 1) {
                 int belowTile = level->getTile(x, y - 1, z);
-                // grow downwards into air
+                
                 if (belowTile == 0) {
                     int spawnFacings =
                         level->random->nextInt(16) & currentFacings;
@@ -379,7 +379,7 @@ void VineTile::playerDestroy(Level* level, std::shared_ptr<Player> player,
         player->awardStat(GenericStats::blocksMined(id),
                           GenericStats::param_blocksMined(id, data, 1));
 
-        // drop leaf block instead of sapling
+        
         popResource(level, x, y, z,
                     std::make_shared<ItemInstance>(Tile::vine, 1, 0));
     } else {

@@ -1,6 +1,6 @@
 #pragma once
 
-// 4J-PB - if you change this, you need to update SoundEngine::wchSoundNames[]
+
 enum eSOUND_TYPE {
     eSoundType_MOB_CHICKEN_AMBIENT,
     eSoundType_MOB_CHICKEN_HURT,
@@ -57,10 +57,10 @@ enum eSOUND_TYPE {
     eSoundType_MOB_CAT_PURREOW,
     eSoundType_MOB_CAT_MEOW,
     eSoundType_MOB_CAT_HIT,
-    //	eSoundType_MOB_IRONGOLEM_THROW,
-    //	eSoundType_MOB_IRONGOLEM_HIT,
-    //	eSoundType_MOB_IRONGOLEM_DEATH,
-    //	eSoundType_MOB_IRONGOLEM_WALK,
+    
+    
+    
+    
     eSoundType_RANDOM_BOW,
     eSoundType_RANDOM_BOW_HIT,
     eSoundType_RANDOM_EXPLODE,
@@ -83,7 +83,7 @@ enum eSOUND_TYPE {
     eSoundType_AMBIENT_WEATHER_THUNDER,
     eSoundType_AMBIENT_CAVE_CAVE,
     eSoundType_PORTAL_PORTAL,
-    // 4J-PB - adding some that were still text in the code
+    
     eSoundType_PORTAL_TRIGGER,
     eSoundType_PORTAL_TRAVEL,
 
@@ -109,7 +109,7 @@ enum eSOUND_TYPE {
     eSoundType_STEP_METAL,
     eSoundType_STEP_CLOTH,
     eSoundType_STEP_SAND,
-    // soundbank 2
+    
     eSoundType_MOB_ENDERDRAGON_END,
     eSoundType_MOB_ENDERDRAGON_GROWL,
     eSoundType_MOB_ENDERDRAGON_HIT,
@@ -119,7 +119,7 @@ enum eSOUND_TYPE {
     eSoundType_MOB_IRONGOLEM_DEATH,
     eSoundType_MOB_IRONGOLEM_WALK,
 
-    // TU14
+    
     eSoundType_DAMAGE_THORNS,
     eSoundType_RANDOM_ANVIL_BREAK,
     eSoundType_RANDOM_ANVIL_LAND,
@@ -143,7 +143,7 @@ enum eSOUND_TYPE {
     eSoundType_DIG_STONE,
     eSoundType_DIG_WOOD,
 
-    // 1.6.4
+    
     eSoundType_FIREWORKS_LAUNCH,
     eSoundType_FIREWORKS_BLAST,
     eSoundType_FIREWORKS_BLAST_FAR,
@@ -158,10 +158,10 @@ enum eSOUND_TYPE {
     eSoundType_MOB_BAT_TAKEOFF,
 
     eSoundType_MOB_WITHER_SPAWN,
-    eSoundType_MOB_WITHER_IDLE,   //"mob.wither.idle";
-    eSoundType_MOB_WITHER_HURT,   //"mob.wither.hurt";
-    eSoundType_MOB_WITHER_DEATH,  //"mob.wither.death";
-    eSoundType_MOB_WITHER_SHOOT,  //"mob.wither.shoot";
+    eSoundType_MOB_WITHER_IDLE,   
+    eSoundType_MOB_WITHER_HURT,   
+    eSoundType_MOB_WITHER_DEATH,  
+    eSoundType_MOB_WITHER_SHOOT,  
 
     eSoundType_MOB_COW_STEP,
     eSoundType_MOB_CHICKEN_STEP,
@@ -211,7 +211,7 @@ enum eSOUND_TYPE {
     eSoundType_MAX
 };
 
-// 4J-PB - if you change this, you need to update SoundEngine::wchUISoundNames[]
+
 enum ESoundEffect {
     eSFX_Back,
     eSFX_Craft,
@@ -236,128 +236,127 @@ enum eMATERIALSOUND_TYPE {
     eMaterialSoundType_ANVIL,
 };
 
-/*
-enum eSOUND_TYPE
-{
-L"mob.chicken",
-L"mob.chickenhurt",
-L"mob.chickenplop",
 
-L"mob.cow",
-L"mob.cowhurt",
 
-L"mob.pig",
-L"mob.pigdeath",
 
-L"mob.sheep",
 
-L"mob.wolf.growl",
-L"mob.wolf.whine",
-L"mob.wolf.panting",
-L"mob.wolf.bark",
-L"mob.wolf.hurt",
-L"mob.wolf.death",
-L"mob.wolf.shake",
 
-L"mob.blaze.breathe",
-L"mob.blaze.hit",
-L"mob.blaze.death",
 
-L"mob.ghast.moan",
-L"mob.ghast.scream",
-L"mob.ghast.death",
-L"mob.ghast.fireball",
-        L"mob.ghast.charge",
 
-        L"mob.endermen.idle",
-        L"mob.endermen.hit",
-        L"mob.endermen.death",
-        L"mob.endermen.portal",
 
-        L"mob.zombiepig.zpig",
-        L"mob.zombiepig.zpighurt",
-        L"mob.zombiepig.zpigdeath",
-        L"mob.zombiepig.zpigangry",
 
-        L"mob.silverfish.say",
-        L"mob.silverfish.hit",
-        L"mob.silverfish.kill",
-        L"mob.silverfish.step",
 
-        L"mob.skeleton",
-        L"mob.skeleton.hurt",
 
-        L"mob.spider",
-        L"mob.spiderdeath",
 
-        L"mob.slime",
-        L"mob.slimeattack",
 
-        L"mob.creeper",
-        L"mob.creeperdeath",
 
-        L"mob.zombie",
-        L"mob.zombiehurt",
-        L"mob.zombiedeath",
-        L"mob.zombie.wood",
-        L"mob.zombie.woodbreak",
-        L"mob.zombie.metal",
 
-        L"mob.magmacube.big",
-        L"mob.magmacube.small",
 
-        L"random.bow",
-        L"random.bowhit",
-        L"random.explode",
-        L"random.fizz",
-        L"random.pop",
-        L"random.fuse",
-        L"random.drink",
-        L"random.eat",
-        L"random.burp",
-        L"random.splash",
-        L"random.click",
-        L"random.glass",
-        L"random.orb",
-        L"random.break",
-        L"random.chestopen",
-        L"random.chestclosed",
-        L"random.door_open",
-        L"random.door_close",
 
-        L"ambient.weather.rain",
-        L"ambient.weather.thunder",
 
-        L"ambient.cave.cave",
 
-        L"portal.portal",
 
-        L"fire.ignite",
-        L"fire.fire",
 
-        L"damage.hurtflesh",
-        L"damage.fallsmall",
-        L"damage.fallbig",
 
-        L"note.harp",
-        L"note.bd",
-        L"note.snare",
-        L"note.hat",
-        L"note.bassattack",
 
-        L"tile.piston.in",
-        L"tile.piston.out",
 
-        L"liquid.water",
-        L"liquid.lavapop",
-        L"liquid.lava",
 
-        L"step.stone",
-        L"step.wood",
-        L"step.gravel",
-        L"step.grass",
-        L"step.metal",
-        L"step.cloth",
-        L"step.sand",
 
-};*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

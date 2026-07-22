@@ -21,7 +21,7 @@
 #include "nbt/CompoundTag.h"
 
 const int ExperienceOrb::LIFETIME =
-    5 * 60 * SharedConstants::TICKS_PER_SECOND;  // Five minutes!
+    5 * 60 * SharedConstants::TICKS_PER_SECOND;  
 
 void ExperienceOrb::_init() {
     tickCount = 0;
@@ -74,7 +74,7 @@ int ExperienceOrb::getLightColor(float a) {
     int br2 = (br >> 16) & 0xff;
     br1 += (int)(l * 15 * 16);
     if (br1 > 15 * 16) br1 = 15 * 16;
-    //        br2 = 15*16;
+    
     return br1 | br2 << 16;
 }
 
@@ -97,9 +97,9 @@ void ExperienceOrb::tick() {
     checkInTile(x, (bb.y0 + bb.y1) / 2, z);
 
     double maxDist = 8;
-    // 4J - PC Comment
-    // Usually exp orbs will get created at the same time so smoothen the
-    // lagspikes
+    
+    
+    
     if (followingTime <
         tickCount - SharedConstants::TICKS_PER_SECOND + (entityId % 100)) {
         if (followingPlayer == nullptr ||
@@ -187,7 +187,7 @@ void ExperienceOrb::playerTouch(std::shared_ptr<Player> player) {
 
     if (throwTime == 0 && player->takeXpDelay == 0) {
         player->takeXpDelay = 2;
-        // 4J - sound change brought forward from 1.2.3
+        
         playSound(
             eSoundType_RANDOM_ORB, 0.1f,
             0.5f * ((random->nextFloat() - random->nextFloat()) * 0.7f + 1.8f));
@@ -225,14 +225,14 @@ int ExperienceOrb::getIcon() {
     return 0;
 }
 
-/**
- * Fetches the biggest possible experience orb value based on a maximum
- * value. The current algorithm is next prime which is at least twice more
- * than the previous one.
- *
- * @param maxValue
- * @return
- */
+
+
+
+
+
+
+
+
 int ExperienceOrb::getExperienceValue(int maxValue) {
     if (maxValue >= 2477) {
         return 2477;
@@ -261,17 +261,17 @@ int ExperienceOrb::getExperienceValue(int maxValue) {
 
 bool ExperienceOrb::isAttackable() { return false; }
 
-// 4J added
+
 bool ExperienceOrb::shouldRender(Vec3* c) {
     double xd = x - c->x;
     double yd = y - c->y;
     double zd = z - c->z;
     double distance = xd * xd + yd * yd + zd * zd;
 
-    // 4J - don't render experience orbs that are less than 2 metres away, to
-    // try and avoid large particles that are causing us problems with
-    // photosensitivity testing - issues when you go near a large pile of
-    // experience orbs that all rush towards the near clip plane
+    
+    
+    
+    
     if (distance < 4) return false;
 
     return Entity::shouldRender(c);

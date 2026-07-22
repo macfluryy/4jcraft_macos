@@ -10,8 +10,8 @@
 
 StringTable::StringTable(void) {}
 
-// Load string table from a binary blob, filling out with the current
-// localisation data only
+
+
 StringTable::StringTable(std::uint8_t* pbData, unsigned int dataSize) {
     src = std::vector<uint8_t>(pbData, pbData + dataSize);
 
@@ -49,7 +49,7 @@ void StringTable::ProcessStringTableData(void) {
     int64_t bytesToSkip = 0;
     int dataSize = 0;
 
-    //
+    
     for (auto it_locales = locales.begin();
          it_locales != locales.end() && (!foundLang); it_locales++) {
         bytesToSkip = 0;
@@ -82,11 +82,11 @@ void StringTable::ProcessStringTableData(void) {
         ByteArrayInputStream bais2(langData);
         DataInputStream dis2(&bais2);
 
-        // Read the language file for the selected language
+        
         int langVersion = dis2.readInt();
 
-        isStatic = false;     // 4J-JEV: Versions 1 and up could use
-        if (langVersion > 0)  // integers rather than std::wstrings as keys.
+        isStatic = false;     
+        if (langVersion > 0)  
             isStatic = dis2.readBoolean();
 
         std::wstring langId = dis2.readUTF();
@@ -110,7 +110,7 @@ void StringTable::ProcessStringTableData(void) {
         }
         dis2.close();
 
-        // We can't delete this data in the dtor, so clear the reference
+        
         bais2.reset();
     } else {
         app.DebugPrintf("Failed to get language\n");
@@ -121,12 +121,12 @@ void StringTable::ProcessStringTableData(void) {
         isStatic = false;
     }
 
-    // We can't delete this data in the dtor, so clear the reference
+    
     bais.reset();
 }
 
 StringTable::~StringTable(void) {
-    // delete src.data(); TODO 4J-JEV: ?
+    
 }
 
 void StringTable::getData(std::uint8_t** ppData, unsigned int* pSize) {

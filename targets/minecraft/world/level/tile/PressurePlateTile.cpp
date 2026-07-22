@@ -21,7 +21,7 @@ PressurePlateTile::PressurePlateTile(int id, const std::wstring& tex,
     : BasePressurePlateTile(id, tex, material) {
     this->sensitivity = sensitivity;
 
-    // 4J Stu - Move this from base class to use virtual function
+    
     updateShape(getDataForSignal(Redstone::SIGNAL_MAX));
 }
 
@@ -45,8 +45,8 @@ int PressurePlateTile::getSignalStrength(Level* level, int x, int y, int z) {
     else if (sensitivity == players)
         entities = level->getEntitiesOfClass(typeid(Player), &at_bb);
     else
-        __debugbreak();  // 4J-JEV: We're going to delete something at a random
-                         // location.
+        __debugbreak();  
+                         
 
     if (entities != nullptr && !entities->empty()) {
         for (auto it = entities->begin(); it != entities->end(); ++it) {

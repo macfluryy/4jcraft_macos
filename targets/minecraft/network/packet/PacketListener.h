@@ -56,7 +56,7 @@ class TeleportEntityPacket;
 class TileEventPacket;
 class TileUpdatePacket;
 class UseItemPacket;
-// 1.8.2
+
 class GetInfoPacket;
 class UpdateMobEffectPacket;
 class RemoveMobEffectPacket;
@@ -64,14 +64,14 @@ class PlayerInfoPacket;
 class SetExperiencePacket;
 class SetCreativeModeSlotPacket;
 class AddExperienceOrbPacket;
-// 1.0.1
+
 class ContainerButtonClickPacket;
 class TileEntityDataPacket;
-// 1.1
+
 class CustomPayloadPacket;
-// 1.2.3
+
 class RotateHeadPacket;
-// 1.3.2
+
 class ClientProtocolPacket;
 class ServerAuthDataPacket;
 class SharedKeyPacket;
@@ -82,15 +82,17 @@ class LevelSoundPacket;
 class TileDestructionPacket;
 class ClientCommandPacket;
 class LevelChunksPacket;
-// 1.6.4
+
 class SetObjectivePacket;
 class SetScorePacket;
 class SetDisplayObjectivePacket;
 class SetPlayerTeamPacket;
+class HudOverlayPacket;
+class JavaTabListPacket;
 class LevelParticlesPacket;
 class UpdateAttributesPacket;
 class TileEditorOpenPacket;
-// 4J Added
+
 class CraftItemPacket;
 class TradeItemPacket;
 class DebugOptionsPacket;
@@ -186,7 +188,7 @@ public:
         std::shared_ptr<ComplexItemDataPacket> packet);
     virtual void handleLevelEvent(std::shared_ptr<LevelEventPacket> packet);
 
-    //  1.8.2
+    
     virtual void handleGetInfo(std::shared_ptr<GetInfoPacket> packet);
     virtual void handleUpdateMobEffect(
         std::shared_ptr<UpdateMobEffectPacket> packet);
@@ -201,26 +203,26 @@ public:
     virtual void handleAddExperienceOrb(
         std::shared_ptr<AddExperienceOrbPacket> packet);
 
-    // 1.0.1
+    
     virtual void handleContainerButtonClick(
         std::shared_ptr<ContainerButtonClickPacket> packet);
     virtual void handleTileEntityData(
         std::shared_ptr<TileEntityDataPacket> tileEntityDataPacket);
 
-    // 1.1s
+    
     virtual void handleCustomPayload(
         std::shared_ptr<CustomPayloadPacket> customPayloadPacket);
 
-    // 1.2.3
+    
     virtual void handleRotateMob(
         std::shared_ptr<RotateHeadPacket> rotateMobPacket);
 
-    // 1.3.2
+    
     virtual void handleClientProtocolPacket(
         std::shared_ptr<ClientProtocolPacket> packet);
     virtual void handleServerAuthData(
         std::shared_ptr<ServerAuthDataPacket> packet);
-    // virtual void handleSharedKey(std::shared_ptr<SharedKeyPacket> packet);
+    
     virtual void handlePlayerAbilities(
         std::shared_ptr<PlayerAbilitiesPacket> playerAbilitiesPacket);
     virtual void handleChatAutoComplete(
@@ -232,17 +234,19 @@ public:
         std::shared_ptr<TileDestructionPacket> packet);
     virtual void handleClientCommand(
         std::shared_ptr<ClientCommandPacket> packet);
-    // virtual void handleLevelChunks(std::shared_ptr<LevelChunksPacket>
-    // packet);
+    
+    
     virtual bool canHandleAsyncPackets();
 
-    // 1.6.4
+    
     virtual void handleAddObjective(std::shared_ptr<SetObjectivePacket> packet);
     virtual void handleSetScore(std::shared_ptr<SetScorePacket> packet);
     virtual void handleSetDisplayObjective(
         std::shared_ptr<SetDisplayObjectivePacket> packet);
     virtual void handleSetPlayerTeamPacket(
         std::shared_ptr<SetPlayerTeamPacket> packet);
+    virtual void handleHudOverlay(std::shared_ptr<HudOverlayPacket> packet);
+    virtual void handleJavaTabList(std::shared_ptr<JavaTabListPacket> packet);
     virtual void handleParticleEvent(
         std::shared_ptr<LevelParticlesPacket> packet);
     virtual void handleUpdateAttributes(
@@ -251,7 +255,7 @@ public:
         std::shared_ptr<TileEditorOpenPacket> tileEditorOpenPacket);
     virtual bool isDisconnected();
 
-    // 4J Added
+    
     virtual void handleCraftItem(std::shared_ptr<CraftItemPacket> packet);
     virtual void handleTradeItem(std::shared_ptr<TradeItemPacket> packet);
     virtual void handleDebugOptions(std::shared_ptr<DebugOptionsPacket> packet);

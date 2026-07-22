@@ -13,7 +13,7 @@
 
 const int Achievements::ACHIEVEMENT_OFFSET = 0x500000;
 
-// maximum position of achievements (min and max)
+
 
 int Achievements::xMin = std::numeric_limits<int>::max();
 int Achievements::yMin = std::numeric_limits<int>::max();
@@ -42,23 +42,23 @@ Achievement* Achievements::flyPig = nullptr;
 
 Achievement* Achievements::snipeSkeleton = nullptr;
 Achievement* Achievements::diamonds = nullptr;
-// Achievement *Achievements::portal = nullptr;
+
 Achievement* Achievements::ghast = nullptr;
 Achievement* Achievements::blazeRod = nullptr;
 Achievement* Achievements::potion = nullptr;
 Achievement* Achievements::theEnd = nullptr;
 Achievement* Achievements::winGame = nullptr;
 Achievement* Achievements::enchantments = nullptr;
-// Achievement *Achievements::overkill = nullptr;
-// Achievement *Achievements::bookcase = nullptr;
 
-// 4J : WESTY : Added new acheivements.
+
+
+
 Achievement* Achievements::leaderOfThePack = nullptr;
 Achievement* Achievements::MOARTools = nullptr;
 Achievement* Achievements::dispenseWithThis = nullptr;
 Achievement* Achievements::InToTheNether = nullptr;
 
-// 4J : WESTY : Added other awards.
+
 Achievement* Achievements::socialPost = nullptr;
 Achievement* Achievements::eatPorkChop = nullptr;
 Achievement* Achievements::play100Days = nullptr;
@@ -67,16 +67,16 @@ Achievement* Achievements::mine100Blocks = nullptr;
 Achievement* Achievements::kill10Creepers = nullptr;
 
 #if defined(_EXTENDED_ACHIEVEMENTS)
-Achievement* Achievements::overkill = nullptr;  // Restored old achivements.
-Achievement* Achievements::bookcase = nullptr;  // Restored old achivements.
+Achievement* Achievements::overkill = nullptr;  
+Achievement* Achievements::bookcase = nullptr;  
 
-// 4J-JEV: New Achievements for Orbis.
+
 Achievement* Achievements::adventuringTime = nullptr;
 Achievement* Achievements::repopulation = nullptr;
-// Achievement *Achievements::porkChop = nullptr;
+
 Achievement* Achievements::diamondsToYou = nullptr;
-// Achievement *Achievements::passingTheTime = nullptr;
-// Achievement *Achievements::archer = nullptr;
+
+
 Achievement* Achievements::theHaggler = nullptr;
 Achievement* Achievements::potPlanter = nullptr;
 Achievement* Achievements::itsASign = nullptr;
@@ -162,12 +162,12 @@ void Achievements::staticCtor() {
             ->setGolden()
             ->postConstruct();
 
-    // 4J Stu - The order of these achievemnts is very important, as they map
-    // directly to data stored in the profile data. New achievements should be
-    // added at the end.
+    
+    
+    
 
-    // 4J : WESTY : Added new achievements. Note, params "x", "y", "icon" and
-    // "requires" are ignored on xbox.
+    
+    
     Achievements::leaderOfThePack =
         (new Achievement(eAward_LeaderOfThePack, L"leaderOfThePack", 0, 0,
                          Tile::treeTrunk, (Achievement*)buildSword))
@@ -187,7 +187,7 @@ void Achievements::staticCtor() {
                          Tile::treeTrunk, (Achievement*)buildSword))
             ->postConstruct();
 
-    // 4J : WESTY : Added other awards.
+    
     Achievements::mine100Blocks =
         (new Achievement(eAward_mine100Blocks, L"mine100Blocks", 0, 0,
                          Tile::treeTrunk, (Achievement*)buildSword))
@@ -224,31 +224,31 @@ void Achievements::staticCtor() {
                          Tile::treeTrunk, (Achievement*)buildSword))
             ->postConstruct();
 
-    // WARNING: NO NEW ACHIEVMENTS CAN BE ADDED HERE
-    // These stats (achievements) are directly followed by new
-    // stats/achievements in the profile data, so cannot be changed without
-    // migrating the profile data
+    
+    
+    
+    
 
-    // 4J Stu - All new Java achievements removed to stop them using the profile
-    // data
+    
+    
 
-    // 4J Stu - This achievment added in 1.8.2, but does not map to any Xbox
-    // achievements
+    
+    
     Achievements::snipeSkeleton =
         (new Achievement(eAward_snipeSkeleton, L"snipeSkeleton", 7, 0,
                          Item::bow, (Achievement*)killEnemy))
             ->setGolden()
             ->postConstruct();
 
-    // 4J Stu - These added in 1.0.1, but do not map to any Xbox achievements
+    
     Achievements::diamonds =
         (new Achievement(eAward_diamonds, L"diamonds", -1, 5, Item::diamond,
                          (Achievement*)acquireIron))
             ->postConstruct();
-    // Achievements::portal				= (new
-    // Achievement(eAward_portal,				L"portal",
-    // -1, 7,	Tile::obsidian,		(Achievement *)diamonds)
-    // )->postConstruct();
+    
+    
+    
+    
     Achievements::ghast =
         (new Achievement(eAward_ghast, L"ghast", -4, 8, Item::ghastTear,
                          (Achievement*)ghast))
@@ -275,13 +275,13 @@ void Achievements::staticCtor() {
         (new Achievement(eAward_enchantments, L"enchantments", -4, 4,
                          Tile::enchantTable, (Achievement*)enchantments))
             ->postConstruct();
-    //   Achievements::overkill				= (new
-    //   Achievement(eAward_overkill,				L"overkill",
-    //   -4, 1,	Item::sword_diamond, (Achievement *)enchantments)
-    //   )->setGolden()->postConstruct(); Achievements::bookcase
-    //   = (new Achievement(eAward_bookcase,
-    //   L"bookcase",			-3, 6,	Tile::bookshelf,
-    //   (Achievement *)enchantments) )->postConstruct();
+    
+    
+    
+    
+    
+    
+    
 
 #if defined(_EXTENDED_ACHIEVEMENTS)
     Achievements::overkill =
@@ -303,19 +303,19 @@ void Achievements::staticCtor() {
         (new Achievement(eAward_repopulation, L"repopulation", 0, 0,
                          Tile::bookshelf, (Achievement*)nullptr))
             ->postConstruct();
-    // Achievements::porkChoop			// // //
-    // // // //
+    
+    
     Achievements::diamondsToYou =
         (new Achievement(eAward_diamondsToYou, L"diamondsToYou", 0, 0,
                          Tile::bookshelf, (Achievement*)nullptr))
             ->postConstruct();
-    // Achievements::passingTheTime		= (new
-    // Achievement(eAward_play100Days, L"passingTheTime",
-    // 0,0,	Tile::bookshelf,		(Achievement*) nullptr)
-    // )->postConstruct(); Achievements::archer				= (new
-    // Achievement(eAward_arrowKillCreeper,			L"archer",
-    // 0,0,	Tile::bookshelf,		(Achievement*) nullptr)
-    // )->postConstruct();
+    
+    
+    
+    
+    
+    
+    
     Achievements::theHaggler =
         (new Achievement(eAward_theHaggler, L"theHaggler", 0, 0,
                          Tile::bookshelf, (Achievement*)nullptr))
@@ -380,7 +380,7 @@ void Achievements::staticCtor() {
 #endif
 }
 
-// Static { System.out.println(achievements.size() + " achievements"); }
-// TODO
+
+
 
 void Achievements::init() {}

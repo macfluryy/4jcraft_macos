@@ -23,8 +23,8 @@ public:
                               const std::string& controlName);
 
     void init(UIString label, int id);
-    // void init(const std::wstring &label, int id) {
-    // init(UIString::CONSTANT(label), id); }
+    
+    
 
     virtual void ReInit();
 

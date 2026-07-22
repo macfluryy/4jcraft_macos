@@ -58,8 +58,8 @@ RandomLevelSource::RandomLevelSource(Level* level, int64_t seed,
 
     random = new Random(seed);
     pprandom = new Random(
-        seed);  // 4J - added, so that we can have a separate random for doing
-                // post-processing in parallel with creation
+        seed);  
+                
     lperlinNoise1 = new PerlinNoise(random, 16);
     lperlinNoise2 = new PerlinNoise(random, 16);
     perlinNoise1 = new PerlinNoise(random, 8);
@@ -78,15 +78,15 @@ RandomLevelSource::RandomLevelSource(Level* level, int64_t seed,
 
     forestNoise = new PerlinNoise(random, 8);
 
-    // 4J macOS - Phase 2 continental noise. Constructed AFTER all
-    // existing noises so it consumes new entropy from the same Random
-    // and doesn't shift the seed for vanilla generation. Only sampled
-    // when `amplified` is true, so vanilla terrain shape is unchanged.
+    
+    
+    
+    
     continentNoise = new PerlinNoise(random, 4);
 
-    // 4J macOS - Phase 3 mountain mask. 3 octaves is enough to give
-    // smooth ridge curves at ~165-block period without adding noisy
-    // detail that would re-introduce stair-stepping on slopes.
+    
+    
+    
     mountainMaskNoise = new PerlinNoise(random, 3);
 }
 
@@ -126,13 +126,13 @@ time_util::clock::duration g_averagePrepareHeightsTime{};
 
 int RandomLevelSource::getMinDistanceToEdge(int xxx, int zzz, int worldSize,
                                             float falloffStart) {
-    // Get distance to edges of world in x
-    // we have to do a proper line dist check here
+    
+    
     int min = -worldSize / 2;
     int max = (worldSize / 2) - 1;
 
-    // 	// only check if either x or z values are within the falloff
-    // 	if(xxx > (min - falloffStart)
+    
+    
 
     Vec3 topLeft(min, 0, min);
     Vec3 topRight(max, 0, min);
@@ -141,7 +141,7 @@ int RandomLevelSource::getMinDistanceToEdge(int xxx, int zzz, int worldSize,
 
     float closest = falloffStart;
     float dist;
-    // make sure we're in range of the edges before we do a full distance check
+    
     if ((xxx > (min - falloffStart) && xxx < (min + falloffStart)) ||
         (xxx > (max - falloffStart) && xxx < (max + falloffStart))) {
         Vec3 point(xxx, 0, zzz);
@@ -153,7 +153,7 @@ int RandomLevelSource::getMinDistanceToEdge(int xxx, int zzz, int worldSize,
         closest = dist;
     }
 
-    // make sure we're in range of the edges before we do a full distance check
+    
     if ((zzz > (min - falloffStart) && zzz < (min + falloffStart)) ||
         (zzz > (max - falloffStart) && zzz < (max + falloffStart))) {
         Vec3 point(xxx, 0, zzz);
@@ -169,18 +169,18 @@ int RandomLevelSource::getMinDistanceToEdge(int xxx, int zzz, int worldSize,
 }
 
 float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
-    ///////////////////////////////////////////////////////////////////
-    // 4J - add this chunk of code to make land "fall-off" at the edges of
-    // a finite world - size of that world is currently hard-coded in here
+    
+    
+    
     const int worldSize = m_XZSize * 16;
     const int falloffStart =
-        32;  // chunks away from edge were we start doing fall-off
+        32;  
     const float falloffMax =
-        128.0f;  // max value we need to get to falloff by the edge of the map
+        128.0f;  
 
     float comp = 0.0f;
     int emin = getMinDistanceToEdge(xxx, zzz, worldSize, falloffStart);
-    // check if we have a larger world that should have moats
+    
     int expandedWorldSizes[3] = {LEVEL_WIDTH_CLASSIC * 16,
                                  LEVEL_WIDTH_SMALL * 16,
                                  LEVEL_WIDTH_MEDIUM * 16};
@@ -188,8 +188,8 @@ float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
                                   m_mediumEdgeMoat};
     for (int i = 0; i < 3; i++) {
         if (expandedMoatValues[i] && (worldSize > expandedWorldSizes[i])) {
-            // this world has been expanded, with moat settings, so we need
-            // fallofs at this edges too
+            
+            
             int eminMoat = getMinDistanceToEdge(xxx, zzz, expandedWorldSizes[i],
                                                 falloffStart);
             if (eminMoat < emin) {
@@ -198,45 +198,45 @@ float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
         }
     }
 
-    // Calculate how much we want the world to fall away, if we're in the
-    // defined region to do so
+    
+    
     if (emin < falloffStart) {
         int falloff = falloffStart - emin;
         comp = ((float)falloff / (float)falloffStart) * falloffMax;
     }
     *pEMin = emin;
     return comp;
-    // 4J - end of extra code
-    ///////////////////////////////////////////////////////////////////
+    
+    
 }
 
 #else
 
-// MGH  - go back to using the simpler version for PS3/vita/360, as it was
-// causing a lot of slow down on the tuturial generation
+
+
 float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
-    ///////////////////////////////////////////////////////////////////
-    // 4J - add this chunk of code to make land "fall-off" at the edges of
-    // a finite world - size of that world is currently hard-coded in here
+    
+    
+    
     const int worldSize = m_XZSize * 16;
     const int falloffStart =
-        32;  // chunks away from edge were we start doing fall-off
+        32;  
     const float falloffMax =
-        128.0f;  // max value we need to get to falloff by the edge of the map
+        128.0f;  
 
-    // Get distance to edges of world in x
+    
     int xxx0 = xxx + (worldSize / 2);
     if (xxx0 < 0) xxx0 = 0;
     int xxx1 = ((worldSize / 2) - 1) - xxx;
     if (xxx1 < 0) xxx1 = 0;
 
-    // Get distance to edges of world in z
+    
     int zzz0 = zzz + (worldSize / 2);
     if (zzz0 < 0) zzz0 = 0;
     int zzz1 = ((worldSize / 2) - 1) - zzz;
     if (zzz1 < 0) zzz1 = 0;
 
-    // Get min distance to any edge
+    
     int emin = xxx0;
     if (xxx1 < emin) emin = xxx1;
     if (zzz0 < emin) emin = zzz0;
@@ -244,14 +244,14 @@ float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
 
     float comp = 0.0f;
 
-    // Calculate how much we want the world to fall away, if we're in the
-    // defined region to do so
+    
+    
     if (emin < falloffStart) {
         int falloff = falloffStart - emin;
         comp = ((float)falloff / (float)falloffStart) * falloffMax;
     }
-    // 4J - end of extra code
-    ///////////////////////////////////////////////////////////////////
+    
+    
     *pEMin = emin;
     return comp;
 }
@@ -268,16 +268,16 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs,
     int ySize = Level::genDepth / CHUNK_HEIGHT + 1;
     int zSize = xChunks + 1;
 
-    std::vector<Biome*> biomes;  // 4J created locally here for thread safety,
-                                 // java has this as a class member
+    std::vector<Biome*> biomes;  
+                                 
 
     level->getBiomeSource()->getRawBiomeBlock(biomes, xOffs * CHUNK_WIDTH - 2,
                                               zOffs * CHUNK_WIDTH - 2,
                                               xSize + 5, zSize + 5);
 
     std::vector<double>
-        buffer;  // 4J - used to be declared with class level scope but
-                 // tidying up for thread safety reasons
+        buffer;  
+                 
     buffer = getHeights(buffer, xOffs * xChunks, 0, zOffs * xChunks, xSize,
                         ySize, zSize, biomes);
 
@@ -334,43 +334,43 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs,
                         double vala = (_s1 - _s0) * zStep;
                         val -= vala;
                         for (int z = 0; z < CHUNK_WIDTH; z++) {
-                            // 4J Stu - I have removed all uses of the new
-                            // getHeightFalloff function for now as we had some
-                            // problems with PS3/PSVita world generation I have
-                            // fixed the non large worlds method, however we
-                            // will be happier if the current builds go out with
-                            // completely old code We can put the new code back
-                            // in mid-november 2014 once those PS3/Vita builds
-                            // are gone (and the PS4 doesn't have world
-                            // enlarging in these either anyway)
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                             int xxx = ((xOffs * 16) + x + (xc * CHUNK_WIDTH));
                             int zzz = ((zOffs * 16) + z + (zc * CHUNK_WIDTH));
                             int emin;
                             float comp = getHeightFalloff(xxx, zzz, &emin);
 
-                            // 4J - slightly rearranged this code (as of
-                            // java 1.0.1 merge) to better fit with changes
-                            // we've made edge-of-world things - original sets
-                            // blocks[offs += step] directly here rather than
-                            // setting a tileId
+                            
+                            
+                            
+                            
+                            
                             int tileId = 0;
-                            // 4J - this comparison used to just be with 0.0f
-                            // but is now varied by block above
+                            
+                            
                             if ((val += vala) > comp) {
                                 tileId = (uint8_t)Tile::stone_Id;
                             } else if (yc * CHUNK_HEIGHT + y < waterHeight) {
                                 tileId = (uint8_t)Tile::calmWater_Id;
                             }
 
-                            // 4J - more extra code to make sure that the column
-                            // at the edge of the world is just water & rock, to
-                            // match the infinite sea that continues on after
-                            // the edge of the world.
+                            
+                            
+                            
+                            
 
                             if (emin == 0) {
-                                // This matches code in MultiPlayerChunkCache
-                                // that makes the geometry which continues at
-                                // the edge of the world
+                                
+                                
+                                
                                 if (yc * CHUNK_HEIGHT + y <=
                                     (level->getSeaLevel() - 10))
                                     tileId = Tile::stone_Id;
@@ -407,8 +407,8 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs,
     double s = 1 / 32.0;
 
     std::vector<double> depthBuffer(
-        16 * 16);  // 4J - used to be declared with class level
-                   // scope but moved here for thread safety
+        16 * 16);  
+                   
 
     depthBuffer = perlinNoise3->getRegion(depthBuffer, xOffs * 16, zOffs * 16,
                                           0, 16, 16, 1, s * 2, s * 2, s * 2);
@@ -434,10 +434,10 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs,
                 int offs = (z * 16 + x) * Level::genDepth + y;
 
                 if (y <= 1 + random->nextInt(
-                                 2))  // 4J - changed to make the bedrock not
-                                      // have bits you can get stuck in
-                                      //                if (y <= 0 +
-                                      //                random->nextInt(5))
+                                 2))  
+                                      
+                                      
+                                      
                 {
                     blocks[offs] = (uint8_t)Tile::unbreakable_Id;
                 } else {
@@ -476,7 +476,7 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs,
                             run--;
                             blocks[offs] = material;
 
-                            // place a few sandstone blocks beneath sand runs
+                            
                             if (run == 0 && material == Tile::sand_Id) {
                                 run = random->nextInt(4);
                                 material = (uint8_t)Tile::sandStone_Id;
@@ -494,59 +494,59 @@ LevelChunk* RandomLevelSource::create(int x, int z) { return getChunk(x, z); }
 LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
     random->setSeed(xOffs * 341873128712l + zOffs * 132897987541l);
 
-    // 4J - now allocating this with a physical alloc & bypassing general memory
-    // management so that it will get cleanly freed
+    
+    
     int blocksSize = Level::genDepth * 16 * 16;
     uint8_t* tileData = (uint8_t*)malloc(blocksSize);
     memset(tileData, 0, blocksSize);
     std::vector<uint8_t> blocks =
         std::vector<uint8_t>(tileData, tileData + blocksSize);
-    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth *
-    //    16);
+    
+    
 
-    // LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
-    // // 4J - moved to below
+    
+    
 
     prepareHeights(xOffs, zOffs, blocks);
 
-    // 4J - Some changes made here to how biomes, temperatures and downfalls are
-    // passed around for thread safety
+    
+    
     std::vector<Biome*> biomes;
     level->getBiomeSource()->getBiomeBlock(biomes, xOffs * 16, zOffs * 16, 16,
                                            16, true);
 
     buildSurfaces(xOffs, zOffs, blocks, biomes);
-    // 4J macOS - was addAmplifiedFloatingIslands(...). Removed because
-    // vanilla Java Amplified does NOT generate discrete floating islands;
-    // the dramatic over-hangs and sky-bastions in Amplified come out
-    // naturally from the exaggerated biomeDepth/biomeScale density. The
-    // explicit shard-placer made the world look more like a "floating
-    // islands mod" than vanilla Amplified, which is the wrong feel.
+    
+    
+    
+    
+    
+    
 
-    // 4J macOS - Phase 4 slope-aware surface replacement.
-    // After buildSurfaces has stamped biome topMaterial / fillerMaterial,
-    // walk the 16x16 column heightmap inside this chunk and reclassify
-    // the top blocks based on local slope steepness:
-    //
-    //   |max neighbour height delta| (slope)
-    //     0..2  -> flat ledge        : keep biome top (grass / sand)
-    //     3..5  -> medium slope      : convert top to dirt
-    //     6..   -> steep cliff       : convert top to stone
-    //
-    // Plus: above seaLevel + 50 the top stays untouched so amplified
-    // alpine peaks keep the snowy / stone cap palette set up later in
-    // postProcess. Below seaLevel-1 we don't touch (underwater).
-    //
-    // This pass is amplified-only because vanilla normal terrain looks
-    // fine with biome surfaces; only the dramatic Amplified cliffs
-    // need biome-aware treatment.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     if (amplified) {
         const int W = 16;
         const int H = Level::genDepth;
         const int seaLevel = level->getSeaLevel();
         const int peakBand = seaLevel + 50;
 
-        // Local heightmap of the topmost non-air block in this chunk.
+        
         int hm[16 * 16];
         for (int x = 0; x < W; x++) {
             for (int z = 0; z < W; z++) {
@@ -562,11 +562,11 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
             }
         }
 
-        // Slope-aware reclassification. We only inspect interior cells
-        // (1..14) so the neighbour lookups stay inside the chunk
-        // without crossing into other chunks' uninitialised blocks.
-        // Edge columns (x=0,15 / z=0,15) keep their existing surface;
-        // the seam is invisible at gameplay distance.
+        
+        
+        
+        
+        
         for (int x = 1; x < W - 1; x++) {
             for (int z = 1; z < W - 1; z++) {
                 int h = hm[x * W + z];
@@ -584,14 +584,14 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
                 int topOffs = (x * W + z) * H + h;
                 uint8_t topId = blocks[topOffs];
 
-                // 4J macOS - Phase A2 wide beaches. On gently sloped
-                // columns at sea level (h in [seaLevel-1..seaLevel+2]
-                // and dh <= 2), convert grass/dirt top + 3 blocks of
-                // filler to sand. Steep coastal columns fall through
-                // to the steep cliff branch below and become rocky
-                // shores naturally. We only widen real "beach"
-                // material here - water / ice / existing sand stay as
-                // they are.
+                
+                
+                
+                
+                
+                
+                
+                
                 if (h >= seaLevel - 1 && h <= seaLevel + 2 && dh <= 2) {
                     if (topId == Tile::grass_Id ||
                         topId == Tile::dirt_Id) {
@@ -610,14 +610,14 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
                     continue;
                 }
 
-                if (h <= seaLevel) continue;       // underwater
-                if (h >= peakBand) continue;       // alpine cap zone
+                if (h <= seaLevel) continue;       
+                if (h >= peakBand) continue;       
 
-                if (dh < 3) continue;              // flat ledge -> keep
+                if (dh < 3) continue;              
 
-                // Skip non-soil tops: water, ice, sand should stay as
-                // they are. Sand on coastlines is intentional and
-                // shouldn't get retconned to stone.
+                
+                
+                
                 if (topId == Tile::calmWater_Id ||
                     topId == Tile::ice_Id ||
                     topId == Tile::sand_Id ||
@@ -627,9 +627,9 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
                 }
 
                 if (dh >= 6) {
-                    // Steep cliff: top + filler -> stone. Walk down a
-                    // few blocks so the visible face is uniformly
-                    // stone, not 1 block of dirt over stone.
+                    
+                    
+                    
                     int depth = 4;
                     for (int d = 0; d < depth; d++) {
                         int yy = h - d;
@@ -643,9 +643,9 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
                         }
                     }
                 } else {
-                    // Medium slope: top -> dirt. Filler underneath
-                    // stays as biome filler (usually dirt anyway), so
-                    // grass-on-slope reads as bare earth.
+                    
+                    
+                    
                     if (topId == Tile::grass_Id) {
                         blocks[topOffs] = (uint8_t)Tile::dirt_Id;
                     }
@@ -655,9 +655,9 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
     }
 
     caveFeature->apply(this, level, xOffs, zOffs, blocks);
-    // 4J Stu Design Change - 1.8 gen goes stronghold, mineshaft, village,
-    // canyon this changed in 1.2 to canyon, mineshaft, village, stronghold This
-    // change makes sense as it stops canyons running through other structures
+    
+    
+    
     canyonFeature->apply(this, level, xOffs, zOffs, blocks);
     if (generateStructures) {
         mineShaftFeature->apply(this, level, xOffs, zOffs, blocks);
@@ -665,18 +665,18 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
         strongholdFeature->apply(this, level, xOffs, zOffs, blocks);
         scatteredFeature->apply(this, level, xOffs, zOffs, blocks);
     }
-    //        canyonFeature.apply(this, level, xOffs, zOffs, blocks);
-    // townFeature.apply(this, level, xOffs, zOffs, blocks);
-    // addCaves(xOffs, zOffs, blocks);
-    // addTowns(xOffs, zOffs, blocks);
+    
+    
+    
+    
 
-    //    levelChunk->recalcHeightmap();		// 4J - removed & moved
-    //    into its own method
+    
+    
 
-    // 4J - this now creates compressed block data from the blocks array passed
-    // in, so moved it until after the blocks are actually finalised. We also
-    // now need to free the passed in blocks as the LevelChunk doesn't use the
-    // passed in allocation anymore.
+    
+    
+    
+    
     LevelChunk* levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     free(tileData);
 
@@ -686,16 +686,16 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
 void RandomLevelSource::addAmplifiedFloatingIslands(
     int xOffs, int zOffs, std::vector<uint8_t>& blocks,
     std::vector<Biome*>& biomes) {
-    // Java's Amplified terrain doesn't actually float chunks of land in
-    // the sky; the dramatic over-hangs come naturally out of the
-    // exaggerated biomeDepth/biomeScale. We still add a *very* rare
-    // small rock shard to give the high alpine areas a bit of visual
-    // drama, but keep the rate low so the sky stays clean.
+    
+    
+    
+    
+    
     if (!amplified) return;
 
-    // ~1.5% of chunks get a single small shard. Anything bigger
-    // (medium plateaus / massive bastions) is removed - the noise
-    // pipeline now produces real cliffs by itself.
+    
+    
+    
     if (random->nextInt(64) != 0) return;
 
     int minY = level->seaLevel + 64;
@@ -706,9 +706,9 @@ void RandomLevelSource::addAmplifiedFloatingIslands(
     int cz = 5 + random->nextInt(6);
     Biome* biome = biomes[cz + cx * 16];
 
-    // Avoid placing islands directly above oceans / rivers / swamps so
-    // the rare shards read as cliffs above mountains rather than weird
-    // water artefacts.
+    
+    
+    
     if (biome == Biome::ocean || biome == Biome::frozenOcean ||
         biome == Biome::river || biome == Biome::frozenRiver ||
         biome == Biome::swampland) {
@@ -729,11 +729,11 @@ void RandomLevelSource::addAmplifiedFloatingIslands(
             break;
         }
     }
-    // Keep enough vertical clearance below the island so it really hangs
-    // in the air rather than touching the mountain top.
+    
+    
     if (columnTop > cy - ry - 8) return;
 
-    // ---- Place the main ellipsoidal mass of rock ----
+    
     for (int dx = -rx; dx <= rx; dx++) {
         int xx = cx + dx;
         if (xx < 0 || xx >= 16) continue;
@@ -756,8 +756,8 @@ void RandomLevelSource::addAmplifiedFloatingIslands(
                 }
             }
 
-            // Trailing stalactite under the bottom of the island so it has
-            // a dramatic silhouette from below.
+            
+            
             if (stalactiteDepth > 0) {
                 double t = horiz;
                 if (t < 0.55) {
@@ -782,7 +782,7 @@ void RandomLevelSource::addAmplifiedFloatingIslands(
         }
     }
 
-    // ---- Surface the top of the island with biome materials ----
+    
     uint8_t top = biome->topMaterial;
     uint8_t material = biome->material;
     for (int dx = -rx; dx <= rx; dx++) {
@@ -808,14 +808,14 @@ void RandomLevelSource::addAmplifiedFloatingIslands(
     }
 }
 
-// 4J - removed & moved into its own method from getChunk, so we can call
-// recalcHeightmap after the chunk is added into the cache. Without doing this,
-// then loads of the lightgaps() calls will fail to add any lights, because
-// adding a light checks if the cache has this chunk in. lightgaps also does
-// light 1 block into the neighbouring chunks, and maybe that is somehow enough
-// to get lighting to propagate round the world, but this just doesn't seem
-// right - this isn't a new fault in the 360 version, have checked that java
-// does the same.
+
+
+
+
+
+
+
+
 void RandomLevelSource::lightChunk(LevelChunk* lc) { lc->recalcHeightmap(); }
 
 std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
@@ -840,8 +840,8 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
     double hs = 1 * 684.412;
 
     std::vector<double> pnr, ar, br, sr, dr, fi,
-        fis;  // 4J - used to be declared with class level scope but moved here
-              // for thread safety
+        fis;  
+              
 
     if (FLOATING_ISLANDS) {
         fis = floatingIslandScale->getRegion(fis, x, y, z, xSize, 1, zSize, 1.0,
@@ -857,8 +857,8 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
     ar = lperlinNoise1->getRegion(ar, x, y, z, xSize, ySize, zSize, s, hs, s);
     br = lperlinNoise2->getRegion(br, x, y, z, xSize, ySize, zSize, s, hs, s);
 
-    // 4J macOS - Phase 2 continental noise needs the original world-
-    // space x/z because the loop below resets x=z=0 for table indexing.
+    
+    
     int worldX = x;
     int worldZ = z;
 
@@ -875,28 +875,28 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
 
             int rr = 2;
 
-            // 4J macOS - Phase 3 ridge mask. Compute once per column,
-            // BEFORE the biome 5x5 blend. The ridge value modulates
-            // biomeScale uniformly inside the blend window so the
-            // boosted ranges follow smooth chains (one whole column
-            // either gets the boost or doesn't). Domain-warping the
-            // sample with a perpendicular noise fetch gives the
-            // characteristic "S-curve" of TerraForged mountain ranges
-            // instead of straight bands.
-            //
-            // Coefficients (softened after Phase 3 visual review):
-            //   ridge_threshold = 0.60 - only the upper 40% of the
-            //                    ridge mask triggers any boost,
-            //                    keeping Phase 2 connectivity intact
-            //                    on the majority of terrain.
-            //   ridge_max_boost = 0.45 - max multiplicative add to
-            //                    biomeScale; capped at +45% so cliffs
-            //                    don't stair-step.
-            //   ridge sharpening = ridge*ridge*0.78 - softer than the
-            //                    initial 0.85 so cliffs read as
-            //                    "chunky mountain spine" instead of
-            //                    razor edges; eliminates inward
-            //                    folding seen on early Phase 3.
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             float ridgeBoost = 0.0f;
             if (amplified) {
                 int colX = worldX + xx;
@@ -906,11 +906,11 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
                               32.0;
                 double mm = mountainMaskNoise->getValue(
                     (colX + warp) * 0.006, colZ * 0.006);
-                // Perlin returns roughly [-1..1]; remap to [0..1].
+                
                 double mm01 = (mm + 1.0) * 0.5;
                 if (mm01 < 0.0) mm01 = 0.0;
                 if (mm01 > 1.0) mm01 = 1.0;
-                // Ridge fold: |2*x - 1| inverted so x=0.5 -> ridge=1.
+                
                 double ridge = 1.0 - std::fabs(2.0 * mm01 - 1.0);
                 ridge = ridge * ridge * 0.78;
                 if (ridge > 0.60) {
@@ -928,35 +928,35 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
                     float biomeDepth = b->depth;
                     float biomeScale = b->scale;
                     if (amplified && biomeDepth > 0.0f) {
-                        // Java Amplified base formula adapted to our 128-
-                        // block generation height (Java is 256). Scale
-                        // multiplier dropped to *2.5 (Java *4) so the
-                        // (yy - yCenter)/scale term still has enough
-                        // gravitational pull on mid-air noise to keep the
-                        // mountain mass connected. *4 fragmented the world
-                        // into floating shelves; *3 still left thin 1-3
-                        // block walls; *2.5 produces thick 5-7 block
-                        // cliffs that match real vanilla Amplified.
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         biomeDepth = 1.0f + biomeDepth * 2.0f;
                         biomeScale = 1.0f + biomeScale * 2.5f;
 
-                        // 4J macOS - Phase 3. Multiply scale by the
-                        // ridge boost so chains of "high biomeScale"
-                        // form along ridge lines. ridgeBoost <= 0.45
-                        // by construction.
+                        
+                        
+                        
+                        
                         if (ridgeBoost > 0.0f) {
                             biomeScale *= 1.0f + ridgeBoost;
                         }
 
-                        // 4J macOS - Phase A1 biome flavor. Tiny
-                        // per-cell biome multipliers so each biome
-                        // reads slightly differently inside the
-                        // amplified pipeline. Coefficients capped at
-                        // +/-10% so connectivity (Phase 2) and ridge
-                        // chains (Phase 3) remain dominant. Applied
-                        // INSIDE the 5x5 blend so transitions stay
-                        // smooth - one flavor doesn't pop on biome
-                        // boundaries.
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         if (b == Biome::extremeHills ||
                             b == Biome::smallerExtremeHills) {
                             biomeScale *= 1.10f;
@@ -1009,14 +1009,14 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
 
             pp++;
 
-            // 4J macOS - Phase 2 continental noise sample, once per
-            // column. Frequency 0.0015 -> period ~660 blocks, so a
-            // single mountain range / valley spans many chunks. Range
-            // is roughly [-1..1]; we softly clamp to [-0.4..0.6] and
-            // scale into a per-cell density bias below. The result
-            // pulls neighbouring chunks toward the same mass instead
-            // of independently dipping into ocean, which is what
-            // produced the "scattered islands" feel previously.
+            
+            
+            
+            
+            
+            
+            
+            
             double continentBias = 0.0;
             if (amplified) {
                 int colX = worldX + xx;
@@ -1043,17 +1043,17 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
                     (yy - (yCenter)) * 12 * 128 / Level::genDepth / scale;
 
                 if (yOffs < 0) {
-                    // Pull mid-air density above the peak strongly back
-                    // down. Vanilla uses *4; on amplified we use *6 so any
-                    // residual high-altitude density bubbles get crushed
-                    // before they can become floating shelves above the
-                    // mountain.
+                    
+                    
+                    
+                    
+                    
                     yOffs *= amplified ? 6.0 : 4.0;
                 }
-                // Amplified: mildly amplify positive yOffs (cells *below*
-                // ground) too, so noise oscillations near the mountain
-                // surface can't form thin floating slabs. *2.0 is enough
-                // to consolidate terrain without softening sharp peaks.
+                
+                
+                
+                
                 if (amplified && yOffs > 0.0) yOffs *= 2.0;
 
                 double bb = ar[p] / 512;
@@ -1068,39 +1068,39 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
                     val = bb + (cc - bb) * v;
                 val -= yOffs;
 
-                // 4J macOS - Phase 2 continental bias. Apply a soft
-                // bell curve around mid-height (yy = ySize/2 -> seaLevel
-                // band) so that whole regions either rise into mainland
-                // or sink into shallow seas, but the upper third of
-                // the column stays free of artificial density
-                // (otherwise the bias would build new floating
-                // shelves, undoing Phase 1). At the very bottom we
-                // also taper so the underground stays dense regardless.
+                
+                
+                
+                
+                
+                
+                
+                
                 if (amplified) {
                     double yNorm = (double)yy / (double)(ySize - 1);
-                    // Bell shape peaking at yNorm=0.45 (~surface band).
+                    
                     double d = yNorm - 0.45;
                     double bell = 1.0 - (d * d) * 4.0;
                     if (bell < 0.0) bell = 0.0;
                     val += continentBias * bell * 0.5;
                 }
 
-                // Top slide. Amplified starts the slide one cell earlier
-                // so high-altitude density caps don't leave floating
-                // shelves above the peaks - they get compressed cleanly
-                // to -10 (air) instead.
+                
+                
+                
+                
                 int slideStart = amplified ? ySize - 5 : ySize - 4;
 
-                // 4J macOS - Phase 1 anti-floating. Thin positive-density
-                // bubbles above the peak band solidify into 1-3 block
-                // detached shelves ("floating islands"). For amplified
-                // worlds, in the upper band only (yy >= slideStart),
-                // shave a small bias off cells whose density landed in
-                // the [0..0.6] sliver. Real mountain mass has density
-                // well above 1.0 down here, so it isn't touched; only
-                // the borderline bubbles flip to air. This keeps the
-                // dramatic Amplified silhouette while removing the
-                // mod-like detached chunks.
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 if (amplified && yy >= slideStart && val > 0.0 && val < 0.6) {
                     val -= 0.35;
                 }
@@ -1189,8 +1189,8 @@ void RandomLevelSource::calcWaterDepths(ChunkSource* parent, int xt, int zt) {
     }
 }
 
-// 4J - changed this to used pprandom rather than random, so that we can run it
-// concurrently with getChunk
+
+
 void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     HeavyTile::instaFall = true;
     int xo = xt * 16;
@@ -1205,7 +1205,7 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     pprandom->setSeed(level->getSeed());
     int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
     int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
-    // 4jcraft added casts to a higher int and unsigned
+    
     pprandom->setSeed((((uint64_t)xt * (uint64_t)xScale) +
                        ((uint64_t)zt * (uint64_t)zScale)) ^
                       level->getSeed());
@@ -1258,7 +1258,7 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     MobSpawner::postProcessSpawnMobs(level, biome, xo + 8, zo + 8, 16, 16,
                                      pprandom);
 
-    // 4J - brought forward from 1.2.3 to get snow back in taiga biomes
+    
     xo += 8;
     zo += 8;
     for (int x = 0; x < 16; x++) {
@@ -1273,32 +1273,32 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
                 level->setTileAndData(x + xo, y, z + zo, Tile::topSnow_Id, 0,
                                       Tile::UPDATE_CLIENTS);
             }
-            // 4J macOS - Phase 5 alpine snow line. Replaces the
-            // earlier flat threshold (y > seaLevel+45) with a
-            // biome-aware, noise-broken cap so snow caps look
-            // natural instead of carving a perfectly horizontal band
-            // across the world.
-            //
-            // Three inputs combine into the effective snow height:
-            //   base       = seaLevel + 50            (default line)
-            //   tempBias   = (temp - 0.5) * 16        (cold biomes
-            //                                          get snow much
-            //                                          lower; hot
-            //                                          biomes push
-            //                                          the line up
-            //                                          out of reach)
-            //   noiseBias  = forestNoise(...) * 5     (~+/- 5 block
-            //                                          ragged edge,
-            //                                          short period
-            //                                          so it varies
-            //                                          across one
-            //                                          mountain)
-            //
-            // Slope guard: if the column under the candidate snow
-            // block is exposed cliff (steep neighbour drop) we skip
-            // - real alpine cliffs are rocky, not snowy. We use the
-            // local heightmap delta from `level` since the chunk has
-            // already been published by the time postProcess runs.
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             if (amplified && y < Level::genDepthMinusOne &&
                 level->getTile(x + xo, y, z + zo) == 0 &&
                 level->getTile(x + xo, y - 1, z + zo) == Tile::stone_Id) {
@@ -1316,10 +1316,10 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
                     int snowLine =
                         level->seaLevel + 50 + tempBias + noiseBias;
 
-                    // Slope guard - look at heightmap deltas around
-                    // (colX, colZ). If the cliff drops more than 6
-                    // blocks within 1 step the surface is too steep
-                    // for snow to settle.
+                    
+                    
+                    
+                    
                     int hC = level->getHeightmap(colX, colZ);
                     int hN = level->getHeightmap(colX - 1, colZ);
                     int hS = level->getHeightmap(colX + 1, colZ);
@@ -1342,18 +1342,18 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
                                               Tile::topSnow_Id, 0,
                                               Tile::UPDATE_CLIENTS);
 
-                        // For genuinely cold biomes, also fill the
-                        // exposed stone column down to the snow line
-                        // with snow_block (well, topSnow at thickness
-                        // 7 looks reasonable; full snow blocks aren't
-                        // available without breaking save format).
-                        // We skip the column fill in temperate biomes
-                        // - only the very top cap there.
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                     }
                 }
             }
-            // legacy stone-cap snow path (keeps existing behaviour
-            // for non-amplified worlds untouched).
+            
+            
             if (!amplified && y > level->seaLevel + 45 &&
                 y < Level::genDepthMinusOne &&
                 level->getTile(x + xo, y, z + zo) == 0 &&
@@ -1477,7 +1477,7 @@ void RandomLevelSource::addAmplifiedCliffCaves(int xt, int zt) {
             continue;
         }
 
-        // Look for a steep face in one of the cardinal directions.
+        
         int faceDir = -1;
         int faceDrop = 0;
         for (int i = 0; i < 4; i++) {
@@ -1498,12 +1498,12 @@ void RandomLevelSource::addAmplifiedCliffCaves(int xt, int zt) {
         int inX = -outX;
         int inZ = -outZ;
 
-        // Entrance roughly half way up the cliff so the mouth is clearly
-        // visible from the valley but still has plenty of stone above it.
+        
+        
         int entranceY = cliffTop - 4 - pprandom->nextInt(faceDrop - 8);
         if (entranceY < level->seaLevel + 4) continue;
 
-        // Walk outwards until we hit air - that is the cliff face.
+        
         int faceX = x;
         int faceZ = z;
         bool foundFace = false;
@@ -1528,8 +1528,8 @@ void RandomLevelSource::addAmplifiedCliffCaves(int xt, int zt) {
 
         for (int l = 0; l < length; l++) {
             double t = (double)l / (double)length;
-            // Gentle wander into the mountain so it doesn't look too
-            // surgical.
+            
+            
             double wanderY = sin(l * 0.35) * 1.5 +
                              (pprandom->nextDouble() - 0.5) * 0.8;
             double wanderH = sin(l * 0.5) * 0.8;
@@ -1537,7 +1537,7 @@ void RandomLevelSource::addAmplifiedCliffCaves(int xt, int zt) {
             cz += inZ + (inX != 0 ? wanderH : 0.0);
             cy += wanderY * 0.4;
 
-            // The entrance flares out wider than the tail of the tunnel.
+            
             double tailFactor = 1.0 - t * 0.6;
             int rr = (int)(baseRadius * tailFactor + 0.5);
             if (rr < 1) rr = 1;

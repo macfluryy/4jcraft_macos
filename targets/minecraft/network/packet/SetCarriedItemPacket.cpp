@@ -8,12 +8,12 @@ SetCarriedItemPacket::SetCarriedItemPacket() { slot = 0; }
 
 SetCarriedItemPacket::SetCarriedItemPacket(int slot) { this->slot = slot; }
 
-void SetCarriedItemPacket::read(DataInputStream* dis)  // throws IOException
+void SetCarriedItemPacket::read(DataInputStream* dis)  
 {
     slot = dis->readShort();
 }
 
-void SetCarriedItemPacket::write(DataOutputStream* dos)  // throws IOException
+void SetCarriedItemPacket::write(DataOutputStream* dos)  
 {
     dos->writeShort(slot);
 }

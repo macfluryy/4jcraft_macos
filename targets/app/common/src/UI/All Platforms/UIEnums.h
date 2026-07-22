@@ -1,7 +1,7 @@
 #pragma once
 
-// Defines the fixed groups for UI (lower numbers ticked first, rendered last
-// (ie on top))
+
+
 enum EUIGroup {
     eUIGroup_Fullscreen,
     eUIGroup_Player1,
@@ -11,11 +11,11 @@ enum EUIGroup {
 
     eUIGroup_COUNT,
 
-    eUIGroup_PAD,  // Special case to determine the group from the pad (default)
+    eUIGroup_PAD,  
 };
 
-// Defines the layers in a UI group (lower numbers ticked first, rendered last
-// (ie on top))
+
+
 enum EUILayer {
 #if !defined(_CONTENT_PACKAGE)
     eUILayer_Debug,
@@ -23,22 +23,22 @@ enum EUILayer {
     eUILayer_Tooltips,
     eUILayer_Error,
     eUILayer_Alert,
-    eUILayer_Fullscreen,  // Note: Fullscreen in this context doesn't
-                          // necessarily mean fill the whole screen, but fill
-                          // the whole viewport for this group. Enables
-                          // processes that don't interefere with normal scene
-                          // stack
+    eUILayer_Fullscreen,  
+                          
+                          
+                          
+                          
     eUILayer_Popup,
     eUILayer_Scene,
-    // eUILayer_Chat,
+    
     eUILayer_HUD,
 
     eUILayer_COUNT,
 };
 
-// Defines the scenes and components that can be added to a layer
-// If you add to the enums below, you need to add the scene name in the right
-// place in Game::wchSceneA
+
+
+
 enum EUIScene {
     eUIScene_PartnernetPassword = 0,
     eUIScene_Intro,
@@ -50,7 +50,7 @@ enum EUIScene {
     eUIScene_Crafting3x3Menu,
     eUIScene_FurnaceMenu,
     eUIScene_ContainerMenu,
-    eUIScene_LargeContainerMenu,  // for splitscreen
+    eUIScene_LargeContainerMenu,  
     eUIScene_InventoryMenu,
     eUIScene_DispenserMenu,
     eUIScene_DebugOptions,
@@ -101,17 +101,17 @@ enum EUIScene {
     eUIScene_HorseMenu,
     eUIScene_FireworksMenu,
 
-    // ****************************************
-    // ****************************************
-    // **********  IMPORTANT ******************
-    // ****************************************
-    // ****************************************
-    // When adding new scenes here, you must also update the switches in
-    // Game::NavigateToScene There are quite a few so you need
-    // to check them all Also update UILayer::updateFocusState
+    
+    
+    
+    
+    
+    
+    
+    
 
-    // Anything non-xbox should be added here. The ordering of scenes above is
-    // required for sentient reporting on xbox 360 to continue to be accurate
+    
+    
     eUIComponent_Panorama,
     eUIComponent_Logo,
     eUIComponent_DebugUIConsole,
@@ -139,8 +139,8 @@ enum EUIScene {
     eUIScene_COUNT,
 };
 
-// Used by the fullscreen progress scene to decide what to do when a thread
-// finishes
+
+
 enum ProgressionCompletionType {
     e_ProgressCompletion_NoAction,
     e_ProgressCompletion_NavigateBack,
@@ -168,7 +168,7 @@ enum EToolTipButton {
 
 enum EToolTipItem {
     eToolTipNone = -1,
-    eToolTipPickupPlace_OLD = 0,  // To support existing menus.
+    eToolTipPickupPlace_OLD = 0,  
     eToolTipExit,
     eToolTipPickUpGeneric,
     eToolTipPickUpAll,
@@ -228,7 +228,7 @@ enum EHowToPlayPage {
     eHowToPlay_NumPages
 };
 
-// Credits
+
 enum ECreditTextTypes {
     eExtraLargeText = 0,
     eLargeText,
@@ -244,7 +244,7 @@ enum EUIMessage {
 };
 
 #define NO_TRANSLATED_STRING \
-    (-1)  // String ID used to indicate that we are using non localised
-          // std::string.
+    (-1)  
+          
 
 #define CONNECTING_PROGRESS_CHECK_TIME 500

@@ -51,10 +51,10 @@ thread_local bool Entity::m_tlsUseSmallIds = false;
 
 const std::wstring Entity::RIDING_TAG = L"Riding";
 int Entity::entityCounter =
-    2048;  // 4J - changed initialiser to 2048, as we are using range 0 - 2047
-           // as special unique smaller ids for things that need network tracked
+    2048;  
+           
 
-// 4J - added getSmallId & freeSmallId methods
+
 unsigned int Entity::entityIdUsedFlags[2048 / 32] = {0};
 unsigned int Entity::entityIdWanderFlags[2048 / 32] = {0};
 unsigned int Entity::entityIdRemovingFlags[2048 / 32] = {0};
@@ -66,29 +66,29 @@ int Entity::getSmallId() {
     unsigned int* puiUsedFlags = entityIdUsedFlags;
     unsigned int* puiRemovedFlags = nullptr;
 
-    // If we are the server (we should be, if we are allocating small Ids), then
-    // check with the server if there are any small Ids which are still in the
-    // ServerPlayer's vectors of entities to be removed - these are used to
-    // gather up a set of entities into one network packet for final
-    // notification to the client that the entities are removed. We can't go
-    // re-using these small Ids yet, as otherwise we will potentially end up
-    // telling the client that the entity has been removed After we have already
-    // re-used its Id and created a new entity. This ends up with newly created
-    // client-side entities being removed by accident, causing invisible mobs.
+    
+    
+    
+    
+    
+    
+    
+    
+    
     if (m_tlsUseSmallIds) {
         MinecraftServer* server = MinecraftServer::getInstance();
         if (server) {
-            // In some attempt to optimise this, flagEntitiesToBeRemoved most of
-            // the time shouldn't do anything at all, and in this case it
-            // doesn't even memset the entityIdRemovingFlags array, so we
-            // shouldn't use it if the return value is false.
+            
+            
+            
+            
             bool removedFound =
                 server->flagEntitiesToBeRemoved(entityIdRemovingFlags);
             if (removedFound) {
-                // Has set up the entityIdRemovingFlags vector in this case, so
-                // we should check against this when allocating new ids
-                //				app.DebugPrintf("getSmallId:
-                // Removed entities found\n");
+                
+                
+                
+                
                 puiRemovedFlags = entityIdRemovingFlags;
             }
         }
@@ -99,15 +99,15 @@ int Entity::getSmallId() {
         if (uiFlags != 0xffffffff) {
             unsigned int uiMask = 0x80000000;
             for (int j = 0; j < 32; j++) {
-                // See comments above - now checking (if required) that these
-                // aren't newly removed entities that the clients still haven't
-                // been told about, so we don't reuse those ids before we
-                // should.
+                
+                
+                
+                
                 if (puiRemovedFlags) {
                     if (puiRemovedFlags[i] & uiMask) {
-                        //						app.DebugPrintf("Avoiding
-                        // using ID %d (0x%x)\n", i * 32 +
-                        // j,puiRemovedFlags[i]);
+                        
+                        
+                        
                         uiMask >>= 1;
                         continue;
                     }
@@ -155,9 +155,9 @@ void Entity::resetSmallId() {
 
 void Entity::freeSmallId(int index) {
     if (!m_tlsUseSmallIds)
-        return;  // Don't do anything with small ids if this isn't the server
-                 // thread
-    if (index >= 2048) return;  // Don't do anything if this isn't a short id
+        return;  
+                 
+    if (index >= 2048) return;  
 
     unsigned int i = index / 32;
     unsigned int j = index % 32;
@@ -169,21 +169,21 @@ void Entity::freeSmallId(int index) {
 
 void Entity::useSmallIds() { m_tlsUseSmallIds = true; }
 
-// Things also added here to be able to manage the concept of a number of extra
-// "wandering" entities - normally path finding entities aren't allowed to
-// randomly wander about once they are a certain distance away from any player,
-// but we want to be able to (in a controlled fashion) allow some to be able to
-// move so that we can determine whether they have been enclosed in some kind of
-// farm, and so be able to better determine what shouldn't or shouldn't be
-// despawned.
 
-// Let the management system here know whether or not to consider this
-// particular entity for some extra wandering
+
+
+
+
+
+
+
+
+
 void Entity::considerForExtraWandering(bool enable) {
     if (!m_tlsUseSmallIds)
-        return;  // Don't do anything with small ids if this isn't the server
-                 // thread
-    if (entityId >= 2048) return;  // Don't do anything if this isn't a short id
+        return;  
+                 
+    if (entityId >= 2048) return;  
 
     unsigned int i = entityId / 32;
     unsigned int j = entityId % 32;
@@ -196,14 +196,14 @@ void Entity::considerForExtraWandering(bool enable) {
     }
 }
 
-// Should this entity do wandering in addition to what the java code would have
-// done?
+
+
 bool Entity::isExtraWanderingEnabled() {
     if (!m_tlsUseSmallIds)
-        return false;  // Don't do anything with small ids if this isn't the
-                       // server thread
+        return false;  
+                       
     if (entityId >= 2048)
-        return false;  // Don't do anything if this isn't a short id
+        return false;  
 
     for (int i = 0; i < extraWanderCount; i++) {
         if (extraWanderIds[i] == entityId) return true;
@@ -211,28 +211,28 @@ bool Entity::isExtraWanderingEnabled() {
     return false;
 }
 
-// Returns a quadrant of direction that a given entity should be moved in - this
-// is to stop the randomness of the wandering/strolling from just making the
-// entity double back on itself and thus making the determination of whether the
-// entity has been enclosed take longer than it needs to. This function returns
-// a quadrant from 0 to 3 that should be consistent within one period of an
-// entity being considered for extra wandering, but should potentially vary
-// between tries and between different entities.
+
+
+
+
+
+
+
 int Entity::getWanderingQuadrant() {
     return (entityId + (extraWanderTicks / EXTRA_WANDER_TICKS)) & 3;
 }
 
-// Every EXTRA_WANDER_TICKS ticks, attempt to find EXTRA_WANDER_MAX entity Ids
-// from those that have been flagged as ones that should be considered for extra
-// wandering
+
+
+
 void Entity::tickExtraWandering() {
     extraWanderTicks++;
-    // Time to move onto some new entities?
+    
 
     if ((extraWanderTicks % EXTRA_WANDER_TICKS == 0)) {
-        //		printf("Updating extras: ");
-        // Start from the next Id after the one that we last found, or zero if
-        // we didn't find anything last time
+        
+        
+        
         int entityId = 0;
         if (extraWanderCount) {
             entityId = (extraWanderIds[extraWanderCount - 1] + 1) % 2048;
@@ -248,24 +248,24 @@ void Entity::tickExtraWandering() {
 
             if (entityIdWanderFlags[i] & uiMask) {
                 extraWanderIds[extraWanderCount++] = entityId;
-                //				printf("%d, ", entityId);
+                
             }
 
             entityId = (entityId + 1) % 2048;
         }
-        //		printf("\n");
+        
     }
 }
 
-// 4J - added for common ctor code
-// Do all the default initialisations done in the java class
+
+
 void Entity::_init(bool useSmallId, Level* level) {
-    // 4J - changed to assign two different types of ids. A range from 0-2047 is
-    // used for things that we'll be wanting to identify over the network, so we
-    // should only need 11 bits rather than 32 to uniquely identify them. The
-    // rest of the range is used for anything we don't need to track like this,
-    // currently particles. We only ever want to allocate this type of id from
-    // the server thread, so using thread local storage to isolate this.
+    
+    
+    
+    
+    
+    
     if (useSmallId && m_tlsUseSmallIds) {
         entityId = getSmallId();
     } else {
@@ -280,13 +280,13 @@ void Entity::_init(bool useSmallId, Level* level) {
     riding = nullptr;
     forcedLoading = false;
 
-    // level = nullptr; // Level is assigned to in the original c_tor code
+    
     xo = yo = zo = 0.0;
     x = y = z = 0.0;
     xd = yd = zd = 0.0;
     yRot = xRot = 0.0f;
     yRotO = xRotO = 0.0f;
-    bb = AABB(0, 0, 0, 0, 0, 0);  // 4J Was final
+    bb = AABB(0, 0, 0, 0, 0, 0);  
     onGround = false;
     horizontalCollision = verticalCollision = false;
     collision = false;
@@ -328,7 +328,7 @@ void Entity::_init(bool useSmallId, Level* level) {
 
     fireImmune = false;
 
-    // values that need to be sent to clients in SMP
+    
     if (useSmallId) {
         entityData = std::make_shared<SynchedEntityData>();
     } else {
@@ -354,19 +354,19 @@ void Entity::_init(bool useSmallId, Level* level) {
         uuid = L"ent" + Mth::createInsecureUUID(random);
     }
 
-    // 4J Added
+    
     m_ignoreVerticalCollisions = false;
     m_uiAnimOverrideBitmask = 0L;
     m_ignorePortal = false;
 }
 
 Entity::Entity(Level* level,
-               bool useSmallId)  // 4J - added useSmallId parameter
+               bool useSmallId)  
 {
     _init(useSmallId, level);
 
     this->level = level;
-    // resetPos();
+    
     setPos(0, 0, 0);
 
     if (level != nullptr) {
@@ -377,15 +377,15 @@ Entity::Entity(Level* level,
         entityData->define(DATA_SHARED_FLAGS_ID, (uint8_t)0);
         entityData->define(
             DATA_AIR_SUPPLY_ID,
-            TOTAL_AIR_SUPPLY);  // 4J Stu - Brought forward from 1.2.3 to fix
-                                // 38654 - Gameplay: Player will take damage
-                                // when air bubbles are present if resuming game
-                                // from load/autosave underwater.
+            TOTAL_AIR_SUPPLY);  
+                                
+                                
+                                
     }
 
-    // 4J Stu - We cannot call virtual functions in ctors, as at this point the
-    // object is of type Entity and not a derived class
-    // this->defineSynchedData();
+    
+    
+    
 }
 
 Entity::~Entity() {
@@ -397,18 +397,18 @@ std::shared_ptr<SynchedEntityData> Entity::getEntityData() {
     return entityData;
 }
 
-/*
-public bool equals(Object obj) {
-if (obj instanceof Entity) {
-return ((Entity) obj).entityId == entityId;
-}
-return false;
-}
 
-public int hashCode() {
-return entityId;
-}
-*/
+
+
+
+
+
+
+
+
+
+
+
 
 void Entity::resetPos() {
     if (level == nullptr) return;
@@ -456,12 +456,12 @@ void Entity::setPos(EntityPos* pos) {
 }
 
 void Entity::setRot(float yRot, float xRot) {
-    /* JAVA:
-    this->yRot = yRot % 360.0f;
-    this->xRot = xRot % 360.0f;
+    
 
-    C++ Cannot do mod of non-integral type
-    */
+
+
+
+
 
     while (yRot >= 360.0f) yRot -= 360.0f;
     while (yRot < 0) yRot += 360.0f;
@@ -504,8 +504,8 @@ void Entity::interpolateTurn(float xo, float yo) {
 void Entity::tick() { baseTick(); }
 
 void Entity::baseTick() {
-    // 4J Stu - Not needed
-    // util.Timer.push("entityBaseTick");
+    
+    
 
     if (riding != nullptr && riding->removed) {
         riding = nullptr;
@@ -518,10 +518,10 @@ void Entity::baseTick() {
     xRotO = xRot;
     yRotO = yRot;
 
-    if (!level->isClientSide)  // 4J Stu - Don't need this && level instanceof
-                               // ServerLevel)
+    if (!level->isClientSide)  
+                               
     {
-        if (!m_ignorePortal)  // 4J Added
+        if (!m_ignorePortal)  
         {
             MinecraftServer* server =
                 dynamic_cast<ServerLevel*>(level)->getServer();
@@ -604,8 +604,8 @@ void Entity::baseTick() {
 
     firstTick = false;
 
-    // 4J Stu - Unused
-    // util.Timer.pop();
+    
+    
 }
 
 int Entity::getPortalWaitTime() { return 0; }
@@ -648,7 +648,7 @@ bool Entity::isFree(double xa, double ya, double za) {
 }
 
 void Entity::move(double xa, double ya, double za,
-                  bool noEntityCubes)  // 4J - added noEntityCubes parameter
+                  bool noEntityCubes)  
 {
     if (noPhysics) {
         bb = bb.move(xa, ya, za);
@@ -735,17 +735,17 @@ void Entity::move(double xa, double ya, double za,
     std::vector<AABB>* aABBs =
         level->getCubes(shared_from_this(), &expanded, noEntityCubes, true);
 
-    // LAND FIRST, then x and z
+    
     auto itEndAABB = aABBs->end();
 
-    // 4J Stu - Particles (and possibly other entities) don't have xChunk and
-    // zChunk set, so calculate the chunk instead
+    
+    
     int xc = Mth::floor(x / 16);
     int zc = Mth::floor(z / 16);
     if (!level->isClientSide || level->reallyHasChunk(xc, zc)) {
-        // 4J Stu - It's horrible that the client is doing any movement at all!
-        // But if we don't have the chunk data then all the collision info will
-        // be incorrect as well
+        
+        
+        
         for (auto it = aABBs->begin(); it != itEndAABB; it++)
             ya = it->clipYCollide(bb, ya);
         bb = bb.move(0, ya, 0);
@@ -789,20 +789,20 @@ void Entity::move(double xa, double ya, double za,
         AABB normal = bb;
         bb = bbOrg;
 
-        // 4J - added extra expand, as if we don't move up by footSize by
-        // hitting a block above us, then overall we could be trying to move as
-        // much as footSize downwards, so we'd better include cubes under our
-        // feet in this list of things we might possibly collide with
+        
+        
+        
+        
         AABB expanded = bb.expand(xa, ya, za).expand(0, -ya, 0);
         aABBs = level->getCubes(shared_from_this(), &expanded, false, true);
 
-        // LAND FIRST, then x and z
+        
         itEndAABB = aABBs->end();
 
         if (!level->isClientSide || level->reallyHasChunk(xc, zc)) {
-            // 4J Stu - It's horrible that the client is doing any movement at
-            // all! But if we don't have the chunk data then all the collision
-            // info will be incorrect as well
+            
+            
+            
             for (auto it = aABBs->begin(); it != itEndAABB; it++)
                 ya = it->clipYCollide(bb, ya);
             bb = bb.move(0, ya, 0);
@@ -834,7 +834,7 @@ void Entity::move(double xa, double ya, double za,
             xa = ya = za = 0;
         } else {
             ya = -footSize;
-            // LAND FIRST, then x and z
+            
             itEndAABB = aABBs->end();
             for (auto it = aABBs->begin(); it != itEndAABB; it++)
                 ya = it->clipYCollide(bb, ya);
@@ -951,10 +951,10 @@ void Entity::playStepSound(int xt, int yt, int zt, int t) {
     const Tile::SoundType* soundType = Tile::tiles[t]->soundType;
 
     if (GetType() == eTYPE_PLAYER) {
-        // should we turn off step sounds?
+        
         unsigned int uiAnimOverrideBitmask =
-            getAnimOverrideBitmask();  // this is masked for custom anim off,
-                                       // and force anim
+            getAnimOverrideBitmask();  
+                                       
 
         if ((uiAnimOverrideBitmask & (1 << HumanoidModel::eAnim_NoLegAnim)) !=
             0) {
@@ -1048,7 +1048,7 @@ bool Entity::isUnderLiquid(Material* material) {
     double yp = y + getHeadHeight();
     int xt = Mth::floor(x);
     int yt = Mth::floor(
-        yp);  // 4J - this used to be a nested pair of floors for some reason
+        yp);  
     int zt = Mth::floor(z);
     int t = level->getTile(xt, yt, zt);
     if (t != 0 && Tile::tiles[t]->material == material) {
@@ -1083,7 +1083,7 @@ void Entity::moveRelative(float xa, float za, float speed) {
     zd += za * cosVar + xa * sinVar;
 }
 
-// 4J - change brought forward from 1.8.2
+
 int Entity::getLightColor(float a) {
     int xTile = Mth::floor(x);
     int zTile = Mth::floor(z);
@@ -1096,7 +1096,7 @@ int Entity::getLightColor(float a) {
     return 0;
 }
 
-// 4J - changes brought forward from 1.8.2
+
 float Entity::getBrightness(float a) {
     int xTile = Mth::floor(x);
     int zTile = Mth::floor(z);
@@ -1235,7 +1235,7 @@ bool Entity::saveAsMount(CompoundTag* entityTag) {
     if (removed || id.empty()) {
         return false;
     }
-    // TODO Is this fine to be casting to a non-const char pointer?
+    
     entityTag->putString(L"id", id);
     saveWithoutId(entityTag);
     return true;
@@ -1246,7 +1246,7 @@ bool Entity::save(CompoundTag* entityTag) {
     if (removed || id.empty() || (rider.lock() != nullptr)) {
         return false;
     }
-    // TODO Is this fine to be casting to a non-const char pointer?
+    
     entityTag->putString(L"id", id);
     saveWithoutId(entityTag);
     return true;
@@ -1320,7 +1320,7 @@ void Entity::load(CompoundTag* tag) {
 
     readAdditionalSaveData(tag);
 
-    // set position again because bb size may have changed
+    
     if (repositionEntityAfterLoad()) setPos(x, y, z);
 }
 
@@ -1330,17 +1330,17 @@ const std::wstring Entity::getEncodeId() {
     return EntityIO::getEncodeId(shared_from_this());
 }
 
-/**
- * Called after load() has finished and the entity has been added to the
- * world
- */
+
+
+
+
 void Entity::onLoadedFromSave() {}
 
 ListTag<DoubleTag>* Entity::newDoubleList(unsigned int number,
                                           double firstValue, ...) {
     ListTag<DoubleTag>* res = new ListTag<DoubleTag>();
 
-    // Add the first parameter to the ListTag
+    
     res->add(new DoubleTag(L"", firstValue));
 
     va_list vl;
@@ -1362,27 +1362,27 @@ ListTag<FloatTag>* Entity::newFloatList(unsigned int number, float firstValue,
                                         float secondValue) {
     ListTag<FloatTag>* res = new ListTag<FloatTag>();
 
-    // Add the first parameter to the ListTag
+    
     res->add(new FloatTag(L"", firstValue));
 
-    // TODO - 4J Stu For some reason the va_list wasn't working correctly here
-    // We only make a list of two floats so just overriding and not using
-    // va_list
+    
+    
+    
     res->add(new FloatTag(L"", secondValue));
 
-    /*
-    va_list vl;
-    va_start(vl,firstValue);
+    
 
-    float val;
 
-    for (unsigned int i = 1; i < number; i++)
-    {
-    val = va_arg(vl,float);
-    res->add(new FloatTag(val));
-    }
-    va_end(vl);
-    */
+
+
+
+
+
+
+
+
+
+
     return res;
 }
 
@@ -1443,14 +1443,14 @@ void Entity::rideTick() {
 
     if (riding == nullptr) return;
 
-    // Sets riders old&new position to it's mount's old&new position (plus the
-    // ride y-seperatation).
+    
+    
     riding->positionRider();
 
     yRideRotA += (riding->yRot - riding->yRotO);
     xRideRotA += (riding->xRot - riding->xRotO);
 
-    // Wrap rotation angles.
+    
     while (yRideRotA >= 180) yRideRotA -= 360;
     while (yRideRotA < -180) yRideRotA += 360;
     while (xRideRotA >= 180) xRideRotA -= 360;
@@ -1459,7 +1459,7 @@ void Entity::rideTick() {
     double yra = yRideRotA * 0.5;
     double xra = xRideRotA * 0.5;
 
-    // Cap rotation speed.
+    
     float max = 10;
     if (yra > max) yra = max;
     if (yra < -max) yra = -max;
@@ -1469,12 +1469,12 @@ void Entity::rideTick() {
     yRideRotA -= yra;
     xRideRotA -= xra;
 
-    // jeb: This caused the crosshair to "drift" while riding horses. For now
-    // I've just disabled it,
-    //      because I can't figure out what it's needed for. Riding boats and
-    //      minecarts seem unaffected...
-    // yRot += yra;
-    // xRot += xra;
+    
+    
+    
+    
+    
+    
 }
 
 void Entity::positionRider() {
@@ -1496,8 +1496,8 @@ void Entity::ride(std::shared_ptr<Entity> e) {
 
     if (e == nullptr) {
         if (riding != nullptr) {
-            // 4J Stu - Position should already be updated before the
-            // SetEntityLinkPacket comes in
+            
+            
             if (!level->isClientSide)
                 moveTo(riding->x, riding->bb.y0 + riding->bbHeight, riding->z,
                        yRot, xRot);
@@ -1518,9 +1518,9 @@ void Entity::lerpTo(double x, double y, double z, float yRot, float xRot,
     setPos(x, y, z);
     setRot(yRot, xRot);
 
-    // 4J - don't know what this special y collision is specifically for, but
-    // its definitely bad news for arrows as they are actually Meant to
-    // intersect the geometry they land in slightly.
+    
+    
+    
     if (GetType() != eTYPE_ARROW) {
         AABB shrunk = bb.shrink(1 / 32.0, 0.0, 1 / 32.0);
         std::vector<AABB>* collisions =
@@ -1573,16 +1573,16 @@ void Entity::handleEntityEvent(uint8_t eventId) {}
 void Entity::animateHurt() {}
 
 std::vector<std::shared_ptr<ItemInstance>>
-Entity::getEquipmentSlots()  // ItemInstance[]
+Entity::getEquipmentSlots()  
 {
-    return std::vector<std::shared_ptr<ItemInstance>>();  // Default ctor
-                                                          // creates nullptr
-                                                          // internal array
+    return std::vector<std::shared_ptr<ItemInstance>>();  
+                                                          
+                                                          
 }
 
-// 4J Stu - Brought forward change from 1.3 to fix #64688 - Customer
-// Encountered: TU7: Content: Art: Aura of enchanted item is not displayed for
-// other players in online game
+
+
+
 void Entity::setEquippedSlot(int slot, std::shared_ptr<ItemInstance> item) {}
 
 bool Entity::isOnFire() {
@@ -1644,14 +1644,14 @@ void Entity::setSharedFlag(int flag, bool value) {
     }
 }
 
-// 4J Stu - Brought forward from 1.2.3 to fix 38654 - Gameplay: Player will take
-// damage when air bubbles are present if resuming game from load/autosave
-// underwater.
+
+
+
 int Entity::getAirSupply() { return entityData->getShort(DATA_AIR_SUPPLY_ID); }
 
-// 4J Stu - Brought forward from 1.2.3 to fix 38654 - Gameplay: Player will take
-// damage when air bubbles are present if resuming game from load/autosave
-// underwater.
+
+
+
 void Entity::setAirSupply(int supply) {
     entityData->set(DATA_AIR_SUPPLY_ID, (short)supply);
 }
@@ -1781,25 +1781,25 @@ void Entity::changeDimension(int i) {
         newLevel = server->getLevel(0);
     }
 
-    // 4J: Restrictions on what can go through
+    
     {
-        // 4J: Some things should just be destroyed when they hit a portal
+        
         if (instanceof(eTYPE_FALLINGTILE)) {
             removed = true;
             return;
         }
 
-        // 4J: Check server level entity limit (arrows, item entities,
-        // experience orbs, etc)
+        
+        
         if (newLevel->atEntityLimit(shared_from_this())) return;
 
-        // 4J: Check level limit on living entities, minecarts and boats
+        
         if (!instanceof(eTYPE_PLAYER) &&
             !newLevel->canCreateMore(GetType(), Level::eSpawnType_Portal))
             return;
     }
 
-    // 4J: Definitely sending, set dimension now
+    
     dimension = newLevel->dimension->id;
 
     level->removeEntity(shared_from_this());
@@ -1856,8 +1856,8 @@ bool Entity::isPushedByWater() { return true; }
 
 std::wstring Entity::getDisplayName() { return getAName(); }
 
-// 4J: Added to retrieve name that should be sent in ChatPackets (important on
-// Xbox One for players)
+
+
 std::wstring Entity::getNetworkName() { return getDisplayName(); }
 
 void Entity::setAnimOverrideBitmask(unsigned int uiBitmask) {
@@ -1866,8 +1866,8 @@ void Entity::setAnimOverrideBitmask(unsigned int uiBitmask) {
 }
 unsigned int Entity::getAnimOverrideBitmask() {
     if (app.GetGameSettings(eGameSetting_CustomSkinAnim) == 0) {
-        // We have a force animation for some skins (claptrap)
-        // 4J-PB - treat all the eAnim_Disable flags as a force anim
+        
+        
         unsigned int uiIgnoreUserCustomSkinAnimSettingMask =
             (1 << HumanoidModel::eAnim_ForceAnim) |
             (1 << HumanoidModel::eAnim_DisableRenderArm0) |

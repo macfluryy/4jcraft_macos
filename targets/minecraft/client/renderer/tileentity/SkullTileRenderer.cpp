@@ -64,24 +64,24 @@ void SkullTileRenderer::renderSkull(float x, float y, float z, int face,
             break;
         case SkullTileEntity::TYPE_ZOMBIE:
             bindTexture(&ZOMBIE_LOCATION);
-            // model = zombieModel;
+            
             break;
         case SkullTileEntity::TYPE_CHAR:
-            // if (!extra.empty())
-            //{
-            //	wstring url = "http://skins.minecraft.net/MinecraftSkins/" +
-            // StringUtil.stripColor(extra) + ".png";
+            
+            
+            
+            
 
-            //	if
-            //(!instance->tileEntityRenderDispatcher->textures->hasHttpTexture(url))
-            //	{
-            //		instance->tileEntityRenderDispatcher->textures->addHttpTexture(url,
-            // new MobSkinTextureProcessor());
-            //	}
+            
+            
+            
+            
+            
+            
 
-            //	bindTexture(url, "/mob/char.png");
-            //}
-            // else
+            
+            
+            
             {
                 bindTexture(&PlayerRenderer::DEFAULT_LOCATION);
             }

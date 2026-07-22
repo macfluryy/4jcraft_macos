@@ -22,7 +22,7 @@ LevelEventPacket::LevelEventPacket(int type, int x, int y, int z, int data,
     this->globalEvent = globalEvent;
 }
 
-void LevelEventPacket::read(DataInputStream* dis)  // throws IOException
+void LevelEventPacket::read(DataInputStream* dis)  
 {
     type = dis->readInt();
     x = dis->readInt();
@@ -32,7 +32,7 @@ void LevelEventPacket::read(DataInputStream* dis)  // throws IOException
     globalEvent = dis->readBoolean();
 }
 
-void LevelEventPacket::write(DataOutputStream* dos)  // throws IOException
+void LevelEventPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(type);
     dos->writeInt(x);

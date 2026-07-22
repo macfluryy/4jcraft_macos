@@ -53,13 +53,13 @@ bool PistonMovingPiece::isCubeShaped() { return false; }
 bool PistonMovingPiece::use(
     Level* level, int x, int y, int z, std::shared_ptr<Player> player,
     int clickedFace, float clickX, float clickY, float clickZ,
-    bool soundOnly /*=false*/)  // 4J added soundOnly param
+    bool soundOnly )  
 {
     if (soundOnly) return false;
-    // this is a special case in order to help removing invisible, unbreakable,
-    // blocks in the world
+    
+    
     if (!level->isClientSide && level->getTileEntity(x, y, z) == nullptr) {
-        // this block is no longer valid
+        
         level->removeTile(x, y, z);
         return true;
     }
@@ -87,8 +87,8 @@ void PistonMovingPiece::spawnResources(Level* level, int x, int y, int z,
 void PistonMovingPiece::neighborChanged(Level* level, int x, int y, int z,
                                         int type) {
     if (!level->isClientSide && level->getTileEntity(x, y, z) == nullptr) {
-        // 4jcraft: remove orphaned moving piston blocks once their tile entity
-        // has already vanished, matching the cleanup path used on interaction.
+        
+        
         level->removeTile(x, y, z);
     }
 }
@@ -106,7 +106,7 @@ std::optional<AABB> PistonMovingPiece::getAABB(Level* level, int x, int y,
         return std::nullopt;
     }
 
-    // move the aabb depending on the animation
+    
     float progress = entity->getProgress(0);
     if (entity->isExtending()) {
         progress = 1.0f - progress;
@@ -118,7 +118,7 @@ std::optional<AABB> PistonMovingPiece::getAABB(Level* level, int x, int y,
 void PistonMovingPiece::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     std::shared_ptr<PistonPieceEntity> entity =
         std::dynamic_pointer_cast<PistonPieceEntity>(forceEntity);
@@ -157,7 +157,7 @@ std::optional<AABB> PistonMovingPiece::getAABB(Level* level, int x, int y,
         return std::nullopt;
     }
 
-    // move the aabb depending on the animation
+    
     if (Facing::STEP_X[facing] < 0) {
         aabb->x0 -= Facing::STEP_X[facing] * progress;
     } else {
@@ -190,8 +190,8 @@ std::shared_ptr<PistonPieceEntity> PistonMovingPiece::getEntity(
 }
 
 void PistonMovingPiece::registerIcons(IconRegister* iconRegister) {
-    // don't register null, register piston top instead (to get proper
-    // particle effect)
+    
+    
     icon = iconRegister->registerIcon(L"piston_top");
 }
 

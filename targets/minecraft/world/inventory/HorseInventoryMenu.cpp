@@ -41,7 +41,7 @@ HorseInventoryMenu::HorseInventoryMenu(
 
     int yo = (containerRows - 4) * 18;
 
-    // equipment slots
+    
     addSlot(new HorseSaddleSlot(horseInventory));
     addSlot(new HorseArmorSlot(this, horseInventory));
 

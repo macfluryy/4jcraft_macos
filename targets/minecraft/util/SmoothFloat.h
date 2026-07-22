@@ -7,7 +7,7 @@ private:
     float lastAmount;
 
 public:
-    SmoothFloat();  // 4J added
+    SmoothFloat();  
     float getNewDeltaValue(float deltaValue, float accelerationAmount);
     float getTargetValue();
 };

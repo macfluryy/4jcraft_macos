@@ -53,7 +53,7 @@ void FurnaceMenu::broadcastChanges() {
 
     auto itEnd = containerListeners.end();
     for (auto it = containerListeners.begin(); it != itEnd; it++) {
-        ContainerListener* listener = *it;  // containerListeners->at(i);
+        ContainerListener* listener = *it;  
         if (tc != furnace->tickCount) {
             listener->setContainerData(this, 0, furnace->tickCount);
         }
@@ -84,7 +84,7 @@ std::shared_ptr<ItemInstance> FurnaceMenu::quickMoveStack(
     std::shared_ptr<Player> player, int slotIndex) {
     std::shared_ptr<ItemInstance> clicked = nullptr;
     Slot* slot = slots.at(slotIndex);
-    // Slot *IngredientSlot = slots->at(INGREDIENT_SLOT);
+    
 
     bool charcoalUsed = furnace->wasCharcoalUsed();
 
@@ -99,7 +99,7 @@ std::shared_ptr<ItemInstance> FurnaceMenu::quickMoveStack(
             }
             slot->onQuickCraft(stack, clicked);
 
-            // 4J-JEV, hook for Durango achievement 'Renewable Energy'.
+            
 #ifdef _EXTENDED_ACHIEVEMENTS
             if (charcoalUsed && stack->getItem()->id == Item::coal_Id &&
                 stack->getAuxValue() == CoalItem::CHAR_COAL)
@@ -148,7 +148,7 @@ std::shared_ptr<ItemInstance> FurnaceMenu::quickMoveStack(
 
 std::shared_ptr<ItemInstance> FurnaceMenu::clicked(
     int slotIndex, int buttonNum, int clickType, std::shared_ptr<Player> player,
-    bool looped)  // 4J Added looped param
+    bool looped)  
 {
     bool charcoalUsed = furnace->wasCharcoalUsed();
 

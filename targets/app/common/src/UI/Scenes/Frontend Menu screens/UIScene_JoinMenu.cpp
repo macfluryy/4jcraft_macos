@@ -30,7 +30,7 @@
 UIScene_JoinMenu::UIScene_JoinMenu(int iPad, void* _initData,
                                    UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     JoinMenuInitData* initData = (JoinMenuInitData*)_initData;
@@ -174,7 +174,7 @@ void UIScene_JoinMenu::tick() {
 
         m_bIgnoreInput = false;
 
-        // Alert the app the we want to be informed of ethernet connections
+        
         app.SetLiveLinkRequired(true);
 
         addTimer(UPDATE_PLAYERS_TIMER_ID, UPDATE_PLAYERS_TIMER_TIME);
@@ -214,9 +214,9 @@ void UIScene_JoinMenu::tick() {
 
         m_friendInfoUpdatedERROR = false;
 
-        // Show a generic network error message, not always safe to assume the
-        // error was host quitting without bubbling more info up from the
-        // network manager so this is the best we can do
+        
+        
+        
         unsigned int uiIDA[1];
         uiIDA[0] = IDS_CONFIRM_OK;
         ui.RequestErrorMessage(IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK,
@@ -285,7 +285,7 @@ void UIScene_JoinMenu::handlePress(F64 controlId, F64 childId) {
         case eControl_JoinGame: {
             m_bIgnoreInput = true;
 
-            // CD - Added for audio
+            
             ui.PlayUISFX(eSFX_Press);
 
             StartSharedLaunchFlow();
@@ -307,9 +307,9 @@ void UIScene_JoinMenu::StartSharedLaunchFlow() {
     if (!app.IsLocalMultiplayerAvailable()) {
         JoinGame(this);
     } else {
-        // ProfileManager.RequestSignInUI(false, false, false, true,
-        // false,&UIScene_JoinMenu::StartGame_SignInReturned,
-        // this,ProfileManager.GetPrimaryPad());
+        
+        
+        
         SignInInfo info;
         info.Func = [this](bool bContinue, int pad) {
             return StartGame_SignInReturned(this, bContinue, pad);
@@ -340,8 +340,8 @@ int UIScene_JoinMenu::StartGame_SignInReturned(void* pParam, bool bContinue,
     return 0;
 }
 
-// Shared function to join the game that is the same whether we used the
-// sign-in UI or not
+
+
 void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
     bool noPrivileges = false;
     int signedInUsers = 0;
@@ -350,14 +350,14 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
     bool isSignedInLive = true;
     int iPadNotSignedInLive = -1;
 
-    ProfileManager.SetLockedProfile(0);  // TEMP!
+    ProfileManager.SetLockedProfile(0);  
 
-    // If we're in SD mode, then only the primary player gets to play
+    
     if (app.IsLocalMultiplayerAvailable()) {
         for (unsigned int index = 0; index < XUSER_MAX_COUNT; ++index) {
             if (ProfileManager.IsSignedIn(index)) {
                 if (isSignedInLive && !ProfileManager.IsSignedInLive(index)) {
-                    // Record the first non signed in live pad
+                    
                     iPadNotSignedInLive = index;
                 }
 
@@ -382,8 +382,8 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
         }
     }
 
-    // If this is an online game but not all players are signed in to Live,
-    // stop!
+    
+    
     if (!isSignedInLive) {
         {
             pClass->m_bIgnoreInput = false;
@@ -396,8 +396,8 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
         return;
     }
 
-    // Check if user-created content is allowed, as we cannot play
-    // multiplayer if it's not
+    
+    
     bool noUGC = false;
     bool pccAllowed = true;
     bool pccFriendsAllowed = true;
@@ -427,8 +427,8 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
         CGameNetworkManager::eJoinGameResult result = g_NetworkManager.JoinGame(
             pClass->m_selectedSession, dwLocalUsersMask);
 
-        // Alert the app the we no longer want to be informed of ethernet
-        // connections
+        
+        
         app.SetLiveLinkRequired(false);
 
         if (result != CGameNetworkManager::JOINGAME_SUCCESS) {
@@ -490,7 +490,7 @@ void UIScene_JoinMenu::handleTimerComplete(int id) {
                                        .c_str());
                         }
                     } else {
-                        // Leave the loop when we hit the first nullptr player
+                        
                         break;
                     }
                 }

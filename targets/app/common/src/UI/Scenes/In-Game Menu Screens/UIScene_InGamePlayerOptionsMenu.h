@@ -22,7 +22,7 @@ class UILayer;
 class UIScene_InGamePlayerOptionsMenu : public UIScene {
 private:
     enum EControls {
-        // Checkboxes
+        
         eControl_BuildAndMine,
         eControl_UseDoorsAndSwitches,
         eControl_UseContainers,
@@ -36,7 +36,7 @@ private:
 
         eControl_CHECKBOXES_COUNT,
 
-        // Others
+        
         eControl_Kick = eControl_CHECKBOXES_COUNT,
     };
 
@@ -85,7 +85,7 @@ public:
     virtual void handleReload();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
     virtual void handleCheckboxToggled(F64 controlId, bool selected);
     virtual void handleTimerComplete(int id);
@@ -93,7 +93,7 @@ protected:
 public:
     virtual void tick();
 
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 
@@ -106,9 +106,9 @@ public:
                                 bool leaving);
 
 private:
-    /** 4J-JEV:
-    For enabling/disabling 'Can Fly', 'Can Teleport', 'Can Disable Hunger' etc
-    used after changing the moderator checkbox.
-*/
+    
+
+
+
     void resetCheatCheckboxes();
 };

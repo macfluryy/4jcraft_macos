@@ -24,15 +24,15 @@ Input::Input() {
 }
 
 void Input::tick(LocalPlayer* player) {
-    // 4J Stu -  Assume that we only need one input class, even though the java
-    // has subclasses for keyboard/controller This function is based on the
-    // ControllerInput class in the Java, and will probably need changed
-    // OutputDebugString("INPUT: Beginning input tick\n");
+    
+    
+    
+    
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
     int iPad = player->GetXboxPad();
 
-    // 4J-PB minecraft movement seems to be the wrong way round, so invert x!
+    
     if (pMinecraft->localgameModes[iPad]->isInputAllowed(
             MINECRAFT_ACTION_LEFT) ||
         pMinecraft->localgameModes[iPad]->isInputAllowed(
@@ -63,7 +63,7 @@ void Input::tick(LocalPlayer* player) {
         xa = ya = 0.0f;
     }
 
-    // 4J - in flying mode, don't actually toggle sneaking
+    
     if (!player->abilities.flying) {
         if ((player->ullButtonsPressed &
              (1LL << MINECRAFT_ACTION_SNEAK_TOGGLE)) &&
@@ -89,7 +89,7 @@ void Input::tick(LocalPlayer* player) {
         tx = InputManager.GetJoypadStick_RX(iPad) *
              (((float)app.GetGameSettings(iPad,
                                           eGameSetting_Sensitivity_InGame)) /
-              100.0f);  // apply sensitivity to look
+              100.0f);  
     if (pMinecraft->localgameModes[iPad]->isInputAllowed(
             MINECRAFT_ACTION_LOOK_UP) ||
         pMinecraft->localgameModes[iPad]->isInputAllowed(
@@ -97,13 +97,13 @@ void Input::tick(LocalPlayer* player) {
         ty = InputManager.GetJoypadStick_RY(iPad) *
              (((float)app.GetGameSettings(iPad,
                                           eGameSetting_Sensitivity_InGame)) /
-              100.0f);  // apply sensitivity to look
+              100.0f);  
 
 #ifndef _CONTENT_PACKAGE
     if (app.GetFreezePlayers()) tx = ty = 0.0f;
 #endif
 
-    // 4J: WESTY : Invert look Y if required.
+    
     if (app.GetGameSettings(iPad, eGameSetting_ControlInvertLook)) {
         ty = -ty;
     }
@@ -117,7 +117,7 @@ void Input::tick(LocalPlayer* player) {
     player->interpolateTurn(tx * std::abs(tx) * turnSpeed,
                             ty * std::abs(ty) * turnSpeed);
 
-    // jumping = controller.isButtonPressed(0);
+    
 
     sprintKey = InputManager.GetValue(iPad, MINECRAFT_ACTION_SPRINT) &&
                 pMinecraft->localgameModes[iPad]->isInputAllowed(
@@ -130,5 +130,5 @@ void Input::tick(LocalPlayer* player) {
     if (app.GetFreezePlayers()) jumping = false;
 #endif
 
-    // OutputDebugString("INPUT: End input tick\n");
+    
 }

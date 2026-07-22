@@ -15,22 +15,22 @@ private:
     std::wstring splash;
     Button* multiplayerButton;
 
-    // 4jcraft: panorama
+    
     void renderPanorama(float a);
     void renderSkybox(float a);
     void rotateAndBlur(float a);
     int viewportTexture;
 
-    // 4jcraft: taken from UIScene_MainMenu
-    // 4J Added
+    
+    
     enum eSplashIndexes {
         eSplashHappyBirthdayEx = 0,
         eSplashHappyBirthdayNotch,
         eSplashMerryXmas,
         eSplashHappyNewYear,
 
-        // The start index in the splashes vector from which we can select a
-        // random splash
+        
+        
         eSplashRandomStart,
     };
 

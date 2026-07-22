@@ -36,7 +36,7 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/DispenserTileEntity.h"
 
-/* Arrow */
+
 
 std::shared_ptr<Projectile> ArrowDispenseBehavior::getProjectile(
     Level* world, Position* position) {
@@ -47,7 +47,7 @@ std::shared_ptr<Projectile> ArrowDispenseBehavior::getProjectile(
     return arrow;
 }
 
-/* ThrownEgg */
+
 
 std::shared_ptr<Projectile> EggDispenseBehavior::getProjectile(
     Level* world, Position* position) {
@@ -55,7 +55,7 @@ std::shared_ptr<Projectile> EggDispenseBehavior::getProjectile(
                                        position->getY(), position->getZ());
 }
 
-/* Snowball */
+
 
 std::shared_ptr<Projectile> SnowballDispenseBehavior::getProjectile(
     Level* world, Position* position) {
@@ -63,7 +63,7 @@ std::shared_ptr<Projectile> SnowballDispenseBehavior::getProjectile(
                                       position->getZ());
 }
 
-/* Exp Bottle */
+
 
 std::shared_ptr<Projectile> ExpBottleDispenseBehavior::getProjectile(
     Level* world, Position* position) {
@@ -79,7 +79,7 @@ float ExpBottleDispenseBehavior::getPower() {
     return AbstractProjectileDispenseBehavior::getPower() * 1.25f;
 }
 
-/* Thrown Potion */
+
 
 ThrownPotionDispenseBehavior::ThrownPotionDispenseBehavior(int potionValue) {
     m_potionValue = potionValue;
@@ -100,7 +100,7 @@ float ThrownPotionDispenseBehavior::getPower() {
     return AbstractProjectileDispenseBehavior::getPower() * 1.25f;
 }
 
-/* Potion */
+
 
 std::shared_ptr<ItemInstance> PotionDispenseBehavior::dispense(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed) {
@@ -112,16 +112,16 @@ std::shared_ptr<ItemInstance> PotionDispenseBehavior::dispense(
     }
 }
 
-/* SpawnEggItem */
+
 
 std::shared_ptr<ItemInstance> SpawnEggDispenseBehavior::execute(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
     eOUTCOME& outcome) {
     FacingEnum* facing = DispenserTile::getFacing(source->getData());
 
-    // Spawn entity in the middle of the block in front of the dispenser
+    
     double spawnX = source->getX() + facing->getStepX();
-    double spawnY = source->getBlockY() + .2f;  // Above pressure plates
+    double spawnY = source->getBlockY() + .2f;  
     double spawnZ = source->getZ() + facing->getStepZ();
 
     int iResult = 0;
@@ -129,7 +129,7 @@ std::shared_ptr<ItemInstance> SpawnEggDispenseBehavior::execute(
         SpawnEggItem::spawnMobAt(source->getWorld(), dispensed->getAuxValue(),
                                  spawnX, spawnY, spawnZ, &iResult);
 
-    // 4J-JEV: Added in-case spawn limit is encountered.
+    
     if (entity == nullptr) {
         outcome = LEFT_ITEM;
         return dispensed;
@@ -146,7 +146,7 @@ std::shared_ptr<ItemInstance> SpawnEggDispenseBehavior::execute(
     return dispensed;
 }
 
-/* Fireworks*/
+
 
 std::shared_ptr<ItemInstance> FireworksDispenseBehavior::execute(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
@@ -177,14 +177,14 @@ std::shared_ptr<ItemInstance> FireworksDispenseBehavior::execute(
 
 void FireworksDispenseBehavior::playSound(BlockSource* source,
                                           eOUTCOME outcome) {
-    // 4J-JEV: This is exactly the same as the default at the moment.
-    // source->getWorld()->levelEvent(LevelEvent::SOUND_CLICK,
-    // source->getBlockX(), source->getBlockY(), source->getBlockZ(), 0);
+    
+    
+    
 
     DefaultDispenseItemBehavior::playSound(source, outcome);
 }
 
-/* Fireballs */
+
 
 std::shared_ptr<ItemInstance> FireballDispenseBehavior::execute(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
@@ -231,7 +231,7 @@ void FireballDispenseBehavior::playSound(BlockSource* source,
     }
 }
 
-/* Boats */
+
 
 BoatDispenseBehavior::BoatDispenseBehavior() : DefaultDispenseItemBehavior() {
     defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
@@ -247,7 +247,7 @@ std::shared_ptr<ItemInstance> BoatDispenseBehavior::execute(
     FacingEnum* facing = DispenserTile::getFacing(source->getData());
     Level* world = source->getWorld();
 
-    // Spawn the boat 'just' outside the dispenser, it overlaps 2 'pixels' now.
+    
     double spawnX = source->getX() + facing->getStepX() * (1 + 2.0f / 16);
     double spawnY = source->getY() + facing->getStepY() * (1 + 2.0f / 16);
     double spawnZ = source->getZ() + facing->getStepZ() * (1 + 2.0f / 16);
@@ -259,7 +259,7 @@ std::shared_ptr<ItemInstance> BoatDispenseBehavior::execute(
 
     double yOffset;
 
-    // 4J: If we're at limit, just dispense item (instead of adding boat)
+    
     if (world->countInstanceOf(eTYPE_BOAT, true) >= Level::MAX_XBOX_BOATS) {
         return defaultDispenseItemBehavior->dispense(source, dispensed);
     }
@@ -285,13 +285,13 @@ std::shared_ptr<ItemInstance> BoatDispenseBehavior::execute(
 }
 
 void BoatDispenseBehavior::playSound(BlockSource* source, eOUTCOME outcome) {
-    // 4J-JEV: This is exactly the same as the default at the moment.
-    // source->getWorld()->levelEvent(LevelEvent::SOUND_CLICK,
-    // source->getBlockX(), source->getBlockY(), source->getBlockZ(), 0);
+    
+    
+    
     DefaultDispenseItemBehavior::playSound(source, outcome);
 }
 
-/* FilledBucket */
+
 
 std::shared_ptr<ItemInstance> FilledBucketDispenseBehavior::execute(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
@@ -315,7 +315,7 @@ std::shared_ptr<ItemInstance> FilledBucketDispenseBehavior::execute(
     return DefaultDispenseItemBehavior::dispense(source, dispensed);
 }
 
-/* EmptyBucket */
+
 
 std::shared_ptr<ItemInstance> EmptyBucketDispenseBehavior::execute(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
@@ -355,7 +355,7 @@ std::shared_ptr<ItemInstance> EmptyBucketDispenseBehavior::execute(
     return dispensed;
 }
 
-/* Flint and Steel */
+
 
 std::shared_ptr<ItemInstance> FlintAndSteelDispenseBehavior::execute(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
@@ -398,7 +398,7 @@ void FlintAndSteelDispenseBehavior::playSound(BlockSource* source,
     }
 }
 
-/* Dye */
+
 
 std::shared_ptr<ItemInstance> DyeDispenseBehavior::execute(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
@@ -439,7 +439,7 @@ void DyeDispenseBehavior::playSound(BlockSource* source, eOUTCOME outcome) {
     }
 }
 
-/* TNT */
+
 
 std::shared_ptr<ItemInstance> TntDispenseBehavior::execute(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed,

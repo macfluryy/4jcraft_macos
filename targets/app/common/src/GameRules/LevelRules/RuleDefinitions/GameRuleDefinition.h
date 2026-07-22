@@ -1,5 +1,5 @@
 #pragma once
-// using namespace std;
+
 #include <format>
 #include <memory>
 #include <string>
@@ -20,11 +20,11 @@ class ItemInstance;
 
 class GameRuleDefinition {
 private:
-    // Owner type defines who this rule applies to
+    
     GameRulesInstance::EGameRulesInstanceType m_ownerType;
 
 protected:
-    // These attributes should map to those in the XSD GameRuleType
+    
     std::wstring m_descriptionId;
     std::wstring m_promptId;
     int m_4JDataValue;
@@ -62,8 +62,8 @@ public:
     virtual int getIcon() { return -1; }
     virtual int getAuxValue() { return 0; }
 
-    // Here we should have functions for all the hooks, with a GameRule* as the
-    // first parameter
+    
+    
     virtual bool onUseTile(GameRule* rule, int tileId, int x, int y, int z) {
         return false;
     }
@@ -76,7 +76,7 @@ public:
     std::vector<GameRuleDefinition*>* enumerate();
     std::unordered_map<GameRuleDefinition*, int>* enumerateMap();
 
-    // Static functions
+    
     static GameRulesInstance* generateNewGameRulesInstance(
         GameRulesInstance::EGameRulesInstanceType type, LevelRuleset* rules,
         Connection* connection);

@@ -25,7 +25,7 @@
 #include "minecraft/world/item/enchantment/WaterWorkerEnchantment.h"
 #include "strings.h"
 
-// Enchantment *Enchantment::enchantments[256];
+
 std::vector<Enchantment*> Enchantment::enchantments =
     std::vector<Enchantment*>(256);
 std::vector<Enchantment*> Enchantment::validEnchantments;
@@ -39,7 +39,7 @@ Enchantment* Enchantment::drownProtection = nullptr;
 Enchantment* Enchantment::waterWorker = nullptr;
 Enchantment* Enchantment::thorns = nullptr;
 
-// weapon
+
 Enchantment* Enchantment::damageBonus = nullptr;
 Enchantment* Enchantment::damageBonusUndead = nullptr;
 Enchantment* Enchantment::damageBonusArthropods = nullptr;
@@ -47,13 +47,13 @@ Enchantment* Enchantment::knockback = nullptr;
 Enchantment* Enchantment::fireAspect = nullptr;
 Enchantment* Enchantment::lootBonus = nullptr;
 
-// digger
+
 Enchantment* Enchantment::diggingBonus = nullptr;
 Enchantment* Enchantment::untouching = nullptr;
 Enchantment* Enchantment::digDurability = nullptr;
 Enchantment* Enchantment::resourceBonus = nullptr;
 
-// bows
+
 Enchantment* Enchantment::arrowBonus = nullptr;
 Enchantment* Enchantment::arrowKnockback = nullptr;
 Enchantment* Enchantment::arrowFire = nullptr;
@@ -74,7 +74,7 @@ void Enchantment::staticCtor() {
     waterWorker = new WaterWorkerEnchantment(6, FREQ_RARE);
     thorns = new ThornsEnchantment(7, FREQ_VERY_RARE);
 
-    // weapon
+    
     damageBonus =
         new DamageEnchantment(16, FREQ_COMMON, DamageEnchantment::ALL);
     damageBonusUndead =
@@ -86,14 +86,14 @@ void Enchantment::staticCtor() {
     lootBonus =
         new LootBonusEnchantment(21, FREQ_RARE, EnchantmentCategory::weapon);
 
-    // digger
+    
     diggingBonus = new DiggingEnchantment(32, FREQ_COMMON);
     untouching = new UntouchingEnchantment(33, FREQ_VERY_RARE);
     digDurability = new DigDurabilityEnchantment(34, FREQ_UNCOMMON);
     resourceBonus =
         new LootBonusEnchantment(35, FREQ_RARE, EnchantmentCategory::digger);
 
-    // bows
+    
     arrowBonus = new ArrowDamageEnchantment(48, FREQ_COMMON);
     arrowKnockback = new ArrowKnockbackEnchantment(49, FREQ_RARE);
     arrowFire = new ArrowFireEnchantment(50, FREQ_RARE);
@@ -113,7 +113,7 @@ void Enchantment::_init(int id) {
 #ifndef _CONTENT_PACKAGE
         assert(0);
 #endif
-        // throw new IllegalArgumentException("Duplicate enchantment id!");
+        
     }
     enchantments[id] = this;
 }
@@ -159,7 +159,7 @@ Enchantment* Enchantment::setDescriptionId(int id) {
 
 int Enchantment::getDescriptionId() { return descriptionId; }
 
-// 4jcraft: re-added old TU18 overload for java gui
+
 std::wstring Enchantment::getFullname(int level, std::wstring& unformatted) {
     wchar_t formatted[256];
     swprintf(formatted, 256, L"%ls %ls", app.GetString(getDescriptionId()),
@@ -182,7 +182,7 @@ bool Enchantment::canEnchant(std::shared_ptr<ItemInstance> item) {
     return category->canEnchant(item->getItem());
 }
 
-// 4J Added
+
 std::wstring Enchantment::getLevelString(int level) {
     int stringId = IDS_ENCHANTMENT_LEVEL_1;
     switch (level) {
@@ -214,5 +214,5 @@ std::wstring Enchantment::getLevelString(int level) {
             stringId = IDS_ENCHANTMENT_LEVEL_10;
             break;
     };
-    return app.GetString(stringId);  // I18n.get("enchantment.level." + level);
+    return app.GetString(stringId);  
 }

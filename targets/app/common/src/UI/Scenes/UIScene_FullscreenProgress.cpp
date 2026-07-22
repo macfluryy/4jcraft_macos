@@ -27,7 +27,7 @@
 UIScene_FullscreenProgress::UIScene_FullscreenProgress(int iPad, void* initData,
                                                        UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     parentLayer->addComponent(iPad, eUIComponent_Panorama);
@@ -60,13 +60,13 @@ UIScene_FullscreenProgress::UIScene_FullscreenProgress(int iPad, void* initData,
     m_bWasCancelled = false;
     m_bWaitForThreadToDelete = params->waitForThreadToDelete;
 
-    // Clear the progress text
+    
     Minecraft* pMinecraft = Minecraft::GetInstance();
     pMinecraft->progressRenderer->progressStart(-1);
     pMinecraft->progressRenderer->progressStage(-1);
     m_progressBar.init(L"", 0, 0, 100, 0);
 
-    // set the tip
+    
     std::wstring wsText =
         app.FormatHTMLString(m_iPad, app.GetString(app.GetNextTip()));
 
@@ -113,8 +113,8 @@ void UIScene_FullscreenProgress::handleDestroy() {
     int code = thread->getExitCode();
     const unsigned int exitcode = static_cast<unsigned int>(code);
 
-    // If we're active, have a cancel func, and haven't already cancelled, call
-    // cancel func
+    
+    
     if (exitcode == C4JThread::kStillActive && m_cancelFunc != nullptr &&
         !m_bWasCancelled) {
         m_bWasCancelled = true;
@@ -132,7 +132,7 @@ void UIScene_FullscreenProgress::tick() {
     if (currentProgress != m_lastProgress) {
         m_lastProgress = currentProgress;
         m_progressBar.setProgress(currentProgress);
-        // app.DebugPrintf("Updated progress value\n");
+        
     }
 
     int title = pMinecraft->progressRenderer->getCurrentTitle();
@@ -161,35 +161,35 @@ void UIScene_FullscreenProgress::tick() {
     int code = thread->getExitCode();
     uint32_t exitcode = *((uint32_t*)&code);
 
-    // app.DebugPrintf("CScene_FullscreenProgress Timer %d\n",pTimer->nId);
+    
 
     if (exitcode != C4JThread::kStillActive) {
-        // If we failed (currently used by network connection thread), navigate
-        // back
+        
+        
         if (exitcode != 0) {
             if (exitcode == ERROR_CANCELLED) {
-                // Current thread cancelled for whatever reason
-                // Currently used only for the
-                // Game::RemoteSaveThreadProc thread Assume to
-                // just ignore this thread as something else is now running that
-                // will cause another action
+                
+                
+                
+                
+                
             } else {
-                /*m_threadCompleted = true;
-                m_buttonConfirm.SetShow( true );
-                m_buttonConfirm.SetFocus( m_CompletionData->iPad );
-                m_CompletionData->type =
-                e_ProgressCompletion_NavigateToHomeMenu;
+                
 
-                int exitReasonStringId;
-                switch( app.GetDisconnectReason() )
-                {
-                default:
-                exitReasonStringId = IDS_CONNECTION_FAILED;
-                }
-                Minecraft *pMinecraft=Minecraft::GetInstance();
-                pMinecraft->progressRenderer->progressStartNoAbort(
-                exitReasonStringId );*/
-                // app.NavigateBack(m_CompletionData->iPad);
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
 
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
@@ -207,8 +207,8 @@ void UIScene_FullscreenProgress::tick() {
                 (!m_bWasCancelled)) {
                 m_threadCompleted = true;
                 m_buttonConfirm.setVisible(true);
-                // 4J-TomK - rebuild touch after confirm button made visible
-                // again
+                
+                
                 updateTooltips();
             } else {
                 if (m_bWasCancelled) {
@@ -220,17 +220,17 @@ void UIScene_FullscreenProgress::tick() {
                         app.DebugPrintf(
                             "e_ProgressCompletion_AutosaveNavigateBack\n");
                         {
-                            // 4J Stu - Fix for #65437 - Customer Encountered:
-                            // Code: Settings: Autosave option doesn't work when
-                            // the Host goes into idle state during gameplay.
-                            // Autosave obviously cannot occur if an ignore
-                            // autosave menu is displayed, so even if we
-                            // navigate back to a scene and not empty then we
-                            // still want to reset this flag which was set true
-                            // by the navigate to the fullscreen progress
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                             ui.SetIgnoreAutosaveMenuDisplayed(m_iPad, false);
 
-                            // This just allows it to be shown
+                            
                             Minecraft* pMinecraft = Minecraft::GetInstance();
                             if (pMinecraft->localgameModes
                                     [ProfileManager.GetPrimaryPad()] != nullptr)
@@ -255,9 +255,9 @@ void UIScene_FullscreenProgress::tick() {
                         app.DebugPrintf(
                             "e_ProgressCompletion_NavigateBackToScene\n");
                         ui.UpdatePlayerBasePositions();
-                        // 4J Stu - If used correctly this scene will not have
-                        // interfered with any other scene at all, so just
-                        // navigate back
+                        
+                        
+                        
                         navigateBack();
                         break;
                     case e_ProgressCompletion_CloseUIScenes:
@@ -289,9 +289,9 @@ void UIScene_FullscreenProgress::tick() {
 void UIScene_FullscreenProgress::handleInput(int iPad, int key, bool repeat,
                                              bool pressed, bool released,
                                              bool& handled) {
-    // if( m_showTooltips )
+    
     {
-        // ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
+        
 
         switch (key) {
             case ACTION_MENU_OK:
@@ -312,10 +312,10 @@ void UIScene_FullscreenProgress::handleInput(int iPad, int key, bool repeat,
 
 void UIScene_FullscreenProgress::handlePress(F64 controlId, F64 childId) {
     if (m_threadCompleted && (int)controlId == eControl_Confirm) {
-        // This assumes all buttons can only be pressed with the A button
+        
         ui.AnimateKeyPress(m_iPad, ACTION_MENU_A, false, true, false);
 
-        // if there's a complete function, call it
+        
         if (m_completeFunc) {
             m_completeFunc(m_completeFuncParam);
         }
@@ -331,8 +331,8 @@ void UIScene_FullscreenProgress::handlePress(F64 controlId, F64 childId) {
             case e_ProgressCompletion_NavigateBackToScene:
                 app.DebugPrintf("e_ProgressCompletion_NavigateBackToScene\n");
                 ui.UpdatePlayerBasePositions();
-                // 4J Stu - If used correctly this scene will not have
-                // interfered with any other scene at all, so just navigate back
+                
+                
                 navigateBack();
                 break;
             case e_ProgressCompletion_CloseUIScenes:
@@ -360,7 +360,7 @@ void UIScene_FullscreenProgress::handlePress(F64 controlId, F64 childId) {
 void UIScene_FullscreenProgress::handleTimerComplete(int id) {
     switch (id) {
         case TIMER_FULLSCREEN_TIPS: {
-            // display the next tip
+            
             std::wstring wsText =
                 app.FormatHTMLString(m_iPad, app.GetString(app.GetNextTip()));
             wchar_t startTags[64];

@@ -19,8 +19,8 @@ class Material;
 
 thread_local bool TheEndPortal::m_tlsAllowAnywhere = false;
 
-// 4J - allowAnywhere is a static in java, implementing as TLS here to make
-// thread safe
+
+
 bool TheEndPortal::allowAnywhere() { return m_tlsAllowAnywhere; }
 
 void TheEndPortal::allowAnywhere(bool set) { m_tlsAllowAnywhere = set; }
@@ -37,7 +37,7 @@ std::shared_ptr<TileEntity> TheEndPortal::newTileEntity(Level* level) {
 void TheEndPortal::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     float r = 1 / 16.0f;
     setShape(0, 0, 0, 1, r, 1);
@@ -61,13 +61,13 @@ int TheEndPortal::getResourceCount(Random* random) { return 0; }
 
 void TheEndPortal::entityInside(Level* level, int x, int y, int z,
                                 std::shared_ptr<Entity> entity) {
-    if (entity->GetType() == eTYPE_EXPERIENCEORB) return;  // 4J added
+    if (entity->GetType() == eTYPE_EXPERIENCEORB) return;  
 
     if (entity->riding == nullptr && entity->rider.lock() == nullptr) {
         if (!level->isClientSide) {
             if (entity->instanceof(eTYPE_PLAYER)) {
-                // 4J Stu - Update the level data position so that the
-                // stronghold portal can be shown on the maps
+                
+                
                 int x, z;
                 x = z = 0;
                 if (level->dimension == 0 &&
@@ -110,6 +110,6 @@ void TheEndPortal::onPlace(Level* level, int x, int y, int z) {
 int TheEndPortal::cloneTileId(Level* level, int x, int y, int z) { return 0; }
 
 void TheEndPortal::registerIcons(IconRegister* iconRegister) {
-    // don't register null, because of particles
+    
     icon = iconRegister->registerIcon(L"portal");
 }

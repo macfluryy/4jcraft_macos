@@ -7,18 +7,18 @@ class LinuxLeaderboardManager : public LeaderboardManager {
 public:
     virtual void Tick() {}
 
-    // Open a session
+    
     virtual bool OpenSession() { return true; }
 
-    // Close a session
+    
     virtual void CloseSession() {}
 
-    // Delete a session
+    
     virtual void DeleteSession() {}
 
-    // Write the given stats
-    // This is called synchronously and will not free any memory allocated for
-    // views when it is done
+    
+    
+    
 
     virtual bool WriteStats(unsigned int viewCount, ViewIn views) {
         return false;
@@ -41,12 +41,12 @@ public:
         return false;
     }
 
-    // Perform a flush of the stats
+    
     virtual void FlushStats() {}
 
-    // Cancel the current operation
+    
     virtual void CancelOperation() {}
 
-    // Is the leaderboard manager idle.
+    
     virtual bool isIdle() { return true; }
 };

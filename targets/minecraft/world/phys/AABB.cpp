@@ -1,9 +1,9 @@
-// package net.minecraft.world.phys;
 
-// import java->util.ArrayList;
-// import java->util.List;
 
-// TODO: use brace initialization everywhere
+
+
+
+
 
 #include "minecraft/world/phys/AABB.h"
 
@@ -150,7 +150,7 @@ bool AABB::contains(const Vec3& p) const {
     return true;
 }
 
-// 4J Added
+
 bool AABB::containsIncludingLowerBound(const Vec3& p) const {
     if (p.x < x0 || p.x >= x1) return false;
     if (p.y < y0 || p.y >= y1) return false;

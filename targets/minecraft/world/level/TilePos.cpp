@@ -11,7 +11,7 @@ TilePos::TilePos(int x, int y, int z) {
     this->z = z;
 }
 
-// 4J - brought forward from 1.2.3
+
 TilePos::TilePos(Vec3* p) {
     this->x = Mth::floor(p->x);
     this->y = Mth::floor(p->y);

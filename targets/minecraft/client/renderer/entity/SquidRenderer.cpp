@@ -23,8 +23,8 @@ void SquidRenderer::render(std::shared_ptr<Entity> mob, double x, double y,
 
 void SquidRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
                                    float bob, float bodyRot, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Squid> mob = std::dynamic_pointer_cast<Squid>(_mob);
 
     float bodyXRot = (mob->xBodyRotO + (mob->xBodyRot - mob->xBodyRotO) * a);
@@ -38,8 +38,8 @@ void SquidRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
 }
 
 float SquidRenderer::getBob(std::shared_ptr<LivingEntity> _mob, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Squid> mob = std::dynamic_pointer_cast<Squid>(_mob);
 
     return mob->oldTentacleAngle +

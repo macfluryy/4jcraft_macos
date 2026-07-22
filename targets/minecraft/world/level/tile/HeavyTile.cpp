@@ -42,8 +42,8 @@ void HeavyTile::checkSlide(Level* level, int x, int y, int z) {
                 level->setTileAndUpdate(x, y, z, id);
             }
         } else if (!level->isClientSide) {
-            // 4J added - don't do anything just now if we can't create any new
-            // falling tiles
+            
+            
             if (!level->newFallingTileAllowed()) {
                 level->addToTickNextTick(x, y, z, id, getTickDelay(level));
                 return;

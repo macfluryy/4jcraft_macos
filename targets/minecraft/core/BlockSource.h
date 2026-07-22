@@ -10,19 +10,19 @@ class TileEntity;
 
 class BlockSource : public LocatableSource {
 public:
-    /**
-     * @return The X coordinate for the middle of the block
-     */
+    
+
+
     virtual double getX() = 0;
 
-    /**
-     * @return The Y coordinate for the middle of the block
-     */
+    
+
+
     virtual double getY() = 0;
 
-    /**
-     * @return The Z coordinate for the middle of the block
-     */
+    
+
+
     virtual double getZ() = 0;
 
     virtual int getBlockX() = 0;

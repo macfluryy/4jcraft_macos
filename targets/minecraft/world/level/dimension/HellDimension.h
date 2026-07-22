@@ -19,6 +19,6 @@ public:
     virtual bool mayRespawn() const;
     virtual bool isFoggyAt(int x, int z);
 
-    // 4J Added
+    
     virtual int getXZSize();
 };

@@ -13,7 +13,7 @@ private:
     static const double SIT_CHANCE;
 
 private:
-    Ocelot* ocelot;  // Owner of this goal
+    Ocelot* ocelot;  
     double speedModifier;
     int _tick;
     int tryTicks;

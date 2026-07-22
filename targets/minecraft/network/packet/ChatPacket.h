@@ -9,17 +9,17 @@
 
 class ChatPacket : public Packet,
                    public std::enable_shared_from_this<ChatPacket> {
-    // longest allowed std::string is "<" + name + "> " + message
+    
 private:
     static const unsigned int MAX_LENGTH;
 
 public:
-    // 4J - We want to be able to localise the messages sent. The enum also
-    // allows for the posibility that there may be different versions playing
-    // the game, so the enum should map to a std::string id which may be
-    // different on different versions
+    
+    
+    
+    
     enum EChatPacketMessage {
-        e_ChatCustom = 0,  // No localised std::string, only the text passed in
+        e_ChatCustom = 0,  
         e_ChatBedOccupied,
         e_ChatBedNoSleep,
         e_ChatBedNotValid,
@@ -79,41 +79,41 @@ public:
         e_ChatPlayerEnteredEnd,
         e_ChatPlayerLeftEnd,
 
-        e_ChatPlayerMaxPigsSheepCows,  // tell the players they can't use the
-                                       // spawn egg
-        e_ChatPlayerMaxChickens,  // tell the players they can't use the spawn
-                                  // egg
-        e_ChatPlayerMaxSquid,  // tell the players they can't use the spawn egg
-        e_ChatPlayerMaxMooshrooms,  // tell the players they can't use the spawn
-                                    // egg
-        e_ChatPlayerMaxWolves,  // tell the players they can't use the spawn egg
-        e_ChatPlayerMaxAnimals,    // tell the players they can't use the spawn
-                                   // egg
-        e_ChatPlayerMaxEnemies,    // tell the players they can't use the spawn
-                                   // egg
-        e_ChatPlayerMaxVillagers,  // tell the players they can't use the spawn
-                                   // egg
-        e_ChatPlayerMaxHangingEntities,   // tell the players they hit the
-                                          // picture/itemframe limit
-        e_ChatPlayerCantSpawnInPeaceful,  // Tell the player they can't spawn
-                                          // enemies in peaceful mode
-        e_ChatPlayerMaxBredAnimals,       // Tell the player they can't put this
-                                     // animal in love mode because no breeding
-                                     // can be done
-        e_ChatPlayerMaxBredPigsSheepCows,  // Tell the player they can't put
-                                           // this animal in love mode because
-                                           // no breeding can be done
-        e_ChatPlayerMaxBredChickens,  // Tell the player they can't put this
-                                      // animal in love mode because no breeding
-                                      // can be done
-        e_ChatPlayerMaxBredMooshrooms,  // Tell the player they can't put this
-                                        // animal in love mode because no
-                                        // breeding can be done
-        e_ChatPlayerMaxBredWolves,  // Tell the player they can't put this wolf
-                                    // in love mode because no breeding can be
-                                    // done
-        e_ChatPlayerCantShearMooshroom,  // Tell the player they can't shear
-                                         // because the limits have been reached
+        e_ChatPlayerMaxPigsSheepCows,  
+                                       
+        e_ChatPlayerMaxChickens,  
+                                  
+        e_ChatPlayerMaxSquid,  
+        e_ChatPlayerMaxMooshrooms,  
+                                    
+        e_ChatPlayerMaxWolves,  
+        e_ChatPlayerMaxAnimals,    
+                                   
+        e_ChatPlayerMaxEnemies,    
+                                   
+        e_ChatPlayerMaxVillagers,  
+                                   
+        e_ChatPlayerMaxHangingEntities,   
+                                          
+        e_ChatPlayerCantSpawnInPeaceful,  
+                                          
+        e_ChatPlayerMaxBredAnimals,       
+                                     
+                                     
+        e_ChatPlayerMaxBredPigsSheepCows,  
+                                           
+                                           
+        e_ChatPlayerMaxBredChickens,  
+                                      
+                                      
+        e_ChatPlayerMaxBredMooshrooms,  
+                                        
+                                        
+        e_ChatPlayerMaxBredWolves,  
+                                    
+                                    
+        e_ChatPlayerCantShearMooshroom,  
+                                         
         e_ChatPlayerMaxBoats,
         e_ChatPlayerMaxBats,
 
@@ -130,9 +130,9 @@ public:
 
     ChatPacket();
 
-    // 4J: Seperated the one convoluted ctor into three more readable ctors. The
-    // last two ctors are only used for death messages and I'd really like to
-    // consolodate them and/or the logic that uses them at some point.
+    
+    
+    
     ChatPacket(const std::wstring& message,
                EChatPacketMessage type = e_ChatCustom, int customData = -1);
     ChatPacket(const std::wstring& message, EChatPacketMessage type,

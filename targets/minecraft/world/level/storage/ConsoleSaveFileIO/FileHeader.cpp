@@ -1,5 +1,5 @@
 
-// #define _DEBUG_FILE_HEADER
+
 
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
@@ -22,8 +22,8 @@ FileHeader::FileHeader() {
     lastFile = nullptr;
     m_saveVersion = 0;
 
-    // New saves should have an original version set to the latest version. This
-    // will be overridden when we load a save
+    
+    
     m_originalSaveVersion = SAVE_FILE_VERSION_NUMBER;
     m_savePlatform = SAVE_FILE_PLATFORM_LOCAL;
     m_saveEndian = m_localEndian;
@@ -36,7 +36,7 @@ FileHeader::~FileHeader() {
 }
 
 FileEntry* FileHeader::AddFile(const std::wstring& name,
-                               unsigned int length /* = 0 */) {
+                               unsigned int length ) {
     assert(name.length() < 64);
 
     wchar_t filename[64];
@@ -44,16 +44,16 @@ FileEntry* FileHeader::AddFile(const std::wstring& name,
     memcpy(&filename, name.c_str(),
            std::min(sizeof(wchar_t) * 64, sizeof(wchar_t) * name.length()));
 
-    // Would a map be more efficient? Our file tables probably won't be very big
-    // so better to avoid hashing all the time? Does the file exist?
+    
+    
     for (unsigned int i = 0; i < fileTable.size(); ++i) {
         if (wcscmp(fileTable[i]->data.filename, filename) == 0) {
-            // If so, return it
+            
             return fileTable[i];
         }
     }
 
-    // Else, add it to our file table
+    
     fileTable.push_back(new FileEntry(filename, length, GetStartOfNextData()));
     lastFile = fileTable[fileTable.size() - 1];
     return lastFile;
@@ -80,29 +80,29 @@ void FileHeader::RemoveFile(FileEntry* file) {
 void FileHeader::WriteHeader(void* saveMem) {
     unsigned int headerOffset = GetStartOfNextData();
 
-    // 4J Changed for save version 2 to be the number of files rather than the
-    // size in bytes
+    
+    
     unsigned int headerSize = (int)(fileTable.size());
 
-    // uint32_t numberOfBytesWritten = 0;
+    
 
-    // Write the offset of the header
-    // assert(numberOfBytesWritten == 4);
+    
+    
     int* begin = (int*)saveMem;
     *begin = headerOffset;
 
-    // Write the size of the header
-    // assert(numberOfBytesWritten == 4);
+    
+    
     *(begin + 1) = headerSize;
 
     short* versions = (short*)(begin + 2);
-    // Write the original version number
+    
     *versions = m_originalSaveVersion;
 
-    // Write the version number
+    
     short versionNumber = SAVE_FILE_VERSION_NUMBER;
-    // assert(numberOfBytesWritten == 4);
-    //*(begin + 2) = versionNumber;
+    
+    
     *(versions + 1) = versionNumber;
 
 #if defined(_DEBUG_FILE_HEADER)
@@ -118,21 +118,21 @@ void FileHeader::WriteHeader(void* saveMem) {
                     headerOffset, headerSize);
 #endif
 
-    // Write the header
+    
     for (unsigned int i = 0; i < fileTable.size(); ++i) {
-        // wprintf(L"File: %ls, Start = %d, Length = %d, End = %d\n",
-        // fileTable[i]->data.filename, fileTable[i]->data.startOffset,
-        // fileTable[i]->data.size(), fileTable[i]->data.startOffset +
-        // fileTable[i]->data.size());
+        
+        
+        
+        
         memcpy((void*)headerPosition, &fileTable[i]->data,
                sizeof(FileEntrySaveData));
-        // assert(numberOfBytesWritten == sizeof(FileEntrySaveData));
+        
         headerPosition += sizeof(FileEntrySaveData);
     }
 }
 
 void FileHeader::ReadHeader(
-    void* saveMem, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL */) {
+    void* saveMem, ESavePlatform plat ) {
     unsigned int headerOffset;
     unsigned int headerSize;
 
@@ -156,24 +156,24 @@ void FileHeader::ReadHeader(
             break;
     }
 
-    // Read the offset of the header
-    // assert(numberOfBytesRead == 4);
+    
+    
     int* begin = (int*)saveMem;
     headerOffset = *begin;
     if (isSaveEndianDifferent()) System::ReverseULONG(&headerOffset);
 
-    // Read the size of the header
-    // assert(numberOfBytesRead == 4);
+    
+    
     headerSize = *(begin + 1);
     if (isSaveEndianDifferent()) System::ReverseULONG(&headerSize);
 
     short* versions = (short*)(begin + 2);
-    // Read the original save version number
+    
     m_originalSaveVersion = *(versions);
     if (isSaveEndianDifferent()) System::ReverseSHORT(&m_originalSaveVersion);
 
-    // Read the save version number
-    // m_saveVersion = *(begin + 2);
+    
+    
     m_saveVersion = *(versions + 1);
     if (isSaveEndianDifferent()) System::ReverseSHORT(&m_saveVersion);
 
@@ -188,21 +188,21 @@ void FileHeader::ReadHeader(
     char* headerPosition = (char*)saveMem + headerOffset;
 
     switch (m_saveVersion) {
-        // case SAVE_FILE_VERSION_NUMBER:
-        // case 8: // 4J Stu - SAVE_FILE_VERSION_NUMBER 2,3,4,5,6,7,8 are the
-        // same, but: 							: Bumped
-        // it to 3 in TU5 to force older builds (ie 0062) to
-        // generate a new world when trying to load new saves
-        // : Bumped it to 4 in TU9 to delete versions of The End that were
-        // generated in builds prior to TU9
-        // : Bumped it to 5 in TU9 to update the map data that was only using 1
-        // bit to determine dimension
-        // : Bumped it to 6 for PS3 v1 to update map data mappings to use larger
-        // PlayerUID 							: Bumped
-        // it to 7 for Durango v1 to update map data mappings to use string
-        // based PlayerUID
-        // : Bumped it to 8 for Durango v1 when to save the chunks in a
-        // different compressed format
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         case SAVE_FILE_VERSION_COMPRESSED_CHUNK_STORAGE:
         case SAVE_FILE_VERSION_DURANGO_CHANGE_MAP_DATA_MAPPING_SIZE:
         case SAVE_FILE_VERSION_CHANGE_MAP_DATA_MAPPING_SIZE:
@@ -210,23 +210,23 @@ void FileHeader::ReadHeader(
         case SAVE_FILE_VERSION_NEW_END:
         case SAVE_FILE_VERSION_POST_LAUNCH:
         case SAVE_FILE_VERSION_LAUNCH: {
-            // Changes for save file version 2:
-            // headerSize is now a count of elements rather than a count of
-            // bytes The FileEntrySaveData struct has a lastModifiedTime member
+            
+            
+            
 
-            // Read the header
+            
             FileEntrySaveData* fesdHeaderPosition =
                 (FileEntrySaveData*)headerPosition;
             for (unsigned int i = 0; i < headerSize; ++i) {
                 FileEntry* entry = new FileEntry();
-                // assert(numberOfBytesRead == sizeof(FileEntrySaveData));
+                
 
                 memcpy(&entry->data, fesdHeaderPosition,
                        sizeof(FileEntrySaveData));
 
                 if (isSaveEndianDifferent()) {
-                    // Reverse bytes
-                    // System::ReverseWCHARA(entry->data.filename,64);
+                    
+                    
                     System::ReverseULONG(&entry->data.length);
                     System::ReverseULONG(&entry->data.startOffset);
                     System::ReverseULONGLONG(&entry->data.lastModifiedTime);
@@ -249,17 +249,17 @@ void FileHeader::ReadHeader(
             }
         } break;
 
-        // Legacy save versions, with updated code to convert the
-        // FileEntrySaveData to the latest version 4J Stu - At time of writing,
-        // the tutorial save is V1 so need to keep this for compatibility
+        
+        
+        
         case SAVE_FILE_VERSION_PRE_LAUNCH: {
-            // Read the header
-            // We can then make headerPosition a FileEntrySaveData pointer and
-            // just increment by one up to the number
+            
+            
+            
             unsigned int i = 0;
             while (i < headerSize) {
                 FileEntry* entry = new FileEntry();
-                // assert(numberOfBytesRead == sizeof(FileEntrySaveData));
+                
 
                 memcpy(&entry->data, headerPosition,
                        sizeof(FileEntrySaveDataV1));
@@ -290,10 +290,10 @@ void FileHeader::ReadHeader(
 }
 
 unsigned int FileHeader::GetStartOfNextData() {
-    // The first 4 bytes is the location of the header (the header itself is at
-    // the end of the file) Then 4 bytes for the size of the header Then 2 bytes
-    // for the version number at which this save was first generated Then 2
-    // bytes for the version number that the save should now be at
+    
+    
+    
+    
     unsigned int totalBytesSoFar = SAVE_FILE_HEADER_SIZE;
     for (unsigned int i = 0; i < fileTable.size(); ++i) {
         if (fileTable[i]->getFileSize() > 0)
@@ -309,7 +309,7 @@ unsigned int FileHeader::GetFileSize() {
 
 void FileHeader::AdjustStartOffsets(FileEntry* file,
                                     unsigned int nNumberOfBytesToWrite,
-                                    bool subtract /*= false*/) {
+                                    bool subtract ) {
     bool found = false;
     for (unsigned int i = 0; i < fileTable.size(); ++i) {
         if (found == true) {
@@ -329,7 +329,7 @@ void FileHeader::AdjustStartOffsets(FileEntry* file,
 bool FileHeader::fileExists(const std::wstring& name) {
     for (unsigned int i = 0; i < fileTable.size(); ++i) {
         if (wcscmp(fileTable[i]->data.filename, name.c_str()) == 0) {
-            // If so, return it
+            
             return true;
         }
     }

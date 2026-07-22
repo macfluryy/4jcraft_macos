@@ -11,7 +11,7 @@
 
 
 SurvivalMode::SurvivalMode(Minecraft* minecraft) : GameMode(minecraft) {
-    // 4J - added initialisers
+    
     xDestroyBlock = -1;
     yDestroyBlock = -1;
     zDestroyBlock = -1;
@@ -23,14 +23,14 @@ SurvivalMode::SurvivalMode(Minecraft* minecraft) : GameMode(minecraft) {
     if (ClientConstants::IS_DEMO_VERSION) {
         if (dynamic_cast<DemoMode*>(this) == nullptr) {
             assert(false);
-            //            throw new IllegalStateException("Invalid game mode");
-            //            // 4J - removed
+            
+            
         }
     }
 }
 
-// 4J Stu - Added this ctor so we can exit the tutorial and replace it with a
-// standard survival mode
+
+
 SurvivalMode::SurvivalMode(SurvivalMode* copy) : GameMode(copy->minecraft) {
     xDestroyBlock = copy->xDestroyBlock;
     yDestroyBlock = copy->yDestroyBlock;
@@ -143,18 +143,18 @@ void SurvivalMode::initLevel(Level* level) { GameMode::initLevel(level); }
 
 std::shared_ptr<Player> SurvivalMode::createPlayer(Level* level) {
     std::shared_ptr<Player> player = GameMode::createPlayer(level);
-    //        player.inventory.add(new ItemInstance(Item.pickAxe_diamond));
-    //        player.inventory.add(new ItemInstance(Item.hatchet_diamond));
-    //        player.inventory.add(new ItemInstance(Tile.torch, 64));
-    //        player.inventory.add(new ItemInstance(Item.porkChop_cooked, 4));
-    //        player.inventory.add(new ItemInstance(Item.bow, 1));
-    //        player.inventory.add(new ItemInstance(Item.arrow, 64));
+    
+    
+    
+    
+    
+    
     return player;
 }
 
 void SurvivalMode::tick() {
     oDestroyProgress = destroyProgress;
-    // minecraft->soundEngine->playMusicTick();
+    
 }
 
 bool SurvivalMode::useItemOn(std::shared_ptr<Player> player, Level* level,

@@ -22,6 +22,6 @@ public:
     virtual std::shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
     void registerIcons(IconRegister* iconRegister);
 
-    // 4J added
+    
     virtual unsigned int getDescriptionId(int iData = -1);
 };

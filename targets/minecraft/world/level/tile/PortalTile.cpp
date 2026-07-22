@@ -27,13 +27,13 @@ void PortalTile::tick(Level* level, int x, int y, int z, Random* random) {
 
     if (level->dimension->isNaturalDimension() &&
         random->nextInt(2000) < level->difficulty) {
-        // locate floor
+        
         int y0 = y;
         while (!level->isTopSolidBlocking(x, y0, z) && y0 > 0) {
             y0--;
         }
         if (y0 > 0 && !level->isSolidBlockingTile(x, y0 + 1, z)) {
-            // spawn a pig man here
+            
             int iResult = 0;
             std::shared_ptr<Entity> entity = SpawnEggItem::spawnMobAt(
                 level, 57, x + .5, y0 + 1.1, z + .5, &iResult);
@@ -52,7 +52,7 @@ std::optional<AABB> PortalTile::getAABB(Level* level, int x, int y, int z) {
 void PortalTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     if (level->getTile(x - 1, y, z) == id ||
         level->getTile(x + 1, y, z) == id) {
@@ -150,11 +150,11 @@ void PortalTile::neighborChanged(Level* level, int x, int y, int z, int type) {
         return;
     }
 
-    if (!(  //
+    if (!(  
             (level->getTile(x + xd, y, z + zd) == Tile::obsidian_Id &&
-             level->getTile(x - xd, y, z - zd) == id) ||  //
+             level->getTile(x - xd, y, z - zd) == id) ||  
             (level->getTile(x - xd, y, z - zd) == Tile::obsidian_Id &&
-             level->getTile(x + xd, y, z + zd) == id)  //
+             level->getTile(x + xd, y, z + zd) == id)  
             )) {
         level->removeTile(x, y, z);
         return;
@@ -192,7 +192,7 @@ int PortalTile::getRenderLayer() { return 1; }
 
 void PortalTile::entityInside(Level* level, int x, int y, int z,
                               std::shared_ptr<Entity> entity) {
-    if (entity->GetType() == eTYPE_EXPERIENCEORB) return;  // 4J added
+    if (entity->GetType() == eTYPE_EXPERIENCEORB) return;  
 
     if (entity->riding == nullptr && entity->rider.lock() == nullptr)
         entity->handleInsidePortal();
@@ -231,6 +231,6 @@ void PortalTile::animateTick(Level* level, int xt, int yt, int zt,
 
 int PortalTile::cloneTileId(Level* level, int x, int y, int z) { return 0; }
 
-// 4J Added - We cannot collect the portal tile, so don't consider it as a hit
-// result Bug #754 - Riding a minecart into a portal will trap the player
+
+
 bool PortalTile::mayPick() { return false; }

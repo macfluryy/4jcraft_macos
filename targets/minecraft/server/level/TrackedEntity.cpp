@@ -61,11 +61,11 @@ class AttributeInstance;
 class MobEffectInstance;
 #ifndef __linux__ && __APPLE__
 #include <qnet.h>
-#endif  // __linux__
+#endif  
 
 TrackedEntity::TrackedEntity(std::shared_ptr<Entity> e, int range,
                              int updateInterval, bool trackDelta) {
-    // 4J added initialisers
+    
     xap = yap = zap = 0;
     tickCount = 0;
     xpu = ypu = zpu = 0;
@@ -110,7 +110,7 @@ void TrackedEntity::tick(EntityTracker* tracker,
             SetEntityLinkPacket::RIDING, e, e->riding));
     }
 
-    // Moving forward  special case for item frames
+    
     if (e->GetType() == eTYPE_ITEM_FRAME && tickCount % 10 == 0) {
         std::shared_ptr<ItemFrame> frame =
             std::dynamic_pointer_cast<ItemFrame>(e);
@@ -141,12 +141,12 @@ void TrackedEntity::tick(EntityTracker* tracker,
         }
     } else if (tickCount % updateInterval == 0 || e->hasImpulse ||
                e->getEntityData()->isDirty()) {
-        // 4J: Moved this as it's shared
+        
         int yRotn = std::floor(e->yRot * 256 / 360);
         int xRotn = std::floor(e->xRot * 256 / 360);
 
-        // 4J: Changed rotation to be generally sent as a delta as well as
-        // position
+        
+        
         int yRota = yRotn - yRotp;
         int xRota = xRotn - xRotp;
 
@@ -163,14 +163,14 @@ void TrackedEntity::tick(EntityTracker* tracker,
 
             std::shared_ptr<Packet> packet = nullptr;
 
-            // 4J - this pos flag used to be set based on abs(xn) etc. but that
-            // just seems wrong
+            
+            
             bool pos =
                 abs(xa) >= TOLERANCE_LEVEL || abs(ya) >= TOLERANCE_LEVEL ||
                 abs(za) >= TOLERANCE_LEVEL ||
                 (tickCount % (SharedConstants::TICKS_PER_SECOND * 3) == 0);
 
-            // Keep rotation deltas in +/- 180 degree range
+            
             while (yRota > 127) yRota -= 256;
             while (yRota < -128) yRota += 256;
             while (xRota > 127) xRota -= 256;
@@ -179,30 +179,30 @@ void TrackedEntity::tick(EntityTracker* tracker,
             bool rot =
                 abs(yRota) >= TOLERANCE_LEVEL || abs(xRota) >= TOLERANCE_LEVEL;
 
-            // 4J: Modified the following check. It was originally added by
-            // Mojang to address certain unspecified issues with entity
-            // position. Turns out the issue effects a variety of different
-            // entities so we've left it in and just added the new exceptions
-            // (so far just players)
+            
+            
+            
+            
+            
 
-            // 4J: Original comment follows
-            // TODO: Figure out how to fix this properly
-            // skip first tick since position is sent in addEntity packet
-            // FallingTile depends on this because it removes its source block
-            // in the first tick()
+            
+            
+            
+            
+            
 
             if (tickCount > 0 || e->instanceof(eTYPE_ARROW) ||
-                e->instanceof(eTYPE_PLAYER))  // 4J: Modifed, see above
+                e->instanceof(eTYPE_PLAYER))  
             {
                 if (xa < -128 || xa >= 128 || ya < -128 || ya >= 128 ||
                     za < -128 || za >= 128 ||
                     wasRiding
-                    // 4J Stu - I fixed the initialisation of teleportDelay in
-                    // the ctor, but we managed this far without out and would
-                    // prefer not to have all the extra traffix so ignore it 4J
-                    // Stu - Fix for #9579 - GAMEPLAY: Boats with a player in
-                    // them slowly sink under the water over time, and with no
-                    // player in them they float into the sky.
+                    
+                    
+                    
+                    
+                    
+                    
                     ||
                     (e->GetType() == eTYPE_BOAT && teleportDelay > 20 * 20)) {
                     teleportDelay = 0;
@@ -210,18 +210,18 @@ void TrackedEntity::tick(EntityTracker* tracker,
                         new TeleportEntityPacket(e->entityId, xn, yn, zn,
                                                  (uint8_t)yRotn,
                                                  (uint8_t)xRotn));
-                    //			printf("%d: New teleport rot
-                    //%d\n",e->entityId,yRotn);
+                    
+                    
                     yRotp = yRotn;
                     xRotp = xRotn;
                 } else {
                     if (pos && rot) {
-                        // 4J If the movement is small enough, and there's no
-                        // xrot, then use the new smaller packets
+                        
+                        
                         if ((xa >= -16) && (xa <= 15) && (za >= -16) &&
                             (za <= 15) && (ya >= -32) && (ya <= 31) &&
                             (xRota == 0)) {
-                            // Clamp rotations that are too big
+                            
                             if (yRota < -16) {
                                 yRota = -16;
                                 yRotn = yRotp + yRota;
@@ -229,7 +229,7 @@ void TrackedEntity::tick(EntityTracker* tracker,
                                 yRota = 15;
                                 yRotn = yRotp + yRota;
                             }
-                            // 5 bits each for x & z, and 6 for y
+                            
                             packet = std::shared_ptr<MoveEntityPacketSmall>(
                                 new MoveEntityPacketSmall::PosRot(
                                     e->entityId, (char)xa, (char)ya, (char)za,
@@ -240,17 +240,17 @@ void TrackedEntity::tick(EntityTracker* tracker,
                                 new MoveEntityPacket::PosRot(
                                     e->entityId, (char)xa, (char)ya, (char)za,
                                     (char)yRota, (char)xRota));
-                            //					printf("%d: New
-                            // posrot %d + %d =
-                            //%d\n",e->entityId,yRotp,yRota,yRotn);
+                            
+                            
+                            
                             c0b++;
                         }
                     } else if (pos) {
-                        // 4J If the movement is small enough, then use the new
-                        // smaller packets
+                        
+                        
                         if ((xa >= -8) && (xa <= 7) && (za >= -8) &&
                             (za <= 7) && (ya >= -16) && (ya <= 15)) {
-                            // 4 bits each for x & z, and 5 for y
+                            
                             packet = std::shared_ptr<MoveEntityPacketSmall>(
                                 new MoveEntityPacketSmall::Pos(
                                     e->entityId, (char)xa, (char)ya, (char)za));
@@ -259,9 +259,9 @@ void TrackedEntity::tick(EntityTracker* tracker,
 
                         else if ((xa >= -16) && (xa <= 15) && (za >= -16) &&
                                  (za <= 15) && (ya >= -32) && (ya <= 31)) {
-                            // use the packet with small packet with rotation if
-                            // we can - 5 bits each for x & z, and 6 for y -
-                            // still a byte less than the alternative
+                            
+                            
+                            
                             packet = std::shared_ptr<MoveEntityPacketSmall>(
                                 new MoveEntityPacketSmall::PosRot(
                                     e->entityId, (char)xa, (char)ya, (char)za,
@@ -274,10 +274,10 @@ void TrackedEntity::tick(EntityTracker* tracker,
                             c1c++;
                         }
                     } else if (rot) {
-                        // 4J If there's no x rotation, then use the new smaller
-                        // packet type
+                        
+                        
                         if (xRota == 0) {
-                            // Clamp rotations that are too big
+                            
                             if (yRota < -16) {
                                 yRota = -16;
                                 yRotn = yRotp + yRota;
@@ -290,9 +290,9 @@ void TrackedEntity::tick(EntityTracker* tracker,
                                                                (char)yRota, 0));
                             c2a++;
                         } else {
-                            //					printf("%d: New
-                            // rot %d + %d =
-                            //%d\n",e->entityId,yRotp,yRota,yRotn);
+                            
+                            
+                            
                             packet = std::shared_ptr<MoveEntityPacket>(
                                 new MoveEntityPacket::Rot(
                                     e->entityId, (char)yRota, (char)xRota));
@@ -342,7 +342,7 @@ void TrackedEntity::tick(EntityTracker* tracker,
             bool rot = abs(yRotn - yRotp) >= TOLERANCE_LEVEL ||
                        abs(xRotn - xRotp) >= TOLERANCE_LEVEL;
             if (rot) {
-                // 4J: Changed this to use deltas
+                
                 broadcast(std::make_shared<MoveEntityPacket::Rot>(
                     e->entityId, (uint8_t)yRota, (uint8_t)xRota));
                 yRotp = yRotn;
@@ -371,7 +371,7 @@ void TrackedEntity::tick(EntityTracker* tracker,
     tickCount++;
 
     if (e->hurtMarked) {
-        // broadcast(new AnimatePacket(e, AnimatePacket.HURT));
+        
         broadcastAndSend(std::shared_ptr<SetEntityMotionPacket>(
             new SetEntityMotionPacket(e)));
         e->hurtMarked = false;
@@ -404,18 +404,18 @@ void TrackedEntity::sendDirtyEntityData() {
 
 void TrackedEntity::broadcast(std::shared_ptr<Packet> packet) {
     if (Packet::canSendToAnyClient(packet)) {
-        // 4J-PB - due to the knockback on a player being hit, we need to send
-        // to all players, but limit the network traffic here to players that
-        // have not already had it sent to their system
+        
+        
+        
         std::vector<std::shared_ptr<ServerPlayer> > sentTo;
 
-        // 4J - don't send to a player we've already sent this data to that
-        // shares the same machine. EntityMotionPacket used to limit themselves
-        // to sending once to each machine by only sending to the primary player
-        // on each machine. This was causing trouble for split screen as only
-        // the primary player would get a knockback velocity. Now these packets
-        // can be sent to any player, but we try to restrict the network impact
-        // this has by not resending to the one machine
+        
+        
+        
+        
+        
+        
+        
 
         for (auto it = seenBy.begin(); it != seenBy.end(); it++) {
             std::shared_ptr<ServerPlayer> player = *it;
@@ -433,19 +433,19 @@ void TrackedEntity::broadcast(std::shared_ptr<Packet> packet) {
                         if (otherPlayer != nullptr &&
                             thisPlayer->IsSameSystem(otherPlayer)) {
                             dontSend = true;
-                            // #ifdef _DEBUG
-                            // 					shared_ptr<SetEntityMotionPacket>
-                            // emp=
-                            // std::dynamic_pointer_cast<SetEntityMotionPacket>
-                            // (packet);
-                            // if(emp!=nullptr)
-                            // 					{
-                            // 						app.DebugPrintf("Not
-                            // sending this SetEntityMotionPacket to player -
-                            // it's already been sent to a player on their
-                            // console\n");
-                            // 					}
-                            // #endif
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                         }
                     }
                 }
@@ -458,8 +458,8 @@ void TrackedEntity::broadcast(std::shared_ptr<Packet> packet) {
             sentTo.push_back(player);
         }
     } else {
-        // This packet hasn't got canSendToAnyClient set, so just send to
-        // everyone here, and it
+        
+        
 
         for (auto it = seenBy.begin(); it != seenBy.end(); it++) {
             (*it)->connection->send(packet);
@@ -493,32 +493,32 @@ void TrackedEntity::removePlayer(std::shared_ptr<ServerPlayer> sp) {
     }
 }
 
-// 4J-JEV: Added for code reuse.
+
 TrackedEntity::eVisibility TrackedEntity::isVisible(
     EntityTracker* tracker, std::shared_ptr<ServerPlayer> sp, bool forRider) {
-    // 4J Stu - We call update players when the entity has moved more than a
-    // certain amount at the start of it's tick Before this call we set xpu, ypu
-    // and zpu to the entities new position, but xp,yp and zp are the old
-    // position until later in the tick. Therefore we should use the new
-    // position for visibility checks
-    double xd = sp->x - xpu;  // xp / 32;
-    double zd = sp->z - zpu;  // zp / 32;
+    
+    
+    
+    
+    
+    double xd = sp->x - xpu;  
+    double zd = sp->z - zpu;  
 
-    // 4J Stu - Fix for loading a player who is currently riding something (e.g.
-    // a horse)
+    
+    
     if (e->forcedLoading) {
         xd = sp->x - xp / 32;
         zd = sp->z - zp / 32;
     }
 
     int playersRange = range;
-    // 4J macOS task 8.1 (Req 7.1) - never track entities beyond the viewing
-    // player's effective view distance (chunks -> blocks). Keeps entity
-    // visibility consistent with the chunk streaming radius.
+    
+    
+    
     int pvdBlocks = sp->getViewDistance() * 16;
     if (playersRange > pvdBlocks) playersRange = pvdBlocks;
-    // RTT-based reduction (Req 7.2/7.3): subtract ONLY from the entity tracking
-    // range, never from the chunk view distance.
+    
+    
     if (playersRange > TRACKED_ENTITY_MINIMUM_VIEW_DISTANCE) {
         playersRange -= sp->getPlayerViewDistanceModifier();
     }
@@ -527,20 +527,20 @@ TrackedEntity::eVisibility TrackedEntity::isVisible(
                     zd >= -playersRange && zd <= playersRange;
     bool canBeSeenBy = canBySeenBy(sp);
 
-    // 4J - added. Try and find other players who are in the same dimension as
-    // this one and on the same machine, and extend our visibility so things are
-    // consider visible to this player if they are near the other one. This is
-    // because we only send entity tracking info to players who
-    // canReceiveAllPackets().
+    
+    
+    
+    
+    
     if (!bVisible) {
         MinecraftServer* server = MinecraftServer::getInstance();
         INetworkPlayer* thisPlayer = sp->connection->getNetworkPlayer();
         if (thisPlayer) {
             for (unsigned int i = 0; i < server->getPlayers()->players.size();
                  i++) {
-                // Consider extra players, but not if they are the entity we are
-                // tracking, or the player we've been passed as input, or in
-                // another dimension
+                
+                
+                
                 std::shared_ptr<ServerPlayer> ep =
                     server->getPlayers()->players[i];
                 if (ep == sp) continue;
@@ -551,14 +551,14 @@ TrackedEntity::eVisibility TrackedEntity::isVisible(
                     ep->connection->getNetworkPlayer();
                 if (otherPlayer != nullptr &&
                     thisPlayer->IsSameSystem(otherPlayer)) {
-                    // 4J Stu - We call update players when the entity has moved
-                    // more than a certain amount at the start of it's tick
-                    // Before this call we set xpu, ypu and zpu to the entities
-                    // new position, but xp,yp and zp are the old position until
-                    // later in the tick. Therefore we should use the new
-                    // position for visibility checks
-                    double xd = ep->x - xpu;  // xp / 32;
-                    double zd = ep->z - zpu;  // zp / 32;
+                    
+                    
+                    
+                    
+                    
+                    
+                    double xd = ep->x - xpu;  
+                    double zd = ep->z - zpu;  
                     bVisible |= (xd >= -playersRange && xd <= playersRange &&
                                  zd >= -playersRange && zd <= playersRange);
                     canBeSeenBy |= canBySeenBy(ep);
@@ -567,15 +567,15 @@ TrackedEntity::eVisibility TrackedEntity::isVisible(
         }
     }
 
-    // 4J Stu - We need to ensure that we send the mount before the rider, so
-    // check that the player has been added to the seenBy list
+    
+    
     if (forRider) {
         canBeSeenBy = canBeSeenBy && (seenBy.find(sp) != seenBy.end());
     }
 
-    // 4J-JEV: ADDED! An entities mount has to be visible before the entity
-    // visible, this is to ensure that the mount is already in the client's game
-    // when the rider is added.
+    
+    
+    
     if (canBeSeenBy && bVisible && e->riding != nullptr) {
         return tracker->getTracker(e->riding)->isVisible(tracker, sp, true);
     } else if (canBeSeenBy && bVisible)
@@ -614,7 +614,7 @@ void TrackedEntity::updatePlayer(EntityTracker* tracker,
         bool isAddMobPacket =
             std::dynamic_pointer_cast<AddMobPacket>(packet) != nullptr;
 
-        // 4J Stu brought forward to fix when Item Frames
+        
         if (!e->getEntityData()->isEmpty() && !isAddMobPacket) {
             sp->connection->send(std::make_shared<SetEntityDataPacket>(
                 e->entityId, e->getEntityData(), true));
@@ -697,15 +697,15 @@ void TrackedEntity::updatePlayer(EntityTracker* tracker,
 }
 
 bool TrackedEntity::canBySeenBy(std::shared_ptr<ServerPlayer> player) {
-    // 4J - for some reason this isn't currently working, and is causing players
-    // to not appear until we are really close to them. Not sure what the
-    // conflict is between the java & our version, but removing for now as it is
-    // causing issues and we shouldn't *really* need it
-    // TODO - investigate further
+    
+    
+    
+    
+    
 
     return true;
-    //	return player->getLevel()->getChunkMap()->isPlayerIn(player, e->xChunk,
-    // e->zChunk);
+    
+    
 }
 
 void TrackedEntity::updatePlayers(
@@ -722,7 +722,7 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
                         e->getAName().c_str());
     }
 
-    // 4J-PB - replacing with a switch, rather than tons of ifs
+    
     if (std::dynamic_pointer_cast<Creature>(e) != nullptr) {
         yHeadRotp = std::floor(e->getYHeadRot() * 256 / 360);
         return std::shared_ptr<AddMobPacket>(
@@ -745,9 +745,9 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
             xuid = player->getXuid();
             OnlineXuid = player->getOnlineXuid();
         }
-        // 4J Added yHeadRotp param to fix #102563 - TU12: Content: Gameplay:
-        // When one of the Players is idle for a few minutes his head turns 180
-        // degrees.
+        
+        
+        
         return std::make_shared<AddPlayerPacket>(
             player, xuid, OnlineXuid, xp, yp, zp, yRotp, xRotp, yHeadRotp);
     } else if (e->instanceof(eTYPE_MINECART)) {

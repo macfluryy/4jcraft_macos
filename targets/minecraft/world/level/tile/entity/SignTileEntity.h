@@ -54,6 +54,6 @@ public:
     virtual void setChanged();
     int handleStringVerify(STRING_VERIFY_RESPONSE* pResults);
 
-    // 4J Added
+    
     virtual std::shared_ptr<TileEntity> clone();
 };

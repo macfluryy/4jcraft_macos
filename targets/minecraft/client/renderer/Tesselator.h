@@ -10,7 +10,7 @@ class ChunkRebuildData;
 class IntBuffer;
 
 class Tesselator {
-    // private static bool TRIANGLE_MODE = false;
+    
     friend ChunkRebuildData;
 
 private:
@@ -31,8 +31,8 @@ private:
     bool hasTexture2;
     bool hasNormal;
     int p;
-    bool useCompactFormat360;             // 4J - added
-    bool useProjectedTexturePixelShader;  // 4J - added
+    bool useCompactFormat360;             
+    bool useProjectedTexturePixelShader;  
 public:
     int count;
 
@@ -43,7 +43,7 @@ private:
     float xoo, yoo, zoo;
     int _normal;
 
-    // 4J - added for thread local storage
+    
 public:
     static void CreateNewThreadStorage(int bytes);
 
@@ -55,7 +55,7 @@ public:
 
 private:
     bool tesselating;
-    bool mipmapEnable;  // 4J added
+    bool mipmapEnable;  
 
     bool vboMode;
     IntBuffer* vboIds;
@@ -72,8 +72,8 @@ public:
 private:
     void clear();
 
-    // 4J - added to handle compact quad vertex format, which need packaged up
-    // as quads
+    
+    
     unsigned int m_ix[4], m_iy[4], m_iz[4];
     unsigned int m_clr[4];
     unsigned int m_u[4], m_v[4];
@@ -81,7 +81,7 @@ private:
     void packCompactQuad();
 
 public:
-    // 4J MGH - added, to calculate tight bounds
+    
     class Bounds {
     public:
         void reset() {
@@ -116,17 +116,17 @@ public:
             if (ob.boundingBox[5] > boundingBox[5])
                 boundingBox[5] = ob.boundingBox[5];
         }
-        float boundingBox[6];  // 4J MGH added
+        float boundingBox[6];  
 
     } bounds;
 
     void begin();
     void begin(int mode);
-    void useCompactVertices(bool enable);   // 4J added
-    bool getCompactVertices();              // AP added
-    void useProjectedTexture(bool enable);  // 4J added
+    void useCompactVertices(bool enable);   
+    bool getCompactVertices();              
+    void useProjectedTexture(bool enable);  
     void tex(float u, float v);
-    void tex2(int tex2);  // 4J - change brought forward from 1.8.2
+    void tex2(int tex2);  
     void color(float r, float g, float b);
     void color(float r, float g, float b, float a);
     void color(int r, int g, int b);
@@ -140,7 +140,7 @@ public:
     void normal(float x, float y, float z);
     void offset(float xo, float yo, float zo);
     void addOffset(float x, float y, float z);
-    bool setMipmapEnable(bool enable);  // 4J added
+    bool setMipmapEnable(bool enable);  
 
-    bool hasMaxVertices();  // 4J Added
+    bool hasMaxVertices();  
 };

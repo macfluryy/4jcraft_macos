@@ -44,7 +44,7 @@ FurnaceRecipes::FurnaceRecipes() {
     addFurnaceRecipy(Tile::netherRack_Id, new ItemInstance(Item::netherbrick),
                      .1f);
 
-    // special silk touch related recipes:
+    
     addFurnaceRecipy(Tile::coalOre_Id, new ItemInstance(Item::coal), .1f);
     addFurnaceRecipy(Tile::redStoneOre_Id, new ItemInstance(Item::redStone),
                      .7f);
@@ -57,7 +57,7 @@ FurnaceRecipes::FurnaceRecipes() {
 
 void FurnaceRecipes::addFurnaceRecipy(int itemId, ItemInstance* result,
                                       float value) {
-    // recipies->put(itemId, result);
+    
     recipies[itemId] = result;
     recipeValue[result->id] = value;
 }

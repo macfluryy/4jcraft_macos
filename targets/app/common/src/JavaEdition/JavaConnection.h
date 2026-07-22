@@ -72,6 +72,13 @@ enum class JavaConnectionEventType {
     ScoreUpdate,
     ScoreDisplay,
     ScoreTeam,
+    HudText,
+};
+
+
+struct JavaEnch {
+    int16_t id = 0;
+    int16_t lvl = 0;
 };
 
 struct JavaInvSlot {
@@ -80,6 +87,9 @@ struct JavaInvSlot {
     int16_t damage = 0;
     std::wstring customName;
     std::vector<std::wstring> lore;
+    std::vector<JavaEnch> ench;         
+    std::vector<JavaEnch> storedEnch;   
+    int32_t hideFlags = 0;              
 };
 
 struct JavaMetaEntry {
@@ -101,6 +111,10 @@ struct JavaEntityInfo {
     int16_t vx = 0, vy = 0, vz = 0;
     std::wstring playerName;
     std::string skinUrl;
+    
+    
+    
+    std::string uuid;
     int objectData = -1;
 };
 

@@ -21,7 +21,7 @@ bool UIControl_ButtonList::setupControl(UIScene* scene, IggyValuePath* parent,
     UIControl::setControlType(UIControl::eButtonList);
     bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-    // SlotList specific initialisers
+    
     m_addNewItemFunc = registerFastName(L"addNewItem");
     m_removeAllItemsFunc = registerFastName(L"removeAllItems");
     m_funcHighlightItem = registerFastName(L"HighlightItem");

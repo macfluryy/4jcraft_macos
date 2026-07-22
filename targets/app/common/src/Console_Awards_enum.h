@@ -29,7 +29,7 @@ enum eAward {
     eAward_arrowKillCreeper,
     eAward_socialPost,
 
-    // 4J Stu - Does not map to any Xbox achievements
+    
     eAward_snipeSkeleton,
     eAward_diamonds,
     eAward_portal,
@@ -45,10 +45,10 @@ enum eAward {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     eAward_adventuringTime,
     eAward_repopulation,
-    // eAward_porkChop,
+    
     eAward_diamondsToYou,
-    // eAward_passingTheTime,
-    // eAward_archer,
+    
+    
     eAward_theHaggler,
     eAward_potPlanter,
     eAward_itsASign,

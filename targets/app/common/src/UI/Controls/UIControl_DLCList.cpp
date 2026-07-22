@@ -16,7 +16,7 @@ bool UIControl_DLCList::setupControl(UIScene* scene, IggyValuePath* parent,
     bool success =
         UIControl_ButtonList::setupControl(scene, parent, controlName);
 
-    // SlotList specific initialisers
+    
     m_funcShowTick = registerFastName(L"ShowTick");
 
     return success;

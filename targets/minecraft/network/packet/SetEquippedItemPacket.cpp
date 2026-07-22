@@ -17,31 +17,31 @@ SetEquippedItemPacket::SetEquippedItemPacket(
     this->entity = entity;
     this->slot = slot;
 
-    // 4J Stu - Brought forward change from 1.3 to fix #64688 - Customer
-    // Encountered: TU7: Content: Art: Aura of enchanted item is not displayed
-    // for other players in online game
+    
+    
+    
     this->item = item == nullptr ? nullptr : item->copy();
 }
 
-void SetEquippedItemPacket::read(DataInputStream* dis)  // throws IOException
+void SetEquippedItemPacket::read(DataInputStream* dis)  
 {
     entity = dis->readInt();
     slot = dis->readShort();
 
-    // 4J Stu - Brought forward change from 1.3 to fix #64688 - Customer
-    // Encountered: TU7: Content: Art: Aura of enchanted item is not displayed
-    // for other players in online game
+    
+    
+    
     item = readItem(dis);
 }
 
-void SetEquippedItemPacket::write(DataOutputStream* dos)  // throws IOException
+void SetEquippedItemPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(entity);
     dos->writeShort(slot);
 
-    // 4J Stu - Brought forward change from 1.3 to fix #64688 - Customer
-    // Encountered: TU7: Content: Art: Aura of enchanted item is not displayed
-    // for other players in online game
+    
+    
+    
     writeItem(item, dos);
 }
 
@@ -51,9 +51,9 @@ void SetEquippedItemPacket::handle(PacketListener* listener) {
 
 int SetEquippedItemPacket::getEstimatedSize() { return 4 + 2 * 2; }
 
-// 4J Stu - Brought forward from 1.3 to fix #64688 - Customer Encountered: TU7:
-// Content: Art: Aura of enchanted item is not displayed for other players in
-// online game
+
+
+
 std::shared_ptr<ItemInstance> SetEquippedItemPacket::getItem() { return item; }
 
 bool SetEquippedItemPacket::canBeInvalidated() { return true; }

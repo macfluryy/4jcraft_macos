@@ -13,10 +13,10 @@
 #include "minecraft/world/level/tile/Tile.h"
 
 DesertBiome::DesertBiome(int id) : Biome(id) {
-    // remove default mob spawn settings
+    
     friendlies.clear();
-    friendlies_chicken.clear();  // 4J added
-    friendlies_wolf.clear();     // 4J added
+    friendlies_chicken.clear();  
+    friendlies_wolf.clear();     
     this->topMaterial = static_cast<std::uint8_t>(Tile::sand_Id);
     this->material = static_cast<std::uint8_t>(Tile::sand_Id);
 

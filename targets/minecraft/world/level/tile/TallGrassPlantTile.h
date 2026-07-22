@@ -29,7 +29,7 @@ protected:
     TallGrass(int id);
 
 public:
-    virtual void updateDefaultShape();  // 4J Added override
+    virtual void updateDefaultShape();  
     virtual Icon* getTexture(int face, int data);
 
     virtual int getColor(int auxData);
@@ -37,7 +37,7 @@ public:
 
     virtual int getColor(LevelSource* level, int x, int y, int z);
     virtual int getColor(LevelSource* level, int x, int y, int z,
-                         int data);  // 4J added
+                         int data);  
 
     virtual int getResource(int data, Random* random, int playerBonusLevel);
     virtual int getResourceCountForLootBonus(int bonusLevel, Random* random);

@@ -7,8 +7,8 @@ class ConsoleSaveFile;
 class ProgressRenderer;
 class ProgressListener;
 
-// 4J Stu - This code is taken from the standalone save converter tool, and
-// modified slightly
+
+
 class ConsoleSaveFileConverter {
 private:
     static void ProcessSimpleFile(ConsoleSaveFile* sourceSave,

@@ -20,7 +20,7 @@ ChunkVisibilityAreaPacket::ChunkVisibilityAreaPacket(int minX, int maxX,
 }
 
 void ChunkVisibilityAreaPacket::read(
-    DataInputStream* dis)  // throws IOException
+    DataInputStream* dis)  
 {
     m_minX = dis->readInt();
     m_maxX = dis->readInt();
@@ -29,7 +29,7 @@ void ChunkVisibilityAreaPacket::read(
 }
 
 void ChunkVisibilityAreaPacket::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     dos->writeInt(m_minX);
     dos->writeInt(m_maxX);

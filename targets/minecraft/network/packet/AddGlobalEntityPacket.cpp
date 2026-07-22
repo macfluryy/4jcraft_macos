@@ -31,7 +31,7 @@ AddGlobalEntityPacket::AddGlobalEntityPacket(std::shared_ptr<Entity> e) {
     }
 }
 
-void AddGlobalEntityPacket::read(DataInputStream* dis)  // throws IOException
+void AddGlobalEntityPacket::read(DataInputStream* dis)  
 {
     id = dis->readInt();
     type = static_cast<int>(dis->readByte());
@@ -40,7 +40,7 @@ void AddGlobalEntityPacket::read(DataInputStream* dis)  // throws IOException
     z = dis->readInt();
 }
 
-void AddGlobalEntityPacket::write(DataOutputStream* dos)  // throws IOException
+void AddGlobalEntityPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(id);
     dos->writeByte(static_cast<uint8_t>(type));

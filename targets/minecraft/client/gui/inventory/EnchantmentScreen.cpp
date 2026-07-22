@@ -24,8 +24,8 @@
 
 class Level;
 
-// 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
-// container classes (and iggy too)
+
+
 #ifdef ENABLE_JAVA_GUIS
 ResourceLocation GUI_ENCHANT_LOCATION = ResourceLocation(TN_GUI_ENCHANT);
 ResourceLocation ITEM_BOOK_LOCATION = ResourceLocation(TN_ITEM_BOOK);
@@ -58,9 +58,9 @@ void EnchantmentScreen::renderLabels() {
     int xo = (width - imageWidth) / 2;
     int yo = (height - imageHeight) / 2;
 
-    // 4jcraft: our own refactor, text rendering has been moved to the
-    // foreground here from renderBg() (which is where it was in the JE 1.6.4
-    // code)
+    
+    
+    
     bool needsUpdate = false;
     for (int i = 0; i < 3; ++i) {
         if (enchantMenu->costs[i] != lastCosts[i]) {
@@ -173,7 +173,7 @@ void EnchantmentScreen::renderBg(float a) {
     Minecraft::GetInstance()->textures->bindTexture(&ITEM_BOOK_LOCATION);
     glRotatef(20.0f, 1.0f, 0.0f, 0.0f);
 
-    // 4jcraft: brought over from UIControl_EnchantmentBook
+    
     float o = oOpen + (open - oOpen) * a;
     glTranslatef((1 - o) * 0.2f, (1 - o) * 0.1f, (1 - o) * 0.25f);
     glRotatef(-(1 - o) * 90 - 90, 0, 1, 0);
@@ -260,7 +260,7 @@ void EnchantmentScreen::mouseClicked(int x, int y, int buttonNum) {
 void EnchantmentScreen::tick() {
     AbstractContainerScreen::tick();
 
-    // 4jcraft: brought over from UIControl_EnchantmentBook
+    
     oFlip = flip;
     oOpen = open;
 
@@ -302,7 +302,7 @@ void EnchantmentScreen::tick() {
     flip = flip + flipA;
 }
 
-// 4jcraft: brought over from UIControl_EnchantmentButton
+
 EnchantmentScreen::EnchantmentNames
     EnchantmentScreen::EnchantmentNames::instance;
 

@@ -34,9 +34,9 @@ StructureFeature::~StructureFeature() {
 
 void StructureFeature::addFeature(Level* level, int x, int z, int xOffs,
                                   int zOffs, std::vector<uint8_t>& blocks) {
-    // this method is called for each chunk within 8 chunk's distance from
-    // the chunk being generated, but not all chunks are the sources of
-    // structures
+    
+    
+    
 
     restoreSavedData(level);
 
@@ -45,11 +45,11 @@ void StructureFeature::addFeature(Level* level, int x, int z, int xOffs,
         return;
     }
 
-    // clear random key
+    
     random->nextInt();
-    // 4J-PB - want to know if it's a superflat land, so we don't generate so
-    // many villages - we've changed the distance required between villages on
-    // the xbox
+    
+    
+    
     if (isFeatureChunk(
             x, z,
             level->getLevelData()->getGenerator() == LevelType::lvl_flat)) {
@@ -63,15 +63,15 @@ bool StructureFeature::postProcess(Level* level, Random* random, int chunkX,
                                    int chunkZ) {
     restoreSavedData(level);
 
-    // 4J Stu - The x and z used to be offset by (+8) here, but that means we
-    // can miss out half structures on the edge of the world Normal feature
-    // generation offsets generation by half a chunk to ensure that it can
-    // generate the entire feature in chunks already created Structure features
-    // don't need this, as the PlaceBlock function only places blocks inside the
-    // BoundingBox specified, and parts of a struture piece can be added in more
-    // than one post-process call
-    int cx = ((unsigned)chunkX << 4);  // + 8;
-    int cz = ((unsigned)chunkZ << 4);  // + 8;
+    
+    
+    
+    
+    
+    
+    
+    int cx = ((unsigned)chunkX << 4);  
+    int cz = ((unsigned)chunkZ << 4);  
 
     bool intersection = false;
     for (auto it = cachedStructures.begin(); it != cachedStructures.end();
@@ -86,8 +86,8 @@ bool StructureFeature::postProcess(Level* level, Random* random, int chunkX,
                 delete bb;
                 intersection = true;
 
-                // because some feature pieces are modified in the postProcess
-                // step, we need to save them again
+                
+                
                 saveFeature(structureStart->getChunkX(),
                             structureStart->getChunkZ(), structureStart);
             }
@@ -127,7 +127,7 @@ bool StructureFeature::isInsideFeature(int cellX, int cellY, int cellZ) {
 
 StructureStart* StructureFeature::getStructureAt(int cellX, int cellY,
                                                  int cellZ) {
-    // for (StructureStart structureStart : cachedStructures.values())
+    
     for (auto it = cachedStructures.begin(); it != cachedStructures.end();
          ++it) {
         StructureStart* pStructureStart = it->second;
@@ -135,14 +135,14 @@ StructureStart* StructureFeature::getStructureAt(int cellX, int cellY,
         if (pStructureStart->isValid()) {
             if (pStructureStart->getBoundingBox()->intersects(cellX, cellZ,
                                                               cellX, cellZ)) {
-                /*
-                Iterator<StructurePiece> it =
-                structureStart.getPieces().iterator(); while (it.hasNext())
-                { StructurePiece next = it.next(); if
-                (next.getBoundingBox().isInside(cellX, cellY, cellZ)) { return
-                true;
-                }
-                */
+                
+
+
+
+
+
+
+
                 std::list<StructurePiece*>* pieces =
                     pStructureStart->getPieces();
 
@@ -176,8 +176,8 @@ bool StructureFeature::isInsideBoundingFeature(int cellX, int cellY,
 
 TilePos* StructureFeature::getNearestGeneratedFeature(Level* level, int cellX,
                                                       int cellY, int cellZ) {
-    // this is a hack that will "force" the feature to generate positions
-    // even if the player hasn't generated new chunks yet
+    
+    
     this->level = level;
 
     restoreSavedData(level);
@@ -200,8 +200,8 @@ TilePos* StructureFeature::getNearestGeneratedFeature(Level* level, int cellX,
         StructureStart* pStructureStart = it->second;
 
         if (pStructureStart->isValid()) {
-            // StructurePiece *pStructurePiece =
-            // pStructureStart->getPieces().get(0);
+            
+            
             StructurePiece* pStructurePiece =
                 *pStructureStart->getPieces()->begin();
             TilePos* locatorPosition = pStructurePiece->getLocatorPosition();
@@ -276,8 +276,8 @@ void StructureFeature::restoreSavedData(Level* level) {
 
                         StructureStart* start =
                             StructureFeatureIO::loadStaticStart(ct, level);
-                        // System.out.println("Loaded " +
-                        // start.getClass().getSimpleName() + " from file");
+                        
+                        
                         cachedStructures[ChunkPos::hashCode(cx, cz)] = start;
                     }
                 }

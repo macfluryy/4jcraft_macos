@@ -70,7 +70,7 @@ private:
                       int sz, Vec3* startPos, double goalDirX, double goalDirZ);
 
 public:
-    // 4J Added override to update ai elements when loading entity from
-    // schematics
+    
+    
     void setLevel(Level* level);
 };

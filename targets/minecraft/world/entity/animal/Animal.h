@@ -14,10 +14,10 @@ class ItemInstance;
 
 class Animal : public AgableMob, public Creature {
 private:
-    static const int DATA_IN_LOVE = 13;  // 4J added
+    static const int DATA_IN_LOVE = 13;  
 
-    //	int inLove;							// 4J
-    // removed - now synched data
+    
+    
     int loveTime;
     std::weak_ptr<Player> loveCause;
 
@@ -61,13 +61,13 @@ public:
     virtual bool mobInteract(std::shared_ptr<Player> player);
 
 protected:
-    int getInLoveValue();  // 4J added
+    int getInLoveValue();  
 
 public:
-    void setInLoveValue(int value);  // 4J added
+    void setInLoveValue(int value);  
     void setInLove(std::shared_ptr<Player>
-                       player);  // 4J added, then modified to match latest Java
-                                 // for XboxOne achievements
+                       player);  
+                                 
     virtual void setInLove();
     std::shared_ptr<Player> getLoveCause();
     bool isInLove();
@@ -75,19 +75,19 @@ public:
     virtual bool canMate(std::shared_ptr<Animal> partner);
     virtual void handleEntityEvent(uint8_t id);
 
-    // 4J added for determining whether animals are enclosed or not
+    
 private:
     bool m_isDespawnProtected;
 
     static const int MAX_WANDER_DISTANCE =
-        20;  // Maximum distance that the entity can wander before being
-             // considered as not enclosed & therefore not protected (in tiles)
+        20;  
+             
     short m_minWanderX,
-        m_maxWanderX;  // Bounding x values that this has moved since last being
-                       // set to protected ( in tiles )
+        m_maxWanderX;  
+                       
     short m_minWanderZ,
-        m_maxWanderZ;  // Bounding z values that this has moved since last being
-                       // set to protected ( in tiles )
+        m_maxWanderZ;  
+                       
     void updateDespawnProtectedState();
 
 public:

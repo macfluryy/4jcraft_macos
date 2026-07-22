@@ -1,6 +1,6 @@
 #pragma once
-// 4J Stu - Implements the Java InputStream but rather than writing directly to
-// disc it writes through the save file
+
+
 
 #include <stdint.h>
 

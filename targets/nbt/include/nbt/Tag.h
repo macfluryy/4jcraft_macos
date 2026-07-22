@@ -46,6 +46,6 @@ public:
     static Tag* newTag(uint8_t type, const std::wstring& name);
     static const wchar_t* getTagName(uint8_t type);
     virtual ~Tag() {}
-    virtual bool equals(Tag* obj);  // 4J Brought forward from 1.2
-    virtual Tag* copy() = 0;        // 4J Brought foward from 1.2
+    virtual bool equals(Tag* obj);  
+    virtual Tag* copy() = 0;        
 };

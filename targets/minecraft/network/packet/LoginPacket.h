@@ -17,22 +17,22 @@ public:
     std::wstring userName;
     int64_t seed;
     char dimension;
-    PlayerUID m_offlineXuid, m_onlineXuid;         // 4J Added
-    char difficulty;                               // 4J Added
-    bool m_friendsOnlyUGC;                         // 4J Added
-    std::uint32_t m_ugcPlayersVersion;             // 4J Added
-    int m_multiplayerInstanceId;                   // 4J Added for sentient
-    std::uint8_t m_playerIndex;                    // 4J Added
-    std::uint32_t m_playerSkinId, m_playerCapeId;  // 4J Added
-    bool m_isGuest;                                // 4J Added
-    bool m_newSeaLevel;                            // 4J Added
+    PlayerUID m_offlineXuid, m_onlineXuid;         
+    char difficulty;                               
+    bool m_friendsOnlyUGC;                         
+    std::uint32_t m_ugcPlayersVersion;             
+    int m_multiplayerInstanceId;                   
+    std::uint8_t m_playerIndex;                    
+    std::uint32_t m_playerSkinId, m_playerCapeId;  
+    bool m_isGuest;                                
+    bool m_newSeaLevel;                            
     LevelType* m_pLevelType;
     unsigned int m_uiGamePrivileges;
-    int m_xzSize;     // 4J Added
-    int m_hellScale;  // 4J Added
+    int m_xzSize;     
+    int m_hellScale;  
     int serverViewDistance;
 
-    // 1.8.2
+    
     int gameType;
     std::uint8_t mapHeight;
     std::uint8_t maxPlayers;
@@ -44,12 +44,12 @@ public:
                 char difficulty, int m_multiplayerInstanceId,
                 std::uint8_t playerIndex, bool newSeaLevel,
                 unsigned int uiGamePrivileges, int xzSize, int hellScale,
-                int serverViewDistance);  // Server -> Client
+                int serverViewDistance);  
     LoginPacket(const std::wstring& userName, int clientVersion,
                 PlayerUID offlineXuid, PlayerUID onlineXuid,
                 bool friendsOnlyUGC, std::uint32_t ugcPlayersVersion,
                 std::uint32_t skinId, std::uint32_t capeId,
-                bool isGuest);  // Client -> Server
+                bool isGuest);  
 
     virtual void read(DataInputStream* dis);
     virtual void write(DataOutputStream* dos);

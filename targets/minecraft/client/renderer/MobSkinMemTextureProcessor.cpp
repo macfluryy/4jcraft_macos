@@ -4,17 +4,17 @@
 
 #include "app/include/BufferedImage.h"
 
-// 4jcraft: implemented as a direct pixel-buffer transform. The original Java
-// version drew through Graphics, but BufferedImage::getGraphics() is a stub
-// (returns nullptr) in this port, so we copy pixels directly.
-//
-// Modern Java skins are 64x64: the top half is exactly the legacy 64x32
-// layout (head+hat, body, right arm, right leg), the bottom half holds the
-// separate left limbs plus second-layer overlays. The legacy humanoid model
-// mirrors the right limbs for the left side and has no overlay slots for
-// body/limbs, so we convert by copying the top half and baking the overlays
-// that have legacy equivalents onto their base regions. Anything that is not
-// 64x64 (legacy/DLC 64x32 skins in particular) passes through untouched.
+
+
+
+
+
+
+
+
+
+
+
 BufferedImage* MobSkinMemTextureProcessor::process(BufferedImage* in) {
     if (in == nullptr) return nullptr;
     if (in->getWidth() != 64 || in->getHeight() != 64) return in;
@@ -27,15 +27,15 @@ BufferedImage* MobSkinMemTextureProcessor::process(BufferedImage* in) {
     const int* src = in->getData();
     pixels = out->getData();
 
-    // Top half of a modern 64x64 skin is the legacy 64x32 layout verbatim.
+    
     memcpy(pixels, src, static_cast<size_t>(64 * 32) * sizeof(int));
 
-    // Bake second-layer overlays onto their legacy base regions.
-    copyOverlay(src, 0, 32, 0, 16, 16, 16);    // right pant   -> right leg
-    copyOverlay(src, 16, 32, 16, 16, 24, 16);  // jacket       -> body
-    copyOverlay(src, 40, 32, 40, 16, 16, 16);  // right sleeve -> right arm
-    // Left-limb data (rows 48-63) has no legacy destination: the legacy model
-    // mirrors the right limbs. Dropped rather than distorted.
+    
+    copyOverlay(src, 0, 32, 0, 16, 16, 16);    
+    copyOverlay(src, 16, 32, 16, 16, 24, 16);  
+    copyOverlay(src, 40, 32, 40, 16, 16, 16);  
+    
+    
 
     setNoAlpha(0, 0, 32, 16);
     setForceAlpha(32, 0, 64, 32);
@@ -44,8 +44,8 @@ BufferedImage* MobSkinMemTextureProcessor::process(BufferedImage* in) {
     return out;
 }
 
-// Copies a w*h overlay region from the 64x64 source onto the destination
-// region of the 64x32 output, keeping only sufficiently opaque texels.
+
+
 void MobSkinMemTextureProcessor::copyOverlay(const int* src, int srcX, int srcY,
                                              int dstX, int dstY, int w, int h) {
     for (int y = 0; y < h; y++)

@@ -45,7 +45,7 @@ bool MineShaftFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
 }
 
 StructureStart* MineShaftFeature::createStructureStart(int x, int z) {
-    // 4J added
+    
     app.AddTerrainFeaturePosition(eTerrainFeature_Mineshaft, x, z);
 
     return new MineShaftStart(level, random, x, z);

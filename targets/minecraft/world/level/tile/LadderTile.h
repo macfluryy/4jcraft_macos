@@ -17,7 +17,7 @@ public:
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
-            TileEntity>());  // 4J added forceData, forceEntity param
+            TileEntity>());  
     using Tile::setShape;
     virtual void setShape(int data);
     virtual bool blocksLight();

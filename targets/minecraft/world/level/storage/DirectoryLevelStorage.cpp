@@ -57,13 +57,13 @@ int _MapDataMappings::getDimension(int id) {
 
     switch (val) {
         case 0:
-            returnVal = 0;  // Overworld
+            returnVal = 0;  
             break;
         case 1:
-            returnVal = -1;  // Nether
+            returnVal = -1;  
             break;
         case 2:
-            returnVal = 1;  // End
+            returnVal = 1;  
             break;
         default:
 #if !defined(_CONTENT_PACKAGE)
@@ -82,12 +82,12 @@ void _MapDataMappings::setMapping(int id, PlayerUID xuid, int dimension) {
 
     dimensions[id >> 2] &= ~(2 << offset);
     switch (dimension) {
-        case 0:  // Overworld
+        case 0:  
             break;
-        case -1:  // Nether
+        case -1:  
             dimensions[id >> 2] |= (1 << offset);
             break;
-        case 1:  // End
+        case 1:  
             dimensions[id >> 2] |= (2 << offset);
             break;
         default:

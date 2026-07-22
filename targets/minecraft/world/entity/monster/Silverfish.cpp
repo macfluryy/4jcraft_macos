@@ -22,8 +22,8 @@
 #include "minecraft/world/phys/AABB.h"
 
 Silverfish::Silverfish(Level* level) : Monster(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -53,17 +53,17 @@ std::shared_ptr<Entity> Silverfish::findAttackTarget() {
 }
 
 int Silverfish::getAmbientSound() {
-    // 4J - brought sound change forward from 1.2.3
+    
     return eSoundType_MOB_SILVERFISH_AMBIENT;
 }
 
 int Silverfish::getHurtSound() {
-    // 4J - brought sound change forward from 1.2.3
+    
     return eSoundType_MOB_SILVERFISH_HURT;
 }
 
 int Silverfish::getDeathSound() {
-    // 4J - brought sound change forward from 1.2.3
+    
     return eSoundType_MOB_SILVERFISH_DEATH;
 }
 
@@ -72,14 +72,14 @@ bool Silverfish::hurt(DamageSource* source, float dmg) {
     if (lookForFriends <= 0 &&
         (dynamic_cast<EntityDamageSource*>(source) != nullptr ||
          source == DamageSource::magic)) {
-        // look for friends
+        
         lookForFriends = 20;
     }
     return Monster::hurt(source, dmg);
 }
 
 void Silverfish::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
-    //        super.checkHurtTarget(target, d);
+    
     if (attackTime <= 0 && d < 1.2f && target->bb.y1 > bb.y0 &&
         target->bb.y0 < bb.y1) {
         attackTime = 20;
@@ -94,7 +94,7 @@ void Silverfish::playStepSound(int xt, int yt, int zt, int t) {
 int Silverfish::getDeathLoot() { return 0; }
 
 void Silverfish::tick() {
-    // rotate the whole body to the same angle as the head
+    
     yBodyRot = yRot;
 
     Monster::tick();
@@ -110,7 +110,7 @@ void Silverfish::serverAiStep() {
     if (lookForFriends > 0) {
         lookForFriends--;
         if (lookForFriends == 0) {
-            // see if there are any friendly monster eggs nearby
+            
             int baseX = Mth::floor(x);
             int baseY = Mth::floor(y);
             int baseZ = Mth::floor(z);
@@ -161,8 +161,8 @@ void Silverfish::serverAiStep() {
     }
 
     if (attackTarget == nullptr && !isPathFinding()) {
-        // if the silverfish isn't doing anything special, it will merge
-        // with any rock tile it is nearby
+        
+        
         int tileX = Mth::floor(x), tileY = Mth::floor(y + .5f),
             tileZ = Mth::floor(z);
         int facing = random->nextInt(6);
@@ -187,7 +187,7 @@ void Silverfish::serverAiStep() {
 }
 
 float Silverfish::getWalkTargetValue(int x, int y, int z) {
-    // silverfish LOVES stone =)
+    
     if (level->getTile(x, y - 1, z) == Tile::stone_Id) return 10;
     return Monster::getWalkTargetValue(x, y, z);
 }

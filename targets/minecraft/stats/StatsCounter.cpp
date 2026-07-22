@@ -49,21 +49,21 @@ void StatsCounter::award(Stat* stat, unsigned int difficulty,
 
         if (stat != GenericStats::timePlayed()) app.DebugPrintf("");
 
-        // If value has wrapped, cap it to UINT_MAX
+        
         if (val->second.stats[difficulty] <
             (val->second.stats[difficulty] - count))
             val->second.stats[difficulty] = UINT_MAX;
 
-        // If value is larger than USHRT_MAX and is not designated as large, cap
-        // it to USHRT_MAX
+        
+        
         if (val->second.stats[difficulty] > USHRT_MAX && !isLargeStat(stat))
             val->second.stats[difficulty] = USHRT_MAX;
     }
 
     requiresSave = true;
 
-    // If this stat is on a leaderboard, mark that leaderboard as needing
-    // updated
+    
+    
     std::unordered_map<Stat*, int>::iterator leaderboardEntry =
         statBoards.find(stat);
     if (leaderboardEntry != statBoards.end()) {
@@ -79,7 +79,7 @@ bool StatsCounter::hasTaken(Achievement* ach) {
 }
 
 bool StatsCounter::canTake(Achievement* ach) {
-    // 4J Gordon: Remove achievement dependencies, always able to take
+    
     return true;
 }
 
@@ -102,35 +102,35 @@ void StatsCounter::tick(int player) {
 
     if (requiresSave && saveCounter == 0) save(player);
 
-    // 4J-JEV, we don't want to write leaderboards in the middle of a game.
-    // EDIT: Yes we do, people were not ending their games properly and not
-    // updating scores.
-    // #if 1
+    
+    
+    
+    
     if (flushCounter > 0) {
         --flushCounter;
         if (flushCounter == 0) flushLeaderboards();
     }
-    // #endif
+    
 }
 
 void StatsCounter::clear() {
-    // clear out the stats when someone signs out
+    
     stats.clear();
 }
 
 void StatsCounter::parse(void* data) {
-    // Check that we don't already have any stats
+    
     assert(stats.size() == 0);
 
-    // Pointer to current position in stat array
+    
     std::uint8_t* pbData = reinterpret_cast<std::uint8_t*>(data);
     pbData += sizeof(GAME_SETTINGS);
     std::uint8_t* statData = pbData;
 
-    // Value being read
+    
     StatContainer newVal;
 
-    // For each stat
+    
     std::vector<Stat*>::iterator end = Stats::all->end();
     for (std::vector<Stat*>::iterator iter = Stats::all->begin(); iter != end;
          ++iter) {
@@ -178,7 +178,7 @@ void StatsCounter::parse(void* data) {
 }
 
 void StatsCounter::save(int player, bool force) {
-    // Check we're going to have enough room to store all possible stats
+    
     unsigned int uiTotalStatsSize =
         (Stats::all->size() * 4 * sizeof(unsigned short)) -
         (Achievements::achievements->size() * 3 * sizeof(unsigned short)) +
@@ -188,25 +188,25 @@ void StatsCounter::save(int player, bool force) {
            (Game::GAME_DEFINED_PROFILE_DATA_BYTES -
             sizeof(GAME_SETTINGS)));
 
-    // Retrieve the data pointer from the profile
+    
     std::uint8_t* pbData = reinterpret_cast<std::uint8_t*>(
         ProfileManager.GetGameDefinedProfileData(player));
     pbData += sizeof(GAME_SETTINGS);
 
-    // Pointer to current position in stat array
+    
     std::uint8_t* statData = pbData;
 
-    // Reset all the data to 0 (we're going to replace it with the map data)
+    
     memset(statData, 0,
            Game::GAME_DEFINED_PROFILE_DATA_BYTES -
                sizeof(GAME_SETTINGS));
 
-    // For each stat
+    
     StatsMap::iterator val;
     std::vector<Stat*>::iterator end = Stats::all->end();
     for (std::vector<Stat*>::iterator iter = Stats::all->begin(); iter != end;
          ++iter) {
-        // If the stat is in the map write out it's value
+        
         val = stats.find(*iter);
         if (!(*iter)->isAchievement()) {
             if (!isLargeStat(*iter)) {
@@ -256,9 +256,9 @@ void StatsCounter::flushLeaderboards() {
         app.DebugPrintf(
             "Failed to open a session in order to write to leaderboard\n");
 
-        // 4J-JEV: If user was not signed in it would hit this.
-        // assert(false);// && "Failed to open a session in order to write to
-        // leaderboard");
+        
+        
+        
     }
 
     modifiedBoards = 0;
@@ -272,16 +272,16 @@ void StatsCounter::saveLeaderboards() {
         app.DebugPrintf(
             "Failed to open a session in order to write to leaderboard\n");
 
-        // 4J-JEV: If user was not signed in it would hit this.
-        // assert(false);// && "Failed to open a session in order to write to
-        // leaderboard");
+        
+        
+        
     }
 
     modifiedBoards = 0;
 }
 
 void StatsCounter::writeStats() {
-    // unsigned int locale = XGetLocale();
+    
 
     int viewCount = 0;
     int iPad = ProfileManager.GetLockedProfile();
@@ -363,13 +363,13 @@ void StatsCounter::dumpStatsToTTY() {
 
 #if defined(_DEBUG)
 
-// To clear leaderboards set DEBUG_ENABLE_CLEAR_LEADERBOARDS to 1 and set
-// DEBUG_CLEAR_LEADERBOARDS to be the bitmask of what you want to clear
-// Leaderboards are updated on game exit so enter and exit a level to trigger
-// the clear
 
-// #define DEBUG_CLEAR_LEADERBOARDS			(LEADERBOARD_KILLS_EASY
-// | LEADERBOARD_KILLS_NORMAL | LEADERBOARD_KILLS_HARD)
+
+
+
+
+
+
 #define DEBUG_CLEAR_LEADERBOARDS (0xFFFFFFFF)
 #define DEBUG_ENABLE_CLEAR_LEADERBOARDS
 

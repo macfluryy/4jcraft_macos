@@ -21,17 +21,17 @@ bool TradeWithPlayerGoal::canUse() {
 
     std::shared_ptr<Player> trader = mob->getTradingPlayer();
     if (trader == nullptr) {
-        // no interaction
+        
         return false;
     }
 
     if (mob->distanceToSqr(trader) > (4 * 4)) {
-        // too far away
+        
         return false;
     }
 
     if (!(trader->containerMenu == trader->inventoryMenu)) {
-        // closed container
+        
         return false;
     }
 

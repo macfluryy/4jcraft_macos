@@ -31,8 +31,8 @@ bool AgableMob::mobInteract(std::shared_ptr<Player> player) {
             eINSTANCEOF classToSpawn = EntityIO::getClass(item->getAuxValue());
             if (classToSpawn != eTYPE_NOTSET &&
                 (classToSpawn & eTYPE_AGABLE_MOB) == eTYPE_AGABLE_MOB &&
-                classToSpawn == GetType())  // 4J Added GetType() check to only
-                                            // spawn same type
+                classToSpawn == GetType())  
+                                            
             {
                 int error;
                 std::shared_ptr<Entity> result =

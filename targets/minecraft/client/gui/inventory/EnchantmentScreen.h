@@ -34,13 +34,13 @@ private:
 
     Random random;
 
-    // 4jcraft: brought over from UIControl_EnchantmentBook
+    
     int bookTick;
     float flip, oFlip, flipT, flipA;
     float open, oOpen;
     std::shared_ptr<ItemInstance> last;
 
-    // 4jcraft: brought over from UIControl_EnchantmentButton
+    
     class EnchantmentNames {
     public:
         static EnchantmentNames instance;

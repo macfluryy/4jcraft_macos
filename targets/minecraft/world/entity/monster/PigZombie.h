@@ -10,7 +10,7 @@ class AttributeModifier;
 class Entity;
 class Level;
 
-// SKIN BY XaPhobia Chris Beidler
+
 class PigZombie : public Zombie {
 public:
     eINSTANCEOF GetType() { return eTYPE_PIGZOMBIE; }
@@ -64,5 +64,5 @@ protected:
 public:
     virtual MobGroupData* finalizeMobSpawn(
         MobGroupData* groupData,
-        int extraData = 0);  // 4J Added extraData param
+        int extraData = 0);  
 };

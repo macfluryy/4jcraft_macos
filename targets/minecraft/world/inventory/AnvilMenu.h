@@ -32,7 +32,7 @@ public:
 private:
     std::shared_ptr<Container> resultSlots;
 
-    // 4J Stu - anonymous class here now RepairContainer
+    
     std::shared_ptr<Container> repairSlots;
 
     Level* level;

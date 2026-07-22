@@ -105,7 +105,7 @@ void CreateWorldScreen::init() {
     updateCreateButtonState();
 }
 
-// 4jcraft: referenced from func_73914_h in MCP 7.1 fr those wondering
+
 void CreateWorldScreen::updateStrings() {
     Language* language = Language::getInstance();
 
@@ -206,7 +206,7 @@ void CreateWorldScreen::setMoreOptionsVisible(bool visible) {
 
 std::wstring CreateWorldScreen::findAvailableFolderName(
     LevelStorageSource* levelSource, const std::wstring& folder) {
-    std::wstring folder2 = folder;  // 4J - copy input as it is const
+    std::wstring folder2 = folder;  
 
     return folder2;
 }
@@ -223,15 +223,15 @@ void CreateWorldScreen::buttonClicked(Button* button) {
         minecraft->setScreen(lastScreen);
     } else if (button->id == 0) {
         minecraft->setScreen(
-            new Screen());  // blank screen while the world loads
+            new Screen());  
         if (done) return;
         done = true;
 
         MoreOptionsParams* moreOptionsParams = new MoreOptionsParams();
 
-        // these r just the defaults from the createworldmenu UIscene
-        // i had higher ambitions for what id do with these but its not worth it
-        // for a temp ui
+        
+        
+        
         moreOptionsParams->bGenerateOptions = true;
         moreOptionsParams->bStructures = generateStructures;
         moreOptionsParams->bFlatWorld = worldType == e_levelType_Superflat;
@@ -268,7 +268,7 @@ void CreateWorldScreen::buttonClicked(Button* button) {
             while (std::filesystem::exists(savesPath / candidate)) {
                 candidate = base + L" " + std::to_wstring(suffix);
                 ++suffix;
-                if (suffix > 9999) break;  // safety net
+                if (suffix > 9999) break;  
             }
             worldName = candidate;
         }
@@ -304,10 +304,10 @@ void CreateWorldScreen::buttonClicked(Button* button) {
                     hashValue = 31 * hashValue + seedString.at(i);
                 seedValue = hashValue;
             }
-            //           } catch (NumberFormatException e) {
-            //               // not a number, fetch hash value
-            //               seedValue = seedString.hashCode();
-            //           }
+            
+            
+            
+            
         } else {
             param->findSeed = true;
         }
@@ -441,7 +441,7 @@ void CreateWorldScreen::mouseClicked(int x, int y, int buttonNum) {
 void CreateWorldScreen::render(int xm, int ym, float a) {
     Language* language = Language::getInstance();
 
-    // fill(0, 0, width, height, 0x40000000);
+    
     renderBackground();
 
     drawCenteredString(font, language->getElement(L"selectWorld.create"),

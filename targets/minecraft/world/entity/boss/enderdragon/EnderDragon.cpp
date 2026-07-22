@@ -33,38 +33,38 @@
 
 #define PRINT_DRAGON_STATE_CHANGE_MESSAGES 1
 
-// 4J Added for new dragon behaviour
+
 const int EnderDragon::CRYSTAL_COUNT = 8;
 const int EnderDragon::FLAME_TICKS = 60;
 const float EnderDragon::FLAME_ANGLE = 22.5f;
 const int EnderDragon::FLAME_PASSES =
-    4;  // How many times it covers FLAME_ANGLE in FLAME_TICKS
+    4;  
 const int EnderDragon::FLAME_FREQUENCY =
-    2;  // Every FLAME_FREQUENCY ticks it sets fire to blocks while doing a
-        // flame pass
+    2;  
+        
 const int EnderDragon::FLAME_RANGE = 10;
 
 const int EnderDragon::ATTACK_TICKS =
-    SharedConstants::TICKS_PER_SECOND * 2;  // Time for the dragon roar to play
+    SharedConstants::TICKS_PER_SECOND * 2;  
 
 const int EnderDragon::SITTING_ATTACK_Y_VIEW_RANGE =
-    10;  // The player must be now lower and no higher than the dragon by this
-         // amount
+    10;  
+         
 const int EnderDragon::SITTING_ATTACK_VIEW_RANGE = EnderDragon::FLAME_RANGE * 2;
 const int EnderDragon::SITTING_ATTACK_RANGE = EnderDragon::FLAME_RANGE * 2;
 const int EnderDragon::SITTING_POST_ATTACK_IDLE_TICKS = 40;
 const int EnderDragon::SITTING_SCANNING_IDLE_TICKS = 100;
 const int EnderDragon::SITTING_FLAME_ATTACKS_COUNT =
-    4;  // How many times the dragons does the scan/roar/flame cycle before
-        // flying off
+    4;  
+        
 
-// The percentage of max health that the dragon will take while in the "Sitting"
-// states before flying away
+
+
 const float EnderDragon::SITTING_ALLOWED_DAMAGE_PERCENTAGE = 0.25f;
 
 void EnderDragon::_init() {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -79,7 +79,7 @@ void EnderDragon::_init() {
     dragonDeathTime = 0;
     nearestCrystal = nullptr;
 
-    // 4J Stu - Added for new dragon behaviour
+    
     m_remainingCrystalsCount = CRYSTAL_COUNT;
     m_fireballCharge = 0;
     m_holdingPatternAngle = 0.0f;
@@ -117,7 +117,7 @@ EnderDragon::EnderDragon(Level* level) : Mob(level) {
     noCulling = true;
 }
 
-// 4J - split off from ctor so we can use shared_from_this()
+
 void EnderDragon::AddParts() {
     head = std::make_shared<MultiEntityMobPart>(
         std::dynamic_pointer_cast<MultiEntityMob>(shared_from_this()), L"head",
@@ -125,7 +125,7 @@ void EnderDragon::AddParts() {
     neck = std::make_shared<MultiEntityMobPart>(
         std::dynamic_pointer_cast<MultiEntityMob>(shared_from_this()), L"neck",
         6,
-        6);  // 4J Added
+        6);  
     body = std::make_shared<MultiEntityMobPart>(
         std::dynamic_pointer_cast<MultiEntityMob>(shared_from_this()), L"body",
         8, 8);
@@ -146,7 +146,7 @@ void EnderDragon::AddParts() {
         4, 4);
 
     subEntities.push_back(head);
-    subEntities.push_back(neck);  // 4J Added
+    subEntities.push_back(neck);  
     subEntities.push_back(body);
     subEntities.push_back(tail1);
     subEntities.push_back(tail2);
@@ -175,7 +175,7 @@ void EnderDragon::registerAttributes() {
 void EnderDragon::defineSynchedData() {
     Mob::defineSynchedData();
 
-    // 4J Added for new dragon behaviour
+    
     entityData->define(DATA_ID_SYNCHED_ACTION,
                        e_EnderdragonAction_HoldingPattern);
 }
@@ -191,10 +191,10 @@ void EnderDragon::getLatencyPos(std::vector<double>& result, int step,
     int p0 = (posPointer - step * 1) & 63;
     int p1 = (posPointer - step * 1 - 1) & 63;
 
-    // positions is a ring buffer of size positionsLength (64) storing
-    // positional information per tick positions[i][0] is y rotation
-    // positions[i][1] is y position
-    // positions[i][2] is currently always 0
+    
+    
+    
+    
 
     double yr0 = positions[p0][0];
     double yrd = Mth::wrapDegrees(positions[p1][0] - yr0);
@@ -209,10 +209,10 @@ void EnderDragon::getLatencyPos(std::vector<double>& result, int step,
 
 void EnderDragon::aiStep() {
     if (level->isClientSide) {
-        // 4J Stu - If saved when dead we need to make sure that the actual
-        // health is updated correctly on the client Fix for TU9: Content:
-        // Gameplay: Enderdragon respawns after loading game which was
-        // previously saved at point of hes death
+        
+        
+        
+        
         setHealth(getHealth());
 
         float flap = cosf(flapTime * std::numbers::pi * 2);
@@ -223,7 +223,7 @@ void EnderDragon::aiStep() {
                                   0.8f + random->nextFloat() * .3f, false,
                                   100.0f);
         }
-        // play a growl every now and then
+        
         if (!(getSynchedAction() == e_EnderdragonAction_Sitting_Flaming ||
               getSynchedAction() == e_EnderdragonAction_Sitting_Scanning ||
               getSynchedAction() == e_EnderdragonAction_Sitting_Attacking)) {
@@ -240,9 +240,9 @@ void EnderDragon::aiStep() {
     oFlapTime = flapTime;
 
     if (getHealth() <= 0) {
-        //            level.addParticle("explode", x + random.nextFloat() *
-        //            bbWidth * 2 - bbWidth, y + random.nextFloat() * bbHeight,
-        //            z + random.nextFloat() * bbWidth * 2 - bbWidth, 0, 0, 0);
+        
+        
+        
         float xo = (random->nextFloat() - 0.5f) * 8;
         float yo = (random->nextFloat() - 0.5f) * 4;
         float zo = (random->nextFloat() - 0.5f) * 8;
@@ -258,8 +258,8 @@ void EnderDragon::aiStep() {
     if (getSynchedAction() == e_EnderdragonAction_Sitting_Flaming ||
         getSynchedAction() == e_EnderdragonAction_Sitting_Scanning ||
         getSynchedAction() == e_EnderdragonAction_Sitting_Attacking) {
-        // app.DebugPrintf("flapSpeed is %f\n", flapSpeed);
-        // flapTime += flapSpeed * 2;
+        
+        
         flapTime += 0.1f;
     } else if (inWall) {
         flapTime += flapSpeed * 0.5f;
@@ -286,19 +286,19 @@ void EnderDragon::aiStep() {
             double yt = y + (ly - y) / lSteps;
             double zt = z + (lz - z) / lSteps;
 
-            // 4J Stu - The movement is so small that this head animation
-            // doesn't look good
-            // if( getSynchedAction() == e_EnderdragonAction_Sitting_Flaming )
-            //{
-            //	double yrd = lyr - (yRot + m_headYRot);
-            //	while (yrd < -180)
-            //		yrd += 360;
-            //	while (yrd >= 180)
-            //		yrd -= 360;
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
-            //	m_headYRot += (yrd) / lSteps;
-            //}
-            // else
+            
+            
+            
             {
                 double yrd = Mth::wrapDegrees(lyr - yRot);
 
@@ -311,13 +311,13 @@ void EnderDragon::aiStep() {
             this->setPos(xt, yt, zt);
             this->setRot(yRot, xRot);
 
-            /*
-             * List<AABB> collisions = level.getCubes(this, bb.shrink(1 / 32.0,
-             * 0, 1 / 32.0)); if (collisions.size() > 0) { double yTop = 0; for
-             * (int i = 0; i < collisions.size(); i++) { AABB ab =
-             * collisions.get(i); if (ab.y1 > yTop) yTop = ab.y1; } yt += yTop -
-             * bb.y0; setPos(xt, yt, zt); }
-             */
+            
+
+
+
+
+
+
         }
 
         if (getSynchedAction() == e_EnderdragonAction_Landing ||
@@ -326,25 +326,25 @@ void EnderDragon::aiStep() {
             double xP = 0.0;
             double yP = 0.0;
             double zP = 0.0;
-            Vec3 v = getHeadLookVector(1);  // getViewVector(1);
-            // app.DebugPrintf("View vector is (%f,%f,%f) - lsteps %d\n", v->x,
-            // v->y, v->z, lSteps); unsigned int d = 0; for(unsigned int d = 1;
-            // d < 3; ++d)
+            Vec3 v = getHeadLookVector(1);  
+            
+            
+            
             {
                 Vec3 vN = Vec3{v.x, v.y, v.z}.normalize();
                 vN.yRot(-std::numbers::pi / 4);
 
                 for (unsigned int i = 0; i < 8; ++i) {
                     if (getSynchedAction() == e_EnderdragonAction_Landing) {
-                        // for(unsigned int j = 0; j < 6; ++j)
+                        
                         {
-                            xP = head->x;  // - vN->x * d;
+                            xP = head->x;  
                             yP =
                                 head->bb.y0 +
                                 head->bbHeight /
-                                    2;  // - vN->y * d; //head->y +
-                                        // head->bbHeight / 2 + 0.5f - v->y * d;
-                            zP = head->z;  // - vN->z * d;
+                                    2;  
+                                        
+                            zP = head->z;  
                             xP += (level->random->nextBoolean() ? 1 : -1) *
                                   level->random->nextFloat() / 2;
                             yP += (level->random->nextBoolean() ? 1 : -1) *
@@ -360,13 +360,13 @@ void EnderDragon::aiStep() {
                         double yVelocity = 0.6;
                         double xzVelocity = 0.08;
                         for (unsigned int j = 0; j < 6; ++j) {
-                            xP = head->x;  // - vN->x * d;
+                            xP = head->x;  
                             yP =
                                 head->bb.y0 +
                                 head->bbHeight /
-                                    2;  // - vN->y * d; //head->y +
-                                        // head->bbHeight / 2 + 0.5f - v->y * d;
-                            zP = head->z;  // - vN->z * d;
+                                    2;  
+                                        
+                            zP = head->z;  
                             xP += (level->random->nextBoolean() ? 1 : -1) *
                                   level->random->nextFloat() / 2;
                             yP += (level->random->nextBoolean() ? 1 : -1) *
@@ -384,8 +384,8 @@ void EnderDragon::aiStep() {
             }
         } else if (getSynchedAction() ==
                    e_EnderdragonAction_Sitting_Attacking) {
-            // AP - changed this to use playLocalSound because no sound could be
-            // heard with playSound (cos it's a stub function)
+            
+            
             level->playLocalSound(x, y, z, eSoundType_MOB_ENDERDRAGON_GROWL,
                                   0.5f, 0.8f + random->nextFloat() * .3f, false,
                                   100.0f);
@@ -456,7 +456,7 @@ void EnderDragon::aiStep() {
         } else if (!newTarget &&
                    getSynchedAction() == e_EnderdragonAction_Takeoff) {
             int eggHeight = level->getTopSolidBlock(
-                PODIUM_X_POS, PODIUM_Z_POS);  // level->getHeightmap(4,4);
+                PODIUM_X_POS, PODIUM_Z_POS);  
 
             float dist = distanceToSqr(PODIUM_X_POS, eggHeight, PODIUM_Z_POS);
             if (dist > (10.0f * 10.0f)) {
@@ -482,7 +482,7 @@ void EnderDragon::aiStep() {
 
                 for (auto it = targets.begin(); it != targets.end(); ++it) {
                     if ((*it)->instanceof(eTYPE_LIVINGENTITY)) {
-                        // app.DebugPrintf("Attacking entity with acid\n");
+                        
                         std::shared_ptr<LivingEntity> e =
                             std::dynamic_pointer_cast<LivingEntity>(*it);
                         e->hurt(DamageSource::dragonbreath, 2);
@@ -491,7 +491,7 @@ void EnderDragon::aiStep() {
             }
         }
         if (getSynchedAction() == e_EnderdragonAction_Sitting_Flaming) {
-            // No movement
+            
         } else if (getSynchedAction() == e_EnderdragonAction_Sitting_Scanning) {
             if (attackTarget != nullptr) {
                 Vec3 aim = Vec3((attackTarget->x - x), 0, (attackTarget->z - z))
@@ -507,9 +507,9 @@ void EnderDragon::aiStep() {
 
                 if (angleDegs < 0 || angleDegs > 10) {
                     double xdd = attackTarget->x - head->x;
-                    // double ydd = (attackTarget->bb.y0 +
-                    // attackTarget->bbHeight / 2) - (head->y + head->bbHeight /
-                    // 2);
+                    
+                    
+                    
                     double zdd = attackTarget->z - head->z;
 
                     double yRotT =
@@ -529,19 +529,19 @@ void EnderDragon::aiStep() {
                     yRotA += yRotD * ((0.7f / distToTarget) / rotSpeed);
                     yRot += yRotA;
                 } else {
-                    // m_actionTicks = FLAME_TICKS;
+                    
                 }
             } else {
-                // setSynchedAction(e_EnderdragonAction_Sitting_Flaming);
-                // app.DebugPrintf("Dragon action is now : SittingFlaming\n");
-                // m_actionTicks = 0;
+                
+                
+                
             }
         } else if (getSynchedAction() ==
                    e_EnderdragonAction_Sitting_Attacking) {
         } else {
-            // 			double xTargetO = xTarget;
-            // 			double yTargetO = yTarget;
-            // 			double zTargetO = zTarget;
+            
+            
+            
             if (getSynchedAction() == e_EnderdragonAction_StrafePlayer &&
                 attackTarget != nullptr && m_currentPath != nullptr &&
                 m_currentPath->isDone()) {
@@ -555,8 +555,8 @@ void EnderDragon::aiStep() {
                 if (ho > 10) ho = 10;
                 yTarget = attackTarget->bb.y0 + ho;
             } else {
-                // xTarget += random->nextGaussian() * 2;
-                // zTarget += random->nextGaussian() * 2;
+                
+                
             }
             ydd = ydd / (sqrt(xdd * xdd + zdd * zdd));
             float max = 0.6f;
@@ -618,7 +618,7 @@ void EnderDragon::aiStep() {
     yBodyRot = yRot;
 
     head->bbWidth = head->bbHeight =
-        1;  // 4J Stu - Replaced what was "head" with "neck" //3;
+        1;  
     neck->bbWidth = neck->bbHeight = 3;
     tail1->bbWidth = tail1->bbHeight = 2;
     tail2->bbWidth = tail2->bbHeight = 2;
@@ -630,21 +630,21 @@ void EnderDragon::aiStep() {
     wing2->bbHeight = 3;
     wing2->bbWidth = 4;
 
-    // double latencyPosAcomponents[3],latencyPosBcomponents[3];
-    // std::vector<double> latencyPosA =
-    // std::vector<double>(latencyPosAcomponents,3); std::vector<double>
-    // latencyPosB = std::vector<double>(latencyPosBcomponents,3);
-    // getLatencyPos(latencyPosA, 5, 1);
-    // getLatencyPos(latencyPosB, 10, 1);
+    
+    
+    
+    
+    
+    
 
-    // float tilt = (float) (latencyPosA[1] - latencyPosB[1]) * 10 / 180.0f *
-    // std::numbers::pi;
+    
+    
     float tilt = (float)getTilt(1) / 180.0f * std::numbers::pi;
     float ccTilt = cos(tilt);
 
-    // 4J Stu - ssTilt was negative sin(tilt), but this causes the bounding
-    // boxes of the parts to head in the wrong y direction i.e. head moves up
-    // when tilting forward, and down when tilting backwards
+    
+    
+    
     float ssTilt = sin(tilt);
 
     float rot1 = yRot * std::numbers::pi / 180;
@@ -682,9 +682,9 @@ void EnderDragon::aiStep() {
     getLatencyPos(p1, 5, 1);
 
     {
-        // double p0components[3];
-        // std::vector<double> p0 = std::vector<double>(p0components,
-        // p0components + 3); getLatencyPos(p0, 0, 1);
+        
+        
+        
 
         double yRotDiff = getHeadYRotDiff(1);
 
@@ -694,15 +694,15 @@ void EnderDragon::aiStep() {
             cos((yRot + yRotDiff) * std::numbers::pi / 180 - yRotA * 0.01f);
         head->tick();
         neck->tick();
-        double yOffset = getHeadYOffset(1);  // (p0[1] - p1[1]) * 1
+        double yOffset = getHeadYOffset(1);  
 
-        // 4J Stu - Changed the head entity to only be the head, and not include
-        // the neck parts
+        
+        
         head->moveTo(x + ss * 6.5f * ccTilt, y + yOffset + ssTilt * 6.5f,
                      z - cc * 6.5f * ccTilt, 0, 0);
 
-        // Neck position is where the java code used to move the "head" object
-        // which was head and neck
+        
+        
         neck->moveTo(x + ss * 5.5f * ccTilt, y + yOffset + ssTilt * 5.5f,
                      z - cc * 5.5f * ccTilt, 0, 0);
 
@@ -712,21 +712,21 @@ void EnderDragon::aiStep() {
         m_acidArea = {acidX - 5, acidY - 17, acidZ - 5,
                       acidX + 5, acidY + 4,  acidZ + 5};
 
-        // app.DebugPrintf("\nDragon is %s, yRot = %f, yRotA = %f, ss = %f, cc =
-        // %f, ccTilt = %f\n",level->isClientSide?"client":"server", yRot,
-        // yRotA, ss, cc, ccTilt); app.DebugPrintf("Body (%f,%f,%f) to
-        // (%f,%f,%f)\n", body->bb.x0, body->bb.y0, body->bb.z0,
-        // body->bb.x1, body->bb.y1, body->bb.z1); app.DebugPrintf("Neck
-        // (%f,%f,%f) to (%f,%f,%f)\n", neck->bb.x0, neck->bb.y0,
-        // neck->bb.z0, neck->bb.x1, neck->bb.y1, neck->bb.z1);
-        // app.DebugPrintf("Head (%f,%f,%f) to (%f,%f,%f)\n", head->bb.x0,
-        // head->bb.y0, head->bb.z0, head->bb.x1, head->bb.y1,
-        // head->bb.z1); app.DebugPrintf("Acid (%f,%f,%f) to (%f,%f,%f)\n\n",
-        // m_acidArea->x0, m_acidArea->y0, m_acidArea->z0, m_acidArea->x1,
-        // m_acidArea->y1, m_acidArea->z1);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
-    // Curls/straightens the tail
+    
     for (int i = 0; i < 3; i++) {
         std::shared_ptr<MultiEntityMobPart> part = nullptr;
 
@@ -752,7 +752,7 @@ void EnderDragon::aiStep() {
                      z + (cc1 * dd1 + cc * dd) * ccTilt, 0, 0);
     }
 
-    // 4J Stu - Fireball attack taken from Ghast
+    
     if (!level->isClientSide) {
         double maxDist = 64.0f;
         if (getSynchedAction() == e_EnderdragonAction_StrafePlayer &&
@@ -816,7 +816,7 @@ void EnderDragon::aiStep() {
             if (m_fireballCharge > 0) m_fireballCharge--;
         }
     }
-    // End fireball attack
+    
 
     if (!level->isClientSide) {
         inWall = checkWalls(&head->bb) | checkWalls(&neck->bb) |
@@ -845,7 +845,7 @@ void EnderDragon::checkCrystals() {
 
         std::shared_ptr<EnderCrystal> crystal = nullptr;
         double nearest = std::numeric_limits<double>::max();
-        // for (Entity ec : crystals)
+        
         for (auto it = crystals->begin(); it != crystals->end(); ++it) {
             std::shared_ptr<EnderCrystal> ec =
                 std::dynamic_pointer_cast<EnderCrystal>(*it);
@@ -862,27 +862,27 @@ void EnderDragon::checkCrystals() {
 }
 
 void EnderDragon::checkAttack() {
-    // if (tickCount % 20 == 0)
+    
     {
-        // 		Vec3 *v = getViewVector(1);
-        // 		double xdd = 0;
-        // 		double ydd = -1;
-        // 		double zdd = 0;
+        
+        
+        
+        
 
-        //            double x = (body.bb.x0 + body.bb.x1) / 2;
-        //            double y = (body.bb.y0 + body.bb.y1) / 2 - 2;
-        //            double z = (body.bb.z0 + body.bb.z1) / 2;
+        
+        
+        
     }
 }
 
 void EnderDragon::knockBack(std::vector<std::shared_ptr<Entity> >* entities) {
     double xm = (body->bb.x0 + body->bb.x1) / 2;
-    //        double ym = (body.bb.y0 + body.bb.y1) / 2;
+    
     double zm = (body->bb.z0 + body->bb.z1) / 2;
 
-    // for (Entity e : entities)
+    
     for (auto it = entities->begin(); it != entities->end(); ++it) {
-        if ((*it)->instanceof(eTYPE_LIVINGENTITY))  //(e instanceof Mob)
+        if ((*it)->instanceof(eTYPE_LIVINGENTITY))  
         {
             std::shared_ptr<LivingEntity> e =
                 std::dynamic_pointer_cast<LivingEntity>(*it);
@@ -895,13 +895,13 @@ void EnderDragon::knockBack(std::vector<std::shared_ptr<Entity> >* entities) {
 }
 
 void EnderDragon::hurt(std::vector<std::shared_ptr<Entity> >* entities) {
-    // for (int i = 0; i < entities->size(); i++)
+    
     for (auto it = entities->begin(); it != entities->end(); ++it) {
-        if ((*it)->instanceof(eTYPE_LIVINGENTITY))  //(e instanceof Mob)
+        if ((*it)->instanceof(eTYPE_LIVINGENTITY))  
         {
             std::shared_ptr<LivingEntity> e =
                 std::dynamic_pointer_cast<LivingEntity>(
-                    *it);  // entities.get(i);
+                    *it);  
             DamageSource* damageSource = DamageSource::mobAttack(
                 std::dynamic_pointer_cast<LivingEntity>(shared_from_this()));
             e->hurt(damageSource, 10);
@@ -913,18 +913,18 @@ void EnderDragon::hurt(std::vector<std::shared_ptr<Entity> >* entities) {
 void EnderDragon::findNewTarget() {
     std::shared_ptr<Player> playerNearestToEgg = nullptr;
 
-    // Update current action
+    
     switch (getSynchedAction()) {
         case e_EnderdragonAction_Takeoff:
         case e_EnderdragonAction_HoldingPattern: {
             if (!newTarget && m_currentPath != nullptr &&
                 m_currentPath->isDone()) {
-                // Distance is 64, which is the radius of the circle
+                
                 int eggHeight =
                     std::max(level->seaLevel + 5,
                              level->getTopSolidBlock(
                                  PODIUM_X_POS,
-                                 PODIUM_Z_POS));  // level->getHeightmap(4,4);
+                                 PODIUM_Z_POS));  
                 playerNearestToEgg = level->getNearestPlayer(
                     PODIUM_X_POS, eggHeight, PODIUM_Z_POS, 64.0);
                 double dist = 64.0f;
@@ -933,7 +933,7 @@ void EnderDragon::findNewTarget() {
                         PODIUM_X_POS, eggHeight, PODIUM_Z_POS);
                     dist /= (8 * 8 * 8);
                 }
-                // app.DebugPrintf("Adjusted dist is %f\n", dist);
+                
 
                 if (random->nextInt(m_remainingCrystalsCount + 3) == 0) {
                     setSynchedAction(e_EnderdragonAction_LandingApproach);
@@ -941,8 +941,8 @@ void EnderDragon::findNewTarget() {
                     app.DebugPrintf("Dragon action is now: LandingApproach\n");
 #endif
                 }
-                // More likely to strafe a player if they are close to the egg,
-                // or there are not many crystals remaining
+                
+                
                 else if (playerNearestToEgg != nullptr &&
                          (random->nextInt(std::abs(dist) + 2) == 0 ||
                           random->nextInt(m_remainingCrystalsCount + 2) == 0)) {
@@ -954,7 +954,7 @@ void EnderDragon::findNewTarget() {
             }
         } break;
         case e_EnderdragonAction_StrafePlayer:
-            // Always return to the holding pattern after strafing
+            
             if (m_currentPath == nullptr ||
                 (m_currentPath->isDone() && newTarget)) {
                 setSynchedAction(e_EnderdragonAction_HoldingPattern);
@@ -964,11 +964,11 @@ void EnderDragon::findNewTarget() {
             }
             break;
         case e_EnderdragonAction_Landing:
-            //		setSynchedAction(e_EnderdragonAction_Sitting_Flaming);
-            // #if PRINT_DRAGON_STATE_CHANGE_MESSAGES
-            //		app.DebugPrintf("Dragon action is now:
-            // SittingFlaming\n"); #endif 		m_actionTicks =
-            // FLAME_TICKS;
+            
+            
+            
+            
+            
 
             m_flameAttacks = 0;
             setSynchedAction(e_EnderdragonAction_Sitting_Scanning);
@@ -986,22 +986,22 @@ void EnderDragon::findNewTarget() {
 
     newTarget = false;
 
-    // if (random->nextInt(2) == 0 && level->players.size() > 0)
+    
     if (getSynchedAction() == e_EnderdragonAction_StrafePlayer &&
         playerNearestToEgg != nullptr) {
         attackTarget = playerNearestToEgg;
         strafeAttackTarget();
     } else if (getSynchedAction() == e_EnderdragonAction_LandingApproach) {
-        // Generate a new path if we don't currently have one
+        
         if (m_currentPath == nullptr || m_currentPath->isDone()) {
             int currentNodeIndex = findClosestNode();
 
-            // To get the angle to the player correct when landing, head to a
-            // node diametrically opposite the player, then swoop in to 4,4
+            
+            
             int eggHeight = std::max(
                 level->seaLevel + 5,
                 level->getTopSolidBlock(
-                    PODIUM_X_POS, PODIUM_Z_POS));  // level->getHeightmap(4,4);
+                    PODIUM_X_POS, PODIUM_Z_POS));  
             playerNearestToEgg = level->getNearestPlayer(
                 PODIUM_X_POS, eggHeight, PODIUM_Z_POS, 128.0);
 
@@ -1010,8 +1010,8 @@ void EnderDragon::findNewTarget() {
                 Vec3 aim = Vec3(playerNearestToEgg->x, 0, playerNearestToEgg->z)
                                .normalize();
 
-                // app.DebugPrintf("Final marker node near (%f,%d,%f)\n",
-                // -aim->x*40,105,-aim->z*40 );
+                
+                
                 targetNodeIndex =
                     findClosestNode(-aim.x * 40, 105.0, -aim.z * 40);
             } else {
@@ -1023,7 +1023,7 @@ void EnderDragon::findNewTarget() {
             m_currentPath =
                 findPath(currentNodeIndex, targetNodeIndex, &finalNode);
 
-            // Always skip the first node (as that's where we are already)
+            
             if (m_currentPath != nullptr) m_currentPath->next();
         }
 
@@ -1040,15 +1040,15 @@ void EnderDragon::findNewTarget() {
     } else if (getSynchedAction() == e_EnderdragonAction_Sitting_Flaming ||
                getSynchedAction() == e_EnderdragonAction_Sitting_Attacking ||
                getSynchedAction() == e_EnderdragonAction_Sitting_Scanning) {
-        // Does no movement
+        
     } else {
-        // Default is e_EnderdragonAction_HoldingPattern
-        // Generate a new path if we don't currently have one
+        
+        
         if (m_currentPath == nullptr || m_currentPath->isDone()) {
             int currentNodeIndex = findClosestNode();
             int targetNodeIndex = currentNodeIndex;
-            // if(random->nextInt(4) == 0) m_holdingPatternClockwise =
-            // !m_holdingPatternClockwise;
+            
+            
 
             if (getSynchedAction() == e_EnderdragonAction_Takeoff) {
                 Vec3 v = getHeadLookVector(1);
@@ -1066,15 +1066,15 @@ void EnderDragon::findNewTarget() {
             }
 
             if (m_remainingCrystalsCount <= 0) {
-                // If no crystals left, navigate only between nodes 12-19
+                
                 targetNodeIndex -= 12;
                 targetNodeIndex =
                     targetNodeIndex &
-                    7;  // 4J-RR - was %8, but that could create a result of -1
-                        // here when targetNodeIndex was 11
+                    7;  
+                        
                 targetNodeIndex += 12;
             } else {
-                // If crystals are left, navigate only between nodes 0-11
+                
                 targetNodeIndex = targetNodeIndex % 12;
                 if (targetNodeIndex < 0) targetNodeIndex += 12;
             }
@@ -1082,7 +1082,7 @@ void EnderDragon::findNewTarget() {
             if (m_currentPath != nullptr) delete m_currentPath;
             m_currentPath = findPath(currentNodeIndex, targetNodeIndex);
 
-            // Always skip the first node (as that's where we are already)
+            
             if (m_currentPath != nullptr) m_currentPath->next();
         }
 
@@ -1112,7 +1112,7 @@ bool EnderDragon::checkWalls(AABB* bb) {
         for (int y = y0; y <= y1; y++) {
             for (int z = z0; z <= z1; z++) {
                 int t = level->getTile(x, y, z);
-                // 4J Stu - Don't remove fire
+                
                 if (t == 0 || t == Tile::fire_Id) {
                 } else if (t == Tile::obsidian_Id || t == Tile::endStone_Id ||
                            t == Tile::unbreakable_Id ||
@@ -1142,14 +1142,14 @@ bool EnderDragon::hurt(std::shared_ptr<MultiEntityMobPart> MultiEntityMobPart,
         damage = damage / 4 + 1;
     }
 
-    // float rot1 = yRot * std::numbers::pi / 180;
-    // float ss1 = sin(rot1);
-    // float cc1 = cos(rot1);
+    
+    
+    
 
-    // xTarget = x + ss1 * 5 + (random->nextFloat() - 0.5f) * 2;
-    // yTarget = y + random->nextFloat() * 3 + 1;
-    // zTarget = z - cc1 * 5 + (random->nextFloat() - 0.5f) * 2;
-    // attackTarget = nullptr;
+    
+    
+    
+    
 
     if (source->getEntity() != nullptr &&
             source->getEntity()->instanceof(eTYPE_PLAYER) ||
@@ -1157,8 +1157,8 @@ bool EnderDragon::hurt(std::shared_ptr<MultiEntityMobPart> MultiEntityMobPart,
         int healthBefore = getHealth();
         reallyHurt(source, damage);
 
-        // if(!level->isClientSide) app.DebugPrintf("Health is now %d\n",
-        // health);
+        
+        
         if (getHealth() <= 0 &&
             !(getSynchedAction() == e_EnderdragonAction_Sitting_Flaming ||
               getSynchedAction() == e_EnderdragonAction_Sitting_Scanning ||
@@ -1239,8 +1239,8 @@ void EnderDragon::tickDeath() {
     yBodyRot = yRot += 20.0f;
 
     if (dragonDeathTime == 200 && !level->isClientSide) {
-        // level->levelEvent(nullptr, LevelEvent::ENDERDRAGON_KILLED, (int) x,
-        // (int) y, (int) z, 0);
+        
+        
 
         int xpCount = 2000;
         while (xpCount > 0) {
@@ -1256,8 +1256,8 @@ void EnderDragon::tickDeath() {
         } else {
             zo = 0;
         }
-        // 4J-PB changed to center this between the pillars
-        spawnExitPortal(0, 0);  // Mth::floor(x), Mth::floor(z));
+        
+        spawnExitPortal(0, 0);  
         remove();
     }
 }
@@ -1307,8 +1307,8 @@ void EnderDragon::spawnExitPortal(int x, int z) {
     level->setTileAndUpdate(x, y + 3, z, Tile::unbreakable_Id);
     level->setTileAndUpdate(x, y + 4, z, Tile::dragonEgg_Id);
 
-    // 4J-PB - The podium can be floating with nothing under it, so put some
-    // whiteStone under it if this is the case
+    
+    
     for (int yy = y - 5; yy < y - 1; yy++) {
         for (int xx = x - (r - 1); xx <= x + (r - 1); xx++) {
             for (int zz = z - (r - 1); zz <= z + (r - 1); zz++) {
@@ -1333,20 +1333,20 @@ bool EnderDragon::isPickable() { return false; }
 Level* EnderDragon::getLevel() { return level; }
 
 int EnderDragon::getAmbientSound() {
-    return eSoundType_MOB_ENDERDRAGON_GROWL;  //"mob.enderdragon.growl";
+    return eSoundType_MOB_ENDERDRAGON_GROWL;  
 }
 
 int EnderDragon::getHurtSound() {
-    return eSoundType_MOB_ENDERDRAGON_HIT;  //"mob.enderdragon.hit";
+    return eSoundType_MOB_ENDERDRAGON_HIT;  
 }
 
 float EnderDragon::getSoundVolume() { return 5; }
 
-// 4J Added for new dragon behaviour
+
 bool EnderDragon::setSynchedAction(EEnderdragonAction action,
-                                   bool force /*= false*/) {
+                                   bool force ) {
     bool validTransition = false;
-    // Check if this is a valid state transition
+    
     switch (getSynchedAction()) {
         case e_EnderdragonAction_HoldingPattern:
             switch (action) {
@@ -1459,7 +1459,7 @@ void EnderDragon::handleCrystalDestroyed(DamageSource* source) {
 
     app.DebugPrintf("Crystal count is now %d\n", m_remainingCrystalsCount);
 
-    //--m_remainingCrystalsCount;
+    
 
     if (m_remainingCrystalsCount % 2 == 0) {
         if (setSynchedAction(e_EnderdragonAction_LandingApproach)) {
@@ -1508,7 +1508,7 @@ void EnderDragon::strafeAttackTarget() {
     m_currentPath = findPath(currentNodeIndex, targetNodeIndex, &finalNode);
 
     if (m_currentPath != nullptr) {
-        // Always skip the first node (as that's where we are already)
+        
         m_currentPath->next();
 
         navigateToNextPathNode();
@@ -1524,8 +1524,8 @@ void EnderDragon::navigateToNextPathNode() {
 
         if (getSynchedAction() == e_EnderdragonAction_LandingApproach &&
             m_currentPath->isDone()) {
-            // When heading to the last node on the landing approach, we want
-            // the yCoord to be exact
+            
+            
             yTarget = curr.y;
         } else {
             do {
@@ -1541,12 +1541,12 @@ void EnderDragon::navigateToNextPathNode() {
 }
 
 int EnderDragon::findClosestNode() {
-    // Setup all the nodes on the first time this is called
+    
     if ((*m_nodes)[0] == nullptr) {
-        // Path nodes for navigation
-        // 0 - 11 are the outer ring at 60 blocks from centre
-        // 12 - 19 are the middle ring at 40 blocks from centre
-        // 20 - 23 are the inner ring at 20 blocks from centre
+        
+        
+        
+        
         int nodeX = 0;
         int nodeY = 0;
         int nodeZ = 0;
@@ -1566,7 +1566,7 @@ int EnderDragon::findClosestNode() {
                 nodeZ = 40 * sinf(2 * (-std::numbers::pi +
                                        (std::numbers::pi / 8) * multiplier));
                 yAdjustment +=
-                    10;  // Make the target well above the top of the towers
+                    10;  
             } else {
                 multiplier -= 20;
                 nodeX = 20 * cosf(2 * (-std::numbers::pi +
@@ -1574,8 +1574,8 @@ int EnderDragon::findClosestNode() {
                 nodeZ = 20 * sinf(2 * (-std::numbers::pi +
                                        (std::numbers::pi / 4) * multiplier));
             }
-            // Fix for #77202 - TU9: Content: Gameplay: The Ender Dragon
-            // sometimes flies through terrain Add minimum height
+            
+            
             nodeY =
                 std::max((level->seaLevel + 10),
                          level->getTopSolidBlock(nodeX, nodeZ) + yAdjustment);
@@ -1585,7 +1585,7 @@ int EnderDragon::findClosestNode() {
 
             (*m_nodes)[i] = new Node(nodeX, nodeY, nodeZ);
 
-            // level->setTile(nodeX,nodeY,nodeZ,Tile::obsidian_Id);
+            
         }
 
         m_nodeAdjacency[0] = (1 << 11) | (1 << 1) | (1 << 12);
@@ -1633,8 +1633,8 @@ int EnderDragon::findClosestNode(double tX, double tY, double tZ) {
     Node* currentPos = new Node((int)floor(tX), (int)floor(tY), (int)floor(tZ));
     int startIndex = 0;
     if (m_remainingCrystalsCount <= 0) {
-        // If not crystals are left then we try and stay in the middle ring and
-        // avoid the outer ring
+        
+        
         startIndex = 12;
     }
     for (unsigned int i = startIndex; i < 24; ++i) {
@@ -1650,9 +1650,9 @@ int EnderDragon::findClosestNode(double tX, double tY, double tZ) {
     return closestIndex;
 }
 
-// 4J Stu - A* taken from PathFinder and modified
+
 Path* EnderDragon::findPath(int startIndex, int endIndex,
-                            Node* finalNode /* = nullptr */) {
+                            Node* finalNode ) {
     for (unsigned int i = 0; i < 24; ++i) {
         Node* n = (*m_nodes)[i];
         n->closed = false;
@@ -1677,8 +1677,8 @@ Path* EnderDragon::findPath(int startIndex, int endIndex,
 
     int minimumNodeIndex = 0;
     if (m_remainingCrystalsCount <= 0) {
-        // If not crystals are left then we try and stay in the middle ring and
-        // avoid the outer ring
+        
+        
         minimumNodeIndex = 12;
     }
 
@@ -1739,7 +1739,7 @@ Path* EnderDragon::findPath(int startIndex, int endIndex,
     return reconstruct_path(from, closest);
 }
 
-// function reconstruct_path(came_from,current_node)
+
 Path* EnderDragon::reconstruct_path(Node* from, Node* to) {
     int count = 1;
     Node* n = to;
@@ -1781,14 +1781,14 @@ void EnderDragon::readAdditionalSaveData(CompoundTag* tag) {
 
 float EnderDragon::getTilt(float a) {
     float tilt = 0.0f;
-    // if(	getSynchedAction() == e_EnderdragonAction_Sitting_Flaming ||
-    //	getSynchedAction() == e_EnderdragonAction_Sitting_Scanning ||
-    //	getSynchedAction() == e_EnderdragonAction_Sitting_Attacking)
-    //{
-    //	tilt = -25.0f;
-    //	xRot = -25.0f;
-    // }
-    // else
+    
+    
+    
+    
+    
+    
+    
+    
     {
         double latencyPosAcomponents[3], latencyPosBcomponents[3];
         std::vector<double> latencyPosA = std::vector<double>(
@@ -1800,7 +1800,7 @@ float EnderDragon::getTilt(float a) {
 
         tilt = (latencyPosA[1] - latencyPosB[1]) * 10;
     }
-    // app.DebugPrintf("Tilt is %f\n", tilt);
+    
 
     return tilt;
 }
@@ -1824,18 +1824,18 @@ double EnderDragon::getHeadYOffset(float a) {
 
         headYOffset = (p0[1] - p1[1]) * 1;
     }
-    // app.DebugPrintf("headYOffset is %f\n", headYOffset);
+    
     return headYOffset;
 }
 
 double EnderDragon::getHeadYRotDiff(float a) {
     double result = 0.0;
-    // if(	getSynchedAction() == e_EnderdragonAction_Sitting_Flaming ||
-    //	getSynchedAction() == e_EnderdragonAction_Sitting_Scanning ||
-    //	getSynchedAction() == e_EnderdragonAction_Sitting_Attacking)
-    //{
-    //	result = m_headYRot;
-    // }
+    
+    
+    
+    
+    
+    
     return result;
 }
 
@@ -1846,13 +1846,13 @@ double EnderDragon::getHeadPartYOffset(int partIndex,
     if (getSynchedAction() == e_EnderdragonAction_Landing ||
         getSynchedAction() == e_EnderdragonAction_Takeoff) {
         int eggHeight = level->getTopSolidBlock(
-            PODIUM_X_POS, PODIUM_Z_POS);  // level->getHeightmap(4,4);
+            PODIUM_X_POS, PODIUM_Z_POS);  
         float dist =
             sqrt(distanceToSqr(PODIUM_X_POS, eggHeight, PODIUM_Z_POS)) / 4;
         if (dist < 1.0f) dist = 1.0f;
         result = partIndex / dist;
-        // app.DebugPrintf("getHeadPartYOffset - dist = %f, result = %f (%d)\n",
-        // dist, result, partIndex);
+        
+        
     } else if (getSynchedAction() == e_EnderdragonAction_Sitting_Flaming ||
                getSynchedAction() == e_EnderdragonAction_Sitting_Scanning ||
                getSynchedAction() == e_EnderdragonAction_Sitting_Attacking) {
@@ -1864,7 +1864,7 @@ double EnderDragon::getHeadPartYOffset(int partIndex,
             result = partPos[1] - bodyPos[1];
         }
     }
-    // app.DebugPrintf("Part %d is at %f\n", partIndex, result);
+    
     return result;
 }
 
@@ -1872,17 +1872,17 @@ double EnderDragon::getHeadPartYRotDiff(int partIndex,
                                         std::vector<double>& bodyPos,
                                         std::vector<double>& partPos) {
     double result = 0.0;
-    // if(	getSynchedAction() == e_EnderdragonAction_Sitting_Flaming ||
-    //	getSynchedAction() == e_EnderdragonAction_Sitting_Scanning ||
-    //	getSynchedAction() == e_EnderdragonAction_Sitting_Attacking)
-    //{
-    //	result = m_headYRot / (7 - partIndex);
-    // }
-    // else
+    
+    
+    
+    
+    
+    
+    
     {
         result = partPos[0] - bodyPos[0];
     }
-    // app.DebugPrintf("Part %d is at %f\n", partIndex, result);
+    
     return result;
 }
 
@@ -1892,11 +1892,11 @@ Vec3 EnderDragon::getHeadLookVector(float a) {
     if (getSynchedAction() == e_EnderdragonAction_Landing ||
         getSynchedAction() == e_EnderdragonAction_Takeoff) {
         int eggHeight = level->getTopSolidBlock(
-            PODIUM_X_POS, PODIUM_Z_POS);  // level->getHeightmap(4,4);
+            PODIUM_X_POS, PODIUM_Z_POS);  
         float dist =
             sqrt(distanceToSqr(PODIUM_X_POS, eggHeight, PODIUM_Z_POS)) / 4;
         if (dist < 1.0f) dist = 1.0f;
-        // The 6.0f is dragon->getHeadPartYOffset(6, start, p)
+        
         float yOffset = 6.0f / dist;
 
         double xRotTemp = xRot;
@@ -1915,7 +1915,7 @@ Vec3 EnderDragon::getHeadLookVector(float a) {
                getSynchedAction() == e_EnderdragonAction_Sitting_Attacking) {
         double xRotTemp = xRot;
         double rotScale = 1.5f;
-        // The 6.0f is dragon->getHeadPartYOffset(6, start, p)
+        
         xRot = -6.0f * rotScale * 5.0f;
 
         double yRotTemp = yRot;

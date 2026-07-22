@@ -75,12 +75,12 @@ void MobEffectInstance::setSplash(bool splash) { this->splash = splash; }
 
 bool MobEffectInstance::isAmbient() { return ambient; }
 
-/**
- * Runs the effect on a Mob target.
- *
- * @param target
- * @return True if the effect is still active.
- */
+
+
+
+
+
+
 bool MobEffectInstance::tick(std::shared_ptr<LivingEntity> target) {
     if (duration > 0) {
         if (MobEffect::effects[id]->isDurationEffectTick(duration, amplifier)) {
@@ -103,16 +103,16 @@ int MobEffectInstance::getDescriptionId() {
     return MobEffect::effects[id]->getDescriptionId();
 }
 
-// 4J Added
+
 int MobEffectInstance::getPostfixDescriptionId() {
     return MobEffect::effects[id]->getPostfixDescriptionId();
 }
 
 int MobEffectInstance::hashCode() {
-    // return id;
+    
 
-    // 4J Stu - Changed this to return a value that represents id, amp and
-    // duration
+    
+    
     return (id & 0xff) | ((amplifier & 0xff) << 8) |
            ((duration & 0xffff) << 16);
 }
@@ -120,24 +120,24 @@ int MobEffectInstance::hashCode() {
 std::wstring MobEffectInstance::toString() {
     std::wstring result =
         L"MobEffectInstance::toString - NON IMPLEMENTED OR LOCALISED FUNCTION";
-    // wstring result = "";
-    // if (getAmplifier() > 0)
-    //{
-    //	result = getDescriptionId() + " x " + (getAmplifier() + 1) + ",
-    // Duration: " + getDuration();
-    // }
-    // else
-    //{
-    //	result = getDescriptionId() + ", Duration: " + getDuration();
-    // }
-    // if (MobEffect.effects[id].isDisabled())
-    //{
-    //	return "(" + result + ")";
-    // }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     return result;
 }
 
-// Was bool equals(Object obj)
+
 bool MobEffectInstance::equals(MobEffectInstance* instance) {
     return id == instance->id && amplifier == instance->amplifier &&
            duration == instance->duration && splash == instance->splash &&

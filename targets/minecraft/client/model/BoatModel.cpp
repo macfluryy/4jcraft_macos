@@ -38,8 +38,8 @@ BoatModel::BoatModel() : Model() {
     cubes[2]->yRot = std::numbers::pi / 2 * 1;
     cubes[3]->yRot = std::numbers::pi / 2 * 2;
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     cubes[0]->compile(1.0f / 16.0f);
     cubes[1]->compile(1.0f / 16.0f);
     cubes[2]->compile(1.0f / 16.0f);

@@ -18,11 +18,11 @@ public:
     int64_t mapSeed;
     int mapHeight;
     GameType* playerGameType;
-    bool m_newSeaLevel;  // 4J added
+    bool m_newSeaLevel;  
     LevelType* m_pLevelType;
     int m_newEntityId;
-    int m_xzSize;     // 4J Added
-    int m_hellScale;  // 4J Added
+    int m_xzSize;     
+    int m_hellScale;  
 
     RespawnPacket();
     RespawnPacket(char dimension, int64_t mapSeed, int mapHeight,

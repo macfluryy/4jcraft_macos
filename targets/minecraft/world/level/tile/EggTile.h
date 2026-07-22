@@ -17,7 +17,7 @@ public:
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
-                     bool soundOnly = false);  // 4J added soundOnly param
+                     bool soundOnly = false);  
     virtual void attack(Level* level, int x, int y, int z,
                         std::shared_ptr<Player> player);
 
@@ -34,7 +34,7 @@ public:
     virtual int getRenderShape();
     virtual int cloneTileId(Level* level, int x, int y, int z);
 
-    // 4J Added
+    
     static void generateTeleportParticles(Level* level, int xt, int yt, int zt,
                                           int deltas);
 };

@@ -1,7 +1,7 @@
 #pragma once
 
-// 4J-JEV:
-// All functional potions need bit-13 set.
+
+
 
 #define MASK_REGENERATION 0x2001
 #define MASK_SPEED 0x2002
@@ -55,7 +55,7 @@
 #define MACRO_MAKEPOTION_AUXVAL(potion_type, potion_strength, potion_effect) \
     (potion_type | potion_strength | potion_effect)
 
-// The potion brewing creates high aux values with redundant high bits, so use
-// this to bring the aux val into ranges that match our macros 4J-JEV: 0x2000 ==
-// bit-13; Used to stop netherwart "resetting" functional potions.
+
+
+
 #define NORMALISE_POTION_AUXVAL(aux) (aux & (MASK_BIT13 | MASK_SPLASH | 0xFF))

@@ -15,9 +15,9 @@ public:
     static const int TYPE_HEIROGLYPHS = 1;
     static const int TYPE_SMOOTHSIDE = 2;
 
-    // Add this in when we need it
-    // static final String[] SANDSTONE_NAMES = {"default", "chiseled",
-    // "smooth"};
+    
+    
+    
 
     static const int SANDSTONE_BLOCK_NAMES = 3;
     static int SANDSTONE_NAMES[SANDSTONE_BLOCK_NAMES];

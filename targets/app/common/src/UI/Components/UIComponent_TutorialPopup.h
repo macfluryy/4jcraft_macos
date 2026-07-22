@@ -25,20 +25,20 @@ class UILayer;
 
 class UIComponent_TutorialPopup : public UIScene {
 private:
-    // A scene that may be displayed behind the popup that the player is using,
-    // that will need shifted so we can see it clearly.
+    
+    
     UIScene *m_interactScene, *m_lastInteractSceneMoved;
     bool m_lastSceneMovedLeft;
     bool m_bAllowFade;
     Tutorial* m_tutorial;
     std::shared_ptr<ItemInstance> m_iconItem;
     bool m_iconIsFoil;
-    // int m_iLocalPlayerC;
+    
 
     bool m_bContainerMenuVisible;
     bool m_bSplitscreenGamertagVisible;
 
-    // Maps to values in AS
+    
     enum EIcons {
         e_ICON_TYPE_IGGY = 0,
         e_ICON_TYPE_ARMOUR = 1,
@@ -79,14 +79,14 @@ protected:
 public:
     virtual EUIScene getSceneType() { return eUIComponent_TutorialPopup; }
 
-    // Returns true if this scene handles input
+    
     virtual bool stealsFocus() { return false; }
 
-    // Returns true if this scene has focus for the pad passed in
+    
     virtual bool hasFocus(int iPad) { return false; }
 
-    // Returns true if lower scenes in this scenes layer, or in any layer below
-    // this scenes layers should be hidden
+    
+    
     virtual bool hidesLowerScenes() { return false; }
 
     virtual void handleReload();
@@ -102,7 +102,7 @@ public:
     void SetVisible(bool visible);
     bool IsVisible();
 
-    // RENDERING
+    
     virtual void render(S32 width, S32 height,
                         C4JRender::eViewportType viewport);
 

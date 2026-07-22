@@ -1,14 +1,14 @@
 #pragma once
 
-// 4J-PB added to avoid std::string compares on adding particles
+
 enum ePARTICLE_TYPE {
     eParticleType_bubble,
     eParticleType_smoke,
     eParticleType_note,
-    eParticleType_netherportal,  // 4J - This particle should only be used by
-                                 // the Nether portal. Everything else should
-                                 // use eParticleType_end
-    eParticleType_endportal,     // 4J - Seperated this from torches and fires
+    eParticleType_netherportal,  
+                                 
+                                 
+    eParticleType_endportal,     
     eParticleType_explode,
     eParticleType_flame,
     eParticleType_lava,
@@ -36,26 +36,26 @@ enum ePARTICLE_TYPE {
     eParticleType_dripLava,
     eParticleType_enchantmenttable,
     eParticleType_dragonbreath,
-    eParticleType_ender,  // 4J Added - These are things that used the "portal"
-                          // particle but are actually end related entities
+    eParticleType_ender,  
+                          
     eParticleType_angryVillager,
     eParticleType_happyVillager,
     eParticleType_fireworksspark,
 
-    // 4J-JEV: In the java, the particle name was used to sneak parameters in
-    // for the Terrain and IconCrack particle constructors.
+    
+    
 
     eParticleType_iconcrack_base =
-        0x100000,  // There's  range of iconcrack particle types based on item
-                   // id and data.
+        0x100000,  
+                   
     eParticleType_iconcrack_last = 0x1FFFFF,
     eParticleType_tilecrack_base =
-        0x200000,  // There's a range of tilecrack particle types based on tile
-                   // id and data.
+        0x200000,  
+                   
     eParticleType_tilecrack_last = 0x2FFFFF,
-    // 0x0000FF, <- these bits are for storing the data value.
-    // 0x0FFF00, <- these bits are for encoding tile/item id.
-    // 0x300000, <- these bits show if its an icon/tile or not.
+    
+    
+    
 
 };
 

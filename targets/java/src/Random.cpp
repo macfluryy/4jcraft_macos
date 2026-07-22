@@ -3,12 +3,12 @@
 #include <cassert>
 #include <chrono>
 #include <cmath>
-#include <cstdint>  // for int64_t
+#include <cstdint>  
 
 Random::Random() {
-    // 4J - jave now uses the system nanosecond counter added to a
-    // "seedUniquifier" to get an initial seed. Our nanosecond timer is actually
-    // only millisecond accuate, so use QueryPerformanceCounter here instead
+    
+    
+    
     int64_t seed;
 
     auto now = std::chrono::steady_clock::now().time_since_epoch();
@@ -27,8 +27,8 @@ void Random::setSeed(int64_t s) {
 }
 
 int Random::next(int bits) {
-    // 4jcraft, cast to uint64_t for modulo arithmethic
-    // overflow of int undefined, and its guaranteed here.
+    
+    
     seed = ((uint64_t)seed * 0x5DEECE66DLL + 0xBLL) & ((1LL << 48) - 1);
     return (int)(seed >> (48 - bits));
 }
@@ -50,8 +50,8 @@ double Random::nextGaussian() {
     } else {
         double v1, v2, s;
         do {
-            v1 = 2 * nextDouble() - 1;  // between -1.0 and 1.0
-            v2 = 2 * nextDouble() - 1;  // between -1.0 and 1.0
+            v1 = 2 * nextDouble() - 1;  
+            v2 = 2 * nextDouble() - 1;  
             s = v1 * v1 + v2 * v2;
         } while (s >= 1 || s == 0);
         double multiplier = sqrt(-2 * log(s) / s);
@@ -66,16 +66,16 @@ int Random::nextInt() { return next(32); }
 int Random::nextInt(int n) {
     assert(n > 0);
 
-    if ((n & -n) == n)  // i.e., n is a power of 2
-                        // 4jcraft added casts to unsigned (and uint64_t)
+    if ((n & -n) == n)  
+                        
         return (int)(((uint64_t)next(31) * n) >>
-                     31);  // 4J Stu - Made int64_t instead of long
+                     31);  
 
     int bits, val;
     do {
         bits = next(31);
         val = bits % n;
-        // 4jcraft added a cast to prevent overflow
+        
     } while ((int64_t)bits - val + (n - 1) < 0);
     return val;
 }
@@ -98,7 +98,7 @@ double Random::nextDouble(double min, double max) {
 }
 
 int64_t Random::nextLong() {
-    // 4jcraft added casts to unsigned
+    
     return (int64_t)((uint64_t)next(32) << 32) + next(32);
 }
 

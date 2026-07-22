@@ -2,7 +2,7 @@
 #pragma once
 #if !defined(XMLMOJANGCALLBACK_H)
 #define XMLMOJANGCALLBACK_H
-// xml reading
+
 
 using namespace ATG;
 
@@ -56,7 +56,7 @@ public:
                 }
             }
 
-            // if the xuid hasn't been defined, then we can't use the data
+            
             if (xuid != 0LL) {
                 return Game::RegisterMojangData(
                     wNameXUID, xuid, wNameSkin, wNameCloak);
@@ -130,7 +130,7 @@ public:
                 }
             }
 
-            // if the xuid hasn't been defined, then we can't use the data
+            
             if (iValue != -1) {
 #if defined(_DEBUG)
                 wprintf(L"Type - %s, Value - %d, ", wType, iValue);
@@ -260,7 +260,7 @@ public:
                 }
             }
 
-            // if the xuid hasn't been defined, then we can't use the data
+            
             if (ullFull != 0LL) {
 #if defined(_DEBUG)
                 wprintf(L"Type - %ls, Name - %ls, ", wType, wNameBanner);

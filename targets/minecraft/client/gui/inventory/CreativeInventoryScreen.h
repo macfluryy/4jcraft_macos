@@ -19,34 +19,34 @@ private:
     static constexpr int ROWS = 5;
     static constexpr int COLUMNS = 9;
     static constexpr int ITEMS_PER_PAGE =
-        ROWS * COLUMNS;  // 45 items (9x5 grid)
+        ROWS * COLUMNS;  
 
-    // Currently selected creative tab index
+    
     static int selectedTabIndex;
 
-    // Array of item ids for the tab icons
+    
     static const int
         tabIconIds[IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT];
 
-    // Temporary inventory for creative mode items
+    
     static std::shared_ptr<SimpleContainer> basicInventory;
 
-    // Item renderer for the tab icons
+    
     static ItemRenderer* itemRenderer;
 
-    // Array of tab icons
+    
     static std::shared_ptr<ItemInstance>
         tabIcons[IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT];
 
-    // Amount scrolled in Creative mode inventory (0 = top, 1 = bottom)
+    
     float currentScroll;
 
     bool isScrolling;
 
-    // True if the left mouse button is currently being held
+    
     bool isLeftMouseDown;
 
-    // True if the left mouse button was held down last time render was called
+    
     bool wasClicking;
 
     std::shared_ptr<Player> player;

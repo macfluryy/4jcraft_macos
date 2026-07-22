@@ -21,7 +21,7 @@ void BodyControl::clientTick() {
     double zd = mob->z - mob->zo;
 
     if (xd * xd + zd * zd > MoveControl::MIN_SPEED_SQR) {
-        // we are moving.
+        
         mob->yBodyRot = mob->yRot;
         mob->yHeadRot = clamp(mob->yBodyRot, mob->yHeadRot, maxClampAngle);
         lastHeadY = mob->yHeadRot;
@@ -29,7 +29,7 @@ void BodyControl::clientTick() {
         return;
     }
 
-    // Body will align to head after looking long enough in a direction
+    
     float clampAngle = maxClampAngle;
     if (std::abs(mob->yHeadRot - lastHeadY) > 15) {
         timeStill = 0;

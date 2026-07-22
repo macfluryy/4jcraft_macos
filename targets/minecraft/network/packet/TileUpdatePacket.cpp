@@ -22,7 +22,7 @@ TileUpdatePacket::TileUpdatePacket(int x, int y, int z, Level* level) {
                                      : ((level->dimension->id == -1) ? 1 : 2));
 }
 
-void TileUpdatePacket::read(DataInputStream* dis)  // throws IOException
+void TileUpdatePacket::read(DataInputStream* dis)  
 {
 #ifdef _LARGE_WORLDS
     x = dis->readInt();
@@ -35,7 +35,7 @@ void TileUpdatePacket::read(DataInputStream* dis)  // throws IOException
     data = dataLevel & 0xf;
     levelIdx = (dataLevel >> 4) & 0xf;
 #else
-    // 4J - See comments in write for packing
+    
     int xyzdata = dis->readInt();
     x = (xyzdata >> 22) & 0x3ff;
     y = (xyzdata >> 14) & 0xff;
@@ -44,14 +44,14 @@ void TileUpdatePacket::read(DataInputStream* dis)  // throws IOException
     z = (z << 22) >> 22;
     data = xyzdata & 0xf;
     block = (int)dis->readShort() & 0xffff;
-    // levelIdx = ( xyzdata >> 31 ) & 1;
+    
 
-    // Can't pack this as it's now 2 bits
+    
     levelIdx = (int)dis->readByte();
 #endif
 }
 
-void TileUpdatePacket::write(DataOutputStream* dos)  // throws IOException
+void TileUpdatePacket::write(DataOutputStream* dos)  
 {
 #ifdef _LARGE_WORLDS
     dos->writeInt(x);
@@ -62,17 +62,17 @@ void TileUpdatePacket::write(DataOutputStream* dos)  // throws IOException
     std::uint8_t dataLevel = ((levelIdx & 0xf) << 4) | (data & 0xf);
     dos->writeByte(dataLevel);
 #else
-    // 4J - for our fixed size map, we can pack x & z into 10 bits each (-512 ->
-    // 511), y into 8 bits (0 to 255) block type could really be 7 bits but
-    // leaving that as 8 for future ease of expansion. Data only needs to be
-    // 4-bits as that is how it is ultimately stored
+    
+    
+    
+    
     int xyzdata = ((x & 0x3ff) << 22) | ((y & 0xff) << 14) |
                   ((z & 0x3ff) << 4) | (data & 0xf);
-    // xyzdata |= levelIdx << 31;
+    
     dos->writeInt(xyzdata);
     dos->writeShort(block);
 
-    // Can't pack this as it's now 2 bits
+    
     dos->write(levelIdx);
 #endif
 }

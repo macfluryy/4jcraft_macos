@@ -10,7 +10,7 @@ public:
 
 private:
     void init(Level* level, double x, double y, double z, float scale,
-              float rCol, float gCol, float bCol);  // 4J - added
+              float rCol, float gCol, float bCol);  
 public:
     RedDustParticle(Level* level, double x, double y, double z, float rCol,
                     float gCol, float bCol);

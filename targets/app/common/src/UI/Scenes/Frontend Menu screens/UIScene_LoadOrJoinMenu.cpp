@@ -64,8 +64,8 @@ int UIScene_LoadOrJoinMenu::loadSaveDataThumbnailReturned(
 }
 
 int UIScene_LoadOrJoinMenu::LoadSaveCallback(void* lpParam, bool bRes) {
-    // UIScene_LoadOrJoinMenu *pClass= (UIScene_LoadOrJoinMenu *)lpParam;
-    //  Get the save data now
+    
+    
     if (bRes) {
         app.DebugPrintf("Loaded save OK\n");
     }
@@ -75,7 +75,7 @@ int UIScene_LoadOrJoinMenu::LoadSaveCallback(void* lpParam, bool bRes) {
 UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
                                                UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
     app.SetLiveLinkRequired(true);
 
@@ -86,7 +86,7 @@ UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
     m_bInParty = false;
     m_currentSessions = nullptr;
     m_iState = e_SavesIdle;
-    // m_bRetrievingSaveInfo=false;
+    
 
     m_buttonListSaves.init(eControl_SavesList);
     m_buttonListGames.init(eControl_GamesList);
@@ -122,11 +122,11 @@ UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
 
     int iLB = -1;
 
-    // block input if we're waiting for DLC to install, and wipe the saves list.
-    // The end of dlc mounting custom message will fill the list again
+    
+    
     if (app.StartInstallDLCProcess(m_iPad) == true || app.DLCInstallPending()) {
-        // if we're waiting for DLC to mount, don't fill the save list. The
-        // custom message on end of dlc mounting will do that
+        
+        
         m_bIgnoreInput = true;
     } else {
         Initialise();
@@ -139,19 +139,19 @@ UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
 
     m_initData = new JoinMenuInitData();
 
-    // 4J Stu - Fix for #12530 -TCR 001 BAS Game Stability: Title will crash if
-    // the player disconnects while starting a new world and then opts to play
-    // the tutorial once they have been returned to the Main Menu.
+    
+    
+    
     MinecraftServer::resetFlags();
 
-    // If we're not ignoring input, then we aren't still waiting for the DLC to
-    // mount, and can now check for corrupt dlc. Otherwise this will happen when
-    // the dlc has finished mounting.
+    
+    
+    
     if (!m_bIgnoreInput) {
         app.m_dlcManager.checkForCorruptDLCAndAlert();
     }
 
-    // 4J-PB - Only Xbox will not have trial DLC patched into the game
+    
 
 #if defined(SONY_REMOTE_STORAGE_DOWNLOAD)
     m_eSaveTransferState = eSaveTransfer_Idle;
@@ -170,8 +170,8 @@ UIScene_LoadOrJoinMenu::~UIScene_LoadOrJoinMenu() {
     }
 
 #if TO_BE_IMPLEMENTED
-    // Reset the background downloading, in case we changed it by attempting to
-    // download a texture pack
+    
+    
     XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_AUTO);
 #endif
 
@@ -184,10 +184,10 @@ UIScene_LoadOrJoinMenu::~UIScene_LoadOrJoinMenu() {
 }
 
 void UIScene_LoadOrJoinMenu::updateTooltips() {
-    // update the tooltips
-    // if the saves list has focus, then we should show the Delete Save tooltip
-    // if the games list has focus, then we should the the View Gamercard
-    // tooltip
+    
+    
+    
+    
     int iRB = -1;
     int iY = -1;
     int iLB = -1;
@@ -208,7 +208,7 @@ void UIScene_LoadOrJoinMenu::updateTooltips() {
             }
         }
     } else if (DoesMashUpWorldHaveFocus()) {
-        // If it's a mash-up pack world, give the Hide option
+        
         iRB = IDS_TOOLTIPS_HIDE;
     }
 
@@ -222,11 +222,11 @@ void UIScene_LoadOrJoinMenu::updateTooltips() {
     if (StorageManager.GetSaveDisabled()) {
     } else {
 #if defined(SONY_REMOTE_STORAGE_DOWNLOAD)
-        // Is there a save from PS3 or PSVita available?
-        // Sony asked that this be displayed at all times so users are aware of
-        // the functionality. We'll display some text when there's no save
-        // available
-        // if(app.getRemoteStorage()->saveIsAvailable())
+        
+        
+        
+        
+        
         {
             bool bSignedInLive = ProfileManager.IsSignedInLive(m_iPad);
             if (bSignedInLive) {
@@ -242,7 +242,7 @@ void UIScene_LoadOrJoinMenu::updateTooltips() {
                    IDS_TOOLTIPS_BACK, iX, iY, -1, -1, iLB, iRB);
 }
 
-//
+
 void UIScene_LoadOrJoinMenu::Initialise() {
     m_iSaveListIndex = 0;
     m_iGameListIndex = 0;
@@ -255,8 +255,8 @@ void UIScene_LoadOrJoinMenu::Initialise() {
         if (StorageManager.GetSaveDeviceSelected(m_iPad))
 #endif
         {
-            // saving is disabled, but we should still be able to load from a
-            // selected save device
+            
+            
 
             GetSaveInfo();
         }
@@ -267,8 +267,8 @@ void UIScene_LoadOrJoinMenu::Initialise() {
         }
 #endif
     } else {
-        // 4J-PB - we need to check that there is enough space left to create a
-        // copy of the save (for a rename)
+        
+        
         bool bCanRename = StorageManager.EnoughSpaceForAMinSaveGame();
 
         GetSaveInfo();
@@ -284,7 +284,7 @@ void UIScene_LoadOrJoinMenu::updateComponents() {
 }
 
 void UIScene_LoadOrJoinMenu::handleDestroy() {
-    // shut down the keyboard if it is displayed
+    
 }
 
 void UIScene_LoadOrJoinMenu::handleGainFocus(bool navBack) {
@@ -292,7 +292,7 @@ void UIScene_LoadOrJoinMenu::handleGainFocus(bool navBack) {
 
     updateTooltips();
 
-    // Add load online timer
+    
     addTimer(JOIN_LOAD_ONLINE_TIMER_ID, JOIN_LOAD_ONLINE_TIMER_TIME);
 
     if (navBack) {
@@ -301,13 +301,13 @@ void UIScene_LoadOrJoinMenu::handleGainFocus(bool navBack) {
         m_bMultiplayerAllowed = ProfileManager.IsSignedInLive(m_iPad) &&
                                 ProfileManager.AllowedToPlayMultiplayer(m_iPad);
 
-        // re-enable button presses
+        
         m_bIgnoreInput = false;
 
-        // block input if we're waiting for DLC to install, and wipe the saves
-        // list. The end of dlc mounting custom message will fill the list again
+        
+        
         if (app.StartInstallDLCProcess(m_iPad) == false) {
-            // not doing a mount, so re-enable input
+            
             m_bIgnoreInput = false;
         } else {
             m_bIgnoreInput = true;
@@ -322,8 +322,8 @@ void UIScene_LoadOrJoinMenu::handleGainFocus(bool navBack) {
             HXUICLASS hClassConnectingProgress =
                 XuiFindClass(L"CScene_ConnectingProgress");
 
-            // If we are navigating back from a full screen progress scene, then
-            // that means a connection attempt failed
+            
+            
             if (XuiIsInstanceOf(hSceneFrom, hClassFullscreenProgress) ||
                 XuiIsInstanceOf(hSceneFrom, hClassConnectingProgress)) {
                 UpdateGamesList();
@@ -338,10 +338,10 @@ void UIScene_LoadOrJoinMenu::handleGainFocus(bool navBack) {
 #endif
         }
 
-        // are we back here because of a delete of a corrupt save?
+        
 
         if (app.GetCorruptSaveDeleted()) {
-            // wipe the list and repopulate it
+            
             m_iState = e_SavesRepopulateAfterDelete;
             app.SetCorruptSaveDeleted(false);
         }
@@ -349,7 +349,7 @@ void UIScene_LoadOrJoinMenu::handleGainFocus(bool navBack) {
 }
 
 void UIScene_LoadOrJoinMenu::handleLoseFocus() {
-    // Kill load online timer
+    
     killTimer(JOIN_LOAD_ONLINE_TIMER_ID);
 }
 
@@ -361,27 +361,27 @@ void UIScene_LoadOrJoinMenu::tick() {
     UIScene::tick();
 
 #if defined(_WINDOWS64)
-    if (m_bExitScene)  // navigate forward or back
+    if (m_bExitScene)  
     {
         if (!m_bRetrievingSaveThumbnails) {
-            // need to wait for any callback retrieving thumbnail to complete
+            
             navigateBack();
         }
     }
-    // Stop loading thumbnails if we navigate forwards
+    
     if (hasFocus(m_iPad)) {
 #if defined(SONY_REMOTE_STORAGE_DOWNLOAD)
-        // if the loadOrJoin menu has focus again, we can clear the saveTransfer
-        // flag now. Added so we can delay the ehternet disconnect till it's
-        // cleaned up
+        
+        
+        
         if (m_eSaveTransferState == eSaveTransfer_Idle)
             m_bSaveTransferRunning = false;
 #endif
-        // Display the saves if we have them
+        
         if (!m_bSavesDisplayed) {
             m_pSaveDetails = StorageManager.ReturnSavesInfo();
             if (m_pSaveDetails != nullptr) {
-                // CD - Fix - Adding define for ORBIS/XBOXONE
+                
 
                 AddDefaultButtons();
                 m_bSavesDisplayed = true;
@@ -411,7 +411,7 @@ void UIScene_LoadOrJoinMenu::tick() {
                 }
                 m_controlSavesTimer.setVisible(false);
 
-                // set focus on the first button
+                
             }
         }
 
@@ -421,7 +421,7 @@ void UIScene_LoadOrJoinMenu::tick() {
                 (m_buttonListSaves.getItemCount() - m_iDefaultButtonsC)) {
                 m_bRetrievingSaveThumbnails = true;
                 app.DebugPrintf("Requesting the first thumbnail\n");
-                // set the save to load
+                
                 PSAVE_DETAILS pSaveDetails = StorageManager.ReturnSavesInfo();
                 C4JStorage::ESaveGameState eLoadStatus =
                     StorageManager.LoadSaveDataThumbnail(
@@ -431,7 +431,7 @@ void UIScene_LoadOrJoinMenu::tick() {
                         });
 
                 if (eLoadStatus != C4JStorage::ESaveGame_GetSaveThumbnail) {
-                    // something went wrong
+                    
                     m_bRetrievingSaveThumbnails = false;
                     m_bAllLoaded = true;
                 }
@@ -439,22 +439,22 @@ void UIScene_LoadOrJoinMenu::tick() {
         } else if (m_bSavesDisplayed && m_bSaveThumbnailReady) {
             m_bSaveThumbnailReady = false;
 
-            // check we're not waiting to exit the scene
+            
             if (!m_bExitScene) {
-                // convert to utf16
+                
                 std::uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
 #if defined(_WINDOWS64)
                 int result = ::MultiByteToWideChar(
-                    CP_UTF8,               // convert from UTF-8
-                    MB_ERR_INVALID_CHARS,  // error on invalid chars
+                    CP_UTF8,               
+                    MB_ERR_INVALID_CHARS,  
                     m_saveDetails[m_iRequestingThumbnailId]
-                        .UTF8SaveFilename,    // source UTF-8 string
-                    MAX_SAVEFILENAME_LENGTH,  // total length of source UTF-8
-                                              // string,
-                    // in char's (= bytes), including end-of-string \0
-                    (wchar_t*)u16Message,    // destination buffer
-                    MAX_SAVEFILENAME_LENGTH  // size of destination buffer, in
-                                             // wchar_t's
+                        .UTF8SaveFilename,    
+                    MAX_SAVEFILENAME_LENGTH,  
+                                              
+                    
+                    (wchar_t*)u16Message,    
+                    MAX_SAVEFILENAME_LENGTH  
+                                             
                 );
 #else
                 std::uint32_t srcmax, dstmax;
@@ -486,7 +486,7 @@ void UIScene_LoadOrJoinMenu::tick() {
                 if (m_iRequestingThumbnailId <
                     (m_buttonListSaves.getItemCount() - m_iDefaultButtonsC)) {
                     app.DebugPrintf("Requesting another thumbnail\n");
-                    // set the save to load
+                    
                     PSAVE_DETAILS pSaveDetails =
                         StorageManager.ReturnSavesInfo();
                     C4JStorage::ESaveGameState eLoadStatus =
@@ -498,7 +498,7 @@ void UIScene_LoadOrJoinMenu::tick() {
                                                                      bytes);
                             });
                     if (eLoadStatus != C4JStorage::ESaveGame_GetSaveThumbnail) {
-                        // something went wrong
+                        
                         m_bRetrievingSaveThumbnails = false;
                         m_bAllLoaded = true;
                     }
@@ -507,7 +507,7 @@ void UIScene_LoadOrJoinMenu::tick() {
                     m_bAllLoaded = true;
                 }
             } else {
-                // stop retrieving thumbnails, and exit
+                
                 m_bRetrievingSaveThumbnails = false;
             }
         }
@@ -557,13 +557,13 @@ void UIScene_LoadOrJoinMenu::tick() {
     }
 #endif
 
-    // SAVE TRANSFERS
+    
 }
 
 void UIScene_LoadOrJoinMenu::GetSaveInfo() {
     unsigned int uiSaveC = 0;
 
-    // This will return with the number retrieved in uiSaveC
+    
 
     if (app.DebugSettingsOn() && app.GetLoadSavesFromFolderEnabled()) {
         uiSaveC = 0;
@@ -576,7 +576,7 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
         m_saves = new std::vector<File*>();
         File savesDir = Minecraft::getSavesDirectory();
         if (savesDir.exists()) {
-            // Only keep regular .mcs files (skip ".DS_Store", subdirs, etc.)
+            
             std::vector<File*>* all = savesDir.listFiles();
             if (all != nullptr) {
                 for (auto it = all->begin(); it != all->end(); ++it) {
@@ -587,7 +587,7 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
                         continue;
                     }
                     std::wstring name = f->getName();
-                    // Match "*.mcs" case-insensitively.
+                    
                     bool isMcs = false;
                     if (name.size() >= 4) {
                         std::wstring ext = name.substr(name.size() - 4);
@@ -604,10 +604,10 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
             }
         }
         uiSaveC = (unsigned int)m_saves->size();
-        // add the New Game and Tutorial after the saves list is retrieved, if
-        // there are any saves
+        
+        
 
-        // Add two for New Game and Tutorial
+        
         unsigned int listItems = uiSaveC;
 
         AddDefaultButtons();
@@ -625,9 +625,9 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
         m_bAllLoaded = true;
         m_bIgnoreInput = false;
     } else {
-        // clear the saves list
+        
         m_bSavesDisplayed =
-            false;  // we're blocking the exit from this scene until complete
+            false;  
         m_buttonListSaves.clearList();
         m_iSaveInfoC = 0;
         m_controlSavesTimer.setVisible(true);
@@ -636,12 +636,12 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
         if (m_pSaveDetails == nullptr) {
             C4JStorage::ESaveGameState eSGIStatus = StorageManager.GetSavesInfo(
                 m_iPad, nullptr, (char*)"save");
-            //m_pSaveDetails = StorageManager.ReturnSavesInfo();
+            
         }
 
-        /*unsigned int uiSaveC = 0;
-        if (m_pSaveDetails) {
-            uiSaveC = m_pSaveDetails->iSaveC;*/
+        
+
+
         #if TO_BE_IMPLEMENTED
                 if (eSGIStatus == C4JStorage::ESGIStatus_NoSaves) {
                     uiSaveC = 0;
@@ -650,19 +650,19 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
                 }
         #endif
 
-        /*// Add default buttons (Create New World, etc.)
-        AddDefaultButtons();
+        
 
-        // Add saved worlds
-        for (unsigned int i = 0; i < uiSaveC; i++) {
-            std::string name = m_pSaveDetails->SaveInfoA[i].UTF8SaveTitle;
-            std::wstring wname(name.begin(), name.end());
-            m_buttonListSaves.addItem(wname.c_str(), L"");
-        }
 
-        m_bSavesDisplayed = true;
-        m_bAllLoaded = true;
-        m_bIgnoreInput = false;*/
+
+
+
+
+
+
+
+
+
+
     }
 
     return;
@@ -682,7 +682,7 @@ void UIScene_LoadOrJoinMenu::AddDefaultButtons() {
          it != app.getLevelGenerators()->end(); ++it) {
         LevelGenerationOptions* levelGen = *it;
 
-        // retrieve the save icon from the texture pack, if there is one
+        
         unsigned int uiTexturePackID = levelGen->getRequiredTexturePackId();
 
         if (uiTexturePackID != 0) {
@@ -691,18 +691,18 @@ void UIScene_LoadOrJoinMenu::AddDefaultButtons() {
 
             if ((uiMashUpWorldsBitmask & (1 << (uiTexturePackID - 1024))) ==
                 0) {
-                // this world is hidden, so skip
+                
                 continue;
             }
         }
 
-        // 4J-JEV: For debug. Ignore worlds with no name.
+        
         const wchar_t* wstr = levelGen->getWorldName();
         m_buttonListSaves.addItem(wstr);
         m_generators.push_back(levelGen);
 
         if (uiTexturePackID != 0) {
-            // increment the count of the mash-up pack worlds in the save list
+            
             m_iMashUpButtonsC++;
             TexturePack* tp =
                 Minecraft::GetInstance()->skins->getTexturePackById(
@@ -729,7 +729,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat,
                                          bool& handled) {
     if (m_bIgnoreInput) return;
 
-    // if we're retrieving save info, ignore key presses
+    
     if (!m_bSavesDisplayed) return;
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
@@ -743,17 +743,17 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat,
             break;
         case ACTION_MENU_X:
 #if TO_BE_IMPLEMENTED
-            // Change device
-            // Fix for #12531 - TCR 001: BAS Game Stability: When a player
-            // selects to change a storage device, and repeatedly backs out of
-            // the SD screen, disconnects from LIVE, and then selects a SD, the
-            // title crashes.
+            
+            
+            
+            
+            
             m_bIgnoreInput = true;
             StorageManager.SetSaveDevice(
                 &CScene_MultiGameJoinLoad::DeviceSelectReturned, this, true);
             ui.PlayUISFX(eSFX_Press);
 #endif
-            // Save Transfer
+            
 #if defined(SONY_REMOTE_STORAGE_DOWNLOAD)
             {
                 bool bSignedInLive = ProfileManager.IsSignedInLive(iPad);
@@ -768,16 +768,16 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat,
 
         case ACTION_MENU_RIGHT_SCROLL:
             if (DoesSavesListHaveFocus()) {
-                // 4J-PB - check we are on a valid save
+                
                 if ((m_iDefaultButtonsC != 0) &&
                     (m_iSaveListIndex >= m_iDefaultButtonsC)) {
                     m_bIgnoreInput = true;
 
-                    // Could be delete save or Save Options
+                    
                     if (StorageManager.GetSaveDisabled()) {
-                        // delete the save game
-                        // Have to ask the player if they are sure they want to
-                        // delete this game
+                        
+                        
+                        
                         unsigned int uiIDA[2];
                         uiIDA[0] = IDS_CONFIRM_CANCEL;
                         uiIDA[1] = IDS_CONFIRM_OK;
@@ -807,9 +807,9 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat,
                                     SaveOptionsDialogReturned,
                                 this);
                         } else {
-                            // delete the save game
-                            // Have to ask the player if they are sure they want
-                            // to delete this game
+                            
+                            
+                            
                             unsigned int uiIDA[2];
                             uiIDA[0] = IDS_CONFIRM_CANCEL;
                             uiIDA[1] = IDS_CONFIRM_OK;
@@ -824,7 +824,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat,
                     ui.PlayUISFX(eSFX_Press);
                 }
             } else if (DoesMashUpWorldHaveFocus()) {
-                // hiding a mash-up world
+                
                 if ((m_iSaveListIndex != JOIN_LOAD_CREATE_BUTTON_INDEX)) {
                     LevelGenerationOptions* levelGen =
                         m_generators.at(m_iSaveListIndex - 1);
@@ -837,7 +837,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat,
                             m_bIgnoreInput = true;
                             app.HideMashupPackWorld(m_iPad, uiPackID);
 
-                            // update the saves list
+                            
                             m_iState = e_SavesRepopulateAfterMashupHide;
                         }
                     }
@@ -849,8 +849,8 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat,
             break;
         case ACTION_MENU_LEFT:
         case ACTION_MENU_RIGHT: {
-            // if we are on the saves menu, check there are games in the games
-            // list to move to
+            
+            
             if (DoesSavesListHaveFocus()) {
                 if (m_buttonListGames.getItemCount() > 0) {
                     sendInputToMovie(key, repeat, pressed, released);
@@ -872,11 +872,11 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat,
 }
 
 int UIScene_LoadOrJoinMenu::handleKeyboardCompleteWorldName(bool bRes) {
-    // 4J HEG - No reason to set value if keyboard was cancelled
+    
     m_bIgnoreInput = false;
     if (bRes) {
         const char* text = InputManager.GetText();
-        // check the name is valid
+        
         if (text[0] != '\0') {
         } else {
             m_bIgnoreInput = false;
@@ -929,7 +929,7 @@ void UIScene_LoadOrJoinMenu::handlePress(F64 controlId, F64 childId) {
 
             int lGenID = (int)childId - 1;
 
-            // CD - Added for audio
+            
             ui.PlayUISFX(eSFX_Press);
 
             if ((int)childId == JOIN_LOAD_CREATE_BUTTON_INDEX) {
@@ -946,7 +946,7 @@ void UIScene_LoadOrJoinMenu::handlePress(F64 controlId, F64 childId) {
             } else if (lGenID < m_generators.size()) {
                 LevelGenerationOptions* levelGen = m_generators.at(lGenID);
                 app.SetTutorialMode(levelGen->isTutorial());
-                // Reset the autosave time
+                
                 app.SetAutosaveTimerTime();
 
                 if (levelGen->isTutorial()) {
@@ -954,15 +954,15 @@ void UIScene_LoadOrJoinMenu::handlePress(F64 controlId, F64 childId) {
                 } else {
                     LoadMenuInitData* params = new LoadMenuInitData();
                     params->iPad = m_iPad;
-                    // need to get the iIndex from the list item, since the
-                    // position in the list doesn't correspond to the
-                    // GetSaveGameInfo list because of sorting
+                    
+                    
+                    
                     params->iSaveGameInfoIndex = -1;
-                    // params->pbSaveRenamed=&m_bSaveRenamed;
+                    
                     params->levelGen = levelGen;
                     params->saveDetails = nullptr;
 
-                    // navigate to the settings scene
+                    
                     ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
                                        eUIScene_LoadMenu, params);
                 }
@@ -977,18 +977,18 @@ void UIScene_LoadOrJoinMenu::handlePress(F64 controlId, F64 childId) {
                     } else {
                         LoadMenuInitData* params = new LoadMenuInitData();
                         params->iPad = m_iPad;
-                        // need to get the iIndex from the list item, since the
-                        // position in the list doesn't correspond to the
-                        // GetSaveGameInfo list because of sorting
+                        
+                        
+                        
                         params->iSaveGameInfoIndex =
                             ((int)childId) - m_iDefaultButtonsC;
-                        // params->pbSaveRenamed=&m_bSaveRenamed;
+                        
                         params->levelGen = nullptr;
                         params->saveDetails =
                             &m_saveDetails[((int)childId) - m_iDefaultButtonsC];
 
                         {
-                            // navigate to the settings scene
+                            
                             ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
                                                eUIScene_LoadMenu, params);
                         }
@@ -1001,7 +1001,7 @@ void UIScene_LoadOrJoinMenu::handlePress(F64 controlId, F64 childId) {
 
             m_eAction = eAction_JoinGame;
 
-            // CD - Added for audio
+            
             ui.PlayUISFX(eSFX_Press);
 
             {
@@ -1018,14 +1018,14 @@ void UIScene_LoadOrJoinMenu::handlePress(F64 controlId, F64 childId) {
 void UIScene_LoadOrJoinMenu::CheckAndJoinGame(int gameIndex) {
     if (m_buttonListGames.getItemCount() > 0 &&
         gameIndex < m_currentSessions->size()) {
-        // CScene_MultiGameInfo::JoinMenuInitData *initData = new
-        // CScene_MultiGameInfo::JoinMenuInitData();
+        
+        
         m_initData->iPad = 0;
         ;
         m_initData->selectedSession = m_currentSessions->at(gameIndex);
 
-        // check that we have the texture pack available
-        // If it's not the default texture pack
+        
+        
         if (m_initData->selectedSession->data.texturePackParentId != 0) {
             int texturePacksCount =
                 Minecraft::GetInstance()->skins->getTexturePackCount();
@@ -1042,16 +1042,16 @@ void UIScene_LoadOrJoinMenu::CheckAndJoinGame(int gameIndex) {
             }
 
             if (bHasTexturePackInstalled == false) {
-                // upsell the texture pack
-                // tell sentient about the upsell of the full version of the
-                // skin pack
+                
+                
+                
                 unsigned int uiIDA[2];
 
                 uiIDA[0] = IDS_TEXTUREPACK_FULLVERSION;
-                // uiIDA[1]=IDS_TEXTURE_PACK_TRIALVERSION;
+                
                 uiIDA[1] = IDS_CONFIRM_CANCEL;
 
-                // Give the player a warning about the texture pack missing
+                
                 ui.RequestAlertMessage(
                     IDS_DLC_TEXTUREPACK_NOT_PRESENT_TITLE,
                     IDS_DLC_TEXTUREPACK_NOT_PRESENT, uiIDA, 2, m_iPad,
@@ -1069,20 +1069,20 @@ void UIScene_LoadOrJoinMenu::CheckAndJoinGame(int gameIndex) {
 }
 
 void UIScene_LoadOrJoinMenu::LoadLevelGen(LevelGenerationOptions* levelGen) {
-    // Load data from disc
-    // File saveFile( L"Tutorial\\Tutorial" );
-    // LoadSaveFromDisk(&saveFile);
+    
+    
+    
 
-    // clear out the app's terrain features list
+    
     app.ClearTerrainFeaturePosition();
 
     StorageManager.ResetSaveData();
-    // Make our next save default to the name of the level
+    
     StorageManager.SetSaveTitle(levelGen->getDefaultSaveName().c_str());
 
     bool isClientSide = false;
     bool isPrivate = false;
-    // TODO int maxPlayers = MINECRAFT_NET_MAX_PLAYERS;
+    
     int maxPlayers = 8;
 
     if (app.GetTutorialMode()) {
@@ -1103,7 +1103,7 @@ void UIScene_LoadOrJoinMenu::LoadLevelGen(LevelGenerationOptions* levelGen) {
 
         Minecraft* pMinecraft = Minecraft::GetInstance();
         pMinecraft->skins->selectTexturePackById(param->texturePackId);
-        // pMinecraft->skins->updateUI();
+        
     }
 
     g_NetworkManager.FakeLocalPlayerJoined();
@@ -1132,18 +1132,18 @@ void UIScene_LoadOrJoinMenu::UpdateGamesListCallback(void* pParam) {
 }
 
 void UIScene_LoadOrJoinMenu::UpdateGamesList() {
-    // If we're ignoring input scene isn't active so do nothing
+    
     if (m_bIgnoreInput) return;
 
-    // If a texture pack is loading, or will be loading, then ignore this ( we
-    // are going to be destroyed anyway)
+    
+    
     if (Minecraft::GetInstance()->skins->getSelected()->isLoadingData() ||
         (Minecraft::GetInstance()->skins->needsUIUpdate() ||
          ui.IsReloadingSkin()))
         return;
 
-    // if we're retrieving save info, don't show the list yet as we will be
-    // ignoring press events
+    
+    
     if (!m_bSavesDisplayed) {
         return;
     }
@@ -1162,9 +1162,9 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
 
     m_controlJoinTimer.setVisible(false);
 
-    // if the saves list has focus, then we should show the Delete Save tooltip
-    // if the games list has focus, then we should show the View Gamercard
-    // tooltip
+    
+    
+    
     int iRB = -1;
     int iY = -1;
     int iX = -1;
@@ -1173,7 +1173,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
     m_currentSessions =
         g_NetworkManager.GetSessionList(m_iPad, 1, m_bShowingPartyGamesOnly);
 
-    // Update the xui list displayed
+    
     unsigned int xuiListSize = m_buttonListGames.getItemCount();
     unsigned int filteredListSize = (unsigned int)m_currentSessions->size();
 
@@ -1200,11 +1200,11 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
 #endif
     }
 
-    // clear out the games list and re-fill
+    
     m_buttonListGames.clearList();
 
     if (filteredListSize > 0) {
-        // Reset the focus to the selected session if it still exists
+        
         unsigned int sessionIndex = 0;
         m_buttonListGames.setCurrentSelection(0);
 
@@ -1214,9 +1214,9 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
 
             wchar_t textureName[64] = L"\0";
 
-            // Is this a default game or a texture pack game?
+            
             if (sessionInfo->data.texturePackParentId != 0) {
-                // Do we have the texture pack
+                
                 Minecraft* pMinecraft = Minecraft::GetInstance();
                 TexturePack* tp = pMinecraft->skins->getTexturePackById(
                     sessionInfo->data.texturePackParentId);
@@ -1231,7 +1231,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
                     app.GetTPD(sessionInfo->data.texturePackParentId, &pbData,
                                &dwBytes);
 
-                    // is it in the tpd data ?
+                    
                     unsigned int tpdImageBytes = 0;
                     app.GetFileFromTPD(eTPDFileType_Icon, pbData, dwBytes,
                                        &imageData, &tpdImageBytes);
@@ -1252,7 +1252,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
                     }
                 }
             } else {
-                // default texture pack
+                
                 Minecraft* pMinecraft = Minecraft::GetInstance();
                 TexturePack* tp = pMinecraft->skins->getTexturePackByIndex(0);
 
@@ -1285,7 +1285,7 @@ void UIScene_LoadOrJoinMenu::HandleDLCMountingComplete() { Initialise(); }
 
 bool UIScene_LoadOrJoinMenu::DoesSavesListHaveFocus() {
     if (m_buttonListSaves.hasFocus()) {
-        // check it's not the first or second element (new world or tutorial)
+        
         if (m_iSaveListIndex > (m_iDefaultButtonsC - 1)) {
             return true;
         }
@@ -1295,7 +1295,7 @@ bool UIScene_LoadOrJoinMenu::DoesSavesListHaveFocus() {
 
 bool UIScene_LoadOrJoinMenu::DoesMashUpWorldHaveFocus() {
     if (m_buttonListSaves.hasFocus()) {
-        // check it's not the first or second element (new world or tutorial)
+        
         if (m_iSaveListIndex > (m_iDefaultButtonsC - 1)) {
             return false;
         }
@@ -1320,8 +1320,8 @@ void UIScene_LoadOrJoinMenu::handleTimerComplete(int id) {
                 ProfileManager.AllowedToPlayMultiplayer(m_iPad);
             if (bMultiplayerAllowed != m_bMultiplayerAllowed) {
                 if (bMultiplayerAllowed) {
-                    // 					m_CheckboxOnline.SetEnable(true);
-                    // 					m_CheckboxPrivate.SetEnable(true);
+                    
+                    
                 } else {
                     m_bInParty = false;
                     m_buttonListGames.clearList();
@@ -1332,17 +1332,17 @@ void UIScene_LoadOrJoinMenu::handleTimerComplete(int id) {
                 m_bMultiplayerAllowed = bMultiplayerAllowed;
             }
         } break;
-            // 4J-PB - Only Xbox will not have trial DLC patched into the game
+            
     }
 }
 
 void UIScene_LoadOrJoinMenu::LoadSaveFromDisk(
-    File* saveFile, ESavePlatform savePlatform /*= SAVE_FILE_PLATFORM_LOCAL*/) {
-    // we'll only be coming in here when the tutorial is loaded now
+    File* saveFile, ESavePlatform savePlatform ) {
+    
 
     StorageManager.ResetSaveData();
 
-    // Make our next save default to the name of the level
+    
     StorageManager.SetSaveTitle(saveFile->getName().c_str());
 
     int64_t fileSize = saveFile->length();
@@ -1397,16 +1397,16 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromCloud() {
     wchar_t wFileName[128];
     mbstowcs(
         wFileName, app.getRemoteStorage()->getLocalFilename(),
-        strlen(app.getRemoteStorage()->getLocalFilename()) + 1);  // plus null
+        strlen(app.getRemoteStorage()->getLocalFilename()) + 1);  
     File cloudFile(wFileName);
 
     StorageManager.ResetSaveData();
 
-    // Make our next save default to the name of the level
+    
     wchar_t wSaveName[128];
     mbstowcs(
         wSaveName, app.getRemoteStorage()->getSaveNameUTF8(),
-        strlen(app.getRemoteStorage()->getSaveNameUTF8()) + 1);  // plus null
+        strlen(app.getRemoteStorage()->getSaveNameUTF8()) + 1);  
     StorageManager.SetSaveTitle(wSaveName);
 
     int64_t fileSize = cloudFile.length();
@@ -1462,10 +1462,10 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromCloud() {
 int UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)pParam;
-    // results switched for this dialog
+    
 
-    // Check that we have a valid save selected (can get a bad index if the save
-    // list has been refreshed)
+    
+    
     bool validSelection =
         pClass->m_iDefaultButtonsC != 0 &&
         pClass->m_iSaveListIndex >= pClass->m_iDefaultButtonsC;
@@ -1502,7 +1502,7 @@ int UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned(
 
 int UIScene_LoadOrJoinMenu::deleteSaveDataReturned(bool bRes) {
     if (bRes) {
-        // wipe the list and repopulate it
+        
         m_iState = e_SavesRepopulateAfterDelete;
     } else
         m_bIgnoreInput = false;
@@ -1526,15 +1526,15 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)pParam;
 
-    // results switched for this dialog
-    // EMessage_ResultAccept means cancel
+    
+    
     switch (result) {
-        case C4JStorage::EMessage_ResultDecline:  // rename
+        case C4JStorage::EMessage_ResultDecline:  
         {
             pClass->m_bIgnoreInput = true;
-            // bring up a keyboard
+            
             wchar_t wSaveName[128];
-            // CD - Fix - We must memset the SaveName
+            
             memset(wSaveName, 0, 128 * sizeof(wchar_t));
             mbstowcs(
                 wSaveName,
@@ -1542,7 +1542,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(
                     ->m_saveDetails[pClass->m_iSaveListIndex -
                                     pClass->m_iDefaultButtonsC]
                     .UTF8SaveName,
-                strlen(pClass->m_saveDetails->UTF8SaveName) + 1);  // plus null
+                strlen(pClass->m_saveDetails->UTF8SaveName) + 1);  
             wchar_t* ptr = wSaveName;
             InputManager.RequestKeyboard(
                 app.GetString(IDS_RENAME_WORLD_TITLE), wSaveName, 0, 25,
@@ -1552,11 +1552,11 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(
                 C_4JInput::EKeyboardMode_Default);
         } break;
 
-        case C4JStorage::EMessage_ResultThirdOption:  // delete -
+        case C4JStorage::EMessage_ResultThirdOption:  
         {
-            // delete the save game
-            // Have to ask the player if they are sure they want to delete this
-            // game
+            
+            
+            
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_CONFIRM_CANCEL;
             uiIDA[1] = IDS_CONFIRM_OK;
@@ -1566,7 +1566,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(
         } break;
 
 #if defined(SONY_REMOTE_STORAGE_UPLOAD)
-        case C4JStorage::EMessage_ResultFourthOption:  // upload to cloud
+        case C4JStorage::EMessage_ResultFourthOption:  
         {
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_CONFIRM_OK;
@@ -1581,7 +1581,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(
 
         case C4JStorage::EMessage_Cancelled:
         default: {
-            // reset the tooltips
+            
             pClass->updateTooltips();
             pClass->m_bIgnoreInput = false;
         } break;
@@ -1593,10 +1593,10 @@ int UIScene_LoadOrJoinMenu::TexturePackDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)pParam;
 
-    // Exit with or without saving
+    
     if (result == C4JStorage::EMessage_ResultAccept) {
-        // we need to enable background downloading for the DLC
-        // XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_ALWAYS_ALLOW);
+        
+        
     }
     pClass->m_bIgnoreInput = false;
     return 0;
@@ -1677,9 +1677,9 @@ int UIScene_LoadOrJoinMenu::RemoteSaveNotFoundCallback(
     return 0;
 }
 
-// MGH -  added this global to force the delete of the previous data, for the
-// remote storage saves
-//	need to speak to Chris why this is necessary
+
+
+
 bool g_bForceVitaSaveWipe = false;
 
 int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
@@ -1693,7 +1693,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
     bool bSaveFileCreated = false;
     wchar_t wSaveName[128];
 
-    // get the save file size
+    
     pMinecraft->progressRenderer->progressStagePercentage(0);
     pMinecraft->progressRenderer->progressStart(
         IDS_TOOLTIPS_SAVETRANSFER_DOWNLOAD);
@@ -1725,8 +1725,8 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                             pClass->m_eSaveTransferState =
                                 eSaveTransfer_CreateDummyFile;
                         } else {
-                            // must be a newer version of the save in the cloud
-                            // that we don't support yet
+                            
+                            
                             unsigned int uiIDA[1];
                             uiIDA[0] = IDS_CONFIRM_OK;
                             ui.RequestAlertMessage(
@@ -1736,8 +1736,8 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                                 RemoteSaveNotFoundCallback, pClass);
                         }
                     } else {
-                        // no save available, inform the user about the
-                        // functionality
+                        
+                        
                         unsigned int uiIDA[1];
                         uiIDA[0] = IDS_CONFIRM_OK;
                         ui.RequestAlertMessage(
@@ -1752,11 +1752,11 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                 StorageManager.ResetSaveData();
                 byte* compData = (byte*)StorageManager.AllocateSaveData(
                     app.getRemoteStorage()->getSaveFilesize());
-                // Make our next save default to the name of the level
+                
                 const char* pNameUTF8 =
                     app.getRemoteStorage()->getSaveNameUTF8();
                 mbstowcs(wSaveName, pNameUTF8,
-                         strlen(pNameUTF8) + 1);  // plus null
+                         strlen(pNameUTF8) + 1);  
                 StorageManager.SetSaveTitle(wSaveName);
                 std::uint8_t* pbThumbnailData = nullptr;
                 unsigned int dwThumbnailDataSize = 0;
@@ -1766,14 +1766,14 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
 
                 StorageManager.GetDefaultSaveImage(
                     &pbDataSaveImage,
-                    &dwDataSizeSaveImage);  // Get the default save thumbnail
-                                            // (as set by SetDefaultImages) for
-                                            // use on saving games t
+                    &dwDataSizeSaveImage);  
+                                            
+                                            
                 StorageManager.GetDefaultSaveThumbnail(
                     &pbThumbnailData,
-                    &dwThumbnailDataSize);  // Get the default save image (as
-                                            // set by SetDefaultImages) for use
-                                            // on saving games that
+                    &dwThumbnailDataSize);  
+                                            
+                                            
 
                 std::uint8_t bTextMetadata[88];
                 memset(bTextMetadata, 0, 88);
@@ -1783,7 +1783,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                     bTextMetadata, app.getRemoteStorage()->getSaveSeed(), true,
                     hostOptions, app.getRemoteStorage()->getSaveTexturePack());
 
-                // set the icon and save image
+                
                 StorageManager.SetSaveImages(
                     pbThumbnailData, dwThumbnailDataSize, pbDataSaveImage,
                     dwDataSizeSaveImage, bTextMetadata, iTextMetadataBytes);
@@ -1805,15 +1805,15 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
             case eSaveTransfer_CreatingDummyFile:
                 break;
             case eSaveTransfer_GetSavesInfo: {
-                // we can't cancel here, we need the saves info so we can delete
-                // the file
+                
+                
                 if (pClass->m_saveTransferDownloadCancelled) {
                     wchar_t wcTemp[256];
                     swprintf(
                         wcTemp, 256,
                         app.GetString(
-                            IDS_CANCEL));  // MGH - should change this string to
-                                           // "cancelling download"
+                            IDS_CANCEL));  
+                                           
                     m_wstrStageText = wcTemp;
                     pMinecraft->progressRenderer->progressStage(
                         m_wstrStageText);
@@ -1837,8 +1837,8 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                     swprintf(
                         wcTemp, 256,
                         app.GetString(
-                            IDS_CANCEL));  // MGH - should change this string to
-                                           // "cancelling download"
+                            IDS_CANCEL));  
+                                           
                     m_wstrStageText = wcTemp;
                     pMinecraft->progressRenderer->progressStage(
                         m_wstrStageText);
@@ -1877,8 +1877,8 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                 pMinecraft->progressRenderer->progressStagePercentage(
                     dataProgress);
 
-                // swprintf(wcTemp, 256, L"Downloading data : %d",
-                // dataProgress);//app.GetString(IDS_SAVETRANSFER_STAGE_GET_DATA),0,pClass->m_ulFileSize);
+                
+                
                 swprintf(wcTemp, 256,
                          app.GetString(IDS_SAVETRANSFER_STAGE_GET_DATA),
                          dataProgress);
@@ -1904,7 +1904,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                 for (int i = 0; i < pSaveDetails->iSaveC; i++) {
                     if (strcmp(pSaveDetails->SaveInfoA[i].UTF8SaveFilename,
                                pClass->m_downloadedUniqueFilename) == 0) {
-                        // found it
+                        
                         saveInfoIndex = i;
                     }
                 }
@@ -1949,15 +1949,15 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
 
                     StorageManager.GetDefaultSaveImage(
                         &pbDataSaveImage,
-                        &dwDataSizeSaveImage);  // Get the default save
-                                                // thumbnail (as set by
-                                                // SetDefaultImages) for use on
-                                                // saving games t
+                        &dwDataSizeSaveImage);  
+                                                
+                                                
+                                                
                     StorageManager.GetDefaultSaveThumbnail(
                         &pbThumbnailData,
-                        &dwThumbnailDataSize);  // Get the default save image
-                                                // (as set by SetDefaultImages)
-                                                // for use on saving games that
+                        &dwThumbnailDataSize);  
+                                                
+                                                
 
                     std::uint8_t bTextMetadata[88];
                     memset(bTextMetadata, 0, 88);
@@ -1970,7 +1970,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                         true, remoteHostOptions,
                         app.getRemoteStorage()->getSaveTexturePack());
 
-                    // set the icon and save image
+                    
                     StorageManager.SetSaveImages(
                         pbThumbnailData, dwThumbnailDataSize, pbDataSaveImage,
                         dwDataSizeSaveImage, bTextMetadata, iTextMetadataBytes);
@@ -1997,8 +1997,8 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
 #endif
             } break;
             case eSaveTransfer_Converting: {
-                pSave->ConvertToLocalPlatform();  // check if we need to convert
-                                                  // this file from PS3->PS4
+                pSave->ConvertToLocalPlatform();  
+                                                  
                 pClass->m_eSaveTransferState = eSaveTransfer_Saving;
                 pMinecraft->progressRenderer->progressStage(
                     IDS_SAVETRANSFER_STAGE_SAVING);
@@ -2007,18 +2007,18 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                     pClass->m_downloadedUniqueFilename);
 
                 app.getRemoteStorage()
-                    ->waitForStorageManagerIdle();  // we need to wait for the
-                                                    // save system to be idle
-                                                    // here, as Flush doesn't
-                                                    // check for it.
+                    ->waitForStorageManagerIdle();  
+                                                    
+                                                    
+                                                    
                 pSave->Flush(false, false);
             } break;
             case eSaveTransfer_Saving: {
-                // On Durango/Orbis, we need to wait for all the asynchronous
-                // saving processes to complete before destroying the levels, as
-                // that will ultimately delete the directory level storage &
-                // therefore the ConsoleSaveSplit instance, which needs to be
-                // around until all the sub files have completed saving.
+                
+                
+                
+                
+                
 
                 delete pSave;
 
@@ -2028,16 +2028,16 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
             } break;
 
             case eSaveTransfer_Succeeded: {
-                // if we've arrived here, the save has been created successfully
+                
                 pClass->m_iState = e_SavesRepopulate;
                 pClass->updateTooltips();
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
                 app.getRemoteStorage()
-                    ->waitForStorageManagerIdle();  // wait for everything to
-                                                    // complete before we hand
-                                                    // control back to the
-                                                    // player
+                    ->waitForStorageManagerIdle();  
+                                                    
+                                                    
+                                                    
                 ui.RequestErrorMessage(IDS_TOOLTIPS_SAVETRANSFER_DOWNLOAD,
                                        IDS_SAVE_TRANSFER_DOWNLOADCOMPLETE,
                                        uiIDA, 1, ProfileManager.GetPrimaryPad(),
@@ -2045,10 +2045,10 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                 pClass->m_eSaveTransferState = eSaveTransfer_Finished;
             } break;
 
-            case eSaveTransfer_Cancelled:  // this is no longer used
+            case eSaveTransfer_Cancelled:  
             {
-                assert(0);  // pClass->m_eSaveTransferState =
-                            // eSaveTransfer_Idle;
+                assert(0);  
+                            
             } break;
             case eSaveTransfer_Error: {
                 if (bSaveFileCreated) {
@@ -2056,24 +2056,24 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                         wchar_t wcTemp[256];
                         swprintf(wcTemp, 256,
                                  app.GetString(
-                                     IDS_CANCEL));  // MGH - should change this
-                                                    // string to "cancelling
-                                                    // download"
+                                     IDS_CANCEL));  
+                                                    
+                                                    
                         m_wstrStageText = wcTemp;
                         pMinecraft->progressRenderer->progressStage(
                             m_wstrStageText);
                         pMinecraft->progressRenderer->progressStage(
                             m_wstrStageText);
                     }
-                    // if the save file has already been created we have to
-                    // delete it again if there's been an error
+                    
+                    
                     PSAVE_DETAILS pSaveDetails =
                         StorageManager.ReturnSavesInfo();
                     int saveInfoIndex = -1;
                     for (int i = 0; i < pSaveDetails->iSaveC; i++) {
                         if (strcmp(pSaveDetails->SaveInfoA[i].UTF8SaveFilename,
                                    pClass->m_downloadedUniqueFilename) == 0) {
-                            // found it
+                            
                             saveInfoIndex = i;
                         }
                     }
@@ -2085,7 +2085,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                         pClass->m_eSaveTransferState =
                             eSaveTransfer_ErrorMesssage;
                     } else {
-                        // delete the save file
+                        
                         app.getRemoteStorage()->waitForStorageManagerIdle();
                         C4JStorage::ESaveGameState eDeleteStatus =
                             StorageManager.DeleteSaveData(
@@ -2113,10 +2113,10 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                 break;
             case eSaveTransfer_ErrorMesssage: {
                 app.getRemoteStorage()
-                    ->waitForStorageManagerIdle();  // wait for everything to
-                                                    // complete before we hand
-                                                    // control back to the
-                                                    // player
+                    ->waitForStorageManagerIdle();  
+                                                    
+                                                    
+                                                    
                 if (pClass->m_saveTransferDownloadCancelled) {
                     pClass->m_eSaveTransferState = eSaveTransfer_Idle;
                 } else {
@@ -2126,14 +2126,14 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                     if (!ProfileManager.IsSignedInLive(
                             ProfileManager.GetPrimaryPad())) {
                         errorMessage =
-                            IDS_ERROR_NETWORK;  // show "A network error has
-                                                // occurred."
+                            IDS_ERROR_NETWORK;  
+                                                
 #if defined(__VITA__)
                         if (!ProfileManager.IsSignedInPSN(
                                 ProfileManager.GetPrimaryPad())) {
                             errorMessage =
-                                IDS_PRO_NOTONLINE_TEXT;  // show "not signed
-                                                         // into PSN"
+                                IDS_PRO_NOTONLINE_TEXT;  
+                                                         
                         }
 #endif
                     }
@@ -2143,8 +2143,8 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                                            CrossSaveFinishedCallback, pClass);
                     pClass->m_eSaveTransferState = eSaveTransfer_Finished;
                 }
-                if (bSaveFileCreated)  // save file has been created, then
-                                       // deleted.
+                if (bSaveFileCreated)  
+                                       
                     pClass->m_iState = e_SavesRepopulateAfterDelete;
                 else
                     pClass->m_iState = e_SavesRepopulate;
@@ -2152,7 +2152,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
             } break;
             case eSaveTransfer_Finished: {
             }
-            // waiting to dismiss the dialog
+            
             break;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
@@ -2184,8 +2184,8 @@ void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(void* lpParam) {
     pClass->m_saveTransferDownloadCancelled = true;
     ui.SetTooltips(
         DEFAULT_XUI_MENU_USER, -1, -1, -1, -1, -1, -1, -1,
-        -1);  // MGH -  added - remove the "cancel" tooltip, so the player knows
-              // it's underway (really needs a "cancelling" message)
+        -1);  
+              
 }
 
 #endif

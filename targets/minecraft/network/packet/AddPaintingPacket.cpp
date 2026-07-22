@@ -23,7 +23,7 @@ AddPaintingPacket::AddPaintingPacket(std::shared_ptr<Painting> e) {
     motive = e->motive->name;
 }
 
-void AddPaintingPacket::read(DataInputStream* dis)  // throws IOException
+void AddPaintingPacket::read(DataInputStream* dis)  
 {
     id = dis->readInt();
     motive = readUtf(dis, Painting::Motive::MAX_MOTIVE_NAME_LENGTH);
@@ -33,7 +33,7 @@ void AddPaintingPacket::read(DataInputStream* dis)  // throws IOException
     dir = dis->readInt();
 }
 
-void AddPaintingPacket::write(DataOutputStream* dos)  // throws IOException
+void AddPaintingPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(id);
     writeUtf(motive, dos);

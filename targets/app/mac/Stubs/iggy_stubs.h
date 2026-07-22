@@ -39,7 +39,7 @@ RADEXPFUNC inline void RADEXPLINK IggyPlayerDrawTile(Iggy* f, S32 x0, S32 y0,
 }
 RADEXPFUNC inline void RADEXPLINK IggyPlayerDrawTilesEnd(Iggy* f) { STUBBED; }
 
-// Each fake Iggy player gets its own state block
+
 struct FakeIggyPlayer {
     int tickCount;
     bool needsTick;
@@ -47,7 +47,7 @@ struct FakeIggyPlayer {
     void* userdata;
 };
 
-// Simple player pool
+
 static FakeIggyPlayer s_fakePlayers[64];
 static int s_fakePlayerCount = 0;
 
@@ -58,7 +58,7 @@ RADEXPFUNC inline Iggy* RADEXPLINK IggyPlayerCreateFromMemory(
     fp->tickCount = 0;
     fp->needsTick = true;
     fp->userdata = nullptr;
-    // Default to 1920x1080 at 30fps
+    
     memset(&fp->props, 0, sizeof(fp->props));
     fp->props.movie_width_in_pixels = 1920;
     fp->props.movie_height_in_pixels = 1080;
@@ -113,12 +113,12 @@ RADEXPFUNC inline void RADEXPLINK IggyPlayerTickRS(Iggy* player) {
     FakeIggyPlayer* fp = getFakePlayer(player);
     if (fp) {
         fp->tickCount++;
-        // Allow one tick per frame cycle
+        
         fp->needsTick = false;
     }
 }
 RADEXPFUNC inline void RADEXPLINK IggyPlayerDraw(Iggy* f) {
-    // Re-arm tick for next frame
+    
     FakeIggyPlayer* fp = getFakePlayer(f);
     if (fp) fp->needsTick = true;
 }
@@ -184,7 +184,7 @@ RADEXPFUNC inline void RADEXPLINK IggyInit(IggyAllocator* allocator) {
     STUBBED;
 }
 RADEXPFUNC inline void RADEXPLINK
-IggySetWarningCallback(Iggy_WarningFunction* /*error*/, void* /*user_callback_data*/) {
+IggySetWarningCallback(Iggy_WarningFunction* , void* ) {
     STUBBED;
 }
 RADEXPFUNC inline void RADEXPLINK IggySetTraceCallbackUTF8(
@@ -230,16 +230,16 @@ RADEXPFUNC inline void RADEXPLINK IggyLibraryDestroy(IggyLibrary lib) {
     STUBBED;
 }
 
-// Iggy is fake
+
 static GDrawFunctions* s_iggy_gdraw_funcs = 0;
 RADEXPFUNC inline void RADEXPLINK IggySetGDraw(GDrawFunctions* gdraw_funcs) {
     s_iggy_gdraw_funcs = gdraw_funcs;
 }
 
-// Audio stubs
+
 RADEXPFUNC inline void RADEXPLINK IggyAudioUseDefault(void) { STUBBED; }
 
-// Explorer/Perfmon, shit implmentation
+
 RADEXPFUNC inline void* RADEXPLINK IggyExpCreate(const char* host, int port,
                                                  void* storage,
                                                  int storage_size) {
@@ -264,7 +264,7 @@ IggyValueGetTypeRS(IggyValuePath* var, IggyName sub_name,
     return IGGY_RESULT_SUCCESS;
 }
 
-// GDraw memory/warning functions are defined in gdraw_glfw.c (C linkage)
-// Juicey you stupid idiot do NOT define them here
 
-#endif  // IGGYSTUBS_H
+
+
+#endif  

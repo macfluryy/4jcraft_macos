@@ -17,31 +17,31 @@ WolfModel::WolfModel() {
     float headHeight = 12 + 9.5f - legSize;
 
     head = new ModelPart(this, 0, 0);
-    head->addBox(-3, -3, -2, 6, 6, 4, g);  // Head
+    head->addBox(-3, -3, -2, 6, 6, 4, g);  
     head->setPos(-1, headHeight, -7);
 
     body = new ModelPart(this, 18, 14);
-    body->addBox(-4, -2, -3, 6, 9, 6, g);  // Body
+    body->addBox(-4, -2, -3, 6, 9, 6, g);  
     body->setPos(0, 11 + 11 - legSize, 2);
 
     upperBody = new ModelPart(this, 21, 0);
-    upperBody->addBox(-4, -3, -3, 8, 6, 7, g);  // Body
+    upperBody->addBox(-4, -3, -3, 8, 6, 7, g);  
     upperBody->setPos(-1.0f, 11 + 11.0f - legSize, 2);
 
     leg0 = new ModelPart(this, 0, 18);
-    leg0->addBox(-1, 0, -1, 2, legSize, 2, g);  // Leg0
+    leg0->addBox(-1, 0, -1, 2, legSize, 2, g);  
     leg0->setPos(-2.5f, 18 + 6 - legSize, 7);
 
     leg1 = new ModelPart(this, 0, 18);
-    leg1->addBox(-1, 0, -1, 2, legSize, 2, g);  // Leg1
+    leg1->addBox(-1, 0, -1, 2, legSize, 2, g);  
     leg1->setPos(.5f, 18 + 6 - legSize, 7);
 
     leg2 = new ModelPart(this, 0, 18);
-    leg2->addBox(-1, 0, -1, 2, legSize, 2, g);  // Leg2
+    leg2->addBox(-1, 0, -1, 2, legSize, 2, g);  
     leg2->setPos(-2.5f, 18 + 6 - legSize, -4);
 
     leg3 = new ModelPart(this, 0, 18);
-    leg3->addBox(-1, 0, -1, 2, legSize, 2, g);  // Leg3
+    leg3->addBox(-1, 0, -1, 2, legSize, 2, g);  
     leg3->setPos(.5f, 18 + 6 - legSize, -4);
 
     tail = new ModelPart(this, 9, 18);
@@ -52,8 +52,8 @@ WolfModel::WolfModel() {
     head->texOffs(16, 14)->addBox(1, -5, 0, 2, 2, 1, g);
     head->texOffs(0, 10)->addBox(-1.5f, 0, -5, 3, 3, 4, g);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     head->compile(1.0f / 16.0f);
     body->compile(1.0f / 16.0f);
     upperBody->compile(1.0f / 16.0f);

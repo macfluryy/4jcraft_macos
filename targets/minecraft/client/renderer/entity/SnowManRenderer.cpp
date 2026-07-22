@@ -27,9 +27,9 @@ SnowManRenderer::SnowManRenderer() : MobRenderer(new SnowManModel(), 0.5f) {
 
 void SnowManRenderer::additionalRendering(std::shared_ptr<LivingEntity> _mob,
                                           float a) {
-    // 4J - original version used generics and thus had an input parameter of
-    // type SnowMan rather than shared_ptr<Mob>  we have here - do some casting
-    // around instead
+    
+    
+    
     std::shared_ptr<SnowMan> mob = std::dynamic_pointer_cast<SnowMan>(_mob);
 
     MobRenderer::additionalRendering(mob, a);

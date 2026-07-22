@@ -16,8 +16,8 @@ public:
     double x, y, z;
     float r;
     std::vector<TilePos>
-        toBlow;  // 4J - was an unorderedset but doesn't require any features of
-                 // that apart from making it match the ctor toBlow type
+        toBlow;  
+                 
     bool m_bKnockbackOnly;
 
 private:

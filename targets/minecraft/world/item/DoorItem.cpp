@@ -37,10 +37,10 @@ bool DoorItem::useOn(std::shared_ptr<ItemInstance> instance,
         return false;
     if (!tile->mayPlace(level, x, y, z)) return false;
 
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
     if (bTestUseOnOnly) return true;
 
-    // 4J-JEV: Hook for durango 'BlockPlaced' event.
+    
     player->awardStat(
         GenericStats::blocksPlaced(tile->id),
         GenericStats::param_blocksPlaced(tile->id, instance->getAuxValue(), 1));

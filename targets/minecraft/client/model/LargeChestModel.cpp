@@ -21,8 +21,8 @@ LargeChestModel::LargeChestModel() {
     bottom->y = 6;
     bottom->z = 1;
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     lid->compile(1.0f / 16.0f);
     lock->compile(1.0f / 16.0f);
     bottom->compile(1.0f / 16.0f);

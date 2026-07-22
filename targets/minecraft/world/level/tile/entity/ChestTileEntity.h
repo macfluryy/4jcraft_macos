@@ -18,7 +18,7 @@ public:
     eINSTANCEOF GetType() { return eTYPE_CHESTTILEENTITY; }
     static TileEntity* create() { return new ChestTileEntity(); }
 
-    int getContainerType();  // 4J-Added;
+    int getContainerType();  
 
     using TileEntity::setChanged;
 
@@ -26,15 +26,15 @@ private:
     void _init(bool isBonusChest);
 
 public:
-    ChestTileEntity(bool isBonusChest = false);            // 4J added param
-    ChestTileEntity(int type, bool isBonusChest = false);  // 4J added param
+    ChestTileEntity(bool isBonusChest = false);            
+    ChestTileEntity(int type, bool isBonusChest = false);  
     virtual ~ChestTileEntity();
 
 private:
     std::vector<std::shared_ptr<ItemInstance>>* items;
 
 public:
-    bool isBonusChest;  // 4J added
+    bool isBonusChest;  
     bool hasCheckedNeighbors;
     std::weak_ptr<ChestTileEntity> n;
     std::weak_ptr<ChestTileEntity> e;
@@ -87,6 +87,6 @@ public:
     virtual void setRemoved();
     virtual int getType();
 
-    // 4J Added
+    
     virtual std::shared_ptr<TileEntity> clone();
 };

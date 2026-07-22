@@ -11,7 +11,7 @@ class LiquidTileDynamic : public LiquidTile {
     friend class Tile;
 
 private:
-    // 4J Added
+    
     typedef struct _LiquidTickData {
         Level* level;
         int x, y, z;
@@ -20,7 +20,7 @@ private:
             : level(level), x(x), y(y), z(z), random(random) {}
     } LiquidTickData;
     std::deque<LiquidTickData>
-        m_tilesToTick;  // For an iterative version of instatick
+        m_tilesToTick;  
     bool m_iterativeInstatick;
 
 protected:
@@ -35,7 +35,7 @@ public:
     virtual bool isPathfindable(LevelSource* level, int x, int y, int z);
 
 private:
-    // 4J Added
+    
     void iterativeTick(Level* level, int x, int y, int z, Random* random);
     void mainTick(Level* level, int x, int y, int z, Random* random);
 

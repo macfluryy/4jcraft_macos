@@ -38,21 +38,21 @@ AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
     id = player->entityId;
     name = player->getName();
 
-    // 4J Stu - Send "previously sent" value of position as well so that we stay
-    // in sync
-    x = xp;  // Mth::floor(player->x * 32);
-    y = yp;  // Mth::floor(player->y * 32);
-    z = zp;  // Mth::floor(player->z * 32);
-    // 4J - changed - send current "previously sent" value of rotations to put
-    // this in sync with other clients
+    
+    
+    x = xp;  
+    y = yp;  
+    z = zp;  
+    
+    
     yRot = yRotp;
     xRot = xRotp;
-    yHeadRot = yHeadRotp;  // 4J Added
-    //    yRot = (byte) (player->yRot * 256 / 360);
-    //    xRot = (byte) (player->xRot * 256 / 360);
+    yHeadRot = yHeadRotp;  
+    
+    
 
-    // printf("%d: New add player (%f,%f,%f) : (%d,%d,%d) : xRot %d, yRot
-    // %d\n",id,player->x,player->y,player->z,x,y,z,xRot,yRot);
+    
+    
 
     std::shared_ptr<ItemInstance> itemInstance =
         player->inventory->getSelected();
@@ -69,7 +69,7 @@ AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
     unpack = nullptr;
 }
 
-void AddPlayerPacket::read(DataInputStream* dis)  // throws IOException
+void AddPlayerPacket::read(DataInputStream* dis)  
 {
     id = dis->readInt();
     name = readUtf(dis, Player::MAX_NAME_LENGTH);
@@ -78,7 +78,7 @@ void AddPlayerPacket::read(DataInputStream* dis)  // throws IOException
     z = dis->readInt();
     yRot = dis->readByte();
     xRot = dis->readByte();
-    yHeadRot = dis->readByte();  // 4J Added
+    yHeadRot = dis->readByte();  
     carriedItem = dis->readShort();
     xuid = dis->readPlayerUID();
     OnlineXuid = dis->readPlayerUID();
@@ -92,7 +92,7 @@ void AddPlayerPacket::read(DataInputStream* dis)  // throws IOException
     unpack = SynchedEntityData::unpack(dis);
 }
 
-void AddPlayerPacket::write(DataOutputStream* dos)  // throws IOException
+void AddPlayerPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(id);
     writeUtf(name, dos);
@@ -101,7 +101,7 @@ void AddPlayerPacket::write(DataOutputStream* dos)  // throws IOException
     dos->writeInt(z);
     dos->writeByte(static_cast<std::uint8_t>(yRot));
     dos->writeByte(static_cast<std::uint8_t>(xRot));
-    dos->writeByte(static_cast<std::uint8_t>(yHeadRot));  // 4J Added
+    dos->writeByte(static_cast<std::uint8_t>(yHeadRot));  
     dos->writeShort(carriedItem);
     dos->writePlayerUID(xuid);
     dos->writePlayerUID(OnlineXuid);
@@ -126,9 +126,9 @@ int AddPlayerPacket::getEstimatedSize() {
     if (entityData != nullptr) {
         iSize += entityData->getSizeInBytes();
     } else if (unpack != nullptr) {
-        // 4J Stu - This is an incoming value which we aren't currently
-        // analysing
-        // iSize += unpack->get
+        
+        
+        
     }
 
     return iSize;

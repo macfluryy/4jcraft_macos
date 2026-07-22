@@ -8,7 +8,7 @@ class VillagerModel : public Model {
 public:
     ModelPart *head, *body, *arms, *leg0, *leg1, *nose;
 
-    void _init(float g, float yOffset, int xTexSize, int yTexSize);  // 4J added
+    void _init(float g, float yOffset, int xTexSize, int yTexSize);  
     VillagerModel(float g, float yOffset, int xTexSize, int yTexSize);
     VillagerModel(float g);
     virtual void render(std::shared_ptr<Entity> entity, float time, float r,

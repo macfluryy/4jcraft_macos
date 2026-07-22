@@ -43,13 +43,13 @@ void UIControl_MinecraftPlayer::render(IggyCustomDrawCallbackRegion* region) {
     float xo = width / 2;
     float yo = height;
 
-    // dynamic y offset according to region height
+    
     glTranslatef(xo, yo - (height / 9.0f), 50.0f);
 
     float ss;
 
-    // Base scale on height of this control
-    // Potentially we might want separate x & y scales here
+    
+    
     ss = width / (m_fScreenWidth / m_fScreenHeight);
 
     glScalef(-ss, ss, ss);
@@ -63,12 +63,12 @@ void UIControl_MinecraftPlayer::render(IggyCustomDrawCallbackRegion* region) {
     float oxr = pMinecraft->localplayers[containerMenu->getPad()]->xRot;
     float oyhr = pMinecraft->localplayers[containerMenu->getPad()]->yHeadRot;
 
-    // float xd = ( matrix._41 + ( (bwidth*matrix._11)/2) ) - m_pointerPos.x;
+    
     float xd = (m_x + m_width / 2) - containerMenu->m_pointerPos.x;
 
-    // Need to base Y on head position, not centre of mass
-    // float yd = ( matrix._42 + ( (bheight*matrix._22) / 2) - 40 ) -
-    // m_pointerPos.y;
+    
+    
+    
     float yd = (m_y + m_height / 2 - 40) - containerMenu->m_pointerPos.y;
 
     glRotatef(45 + 90, 0, 1, 0);
@@ -85,20 +85,20 @@ void UIControl_MinecraftPlayer::render(IggyCustomDrawCallbackRegion* region) {
         -(float)atan(yd / 40.0f) * 20;
     pMinecraft->localplayers[containerMenu->getPad()]->yHeadRot =
         pMinecraft->localplayers[containerMenu->getPad()]->yRot;
-    // pMinecraft->localplayers[m_iPad]->glow = 1;
+    
     glTranslatef(
         0, pMinecraft->localplayers[containerMenu->getPad()]->heightOffset, 0);
     EntityRenderDispatcher::instance->playerRotY = 180;
 
-    // 4J Stu - Turning on hideGui while we do this stops the name rendering in
-    // split-screen
+    
+    
     bool wasHidingGui = pMinecraft->options->hideGui;
     pMinecraft->options->hideGui = true;
     EntityRenderDispatcher::instance->render(
         pMinecraft->localplayers[containerMenu->getPad()], 0, 0, 0, 0, 1, false,
         false);
     pMinecraft->options->hideGui = wasHidingGui;
-    // pMinecraft->localplayers[m_iPad]->glow = 0;
+    
 
     pMinecraft->localplayers[containerMenu->getPad()]->yBodyRot = oybr;
     pMinecraft->localplayers[containerMenu->getPad()]->yRot = oyr;

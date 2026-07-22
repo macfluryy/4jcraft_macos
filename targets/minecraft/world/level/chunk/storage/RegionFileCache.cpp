@@ -25,16 +25,16 @@ bool RegionFileCache::useSplitSaves(ESavePlatform platform) {
 
 RegionFile* RegionFileCache::_getRegionFile(
     ConsoleSaveFile* saveFile, const std::wstring& prefix, int chunkX,
-    int chunkZ)  // 4J - TODO was synchronized
+    int chunkZ)  
 {
-    // 4J Jev - changed back to use of the File class.
-    // char file[MAX_PATH_SIZE];
-    // sprintf(file,"%s\\region\\r.%d.%d.mcr",basePath,chunkX >> 5,chunkZ >> 5);
+    
+    
+    
 
-    // File regionDir(basePath, L"region");
+    
 
-    // File file(regionDir, wstring(L"r.") + toWString(chunkX>>5) + L"." +
-    // toWString(chunkZ>>5) + L".mcr" );
+    
+    
     File file;
     if (useSplitSaves(saveFile->getSavePlatform())) {
         file = File(prefix + std::wstring(L"r.") + toWString(chunkX >> 4) +
@@ -48,41 +48,41 @@ RegionFile* RegionFileCache::_getRegionFile(
     auto it = cache.find(file);
     if (it != cache.end()) ref = it->second;
 
-    // 4J Jev, put back in.
+    
     if (ref != nullptr) {
         return ref;
     }
 
-    // 4J Stu - Remove for new save files
-    /*
-if (!regionDir.exists())
-    {
-    regionDir.mkdirs();
-}
-    */
+    
+    
+
+
+
+
+
     if (cache.size() >= MAX_CACHE_SIZE) {
         _clear();
     }
 
     RegionFile* reg = new RegionFile(saveFile, &file);
-    cache[file] = reg;  // 4J - this was originally a softReferenc
+    cache[file] = reg;  
     return reg;
 }
 
-void RegionFileCache::_clear()  // 4J - TODO was synchronized
+void RegionFileCache::_clear()  
 {
     auto itEnd = cache.end();
     for (auto it = cache.begin(); it != itEnd; it++) {
-        // 4J - removed try/catch
-        //        try {
+        
+        
         RegionFile* regionFile = it->second;
         if (regionFile != nullptr) {
             regionFile->close();
         }
         delete regionFile;
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //        }
+        
+        
+        
     }
     cache.clear();
 }

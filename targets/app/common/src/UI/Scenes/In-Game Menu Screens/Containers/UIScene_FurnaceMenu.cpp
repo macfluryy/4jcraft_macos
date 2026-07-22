@@ -22,7 +22,7 @@ class UILayer;
 UIScene_FurnaceMenu::UIScene_FurnaceMenu(int iPad, void* _initData,
                                          UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     FurnaceScreenInput* initData = (FurnaceScreenInput*)_initData;

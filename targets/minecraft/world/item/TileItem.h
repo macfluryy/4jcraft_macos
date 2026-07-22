@@ -23,10 +23,10 @@ public:
 
     virtual int getTileId();
 
-    //@Override
+    
     int getIconType();
 
-    //@Override
+    
     Icon* getIcon(int auxValue);
 
     virtual bool useOn(std::shared_ptr<ItemInstance> instance,
@@ -37,10 +37,10 @@ public:
         std::shared_ptr<ItemInstance> instance);
     virtual unsigned int getDescriptionId(int iData = -1);
 
-    // 4J Added
+    
     virtual int getColor(int itemAuxValue, int spriteLayer);
 
-    // 4J Added
+    
     virtual unsigned int getUseDescriptionId(
         std::shared_ptr<ItemInstance> instance);
     virtual unsigned int getUseDescriptionId();
@@ -49,6 +49,6 @@ public:
                           std::shared_ptr<Player> player,
                           std::shared_ptr<ItemInstance> item);
 
-    //@Override
+    
     virtual void registerIcons(IconRegister* iconRegister);
 };

@@ -40,8 +40,8 @@ std::shared_ptr<Merchant> IUIScene_TradingMenu::getMerchant() {
 
 bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
     bool handled = false;
-    // MerchantRecipeList *offers =
-    // m_merchant->getOffers(Minecraft::GetInstance()->localplayers[getPad()]);
+    
+    
 
     bool changed = false;
 
@@ -65,8 +65,8 @@ bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             ui.ShowTooltip(iPad, eToolTipButtonB, false);
             ui.ShowTooltip(iPad, eToolTipButtonA, false);
             ui.ShowTooltip(iPad, eToolTipButtonRB, false);
-            // kill the crafting xui
-            // ui.PlayUISFX(eSFX_Back);
+            
+            
             ui.CloseUIScenes(iPad);
 
             handled = true;
@@ -78,7 +78,7 @@ bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                     MerchantRecipe* activeRecipe =
                         m_activeOffers.at(selectedShopItem).first;
                     if (!activeRecipe->isDeprecated()) {
-                        // Do we have the ingredients?
+                        
                         std::shared_ptr<ItemInstance> buyAItem =
                             activeRecipe->getBuyAItem();
                         std::shared_ptr<ItemInstance> buyBItem =
@@ -93,26 +93,26 @@ bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                              buyAMatches >= buyAItem->count) &&
                             (buyBItem == nullptr ||
                              buyBMatches >= buyBItem->count)) {
-                            // 4J-JEV: Fix for PS4 #7111: [PATCH 1.12] Trading
-                            // Librarian villagers for multiple �Enchanted
-                            // Books� will cause the title to crash.
+                            
+                            
+                            
                             int actualShopItem =
                                 m_activeOffers.at(selectedShopItem).second;
 
                             m_merchant->notifyTrade(activeRecipe);
 
-                            // Remove the items we are purchasing with
+                            
                             player->inventory->removeResources(buyAItem);
                             player->inventory->removeResources(buyBItem);
 
-                            // Add the item we have purchased
+                            
                             std::shared_ptr<ItemInstance> result =
                                 activeRecipe->getSellItem()->copy();
                             if (!player->inventory->add(result)) {
                                 player->drop(result);
                             }
 
-                            // Send a packet to the server
+                            
                             player->connection->send(
                                 std::shared_ptr<TradeItemPacket>(
                                     new TradeItemPacket(m_menu->containerId,
@@ -252,7 +252,7 @@ void IUIScene_TradingMenu::updateDisplay() {
 
             std::wstring wsTemp;
 
-            // 4J-PB - need to get the villager type here
+            
             wsTemp = app.GetString(IDS_VILLAGER_OFFERS_ITEM);
             wsTemp = replaceAll(wsTemp, L"{*VILLAGER_TYPE*}",
                                 m_merchant->getDisplayName());
@@ -370,7 +370,7 @@ std::vector<HtmlString>* IUIScene_TradingMenu::GetItemDescription(
     std::shared_ptr<ItemInstance> item) {
     std::vector<HtmlString>* lines = item->getHoverText(nullptr, false);
 
-    // Add rarity to first line
+    
     if (lines->size() > 0) {
         lines->at(0).color = item->getRarity()->color;
     }

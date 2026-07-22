@@ -18,20 +18,20 @@ TerrainParticle::TerrainParticle(Level* level, double x, double y, double z,
     this->tile = tile;
     this->setTex(
         textures,
-        tile->getTexture(0, data));  // 4J - change brought forward from 1.8.2
-                                     // to fix purple particles on door damage
+        tile->getTexture(0, data));  
+                                     
     this->gravity = tile->gravity;
     rCol = gCol = bCol = 0.6f;
     size /= 2;
 }
 
 std::shared_ptr<TerrainParticle> TerrainParticle::init(
-    int x, int y, int z, int data)  // 4J - added data parameter
+    int x, int y, int z, int data)  
 {
     if (tile == Tile::grass)
         return std::dynamic_pointer_cast<TerrainParticle>(shared_from_this());
     int col =
-        tile->getColor(level, x, y, z, data);  // 4J - added data parameter
+        tile->getColor(level, x, y, z, data);  
     rCol *= ((col >> 16) & 0xff) / 255.0f;
     gCol *= ((col >> 8) & 0xff) / 255.0f;
     bCol *= ((col) & 0xff) / 255.0f;
@@ -71,16 +71,16 @@ void TerrainParticle::render(Tesselator* t, float a, float xa, float ya,
     float y = (float)(yo + (this->y - yo) * a - yOff);
     float z = (float)(zo + (this->z - zo) * a - zOff);
 
-    // 4J - don't render terrain particles that are less than a metre away, to
-    // try and avoid large particles that are causing us problems with
-    // photosensitivity testing
+    
+    
+    
     float distSq = (x * x + y * y + z * z);
     if (distSq < 1.0f) return;
 
     float br =
         SharedConstants::TEXTURE_LIGHTING
             ? 1.0f
-            : getBrightness(a);  // 4J - change brought forward from 1.8.2
+            : getBrightness(a);  
     t->color(br * rCol, br * gCol, br * bCol);
 
     t->vertexUV((float)(x - xa * r - xa2 * r), (float)(y - ya * r),

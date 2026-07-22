@@ -16,7 +16,7 @@ static int s_introTickCount = 0;
 
 UIScene_Intro::UIScene_Intro(int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
     m_bIgnoreNavigate = false;
     m_bAnimationEnded = false;
@@ -27,7 +27,7 @@ UIScene_Intro::UIScene_Intro(int iPad, void* initData, UILayer* parentLayer)
     bool bSkipESRB = false;
     bool bChina = false;
 
-    // 4J Stu - These map to values in the Actionscript
+    
 #if defined(_WINDOWS64) || defined(__linux__) || defined(__APPLE__)
     int platformIdx = 0;
 #endif
@@ -58,7 +58,7 @@ void UIScene_Intro::handleInput(int iPad, int key, bool repeat, bool pressed,
         case ACTION_MENU_OK:
             if (!m_bIgnoreNavigate) {
                 m_bIgnoreNavigate = true;
-                // ui.NavigateToHomeMenu();
+                
                 ui.NavigateToScene(0, eUIScene_SaveMessage);
             }
             break;
@@ -68,15 +68,15 @@ void UIScene_Intro::handleInput(int iPad, int key, bool repeat, bool pressed,
 void UIScene_Intro::handleAnimationEnd() {
     if (!m_bIgnoreNavigate) {
         m_bIgnoreNavigate = true;
-        // ui.NavigateToHomeMenu();
+        
         ui.NavigateToScene(0, eUIScene_SaveMessage);
     }
 }
 
 void UIScene_Intro::handleGainFocus(bool navBack) {
-    // Only relevant on xbox one - if we didn't navigate to the main menu at
-    // animation end due to the timer or quadrant sign-in being up, then we'll
-    // need to do it now in case the user has cancelled or joining a game failed
+    
+    
+    
     if (m_bAnimationEnded) {
         ui.NavigateToScene(0, eUIScene_MainMenu);
     }
@@ -84,20 +84,20 @@ void UIScene_Intro::handleGainFocus(bool navBack) {
 
 #if !defined(_ENABLEIGGY)
 void UIScene_Intro::tick() {
-    // Call base tick first (processes Iggy ticking)
+    
     UIScene::tick();
 
-    // Auto-skip the intro after 60 ticks (~2 seconds at 30fps)
-    // since we have no SWF renderer to play the intro animation
+    
+    
     s_introTickCount++;
     if (s_introTickCount == 60 && !m_bIgnoreNavigate) {
-        // 4J macOS - If a direct-connect was kicked off from main() (env
-        // var MC_DIRECT_CONNECT), the player has already been thrown
-        // into a multiplayer world by the time this 2-second timer
-        // fires, and navigating back to the MainMenu here would
-        // overwrite the HUD with the main menu UI. Suppress the auto
-        // navigation in that case - GameStarted is true once the
-        // first MovePlayerPacket has come in for the joined session.
+        
+        
+        
+        
+        
+        
+        
         if (app.GetGameStarted()) {
             m_bIgnoreNavigate = true;
             fprintf(stderr,
@@ -109,8 +109,8 @@ void UIScene_Intro::tick() {
                 "[Linux] Auto-skipping intro -> MainMenu after %d ticks\n",
                 s_introTickCount);
         m_bIgnoreNavigate = true;
-        // Skip straight to MainMenu, bypassing SaveMessage (no SWF interaction
-        // possible)
+        
+        
         ui.NavigateToScene(0, eUIScene_MainMenu);
     }
 }

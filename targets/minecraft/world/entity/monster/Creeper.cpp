@@ -39,8 +39,8 @@ void Creeper::_init() {
 }
 
 Creeper::Creeper(Level* level) : Monster(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -71,7 +71,7 @@ bool Creeper::useNewAi() { return true; }
 
 int Creeper::getMaxFallDistance() {
     if (getTarget() == nullptr) return 3;
-    // As long as they survive the fall they should try.
+    
     return 3 + (int)(getHealth() - 1);
 }
 

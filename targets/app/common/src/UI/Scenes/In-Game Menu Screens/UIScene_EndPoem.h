@@ -40,7 +40,7 @@ protected:
 public:
     virtual void tick();
 
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
     virtual void handleDestroy();

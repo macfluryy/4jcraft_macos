@@ -31,7 +31,7 @@ class UILayer;
 UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(
     int iPad, void* _initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_bShouldNavBack = false;
@@ -172,8 +172,8 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(
         }
     } else {
         if (localPlayer->IsHost()) {
-            // Only host can make people moderators, or enable teleporting for
-            // them
+            
+            
             m_checkboxes[eControl_Op].init(
                 app.GetString(IDS_MODERATOR), eControl_Op,
                 Player::getPlayerGamePrivilege(
@@ -182,39 +182,39 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(
             removeControl(&m_checkboxes[eControl_Op], true);
         }
 
-        /*if(localPlayer->IsHost() && cheats )
-        {
-                m_checkboxes[eControl_HostInvisible].SetEnable(true);
-                bool checked =
-        Player::getPlayerGamePrivilege(m_playerPrivileges,
-        Player::ePlayerGamePrivilege_CanToggleInvisible)!=0;
-                m_checkboxes[eControl_HostInvisible].init(
-        app.GetString(IDS_CAN_INVISIBLE), eControl_HostInvisible, checked);
+        
 
-                m_checkboxes[eControl_HostFly].SetEnable(true);
-                checked = Player::getPlayerGamePrivilege(m_playerPrivileges,
-        Player::ePlayerGamePrivilege_CanToggleFly)!=0;
-                m_checkboxes[eControl_HostFly].init( app.GetString(IDS_CAN_FLY),
-        eControl_HostFly, checked);
 
-                m_checkboxes[eControl_HostHunger].SetEnable(true);
-                checked = Player::getPlayerGamePrivilege(m_playerPrivileges,
-        Player::ePlayerGamePrivilege_CanToggleClassicHunger)!=0;
-                m_checkboxes[eControl_HostHunger].init(
-        app.GetString(IDS_CAN_DISABLE_EXHAUSTION), eControl_HostHunger,
-        checked);
 
-                checked = Player::getPlayerGamePrivilege(m_playerPrivileges,
-        Player::ePlayerGamePrivilege_CanTeleport)!=0;
-                m_checkboxes[eControl_CheatTeleport].init(app.GetString(IDS_ENABLE_TELEPORT),eControl_CheatTeleport,checked);
-        }
-        else
-        {
-                removeControl( &m_checkboxes[eControl_HostInvisible], true );
-                removeControl( &m_checkboxes[eControl_HostFly], true );
-                removeControl( &m_checkboxes[eControl_HostHunger], true );
-                removeControl( &m_checkboxes[eControl_CheatTeleport], true );
-        }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         if (localPlayer->IsHost() && cheats) {
             m_checkboxes[eControl_HostInvisible].SetEnable(true);
@@ -265,7 +265,7 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(
             removeControl(&m_checkboxes[eControl_CheatTeleport], true);
         }
 
-        // Can only kick people if they are not local, and not local to the host
+        
         if (editingPlayer->IsLocal() != true &&
             editingPlayer->IsSameSystem(g_NetworkManager.GetHostPlayer()) !=
                 true) {
@@ -379,7 +379,7 @@ void UIScene_InGamePlayerOptionsMenu::handleReload() {
             removeControl(&m_checkboxes[eControl_CheatTeleport], true);
         }
 
-        // Can only kick people if they are not local, and not local to the host
+        
         if (editingPlayer->IsLocal() == true ||
             editingPlayer->IsSameSystem(g_NetworkManager.GetHostPlayer()) ==
                 true) {
@@ -414,9 +414,9 @@ void UIScene_InGamePlayerOptionsMenu::handleInput(int iPad, int key,
                                                   bool repeat, bool pressed,
                                                   bool released,
                                                   bool& handled) {
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
 
     ui.AnimateKeyPress(iPad, key, repeat, pressed, released);
     switch (key) {
@@ -547,7 +547,7 @@ void UIScene_InGamePlayerOptionsMenu::handleInput(int iPad, int key,
                 unsigned int originalPrivileges =
                     app.GetPlayerPrivileges(m_networkSmallId);
                 if (originalPrivileges != m_playerPrivileges) {
-                    // Send update settings packet to server
+                    
                     Minecraft* pMinecraft = Minecraft::GetInstance();
                     std::shared_ptr<MultiplayerLocalPlayer> player =
                         pMinecraft->localplayers[m_iPad];
@@ -604,13 +604,13 @@ int UIScene_InGamePlayerOptionsMenu::KickPlayerReturned(
                 new KickPlayerPacket(smallId)));
         }
 
-        // Fix for #61494 - [CRASH]: TU7: Code: Multiplayer: Title may crash
-        // while kicking a player from an online game. We cannot do a navigate
-        // back here is this actually occurs on a thread other than the main
-        // thread. On rare occasions this can clash with the XUI render and
-        // causes a crash. The OnPlayerChanged event should perform the navigate
-        // back on the main thread
-        // app.NavigateBack(iPad);
+        
+        
+        
+        
+        
+        
+        
     }
 
     return 0;
@@ -636,8 +636,8 @@ void UIScene_InGamePlayerOptionsMenu::OnPlayerChanged(void* callbackParam,
 
 void UIScene_InGamePlayerOptionsMenu::resetCheatCheckboxes() {
     bool isModerator = m_checkboxes[eControl_Op].IsChecked();
-    // bool cheatsEnabled  =
-    // app.GetGameHostOption(eGameHostOption_CheatsEnabled) != 0;
+    
+    
 
     if (!m_editingSelf) {
         m_checkboxes[eControl_HostInvisible].SetEnable(isModerator);
@@ -651,8 +651,8 @@ void UIScene_InGamePlayerOptionsMenu::handleCheckboxToggled(F64 controlId,
                                                             bool selected) {
     switch ((int)controlId) {
         case eControl_Op:
-            // flag that the moderator state has changed
-            // resetCheatCheckboxes();
+            
+            
             break;
     }
 }

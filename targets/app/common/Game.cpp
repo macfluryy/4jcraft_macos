@@ -108,20 +108,20 @@ class Merchant;
 class ModelPart;
 class SignTileEntity;
 
-// Game app;
+
 unsigned int Game::m_uiLastSignInData = 0;
 
-const float Game::fSafeZoneX = 64.0f;  // 5% of 1280
-const float Game::fSafeZoneY = 36.0f;  // 5% of 720
+const float Game::fSafeZoneX = 64.0f;  
+const float Game::fSafeZoneY = 36.0f;  
 
 int Game::s_iHTMLFontSizesA[eHTMLSize_COUNT] = {
-    // 20,15,20,24
+    
     20, 13, 20, 26};
 
 Game::Game() {
     if (GAME_SETTINGS_PROFILE_DATA_BYTES != sizeof(GAME_SETTINGS)) {
-        // 4J Stu - See comment for GAME_SETTINGS_PROFILE_DATA_BYTES in
-        // Xbox_App.h
+        
+        
         DebugPrintf(
             "WARNING: The size of the profile GAME_SETTINGS struct has "
             "changed, so all stat data is likely incorrect. Is: %d, Should be: "
@@ -136,7 +136,7 @@ Game::Game() {
         m_eTMSAction[i] = eTMSAction_Idle;
         m_eXuiAction[i] = eAppAction_Idle;
         m_eXuiActionParam[i] = nullptr;
-        // m_dwAdditionalModelParts[i] = 0;
+        
 
         if (FAILED(XUserGetSigninInfo(i,
                                       XUSER_GET_SIGNIN_INFO_OFFLINE_XUID_ONLY,
@@ -158,14 +158,14 @@ Game::Game() {
     m_bResourcesLoaded = false;
     m_bGameStarted = false;
     m_bIsAppPaused = false;
-    // m_bSplitScreenEnabled = false;
+    
 
     m_bIntroRunning = false;
     m_eGameMode = eMode_Singleplayer;
     m_bLoadSavesFromFolderEnabled = false;
     m_bWriteSavesToFolderEnabled = false;
-    // m_bInterfaceRenderingOff = false;
-    // m_bHandRenderingOff = false;
+    
+    
     m_bTutorialMode = false;
     m_disconnectReason = DisconnectPacket::eDisconnect_None;
     m_bLiveLinkRequired = false;
@@ -176,7 +176,7 @@ Game::Game() {
 
 #if defined(_CONTENT_PACKAGE)
     m_bDebugOptions =
-        false;  // make them off by default in a content package build
+        false;  
 #else
     m_bDebugOptions = true;
 #endif
@@ -184,14 +184,14 @@ Game::Game() {
     m_bDebugOptions = false;
 #endif
 
-    // memset(m_PreviewBuffer, 0, sizeof(XSOCIAL_PREVIEWIMAGE)*XUSER_MAX_COUNT);
+    
 
     m_xuidNotch = INVALID_XUID;
 
     memset(&m_InviteData, 0, sizeof(JoinFromInviteData));
 
-    // 	m_bRead_TMS_XUIDS_XML=false;
-    // 	m_bRead_TMS_DLCINFO_XML=false;
+    
+    
 
     m_pDLCFileBuffer = nullptr;
     m_dwDLCFileSize = 0;
@@ -270,8 +270,8 @@ void Game::DebugPrintf(int user, const char* szFormat, ...) {
 }
 
 const wchar_t* Game::GetString(int iID) {
-    // return L"Değişiklikler ve Yenilikler";
-    // return L"ÕÕÕÕÖÖÖÖ";
+    
+    
     return app.m_stringTable->getString(iID);
 }
 
@@ -310,17 +310,17 @@ void Game::HandleButtonPresses() {
 }
 
 void Game::HandleButtonPresses(int iPad) {
-    // 		// test an update of the profile data
-    // 		void *pData=ProfileManager.GetGameDefinedProfileData(iPad);
-    //
-    // 		unsigned char *pchData= (unsigned char *)pData;
-    // 		int iCount=0;
-    // 		for(int i=0;i<GAME_DEFINED_PROFILE_DATA_BYTES;i++)
-    // 		{
-    // 			pchData[i]=0xBC;
-    // 			//if(iCount==255) iCount = 0;
-    // 		}
-    //  		ProfileManager.WriteToProfile(iPad,true);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 bool Game::LoadInventoryMenu(int iPad,
@@ -472,7 +472,7 @@ bool Game::LoadFurnaceMenu(
     initData->inventory = inventory;
     initData->iPad = iPad;
 
-    // Load the scene.
+    
     if (app.GetLocalPlayerCount() > 1) {
         initData->bSplitscreen = true;
         success = ui.NavigateToScene(iPad, eUIScene_FurnaceMenu, initData);
@@ -495,7 +495,7 @@ bool Game::LoadBrewingStandMenu(
     initData->inventory = inventory;
     initData->iPad = iPad;
 
-    // Load the scene.
+    
     if (app.GetLocalPlayerCount() > 1) {
         initData->bSplitscreen = true;
         success = ui.NavigateToScene(iPad, eUIScene_BrewingStandMenu, initData);
@@ -518,7 +518,7 @@ bool Game::LoadContainerMenu(int iPad,
     initData->container = container;
     initData->iPad = iPad;
 
-    // Load the scene.
+    
     if (app.GetLocalPlayerCount() > 1) {
         initData->bSplitscreen = true;
 
@@ -549,7 +549,7 @@ bool Game::LoadTrapMenu(int iPad, std::shared_ptr<Container> inventory,
     initData->trap = trap;
     initData->iPad = iPad;
 
-    // Load the scene.
+    
     if (app.GetLocalPlayerCount() > 1) {
         initData->bSplitscreen = true;
         success = ui.NavigateToScene(iPad, eUIScene_DispenserMenu, initData);
@@ -698,30 +698,30 @@ bool Game::LoadBeaconMenu(int iPad,
     return success;
 }
 
-//////////////////////////////////////////////
-// GAME SETTINGS
-//////////////////////////////////////////////
+
+
+
 void Game::InitGameSettings() {
     for (int i = 0; i < XUSER_MAX_COUNT; i++) {
         GameSettingsA[i] =
             (GAME_SETTINGS*)ProfileManager.GetGameDefinedProfileData(i);
-        // clear the flag to say the settings have changed
+        
         GameSettingsA[i]->bSettingsChanged = false;
 
-        // SetDefaultGameSettings(i); - done on a callback from the profile
-        // manager
+        
+        
 
-        // 4J-PB - adding in for Windows & PS3 to set the defaults for the
-        // joypad
+        
+        
 #if defined(_WINDOWS64)
         C_4JProfile::PROFILESETTINGS* pProfileSettings =
             ProfileManager.GetDashboardProfileSettings(i);
-        // clear this for now - it will come from reading the system values
+        
         memset(pProfileSettings, 0, sizeof(C_4JProfile::PROFILESETTINGS));
         SetDefaultOptions(pProfileSettings, i);
 #else
-        // 4jcrqaft: Linux (and any other platform): profile data is
-        // zero-initialised, so explicitly apply defaults
+        
+        
         C_4JProfile::PROFILESETTINGS* pProfileSettings =
             ProfileManager.GetDashboardProfileSettings(i);
         memset(pProfileSettings, 0, sizeof(C_4JProfile::PROFILESETTINGS));
@@ -736,7 +736,7 @@ int Game::SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
     SetGameSettings(iPad, eGameSetting_SoundFXVolume, DEFAULT_VOLUME_LEVEL);
     SetGameSettings(iPad, eGameSetting_Gamma, 50);
 
-    // 4J-PB - Don't reset the difficult level if we're in-game
+    
     if (Minecraft::GetInstance()->level == nullptr) {
         app.DebugPrintf("SetDefaultOptions - Difficulty = 1\n");
         SetGameSettings(iPad, eGameSetting_Difficulty, 1);
@@ -751,7 +751,7 @@ int Game::SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
     SetGameSettings(iPad, eGameSetting_SplitScreenVertical, 0);
     SetGameSettings(iPad, eGameSetting_GamertagsVisible, 1);
 
-    // Interim TU 1.6.6
+    
     SetGameSettings(iPad, eGameSetting_Sensitivity_InMenu, 100);
     SetGameSettings(iPad, eGameSetting_DisplaySplitscreenGamertags, 1);
     SetGameSettings(iPad, eGameSetting_Hints, 1);
@@ -759,40 +759,40 @@ int Game::SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
     SetGameSettings(iPad, eGameSetting_Tooltips, 1);
     SetGameSettings(iPad, eGameSetting_InterfaceOpacity, 80);
 
-    // TU 5
+    
     SetGameSettings(iPad, eGameSetting_Clouds, 1);
     SetGameSettings(iPad, eGameSetting_Online, 1);
     SetGameSettings(iPad, eGameSetting_InviteOnly, 0);
     SetGameSettings(iPad, eGameSetting_FriendsOfFriends, 1);
 
-    // default the update changes message to zero
-    // 4J-PB - We'll only display the message if the profile is pre-TU5
-    // SetGameSettings(iPad,eGameSetting_DisplayUpdateMessage,0);
+    
+    
+    
 
-    // TU 6
+    
     SetGameSettings(iPad, eGameSetting_BedrockFog, 0);
     SetGameSettings(iPad, eGameSetting_DisplayHUD, 1);
     SetGameSettings(iPad, eGameSetting_DisplayHand, 1);
 
-    // TU 7
+    
     SetGameSettings(iPad, eGameSetting_CustomSkinAnim, 1);
 
-    // TU 9
+    
     SetGameSettings(iPad, eGameSetting_DeathMessages, 1);
     SetGameSettings(iPad, eGameSetting_UISize, 1);
     SetGameSettings(iPad, eGameSetting_UISizeSplitscreen, 2);
     SetGameSettings(iPad, eGameSetting_AnimatedCharacter, 1);
 
-    // TU 12
+    
     GameSettingsA[iPad]->ucCurrentFavoriteSkinPos = 0;
     for (int i = 0; i < MAX_FAVORITE_SKINS; i++) {
         GameSettingsA[iPad]->uiFavoriteSkinA[i] = 0xFFFFFFFF;
     }
 
-    // TU 13
+    
     GameSettingsA[iPad]->uiMashUpPackWorldsDisplay = 0xFFFFFFFF;
 
-    // 1.6.4
+    
     app.SetGameHostOption(eGameHostOption_MobGriefing, 1);
     app.SetGameHostOption(eGameHostOption_KeepInventory, 0);
     app.SetGameHostOption(eGameHostOption_DoMobSpawning, 1);
@@ -801,29 +801,29 @@ int Game::SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
     app.SetGameHostOption(eGameHostOption_NaturalRegeneration, 1);
     app.SetGameHostOption(eGameHostOption_DoDaylightCycle, 1);
 
-    // 4J-PB - leave these in, or remove from everywhere they are referenced!
-    // Although probably best to leave in unless we split the profile settings
-    // into platform specific classes - having different meaning per platform
-    // for the same bitmask could get confusing
-    // #ifdef 0
-    // PS3DEC13
-    SetGameSettings(iPad, eGameSetting_PS3_EULA_Read, 0);  // EULA not read
+    
+    
+    
+    
+    
+    
+    SetGameSettings(iPad, eGameSetting_PS3_EULA_Read, 0);  
 
-    // PS3 1.05 - added Greek
+    
 
-    // 4J-JEV: We cannot change these in-game, as they could affect localised
-    // strings and font. XB1: Fix for #172947 - Content: Gameplay: While playing
-    // in language different form system default one and resetting options to
-    // their defaults in active gameplay causes in-game language to change and
-    // HUD to disappear
+    
+    
+    
+    
+    
     if (!app.GetGameStarted()) {
         GameSettingsA[iPad]->ucLanguage =
-            MINECRAFT_LANGUAGE_DEFAULT;  // use the system language
+            MINECRAFT_LANGUAGE_DEFAULT;  
         GameSettingsA[iPad]->ucLocale =
-            MINECRAFT_LANGUAGE_DEFAULT;  // use the system locale
+            MINECRAFT_LANGUAGE_DEFAULT;  
     }
 
-    // #endif
+    
 
     return 0;
 }
@@ -832,16 +832,16 @@ int Game::DefaultOptionsCallback(
     void* pParam, C_4JProfile::PROFILESETTINGS* pSettings, const int iPad) {
     Game* pApp = (Game*)pParam;
 
-    // flag the default options to be set
+    
 
     pApp->DebugPrintf("Setting default options for player %d", iPad);
     pApp->SetAction(iPad, eAppAction_SetDefaultOptions, (void*)pSettings);
-    // pApp->SetDefaultOptions(pSettings,iPad);
+    
 
-    // if the profile data has been changed, then force a profile write
-    // It seems we're allowed to break the 5 minute rule if it's the result of a
-    // user action
-    // pApp->CheckGameSettingsChanged();
+    
+    
+    
+    
 
     return 0;
 }
@@ -850,133 +850,133 @@ int Game::OldProfileVersionCallback(void* pParam,
                                              unsigned char* pucData,
                                              const unsigned short usVersion,
                                              const int iPad) {
-    // check what needs to be done with this version to update to the current
-    // one
+    
+    
 
     switch (usVersion) {
         case PROFILE_VERSION_8: {
             GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
-            // reset the display new message counter
+            
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
-                                               // (counter)
+                GAMESETTING_DISPLAYUPDATEMSG;  
+                                               
 
-            // Added a bitmask in TU13 to enable/disable display of the Mash-up
-            // pack worlds in the saves list
+            
+            
             pGameSettings->uiMashUpPackWorldsDisplay = 0xFFFFFFFF;
 
-            // PS3DEC13
+            
             pGameSettings->uiBitmaskValues &=
-                ~GAMESETTING_PS3EULAREAD;  // eGameSetting_PS3_EULA_Read - off
+                ~GAMESETTING_PS3EULAREAD;  
 
-            // PS3 1.05 - added Greek
+            
             pGameSettings->ucLanguage =
-                MINECRAFT_LANGUAGE_DEFAULT;  // use the system language
+                MINECRAFT_LANGUAGE_DEFAULT;  
 
         } break;
         case PROFILE_VERSION_9:
-            // PS3DEC13
+            
             {
                 GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
                 pGameSettings->uiBitmaskValues |=
-                    GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
-                                                   // (counter)
+                    GAMESETTING_DISPLAYUPDATEMSG;  
+                                                   
                 pGameSettings->uiBitmaskValues &=
-                    ~GAMESETTING_PS3EULAREAD;  // eGameSetting_PS3_EULA_Read -
-                                               // off
+                    ~GAMESETTING_PS3EULAREAD;  
+                                               
 
-                // PS3 1.05 - added Greek
+                
                 pGameSettings->ucLanguage =
-                    MINECRAFT_LANGUAGE_DEFAULT;  // use the system language
+                    MINECRAFT_LANGUAGE_DEFAULT;  
             }
             break;
         case PROFILE_VERSION_10: {
             GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
-                                               // (counter)
+                GAMESETTING_DISPLAYUPDATEMSG;  
+                                               
             pGameSettings->ucLanguage =
-                MINECRAFT_LANGUAGE_DEFAULT;  // use the system language
+                MINECRAFT_LANGUAGE_DEFAULT;  
         } break;
         case PROFILE_VERSION_11: {
             GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
-                                               // (counter)
+                GAMESETTING_DISPLAYUPDATEMSG;  
+                                               
         } break;
         case PROFILE_VERSION_12: {
             GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
-                                               // (counter)
+                GAMESETTING_DISPLAYUPDATEMSG;  
+                                               
         } break;
         default: {
-            // This might be from a version during testing of new profile
-            // updates
+            
+            
             app.DebugPrintf(
                 "Don't know what to do with this profile version!\n");
 
             GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
             pGameSettings->ucMenuSensitivity =
-                100;  // eGameSetting_Sensitivity_InMenu
+                100;  
             pGameSettings->ucInterfaceOpacity =
-                80;  // eGameSetting_Sensitivity_InMenu
+                80;  
             pGameSettings->usBitmaskValues |=
-                0x0200;  // eGameSetting_DisplaySplitscreenGamertags - on
-            pGameSettings->usBitmaskValues |= 0x0400;  // eGameSetting_Hints -
-                                                       // on
+                0x0200;  
+            pGameSettings->usBitmaskValues |= 0x0400;  
+                                                       
             pGameSettings->usBitmaskValues |=
-                0x1000;  // eGameSetting_Autosave - 2
+                0x1000;  
             pGameSettings->usBitmaskValues |=
-                0x8000;  // eGameSetting_Tooltips - on
+                0x8000;  
 
-            pGameSettings->uiBitmaskValues = 0L;  // reset
+            pGameSettings->uiBitmaskValues = 0L;  
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_CLOUDS;  // eGameSetting_Clouds - on
+                GAMESETTING_CLOUDS;  
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_ONLINE;  // eGameSetting_GameSetting_Online - on
-            // eGameSetting_GameSetting_Invite - off
+                GAMESETTING_ONLINE;  
+            
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_FRIENDSOFFRIENDS;  // eGameSetting_GameSetting_FriendsOfFriends
-                                               // - on
+                GAMESETTING_FRIENDSOFFRIENDS;  
+                                               
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
-                                               // (counter)
+                GAMESETTING_DISPLAYUPDATEMSG;  
+                                               
             pGameSettings->uiBitmaskValues &=
-                ~GAMESETTING_BEDROCKFOG;  // eGameSetting_BedrockFog - off
+                ~GAMESETTING_BEDROCKFOG;  
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_DISPLAYHUD;  // eGameSetting_DisplayHUD - on
+                GAMESETTING_DISPLAYHUD;  
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_DISPLAYHAND;  // eGameSetting_DisplayHand - on
+                GAMESETTING_DISPLAYHAND;  
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_CUSTOMSKINANIM;  // eGameSetting_CustomSkinAnim - on
+                GAMESETTING_CUSTOMSKINANIM;  
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_DEATHMESSAGES;  // eGameSetting_DeathMessages - on
+                GAMESETTING_DEATHMESSAGES;  
             pGameSettings->uiBitmaskValues |=
-                (GAMESETTING_UISIZE & 0x00000800);  // uisize 2
+                (GAMESETTING_UISIZE & 0x00000800);  
             pGameSettings->uiBitmaskValues |=
                 (GAMESETTING_UISIZE_SPLITSCREEN &
-                 0x00004000);  // splitscreen ui size 3
+                 0x00004000);  
             pGameSettings->uiBitmaskValues |=
-                GAMESETTING_ANIMATEDCHARACTER;  // eGameSetting_AnimatedCharacter
-                                                // - on
-            // TU12
-            // favorite skins added, but only set in TU12 - set to FFs
+                GAMESETTING_ANIMATEDCHARACTER;  
+                                                
+            
+            
             for (int i = 0; i < MAX_FAVORITE_SKINS; i++) {
                 pGameSettings->uiFavoriteSkinA[i] = 0xFFFFFFFF;
             }
             pGameSettings->ucCurrentFavoriteSkinPos = 0;
-            // Added a bitmask in TU13 to enable/disable display of the Mash-up
-            // pack worlds in the saves list
+            
+            
             pGameSettings->uiMashUpPackWorldsDisplay = 0xFFFFFFFF;
 
-            // PS3DEC13
+            
             pGameSettings->uiBitmaskValues &=
-                ~GAMESETTING_PS3EULAREAD;  // eGameSetting_PS3_EULA_Read - off
+                ~GAMESETTING_PS3EULAREAD;  
 
-            // PS3 1.05 - added Greek
+            
             pGameSettings->ucLanguage =
-                MINECRAFT_LANGUAGE_DEFAULT;  // use the system language
+                MINECRAFT_LANGUAGE_DEFAULT;  
 
         } break;
     }
@@ -997,7 +997,7 @@ void Game::ApplyGameSettingsChanged(int iPad) {
     ActionGameSettings(iPad, eGameSetting_SplitScreenVertical);
     ActionGameSettings(iPad, eGameSetting_GamertagsVisible);
 
-    // Interim TU 1.6.6
+    
     ActionGameSettings(iPad, eGameSetting_Sensitivity_InMenu);
     ActionGameSettings(iPad, eGameSetting_DisplaySplitscreenGamertags);
     ActionGameSettings(iPad, eGameSetting_Hints);
@@ -1036,7 +1036,7 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
             break;
         case eGameSetting_Gamma:
             if (iPad == ProfileManager.GetPrimaryPad()) {
-                // ucGamma range is 0-100, UpdateGamma is 0 - 32768
+                
                 float fVal = ((float)GameSettingsA[iPad]->ucGamma) * 327.68f;
                 RenderManager.UpdateGamma((unsigned short)fVal);
             }
@@ -1049,15 +1049,15 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
                 app.DebugPrintf("Difficulty toggle to %d\n",
                                 GameSettingsA[iPad]->usBitmaskValues & 0x03);
 
-                // Update the Game Host setting
+                
                 app.SetGameHostOption(eGameHostOption_Difficulty,
                                       pMinecraft->options->difficulty);
 
-                // send this to the other players if we are in-game
+                
                 bool bInGame = pMinecraft->level != nullptr;
 
-                // Game Host only (and for now we can't change the diff while in
-                // game, so this shouldn't happen)
+                
+                
                 if (bInGame && g_NetworkManager.IsHost() &&
                     (iPad == ProfileManager.GetPrimaryPad())) {
                     app.SetXuiServerAction(
@@ -1072,19 +1072,19 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
 
             break;
         case eGameSetting_Sensitivity_InGame:
-            // 4J-PB - we don't use the options value
-            // tell the input that we've changed the sensitivity - range of the
-            // slider is 0 to 200, default is 100
+            
+            
+            
             pMinecraft->options->set(
                 Options::Option::SENSITIVITY,
                 ((float)GameSettingsA[iPad]->ucSensitivity) / 100.0f);
-            // InputManager.SetJoypadSensitivity(iPad,((float)GameSettingsA[iPad]->ucSensitivity)/100.0f);
+            
 
             break;
         case eGameSetting_ViewBob:
-            // 4J-PB - not handled here any more - it's read from the
-            // gamesettings per player
-            // pMinecraft->options->toggle(Options::Option::VIEW_BOBBING,GameSettingsA[iPad]->usBitmaskValues&0x04);
+            
+            
+            
             break;
         case eGameSetting_ControlScheme:
             InputManager.SetJoypadMapVal(
@@ -1092,13 +1092,13 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
             break;
 
         case eGameSetting_ControlInvertLook:
-            // Nothing specific to do for this setting.
+            
             break;
 
         case eGameSetting_ControlSouthPaw:
-            // What is the setting?
+            
             if (GameSettingsA[iPad]->usBitmaskValues & 0x80) {
-                // Southpaw.
+                
                 InputManager.SetJoypadStickAxisMap(iPad, AXIS_MAP_LX,
                                                    AXIS_MAP_RX);
                 InputManager.SetJoypadStickAxisMap(iPad, AXIS_MAP_LY,
@@ -1112,7 +1112,7 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
                 InputManager.SetJoypadStickTriggerMap(iPad, TRIGGER_MAP_1,
                                                       TRIGGER_MAP_0);
             } else {
-                // Right handed.
+                
                 InputManager.SetJoypadStickAxisMap(iPad, AXIS_MAP_LX,
                                                    AXIS_MAP_LX);
                 InputManager.SetJoypadStickAxisMap(iPad, AXIS_MAP_LY,
@@ -1135,11 +1135,11 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
         case eGameSetting_GamertagsVisible: {
             bool bInGame = pMinecraft->level != nullptr;
 
-            // Game Host only
+            
             if (bInGame && g_NetworkManager.IsHost() &&
                 (iPad == ProfileManager.GetPrimaryPad())) {
-                // Update the Game Host setting if you are the host and you are
-                // in-game
+                
+                
                 app.SetGameHostOption(
                     eGameHostOption_Gamertags,
                     ((GameSettingsA[iPad]->usBitmaskValues & 0x0008) != 0) ? 1
@@ -1159,13 +1159,13 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
                 }
             }
         } break;
-            // Interim TU 1.6.6
+            
         case eGameSetting_Sensitivity_InMenu:
-            // 4J-PB - we don't use the options value
-            // tell the input that we've changed the sensitivity - range of the
-            // slider is 0 to 200, default is 100
-            // pMinecraft->options->set(Options::Option::SENSITIVITY,((float)GameSettingsA[iPad]->ucSensitivity)/100.0f);
-            // InputManager.SetJoypadSensitivity(iPad,((float)GameSettingsA[iPad]->ucSensitivity)/100.0f);
+            
+            
+            
+            
+            
 
             break;
 
@@ -1183,12 +1183,12 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
 
             break;
         case eGameSetting_InterfaceOpacity:
-            // update the tooltips display
+            
             ui.RefreshTooltips(iPad);
 
             break;
         case eGameSetting_Hints:
-            // nothing to do here
+            
             break;
         case eGameSetting_Tooltips:
             if ((GameSettingsA[iPad]->usBitmaskValues & 0x8000) != 0) {
@@ -1198,25 +1198,25 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
             }
             break;
         case eGameSetting_Clouds:
-            // nothing to do here
+            
             break;
         case eGameSetting_Online:
-            // nothing to do here
+            
             break;
         case eGameSetting_InviteOnly:
-            // nothing to do here
+            
             break;
         case eGameSetting_FriendsOfFriends:
-            // nothing to do here
+            
             break;
         case eGameSetting_BedrockFog: {
             bool bInGame = pMinecraft->level != nullptr;
 
-            // Game Host only
+            
             if (bInGame && g_NetworkManager.IsHost() &&
                 (iPad == ProfileManager.GetPrimaryPad())) {
-                // Update the Game Host setting if you are the host and you are
-                // in-game
+                
+                
                 app.SetGameHostOption(
                     eGameHostOption_BedrockFog,
                     GetGameSettings(iPad, eGameSetting_BedrockFog) ? 1 : 0);
@@ -1225,31 +1225,31 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
             }
         } break;
         case eGameSetting_DisplayHUD:
-            // nothing to do here
+            
             break;
         case eGameSetting_DisplayHand:
-            // nothing to do here
+            
             break;
         case eGameSetting_CustomSkinAnim:
-            // nothing to do here
+            
             break;
         case eGameSetting_DeathMessages:
-            // nothing to do here
+            
             break;
         case eGameSetting_UISize:
-            // nothing to do here
+            
             break;
         case eGameSetting_UISizeSplitscreen:
-            // nothing to do here
+            
             break;
         case eGameSetting_AnimatedCharacter:
-            // nothing to do here
+            
             break;
         case eGameSetting_PS3_EULA_Read:
-            // nothing to do here
+            
             break;
         case eGameSetting_PSVita_NetworkModeAdhoc:
-            // nothing to do here
+            
             break;
         default:
             break;
@@ -1278,16 +1278,16 @@ std::wstring Game::GetPlayerSkinName(int iPad) {
 }
 
 std::uint32_t Game::GetPlayerSkinId(int iPad) {
-    // 4J-PB -check the user has rights to use this skin - they may have had at
-    // some point but the entitlement has been removed.
+    
+    
     DLCPack* Pack = nullptr;
     DLCSkinFile* skinFile = nullptr;
     std::uint32_t dwSkin = GameSettingsA[iPad]->dwSelectedSkin;
     wchar_t chars[256];
 
     if (GET_IS_DLC_SKIN_FROM_BITMASK(dwSkin)) {
-        // 4J Stu - DLC skins are numbered using decimal rather than hex to make
-        // it easier to number manually
+        
+        
         swprintf(chars, 256, L"dlcskin%08d.png",
                  GET_DLC_SKIN_ID_FROM_BITMASK(dwSkin));
 
@@ -1328,8 +1328,8 @@ void Game::SetPlayerCape(int iPad, std::uint32_t dwCapeId) {
     GameSettingsA[iPad]->dwSelectedCape = dwCapeId;
     GameSettingsA[iPad]->bSettingsChanged = true;
 
-    // SentientManager.RecordSkinChanged(iPad,
-    // GameSettingsA[iPad]->dwSelectedSkin);
+    
+    
 
     if (Minecraft::GetInstance()->localplayers[iPad] != nullptr)
         Minecraft::GetInstance()->localplayers[iPad]->setAndBroadcastCustomCape(
@@ -1380,23 +1380,23 @@ unsigned int Game::GetPlayerFavoriteSkinsCount(int iPad) {
 void Game::ValidateFavoriteSkins(int iPad) {
     unsigned int uiCount = GetPlayerFavoriteSkinsCount(iPad);
 
-    // remove invalid skins
+    
     unsigned int uiValidSkin = 0;
     wchar_t chars[256];
 
     for (unsigned int i = 0; i < uiCount; i++) {
-        // get the pack number from the skin id
+        
         swprintf(chars, 256, L"dlcskin%08d.png",
                  app.GetPlayerFavoriteSkin(iPad, i));
 
-        // Also check they haven't reverted to a trial pack
+        
         DLCPack* pDLCPack = app.m_dlcManager.getPackContainingSkin(chars);
 
         if (pDLCPack != nullptr) {
-            // 4J-PB - We should let players add the free skins to their
-            // favourites as well!
-            // DLCFile
-            // *pDLCFile=pDLCPack->getFile(DLCManager::e_DLCType_Skin,chars);
+            
+            
+            
+            
             DLCSkinFile* pSkinFile = pDLCPack->getSkinFile(chars);
 
             if (pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Skin, L"") ||
@@ -1412,9 +1412,9 @@ void Game::ValidateFavoriteSkins(int iPad) {
     }
 }
 
-// Mash-up pack worlds
+
 void Game::HideMashupPackWorld(int iPad, unsigned int iMashupPackID) {
-    unsigned int uiPackID = iMashupPackID - 1024;  // mash-up ids start at 1024
+    unsigned int uiPackID = iMashupPackID - 1024;  
     GameSettingsA[iPad]->uiMashUpPackWorldsDisplay &= ~(1 << uiPackID);
     GameSettingsA[iPad]->bSettingsChanged = true;
 }
@@ -1434,7 +1434,7 @@ void Game::SetMinecraftLanguage(int iPad, unsigned char ucLanguage) {
 }
 
 unsigned char Game::GetMinecraftLanguage(int iPad) {
-    // if there are no game settings read yet, return the default language
+    
     if (GameSettingsA[iPad] == nullptr) {
         return 0;
     } else {
@@ -1448,7 +1448,7 @@ void Game::SetMinecraftLocale(int iPad, unsigned char ucLocale) {
 }
 
 unsigned char Game::GetMinecraftLocale(int iPad) {
-    // if there are no game settings read yet, return the default language
+    
     if (GameSettingsA[iPad] == nullptr) {
         return 0;
     } else {
@@ -1458,7 +1458,7 @@ unsigned char Game::GetMinecraftLocale(int iPad) {
 
 void Game::SetGameSettings(int iPad, eGameSetting eVal,
                                     unsigned char ucVal) {
-    // Minecraft *pMinecraft=Minecraft::GetInstance();
+    
 
     switch (eVal) {
         case eGameSetting_MusicVolume:
@@ -1518,7 +1518,7 @@ void Game::SetGameSettings(int iPad, eGameSetting eVal,
                 GameSettingsA[iPad]->bSettingsChanged = true;
             }
             break;
-        case eGameSetting_ControlScheme:  // bits 5 and 6
+        case eGameSetting_ControlScheme:  
             if ((GameSettingsA[iPad]->usBitmaskValues & 0x30) !=
                 ((ucVal & 0x03) << 4)) {
                 GameSettingsA[iPad]->usBitmaskValues &= ~0x0030;
@@ -1580,7 +1580,7 @@ void Game::SetGameSettings(int iPad, eGameSetting eVal,
             }
             break;
 
-            // 4J-PB - Added for Interim TU for 1.6.6
+            
         case eGameSetting_Sensitivity_InMenu:
             if (GameSettingsA[iPad]->ucMenuSensitivity != ucVal) {
                 GameSettingsA[iPad]->ucMenuSensitivity = ucVal;
@@ -1778,7 +1778,7 @@ void Game::SetGameSettings(int iPad, eGameSetting eVal,
             }
 
             break;
-            // TU9
+            
         case eGameSetting_DeathMessages:
             if ((GameSettingsA[iPad]->uiBitmaskValues &
                  GAMESETTING_DEATHMESSAGES) != (ucVal & 0x01) << 10) {
@@ -1894,7 +1894,7 @@ unsigned char Game::GetGameSettings(int iPad, eGameSetting eVal) {
             break;
         case eGameSetting_ControlScheme:
             return ((GameSettingsA[iPad]->usBitmaskValues & 0x0030) >>
-                    4);  // 2 bits
+                    4);  
             break;
         case eGameSetting_ControlInvertLook:
             return ((GameSettingsA[iPad]->usBitmaskValues & 0x0040) >> 6);
@@ -1905,7 +1905,7 @@ unsigned char Game::GetGameSettings(int iPad, eGameSetting eVal) {
         case eGameSetting_SplitScreenVertical:
             return ((GameSettingsA[iPad]->usBitmaskValues & 0x0100) >> 8);
             break;
-            // 4J-PB - Added for Interim TU for 1.6.6
+            
         case eGameSetting_Sensitivity_InMenu:
             return GameSettingsA[iPad]->ucMenuSensitivity;
             break;
@@ -1973,7 +1973,7 @@ unsigned char Game::GetGameSettings(int iPad, eGameSetting eVal) {
                     GAMESETTING_CUSTOMSKINANIM) >>
                    9;
             break;
-            // TU9
+            
         case eGameSetting_DeathMessages:
             return (GameSettingsA[iPad]->uiBitmaskValues &
                     GAMESETTING_DEATHMESSAGES) >>
@@ -2011,7 +2011,7 @@ unsigned char Game::GetGameSettings(int iPad, eGameSetting eVal) {
 
 void Game::CheckGameSettingsChanged(bool bOverride5MinuteTimer,
                                              int iPad) {
-    // If the settings have changed, write them to the profile
+    
 
     if (iPad == XUSER_INDEX_ANY) {
         for (int i = 0; i < XUSER_MAX_COUNT; i++) {
@@ -2032,15 +2032,15 @@ void Game::ClearGameSettingsChangedFlag(int iPad) {
     GameSettingsA[iPad]->bSettingsChanged = false;
 }
 
-///////////////////////////
-//
-// Remove the debug settings in the content package build
-//
-////////////////////////////
+
+
+
+
+
 #if !defined(_DEBUG_MENUS_ENABLED)
 unsigned int Game::GetGameSettingsDebugMask(
-    int iPad, bool bOverridePlayer)  // bOverridePlayer is to force the send for
-                                     // the server to get the read options
+    int iPad, bool bOverridePlayer)  
+                                     
 {
     return 0;
 }
@@ -2052,8 +2052,8 @@ void Game::ActionDebugMask(int iPad, bool bSetAllClear) {}
 #else
 
 unsigned int Game::GetGameSettingsDebugMask(
-    int iPad, bool bOverridePlayer)  // bOverridePlayer is to force the send for
-                                     // the server to get the read options
+    int iPad, bool bOverridePlayer)  
+                                     
 {
     if (iPad == -1) {
         iPad = ProfileManager.GetPrimaryPad();
@@ -2075,7 +2075,7 @@ void Game::SetGameSettingsDebugMask(int iPad, unsigned int uiVal) {
     GameSettingsA[iPad]->bSettingsChanged = true;
     GameSettingsA[iPad]->uiDebugBitmask = uiVal;
 
-    // update the value so the network server can use it
+    
     std::shared_ptr<Player> player =
         Minecraft::GetInstance()->localplayers[iPad];
 
@@ -2091,7 +2091,7 @@ void Game::ActionDebugMask(int iPad, bool bSetAllClear) {
 
     if (bSetAllClear) ulBitmask = 0L;
 
-    // these settings should only be actioned for the primary player
+    
     if (ProfileManager.GetPrimaryPad() != iPad) return;
 
     for (int i = 0; i < eDebugSetting_Max; i++) {
@@ -2112,17 +2112,17 @@ void Game::ActionDebugMask(int iPad, bool bSetAllClear) {
                 }
                 break;
 
-            case eDebugSetting_FreezePlayers:  // eDebugSetting_InterfaceOff:
+            case eDebugSetting_FreezePlayers:  
                 if (ulBitmask & (1 << i)) {
                     app.SetFreezePlayers(true);
 
-                    // Turn off interface rendering.
-                    // app.SetInterfaceRenderingOff( true );
+                    
+                    
                 } else {
                     app.SetFreezePlayers(false);
 
-                    // Turn on interface rendering.
-                    // app.SetInterfaceRenderingOff( false );
+                    
+                    
                 }
                 break;
             case eDebugSetting_Safearea:
@@ -2133,18 +2133,18 @@ void Game::ActionDebugMask(int iPad, bool bSetAllClear) {
                 }
                 break;
 
-                // case eDebugSetting_HandRenderingOff:
-                //	if(ulBitmask&(1<<i))
-                //	{
-                //		// Turn off hand rendering.
-                //		//app.SetHandRenderingOff( true );
-                //	}
-                //	else
-                //	{
-                //		// Turn on hand rendering.
-                //		//app.SetHandRenderingOff( false );
-                //	}
-                //	break;
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 
             case eDebugSetting_ShowUIConsole:
                 if (ulBitmask & (1 << i)) {
@@ -2208,12 +2208,12 @@ void Game::HandleXuiActions(void) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
     std::shared_ptr<MultiplayerLocalPlayer> player;
 
-    // are there any global actions to deal with?
+    
     eAction = app.GetGlobalXuiAction();
     if (eAction != eAppAction_Idle) {
         switch (eAction) {
             case eAppAction_DisplayLavaMessage:
-                // Display a warning about placing lava in the spawn area
+                
                 {
                     unsigned int uiIDA[1];
                     uiIDA[0] = IDS_CONFIRM_OK;
@@ -2230,77 +2230,77 @@ void Game::HandleXuiActions(void) {
         }
     }
 
-    // are there any app actions to deal with?
+    
     for (int i = 0; i < XUSER_MAX_COUNT; i++) {
         eAction = app.GetXuiAction(i);
         param = m_eXuiActionParam[i];
 
         if (eAction != eAppAction_Idle) {
             switch (eAction) {
-                //     // the renderer will capture a screenshot
-                // case eAppAction_SocialPost:
-                //     if (ProfileManager.IsFullVersion()) {
-                //         // Facebook Share
-                //         if (CSocialManager::Instance()
-                //                 ->IsTitleAllowedToPostImages() &&
-                //             CSocialManager::Instance()
-                //                 ->AreAllUsersAllowedToPostImages()) {
-                //             // disable character name tags for the shot
-                //             // m_bwasHidingGui =
-                //             pMinecraft->options->hideGui;
-                //             // // 4J Stu - Removed 1.8.2 bug fix (TU6) as
-                //             don't
-                //             // need this
-                //             pMinecraft->options->hideGui = true;
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 
-                //             SetAction(i, eAppAction_SocialPostScreenshot);
-                //         } else {
-                //             SetAction(i, eAppAction_Idle);
-                //         }
-                //     } else {
-                //         SetAction(i, eAppAction_Idle);
-                //     }
-                //     break;
-                // case eAppAction_SocialPostScreenshot: {
-                //     SetAction(i, eAppAction_Idle);
-                //     bool bKeepHiding = false;
-                //     for (int j = 0; j < XUSER_MAX_COUNT; ++j) {
-                //         if (app.GetXuiAction(j) ==
-                //             eAppAction_SocialPostScreenshot) {
-                //             bKeepHiding = true;
-                //             break;
-                //         }
-                //     }
-                //     pMinecraft->options->hideGui = bKeepHiding;
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 
-                //     // Facebook Share
+                
 
-                //     if (app.GetLocalPlayerCount() > 1) {
-                //         ui.NavigateToScene(i, eUIScene_SocialPost);
-                //     } else {
-                //         ui.NavigateToScene(i, eUIScene_SocialPost);
-                //     }
-                // } break;
+                
+                
+                
+                
+                
+                
                 case eAppAction_SaveGame:
                     SetAction(i, eAppAction_Idle);
                     if (!GetChangingSessionType()) {
-                        // flag the render to capture the screenshot for the
-                        // save
+                        
+                        
                         SetAction(i, eAppAction_SaveGameCapturedThumbnail);
                     }
 
                     break;
                 case eAppAction_AutosaveSaveGame: {
-                    // Need to run a check to see if the save exists in order to
-                    // stop the dialog asking if we want to overwrite it coming
-                    // up on an autosave
+                    
+                    
+                    
                     bool bSaveExists;
                     StorageManager.DoesSaveExist(&bSaveExists);
 
                     SetAction(i, eAppAction_Idle);
                     if (!GetChangingSessionType()) {
-                        // flag the render to capture the screenshot for the
-                        // save
+                        
+                        
                         SetAction(i,
                                   eAppAction_AutosaveSaveGameCapturedThumbnail);
                     }
@@ -2309,31 +2309,31 @@ void Game::HandleXuiActions(void) {
                 break;
 
                 case eAppAction_SaveGameCapturedThumbnail:
-                    // reset the autosave timer
+                    
                     app.SetAutosaveTimerTime();
                     SetAction(i, eAppAction_Idle);
-                    // Check that there is a name for the save - if we're saving
-                    // from the tutorial and this is the first save from the
-                    // tutorial, we'll not have a name
-                    /*if(StorageManager.GetSaveName()==nullptr)
+                    
+                    
+                    
+                    
+
+
+
+
                     {
-                    app.NavigateToScene(i,eUIScene_SaveWorld);
-                    }
-                    else*/
-                    {
-                        // turn off the gamertags in splitscreen for the primary
-                        // player, since they are about to be made fullscreen
+                        
+                        
                         ui.HideAllGameUIElements();
 
-                        // Hide the other players scenes
+                        
                         ui.ShowOtherPlayersBaseScene(
                             ProfileManager.GetPrimaryPad(), false);
 
-                        // int saveOrCheckpointId = 0;
-                        // bool validSave =
-                        // StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
-                        // SentientManager.RecordLevelSaveOrCheckpoint(ProfileManager.GetPrimaryPad(),
-                        // saveOrCheckpointId);
+                        
+                        
+                        
+                        
+                        
 
                         LoadingInputParams* loadingParams =
                             new LoadingInputParams();
@@ -2341,9 +2341,9 @@ void Game::HandleXuiActions(void) {
                             &UIScene_PauseMenu::SaveWorldThreadProc;
                         loadingParams->lpParam = (void*)false;
 
-                        // 4J-JEV - PS4: Fix for #5708 - [ONLINE] - If the user
-                        // pulls their network cable out while saving the title
-                        // will hang.
+                        
+                        
+                        
                         loadingParams->waitForThreadToDelete = true;
 
                         UIFullscreenProgressCompletionData* completionData =
@@ -2363,7 +2363,7 @@ void Game::HandleXuiActions(void) {
 
                         loadingParams->completionData = completionData;
 
-                        // 4J Stu - Xbox only
+                        
 
                         ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
                                            eUIScene_FullscreenProgress,
@@ -2377,16 +2377,16 @@ void Game::HandleXuiActions(void) {
                     app.SetAutosaveTimerTime();
                     SetAction(i, eAppAction_Idle);
 
-                    // turn off the gamertags in splitscreen for the primary
-                    // player, since they are about to be made fullscreen
+                    
+                    
                     ui.HideAllGameUIElements();
 
-                    // app.CloseAllPlayersXuiScenes();
-                    //  Hide the other players scenes
+                    
+                    
                     ui.ShowOtherPlayersBaseScene(ProfileManager.GetPrimaryPad(),
                                                  false);
 
-                    // This just allows it to be shown
+                    
                     if (pMinecraft
                             ->localgameModes[ProfileManager.GetPrimaryPad()] !=
                         nullptr)
@@ -2395,11 +2395,11 @@ void Game::HandleXuiActions(void) {
                             ->getTutorial()
                             ->showTutorialPopup(false);
 
-                    // int saveOrCheckpointId = 0;
-                    // bool validSave =
-                    // StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
-                    // SentientManager.RecordLevelSaveOrCheckpoint(ProfileManager.GetPrimaryPad(),
-                    // saveOrCheckpointId);
+                    
+                    
+                    
+                    
+                    
 
                     LoadingInputParams* loadingParams =
                         new LoadingInputParams();
@@ -2415,10 +2415,10 @@ void Game::HandleXuiActions(void) {
                     completionData->type =
                         e_ProgressCompletion_AutosaveNavigateBack;
                     completionData->iPad = ProfileManager.GetPrimaryPad();
-                    // completionData->bAutosaveWasMenuDisplayed=ui.GetMenuDisplayed(ProfileManager.GetPrimaryPad());
+                    
                     loadingParams->completionData = completionData;
 
-                    // 4J Stu - Xbox only
+                    
 
                     ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
                                        eUIScene_FullscreenProgress,
@@ -2426,45 +2426,45 @@ void Game::HandleXuiActions(void) {
                                        eUIGroup_Fullscreen);
                 } break;
                 case eAppAction_ExitPlayer:
-                    // a secondary player has chosen to quit
+                    
                     {
                         int iPlayerC = g_NetworkManager.GetPlayerCount();
 
-                        // Since the player is exiting, let's flush any profile
-                        // writes for them, and hope we're not breaking TCR
-                        // 136...
+                        
+                        
+                        
                         ProfileManager.ForceQueuedProfileWrites(i);
 
-                        // not required - it's done within the
-                        // removeLocalPlayerIdx
-                        // 				if(pMinecraft->level->isClientSide)
-                        // 				{
-                        // 					// we need to
-                        // remove the qnetplayer, or this player won't be able
-                        // to get back into the game until qnet times out and
-                        // removes them
-                        // 					g_NetworkManager.NotifyPlayerLeaving(g_NetworkManager.GetLocalPlayerByUserIndex(i));
-                        // 				}
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
 
-                        // if there are any tips showing, we need to close them
+                        
 
                         pMinecraft->gui->clearMessages(i);
 
-                        // Make sure we've not got this player selected as
-                        // current - this shouldn't be the case anyway
+                        
+                        
                         pMinecraft->setLocalPlayerIdx(
                             ProfileManager.GetPrimaryPad());
                         pMinecraft->removeLocalPlayerIdx(i);
 
-                        // Wipe out the tooltips
+                        
                         ui.SetTooltips(i, -1);
 
-                        // Change the presence info
-                        // Are we offline or online, and how many players are
-                        // there
-                        if (iPlayerC > 2)  // one player is about to leave here
-                                           // - they'll be set to idle in the
-                                           // qnet manager player leave
+                        
+                        
+                        
+                        if (iPlayerC > 2)  
+                                           
+                                           
                         {
                             for (int iPlayer = 0; iPlayer < XUSER_MAX_COUNT;
                                  iPlayer++) {
@@ -2508,27 +2508,27 @@ void Game::HandleXuiActions(void) {
                     break;
                 case eAppAction_ExitPlayerPreLogin: {
                     int iPlayerC = g_NetworkManager.GetPlayerCount();
-                    // Since the player is exiting, let's flush any profile
-                    // writes for them, and hope we're not breaking TCR 136...
+                    
+                    
                     ProfileManager.ForceQueuedProfileWrites(i);
-                    // if there are any tips showing, we need to close them
+                    
 
                     pMinecraft->gui->clearMessages(i);
 
-                    // Make sure we've not got this player selected as current -
-                    // this shouldn't be the case anyway
+                    
+                    
                     pMinecraft->setLocalPlayerIdx(
                         ProfileManager.GetPrimaryPad());
                     pMinecraft->removeLocalPlayerIdx(i);
 
-                    // Wipe out the tooltips
+                    
                     ui.SetTooltips(i, -1);
 
-                    // Change the presence info
-                    // Are we offline or online, and how many players are there
+                    
+                    
                     if (iPlayerC >
-                        2)  // one player is about to leave here - they'll be
-                            // set to idle in the qnet manager player leave
+                        2)  
+                            
                     {
                         for (int iPlayer = 0; iPlayer < XUSER_MAX_COUNT;
                              iPlayer++) {
@@ -2582,39 +2582,39 @@ void Game::HandleXuiActions(void) {
 
                     SetAction(i, eAppAction_Idle);
 
-                    // If we're already leaving don't exit
+                    
                     if (g_NetworkManager.IsLeavingGame()) {
                         break;
                     }
 
                     pMinecraft->gui->clearMessages();
 
-                    // turn off the gamertags in splitscreen for the primary
-                    // player, since they are about to be made fullscreen
+                    
+                    
                     ui.HideAllGameUIElements();
 
-                    // reset the flag stopping new dlc message being shown if
-                    // you've seen the message before
+                    
+                    
                     DisplayNewDLCTipAgain();
 
-                    // clear the autosave timer that might be on screen
+                    
                     ui.ShowAutosaveCountdownTimer(false);
 
-                    // Hide the selected item text
+                    
                     ui.HideAllGameUIElements();
 
-                    // Since the player forced the exit, let's flush any profile
-                    // writes, and hope we're not breaking TCR 136...
+                    
+                    
 
-                    // 4J-PB - cancel any possible std::string verifications
-                    // queued with LIVE
-                    // InputManager.CancelAllVerifyInProgress();
+                    
+                    
+                    
 
-                    // In a split screen, only the primary player actually
-                    // quits the game, others just remove their players
+                    
+                    
                     if (i != ProfileManager.GetPrimaryPad()) {
-                        // Make sure we've not got this player selected as
-                        // current - this shouldn't be the case anyway
+                        
+                        
                         pMinecraft->setLocalPlayerIdx(
                             ProfileManager.GetPrimaryPad());
                         pMinecraft->removeLocalPlayerIdx(i);
@@ -2622,11 +2622,11 @@ void Game::HandleXuiActions(void) {
                         SetAction(i, eAppAction_Idle);
                         return;
                     }
-                    // flag to capture the save thumbnail
+                    
                     SetAction(i, eAppAction_ExitWorldCapturedThumbnail, param);
 
-                    // Change the presence info
-                    // Are we offline or online, and how many players are there
+                    
+                    
 
                     if (g_NetworkManager.GetPlayerCount() > 1) {
                         for (int j = 0; j < XUSER_MAX_COUNT; j++) {
@@ -2659,23 +2659,23 @@ void Game::HandleXuiActions(void) {
                     break;
                 case eAppAction_ExitWorldCapturedThumbnail: {
                     SetAction(i, eAppAction_Idle);
-                    // Stop app running
+                    
                     SetGameStarted(false);
                     SetChangingSessionType(
-                        true);  // Added to stop handling ethernet disconnects
+                        true);  
 
                     ui.CloseAllPlayersScenes();
 
-                    // turn off the gamertags in splitscreen for the primary
-                    // player, since they are about to be made fullscreen
+                    
+                    
                     ui.HideAllGameUIElements();
 
-                    // 4J Stu - Fix for #12368 - Crash: Game crashes when saving
-                    // then exiting and selecting to save
+                    
+                    
                     for (unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx) {
-                        // 4J Stu - Fix for #13257 - CRASH: Gameplay: Title
-                        // crashed after exiting the tutorial It doesn't matter
-                        // if they were in the tutorial already
+                        
+                        
+                        
                         pMinecraft->playerLeftTutorial(idx);
                     }
 
@@ -2687,12 +2687,12 @@ void Game::HandleXuiActions(void) {
 
                     UIFullscreenProgressCompletionData* completionData =
                         new UIFullscreenProgressCompletionData();
-                    // If param is non-null then this is a forced exit by the
-                    // server, so make sure the player knows why 4J Stu -
-                    // Changed - Don't use the FullScreenProgressScreen for
-                    // action, use a dialog instead
+                    
+                    
+                    
+                    
                     completionData->bRequiresUserAction =
-                        false;  //(param != nullptr) ? true : false;
+                        false;  
                     completionData->bShowTips =
                         (param != nullptr) ? false : true;
                     completionData->bShowBackground = true;
@@ -2711,21 +2711,21 @@ void Game::HandleXuiActions(void) {
 
                     pMinecraft->gui->clearMessages();
 
-                    // turn off the gamertags in splitscreen for the primary
-                    // player, since they are about to be made fullscreen
+                    
+                    
                     ui.HideAllGameUIElements();
 
-                    // Stop app running
+                    
                     SetGameStarted(false);
 
                     ui.CloseAllPlayersScenes();
 
-                    // 4J Stu - Fix for #12368 - Crash: Game crashes when saving
-                    // then exiting and selecting to save
+                    
+                    
                     for (unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx) {
-                        // 4J Stu - Fix for #13257 - CRASH: Gameplay: Title
-                        // crashed after exiting the tutorial It doesn't matter
-                        // if they were in the tutorial already
+                        
+                        
+                        
                         pMinecraft->playerLeftTutorial(idx);
                     }
 
@@ -2751,7 +2751,7 @@ void Game::HandleXuiActions(void) {
 
                 break;
                 case eAppAction_ExitTrial:
-                    // XLaunchNewImage(XLAUNCH_KEYWORD_DASH_ARCADE, 0);
+                    
                     ExitGame();
                     break;
 
@@ -2764,54 +2764,54 @@ void Game::HandleXuiActions(void) {
                     param->setFailTimer = false;
                     ui.NavigateToScene(i, eUIScene_ConnectingProgress, param);
 
-                    // Need to reset this incase the player has already died and
-                    // respawned
+                    
+                    
                     pMinecraft->localplayers[i]->SetPlayerRespawned(false);
 
                     SetAction(i, eAppAction_WaitForRespawnComplete);
                     if (app.GetLocalPlayerCount() > 1) {
-                        // In split screen mode, we don't want to do any async
-                        // loading or flushing of the cache, just a simple
-                        // respawn
+                        
+                        
+                        
                         pMinecraft->localplayers[i]->respawn();
 
-                        // If the respawn requires a dimension change then the
-                        // action will have changed
-                        // if(app.GetXuiAction(i) == eAppAction_Respawn)
-                        //{
-                        //	SetAction(i,eAppAction_Idle);
-                        //	CloseXuiScenes(i);
-                        //}
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                     } else {
-                        // SetAction(i,eAppAction_WaitForRespawnComplete);
+                        
 
-                        // LoadingInputParams *loadingParams = new
-                        // LoadingInputParams(); loadingParams->func =
-                        // &CScene_Death::RespawnThreadProc;
-                        // loadingParams->lpParam = (void*)i;
+                        
+                        
+                        
+                        
 
-                        // Disable game & update thread whilst we do any of this
-                        // app.SetGameStarted(false);
+                        
+                        
                         pMinecraft->gameRenderer->DisableUpdateThread();
 
-                        // 4J Stu - We don't need this on a thread in
-                        // multiplayer as respawning is asynchronous.
+                        
+                        
                         pMinecraft->localplayers[i]->respawn();
 
-                        // app.SetGameStarted(true);
+                        
                         pMinecraft->gameRenderer->EnableUpdateThread();
 
-                        // UIFullscreenProgressCompletionData *completionData =
-                        // new UIFullscreenProgressCompletionData();
-                        // completionData->bShowBackground=true;
-                        // completionData->bShowLogo=true;
-                        // completionData->type =
-                        // e_ProgressCompletion_CloseUIScenes;
-                        // completionData->iPad = i;
-                        // loadingParams->completionData = completionData;
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
 
-                        // app.NavigateToScene(i,eUIScene_FullscreenProgress,
-                        // loadingParams, true);
+                        
+                        
                     }
                 } break;
                 case eAppAction_WaitForRespawnComplete:
@@ -2825,10 +2825,10 @@ void Game::HandleXuiActions(void) {
                             ui.CloseUIScenes(i);
                         }
 
-                        // clear the progress messages
+                        
 
-                        // 					pMinecraft->progressRenderer->progressStart(-1);
-                        // 					pMinecraft->progressRenderer->progressStage(-1);
+                        
+                        
                     } else if (!g_NetworkManager.IsInGameplay()) {
                         SetAction(i, eAppAction_Idle);
                     }
@@ -2844,33 +2844,33 @@ void Game::HandleXuiActions(void) {
                     }
                     break;
                 case eAppAction_PrimaryPlayerSignedOut: {
-                    // SetAction(i,eAppAction_Idle);
+                    
 
-                    // clear the autosavetimer that might be displayed
+                    
                     ui.ShowAutosaveCountdownTimer(false);
 
-                    // If the player signs out before the game started the
-                    // server can be killed a bit earlier to stop the loading or
-                    // saving of a new game continuing running while the
-                    // UI/Guide is up
+                    
+                    
+                    
+                    
                     if (!app.GetGameStarted())
                         MinecraftServer::HaltServer(true);
 
-                    // inform the player they are being returned to the menus
-                    // because they signed out
+                    
+                    
                     StorageManager.SetSaveDeviceSelected(i, false);
-                    // need to clear the player stats - can't assume it'll be
-                    // done in setlevel - we may not be in the game
+                    
+                    
                     StatsCounter* pStats = Minecraft::GetInstance()->stats[i];
                     pStats->clear();
 
-                    // 4J-PB - the libs will display the Returned to Title
-                    // screen 					unsigned int
-                    // uiIDA[1]; uiIDA[0]=IDS_CONFIRM_OK;
-                    //
-                    // 					ui.RequestMessageBox(IDS_RETURNEDTOMENU_TITLE,
-                    // IDS_RETURNEDTOTITLESCREEN_TEXT, uiIDA, 1,
-                    // i,&Game::PrimaryPlayerSignedOutReturned,this,app.GetStringTable());
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     if (g_NetworkManager.IsInSession()) {
                         app.SetAction(
                             i, eAppAction_PrimaryPlayerSignedOutReturned);
@@ -2885,41 +2885,41 @@ void Game::HandleXuiActions(void) {
                         "Handling eAppAction_EthernetDisconnected\n");
                     SetAction(i, eAppAction_Idle);
 
-                    // 4J Stu - Fix for #12530 -TCR 001 BAS Game Stability:
-                    // Title will crash if the player disconnects while starting
-                    // a new world and then opts to play the tutorial once they
-                    // have been returned to the Main Menu.
+                    
+                    
+                    
+                    
                     if (!g_NetworkManager.IsLeavingGame()) {
                         app.DebugPrintf(
                             "Handling eAppAction_EthernetDisconnected - Not "
                             "leaving game\n");
-                        // 4J-PB - not the same as a signout. We should only
-                        // leave the game if this machine is not the host. We
-                        // shouldn't get rid of the save device either.
+                        
+                        
+                        
                         if (g_NetworkManager.IsHost()) {
                             app.DebugPrintf(
                                 "Handling eAppAction_EthernetDisconnected - Is "
                                 "Host\n");
-                            // If it's already a local game, then an ethernet
-                            // disconnect should have no effect
+                            
+                            
                             if (!g_NetworkManager.IsLocalGame() &&
                                 g_NetworkManager.IsInGameplay()) {
-                                // Change the session to an offline session
+                                
                                 SetAction(i, eAppAction_ChangeSessionType);
                             } else if (!g_NetworkManager.IsLocalGame() &&
                                        !g_NetworkManager.IsInGameplay()) {
-                                // There are two cases here, either:
-                                //	 1. We're early enough in the
-                                // create/load game that we can do a really
-                                // minimal shutdown or
-                                //   2. We're far enough in (game has started
-                                //   but the actual game started flag hasn't
-                                //   been set) that we should just wait until
-                                //   we're in the game and switch to offline
-                                //   mode
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
 
-                                // If there's a non-null level then, for our
-                                // purposes, the game has started
+                                
+                                
                                 bool gameStarted = false;
                                 for (int j = 0; j < pMinecraft->levels.size();
                                      j++) {
@@ -2931,20 +2931,20 @@ void Game::HandleXuiActions(void) {
                                 }
 
                                 if (!gameStarted) {
-                                    // 1. Exit
+                                    
                                     MinecraftServer::HaltServer();
 
-                                    // Fix for #12530 - TCR 001 BAS Game
-                                    // Stability: Title will crash if the player
-                                    // disconnects while starting a new world
-                                    // and then opts to play the tutorial once
-                                    // they have been returned to the Main Menu.
-                                    // 4J Stu - Leave the session
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
                                     g_NetworkManager.LeaveGame(false);
 
-                                    // need to clear the player stats - can't
-                                    // assume it'll be done in setlevel - we may
-                                    // not be in the game
+                                    
+                                    
+                                    
                                     StatsCounter* pStats =
                                         Minecraft::GetInstance()->stats[i];
                                     pStats->clear();
@@ -2961,7 +2961,7 @@ void Game::HandleXuiActions(void) {
                                             EthernetDisconnectReturned,
                                         this);
                                 } else {
-                                    // 2. Switch to offline
+                                    
                                     SetAction(i, eAppAction_ChangeSessionType);
                                 }
                             }
@@ -2970,9 +2970,9 @@ void Game::HandleXuiActions(void) {
                                 app.DebugPrintf(
                                     "Handling eAppAction_EthernetDisconnected "
                                     "- Not host\n");
-                                // need to clear the player stats - can't assume
-                                // it'll be done in setlevel - we may not be in
-                                // the game
+                                
+                                
+                                
                                 StatsCounter* pStats =
                                     Minecraft::GetInstance()->stats[i];
                                 pStats->clear();
@@ -2991,46 +2991,46 @@ void Game::HandleXuiActions(void) {
                         }
                     }
                 } break;
-                    // We currently handle both these returns the same way.
+                    
                 case eAppAction_EthernetDisconnectedReturned:
                 case eAppAction_PrimaryPlayerSignedOutReturned: {
                     SetAction(i, eAppAction_Idle);
 
                     pMinecraft->gui->clearMessages();
 
-                    // turn off the gamertags in splitscreen for the primary
-                    // player, since they are about to be made fullscreen
+                    
+                    
                     ui.HideAllGameUIElements();
 
-                    // set the state back to pre-game
+                    
                     ProfileManager.ResetProfileProcessState();
 
                     if (g_NetworkManager.IsLeavingGame()) {
-                        // 4J Stu - If we are already leaving the game, then we
-                        // just need to signal that the player signed out to
-                        // stop saves
+                        
+                        
+                        
                         pMinecraft->progressRenderer->progressStartNoAbort(
                             IDS_EXITING_GAME);
                         pMinecraft->progressRenderer->progressStage(-1);
-                        // This has no effect on client machines
+                        
                         MinecraftServer::HaltServer(true);
                     } else {
-                        // Stop app running
+                        
                         SetGameStarted(false);
 
-                        // turn off the gamertags in splitscreen for the primary
-                        // player, since they are about to be made fullscreen
+                        
+                        
                         ui.HideAllGameUIElements();
 
                         ui.CloseAllPlayersScenes();
 
-                        // 4J Stu - Fix for #12368 - Crash: Game crashes when
-                        // saving then exiting and selecting to save
+                        
+                        
                         for (unsigned int idx = 0; idx < XUSER_MAX_COUNT;
                              ++idx) {
-                            // 4J Stu - Fix for #13257 - CRASH: Gameplay: Title
-                            // crashed after exiting the tutorial It doesn't
-                            // matter if they were in the tutorial already
+                            
+                            
+                            
                             pMinecraft->playerLeftTutorial(idx);
                         }
 
@@ -3055,26 +3055,26 @@ void Game::HandleXuiActions(void) {
                 } break;
                 case eAppAction_PrimaryPlayerSignedOutReturned_Menus:
                     SetAction(i, eAppAction_Idle);
-                    // set the state back to pre-game
+                    
                     ProfileManager.ResetProfileProcessState();
-                    // clear the save device
+                    
                     StorageManager.SetSaveDeviceSelected(i, false);
 
                     ui.UpdatePlayerBasePositions();
-                    // there are multiple layers in the help menu, so a navigate
-                    // back isn't enough
+                    
+                    
                     ui.NavigateToHomeMenu();
 
                     break;
                 case eAppAction_EthernetDisconnectedReturned_Menus:
                     SetAction(i, eAppAction_Idle);
-                    // set the state back to pre-game
+                    
                     ProfileManager.ResetProfileProcessState();
 
                     ui.UpdatePlayerBasePositions();
 
-                    // there are multiple layers in the help menu, so a navigate
-                    // back isn't enough
+                    
+                    
                     ui.NavigateToHomeMenu();
 
                     break;
@@ -3090,7 +3090,7 @@ void Game::HandleXuiActions(void) {
                         &Game::TrialOverReturned, this);
                 } break;
 
-                    // INVITES
+                    
                 case eAppAction_DashboardTrialJoinFromInvite: {
                     SetAction(i, eAppAction_Idle);
                     unsigned int uiIDA[2];
@@ -3105,7 +3105,7 @@ void Game::HandleXuiActions(void) {
                     unsigned int uiIDA[3];
 
                     SetAction(i, eAppAction_Idle);
-                    // Check the player really wants to do this
+                    
 
                     if (!StorageManager.GetSaveDisabled() &&
                         i == ProfileManager.GetPrimaryPad() &&
@@ -3133,47 +3133,47 @@ void Game::HandleXuiActions(void) {
 
                     pMinecraft->gui->clearMessages();
 
-                    // turn off the gamertags in splitscreen for the primary
-                    // player, since they are about to be made fullscreen
+                    
+                    
                     ui.HideAllGameUIElements();
 
-                    // Stop app running
+                    
                     SetGameStarted(false);
 
                     ui.CloseAllPlayersScenes();
 
-                    // 4J Stu - Fix for #12368 - Crash: Game crashes when saving
-                    // then exiting and selecting to save
+                    
+                    
                     for (unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx) {
-                        // 4J Stu - Fix for #13257 - CRASH: Gameplay: Title
-                        // crashed after exiting the tutorial It doesn't matter
-                        // if they were in the tutorial already
+                        
+                        
+                        
                         pMinecraft->playerLeftTutorial(idx);
                     }
 
-                    // 4J-PB - may have been using a texture pack with audio ,
-                    // so clean up anything texture pack related here
+                    
+                    
 
-                    // unload any texture pack audio
-                    // if there is audio in use, clear out the audio, and
-                    // unmount the pack
+                    
+                    
+                    
                     TexturePack* pTexPack =
                         Minecraft::GetInstance()->skins->getSelected();
                     DLCTexturePack* pDLCTexPack = nullptr;
 
                     if (pTexPack->hasAudio()) {
-                        // get the dlc texture pack, and store it
+                        
                         pDLCTexPack = (DLCTexturePack*)pTexPack;
                     }
 
-                    // change to the default texture pack
+                    
                     pMinecraft->skins->selectTexturePackById(
                         TexturePackRepository::DEFAULT_TEXTURE_PACK_ID);
 
                     if (pTexPack->hasAudio()) {
-                        // need to stop the streaming audio - by playing
-                        // streaming audio from the default texture pack now
-                        // reset the streaming sounds back to the normal ones
+                        
+                        
+                        
                         pMinecraft->soundEngine->SetStreamingSounds(
                             eStream_Overworld_Calm1, eStream_Overworld_piano3,
                             eStream_Nether1, eStream_Nether4,
@@ -3209,17 +3209,17 @@ void Game::HandleXuiActions(void) {
                 case eAppAction_JoinFromInvite: {
                     SetAction(i, eAppAction_Idle);
 
-                    // 4J Stu - Move this state block from
-                    // IPlatformNetwork::ExitAndJoinFromInviteThreadProc,
-                    // as g_NetworkManager.JoinGameFromInviteInfo ultimately can
-                    // call NavigateToScene,
-                    /// and we should only be calling that from the main thread
+                    
+                    
+                    
+                    
+                    
                     app.SetTutorialMode(false);
 
                     g_NetworkManager.SetLocalGame(false);
 
                     JoinFromInviteData* inviteData = (JoinFromInviteData*)param;
-                    // 4J-PB - clear any previous connection errors
+                    
                     Minecraft::GetInstance()->clearConnectionFailed();
 
                     app.DebugPrintf(
@@ -3230,23 +3230,23 @@ void Game::HandleXuiActions(void) {
                     ProfileManager.SetLockedProfile(inviteData->dwUserIndex);
                     ProfileManager.SetPrimaryPad(inviteData->dwUserIndex);
 
-                    // change the minecraft player name
+                    
                     Minecraft::GetInstance()->user->name =
                         convStringToWstring(ProfileManager.GetGamertag(
                             ProfileManager.GetPrimaryPad()));
 
                     bool success = g_NetworkManager.JoinGameFromInviteInfo(
-                        inviteData->dwUserIndex,       // dwUserIndex
-                        inviteData->dwLocalUsersMask,  // dwUserMask
-                        inviteData->pInviteInfo);      // pInviteInfo
+                        inviteData->dwUserIndex,       
+                        inviteData->dwLocalUsersMask,  
+                        inviteData->pInviteInfo);      
 
                     if (!success) {
                         app.DebugPrintf("Failed joining game from invite\n");
-                        // return hr;
+                        
 
-                        // 4J Stu - Copied this from XUI_FullScreenProgress to
-                        // properly handle the fail case, as the thread will no
-                        // longer be failing
+                        
+                        
+                        
                         unsigned int uiIDA[1];
                         uiIDA[0] = IDS_CONFIRM_OK;
                         ui.RequestErrorMessage(
@@ -3258,12 +3258,12 @@ void Game::HandleXuiActions(void) {
                     }
                 } break;
                 case eAppAction_ChangeSessionType: {
-                    // If we are not in gameplay yet, then wait until the server
-                    // is setup before changing the session type
+                    
+                    
                     if (g_NetworkManager.IsInGameplay()) {
-                        // This kicks off a thread that waits for the server to
-                        // end, then closes the current session, starts a new
-                        // one and joins the local players into it
+                        
+                        
+                        
 
                         SetAction(i, eAppAction_Idle);
 
@@ -3273,9 +3273,9 @@ void Game::HandleXuiActions(void) {
                             SetChangingSessionType(true);
                             SetReallyChangingSessionType(true);
 
-                            // turn off the gamertags in splitscreen for the
-                            // primary player, since they are about to be made
-                            // fullscreen
+                            
+                            
+                            
                             ui.HideAllGameUIElements();
 
                             if (!ui.IsSceneInStack(
@@ -3286,12 +3286,12 @@ void Game::HandleXuiActions(void) {
                             ui.ShowOtherPlayersBaseScene(
                                 ProfileManager.GetPrimaryPad(), true);
 
-                            // Remove this line to fix:
-                            // #49084 - TU5: Code: Gameplay: The title crashes
-                            // every time client navigates to 'Play game' menu
-                            // and loads/creates new game after a "Connection to
-                            // Xbox LIVE was lost" message has appeared.
-                            // app.NavigateToScene(0,eUIScene_Main);
+                            
+                            
+                            
+                            
+                            
+                            
 
                             LoadingInputParams* loadingParams =
                                 new LoadingInputParams();
@@ -3323,8 +3323,8 @@ void Game::HandleXuiActions(void) {
                                                loadingParams);
                         }
                     } else if (g_NetworkManager.IsLeavingGame()) {
-                        // If we are leaving the game, then ignore the state
-                        // change
+                        
+                        
                         SetAction(i, eAppAction_Idle);
                     }
                 } break;
@@ -3332,16 +3332,16 @@ void Game::HandleXuiActions(void) {
                     SetAction(i, eAppAction_Idle);
                     SetDefaultOptions((C_4JProfile::PROFILESETTINGS*)param, i);
 
-                    // if the profile data has been changed, then force a
-                    // profile write It seems we're allowed to break the 5
-                    // minute rule if it's the result of a user action
+                    
+                    
+                    
                     CheckGameSettingsChanged(true, i);
 
                     break;
 
                 case eAppAction_RemoteServerSave: {
-                    // If the remote server save has already finished, don't
-                    // complete the action
+                    
+                    
                     if (GetGameStarted()) {
                         SetAction(ProfileManager.GetPrimaryPad(),
                                   eAppAction_Idle);
@@ -3354,8 +3354,8 @@ void Game::HandleXuiActions(void) {
                         ui.CloseUIScenes(i, true);
                     }
 
-                    // turn off the gamertags in splitscreen for the primary
-                    // player, since they are about to be made fullscreen
+                    
+                    
                     ui.HideAllGameUIElements();
 
                     LoadingInputParams* loadingParams =
@@ -3389,7 +3389,7 @@ void Game::HandleXuiActions(void) {
                                        loadingParams);
                 } break;
                 case eAppAction_WaitRemoteServerSaveComplete:
-                    // Do nothing
+                    
                     break;
                 case eAppAction_FailedToJoinNoPrivileges: {
                     unsigned int uiIDA[1];
@@ -3402,11 +3402,11 @@ void Game::HandleXuiActions(void) {
                         SetAction(i, eAppAction_Idle);
                 } break;
                 case eAppAction_ProfileReadError:
-                    // Return player to the main menu - code largely copied from
-                    // that for handling eAppAction_PrimaryPlayerSignedOut,
-                    // although I don't think we should have got as far as
-                    // needing to halt the server, or running the game, before
-                    // returning to the menu
+                    
+                    
+                    
+                    
+                    
                     if (!app.GetGameStarted())
                         MinecraftServer::HaltServer(true);
 
@@ -3421,13 +3421,13 @@ void Game::HandleXuiActions(void) {
                     break;
 
                 case eAppAction_BanLevel: {
-                    // It's possible that this state can get set after the game
-                    // has been exited (e.g. by network disconnection) so we
-                    // can't ban the level at that point
+                    
+                    
+                    
                     if (g_NetworkManager.IsInGameplay() &&
                         !g_NetworkManager.IsLeavingGame()) {
-                        // primary player would exit the world, secondary would
-                        // exit the player
+                        
+                        
                         if (ProfileManager.GetPrimaryPad() == i) {
                             SetAction(i, eAppAction_ExitWorld);
                         } else {
@@ -3440,14 +3440,14 @@ void Game::HandleXuiActions(void) {
                     uiIDA[0] = IDS_BUTTON_REMOVE_FROM_BAN_LIST;
                     uiIDA[1] = IDS_EXIT_GAME;
 
-                    // pass in the gamertag format std::string
+                    
                     wchar_t wchFormat[40];
                     INetworkPlayer* player =
                         g_NetworkManager.GetLocalPlayerByUserIndex(i);
 
-                    // If not the primary player, but the primary player has
-                    // banned this level and decided not to unban then we may
-                    // have left the game by now
+                    
+                    
+                    
                     if (player) {
                         swprintf(wchFormat, 40, L"%ls\n\n%%ls",
                                  player->GetOnlineName());
@@ -3465,7 +3465,7 @@ void Game::HandleXuiActions(void) {
                     }
                 } break;
                 case eAppAction_DebugText:
-                    // launch the xui for text entry
+                    
                     {
                         SetAction(i, eAppAction_Idle);
                     }
@@ -3484,7 +3484,7 @@ void Game::HandleXuiActions(void) {
                         DLCPack* pDLCPack = pTexturePack->getDLCPack();
 
                         bool purchased = false;
-                        // do we have a license?
+                        
                         if (pDLCPack &&
                             pDLCPack->hasPurchasedFile(
                                 DLCManager::e_DLCType_Texture, L"")) {
@@ -3492,8 +3492,8 @@ void Game::HandleXuiActions(void) {
                         }
                     }
 
-                    // 4J-PB  - If the texture pack has audio, we need to switch
-                    // to this
+                    
+                    
                     if (pMinecraft->skins->getSelected()->hasAudio()) {
                         Minecraft::GetInstance()->soundEngine->playStreaming(
                             L"", 0, 0, 0, 1, 1);
@@ -3521,7 +3521,7 @@ void Game::HandleXuiActions(void) {
                     uiIDA[0] = IDS_TEXTUREPACK_FULLVERSION;
                     uiIDA[1] = IDS_TEXTURE_PACK_TRIALVERSION;
 
-                    // Give the player a warning about the texture pack missing
+                    
                     ui.RequestErrorMessage(
                         IDS_DLC_TEXTUREPACK_NOT_PRESENT_TITLE,
                         IDS_DLC_TEXTUREPACK_NOT_PRESENT, uiIDA, 2,
@@ -3536,20 +3536,20 @@ void Game::HandleXuiActions(void) {
             }
         }
 
-        // Any TMS actions?
+        
 
         eTMS = app.GetTMSAction(i);
 
         if (eTMS != eTMSAction_Idle) {
             switch (eTMS) {
-                    // TMS++ actions
+                    
                 case eTMSAction_TMSPP_RetrieveFiles_CreateLoad_SignInReturned:
                 case eTMSAction_TMSPP_RetrieveFiles_RunPlayGame:
                     SetTMSAction(i, eTMSAction_TMSPP_UserFileList);
                     break;
 
                 case eTMSAction_TMSPP_UserFileList:
-                    // retrieve the file list first
+                    
                     SetTMSAction(i, eTMSAction_TMSPP_XUIDSFile);
                     break;
                 case eTMSAction_TMSPP_XUIDSFile:
@@ -3560,16 +3560,16 @@ void Game::HandleXuiActions(void) {
                     SetTMSAction(i, eTMSAction_TMSPP_BannedListFile);
                     break;
                 case eTMSAction_TMSPP_BannedListFile:
-                    // If we have one in TMSPP, then we can assume we can ignore
-                    // TMS
+                    
+                    
                     SetTMSAction(i, eTMSAction_TMS_RetrieveFiles_Complete);
                     break;
 
-                    // SPECIAL CASE - where the user goes directly in to Help &
-                    // Options from the main menu
+                    
+                    
                 case eTMSAction_TMSPP_RetrieveFiles_HelpAndOptions:
                 case eTMSAction_TMSPP_RetrieveFiles_DLCMain:
-                    // retrieve the file list first
+                    
                     SetTMSAction(i, eTMSAction_TMSPP_DLCFileOnly);
                     break;
                 case eTMSAction_TMSPP_RetrieveUserFilelist_DLCFileOnly:
@@ -3585,45 +3585,45 @@ void Game::HandleXuiActions(void) {
                     SetTMSAction(i, eTMSAction_Idle);
                     break;
 
-                    // TMS files
-                    /*			case
-                    eTMSAction_TMS_RetrieveFiles_CreateLoad_SignInReturned: case
-                    eTMSAction_TMS_RetrieveFiles_RunPlayGame: #ifdef 0
-                    SetTMSAction(i,eTMSAction_TMS_XUIDSFile_Waiting);
-                    // pass in the next app action on the call or callback
-                    completing
-                    app.ReadXuidsFileFromTMS(i,eTMSAction_TMS_DLCFile,true);
-                    #else
-                    SetTMSAction(i,eTMSAction_TMS_DLCFile);
-                    #endif
-                    break;
+                    
+                    
 
-                    case eTMSAction_TMS_DLCFile:
-                    SetTMSAction(i,eTMSAction_TMS_BannedListFile);
 
-                    break;
 
-                    case eTMSAction_TMS_RetrieveFiles_HelpAndOptions:
-                    case eTMSAction_TMS_RetrieveFiles_DLCMain:
-                    SetTMSAction(i,eTMSAction_Idle);
 
-                    break;
-                    case eTMSAction_TMS_BannedListFile:
 
-                    break;
 
-                    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 case eTMSAction_TMS_RetrieveFiles_Complete:
                     SetTMSAction(i, eTMSAction_Idle);
-                    // 				if(StorageManager.SetSaveDevice(&CScene_Main::DeviceSelectReturned,pClass))
-                    // 				{
-                    // 					// save device already
-                    // selected
-                    // 					// ensure we've applied
-                    // this player's settings
-                    // 					app.ApplyGameSettingsChanged(ProfileManager.GetPrimaryPad());
-                    // 					app.NavigateToScene(ProfileManager.GetPrimaryPad(),eUIScene_MultiGameJoinLoad);
-                    // 				}
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     break;
                 default:
                     break;
@@ -3635,7 +3635,7 @@ void Game::HandleXuiActions(void) {
 int Game::BannedLevelDialogReturned(
     void* pParam, int iPad, const C4JStorage::EMessageResult result) {
     Game* pApp = (Game*)pParam;
-    // Minecraft *pMinecraft=Minecraft::GetInstance();
+    
 
     if (result == C4JStorage::EMessage_ResultAccept) {
     } else {
@@ -3658,7 +3658,7 @@ void Game::loadMediaArchive() {
 #endif
 
     if (!mediapath.empty()) {
-        // boom headshot
+        
 #if defined(__linux__) || defined(__APPLE__)
         std::wstring exeDirW = PlatformFileIO.getBasePath().wstring();
         std::wstring candidate = exeDirW + File::pathSeparator + mediapath;
@@ -3675,7 +3675,7 @@ void Game::loadMediaArchive() {
 
 void Game::loadStringTable() {
     if (m_stringTable != nullptr) {
-        // we need to unload the current std::string table, this is a reload
+        
         delete m_stringTable;
     }
     std::wstring localisationFile = L"languages.loc";
@@ -3686,21 +3686,21 @@ void Game::loadStringTable() {
     } else {
         m_stringTable = nullptr;
         assert(false);
-        // AHHHHHHHHH.
+        
     }
 }
 
 int Game::PrimaryPlayerSignedOutReturned(
     void* pParam, int iPad, const C4JStorage::EMessageResult) {
-    // Game* pApp = (Game*)pParam;
-    // Minecraft *pMinecraft=Minecraft::GetInstance();
+    
+    
 
-    // if the player is null, we're in the menus
-    // if(Minecraft::GetInstance()->player!=nullptr)
+    
+    
 
-    // We always create a session before kicking of any of the game code, so
-    // even though we may still be joining/creating a game at this point we want
-    // to handle it differently from just being in a menu
+    
+    
+    
     if (g_NetworkManager.IsInSession()) {
         app.SetAction(iPad, eAppAction_PrimaryPlayerSignedOutReturned);
     } else {
@@ -3711,27 +3711,27 @@ int Game::PrimaryPlayerSignedOutReturned(
 
 int Game::EthernetDisconnectReturned(
     void* pParam, int iPad, const C4JStorage::EMessageResult) {
-    // Game* pApp = (Game*)pParam;
+    
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
-    // if the player is null, we're in the menus
+    
     if (Minecraft::GetInstance()->player != nullptr) {
         app.SetAction(pMinecraft->player->GetXboxPad(),
                       eAppAction_EthernetDisconnectedReturned);
     } else {
-        //  4J-PB - turn off the PSN store icon just in case this happened when
-        //  we were in one of the DLC menus
+        
+        
         app.SetAction(iPad, eAppAction_EthernetDisconnectedReturned_Menus);
     }
     return 0;
 }
 
 int Game::SignoutExitWorldThreadProc(void* lpParameter) {
-    // Share AABB & Vec3 pools with default (main thread) - should be ok as long
-    // as we don't tick the main thread whilst this thread is running
+    
+    
     Compression::UseDefaultThreadStorage();
 
-    // app.SetGameStarted(false);
+    
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
@@ -3766,8 +3766,8 @@ int Game::SignoutExitWorldThreadProc(void* lpParameter) {
             }
             pMinecraft->progressRenderer->progressStartNoAbort(
                 exitReasonStringId);
-            // 4J - Force a disconnection, this handles the situation that the
-            // server has already disconnected
+            
+            
             if (pMinecraft->levels[0] != nullptr)
                 pMinecraft->levels[0]->disconnect(false);
             if (pMinecraft->levels[1] != nullptr)
@@ -3783,16 +3783,16 @@ int Game::SignoutExitWorldThreadProc(void* lpParameter) {
                 pMinecraft->levels[1]->disconnect();
         }
 
-        // 4J Stu - This only does something if we actually have a server, so
-        // don't need to do any other checks
+        
+        
         MinecraftServer::HaltServer(true);
 
-        // We need to call the stats & leaderboards save before we exit the
-        // session
-        // pMinecraft->forceStatsSave();
+        
+        
+        
         saveStats = false;
 
-        // 4J Stu - Leave the session once the disconnect packet has been sent
+        
         g_NetworkManager.LeaveGame(false);
     } else {
         if (lpParameter != nullptr) {
@@ -3822,16 +3822,16 @@ int Game::SignoutExitWorldThreadProc(void* lpParameter) {
     }
     pMinecraft->setLevel(nullptr, exitReasonStringId, nullptr, saveStats, true);
 
-    // 4J-JEV: Fix for #106402 - TCR #014 BAS Debug Output:
-    // TU12: Mass Effect Mash-UP: Save file "Default_DisplayName" is created on
-    // all storage devices after signing out from a re-launched pre-generated
-    // world
-    app.m_gameRules.unloadCurrentGameRules();  //
+    
+    
+    
+    
+    app.m_gameRules.unloadCurrentGameRules();  
 
     MinecraftServer::resetFlags();
 
-    // We can't start/join a new game until the session is destroyed, so wait
-    // for it to be idle again
+    
+    
     while (g_NetworkManager.IsInSession()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
@@ -3841,13 +3841,13 @@ int Game::SignoutExitWorldThreadProc(void* lpParameter) {
 
 int Game::UnlockFullInviteReturned(void* pParam, int iPad,
                                             C4JStorage::EMessageResult result) {
-    // Game* pApp = (Game*)pParam;
+    
     Minecraft* pMinecraft = Minecraft::GetInstance();
     bool bNoPlayer;
 
-    // bug 11285 - TCR 001: BAS Game Stability: CRASH - When trying to join a
-    // full version game with a trial version, the trial crashes 4J-PB - we may
-    // be in the main menus here, and we don't have a pMinecraft->player
+    
+    
+    
 
     if (pMinecraft->player == nullptr) {
         bNoPlayer = true;
@@ -3893,14 +3893,14 @@ void Game::ProfileReadErrorCallback(void* pParam) {
 }
 
 void Game::ClearSignInChangeUsersMask() {
-    // 4J-PB - When in the main menu, the user is on pad 0, and any change they
-    // make to their profile will be to pad 0 data If they then go in as a
-    // secondary player to a splitscreen game, their profile will not be read
-    // again on pad 1 if they were previously in a splitscreen game This is
-    // because m_uiLastSignInData remembers they were in previously, and doesn't
-    // read the profile data for them again Fix this by resetting the
-    // m_uiLastSignInData on pressing play game for secondary users. The Primary
-    // user does a read profile on play game anyway
+    
+    
+    
+    
+    
+    
+    
+    
     int iPrimaryPlayer = ProfileManager.GetPrimaryPad();
 
     if (m_uiLastSignInData != 0) {
@@ -3915,20 +3915,20 @@ void Game::SignInChangeCallback(void* pParam,
                                          bool bPrimaryPlayerChanged,
                                          unsigned int uiSignInData) {
     Game* pApp = (Game*)pParam;
-    // check if the primary player signed out
+    
     int iPrimaryPlayer = ProfileManager.GetPrimaryPad();
 
     if ((ProfileManager.GetLockedProfile() != -1) && iPrimaryPlayer != -1) {
         if (((uiSignInData & (1 << iPrimaryPlayer)) == 0) ||
             bPrimaryPlayerChanged) {
-            // Primary Player gone or there's been a sign out and sign in of the
-            // primary player, so kick them out
+            
+            
             pApp->SetAction(iPrimaryPlayer, eAppAction_PrimaryPlayerSignedOut);
 
-            // 4J-PB - invalidate their banned level list
+            
             pApp->InvalidateBannedList(iPrimaryPlayer);
 
-            // need to ditch any DLCOffers info
+            
             StorageManager.ClearDLCOffers();
             pApp->ClearAndResetDLCDownloadQueue();
             pApp->ClearDLCInstalled();
@@ -3964,28 +3964,28 @@ void Game::SignInChangeCallback(void* pParam,
                                            1, ProfileManager.GetPrimaryPad());
                 }
 
-                // 4J Stu - On PS4 we can also cause to exit players if they are
-                // signed out here, but we shouldn't do that if we are going to
-                // switch to an offline game as it will likely crash due to
-                // incompatible parallel processes
+                
+                
+                
+                
                 bool switchToOffline = false;
-                // If it's an online game, and the primary profile is no longer
-                // signed into LIVE then we act as if disconnected
+                
+                
                 if (!ProfileManager.IsSignedInLive(
                         ProfileManager.GetLockedProfile()) &&
                     !g_NetworkManager.IsLocalGame()) {
                     switchToOffline = true;
                 }
 
-                // printf("Old: %x, New: %x, Changed: %x\n", m_ulLastSignInData,
-                // ulSignInData, changedPlayers);
+                
+                
                 for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
-                    // Primary player shouldn't be subjected to these checks,
-                    // and shouldn't call ExitPlayer
+                    
+                    
                     if (i == iPrimaryPlayer) continue;
 
-                    // A guest a signed in or out, out of order which
-                    // invalidates all the guest players we have in the game
+                    
+                    
                     if (hasGuestIdChanged &&
                         pApp->m_currentSigninInfo[i].dwGuestNumber != 0 &&
                         g_NetworkManager.GetLocalPlayerByUserIndex(i) !=
@@ -3999,15 +3999,15 @@ void Game::SignInChangeCallback(void* pParam,
                         XUSER_SIGNIN_INFO info;
                         XUserGetSigninInfo(
                             i, XUSER_GET_SIGNIN_INFO_OFFLINE_XUID_ONLY, &info);
-                        // 4J Stu - Also need to detect the case where the sign
-                        // in mask is the same, but the player has swapped users
-                        // (eg still signed in but xuid different) Fix for
-                        // #48451 - TU5: Code: UI: Splitscreen: Title crashes
-                        // when switching to a profile previously signed out via
-                        // splitscreen profile selection
+                        
+                        
+                        
+                        
+                        
+                        
 
-                        // 4J-PB - compiler complained about if below ('&&'
-                        // within '||') - making it easier to read
+                        
+                        
                         bool bPlayerChanged =
                             (uiChangedPlayers & (1 << i)) == (1 << i);
                         bool bPlayerSignedIn = ((uiSignInData & (1 << i)) != 0);
@@ -4018,16 +4018,16 @@ void Game::SignInChangeCallback(void* pParam,
                               !ProfileManager.AreXUIDSEqual(
                                   pApp->m_currentSigninInfo[i].xuid,
                                   info.xuid)))) {
-                            // 4J-PB - invalidate their banned level list
+                            
                             pApp->DebugPrintf(
                                 "Player at index %d Left - invalidating their "
                                 "banned list\n",
                                 i);
                             pApp->InvalidateBannedList(i);
 
-                            // 4J-HG: If either the player is in the network
-                            // manager or in the game, need to exit player
-                            // TODO: Do we need to check the network manager?
+                            
+                            
+                            
                             if (g_NetworkManager.GetLocalPlayerByUserIndex(i) !=
                                     nullptr ||
                                 Minecraft::GetInstance()->localplayers[i] !=
@@ -4039,8 +4039,8 @@ void Game::SignInChangeCallback(void* pParam,
                     }
                 }
 
-                // If it's an online game, and the primary profile is no longer
-                // signed into LIVE then we act as if disconnected
+                
+                
                 if (switchToOffline) {
                     pApp->SetAction(iPrimaryPlayer,
                                     eAppAction_EthernetDisconnected);
@@ -4048,9 +4048,9 @@ void Game::SignInChangeCallback(void* pParam,
 
                 g_NetworkManager.HandleSignInChange();
             }
-            // Some menus require the player to be signed in to live, so if this
-            // callback happens and the primary player is no longer signed in
-            // then nav back
+            
+            
+            
             else if (pApp->GetLiveLinkRequired() &&
                      !ProfileManager.IsSignedInLive(
                          ProfileManager.GetLockedProfile())) {
@@ -4062,17 +4062,17 @@ void Game::SignInChangeCallback(void* pParam,
         }
         m_uiLastSignInData = uiSignInData;
     } else if (iPrimaryPlayer != -1) {
-        // make sure the TMS banned list data is ditched - the player may have
-        // gone in to help & options, backed out, and signed out
+        
+        
         pApp->InvalidateBannedList(iPrimaryPlayer);
 
-        // need to ditch any DLCOffers info
+        
         StorageManager.ClearDLCOffers();
         pApp->ClearAndResetDLCDownloadQueue();
         pApp->ClearDLCInstalled();
     }
 
-    // Update the guest numbers to the current state
+    
     for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
         if (FAILED(XUserGetSigninInfo(i,
                                       XUSER_GET_SIGNIN_INFO_OFFLINE_XUID_ONLY,
@@ -4090,7 +4090,7 @@ void Game::NotificationsCallback(void* pParam,
                                           unsigned int uiParam) {
     Game* pClass = (Game*)pParam;
 
-    // push these on to the notifications to be handled in qnet's dowork
+    
 
     PNOTIFICATION pNotification = new NOTIFICATION;
 
@@ -4115,11 +4115,11 @@ void Game::NotificationsCallback(void* pParam,
             }
             break;
         case XN_LIVE_CONTENT_INSTALLED:
-            // Need to inform xuis that we've possibly had DLC installed
+            
             {
-                // app.m_dlcManager.SetNeedsUpdated(true);
-                //  Clear the DLC installed flag to cause a GetDLC to run if
-                //  it's called
+                
+                
+                
                 app.ClearDLCInstalled();
 
                 ui.HandleDLCInstalled(ProfileManager.GetPrimaryPad());
@@ -4142,14 +4142,14 @@ bool Game::DebugArtToolsOn() {
 
 void Game::SetDebugSequence(const char* pchSeq) {
     InputManager.SetDebugSequence(pchSeq, [this]() -> int {
-        // printf("sequence matched\n");
+        
         m_bDebugOptions = !m_bDebugOptions;
 
         for (int i = 0; i < XUSER_MAX_COUNT; i++) {
             if (app.DebugSettingsOn()) {
                 app.ActionDebugMask(i);
             } else {
-                // force debug mask off
+                
                 app.ActionDebugMask(i, true);
             }
         }
@@ -4190,10 +4190,10 @@ bool Game::StartInstallDLCProcess(int iPad) {
     app.DebugPrintf("--- Game::StartInstallDLCProcess: pad=%i.\n",
                     iPad);
 
-    // If there is already a call to this in progress, then do nothing
-    // If the app says dlc is installed, then there has been no new system
-    // message to tell us there's new DLC since the last call to
-    // StartInstallDLCProcess
+    
+    
+    
+    
     if ((app.DLCInstallProcessCompleted() == false) &&
         (m_bDLCInstallPending == false)) {
         app.m_dlcManager.resetUnnamedCorruptCount();
@@ -4217,7 +4217,7 @@ bool Game::StartInstallDLCProcess(int iPad) {
     }
 }
 
-// Installed DLC callback
+
 int Game::dlcInstalledCallback(int iInstalledC, int iPad) {
     DebugPrintf(
         "--- Game::dlcInstalledCallback: totalDLC=%i, pad=%i.\n",
@@ -4230,10 +4230,10 @@ int Game::dlcInstalledCallback(int iInstalledC, int iPad) {
 void Game::MountNextDLC(int iPad) {
     app.DebugPrintf("--- Game::MountNextDLC: pad=%i.\n", iPad);
     if (m_iTotalDLCInstalled < m_iTotalDLC) {
-        // Mount it
-        // We also need to match the ones the user wants to mount with the
-        // installed DLC We're supposed to use a generic save game as a cache of
-        // these to do this, with XUSER_ANY
+        
+        
+        
+        
 
         if (StorageManager.MountInstalledDLC(
                 iPad, m_iTotalDLCInstalled,
@@ -4241,7 +4241,7 @@ void Game::MountNextDLC(int iPad) {
                        std::uint32_t dwLicenceMask) {
                     return dlcMountedCallback(pad, dwErr, dwLicenceMask);
                 }) != ERROR_IO_PENDING) {
-            // corrupt DLC
+            
             app.DebugPrintf("Failed to mount DLC %d for pad %d\n",
                             m_iTotalDLCInstalled, iPad);
             ++m_iTotalDLCInstalled;
@@ -4250,13 +4250,13 @@ void Game::MountNextDLC(int iPad) {
             app.DebugPrintf("StorageManager.MountInstalledDLC ok\n");
         }
     } else {
-        /* Removed - now loading these on demand instead of as each pack is
-        mounted if(m_iTotalDLCInstalled > 0)
-        {
-        Minecraft *pMinecraft=Minecraft::GetInstance();
-        pMinecraft->levelRenderer->AddDLCSkinsToMemTextures();
-        }
-        */
+        
+
+
+
+
+
+
 
         m_bDLCInstallPending = false;
         m_bDLCInstallProcessCompleted = true;
@@ -4265,7 +4265,7 @@ void Game::MountNextDLC(int iPad) {
     }
 }
 
-// 4J-JEV: For the sake of clarity in DLCMountedCallback.
+
 #if defined(_WINDOWS64)
 #define CONTENT_DATA_DISPLAY_NAME(a) (a.szDisplayName)
 #else
@@ -4278,7 +4278,7 @@ int Game::dlcMountedCallback(int iPad, std::uint32_t dwErr,
     DebugPrintf("--- Game::dlcMountedCallback\n");
 
     if (dwErr != ERROR_SUCCESS) {
-        // corrupt DLC
+        
         app.DebugPrintf("Failed to mount DLC for pad %d: %u\n", iPad, dwErr);
         app.m_dlcManager.incrementUnnamedCorruptCount();
     } else {
@@ -4336,33 +4336,33 @@ int Game::dlcMountedCallback(int iPad, std::uint32_t dwErr,
 }
 #undef CONTENT_DATA_DISPLAY_NAME
 
-//  void Game::InstallDefaultCape()
-//  {
-// 	 if(!m_bDefaultCapeInstallAttempted)
-// 	 {
-// 		 // we only attempt to install the cape once per launch of the
-// game 		 m_bDefaultCapeInstallAttempted=true;
-//
-// 		 std::wstring wTemp=L"Default_Cape.png";
-// 		 bool bRes=app.IsFileInMemoryTextures(wTemp);
-// 		 // if the file is not already in the memory textures, then read
-// it from TMS 		 if(!bRes)
-// 		 {
-// 			 std::uint8_t *pBuffer=nullptr;
-// 			 std::uint32_t dwSize=0;
-// 			 // 4J-PB - out for now for DaveK so he doesn't get the
-// birthday cape #ifdef _CONTENT_PACKAGE
-// C4JStorage::ETMSStatus eTMSStatus;
-// 			 eTMSStatus=StorageManager.ReadTMSFile(ProfileManager.GetPrimaryPad(),C4JStorage::eGlobalStorage_Title,C4JStorage::eTMS_FileType_Graphic,
-// L"Default_Cape.png",&pBuffer, &dwSize);
-// 			 if(eTMSStatus==C4JStorage::ETMSStatus_Idle)
-// 			 {
-// 				 app.AddMemoryTextureFile(wTemp,pBuffer,dwSize);
-// 			 }
-// #endif
-// 		 }
-// 	 }
-//  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void Game::HandleDLC(DLCPack* pack) {
     unsigned int dwFilesProcessed = 0;
@@ -4377,32 +4377,32 @@ void Game::HandleDLC(DLCPack* pack) {
     if (dwFilesProcessed == 0) m_dlcManager.removePack(pack);
 }
 
-//  int Game::DLCReadCallback(void*
-//  pParam,C4JStorage::DLC_FILE_DETAILS *pDLCData)
-//  {
-//
-//
-// 	 return 0;
-//  }
 
-//-------------------------------------------------------------------------------------
-// Name: InitTime()
-// Desc: Initializes the timer variables
-//-------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 void Game::InitTime() {
-    // Save the start time
+    
     m_Time.qwTime = time_util::clock::now();
 
-    // Zero out the elapsed and total time
+    
     m_Time.qwAppTime = {};
     m_Time.fAppTime = 0.0f;
     m_Time.fElapsedTime = 0.0f;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: UpdateTime()
-// Desc: Updates the elapsed time since our last frame.
-//-------------------------------------------------------------------------------------
+
+
+
+
 void Game::UpdateTime() {
     auto qwNewTime = time_util::clock::now();
     auto qwDeltaTime = qwNewTime - m_Time.qwTime;
@@ -4422,8 +4422,8 @@ bool Game::isXuidNotch(PlayerUID xuid) {
 }
 
 bool Game::isXuidDeadmau5(PlayerUID xuid) {
-    auto it = MojangData.find(xuid);  // 4J Stu - The .at and [] accessors
-                                      // insert elements if they don't exist
+    auto it = MojangData.find(xuid);  
+                                      
     if (it != MojangData.end()) {
         MOJANG_DATA* pMojangData = MojangData[xuid];
         if (pMojangData && pMojangData->eXuid == eXUID_Deadmau5) {
@@ -4438,7 +4438,7 @@ void Game::AddMemoryTextureFile(const std::wstring& wName,
                                          std::uint8_t* pbData,
                                          unsigned int byteCount) {
     std::lock_guard<std::mutex> lock(csMemFilesLock);
-    // check it's not already in
+    
     PMEMDATA pData = nullptr;
     auto it = m_MEM_Files.find(wName);
     if (it != m_MEM_Files.end()) {
@@ -4449,7 +4449,7 @@ void Game::AddMemoryTextureFile(const std::wstring& wName,
         pData = (*it).second;
 
         if (pData->byteCount == 0 && byteCount != 0) {
-            // This should never be nullptr if dwBytes is 0
+            
             if (pData->pbData != nullptr) delete[] pData->pbData;
 
             pData->pbData = pbData;
@@ -4459,17 +4459,17 @@ void Game::AddMemoryTextureFile(const std::wstring& wName,
         ++pData->ucRefCount;
         return;
     }
-    // this is a texture (png) file
+    
 
-    // add this texture to the list of memory texture files - it will then be
-    // picked up by the level renderer's AddEntity
+    
+    
 
     pData = new MEMDATA();
     pData->pbData = pbData;
     pData->byteCount = byteCount;
     pData->ucRefCount = 1;
 
-    // use the xuid to access the skin data
+    
     m_MEM_Files[wName] = pData;
 }
 
@@ -4535,7 +4535,7 @@ void Game::GetMemFileDetails(const std::wstring& wName,
 void Game::AddMemoryTPDFile(int iConfig, std::uint8_t* pbData,
                                      unsigned int byteCount) {
     std::lock_guard<std::mutex> lock(csMemTPDLock);
-    // check it's not already in
+    
     PMEMDATA pData = nullptr;
     auto it = m_MEM_TPD.find(iConfig);
     if (it == m_MEM_TPD.end()) {
@@ -4550,7 +4550,7 @@ void Game::AddMemoryTPDFile(int iConfig, std::uint8_t* pbData,
 
 void Game::RemoveMemoryTPDFile(int iConfig) {
     std::lock_guard<std::mutex> lock(csMemTPDLock);
-    // check it's not already in
+    
     PMEMDATA pData = nullptr;
     auto it = m_MEM_TPD.find(iConfig);
     if (it != m_MEM_TPD.end()) {
@@ -4586,36 +4586,36 @@ void Game::GetTPD(int iConfig, std::uint8_t** ppbData,
     }
 }
 
-// bool Game::UploadFileToGlobalStorage(int iQuadrant,
-// C4JStorage::eGlobalStorage eStorageFacility, std::wstring *wsFile  )
-// {
-// 	bool bRes=false;
-// #ifndef _CONTENT_PACKAGE
-// 	// read the local file
-// 	File gtsFile( wsFile->c_str() );
-//
-// 	int64_t fileSize = gtsFile.length();
-//
-// 	if(fileSize!=0)
-// 	{
-// 		FileInputStream fis(gtsFile);
-// 		std::vector<uint8_t> ba((int)fileSize);
-// 		fis.read(ba);
-// 		fis.close();
-//
-// 		bRes=StorageManager.WriteTMSFile(iQuadrant,eStorageFacility,(wchar_t
-// *)wsFile->c_str(),ba.data(), ba.size());
-//
-// 	}
-// #endif
-// 	return bRes;
-// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void Game::StoreLaunchData() {}
 
 void Game::ExitGame() {}
 
-// Invites
+
 
 void Game::ProcessInvite(std::uint32_t dwUserIndex,
                                   std::uint32_t dwLocalUsersMask,
@@ -4623,16 +4623,16 @@ void Game::ProcessInvite(std::uint32_t dwUserIndex,
     m_InviteData.dwUserIndex = dwUserIndex;
     m_InviteData.dwLocalUsersMask = dwLocalUsersMask;
     m_InviteData.pInviteInfo = pInviteInfo;
-    // memcpy(&m_InviteData,pJoinData,sizeof(JoinFromInviteData));
+    
     SetAction(dwUserIndex, eAppAction_ExitAndJoinFromInvite);
 }
 
 int Game::ExitAndJoinFromInvite(void* pParam, int iPad,
                                          C4JStorage::EMessageResult result) {
     Game* pApp = (Game*)pParam;
-    // Minecraft *pMinecraft=Minecraft::GetInstance();
+    
 
-    // buttons are swapped on this menu
+    
     if (result == C4JStorage::EMessage_ResultDecline) {
         pApp->SetAction(iPad, eAppAction_ExitAndJoinFromInviteConfirmed);
     }
@@ -4643,15 +4643,15 @@ int Game::ExitAndJoinFromInvite(void* pParam, int iPad,
 int Game::ExitAndJoinFromInviteSaveDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     Game* pClass = (Game*)pParam;
-    // Exit with or without saving
-    // Decline means save in this dialog
+    
+    
     if (result == C4JStorage::EMessage_ResultDecline ||
         result == C4JStorage::EMessage_ResultThirdOption) {
-        if (result == C4JStorage::EMessage_ResultDecline)  // Save
+        if (result == C4JStorage::EMessage_ResultDecline)  
         {
-            // Check they have the full texture pack if they are using one
-            // 4J-PB - Is the player trying to save but they are using a trial
-            // texturepack ?
+            
+            
+            
             if (!Minecraft::GetInstance()->skins->isUsingDefaultSkin()) {
                 TexturePack* tPack =
                     Minecraft::GetInstance()->skins->getSelected();
@@ -4659,15 +4659,15 @@ int Game::ExitAndJoinFromInviteSaveDialogReturned(
                 DLCPack* pDLCPack = tPack->getDLCPack();
                 if (!pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Texture,
                                                 L"")) {
-                    // upsell
-                    // get the dlc texture pack
+                    
+                    
 
                     unsigned int uiIDA[2];
                     uiIDA[0] = IDS_CONFIRM_OK;
                     uiIDA[1] = IDS_CONFIRM_CANCEL;
 
-                    // Give the player a warning about the trial version of the
-                    // texture pack
+                    
+                    
                     ui.RequestErrorMessage(
                         IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE,
                         IDS_WARNING_DLC_TRIALTEXTUREPACK_TEXT, uiIDA, 2, iPad,
@@ -4677,12 +4677,12 @@ int Game::ExitAndJoinFromInviteSaveDialogReturned(
                     return 0;
                 }
             }
-            // does the save exist?
+            
             bool bSaveExists;
             StorageManager.DoesSaveExist(&bSaveExists);
-            // 4J-PB - we check if the save exists inside the libs
-            // we need to ask if they are sure they want to overwrite the
-            // existing game
+            
+            
+            
             if (bSaveExists) {
                 unsigned int uiIDA[2];
                 uiIDA[0] = IDS_CONFIRM_CANCEL;
@@ -4697,7 +4697,7 @@ int Game::ExitAndJoinFromInviteSaveDialogReturned(
                 MinecraftServer::getInstance()->setSaveOnExit(true);
             }
         } else {
-            // been a few requests for a confirm on exit without saving
+            
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_CONFIRM_CANCEL;
             uiIDA[1] = IDS_CONFIRM_OK;
@@ -4717,38 +4717,38 @@ int Game::ExitAndJoinFromInviteSaveDialogReturned(
 
 int Game::WarningTrialTexturePackReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    // 4J Stu - I added this in when fixing an X1 bug. We should probably add
-    // this as well but I don't have time to test all platforms atm
+    
+    
 
     return 0;
 }
 
 int Game::ExitAndJoinFromInviteAndSaveReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    // Game* pClass = (Game*)pParam;
+    
 
-    // results switched for this dialog
+    
     if (result == C4JStorage::EMessage_ResultDecline) {
         int saveOrCheckpointId = 0;
 
-        // Check they have the full texture pack if they are using one
-        // 4J-PB - Is the player trying to save but they are using a trial
-        // texturepack ?
+        
+        
+        
         if (!Minecraft::GetInstance()->skins->isUsingDefaultSkin()) {
             TexturePack* tPack = Minecraft::GetInstance()->skins->getSelected();
 
             DLCPack* pDLCPack = tPack->getDLCPack();
             if (!pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Texture,
                                             L"")) {
-                // upsell
-                // get the dlc texture pack
+                
+                
 
                 unsigned int uiIDA[2];
                 uiIDA[0] = IDS_CONFIRM_OK;
                 uiIDA[1] = IDS_CONFIRM_CANCEL;
 
-                // Give the player a warning about the trial version of the
-                // texture pack
+                
+                
                 ui.RequestErrorMessage(
                     IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE,
                     IDS_WARNING_DLC_TRIALTEXTUREPACK_TEXT, uiIDA, 2, iPad,
@@ -4757,12 +4757,12 @@ int Game::ExitAndJoinFromInviteAndSaveReturned(
                 return 0;
             }
         }
-        // bool validSave =
-        // StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
-        // SentientManager.RecordLevelSaveOrCheckpoint(ProfileManager.GetPrimaryPad(),
-        // saveOrCheckpointId);
+        
+        
+        
+        
         MinecraftServer::getInstance()->setSaveOnExit(true);
-        // flag a app action of exit and join game from invite
+        
         app.SetAction(iPad, eAppAction_ExitAndJoinFromInviteConfirmed);
     }
     return 0;
@@ -4770,24 +4770,24 @@ int Game::ExitAndJoinFromInviteAndSaveReturned(
 
 int Game::ExitAndJoinFromInviteDeclineSaveReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    // results switched for this dialog
+    
     if (result == C4JStorage::EMessage_ResultDecline) {
         MinecraftServer::getInstance()->setSaveOnExit(false);
-        // flag a app action of exit and join game from invite
+        
         app.SetAction(iPad, eAppAction_ExitAndJoinFromInviteConfirmed);
     }
     return 0;
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-// FatalLoadError
-//
-// This is called when we can't load one of the required files at startup
-// It tends to mean the files have been corrupted.
-// We have to assume that we've not been able to load the text for the game.
-//
-//////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
 void Game::FatalLoadError() {}
 
 TIPSTRUCT Game::m_GameTipA[MAX_TIPS_GAMETIP] = {
@@ -4831,9 +4831,9 @@ TIPSTRUCT Game::m_TriviaTipA[MAX_TIPS_TRIVIATIP] = {
 Random* Game::TipRandom = new Random();
 
 int Game::TipsSortFunction(const void* a, const void* b) {
-    // 4jcraft, scince the sortvalues can be negative, i changed it
-    // to a three way comparison,
-    // scince subtracting of signed integers can cause overflow.
+    
+    
+    
 
     int s1 = ((TIPSTRUCT*)a)->iSortValue;
     int s2 = ((TIPSTRUCT*)b)->iSortValue;
@@ -4849,19 +4849,19 @@ int Game::TipsSortFunction(const void* a, const void* b) {
 }
 
 void Game::InitialiseTips() {
-    // We'll randomise the tips at start up based on their priority
+    
 
     memset(m_TipIDA, 0, sizeof(m_TipIDA));
 
-    // Make the first tip tell you that you can play splitscreen in HD modes if
-    // you are in SD
+    
+    
     if (!RenderManager.IsHiDef()) {
         m_GameTipA[0].uiStringID = IDS_TIPS_GAMETIP_0;
     }
-    // randomise then quicksort
-    // going to leave the multiplayer tip so it is always first
+    
+    
 
-    // Only randomise the content package build
+    
 #if defined(_CONTENT_PACKAGE)
 
     for (int i = 1; i < MAX_TIPS_GAMETIP; i++) {
@@ -4881,22 +4881,22 @@ void Game::InitialiseTips() {
     int iCurrentTriviaTip = 0;
 
     for (int i = 0; i < MAX_TIPS_GAMETIP + MAX_TIPS_TRIVIATIP; i++) {
-        // Add a trivia one every third tip (if there are any left)
+        
         if ((i % 3 == 2) && (iCurrentTriviaTip < MAX_TIPS_TRIVIATIP)) {
-            // Add a trivia one
+            
             m_TipIDA[i] = m_TriviaTipA[iCurrentTriviaTip++].uiStringID;
         } else {
             if (iCurrentGameTip < MAX_TIPS_GAMETIP) {
-                // Add a gametip
+                
                 m_TipIDA[i] = m_GameTipA[iCurrentGameTip++].uiStringID;
             } else {
-                // Add a trivia one
+                
                 m_TipIDA[i] = m_TriviaTipA[iCurrentTriviaTip++].uiStringID;
             }
         }
 
         if (m_TipIDA[i] == 0) {
-            // the m_TriviaTipA or the m_GameTipA are out of sync
+            
 #if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
@@ -4941,12 +4941,12 @@ int Game::GetHTMLFontSize(EHTMLFontSize size) {
 }
 
 std::wstring Game::FormatHTMLString(
-    int iPad, const std::wstring& desc, int shadowColour /*= 0xFFFFFFFF*/) {
+    int iPad, const std::wstring& desc, int shadowColour ) {
     std::wstring text(desc);
 
     wchar_t replacements[64];
-    // We will also insert line breaks here as couldn't figure out how to get
-    // them to come through from strings.resx !
+    
+    
     text = replaceAll(text, L"{*B*}", L"<br />");
     swprintf(replacements, 64, L"<font color=\"#%08x\">",
              GetHTMLColour(eHTMLColor_T1));
@@ -4956,7 +4956,7 @@ std::wstring Game::FormatHTMLString(
     text = replaceAll(text, L"{*T2*}", replacements);
     swprintf(replacements, 64, L"<font color=\"#%08x\">",
              GetHTMLColour(eHTMLColor_T3));
-    text = replaceAll(text, L"{*T3*}", replacements);  // for How To Play
+    text = replaceAll(text, L"{*T3*}", replacements);  
     swprintf(replacements, 64, L"<font color=\"#%08x\">",
              GetHTMLColour(eHTMLColor_Black));
     text = replaceAll(text, L"{*ETB*}", replacements);
@@ -5014,7 +5014,7 @@ std::wstring Game::FormatHTMLString(
              GetHTMLColour(eHTMLColor_f), shadowColour);
     text = replaceAll(text, L"{*CF*}", replacements);
 
-    // Swap for southpaw.
+    
     if (app.GetGameSettings(iPad, eGameSetting_ControlSouthPaw)) {
         text =
             replaceAll(text, L"{*CONTROLLER_ACTION_MOVE*}",
@@ -5024,7 +5024,7 @@ std::wstring Game::FormatHTMLString(
 
         text = replaceAll(text, L"{*CONTROLLER_MENU_NAVIGATE*}",
                           GetVKReplacement(VK_PAD_RTHUMB_LEFT));
-    } else  // Normal right handed.
+    } else  
     {
         text = replaceAll(text, L"{*CONTROLLER_ACTION_MOVE*}",
                           GetActionReplacement(iPad, MINECRAFT_ACTION_RIGHT));
@@ -5093,8 +5093,8 @@ std::wstring Game::FormatHTMLString(
     text = replaceAll(text, L"{*CONTROLLER_ACTION_DPAD_LEFT*}",
                       GetActionReplacement(iPad, MINECRAFT_ACTION_DPAD_LEFT));
 
-    // Fix for #8903 - UI: Localization: KOR/JPN/CHT: Button Icons are rendered
-    // with padding space, which looks no good
+    
+    
     std::uint32_t dwLanguage = XGetLanguage();
     switch (dwLanguage) {
         case XC_LANGUAGE_KOREAN:
@@ -5114,8 +5114,8 @@ std::wstring Game::GetActionReplacement(int iPad,
 
     std::wstring replacement = L"";
 
-    // 4J Stu - Some of our actions can be mapped to multiple physical buttons,
-    // so replaces the switch that was here
+    
+    
     if (input & _360_JOY_BUTTON_A)
         replacement = L"ButtonA";
     else if (input & _360_JOY_BUTTON_B)
@@ -5281,13 +5281,13 @@ int32_t Game::RegisterMojangData(wchar_t* pXuidName, PlayerUID xuid,
     eXUID eTempXuid = eXUID_Undefined;
     MOJANG_DATA* pMojangData = nullptr;
 
-    // ignore the names if we don't recognize them
+    
     if (pXuidName != nullptr) {
         if (wcscmp(pXuidName, L"XUID_NOTCH") == 0) {
             eTempXuid =
-                eXUID_Notch;  // might be needed for the apple at some point
+                eXUID_Notch;  
         } else if (wcscmp(pXuidName, L"XUID_DEADMAU5") == 0) {
-            eTempXuid = eXUID_Deadmau5;  // Needed for the deadmau5 ears
+            eTempXuid = eXUID_Deadmau5;  
         } else {
             eTempXuid = eXUID_NoName;
         }
@@ -5313,27 +5313,27 @@ MOJANG_DATA* Game::GetMojangDataForXuid(PlayerUID xuid) {
 int32_t Game::RegisterConfigValues(wchar_t* pType, int iValue) {
     int32_t hr = 0;
 
-    // #ifdef 0
-    // 	if(pType!=nullptr)
-    // 	{
-    // 		if(wcscmp(pType,L"XboxOneTransfer")==0)
-    // 		{
-    // 			if(iValue>0)
-    // 			{
-    // 				app.m_bTransferSavesToXboxOne=true;
-    // 			}
-    // 			else
-    // 			{
-    // 				app.m_bTransferSavesToXboxOne=false;
-    // 			}
-    // 		}
-    // 		else if(wcscmp(pType,L"TransferSlotCount")==0)
-    // 		{
-    // 			app.m_uiTransferSlotC=iValue;
-    // 		}
-    //
-    // 	}
-    // #endif
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     return hr;
 }
@@ -5355,7 +5355,7 @@ int32_t Game::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
     pDLCData->uiSortIndex = uiSortIndex;
     pDLCData->iConfig = iConfig;
 
-    // ignore the names if we don't recognize them
+    
     if (pBannerName != L"") {
         wcsncpy_s(pDLCData->wchBanner, pBannerName, MAX_BANNERNAME_SIZE);
     }
@@ -5405,7 +5405,7 @@ int32_t Game::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
 int32_t Game::RegisterDLCData(char* pchDLCName,
                                        unsigned int uiSortIndex,
                                        char* pchImageURL) {
-    // on PS3 we get all the required info from the name
+    
     char chDLCType[3];
     int32_t hr = 0;
     DLC_INFO* pDLCData = new DLC_INFO;
@@ -5419,7 +5419,7 @@ int32_t Game::RegisterDLCData(char* pchDLCName,
     pDLCData->uiSortIndex = uiSortIndex;
     pDLCData->eDLCType = app.GetDLCTypeFromName(pchDLCName);
     strcpy(pDLCData->chImageURL, pchImageURL);
-    // bool bIsTrialDLC = app.GetTrialFromName(pchDLCName);
+    
 
     switch (pDLCData->eDLCType) {
         case e_DLC_TexturePacks: {
@@ -5439,11 +5439,11 @@ int32_t Game::RegisterDLCData(char* pchDLCName,
     app.DebugPrintf(5, "Adding DLC - %s\n", pchDLCName);
     DLCInfo[pchDLCName] = pDLCData;
 
-    // 	if(ullOfferID_Trial!=0ll) DLCInfo_Trial[ullOfferID_Trial]=pDLCData;
-    // 	if(ullOfferID_Full!=0ll) DLCInfo_Full[ullOfferID_Full]=pDLCData;
-    // 	if(pFirstSkin[0]!=0) DLCInfo_SkinName[pFirstSkin]=ullOfferID_Full;
+    
+    
+    
 
-    //	DLCInfo[ullOfferID_Trial]=pDLCData;
+    
 
     return hr;
 }
@@ -5471,12 +5471,12 @@ bool Game::GetDLCFullOfferIDForPackID(const int iPackID,
     }
 }
 DLC_INFO* Game::GetDLCInfoForTrialOfferID(uint64_t ullOfferID_Trial) {
-    // DLC_INFO *pDLCInfo=NULL;
+    
     if (DLCInfo_Trial.size() > 0) {
         auto it = DLCInfo_Trial.find(ullOfferID_Trial);
 
         if (it == DLCInfo_Trial.end()) {
-            // nothing for this
+            
             return nullptr;
         } else {
             return it->second;
@@ -5519,7 +5519,7 @@ DLC_INFO* Game::GetDLCInfoForFullOfferID(uint64_t ullOfferID_Full) {
         auto it = DLCInfo_Full.find(ullOfferID_Full);
 
         if (it == DLCInfo_Full.end()) {
-            // nothing for this
+            
             return nullptr;
         } else {
             return it->second;
@@ -5532,8 +5532,8 @@ void Game::lockSaveNotification() {
     std::lock_guard<std::mutex> lock(m_saveNotificationMutex);
     if (m_saveNotificationDepth++ == 0) {
         if (g_NetworkManager
-                .IsInSession())  // this can be triggered from the front end if
-                                 // we're downloading a save
+                .IsInSession())  
+                                 
         {
             MinecraftServer::getInstance()->broadcastStartSavingPacket();
 
@@ -5551,8 +5551,8 @@ void Game::unlockSaveNotification() {
     std::lock_guard<std::mutex> lock(m_saveNotificationMutex);
     if (--m_saveNotificationDepth == 0) {
         if (g_NetworkManager
-                .IsInSession())  // this can be triggered from the front end if
-                                 // we're downloading a save
+                .IsInSession())  
+                                 
         {
             MinecraftServer::getInstance()->broadcastStopSavingPacket();
 
@@ -5567,21 +5567,21 @@ void Game::unlockSaveNotification() {
 }
 
 int Game::RemoteSaveThreadProc(void* lpParameter) {
-    // The game should be stopped while we are doing this, but the connections
-    // ticks may try to create some AABB's or Vec3's
+    
+    
     Compression::UseDefaultThreadStorage();
 
-    // 4J-PB - Xbox 360 - 163153 - [CRASH] TU17: Code: Multiplayer: During the
-    // Autosave in an online Multiplayer session, the game occasionally crashes
-    // for one or more Clients callstack - >	if(tls->tileId != this->id)
-    // updateDefaultShape(); callstack - >
-    // default.exe!WaterlilyTile::getAABB(Level * level, int x, int y, int z)
-    // line 38 + 8 bytes	C++
-    // ...
-    //  	default.exe!Game::RemoteSaveThreadProc(void *
-    //  lpParameter)  line 6694	C++
-    // host autosave, and the clients can crash on receiving handleMoveEntity
-    // when it's a tile within this thread, so need to do the tls for tiles
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     Tile::CreateNewThreadStorage();
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -5594,14 +5594,14 @@ int Game::RemoteSaveThreadProc(void* lpParameter) {
     while (!app.GetGameStarted() &&
            app.GetXuiAction(ProfileManager.GetPrimaryPad()) ==
                eAppAction_WaitRemoteServerSaveComplete) {
-        // Tick all the games connections
+        
         pMinecraft->tickAllConnections();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     if (app.GetXuiAction(ProfileManager.GetPrimaryPad()) !=
         eAppAction_WaitRemoteServerSaveComplete) {
-        // Something cancelled us?
+        
         return ERROR_CANCELLED;
     }
     app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_Idle);
@@ -5627,14 +5627,14 @@ void Game::ExitGameFromRemoteSave(void* lpParameter) {
 
 int Game::ExitGameFromRemoteSaveDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    // CScene_Pause* pClass = (CScene_Pause*)pParam;
+    
 
-    // results switched for this dialog
+    
     if (result == C4JStorage::EMessage_ResultDecline) {
         app.SetAction(iPad, eAppAction_ExitWorld);
     } else {
-        // Inform fullscreen progress scene that it's not being cancelled after
-        // all
+        
+        
         UIScene_FullscreenProgress* pScene =
             (UIScene_FullscreenProgress*)ui.FindScene(
                 eUIScene_FullscreenProgress);
@@ -5651,7 +5651,7 @@ void Game::SetSpecialTutorialCompletionFlag(int iPad, int index) {
     }
 }
 
-// BANNED LIST FUNCTIONS
+
 
 void Game::SetUniqueMapName(char* pszUniqueMapName) {
     memcpy(m_pszUniqueMapName, pszUniqueMapName, 14);
@@ -5675,8 +5675,8 @@ void Game::InvalidateBannedList(int iPad) {
 void Game::AddLevelToBannedLevelList(int iPad, PlayerUID xuid,
                                               char* pszLevelName,
                                               bool bWriteToTMS) {
-    // we will have retrieved the banned level list from TMS, so add this one to
-    // it and write it back to TMS
+    
+    
 
     BANNEDLISTDATA* pBannedListData = new BANNEDLISTDATA;
     memset(pBannedListData, 0, sizeof(BANNEDLISTDATA));
@@ -5697,15 +5697,15 @@ void Game::AddLevelToBannedLevelList(int iPad, PlayerUID xuid,
             memcpy(&pBannedList[iCount++], pData, sizeof(BANNEDLISTDATA));
         }
 
-        // 4J-PB - write to TMS++ now
+        
 
-        // bool
-        // bRes=StorageManager.WriteTMSFile(iPad,C4JStorage::eGlobalStorage_TitleUser,L"BannedList",(std::uint8_t*)pBannedList,
-        // dwDataBytes);
+        
+        
+        
 
         delete[] pBannedList;
     }
-    // update telemetry too
+    
 }
 
 bool Game::IsInBannedLevelList(int iPad, PlayerUID xuid,
@@ -5724,11 +5724,11 @@ bool Game::IsInBannedLevelList(int iPad, PlayerUID xuid,
 
 void Game::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
                                                    char* pszLevelName) {
-    // bool bFound=false;
-    // bool bRes;
+    
+    
 
-    // we will have retrieved the banned level list from TMS, so remove this one
-    // from it and write it back to TMS
+    
+    
     for (auto it = m_vBannedListA[iPad]->begin();
          it != m_vBannedListA[iPad]->end();) {
         PBANNEDLISTDATA pBannedListData = *it;
@@ -5736,7 +5736,7 @@ void Game::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
         if (pBannedListData != nullptr) {
             if (IsEqualXUID(pBannedListData->xuid, xuid) &&
                 (strcmp(pBannedListData->pszLevelName, pszLevelName) == 0)) {
-                // match found, so remove this entry
+                
                 it = m_vBannedListA[iPad]->erase(it);
             } else {
                 ++it;
@@ -5750,7 +5750,7 @@ void Game::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
     const unsigned int dataBytes =
         static_cast<unsigned int>(sizeof(BANNEDLISTDATA) * bannedListCount);
     if (dataBytes == 0) {
-        // wipe the file
+        
     } else {
         PBANNEDLISTDATA pBannedList =
             (BANNEDLISTDATA*)(new std::uint8_t[dataBytes]);
@@ -5763,13 +5763,13 @@ void Game::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
         delete[] pBannedList;
     }
 
-    // update telemetry too
+    
 }
 
-// function to add credits for the DLC packs
+
 void Game::AddCreditText(const wchar_t* lpStr) {
     DebugPrintf("ADDING CREDIT - %ls\n", lpStr);
-    // add a std::string from the DLC to a credits std::vector
+    
     SCreditTextItemDef* pCreditStruct = new SCreditTextItemDef;
     pCreditStruct->m_eType = eSmallText;
     pCreditStruct->m_iStringID[0] = NO_TRANSLATED_STRING;
@@ -5784,13 +5784,13 @@ bool Game::AlreadySeenCreditText(const std::wstring& wstemp) {
     for (unsigned int i = 0; i < m_vCreditText.size(); i++) {
         std::wstring temp = m_vCreditText.at(i);
 
-        // if they are the same, break out of the case
+        
         if (temp.compare(wstemp) == 0) {
             return true;
         }
     }
 
-    // add this text
+    
     m_vCreditText.push_back((wchar_t*)wstemp.c_str());
     return false;
 }
@@ -5803,7 +5803,7 @@ SCreditTextItemDef* Game::GetDLCCredits(int iIndex) {
     return vDLCCredits.at(iIndex);
 }
 
-// Game Host options
+
 
 void Game::SetGameHostOption(eGameHostOption eVal,
                                       unsigned int uiVal) {
@@ -5818,12 +5818,12 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_FRIENDSOFFRIENDS;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_FRIENDSOFFRIENDS;
             }
             break;
         case eGameHostOption_Difficulty:
-            // clear the difficulty first
+            
             uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_DIFFICULTY;
             uiHostSettings |= (GAME_HOST_OPTION_BITMASK_DIFFICULTY & uiVal);
             break;
@@ -5831,13 +5831,13 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_GAMERTAGS;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_GAMERTAGS;
             }
 
             break;
         case eGameHostOption_GameType:
-            // clear the game type first
+            
             uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_GAMETYPE;
             uiHostSettings |=
                 (GAME_HOST_OPTION_BITMASK_GAMETYPE & (uiVal << 4));
@@ -5857,7 +5857,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_STRUCTURES;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_STRUCTURES;
             }
 
@@ -5866,7 +5866,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_BONUSCHEST;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_BONUSCHEST;
             }
 
@@ -5875,7 +5875,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_BEENINCREATIVE;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_BEENINCREATIVE;
             }
 
@@ -5884,7 +5884,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_PVP;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_PVP;
             }
 
@@ -5893,7 +5893,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_TRUSTPLAYERS;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_TRUSTPLAYERS;
             }
 
@@ -5902,7 +5902,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_TNT;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_TNT;
             }
 
@@ -5911,7 +5911,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_FIRESPREADS;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_FIRESPREADS;
             }
             break;
@@ -5921,7 +5921,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_HOSTHUNGER;
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_HOSTINVISIBLE;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_HOSTFLY;
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_HOSTHUNGER;
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_HOSTINVISIBLE;
@@ -5931,7 +5931,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_HOSTFLY;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_HOSTFLY;
             }
             break;
@@ -5939,7 +5939,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_HOSTHUNGER;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_HOSTHUNGER;
             }
             break;
@@ -5947,7 +5947,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_HOSTINVISIBLE;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_HOSTINVISIBLE;
             }
             break;
@@ -5956,7 +5956,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_BEDROCKFOG;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_BEDROCKFOG;
             }
             break;
@@ -5964,7 +5964,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_DISABLESAVE;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_DISABLESAVE;
             }
             break;
@@ -5972,7 +5972,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_NOTOWNER;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_NOTOWNER;
             }
             break;
@@ -5980,7 +5980,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 1) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_MOBGRIEFING;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_MOBGRIEFING;
             }
             break;
@@ -5988,7 +5988,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_KEEPINVENTORY;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_KEEPINVENTORY;
             }
             break;
@@ -5996,7 +5996,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 1) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_DOMOBSPAWNING;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_DOMOBSPAWNING;
             }
             break;
@@ -6004,7 +6004,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 1) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_DOMOBLOOT;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_DOMOBLOOT;
             }
             break;
@@ -6012,7 +6012,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 1) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_DOTILEDROPS;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_DOTILEDROPS;
             }
             break;
@@ -6020,7 +6020,7 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 1) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_NATURALREGEN;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_NATURALREGEN;
             }
             break;
@@ -6028,12 +6028,12 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
             if (uiVal != 1) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_DODAYLIGHTCYCLE;
             } else {
-                // off
+                
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_DODAYLIGHTCYCLE;
             }
             break;
         case eGameHostOption_WorldSize:
-            // clear the difficulty first
+            
             uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_WORLDSIZE;
             uiHostSettings |=
                 (GAME_HOST_OPTION_BITMASK_WORLDSIZE &
@@ -6053,7 +6053,7 @@ unsigned int Game::GetGameHostOption(eGameHostOption eVal) {
 
 unsigned int Game::GetGameHostOption(unsigned int uiHostSettings,
                                               eGameHostOption eVal) {
-    // unsigned int uiVal=0;
+    
     switch (eVal) {
         case eGameHostOption_FriendsOfFriends:
             return (uiHostSettings & GAME_HOST_OPTION_BITMASK_FRIENDSOFFRIENDS);
@@ -6071,9 +6071,9 @@ unsigned int Game::GetGameHostOption(unsigned int uiHostSettings,
             return (uiHostSettings & GAME_HOST_OPTION_BITMASK_ALL);
             break;
         case eGameHostOption_Tutorial:
-            // special case - tutorial is offline, but we want the gamertag
-            // option, and set Easy mode, structures on, fire on, tnt on, pvp
-            // on, trust players on
+            
+            
+            
             return ((uiHostSettings & GAME_HOST_OPTION_BITMASK_GAMERTAGS) |
                     GAME_HOST_OPTION_BITMASK_TRUSTPLAYERS |
                     GAME_HOST_OPTION_BITMASK_FIRESPREADS |
@@ -6159,8 +6159,8 @@ unsigned int Game::GetGameHostOption(unsigned int uiHostSettings,
 bool Game::CanRecordStatsAndAchievements() {
     bool isTutorial = Minecraft::GetInstance() != nullptr &&
                       Minecraft::GetInstance()->isTutorial();
-    // 4J Stu - All of these options give the host player some advantage, so
-    // should not allow achievements
+    
+    
     return !(app.GetGameHostOption(eGameHostOption_HasBeenInCreative) ||
              app.GetGameHostOption(eGameHostOption_HostCanBeInvisible) ||
              app.GetGameHostOption(eGameHostOption_HostCanChangeHunger) ||
@@ -6224,7 +6224,7 @@ void Game::GetImageTextData(std::uint8_t* imageData,
     unsigned int uiCRC;
     char szKeyword[80];
 
-    // check it's a png
+    
     for (int i = 0; i < 8; i++) {
         if (m_szPNG[i] != ucPtr[i]) return;
     }
@@ -6237,9 +6237,9 @@ void Game::GetImageTextData(std::uint8_t* imageData,
         uiChunkType = FromBigEndian(readPngUInt32(&ucPtr[uiCount]));
         uiCount += sizeof(int);
 
-        if (uiChunkType == PNG_TAG_tEXt)  // tEXt
+        if (uiChunkType == PNG_TAG_tEXt)  
         {
-            // check that it's the 4J text
+            
             unsigned char* pszKeyword = &ucPtr[uiCount];
             while (pszKeyword < ucPtr + uiCount + uiChunkLen) {
                 memset(szKeyword, 0, 80);
@@ -6250,20 +6250,20 @@ void Game::GetImageTextData(std::uint8_t* imageData,
                 }
                 pszKeyword++;
                 if (strcmp(szKeyword, "4J_SEED") == 0) {
-                    // read the seed value
+                    
                     unsigned int uiValueC = 0;
                     while (*pszKeyword != 0 &&
                            (pszKeyword < ucPtr + uiCount + uiChunkLen)) {
                         seedText[uiValueC++] = *pszKeyword;
                         pszKeyword++;
                     }
-                    // memcpy(seedText,pszKeyword,uiChunkLen-8);
+                    
                 } else if (strcmp(szKeyword, "4J_HOSTOPTIONS") == 0) {
                     bHostOptionsRead = true;
-                    // read the host options value
+                    
                     unsigned int uiValueC = 0;
-                    unsigned char pszHostOptions[9];  // Hex representation of
-                                                      // unsigned int
+                    unsigned char pszHostOptions[9];  
+                                                      
                     memset(&pszHostOptions, 0, 9);
                     while (*pszKeyword != 0 &&
                            (pszKeyword < ucPtr + uiCount + uiChunkLen) &&
@@ -6277,10 +6277,10 @@ void Game::GetImageTextData(std::uint8_t* imageData,
                     ss << pszHostOptions;
                     ss >> std::hex >> uiHostOptions;
                 } else if (strcmp(szKeyword, "4J_TEXTUREPACK") == 0) {
-                    // read the texture pack value
+                    
                     unsigned int uiValueC = 0;
-                    unsigned char pszTexturePack[9];  // Hex representation of
-                                                      // unsigned int
+                    unsigned char pszTexturePack[9];  
+                                                      
                     memset(&pszTexturePack, 0, 9);
                     while (*pszKeyword != 0 &&
                            (pszKeyword < ucPtr + uiCount + uiChunkLen) &&
@@ -6312,24 +6312,24 @@ unsigned int Game::CreateImageTextData(std::uint8_t* textMetadata,
         strcpy((char*)textMetadata, "4J_SEED");
         snprintf((char*)&textMetadata[8], 42, "%lld", (long long)seed);
 
-        // get the length
+        
         iTextMetadataBytes += 8;
         while (textMetadata[iTextMetadataBytes] != 0) iTextMetadataBytes++;
-        ++iTextMetadataBytes;  // Add a null terminator at the end of the seed
-                               // value
+        ++iTextMetadataBytes;  
+                               
     }
 
-    // Save the host options that this world was last played with
+    
     strcpy((char*)&textMetadata[iTextMetadataBytes], "4J_HOSTOPTIONS");
     snprintf((char*)&textMetadata[iTextMetadataBytes + 15], 9, "%X",
              uiHostOptions);
 
     iTextMetadataBytes += 15;
     while (textMetadata[iTextMetadataBytes] != 0) iTextMetadataBytes++;
-    ++iTextMetadataBytes;  // Add a null terminator at the end of the host
-                           // options value
+    ++iTextMetadataBytes;  
+                           
 
-    // Save the texture pack id
+    
     strcpy((char*)&textMetadata[iTextMetadataBytes], "4J_TEXTUREPACK");
     snprintf((char*)&textMetadata[iTextMetadataBytes + 15], 9, "%X",
              uiHostOptions);
@@ -6342,7 +6342,7 @@ unsigned int Game::CreateImageTextData(std::uint8_t* textMetadata,
 
 void Game::AddTerrainFeaturePosition(_eTerrainFeatureType eFeatureType,
                                               int x, int z) {
-    // check we don't already have this in
+    
     for (auto it = m_vTerrainFeatures.begin(); it < m_vTerrainFeatures.end();
          ++it) {
         FEATURE_DATA* pFeatureData = *it;
@@ -6467,9 +6467,9 @@ std::wstring Game::getEntityName(eINSTANCEOF type) {
             return app.GetString(IDS_BLAZE);
         case eTYPE_LAVASLIME:
             return app.GetString(IDS_LAVA_SLIME);
-            // 4J-PB - fix for #107167 - Customer Encountered: TU12: Content:
-            // UI: There is no information what killed Player after being slain
-            // by Iron Golem.
+            
+            
+            
         case eTYPE_VILLAGERGOLEM:
             return app.GetString(IDS_IRONGOLEM);
         case eTYPE_HORSE:
@@ -6488,33 +6488,33 @@ std::wstring Game::getEntityName(eINSTANCEOF type) {
 }
 
 std::uint32_t Game::m_dwContentTypeA[e_Marketplace_MAX] = {
-    XMARKETPLACE_OFFERING_TYPE_CONTENT,  // e_DLC_SkinPack, e_DLC_TexturePacks,
-                                         // e_DLC_MashupPacks
-    XMARKETPLACE_OFFERING_TYPE_THEME,    // e_DLC_Themes
-    XMARKETPLACE_OFFERING_TYPE_AVATARITEM,  // e_DLC_AvatarItems
-    XMARKETPLACE_OFFERING_TYPE_TILE,        // e_DLC_Gamerpics
+    XMARKETPLACE_OFFERING_TYPE_CONTENT,  
+                                         
+    XMARKETPLACE_OFFERING_TYPE_THEME,    
+    XMARKETPLACE_OFFERING_TYPE_AVATARITEM,  
+    XMARKETPLACE_OFFERING_TYPE_TILE,        
 };
 
 unsigned int Game::AddDLCRequest(eDLCMarketplaceType eType,
                                           bool bPromote) {
-    // lock access
+    
     {
         std::lock_guard<std::mutex> lock(csDLCDownloadQueue);
 
-        // If it's already in there, promote it to the top of the list
+        
         int iPosition = 0;
         for (auto it = m_DLCDownloadQueue.begin();
              it != m_DLCDownloadQueue.end(); ++it) {
             DLCRequest* pCurrent = *it;
 
             if (pCurrent->dwType == m_dwContentTypeA[eType]) {
-                // already got this in the list
+                
                 if (pCurrent->eState == e_DLC_ContentState_Retrieving ||
                     pCurrent->eState == e_DLC_ContentState_Retrieved) {
-                    // already retrieved this
+                    
                     return 0;
                 } else {
-                    // promote
+                    
                     if (bPromote) {
                         m_DLCDownloadQueue.erase(m_DLCDownloadQueue.begin() +
                                                  iPosition);
@@ -6542,46 +6542,46 @@ unsigned int Game::AddDLCRequest(eDLCMarketplaceType eType,
 
 unsigned int Game::AddTMSPPFileTypeRequest(eDLCContentType eType,
                                                     bool bPromote) {
-    // lock access
+    
     std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
 
-    // If it's already in there, promote it to the top of the list
+    
     int iPosition = 0;
-    // ignore promoting for now
-    /*
-    bool bPromoted=false;
+    
+    
 
 
-    for(auto it = m_TMSPPDownloadQueue.begin(); it !=
-    m_TMSPPDownloadQueue.end(); ++it)
-    {
-    TMSPPRequest  *pCurrent = *it;
 
-    if(pCurrent->eType==eType)
-    {
-    if(!(pCurrent->eState == e_TMS_ContentState_Retrieving || pCurrent->eState
-    == e_TMS_ContentState_Retrieved))
-    {
-    // promote
-    if(bPromote)
-    {
-    m_TMSPPDownloadQueue.erase(m_TMSPPDownloadQueue.begin()+iPosition);
-    m_TMSPPDownloadQueue.insert(m_TMSPPDownloadQueue.begin(),pCurrent);
-    bPromoted=true;
-    }
-    }
-    }
-    iPosition++;
-    }
 
-    if(bPromoted)
-    {
-    // re-ordered the list, so leave now
-    return 0;
-    }
-    */
 
-    // special case for data files (not image files)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     if (eType == e_DLC_TexturePackData) {
         int iCount = GetDLCInfoFullOffersCount();
 
@@ -6590,24 +6590,24 @@ unsigned int Game::AddTMSPPFileTypeRequest(eDLCContentType eType,
 
             if ((pDLC->eDLCType == e_DLC_TexturePacks) ||
                 (pDLC->eDLCType == e_DLC_MashupPacks)) {
-                // first check if the image is already in the memory textures,
-                // since we might be loading some from the Title Update
-                // partition
+                
+                
+                
                 if (pDLC->wchDataFile[0] != 0) {
-                    // wchar_t *cString = pDLC->wchDataFile;
-                    //  4J-PB - shouldn't check this here - let the TMS files
-                    //  override it, so if they are on TMS, we'll take them
-                    //  first
-                    // int iIndex =
-                    // app.GetLocalTMSFileIndex(pDLC->wchDataFile,true);
+                    
+                    
+                    
+                    
+                    
+                    
 
-                    // if(iIndex!=-1)
+                    
                     {
                         bool bPresent = app.IsFileInTPD(pDLC->iConfig);
 
                         if (!bPresent) {
-                            // this may already be present in the vector because
-                            // of a previous trial/full offer
+                            
+                            
 
                             bool bAlreadyInQueue = false;
                             for (auto it = m_TMSPPDownloadQueue.begin();
@@ -6647,34 +6647,34 @@ unsigned int Game::AddTMSPPFileTypeRequest(eDLCContentType eType,
                 }
             }
         }
-    } else {  // for all the files of type eType, add them to the download list
+    } else {  
 
-        // run through the trial offers first, then the full offers. Any
-        // duplicates won't be added to the download queue
+        
+        
         int iCount;
-        // and the full offers
+        
 
         iCount = GetDLCInfoFullOffersCount();
         for (int i = 0; i < iCount; i++) {
             DLC_INFO* pDLC = GetDLCInfoFullOffer(i);
-            // if(wcscmp(pDLC->wchType,wchDLCTypeNames[eType])==0)
+            
             if (pDLC->eDLCType == eType) {
-                // first check if the image is already in the memory textures,
-                // since we might be loading some from the Title Update
-                // partition
+                
+                
+                
 
                 wchar_t* cString = pDLC->wchBanner;
-                // 4J-PB - shouldn't check this here - let the TMS files
-                // override it, so if they are on TMS, we'll take them first
-                // int iIndex = app.GetLocalTMSFileIndex(cString,true);
+                
+                
+                
 
-                // if(iIndex!=-1)
+                
                 {
                     bool bPresent = app.IsFileInMemoryTextures(cString);
 
                     if (!bPresent) {
-                        // this may already be present in the vector because of
-                        // a previous trial/full offer
+                        
+                        
 
                         bool bAlreadyInQueue = false;
                         for (auto it = m_TMSPPDownloadQueue.begin();
@@ -6689,21 +6689,21 @@ unsigned int Game::AddTMSPPFileTypeRequest(eDLCContentType eType,
                         }
 
                         if (!bAlreadyInQueue) {
-                            // app.DebugPrintf("Adding a request to the TMSPP
-                            // download queue - %ls\n",pDLC->wchBanner);
+                            
+                            
                             TMSPPRequest* pTMSPPreq = new TMSPPRequest;
                             memset(pTMSPPreq, 0, sizeof(TMSPPRequest));
 
                             pTMSPPreq->CallbackFunc =
                                 &Game::TMSPPFileReturned;
                             pTMSPPreq->lpCallbackParam = this;
-                            // 4J-PB - testing for now
-                            // pTMSPPreq->eStorageFacility=C4JStorage::eGlobalStorage_TitleUser;
+                            
+                            
                             pTMSPPreq->eStorageFacility =
                                 C4JStorage::eGlobalStorage_Title;
                             pTMSPPreq->eFileTypeVal =
                                 C4JStorage::TMS_FILETYPE_BINARY;
-                            // wcstombs(pTMSPPreq->szFilename,pDLC->wchBanner,MAX_TMSFILENAME_SIZE);
+                            
 
                             memcpy(pTMSPPreq->wchFilename, pDLC->wchBanner,
                                    sizeof(wchar_t) * MAX_BANNERNAME_SIZE);
@@ -6741,14 +6741,14 @@ bool Game::CheckTMSDLCCanStop() {
 }
 
 bool Game::RetrieveNextDLCContent() {
-    // If there's already a retrieve in progress, quit
-    // we may have re-ordered the list, so need to check every item
+    
+    
 
-    // is there a primary player and a network connection?
+    
     int primPad = ProfileManager.GetPrimaryPad();
     if (primPad == -1 || !ProfileManager.IsSignedInLive(primPad)) {
-        return true;  // 4J-JEV: We need to wait until the primary player is
-                      // online.
+        return true;  
+                      
     }
 
     {
@@ -6762,7 +6762,7 @@ bool Game::RetrieveNextDLCContent() {
             }
         }
 
-        // Now look for the next retrieval
+        
         for (auto it = m_DLCDownloadQueue.begin();
              it != m_DLCDownloadQueue.end(); ++it) {
             DLCRequest* pCurrent = *it;
@@ -6782,7 +6782,7 @@ bool Game::RetrieveNextDLCContent() {
                 if (status == C4JStorage::EDLC_Pending) {
                     pCurrent->eState = e_DLC_ContentState_Retrieving;
                 } else {
-                    // no content of this type, or some other problem
+                    
                     app.DebugPrintf("RetrieveNextDLCContent - PROBLEM\n");
                     pCurrent->eState = e_DLC_ContentState_Retrieved;
                 }
@@ -6800,7 +6800,7 @@ int Game::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
                                      const char* szFilename) {
     Game* pClass = (Game*)pParam;
 
-    // find the right one in the vector
+    
     {
         std::lock_guard<std::mutex> lock(pClass->csTMSPPDownloadQueue);
         for (auto it = pClass->m_TMSPPDownloadQueue.begin();
@@ -6813,7 +6813,7 @@ int Game::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
             if (strcmp(szFilename, szFile) == 0)
 #endif
             {
-                // set this to retrieved whether it found it or not
+                
                 pCurrent->eState = e_TMS_ContentState_Retrieved;
 
                 if (pFileData != nullptr) {
@@ -6821,7 +6821,7 @@ int Game::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
                         case e_DLC_TexturePackData: {
                             app.DebugPrintf("--- Got texturepack data %ls\n",
                                             pCurrent->wchFilename);
-                            // get the config value for the texture pack
+                            
                             int iConfig =
                                 app.GetTPConfigVal(pCurrent->wchFilename);
                             app.AddMemoryTPDFile(iConfig, pFileData->pbData,
@@ -6900,15 +6900,15 @@ void Game::ClearTMSPPFilesRetrieved() {
 
 int Game::dlcOffersReturned(int iOfferC, std::uint32_t dwType,
                                      int iPad) {
-    // find the right one in the vector
+    
     {
         std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
         for (auto it = m_DLCDownloadQueue.begin();
              it != m_DLCDownloadQueue.end(); ++it) {
             DLCRequest* pCurrent = *it;
 
-            // avatar items are coming back as type Content, so we can't trust
-            // the type setting
+            
+            
             if (pCurrent->dwType == static_cast<std::uint32_t>(dwType)) {
                 m_iDLCOfferC = iOfferC;
                 DebugPrintf(
@@ -6932,8 +6932,8 @@ eDLCContentType Game::Find_eDLCContentType(std::uint32_t dwType) {
     return (eDLCContentType)0;
 }
 bool Game::DLCContentRetrieved(eDLCMarketplaceType eType) {
-    // If there's already a retrieve in progress, quit
-    // we may have re-ordered the list, so need to check every item
+    
+    
     std::lock_guard<std::mutex> lock(csDLCDownloadQueue);
     for (auto it = m_DLCDownloadQueue.begin(); it != m_DLCDownloadQueue.end();
          ++it) {
@@ -6966,8 +6966,8 @@ void Game::SetAdditionalSkinBoxes(std::uint32_t dwSkinID,
             "array of Skin Boxes\n",
             dwSkinID & 0x0FFFFFFF);
 
-        // convert the skin boxes into model parts, and add to the humanoid
-        // model
+        
+        
         for (unsigned int i = 0; i < dwSkinBoxC; i++) {
             if (pModel) {
                 ModelPart* pModelPart = pModel->AddOrRetrievePart(&SkinBoxA[i]);
@@ -7001,8 +7001,8 @@ std::vector<ModelPart*>* Game::SetAdditionalSkinBoxes(
             "array of Skin Boxes\n",
             dwSkinID & 0x0FFFFFFF);
 
-        // convert the skin boxes into model parts, and add to the humanoid
-        // model
+        
+        
         for (auto it = pvSkinBoxA->begin(); it != pvSkinBoxA->end(); ++it) {
             if (pModel) {
                 ModelPart* pModelPart = pModel->AddOrRetrievePart(*it);
@@ -7064,13 +7064,13 @@ unsigned int Game::GetAnimOverrideBitmask(std::uint32_t dwSkinID) {
 
 void Game::SetAnimOverrideBitmask(std::uint32_t dwSkinID,
                                            unsigned int uiAnimOverrideBitmask) {
-    // Make thread safe
+    
     std::lock_guard<std::mutex> lock(csAnimOverrideBitmask);
 
     if (m_AnimOverrides.size() > 0) {
         auto it = m_AnimOverrides.find(dwSkinID);
         if (it != m_AnimOverrides.end()) {
-            return;  // already in here
+            return;  
         }
     }
     m_AnimOverrides.insert(std::pair<std::uint32_t, unsigned int>(
@@ -7088,9 +7088,9 @@ std::uint32_t Game::getSkinIdFromPath(const std::wstring& skin) {
         skinValue = skinValue.substr(0, skinValue.find_first_of(L'.'));
 
         std::wstringstream ss;
-        // 4J Stu - dlc skins are numbered using decimal to make it easier for
-        // artists/people to number manually Everything else is numbered using
-        // hex
+        
+        
+        
         if (dlcSkin)
             ss << std::dec << skinValue.c_str();
         else
@@ -7103,13 +7103,13 @@ std::uint32_t Game::getSkinIdFromPath(const std::wstring& skin) {
 }
 
 std::wstring Game::getSkinPathFromId(std::uint32_t skinId) {
-    // 4J Stu - This function maps the encoded uint32_t we store in the player
-    // profile to a filename that is stored as a memory texture and shared
-    // between systems in game
+    
+    
+    
     wchar_t chars[256];
     if (GET_IS_DLC_SKIN_FROM_BITMASK(skinId)) {
-        // 4J Stu - DLC skins are numbered using decimal rather than hex to make
-        // it easier to number manually
+        
+        
         swprintf(chars, 256, L"dlcskin%08d.png",
                  GET_DLC_SKIN_ID_FROM_BITMASK(skinId));
 
@@ -7168,7 +7168,7 @@ std::vector<uint8_t> Game::getArchiveFile(
         return m_mediaArchive->getFile(filename);
 }
 
-// DLC
+
 
 int Game::GetDLCInfoTrialOffersCount() {
     return (int)DLCInfo_Trial.size();
@@ -7182,13 +7182,13 @@ int Game::GetDLCInfoTexturesOffersCount() {
     return (int)DLCTextures_PackID.size();
 }
 
-// AUTOSAVE
+
 void Game::SetAutosaveTimerTime(void) {
     int settingValue = GetGameSettings(ProfileManager.GetPrimaryPad(), eGameSetting_Autosave);
     m_uiAutosaveTimer =
         time_util::clock::now() +
         std::chrono::minutes(settingValue * 15);
-}  // value x 15 to get mins
+}  
 
 bool Game::AutosaveDue(void) {
     return (time_util::clock::now() > m_uiAutosaveTimer);
@@ -7218,34 +7218,34 @@ bool Game::IsLocalMultiplayerAvailable() {
 
     return available;
 
-    // #ifdef 0
-    //		iOtherConnectedControllers =
-    // InputManager.GetConnectedGamepadCount();
-    //		if((InputManager.IsPadConnected(userIndex) ||
-    // ProfileManager.IsSignedIn(userIndex)))
-    //		{
-    //			--iOtherConnectedControllers;
-    //		}
-    // #else
-    //		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
-    //		{
-    //			if( (i!=userIndex) && (InputManager.IsPadConnected(i) ||
-    // ProfileManager.IsSignedIn(i)) )
-    //			{
-    //				iOtherConnectedControllers++;
-    //			}
-    //		}
-    // #endif
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
-// 4J-PB - language and locale function
+
 
 void Game::getLocale(std::vector<std::wstring>& vecWstrLocales) {
     std::vector<eMCLang> locales;
 
     const unsigned int systemLanguage = XGetLanguage();
 
-    // 4J-PB - restrict the 360 language until we're ready to have them in
+    
 
     switch (systemLanguage) {
         case XC_LANGUAGE_ENGLISH:
@@ -7268,7 +7268,7 @@ void Game::getLocale(std::vector<std::wstring>& vecWstrLocales) {
                 case XC_LOCALE_GREAT_BRITAIN:
                     locales.push_back(eMCLang_enGB);
                     break;
-                default:  // XC_LOCALE_UNITED_STATES
+                default:  
                     break;
             }
             break;
@@ -7283,7 +7283,7 @@ void Game::getLocale(std::vector<std::wstring>& vecWstrLocales) {
                 case XC_LOCALE_SWITZERLAND:
                     locales.push_back(eMCLang_deCH);
                     break;
-                default:  // XC_LOCALE_GERMANY:
+                default:  
                     break;
             }
             locales.push_back(eMCLang_deDE);
@@ -7299,7 +7299,7 @@ void Game::getLocale(std::vector<std::wstring>& vecWstrLocales) {
                 case XC_LOCALE_SWITZERLAND:
                     locales.push_back(eMCLang_frCH);
                     break;
-                default:  // XC_LOCALE_FRANCE:
+                default:  
                     break;
             }
             locales.push_back(eMCLang_frFR);
@@ -7315,7 +7315,7 @@ void Game::getLocale(std::vector<std::wstring>& vecWstrLocales) {
                     locales.push_back(eMCLang_laLAS);
                     locales.push_back(eMCLang_esMX);
                     break;
-                default:  // XC_LOCALE_SPAIN
+                default:  
                     break;
             }
             locales.push_back(eMCLang_esES);
@@ -7570,7 +7570,7 @@ void Game::LocaleAndLanguageInit() {
     m_xcLangA[L"el-EL"] = XC_LOCALE_GREECE;
     m_xcLangA[L"la-LAS"] = XC_LOCALE_LATIN_AMERICA;
 
-    // New ones for Xbox One
+    
     m_xcLangA[L"zh-SG"] = XC_LOCALE_SINGAPORE;
     m_xcLangA[L"Zh-CN"] = XC_LOCALE_CHINA;
     m_xcLangA[L"zh-HK"] = XC_LOCALE_HONG_KONG;
@@ -7625,19 +7625,19 @@ std::wstring Game::getFilePath(std::uint32_t packId,
 }
 
 enum ETitleUpdateTexturePacks {
-    // eTUTP_MassEffect = 0x400,
-    // eTUTP_Skyrim = 0x401,
-    // eTUTP_Halo = 0x402,
-    // eTUTP_Festive = 0x405,
+    
+    
+    
+    
 
-    // eTUTP_Plastic = 0x801,
-    // eTUTP_Candy = 0x802,
-    // eTUTP_Fantasy = 0x803,
+    
+    
+    
     eTUTP_Halloween = 0x804,
-    // eTUTP_Natural = 0x805,
-    // eTUTP_City = 0x01000806, // 4J Stu - The released City pack had a
-    // sub-pack ID eTUTP_Cartoon = 0x807, eTUTP_Steampunk = 0x01000808, // 4J
-    // Stu - The released Steampunk pack had a sub-pack ID
+    
+    
+    
+    
 };
 
 #if defined(_WINDOWS64)

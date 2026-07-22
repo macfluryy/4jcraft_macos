@@ -10,8 +10,8 @@ class Tile;
 
 class ColoredTileItem : public TileItem {
 private:
-    // Was const, but removing that so we don't have to make all the functions
-    // const as well!
+    
+    
     Tile* colorTile;
     std::vector<int> descriptionPostfixes;
 

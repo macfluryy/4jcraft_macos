@@ -15,26 +15,26 @@ Score::Score(Scoreboard* scoreboard, Objective* objective,
 }
 
 void Score::add(int count) {
-    // if (objective.getCriteria().isReadOnly()) throw new
-    // IllegalStateException("Cannot modify read-only score");
+    
+    
     setScore(getScore() + count);
 }
 
 void Score::remove(int count) {
-    // if (objective.getCriteria().isReadOnly()) throw new
-    // IllegalStateException("Cannot modify read-only score");
+    
+    
     setScore(getScore() - count);
 }
 
 void Score::increment() {
-    // if (objective.getCriteria().isReadOnly()) throw new
-    // IllegalStateException("Cannot modify read-only score");
+    
+    
     add(1);
 }
 
 void Score::decrement() {
-    // if (objective.getCriteria().isReadOnly()) throw new
-    // IllegalStateException("Cannot modify read-only score");
+    
+    
     remove(1);
 }
 

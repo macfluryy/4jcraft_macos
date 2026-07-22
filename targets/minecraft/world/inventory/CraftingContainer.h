@@ -35,8 +35,8 @@ public:
     virtual void setChanged();
     bool stillValid(std::shared_ptr<Player> player);
 
-    void startOpen() {}  // TODO Auto-generated method stub
-    void stopOpen() {}   // TODO Auto-generated method stub
+    void startOpen() {}  
+    void stopOpen() {}   
 
     virtual bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item);
 };

@@ -20,7 +20,7 @@ public:
     CauldronTile(int id);
     using Tile::getTexture;
     virtual Icon* getTexture(int face, int data);
-    //@Override
+    
     void registerIcons(IconRegister* iconRegister);
     static Icon* getTexture(const std::wstring& name);
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
@@ -33,7 +33,7 @@ public:
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
-                     bool soundOnly = false);  // 4J added soundOnly param
+                     bool soundOnly = false);  
     virtual void handleRain(Level* level, int x, int y, int z);
     virtual int getResource(int data, Random* random, int playerBonusLevel);
     virtual int cloneTileId(Level* level, int x, int y, int z);

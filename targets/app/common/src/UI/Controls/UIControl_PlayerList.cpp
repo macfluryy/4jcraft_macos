@@ -16,7 +16,7 @@ bool UIControl_PlayerList::setupControl(UIScene* scene, IggyValuePath* parent,
     bool success =
         UIControl_ButtonList::setupControl(scene, parent, controlName);
 
-    // SlotList specific initialisers
+    
     m_funcSetPlayerIcon = registerFastName(L"SetPlayerIcon");
     m_funcSetVOIPIcon = registerFastName(L"SetVOIPIcon");
 

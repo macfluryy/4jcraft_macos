@@ -32,8 +32,8 @@ void ItemEntity::_init() {
     health = 5;
     bobOffs = (float)(Math::random() * std::numbers::pi * 2);
 
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     setSize(0.25f, 0.25f);
@@ -83,8 +83,8 @@ void ItemEntity::tick() {
     yd -= 0.04f;
     noPhysics = checkInTile(x, (bb.y0 + bb.y1) / 2, z);
 
-    // 4J - added parameter here so that these don't care about colliding with
-    // other entities
+    
+    
     move(xd, yd, zd, true);
 
     bool moved = (int)xo != (int)x || (int)yo != (int)y || (int)zo != (int)z;
@@ -170,7 +170,7 @@ bool ItemEntity::merge(std::shared_ptr<ItemEntity> target) {
 }
 
 void ItemEntity::setShortLifeTime() {
-    // reduce lifetime to one minute
+    
     age = LIFETIME - (60 * SharedConstants::TICKS_PER_SECOND);
 }
 
@@ -181,12 +181,12 @@ bool ItemEntity::updateInWaterState() {
 void ItemEntity::burn(int dmg) { hurt(DamageSource::inFire, dmg); }
 
 bool ItemEntity::hurt(DamageSource* source, float damage) {
-    // 4J - added next line: found whilst debugging an issue with item entities
-    // getting into a bad state when being created by a cactus, since entities
-    // insides cactuses get hurt and therefore depending on the timing of things
-    // they could get removed from the client when they weren't supposed to be.
-    // Are there really any cases were we would want an itemEntity to be locally
-    // hurt?
+    
+    
+    
+    
+    
+    
     if (level->isClientSide) return false;
 
     if (isInvulnerable()) return false;
@@ -221,7 +221,7 @@ void ItemEntity::playerTouch(std::shared_ptr<Player> player) {
 
     std::shared_ptr<ItemInstance> item = getItem();
 
-    // 4J Stu - Fix for duplication glitch
+    
     if (item->count <= 0) {
         remove();
         return;
@@ -229,12 +229,12 @@ void ItemEntity::playerTouch(std::shared_ptr<Player> player) {
 
     int orgCount = item->count;
     if (throwTime == 0 && player->inventory->add(item)) {
-        // if (item.id == Tile.treeTrunk.id)
-        // player.awardStat(Achievements.mineWood); if (item.id ==
-        // Item.leather.id) player.awardStat(Achievements.killCow); if (item.id
-        // == Item.diamond.id) player.awardStat(Achievements.diamonds); if
-        // (item.id == Item.blazeRod.id)
-        // player.awardStat(Achievements.blazeRod);
+        
+        
+        
+        
+        
+        
         if (item->id == Item::diamond_Id) {
             player->awardStat(GenericStats::diamonds(),
                               GenericStats::param_diamonds());
@@ -258,14 +258,14 @@ void ItemEntity::playerTouch(std::shared_ptr<Player> player) {
             eSoundType_RANDOM_POP, 0.2f,
             ((random->nextFloat() - random->nextFloat()) * 0.7f + 1.0f) * 2.0f);
         player->take(shared_from_this(), orgCount);
-        //            System.out.println(item.count + ", " + orgCount);
+        
         if (item->count <= 0) remove();
     }
 }
 
 std::wstring ItemEntity::getAName() {
-    return L"";  // L"item." + getItem()->getDescriptionId();
-    // return I18n.get("item." + item.getDescriptionId());
+    return L"";  
+    
 }
 
 void ItemEntity::changeDimension(int i) {
@@ -281,8 +281,8 @@ std::shared_ptr<ItemInstance> ItemEntity::getItem() {
     if (result == nullptr) {
         if (level != nullptr) {
             app.DebugPrintf("Item entity %d has no item?!\n", entityId);
-            // level.getLogger().severe("Item entity " + entityId + " has no
-            // item?!");
+            
+            
         }
         return std::make_shared<ItemInstance>(Tile::stone);
     }

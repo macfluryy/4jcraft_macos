@@ -49,9 +49,9 @@ public:
     std::unordered_set<ChunkPos, ChunkPosKeyHash, ChunkPosKeyEq> seenChunks;
     int spewTimer;
 
-    // 4J macOS - per-player runtime state for /home, /back and /r.
-    // Not persisted across server restarts (kept in-memory only); a
-    // future improvement would tie these to player save files.
+    
+    
+    
     bool m_hasHome = false;
     double m_homeX = 0.0, m_homeY = 0.0, m_homeZ = 0.0;
     int m_homeDim = 0;
@@ -60,9 +60,9 @@ public:
     double m_backX = 0.0, m_backY = 0.0, m_backZ = 0.0;
     int m_backDim = 0;
 
-    std::wstring m_lastReplyTo;  // last sender of a /msg to this player
+    std::wstring m_lastReplyTo;  
 
-    // 4J-Added, for 'Adventure Time' achievement.
+    
     Biome* currentBiome;
 
 private:
@@ -74,14 +74,14 @@ private:
     int invulnerableTime;
     int viewDistance;
     int64_t lastActionTime;
-    int lastBrupSendTickCount;  // 4J Added
+    int lastBrupSendTickCount;  
 
 public:
     ServerPlayer(MinecraftServer* server, Level* level,
                  const std::wstring& name, ServerPlayerGameMode* gameMode);
     ~ServerPlayer();
     void flagEntitiesToBeRemoved(unsigned int* flags,
-                                 bool* removedFound);  // 4J added
+                                 bool* removedFound);  
 
     virtual void readAdditionalSaveData(CompoundTag* entityTag);
     virtual void addAdditonalSaveData(CompoundTag* entityTag);
@@ -99,7 +99,7 @@ public:
     virtual void die(DamageSource* source);
     virtual bool hurt(DamageSource* dmgSource, float dmg);
     virtual bool canHarmPlayer(std::shared_ptr<Player> target);
-    bool canHarmPlayer(std::wstring targetName);  // 4J: Added
+    bool canHarmPlayer(std::wstring targetName);  
     void doTick(bool sendChunks, bool dontDelayChunks = false,
                 bool ignorePortal = false);
     void doTickA();
@@ -133,31 +133,31 @@ public:
     bool ignoreSlotUpdateHack;
     int latency;
     bool wonGame;
-    bool m_enteredEndExitPortal;  // 4J Added
+    bool m_enteredEndExitPortal;  
 
 private:
     void nextContainerCounter();
 
 public:
     virtual void openTextEdit(std::shared_ptr<TileEntity> sign);
-    virtual bool startCrafting(int x, int y, int z);  // 4J added bool return
-    virtual bool openFireworks(int x, int y, int z);  // 4J added
+    virtual bool startCrafting(int x, int y, int z);  
+    virtual bool openFireworks(int x, int y, int z);  
     virtual bool startEnchanting(
-        int x, int y, int z, const std::wstring& name);  // 4J added bool return
-    virtual bool startRepairing(int x, int y, int z);    // 4J added bool return
+        int x, int y, int z, const std::wstring& name);  
+    virtual bool startRepairing(int x, int y, int z);    
     virtual bool openContainer(
-        std::shared_ptr<Container> container);  // 4J added bool return
+        std::shared_ptr<Container> container);  
     virtual bool openHopper(std::shared_ptr<HopperTileEntity> container);
     virtual bool openHopper(std::shared_ptr<MinecartHopper> container);
     virtual bool openFurnace(
-        std::shared_ptr<FurnaceTileEntity> furnace);  // 4J added bool return
+        std::shared_ptr<FurnaceTileEntity> furnace);  
     virtual bool openTrap(
-        std::shared_ptr<DispenserTileEntity> trap);  // 4J added bool return
+        std::shared_ptr<DispenserTileEntity> trap);  
     virtual bool openBrewingStand(std::shared_ptr<BrewingStandTileEntity>
-                                      brewingStand);  // 4J added bool return
+                                      brewingStand);  
     virtual bool openBeacon(std::shared_ptr<BeaconTileEntity> beacon);
     virtual bool openTrading(std::shared_ptr<Merchant> traderTarget,
-                             const std::wstring& name);  // 4J added bool return
+                             const std::wstring& name);  
     virtual bool openHorseInventory(std::shared_ptr<EntityHorse> horse,
                                     std::shared_ptr<Container> container);
     virtual void slotChanged(AbstractContainerMenu* container, int slotIndex,
@@ -207,30 +207,30 @@ public:
         ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom,
         int customData = -1, const std::wstring& additionalMessage = L"");
     bool hasPermission(EGameCommand command);
-    // bool hasPermission(int permissionLevel, EGameCommand command);
-    // void updateOptions(std::shared_ptr<ClientInformationPacket> packet); //
-    // 4J: Don't use
+    
+    
+    
     int getViewDistance();
-    // 4J macOS - set this player's effective view-distance (in chunks),
-    // clamped to [MIN, MAX] and capped at PlayerList::getViewDistance(), then
-    // (un)subscribe chunks accordingly. MUST be invoked from the server tick
-    // only (callers route the network-requested value through the tick), never
-    // from the network thread, to avoid chunk-subscription data races.
+    
+    
+    
+    
+    
     void setEffectiveViewDistance(int chunks);
-    // bool canChatInColor();
-    // int getChatVisibility();
+    
+    
     Pos* getCommandSenderWorldPosition();
     void resetLastActionTime();
 
 public:
     static int getFlagIndexForChunk(const ChunkPos& pos,
-                                    int dimension);  // 4J - added
-    int getPlayerViewDistanceModifier();  // 4J Added, returns a number which is
-                                          // subtracted from the default view
-                                          // distance
+                                    int dimension);  
+    int getPlayerViewDistanceModifier();  
+                                          
+                                          
 
 public:
-    // 4J Stu - Added hooks for the game rules
+    
     virtual void handleCollectItem(std::shared_ptr<ItemInstance> item);
 
 #ifndef _CONTENT_PACKAGE
@@ -238,8 +238,8 @@ public:
 #endif
 
 protected:
-    // 4J Added to record telemetry of player deaths, this should store the last
-    // source of damage
-    // 4jcraft: fuck you 4J
+    
+    
+    
     uint8_t m_lastDamageSource;
 };

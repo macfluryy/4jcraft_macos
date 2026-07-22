@@ -27,8 +27,8 @@ const double ThrownPotion::SPLASH_RANGE_SQ =
     ThrownPotion::SPLASH_RANGE * ThrownPotion::SPLASH_RANGE;
 
 void ThrownPotion::_init() {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     potionItem = nullptr;
@@ -99,10 +99,10 @@ void ThrownPotion::onHit(HitResult* res) {
                 level->getEntitiesOfClass(typeid(LivingEntity), &aoe);
 
             if (entitiesOfClass != nullptr && !entitiesOfClass->empty()) {
-                // for (Entity e : entitiesOfClass)
+                
                 for (auto it = entitiesOfClass->begin();
                      it != entitiesOfClass->end(); ++it) {
-                    // shared_ptr<Entity> e = *it;
+                    
                     std::shared_ptr<LivingEntity> e =
                         std::dynamic_pointer_cast<LivingEntity>(*it);
                     double dist = distanceToSqr(e);
@@ -112,7 +112,7 @@ void ThrownPotion::onHit(HitResult* res) {
                             scale = 1;
                         }
 
-                        // for (MobEffectInstance effect : mobEffects)
+                        
                         for (auto itMEI = mobEffects->begin();
                              itMEI != mobEffects->end(); ++itMEI) {
                             MobEffectInstance* effect = *itMEI;

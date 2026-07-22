@@ -8,12 +8,12 @@ RangedAttribute::RangedAttribute(eATTRIBUTE_ID id, double defaultValue,
     this->minValue = minValue;
     this->maxValue = maxValue;
 
-    // if (minValue > maxValue) throw new IllegalArgumentException("Minimum
-    // value cannot be bigger than maximum value!"); if (defaultValue <
-    // minValue) throw new IllegalArgumentException("Default value cannot be
-    // lower than minimum value!"); if (defaultValue > maxValue) throw new
-    // IllegalArgumentException("Default value cannot be bigger than maximum
-    // value!");
+    
+    
+    
+    
+    
+    
 }
 
 double RangedAttribute::getMinValue() { return minValue; }

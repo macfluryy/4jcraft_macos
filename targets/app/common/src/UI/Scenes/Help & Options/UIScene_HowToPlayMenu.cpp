@@ -13,36 +13,36 @@
 #include "minecraft/sounds/SoundTypes.h"
 #include "strings.h"
 
-// strings for buttons in the list
-unsigned int UIScene_HowToPlayMenu::m_uiHTPButtonNameA[] = {
-    IDS_HOW_TO_PLAY_MENU_WHATSNEW,     // eHTPButton_WhatsNew
-    IDS_HOW_TO_PLAY_MENU_BASICS,       // eHTPButton_Basics,
-    IDS_HOW_TO_PLAY_MENU_MULTIPLAYER,  // eHTPButton_Multiplayer
-    IDS_HOW_TO_PLAY_MENU_HUD,          // eHTPButton_Hud,
-    IDS_HOW_TO_PLAY_MENU_CREATIVE,     // eHTPButton_Creative,
-    IDS_HOW_TO_PLAY_MENU_INVENTORY,    // eHTPButton_Inventory,
-    IDS_HOW_TO_PLAY_MENU_CHESTS,       // eHTPButton_Chest,
-    IDS_HOW_TO_PLAY_MENU_CRAFTING,     // eHTPButton_Crafting,
-    IDS_HOW_TO_PLAY_MENU_FURNACE,      // eHTPButton_Furnace,
-    IDS_HOW_TO_PLAY_MENU_DISPENSER,    // eHTPButton_Dispenser,
 
-    IDS_HOW_TO_PLAY_MENU_BREWING,      // eHTPButton_Brewing,
-    IDS_HOW_TO_PLAY_MENU_ENCHANTMENT,  // eHTPButton_Enchantment,
+unsigned int UIScene_HowToPlayMenu::m_uiHTPButtonNameA[] = {
+    IDS_HOW_TO_PLAY_MENU_WHATSNEW,     
+    IDS_HOW_TO_PLAY_MENU_BASICS,       
+    IDS_HOW_TO_PLAY_MENU_MULTIPLAYER,  
+    IDS_HOW_TO_PLAY_MENU_HUD,          
+    IDS_HOW_TO_PLAY_MENU_CREATIVE,     
+    IDS_HOW_TO_PLAY_MENU_INVENTORY,    
+    IDS_HOW_TO_PLAY_MENU_CHESTS,       
+    IDS_HOW_TO_PLAY_MENU_CRAFTING,     
+    IDS_HOW_TO_PLAY_MENU_FURNACE,      
+    IDS_HOW_TO_PLAY_MENU_DISPENSER,    
+
+    IDS_HOW_TO_PLAY_MENU_BREWING,      
+    IDS_HOW_TO_PLAY_MENU_ENCHANTMENT,  
     IDS_HOW_TO_PLAY_MENU_ANVIL,
-    IDS_HOW_TO_PLAY_MENU_FARMANIMALS,   // eHTPButton_Breeding,
-    IDS_HOW_TO_PLAY_MENU_BREEDANIMALS,  // eHTPButton_Breeding,
+    IDS_HOW_TO_PLAY_MENU_FARMANIMALS,   
+    IDS_HOW_TO_PLAY_MENU_BREEDANIMALS,  
     IDS_HOW_TO_PLAY_MENU_TRADING,
 
     IDS_HOW_TO_PLAY_MENU_HORSES,       IDS_HOW_TO_PLAY_MENU_BEACONS,
     IDS_HOW_TO_PLAY_MENU_FIREWORKS,    IDS_HOW_TO_PLAY_MENU_HOPPERS,
     IDS_HOW_TO_PLAY_MENU_DROPPERS,
 
-    IDS_HOW_TO_PLAY_MENU_NETHERPORTAL,  // eHTPButton_NetherPortal,
-    IDS_HOW_TO_PLAY_MENU_THEEND,        // eHTPButton_TheEnd,
-    IDS_HOW_TO_PLAY_MENU_HOSTOPTIONS,   // eHTPButton_HostOptions,
+    IDS_HOW_TO_PLAY_MENU_NETHERPORTAL,  
+    IDS_HOW_TO_PLAY_MENU_THEEND,        
+    IDS_HOW_TO_PLAY_MENU_HOSTOPTIONS,   
 };
 
-// mapping the buttons to a scene value
+
 unsigned int UIScene_HowToPlayMenu::m_uiHTPSceneA[] = {
     eHowToPlay_WhatsNew,     eHowToPlay_Basics,
     eHowToPlay_Multiplayer,  eHowToPlay_HUD,
@@ -65,16 +65,16 @@ unsigned int UIScene_HowToPlayMenu::m_uiHTPSceneA[] = {
 UIScene_HowToPlayMenu::UIScene_HowToPlayMenu(int iPad, void* initData,
                                              UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_buttonListHowTo.init(eControl_Buttons);
 
     for (unsigned int i = 0; i < eHTPButton_Max; ++i) {
-        // 4J Stu - Re-add for future platforms
+        
         {
             m_buttonListHowTo.addItem(app.GetString(m_uiHTPButtonNameA[i]),
-                                      i);  // iCount++);
+                                      i);  
         }
     }
 
@@ -110,7 +110,7 @@ void UIScene_HowToPlayMenu::updateComponents() {
 
 void UIScene_HowToPlayMenu::handleReload() {
     for (unsigned int i = 0; i < eHTPButton_Max; ++i) {
-        // 4J Stu - Re-add for future platforms
+        
         {
             m_buttonListHowTo.addItem(app.GetString(m_uiHTPButtonNameA[i]), i);
         }
@@ -122,9 +122,9 @@ void UIScene_HowToPlayMenu::handleReload() {
 void UIScene_HowToPlayMenu::handleInput(int iPad, int key, bool repeat,
                                         bool pressed, bool released,
                                         bool& handled) {
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {
@@ -147,7 +147,7 @@ void UIScene_HowToPlayMenu::handleInput(int iPad, int key, bool repeat,
 
 void UIScene_HowToPlayMenu::handlePress(F64 controlId, F64 childId) {
     if ((int)controlId == eControl_Buttons) {
-        // CD - Added for audio
+        
         ui.PlayUISFX(eSFX_Press);
 
         unsigned int uiInitData;

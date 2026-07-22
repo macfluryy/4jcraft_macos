@@ -12,6 +12,6 @@ public:
     EnchantmentInstance(Enchantment* enchantment, int level);
     EnchantmentInstance(int id, int level);
 
-    // 4J Added
+    
     EnchantmentInstance* copy();
 };

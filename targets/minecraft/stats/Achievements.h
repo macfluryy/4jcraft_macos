@@ -11,7 +11,7 @@ class Achievements {
 protected:
     static const int ACHIEVEMENT_OFFSET;
 
-    // maximum position of achievements (min and max)
+    
 public:
     static const int ACHIEVEMENT_WIDTH_POSITION = 12;
     static const int ACHIEVEMENT_HEIGHT_POSITION = 12;
@@ -37,10 +37,10 @@ public:
     static Achievement* killCow;
     static Achievement* flyPig;
 
-    // 4J-JEV: Present on the PS3.
+    
     static Achievement* snipeSkeleton;
     static Achievement* diamonds;
-    // static Achievement *portal; //4J-JEV: Whats this?
+    
     static Achievement* ghast;
     static Achievement* blazeRod;
     static Achievement* potion;
@@ -48,13 +48,13 @@ public:
     static Achievement* winGame;
     static Achievement* enchantments;
 
-    // 4J : WESTY : Added new acheivements.
+    
     static Achievement* leaderOfThePack;
     static Achievement* MOARTools;
     static Achievement* dispenseWithThis;
     static Achievement* InToTheNether;
 
-    // 4J : WESTY : Added other awards.
+    
     static Achievement* socialPost;
     static Achievement* eatPorkChop;
     static Achievement* play100Days;
@@ -63,8 +63,8 @@ public:
     static Achievement* kill10Creepers;
 
 #ifdef _EXTENDED_ACHIEVEMENTS
-    static Achievement* overkill;  // Old achievements;
-    static Achievement* bookcase;  // Old achievements;
+    static Achievement* overkill;  
+    static Achievement* bookcase;  
     static Achievement* adventuringTime;
     static Achievement* repopulation;
     static Achievement* diamondsToYou;

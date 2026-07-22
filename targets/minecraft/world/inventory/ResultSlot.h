@@ -10,8 +10,8 @@ class Player;
 class ResultSlot : public Slot {
 private:
     std::shared_ptr<Container> craftSlots;
-    Player* player;  // This can't be a std::shared_ptr, as we create a result
-                     // slot in the inventorymenu in the Player ctor
+    Player* player;  
+                     
     int removeCount;
 
 public:
@@ -32,5 +32,5 @@ public:
     virtual void onTake(std::shared_ptr<Player> player,
                         std::shared_ptr<ItemInstance> carried) override;
     virtual bool mayCombine(
-        std::shared_ptr<ItemInstance> item) override;  // 4J Added
+        std::shared_ptr<ItemInstance> item) override;  
 };

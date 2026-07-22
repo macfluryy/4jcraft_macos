@@ -22,11 +22,11 @@ void HugeExplosionSeedParticle::render(Tesselator* t, float a, float xa,
                                        float za2) {}
 
 void HugeExplosionSeedParticle::tick() {
-    // Horrible hack to communicate with the level renderer, which is just
-    // attached as a listener to this level. This let's the particle rendering
-    // know to use this level (rather than try to work it out from the current
-    // player), and to not bother distance clipping particles which would again
-    // be based on the current player.
+    
+    
+    
+    
+    
     Minecraft::GetInstance()->animateTickLevel = level;
     for (int i = 0; i < 6; i++) {
         double xx = x + (random->nextDouble() - random->nextDouble()) * 4;

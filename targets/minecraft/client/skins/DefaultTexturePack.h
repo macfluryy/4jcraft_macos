@@ -12,22 +12,22 @@ public:
     DLCPack* getDLCPack() { return nullptr; }
 
 protected:
-    //@Override
+    
     void loadIcon();
     void loadName();
     void loadDescription();
 
 public:
-    //@Override
+    
     bool hasFile(const std::wstring& name);
     bool isTerrainUpdateCompatible();
 
     std::wstring getDesc1() { return app.GetString(IDS_DEFAULT_TEXTUREPACK); }
 
 protected:
-    //@Override
+    
     InputStream* getResourceImplementation(
-        const std::wstring& name);  // throws FileNotFoundException
+        const std::wstring& name);  
 
 public:
     virtual bool hasData() { return true; }

@@ -36,7 +36,7 @@ bool FireChargeItem::useOn(std::shared_ptr<ItemInstance> instance,
         return false;
     }
 
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
     if (bTestUseOnOnly) {
         return true;
     }

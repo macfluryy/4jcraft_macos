@@ -46,8 +46,8 @@ int CreeperRenderer::getOverlayColor(std::shared_ptr<LivingEntity> mob,
     if ((int)(step * 10) % 2 == 0) return 0;
 
     int _a = (int)(step * 0.2f * 255) +
-             25;  // 4J - added 25 here as our entities are rendered with alpha
-                  // test still enabled, and so anything less is invisible
+             25;  
+                  
     if (_a < 0) _a = 0;
     if (_a > 255) _a = 255;
 
@@ -60,8 +60,8 @@ int CreeperRenderer::getOverlayColor(std::shared_ptr<LivingEntity> mob,
 
 int CreeperRenderer::prepareArmor(std::shared_ptr<LivingEntity> _mob, int layer,
                                   float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Creeper> mob = std::dynamic_pointer_cast<Creeper>(_mob);
     if (mob->isPowered()) {
         if (mob->isInvisible())

@@ -22,7 +22,7 @@ public:
 
     void save(short changeUid);
 
-    // Cannot use delete as function name as it is a reserved keyword
+    
     void deleteBackup(short changeUid);
     void rollback(short changeUid);
 };

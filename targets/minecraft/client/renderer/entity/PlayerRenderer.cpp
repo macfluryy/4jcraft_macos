@@ -37,15 +37,15 @@
 
 const unsigned int PlayerRenderer::s_nametagColors[MINECRAFT_NET_MAX_PLAYERS] =
     {
-        0xff000000,  // WHITE (represents the "white" player, but using black as
-                     // the colour)
-        0xff33cc33,  // GREEN
-        0xffcc3333,  // RED
-        0xff3333cc,  // BLUE
-        0xffcc33cc,  // M_PINK
-        0xffcc6633,  // ORANGE
-        0xffcccc33,  // YELLOW
-        0xff33dccc,  // TURQUOISE
+        0xff000000,  
+                     
+        0xff33cc33,  
+        0xffcc3333,  
+        0xff3333cc,  
+        0xffcc33cc,  
+        0xffcc6633,  
+        0xffcccc33,  
+        0xff33dccc,  
 };
 
 ResourceLocation PlayerRenderer::DEFAULT_LOCATION =
@@ -68,11 +68,11 @@ unsigned int PlayerRenderer::getNametagColour(int index) {
 
 int PlayerRenderer::prepareArmor(std::shared_ptr<LivingEntity> _player,
                                  int layer, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(_player);
 
-    // 4J-PB - need to disable rendering armour for some special skins (Daleks)
+    
     unsigned int uiAnimOverrideBitmask = player->getAnimOverrideBitmask();
     if (uiAnimOverrideBitmask & (1 << HumanoidModel::eAnim_DontRenderArmour)) {
         return -1;
@@ -129,8 +129,8 @@ int PlayerRenderer::prepareArmor(std::shared_ptr<LivingEntity> _player,
 
 void PlayerRenderer::prepareSecondPassArmor(
     std::shared_ptr<LivingEntity> _player, int layer, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(_player);
     std::shared_ptr<ItemInstance> itemInstance =
         player->inventory->getArmor(3 - layer);
@@ -151,8 +151,8 @@ void PlayerRenderer::prepareSecondPassArmor(
 
 void PlayerRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
                             double z, float rot, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Player> mob = std::dynamic_pointer_cast<Player>(_mob);
 
     if (mob->hasInvisiblePrivilege()) return;
@@ -172,11 +172,11 @@ void PlayerRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
             }
         }
     }
-    // 4J added, for 3rd person view of eating
+    
     if (item != nullptr && mob->getUseItemDuration() > 0 &&
         item->getUseAnimation() == UseAnim_eat) {
-        // These factors are largely lifted from ItemInHandRenderer to try and
-        // keep the 3rd person eating animation as similar as possible
+        
+        
         float t = (mob->getUseItemDuration() - a + 1);
         float swing = 1 - (t / item->getUseDuration());
         armorParts1->eating = armorParts2->eating = humanoidModel->eating =
@@ -198,7 +198,7 @@ void PlayerRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
         yp -= 2 / 16.0f;
     }
 
-    // Check if an idle animation is needed
+    
     if (mob->getAnimOverrideBitmask() & (1 << HumanoidModel::eAnim_HasIdle)) {
         if (mob->isIdle()) {
             humanoidModel->idle = true;
@@ -215,10 +215,10 @@ void PlayerRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
         armorParts2->idle = false;
     }
 
-    // 4J-PB - any additional parts to turn on for this player (skin dependent)
+    
     std::vector<ModelPart*>* pAdditionalModelParts =
         mob->GetAdditionalModelParts();
-    // turn them on
+    
     if (pAdditionalModelParts != nullptr) {
         for (auto it = pAdditionalModelParts->begin();
              it != pAdditionalModelParts->end(); ++it) {
@@ -230,7 +230,7 @@ void PlayerRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
 
     LivingEntityRenderer::render(mob, x, yp, z, rot, a);
 
-    // turn them off again
+    
     if (pAdditionalModelParts && pAdditionalModelParts->size() != 0) {
         for (auto it = pAdditionalModelParts->begin();
              it != pAdditionalModelParts->end(); ++it) {
@@ -256,13 +256,13 @@ void PlayerRenderer::additionalRendering(std::shared_ptr<LivingEntity> _mob,
     LivingEntityRenderer::additionalRendering(_mob, a);
     LivingEntityRenderer::renderArrows(_mob, a);
 
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Player> mob = std::dynamic_pointer_cast<Player>(_mob);
 
     std::shared_ptr<ItemInstance> headGear = mob->inventory->getArmor(3);
     if (headGear != nullptr) {
-        // don't render the pumpkin for the skins
+        
         unsigned int uiAnimOverrideBitmask =
             mob->getSkinAnimOverrideBitmask(mob->getCustomSkin());
 
@@ -300,7 +300,7 @@ void PlayerRenderer::additionalRendering(std::shared_ptr<LivingEntity> _mob,
         }
     }
 
-    // need to add a custom texture for deadmau5
+    
     if (mob != nullptr && app.isXuidDeadmau5(mob->getXuid()) &&
         bindTexture(mob->customTextureUrl, L"")) {
         for (int i = 0; i < 2; i++) {
@@ -322,10 +322,10 @@ void PlayerRenderer::additionalRendering(std::shared_ptr<LivingEntity> _mob,
         }
     }
 
-    // 4J: removed
-    /*bool loaded = mob->getCloakTexture()->isLoaded();
-bool b1 = !mob->isInvisible();
-bool b2 = !mob->isCapeHidden();*/
+    
+    
+
+
     if (bindTexture(mob->customTextureUrl2, L"") && !mob->isInvisible()) {
         glPushMatrix();
         glTranslatef(0, 0, 2 / 16.0f);
@@ -358,8 +358,8 @@ bool b2 = !mob->isCapeHidden();*/
             flap += 25;
         }
 
-        // 4J Stu - Fix for sprint-flying causing the cape to rotate up by 180
-        // degrees or more
+        
+        
         float xRot = 6.0f + lean / 2 + flap;
         if (xRot > 64.0f) xRot = 64.0f;
 
@@ -382,7 +382,7 @@ bool b2 = !mob->isCapeHidden();*/
             item = std::make_shared<ItemInstance>(Item::stick);
         }
 
-        UseAnim anim = UseAnim_none;  // null;
+        UseAnim anim = UseAnim_none;  
         if (mob->getUseItemDuration() > 0) {
             anim = item->getUseAnimation();
         }
@@ -478,7 +478,7 @@ void PlayerRenderer::renderHand() {
     humanoidModel->attackTime = 0;
     humanoidModel->setupAnim(0, 0, 0, 0, 0, 1 / 16.0f,
                              Minecraft::GetInstance()->player);
-    // 4J-PB - does this skin have its arm0 disabled? (Dalek, etc)
+    
     if ((humanoidModel->m_uiAnimOverrideBitmask &
          (1 << HumanoidModel::eAnim_DisableRenderArm0)) == 0) {
         humanoidModel->arm0->render(1 / 16.0f, true);
@@ -487,8 +487,8 @@ void PlayerRenderer::renderHand() {
 
 void PlayerRenderer::setupPosition(std::shared_ptr<LivingEntity> _mob, double x,
                                    double y, double z) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Player> mob = std::dynamic_pointer_cast<Player>(_mob);
 
     if (mob->isAlive() && mob->isSleeping()) {
@@ -506,8 +506,8 @@ void PlayerRenderer::setupPosition(std::shared_ptr<LivingEntity> _mob, double x,
 
 void PlayerRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
                                     float bob, float bodyRot, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Player> mob = std::dynamic_pointer_cast<Player>(_mob);
 
     if (mob->isAlive() && mob->isSleeping()) {
@@ -519,7 +519,7 @@ void PlayerRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
     }
 }
 
-// 4J Added override to stop rendering shadow if player is invisible
+
 void PlayerRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y,
                                   double z, float pow, float a) {
     if (app.GetGameHostOption(eGameHostOption_HostCanBeInvisible) > 0) {
@@ -529,7 +529,7 @@ void PlayerRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y,
     EntityRenderer::renderShadow(e, x, y, z, pow, a);
 }
 
-// 4J Added override
+
 void PlayerRenderer::bindTexture(std::shared_ptr<Entity> entity) {
     std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(entity);
     bindTexture(player->customTextureUrl, player->getTexture());

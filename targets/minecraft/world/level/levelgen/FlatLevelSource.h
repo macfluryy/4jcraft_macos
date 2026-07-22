@@ -29,7 +29,7 @@ private:
     Random* pprandom;
 
     bool generateStructures;
-    VillageFeature* villageFeature;  // = new VillageFeature(1);
+    VillageFeature* villageFeature;  
 
 public:
     FlatLevelSource(Level* level, int64_t seed, bool generateStructures);

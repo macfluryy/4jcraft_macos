@@ -26,7 +26,7 @@ MerchantRecipe* MerchantRecipeList::getRecipeFor(
     std::shared_ptr<ItemInstance> buyA, std::shared_ptr<ItemInstance> buyB,
     int selectionHint) {
     if (selectionHint > 0 && selectionHint < m_recipes.size()) {
-        // attempt to match vs the hint
+        
         MerchantRecipe* r = m_recipes.at(selectionHint);
         if (buyA->id == r->getBuyAItem()->id &&
             ((buyB == nullptr && !r->hasSecondaryBuyItem()) ||

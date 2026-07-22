@@ -17,7 +17,7 @@ bool UIControl_DynamicLabel::setupControl(UIScene* scene, IggyValuePath* parent,
     UIControl::setControlType(UIControl::eDynamicLabel);
     bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-    // Label specific initialisers
+    
     m_funcAddText = registerFastName(L"AddText");
     m_funcTouchScroll = registerFastName(L"TouchScroll");
     m_funcGetRealWidth = registerFastName(L"GetRealWidth");

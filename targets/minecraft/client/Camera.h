@@ -19,10 +19,10 @@ public:
     static float zPlayerOffs;
 
 private:
-    //	static IntBuffer *viewport;
+    
     static FloatBuffer* modelview;
     static FloatBuffer* projection;
-    //	static FloatBuffer *position;
+    
 
 public:
     static float xa, ya, za, xa2, za2;

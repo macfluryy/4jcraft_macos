@@ -17,7 +17,7 @@ TakeAnimationParticle::TakeAnimationParticle(Level* level,
                                              std::shared_ptr<Entity> target,
                                              float yOffs)
     : Particle(level, item->x, item->y, item->z, item->xd, item->yd, item->zd) {
-    // 4J - added initialisers
+    
     life = 0;
     lifeTime = 0;
 
@@ -51,7 +51,7 @@ void TakeAnimationParticle::render(Tesselator* t, float a, float xa, float ya,
     int yTile = std::floor(yy + heightOffset / 2.0f);
     int zTile = std::floor(zz);
 
-    // 4J - change brought forward from 1.8.2
+    
     if (SharedConstants::TEXTURE_LIGHTING) {
         int col = getLightColor(a);
         int u = col % 65536;

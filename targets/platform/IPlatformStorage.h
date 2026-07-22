@@ -16,8 +16,8 @@ class C4JStringTable;
 
 class IPlatformStorage {
 public:
-    // Enums live here so both the interface consumer and the concrete
-    // implementation share the same values without a circular include.
+    
+    
     enum EMessageResult {
         EMessage_Undefined = 0,
         EMessage_Busy,
@@ -114,7 +114,7 @@ public:
 
     virtual ~IPlatformStorage() = default;
 
-    // Lifecycle
+    
     virtual void Tick() = 0;
     virtual void Init(unsigned int uiSaveVersion,
                       const wchar_t* pwchDefaultSaveName, char* pszSavePackName,
@@ -123,7 +123,7 @@ public:
                       const char* szGroupID) = 0;
     virtual void ResetSaveData() = 0;
 
-    // Messages
+    
     virtual EMessageResult RequestMessageBox(
         unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
         unsigned int uiOptionC, unsigned int pad = XUSER_INDEX_ANY,
@@ -132,13 +132,13 @@ public:
         wchar_t* pwchFormatString = nullptr, unsigned int focusButton = 0) = 0;
     virtual EMessageResult GetMessageBoxResult() = 0;
 
-    // Save device
+    
     virtual bool SetSaveDevice(std::function<int(const bool)> callback,
                                bool bForceResetOfSaveDevice = false) = 0;
     virtual void SetSaveDeviceSelected(unsigned int uiPad, bool bSelected) = 0;
     virtual bool GetSaveDeviceSelected(unsigned int iPad) = 0;
 
-    // Save game
+    
     virtual void SetDefaultSaveNameForKeyboardDisplay(
         const wchar_t* pwchDefaultSaveName) = 0;
     virtual void SetSaveTitle(const wchar_t* pwchDefaultSaveName) = 0;
@@ -188,7 +188,7 @@ public:
         PSAVE_INFO pSaveInfo,
         std::function<int(const bool)> callback) = 0;
 
-    // DLC
+    
     virtual void RegisterMarketplaceCountsCallback(
         std::function<int(DLC_TMS_DETAILS*, int)> callback) = 0;
     virtual void SetDLCPackageRoot(char* pszDLCRoot) = 0;
@@ -218,7 +218,7 @@ public:
                                        std::vector<std::string>& fileList) = 0;
     virtual std::string GetMountedPath(std::string szMount) = 0;
 
-    // Title storage
+    
     virtual ETMSStatus ReadTMSFile(
         int iQuadrant, eGlobalStorage eStorageFacility, eTMS_FileType eFileType,
         wchar_t* pwchFilename, std::uint8_t** ppBuffer,
@@ -238,7 +238,7 @@ public:
             nullptr,
         int iUserData = 0) = 0;
 
-    // Subfile management (save splitting)
+    
     virtual int AddSubfile(int regionIndex) = 0;
     virtual unsigned int GetSubfileCount() = 0;
     virtual void GetSubfileDetails(unsigned int i, int* regionIndex,
@@ -248,7 +248,7 @@ public:
     virtual void SaveSubfiles(std::function<int(const bool)> callback) = 0;
     virtual ESaveGameState GetSaveState() = 0;
 
-    // Misc
+    
     virtual unsigned int CRC(unsigned char* buf, int len) = 0;
     virtual void ContinueIncompleteOperation() = 0;
 };

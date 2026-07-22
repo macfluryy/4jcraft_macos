@@ -7,4 +7,4 @@
 #ifndef _ENABLEIGGY
 #include "iggy_stubs.h"
 #endif
-#endif  // STUBS_H
+#endif  

@@ -19,14 +19,14 @@ TextureChangePacket::TextureChangePacket(std::shared_ptr<Entity> e,
     this->path = path;
 }
 
-void TextureChangePacket::read(DataInputStream* dis)  // throws IOException
+void TextureChangePacket::read(DataInputStream* dis)  
 {
     id = dis->readInt();
     action = (ETextureChangeType)dis->readByte();
     path = dis->readUTF();
 }
 
-void TextureChangePacket::write(DataOutputStream* dos)  // throws IOException
+void TextureChangePacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(id);
     dos->writeByte(action);

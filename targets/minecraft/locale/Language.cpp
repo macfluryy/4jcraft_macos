@@ -11,28 +11,28 @@
 #include "java/InputOutputStream/FileInputStream.h"
 #include "java/InputOutputStream/InputStream.h"
 
-// 4J - TODO - properly implement
-// 4jcraft: done!
+
+
 
 Language* Language::singleton = nullptr;
 
 Language::Language() {
-    // TODO: move the language loading out of the init to better match 1.3.x
-    // see StringTranslate.java in MCP 7.x for more context
+    
+    
     File langFile(L"Common/res/lang/en_US.lang");
     if (langFile.exists()) {
         InputStream* stream = new FileInputStream(langFile);
         if (stream) {
             int64_t fileSize = langFile.length();
             if (fileSize > 0) {
-                // 4jcraft: we would've used BufferedReader like the JE
-                // equivalent here, but the lang file starts with a newline,
-                // causing readLine() in this BufferedReader impl to just return
-                // an empty string
-                //
-                // InputStreamReader reader(stream);
-                // BufferedReader bufferedReader(&reader);
-                // std::wstring line;
+                
+                
+                
+                
+                
+                
+                
+                
                 std::vector<uint8_t> buffer((unsigned int)fileSize);
                 int bytesRead = stream->read(buffer, 0, (unsigned int)fileSize);
                 if (bytesRead > 0) {
@@ -41,7 +41,7 @@ Language::Language() {
                     std::istringstream iss(content);
                     std::string line;
 
-                    // while (!(line = bufferedReader.readLine()).empty()) {
+                    
                     while (std::getline(iss, line)) {
                         size_t start = line.find_first_not_of(" \t\r\n");
                         if (start == std::string::npos) continue;
@@ -71,7 +71,7 @@ Language::Language() {
 }
 
 Language* Language::getInstance() {
-    // 4jcraft, fixes static init fiassco in I18n.cpp
+    
     if (singleton == nullptr) {
         singleton = new Language();
     }
@@ -79,13 +79,13 @@ Language* Language::getInstance() {
     return singleton;
 }
 
-/* 4J Jev, creates 2 identical functions.
-std::wstring Language::getElement(const std::wstring& elementId)
-{
-        return elementId;
-} */
 
-// 4jcraft changed, again const reference into va_start, std forbids
+
+
+
+
+
+
 std::wstring Language::getElement(std::wstring elementId, ...) {
     va_list args;
     va_start(args, elementId);

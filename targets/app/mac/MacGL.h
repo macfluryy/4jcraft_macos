@@ -41,4 +41,4 @@ void glMultiTexCoord2f(int, float, float);
 void glClientActiveTexture(int);
 void glActiveTexture(int);
 
-#endif // __APPLE__
+#endif 

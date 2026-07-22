@@ -18,10 +18,10 @@
 #include "minecraft/world/level/saveddata/MapItemSavedData.h"
 #include "nbt/CompoundTag.h"
 
-// 4J - added for common ctor code
+
 void ItemFrame::_init() {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     dropChance = 1;
@@ -70,7 +70,7 @@ void ItemFrame::removeFramedMap(std::shared_ptr<ItemInstance> item) {
         std::shared_ptr<MapItemSavedData> mapItemSavedData =
             Item::map->getSavedData(item, level);
         mapItemSavedData->removeItemFrameDecoration(item);
-        // mapItemSavedData.decorations.remove("frame-" + entityId);
+        
     }
     item->setFramed(nullptr);
 }
@@ -127,7 +127,7 @@ bool ItemFrame::interact(std::shared_ptr<Player> player) {
         std::shared_ptr<ItemInstance> item = player->getCarriedItem();
 
         if (item != nullptr) {
-            if (!level->isClientSide)  // isClientSide)
+            if (!level->isClientSide)  
             {
                 setItem(item);
 
@@ -140,7 +140,7 @@ bool ItemFrame::interact(std::shared_ptr<Player> player) {
             }
         }
     } else {
-        if (!level->isClientSide)  // isClientSide)
+        if (!level->isClientSide)  
         {
             setRotation(getRotation() + 1);
         }

@@ -55,14 +55,14 @@ std::shared_ptr<ItemInstance> CraftingContainer::removeItem(unsigned int slot,
         if ((*items)[slot]->count <= count) {
             std::shared_ptr<ItemInstance> item = (*items)[slot];
             (*items)[slot] = nullptr;
-            menu->slotsChanged();  // 4J - used to take pointer to this, but
-                                   // wasn't using it so removed
+            menu->slotsChanged();  
+                                   
             return item;
         } else {
             std::shared_ptr<ItemInstance> i = (*items)[slot]->remove(count);
             if ((*items)[slot]->count == 0) (*items)[slot] = nullptr;
-            menu->slotsChanged();  // 4J - used to take pointer to this, but
-                                   // wasn't using it so removed
+            menu->slotsChanged();  
+                                   
             return i;
         }
     }

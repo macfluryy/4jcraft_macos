@@ -4,9 +4,9 @@
 
 class Socket;
 
-// This is the platform independent interface for dealing with players within a
-// network game. This should be used directly by game code (and
-// GameNetworkManager) rather than the platform-specific implementations.
+
+
+
 
 class INetworkPlayer {
 public:

@@ -15,17 +15,17 @@ SandFeature::SandFeature(int radius, int tile) {
 bool SandFeature::place(Level* level, Random* random, int x, int y, int z) {
     if (level->getMaterial(x, y, z) != Material::water) return false;
 
-    // 4J - optimisation. Without this, we can end up creating a huge number of
-    // HeavyTiles to be ticked a few frames away. I think instatick ought to be
-    // fine here - we're only turning rock into gravel, so should instantly know
-    // if we've made a rock with nothing underneath and that should fall.
+    
+    
+    
+    
     level->setInstaTick(true);
 
     int r = random->nextInt(radius - 2) + 2;
     int yr = 2;
 
-    // 4J Stu Added to stop tree features generating areas previously place by
-    // game rule generation
+    
+    
     if (app.getLevelGenerationOptions() != nullptr) {
         LevelGenerationOptions* levelGenOptions =
             app.getLevelGenerationOptions();
@@ -33,8 +33,8 @@ bool SandFeature::place(Level* level, Random* random, int x, int y, int z) {
             x - r, y - yr, z - r, x + r, y + yr, z + r);
         if (intersects) {
             level->setInstaTick(false);
-            // app.DebugPrintf("Skipping reeds feature generation as it overlaps
-            // a game rule structure\n");
+            
+            
             return false;
         }
     }

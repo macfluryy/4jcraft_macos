@@ -15,7 +15,7 @@ _Polygon::_Polygon(const std::span<const Vertex> vertices)
 _Polygon::_Polygon(const std::span<const Vertex, 4> vertices, int u0, int v0,
                    int u1, int v1, float xTexSize, float yTexSize)
     : vertexCount(vertices.size()) {
-    // 4J - added - don't assume that u1 > u0, v1 > v0
+    
     float us = (u1 > u0) ? (0.1f / xTexSize) : (-0.1f / xTexSize);
     float vs = (v1 > v0) ? (0.1f / yTexSize) : (-0.1f / yTexSize);
 

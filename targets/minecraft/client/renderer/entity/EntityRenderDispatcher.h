@@ -19,16 +19,16 @@ class Textures;
 
 class EntityRenderDispatcher {
 public:
-    static void staticCtor();  // 4J added
+    static void staticCtor();  
 private:
     typedef std::unordered_map<eINSTANCEOF, EntityRenderer*, eINSTANCEOFKeyHash,
                                eINSTANCEOFKeyEq>
         classToRendererMap;
     classToRendererMap renderers;
-    // 4J - was:
-    //	Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> renderers
-    //= new HashMap<Class<? extends Entity>, EntityRenderer<? extends
-    // Entity>>();
+    
+    
+    
+    
 
 public:
     static EntityRenderDispatcher* instance;
@@ -47,7 +47,7 @@ public:
     float playerRotY;
     float playerRotX;
     Options* options;
-    bool isGuiRender;  // 4J added
+    bool isGuiRender;  
 
     double xPlayer, yPlayer, zPlayer;
 

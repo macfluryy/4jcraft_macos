@@ -14,7 +14,7 @@ EditBox::EditBox(Screen* screen, Font* font, int x, int y, int width,
 
 void EditBox::setValue(const std::wstring& value) { 
     this->value = value;
-    cursorPos = value.length(); // 4J macOS - move cursor to end
+    cursorPos = value.length(); 
 }
 
 std::wstring EditBox::getValue() const { 
@@ -30,13 +30,13 @@ void EditBox::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
 
-    // 4J macOS - improved tab handling
+    
     if (ch == 9) {
         screen->tabPressed();
-        return; // don't add tab character
+        return; 
     }
     
-    // 4J macOS - handle backspace correctly
+    
     if (eventKey == Keyboard::KEY_BACK) {
         if (cursorPos > 0 && value.length() > 0) {
             if (cursorPos > value.length()) {
@@ -48,7 +48,7 @@ void EditBox::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
     
-    // 4J macOS - handle delete key
+    
     if (eventKey == Keyboard::KEY_DELETE) {
         if (cursorPos < value.length()) {
             value.erase(cursorPos, 1);
@@ -56,7 +56,7 @@ void EditBox::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
     
-    // 4J macOS - handle arrow keys for cursor movement
+    
     if (eventKey == Keyboard::KEY_LEFT) {
         if (cursorPos > 0) cursorPos--;
         return;
@@ -67,7 +67,7 @@ void EditBox::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
     
-    // 4J macOS - handle home/end keys
+    
     if (eventKey == Keyboard::KEY_HOME) {
         cursorPos = 0;
         return;
@@ -78,7 +78,7 @@ void EditBox::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
     
-    // 4J macOS - improved character validation
+    
     if (SharedConstants::acceptableLetters.find(ch) != std::wstring::npos) {
         if (maxLength == 0 || value.length() < (size_t)maxLength) {
             if (cursorPos >= value.length()) {
@@ -94,15 +94,15 @@ void EditBox::keyPressed(wchar_t ch, int eventKey) {
 void EditBox::mouseClicked(int mouseX, int mouseY, int buttonNum) {
     bool newFocus = isMouseInBounds(mouseX, mouseY);
     
-    // 4J macOS - improved focus handling
+    
     if (newFocus) {
-        // Calculate cursor position based on click
+        
         if (active && enableBackgroundDrawing) {
-            // Rough cursor position calculation
+            
             int textStartX = x + 4;
             if (mouseX > textStartX && font != nullptr) {
-                // Calculate approximate cursor position
-                size_t clickPos = (mouseX - textStartX) / 5; // rough estimate
+                
+                size_t clickPos = (mouseX - textStartX) / 5; 
                 if (clickPos <= value.length()) {
                     cursorPos = clickPos;
                 }
@@ -115,21 +115,21 @@ void EditBox::mouseClicked(int mouseX, int mouseY, int buttonNum) {
 
 void EditBox::focus(bool newFocus) {
     if (newFocus && !inFocus) {
-        // reset the underscore counter to give quicker selection feedback
+        
         frame = 0;
-        cursorPos = value.length(); // move cursor to end on focus
+        cursorPos = value.length(); 
     }
     inFocus = newFocus;
 }
 
 void EditBox::render() {
-    // 4J macOS - improved background rendering
+    
     if (enableBackgroundDrawing) {
         fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xffa0a0a0);
         fill(x, y, x + width, y + height, 0xff000000);
     }
 
-    // 4J macOS - conditional text offset
+    
     int textX = x;
     int textY = y;
     if (enableBackgroundDrawing) {
@@ -138,12 +138,12 @@ void EditBox::render() {
     }
 
     if (active) {
-        // 4J macOS - improved cursor rendering
+        
         bool renderCursor = inFocus && (frame / 6 % 2 == 0);
         std::wstring displayValue = value;
         
         if (renderCursor) {
-            // Insert cursor at cursor position
+            
             if (cursorPos < displayValue.length()) {
                 displayValue.insert(cursorPos, L"|");
             } else {

@@ -32,7 +32,7 @@ int LevelSummary::compareTo(LevelSummary* rhs) {
         return -1;
     }
 
-    // TODO 4J Jev, used to be compareTo in java, is this right?
+    
     return levelId.compare(rhs->levelId);
 }
 

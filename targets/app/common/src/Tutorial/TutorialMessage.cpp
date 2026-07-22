@@ -3,8 +3,8 @@
 #include "app/mac/MacGame.h"
 
 TutorialMessage::TutorialMessage(
-    int messageId, bool limitRepeats /*= false*/,
-    unsigned char numRepeats /*= TUTORIAL_MESSAGE_DEFAULT_SHOW*/)
+    int messageId, bool limitRepeats ,
+    unsigned char numRepeats )
     : messageId(messageId),
       limitRepeats(limitRepeats),
       numRepeats(numRepeats),

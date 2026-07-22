@@ -61,7 +61,7 @@ int StoneSlabTile::getResource(int data, Random* random, int playerBonusLevel) {
     return Tile::stoneSlabHalf_Id;
 }
 
-unsigned int StoneSlabTile::getDescriptionId(int iData /*= -1*/) {
+unsigned int StoneSlabTile::getDescriptionId(int iData ) {
     if (iData < 0) iData = 0;
     return StoneSlabTile::SLAB_NAMES[iData];
 }
@@ -70,8 +70,8 @@ int StoneSlabTile::getAuxName(int auxValue) {
     if (auxValue < 0 || auxValue >= SLAB_NAMES_LENGTH) {
         auxValue = 0;
     }
-    return SLAB_NAMES[auxValue];  // super.getDescriptionId() + "." +
-                                  // SLAB_NAMES[auxValue];
+    return SLAB_NAMES[auxValue];  
+                                  
 }
 
 std::shared_ptr<ItemInstance> StoneSlabTile::getSilkTouchItemInstance(

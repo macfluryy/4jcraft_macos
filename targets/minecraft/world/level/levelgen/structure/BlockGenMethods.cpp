@@ -48,7 +48,7 @@ void BlockGenMethods::generateFrame(Level* level, std::vector<uint8_t>& blocks,
 
     switch (direction) {
         case Direction::WEST: {
-            // rotate counter-clockwise
+            
             int temp = sz;
             sz = 15 - ex;
             ez = 15 - sx;
@@ -56,7 +56,7 @@ void BlockGenMethods::generateFrame(Level* level, std::vector<uint8_t>& blocks,
             alongX = false;
         } break;
         case Direction::EAST: {
-            // rotate clockwise
+            
             int temp = sz;
             sz = sx;
             ez = ex;
@@ -64,7 +64,7 @@ void BlockGenMethods::generateFrame(Level* level, std::vector<uint8_t>& blocks,
             alongX = false;
         } break;
         case Direction::SOUTH: {
-            // rotate 180
+            
             sz = ez = 15 - sz;
             int temp = sx;
             sx = 15 - ex;
@@ -100,19 +100,19 @@ void BlockGenMethods::generateDirectionLine(
 
     switch (startDirection) {
         case Direction::WEST: {
-            // rotate counter-clockwise
+            
             int temp = sz;
             sz = 15 - sx;
             sx = temp;
         } break;
         case Direction::EAST: {
-            // rotate clockwise
+            
             int temp = sz;
             sz = sx;
             sx = 15 - temp;
         } break;
         case Direction::SOUTH: {
-            // rotate 180
+            
             sz = 15 - sz;
             sx = 15 - sx;
         } break;
@@ -120,19 +120,19 @@ void BlockGenMethods::generateDirectionLine(
 
     switch (endDirection) {
         case Direction::WEST: {
-            // rotate counter-clockwise
+            
             int temp = ez;
             ez = 15 - ex;
             ex = temp;
         } break;
         case Direction::EAST: {
-            // rotate clockwise
+            
             int temp = ez;
             ez = ex;
             ex = 15 - temp;
         } break;
         case Direction::SOUTH: {
-            // rotate 180
+            
             ez = 15 - ez;
             ex = 15 - ex;
         } break;
@@ -178,7 +178,7 @@ void BlockGenMethods::generateDirectionLine(
             }
             if (e2 < dy) {
                 yErr = yErr + dy;
-                // don't modify sz here, let the plane decide
+                
             }
         }
     }

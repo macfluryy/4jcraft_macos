@@ -194,7 +194,7 @@ void HumanoidMobRenderer::render(std::shared_ptr<Entity> _mob, double x,
 
 ResourceLocation* HumanoidMobRenderer::getTextureLocation(
     std::shared_ptr<Entity> mob) {
-    // TODO -- Figure out of we need some data in here
+    
     return nullptr;
 }
 
@@ -215,9 +215,9 @@ void HumanoidMobRenderer::additionalRendering(std::shared_ptr<LivingEntity> mob,
     std::shared_ptr<ItemInstance> headGear = mob->getArmor(3);
 
     if (headGear != nullptr) {
-        // don't render the pumpkin of skulls for the skins with that disabled
-        // 4J-PB - need to disable rendering armour/skulls/pumpkins for some
-        // special skins (Daleks)
+        
+        
+        
 
         if ((mob->getAnimOverrideBitmask() &
              (1 << HumanoidModel::eAnim_DontRenderArmour)) == 0) {

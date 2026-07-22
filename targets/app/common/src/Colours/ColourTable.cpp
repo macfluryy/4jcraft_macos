@@ -186,8 +186,8 @@ const wchar_t* ColourTable::ColourTableElements[eMinecraftColour_COUNT] = {
     L"Particle_DragonBreathMax",
     L"Particle_Suspend",
 
-    L"Particle_CritStart",  // arrow in air
-    L"Particle_CritEnd",    // arrow in air
+    L"Particle_CritStart",  
+    L"Particle_CritEnd",    
 
     L"Effect_MovementSpeed",
     L"Effect_MovementSlowDown",
@@ -343,7 +343,7 @@ ColourTable::ColourTable(std::uint8_t* pbData, std::uint32_t dataLength) {
 
 ColourTable::ColourTable(ColourTable* defaultColours, std::uint8_t* pbData,
                          std::uint32_t dataLength) {
-    // 4J Stu - Default the colours that of the table passed in
+    
     memcpy((void*)m_colourValues, (void*)defaultColours->m_colourValues,
            sizeof(int) * eMinecraftColour_COUNT);
     loadColoursFromData(pbData, dataLength);

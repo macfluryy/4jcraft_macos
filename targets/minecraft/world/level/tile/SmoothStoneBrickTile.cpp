@@ -27,7 +27,7 @@ Icon* SmoothStoneBrickTile::getTexture(int face, int data) {
 
 int SmoothStoneBrickTile::getSpawnResourcesAuxValue(int data) { return data; }
 
-unsigned int SmoothStoneBrickTile::getDescriptionId(int iData /*= -1*/) {
+unsigned int SmoothStoneBrickTile::getDescriptionId(int iData ) {
     if (iData < 0) iData = 0;
     return SmoothStoneBrickTile::SMOOTH_STONE_BRICK_NAMES[iData];
 }

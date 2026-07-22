@@ -23,7 +23,7 @@ EnchantTableRenderer::~EnchantTableRenderer() { delete bookModel; }
 void EnchantTableRenderer::render(std::shared_ptr<TileEntity> _table, double x,
                                   double y, double z, float a, bool setColor,
                                   float alpha, bool useCompiled) {
-    // 4J Convert as we aren't using a templated class
+    
     std::shared_ptr<EnchantmentTableEntity> table =
         std::dynamic_pointer_cast<EnchantmentTableEntity>(_table);
 
@@ -41,7 +41,7 @@ void EnchantTableRenderer::render(std::shared_ptr<TileEntity> _table, double x,
 
     glRotatef(-yRot * 180 / std::numbers::pi, 0, 1, 0);
     glRotatef(80, 0, 0, 1);
-    bindTexture(&BOOK_LOCATION);  // 4J was "/item/book.png"
+    bindTexture(&BOOK_LOCATION);  
 
     float ff1 = table->oFlip + (table->flip - table->oFlip) * a + 0.25f;
     float ff2 = table->oFlip + (table->flip - table->oFlip) * a + 0.75f;

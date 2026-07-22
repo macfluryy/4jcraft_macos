@@ -5,8 +5,8 @@
 #include "minecraft/commands/Command.h"
 #include "minecraft/commands/CommandsEnum.h"
 
-// Shared implementation for /op and /deop. The first byte of commandData
-// determines whether to grant (1) or revoke (0) operator privileges.
+
+
 class OpCommand : public Command {
 public:
     virtual EGameCommand getId();

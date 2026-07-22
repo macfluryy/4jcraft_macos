@@ -77,7 +77,7 @@ void WitherSkull::onHit(HitResult* res) {
             if (res->entity->instanceof(eTYPE_LIVINGENTITY)) {
                 int witherSeconds = 0;
                 if (level->difficulty <= Difficulty::EASY) {
-                    // Nothing
+                    
                 } else if (level->difficulty == Difficulty::NORMAL) {
                     witherSeconds = 10;
                 } else if (level->difficulty == Difficulty::HARD) {

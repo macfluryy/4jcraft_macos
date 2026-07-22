@@ -105,7 +105,7 @@ public:
         eMethod_boat,
         eMethod_pig,
 
-        eMethod_time,  // Time is a dimension too right...
+        eMethod_time,  
 
         eMethod_MAX
     };
@@ -226,7 +226,7 @@ public:
     virtual Stat* get_stat(int i);
 
 protected:
-    // Stats
+    
 
     virtual Stat* get_walkOneM();
     virtual Stat* get_swimOneM();
@@ -238,10 +238,10 @@ protected:
 
     virtual Stat* get_cowsMilked();
 
-    // Kills.
+    
     virtual Stat* get_killMob();
 
-    // Mob-Interactions.
+    
     virtual Stat* get_breedEntity(eINSTANCEOF entityId);
     virtual Stat* get_tamedEntity(eINSTANCEOF entityId);
     virtual Stat* get_curedEntity(eINSTANCEOF entityId);
@@ -261,11 +261,11 @@ protected:
     virtual Stat* get_changedDimension(int from, int to);
     virtual Stat* get_enteredBiome(int biomeId);
 
-    // Achievements
+    
 
     virtual Stat* get_achievement(eAward achievementId);
 
-    // Parameters
+    
 
     virtual std::vector<uint8_t> getParam_walkOneM(int distance);
     virtual std::vector<uint8_t> getParam_swimOneM(int distance);
@@ -309,18 +309,18 @@ protected:
 
     virtual std::vector<uint8_t> getParam_onARail(int dist);
     virtual std::vector<uint8_t> getParam_chestfulOfCobblestone(int count);
-    // virtual std::vector<uint8_t> getParam_openInventory(
+    
     virtual std::vector<uint8_t> getParam_overkill(int dmg);
     virtual std::vector<uint8_t> getParam_musicToMyEars(int recordId);
 
-    // Helpers
+    
 
 public:
-    // Achievements that have no parameters, you have earned them or not.
+    
     static bool binaryAchievement(eAward achievementId);
 
-    // Achievements that have parameters, but the event is specifically for this
-    // achievement.
+    
+    
     static bool enhancedAchievement(eAward achievementId);
 
     static void generatePlayerSession();

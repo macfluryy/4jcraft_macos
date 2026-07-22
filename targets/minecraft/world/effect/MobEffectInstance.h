@@ -9,11 +9,11 @@ class LivingEntity;
 
 class MobEffectInstance {
 private:
-    // sent as byte
+    
     int id;
-    // sent as short
+    
     int duration;
-    // sent as byte
+    
     int amplifier;
     bool splash;
     bool ambient;
@@ -45,12 +45,12 @@ private:
 public:
     void applyEffect(std::shared_ptr<LivingEntity> mob);
     int getDescriptionId();
-    int getPostfixDescriptionId();  // 4J Added
+    int getPostfixDescriptionId();  
     int hashCode();
 
     std::wstring toString();
 
-    // Was bool equals(Object obj)
+    
     bool equals(MobEffectInstance* obj);
 
     CompoundTag* save(CompoundTag* tag);

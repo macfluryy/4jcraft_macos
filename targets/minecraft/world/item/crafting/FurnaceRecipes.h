@@ -12,8 +12,8 @@ public:
     static void staticCtor();
 
 private:
-    // Map<Integer, ItemInstance> recipies = new HashMap<Integer,
-    // ItemInstance>();
+    
+    
     std::unordered_map<int, ItemInstance*> recipies;
     std::unordered_map<int, float> recipeValue;
 

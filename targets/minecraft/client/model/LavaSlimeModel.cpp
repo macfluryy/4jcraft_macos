@@ -24,8 +24,8 @@ LavaSlimeModel::LavaSlimeModel() {
     insideCube = new ModelPart(this, 0, 16);
     insideCube->addBox(-2, 16 + 2, -2, 4, 4, 4);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     insideCube->compile(1.0f / 16.0f);
     for (int i = 0; i < BODYCUBESLENGTH; i++) {
         bodyCubes[i]->compile(1.0f / 16.0f);

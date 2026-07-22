@@ -114,7 +114,7 @@ Random PlayerConnection::random;
 PlayerConnection::PlayerConnection(MinecraftServer* server,
                                    Connection* connection,
                                    std::shared_ptr<ServerPlayer> player) {
-    // 4J - added initialisers
+    
     done = false;
     tickCount = 0;
     aboveGroundTickCount = 0;
@@ -131,8 +131,8 @@ PlayerConnection::PlayerConnection(MinecraftServer* server,
     this->connection = connection;
     connection->setListener(this);
     this->player = player;
-    //	player->connection = this;		// 4J - moved out as we can't
-    // assign in a ctor
+    
+    
     m_bCloseOnTick = false;
     m_bWasKicked = false;
 
@@ -160,16 +160,16 @@ void PlayerConnection::tick() {
     connection->tick();
     if (done) return;
 
-    // 4J macOS task 6.3 (Req 5.2/5.5/1.5) - apply any view-distance the client
-    // requested via ClientInformationPacket. This runs on the SERVER tick (not
-    // the network thread), so it is safe to mutate PlayerChunkMap subscription
-    // state through ServerPlayer::setEffectiveViewDistance. Drain the pending
-    // value atomically.
+    
+    
+    
+    
+    
     int pendingVD =
         m_pendingClientViewDistance.exchange(-1, std::memory_order_relaxed);
     if (pendingVD >= 0 && player != nullptr) {
-        // Effective = min(server limit, client request); setEffectiveViewDistance
-        // re-clamps and caps at the server view distance internally.
+        
+        
         int serverVD = server->getPlayers()->getViewDistance();
         int effective = pendingVD < serverVD ? pendingVD : serverVD;
         player->setEffectiveViewDistance(effective);
@@ -200,15 +200,15 @@ void PlayerConnection::disconnect(DisconnectPacket::eDisconnectReason reason) {
     app.DebugPrintf("PlayerConnection disconect reason: %d\n", reason);
     player->disconnect();
 
-    // 4J Stu - Need to remove the player from the receiving list before their
-    // socket is NULLed so that we can find another player on their system
+    
+    
     server->getPlayers()->removePlayerFromReceiving(player);
     send(std::make_shared<DisconnectPacket>(reason));
     connection->sendAndQuit();
-    // 4J-PB - removed, since it needs to be localised in the language the
-    // client is in
-    // server->players->broadcastAll( std::shared_ptr<ChatPacket>( new
-    // ChatPacket(L"§e" + player->name + L" left the game.") ) );
+    
+    
+    
+    
     if (getWasKicked()) {
         server->getPlayers()->broadcastAll(std::make_shared<ChatPacket>(
             player->name, ChatPacket::e_ChatPlayerKickedFromGame));
@@ -266,8 +266,8 @@ void PlayerConnection::handleMovePlayer(
             if (player->riding != nullptr) player->riding->positionRider();
             server->getPlayers()->move(player);
 
-            // player may have been kicked off the mount during the tick, so
-            // only copy valid coordinates if the player still is "synched"
+            
+            
             if (synched) {
                 xLastOk = player->x;
                 yLastOk = player->y;
@@ -309,8 +309,8 @@ void PlayerConnection::handleMovePlayer(
             double yd = packet->yView - packet->y;
             if (!player->isSleeping() && (yd > 1.65 || yd < 0.1)) {
                 disconnect(DisconnectPacket::eDisconnect_IllegalStance);
-                //                logger.warning(player->name + " had an illegal
-                //                stance: " + yd);
+                
+                
                 return;
             }
             if (std::abs(packet->x) > 32000000 ||
@@ -324,8 +324,8 @@ void PlayerConnection::handleMovePlayer(
             xRotT = packet->xRot;
         }
 
-        // 4J Stu Added to stop server player y pos being different than client
-        // when flying
+        
+        
         if (player->abilities.mayfly || player->isAllowedToFly()) {
             player->abilities.flying = packet->isFlying;
         } else
@@ -343,40 +343,40 @@ void PlayerConnection::handleMovePlayer(
 
         double dist = xDist * xDist + yDist * yDist + zDist * zDist;
 
-        // 4J-PB - removing this one for now
-        /*if (dist > 100.0f)
-        {
-        //            logger.warning(player->name + " moved too quickly!");
-        disconnect(DisconnectPacket::eDisconnect_MovedTooQuickly);
-        //                System.out.println("Moved too quickly at " + xt + ", "
-        + yt + ", " + zt);
-        //                teleport(player->x, player->y, player->z,
-        player->yRot, player->xRot); return;
-        }
-        */
+        
+        
+
+
+
+
+
+
+
+
+
 
         float r = 1 / 16.0f;
         AABB shrunk = player->bb.shrink(r, r, r);
         bool oldOk = level->getCubes(player, &shrunk)->empty();
 
         if (player->onGround && !packet->onGround && yDist > 0) {
-            // assume the player made a jump
+            
             player->causeFoodExhaustion(FoodConstants::EXHAUSTION_JUMP);
         }
 
         player->move(xDist, yDist, zDist);
 
-        // 4J Stu - It is possible that we are no longer synched (eg By moving
-        // into an End Portal), so we should stop any further movement based on
-        // this packet Fix for #87764 - Code: Gameplay: Host cannot move and
-        // experiences End World Chunks flickering, while in Splitscreen Mode
-        // and Fix for #87788 - Code: Gameplay: Client cannot move and
-        // experiences End World Chunks flickering, while in Splitscreen Mode
+        
+        
+        
+        
+        
+        
         if (!synched) return;
 
         player->onGround = packet->onGround;
-        // Since server players don't call travel we check food exhaustion
-        // here
+        
+        
         player->checkMovementStatistiscs(xDist, yDist, zDist);
 
         double oyDist = yDist;
@@ -384,7 +384,7 @@ void PlayerConnection::handleMovePlayer(
         xDist = xt - player->x;
         yDist = yt - player->y;
 
-        // 4J-PB - line below will always be true!
+        
         if (yDist > -0.5 || yDist < 0.5) {
             yDist = 0;
         }
@@ -394,10 +394,10 @@ void PlayerConnection::handleMovePlayer(
         if (dist > 0.25 * 0.25 && !player->isSleeping() &&
             !player->gameMode->isCreative() && !player->isAllowedToFly()) {
             fail = true;
-            //            logger.warning(player->name + " moved wrongly!");
-            //            System.out.println("Got position " + xt + ", " + yt +
-            //            ", " + zt); System.out.println("Expected " + player->x
-            //            + ", " + player->y + ", " + player->z);
+            
+            
+            
+            
 #if !defined(_CONTENT_PACKAGE)
             wprintf(L"%ls moved wrongly!\n", player->name.c_str());
             app.DebugPrintf("Got position %f, %f, %f\n", xt, yt, zt);
@@ -407,7 +407,7 @@ void PlayerConnection::handleMovePlayer(
         }
         player->absMoveTo(xt, yt, zt, yRotT, xRotT);
 
-        // TODO: check if this can be elided
+        
         shrunk = player->bb.shrink(r, r, r);
         bool newOk = level->getCubes(player, &shrunk)->empty();
         if (oldOk && (fail || !newOk) && !player->isSleeping()) {
@@ -415,14 +415,14 @@ void PlayerConnection::handleMovePlayer(
             return;
         }
         AABB testBox = player->bb.grow(r, r, r).expand(0, -0.55, 0);
-        // && server.level.getCubes(player, testBox).size() == 0
+        
         if (!server->isFlightAllowed() && !player->gameMode->isCreative() &&
             !level->containsAnyBlocks(&testBox) && !player->isAllowedToFly()) {
             if (oyDist >= (-0.5f / 16.0f)) {
                 aboveGroundTickCount++;
                 if (aboveGroundTickCount > 80) {
-                    //                    logger.warning(player->name + " was
-                    //                    kicked for floating too long!");
+                    
+                    
 #if !defined(_CONTENT_PACKAGE)
                     wprintf(L"%ls was kicked for floating too long!\n",
                             player->name.c_str());
@@ -444,16 +444,16 @@ void PlayerConnection::handleMovePlayer(
 }
 
 void PlayerConnection::teleport(double x, double y, double z, float yRot,
-                                float xRot, bool sendPacket /*= true*/) {
+                                float xRot, bool sendPacket ) {
     synched = false;
     xLastOk = x;
     yLastOk = y;
     zLastOk = z;
     player->absMoveTo(x, y, z, yRot, xRot);
-    // 4J - note that 1.62 is added to the height here as the client connection
-    // that receives this will presume it represents y + heightOffset at that
-    // end This is different to the way that height is sent back to the server,
-    // where it represents the bottom of the player bounding volume
+    
+    
+    
+    
     if (sendPacket)
         player->connection->send(std::make_shared<MovePlayerPacket::PosRot>(
             x, y + 1.62f, y, z, yRot, xRot, false, false));
@@ -488,8 +488,8 @@ void PlayerConnection::handlePlayerAction(
     int z = packet->z;
     if (shouldVerifyLocation) {
         double xDist = player->x - (x + 0.5);
-        // there is a mismatch between the player's camera and the player's
-        // position, so add 1.5 blocks
+        
+        
         double yDist = player->y - (y + 0.5) + 1.5;
         double zDist = player->z - (z + 0.5);
         double dist = xDist * xDist + yDist * yDist + zDist * zDist;
@@ -505,10 +505,10 @@ void PlayerConnection::handlePlayerAction(
         if (true)
             player->gameMode->startDestroyBlock(
                 x, y, z,
-                packet->face);  // 4J - condition was
-                                // !server->isUnderSpawnProtection(level,
-                                // x, y, z, player) (from Java 1.6.4)
-                                // but putting back to old behaviour
+                packet->face);  
+                                
+                                
+                                
         else
             player->connection->send(std::shared_ptr<TileUpdatePacket>(
                 new TileUpdatePacket(x, y, z, level)));
@@ -518,8 +518,8 @@ void PlayerConnection::handlePlayerAction(
         server->getPlayers()->prioritiseTileChanges(
             x, y, z,
             level->dimension
-                ->id);  // 4J added - make sure that the update packets for this
-                        // get prioritised over other general world updates
+                ->id);  
+                        
         if (level->getTile(x, y, z) != 0)
             player->connection->send(std::shared_ptr<TileUpdatePacket>(
                 new TileUpdatePacket(x, y, z, level)));
@@ -541,10 +541,10 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
     int face = packet->getFace();
     player->resetLastActionTime();
 
-    // 4J Stu - We don't have ops, so just use the levels setting
+    
     bool canEditSpawn =
-        level->canEditSpawn;  // = level->dimension->id != 0 ||
-                              // server->players->isOp(player->name);
+        level->canEditSpawn;  
+                              
     if (packet->getFace() == 255) {
         if (item == nullptr) return;
         player->gameMode->useItem(player, level, item);
@@ -553,10 +553,10 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
                 packet->getY() < server->getMaxBuildHeight())) {
         if (synched &&
             player->distanceToSqr(x + 0.5, y + 0.5, z + 0.5) < 8 * 8) {
-            if (true)  // 4J - condition was
-                       // !server->isUnderSpawnProtection(level, x, y, z,
-                       // player) (from java 1.6.4) but putting back to old
-                       // behaviour
+            if (true)  
+                       
+                       
+                       
             {
                 player->gameMode->useItemOn(
                     player, level, item, x, y, z, face, packet->getClickX(),
@@ -566,9 +566,9 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
 
         informClient = true;
     } else {
-        // player->connection->send(shared_ptr<ChatPacket>(new
-        // ChatPacket("\u00A77Height limit for building is " +
-        // server->maxBuildHeight)));
+        
+        
+        
         informClient = true;
     }
 
@@ -583,17 +583,17 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
         if (face == 4) x--;
         if (face == 5) x++;
 
-        // 4J - Fixes an issue where pistons briefly disappear when retracting.
-        // The pistons themselves shouldn't have their change from being
-        // pistonBase_Id to  pistonMovingPiece_Id directly sent to the client,
-        // as this will happen on the client as a result of it actioning (via a
-        // tile event) the retraction of the piston locally. However, by putting
-        // a switch beside a piston and then performing an action on the side of
-        // it facing a piston, the following line of code will send a
-        // TileUpdatePacket containing the change to pistonMovingPiece_Id to the
-        // client, and this packet is received before the piston retract action
-        // happens - when the piston retract then occurs, it doesn't work
-        // properly because the piston tile isn't what it is expecting.
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         if (level->getTile(x, y, z) != Tile::pistonMovingPiece_Id) {
             player->connection->send(std::shared_ptr<TileUpdatePacket>(
                 new TileUpdatePacket(x, y, z, level)));
@@ -636,11 +636,11 @@ void PlayerConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
                                     void* reasonObjects) {
     std::lock_guard<std::mutex> lock(done_cs);
     if (done) return;
-    //    logger.info(player.name + " lost connection: " + reason);
-    // 4J-PB - removed, since it needs to be localised in the language the
-    // client is in
-    // server->players->broadcastAll( std::shared_ptr<ChatPacket>( new
-    // ChatPacket(L"§e" + player->name + L" left the game.") ) );
+    
+    
+    
+    
+    
     if (getWasKicked()) {
         server->getPlayers()->broadcastAll(std::make_shared<ChatPacket>(
             player->name, ChatPacket::e_ChatPlayerKickedFromGame));
@@ -653,19 +653,19 @@ void PlayerConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
 }
 
 void PlayerConnection::onUnhandledPacket(std::shared_ptr<Packet> packet) {
-    //    logger.warning(getClass() + " wasn't prepared to deal with a " +
-    //    packet.getClass());
+    
+    
     disconnect(DisconnectPacket::eDisconnect_UnexpectedPacket);
 }
 
 void PlayerConnection::send(std::shared_ptr<Packet> packet) {
     if (connection->getSocket() != nullptr) {
         if (!server->getPlayers()->canReceiveAllPackets(player)) {
-            // Check if we are allowed to send this packet type
+            
             if (!Packet::canSendToAnyClient(packet)) {
-                // wprintf(L"Not the systems primary player, so not sending them
-                // a packet : %ls / %d\n", player->name.c_str(), packet->getId()
-                // );
+                
+                
+                
                 return;
             }
         }
@@ -673,15 +673,15 @@ void PlayerConnection::send(std::shared_ptr<Packet> packet) {
     }
 }
 
-// 4J Added
+
 void PlayerConnection::queueSend(std::shared_ptr<Packet> packet) {
     if (connection->getSocket() != nullptr) {
         if (!server->getPlayers()->canReceiveAllPackets(player)) {
-            // Check if we are allowed to send this packet type
+            
             if (!Packet::canSendToAnyClient(packet)) {
-                // wprintf(L"Not the systems primary player, so not queueing
-                // them a packet : %ls\n",
-                // connection->getSocket()->getPlayer()->GetGamertag() );
+                
+                
+                
                 return;
             }
         }
@@ -692,8 +692,8 @@ void PlayerConnection::queueSend(std::shared_ptr<Packet> packet) {
 void PlayerConnection::handleSetCarriedItem(
     std::shared_ptr<SetCarriedItemPacket> packet) {
     if (packet->slot < 0 || packet->slot >= Inventory::getSelectionSize()) {
-        //        logger.warning(player.name + " tried to set an invalid carried
-        //        item");
+        
+        
         return;
     }
     player->inventory->selected = packet->slot;
@@ -704,16 +704,16 @@ void PlayerConnection::handleChat(std::shared_ptr<ChatPacket> packet) {
     if (packet->m_stringArgs.empty()) return;
     std::wstring message = packet->m_stringArgs[0];
 
-    // 4J - basic validation: drop oversized messages outright. The wire
-    // protocol does not advertise a length limit but the chat UI cannot
-    // display anything close to this anyway. 256 chars is the vanilla ceiling.
+    
+    
+    
     if (message.size() > 256) {
         message.resize(256);
     }
 
-    // 4J - very simple anti-spam: each non-command message charges
-    // chatSpamTickCount and we kick if it accumulates faster than ~5 messages
-    // per 5 seconds (100 ticks). chatSpamTickCount is decremented in tick().
+    
+    
+    
     if (!message.empty() && message[0] != L'/') {
         chatSpamTickCount += 20;
         if (chatSpamTickCount > 200) {
@@ -725,11 +725,11 @@ void PlayerConnection::handleChat(std::shared_ptr<ChatPacket> packet) {
     if (!message.empty() && message[0] == L'/') {
         handleCommand(message);
     } else if (!message.empty()) {
-        // 4J - route through PlayerList::broadcastAll so iteration is locked
-        // and missing/null connections are skipped. Previously this iterated
-        // server->getPlayers()->players directly, which crashed when a player
-        // disconnected mid-broadcast (PlayerList::remove nulls out
-        // connection before erasing the entry).
+        
+        
+        
+        
+        
         auto chatPacket = std::make_shared<ChatPacket>(
             player->getName(), ChatPacket::e_ChatCustom, -1);
         chatPacket->m_stringArgs.push_back(message);
@@ -737,7 +737,7 @@ void PlayerConnection::handleChat(std::shared_ptr<ChatPacket> packet) {
     }
 }
 
-// Helper function to convert wide string to lowercase
+
 static std::wstring toLower(const std::wstring& str) {
     std::wstring result = str;
     std::transform(result.begin(), result.end(), result.begin(),
@@ -746,70 +746,70 @@ static std::wstring toLower(const std::wstring& str) {
 }
 
 void PlayerConnection::handleCommand(const std::wstring& message) {
-    // 4J - FIX: Properly route all commands through CommandDispatcher
-    // Remove leading "/" from message
+    
+    
     std::wstringstream ss(message.substr(1));
     std::wstring cmdName;
     ss >> cmdName;
-    cmdName = toLower(cmdName);  // Convert to lowercase for case-insensitive matching
+    cmdName = toLower(cmdName);  
     
-    // Parse command name to enum
+    
     EGameCommand cmd = parseCommandName(cmdName);
     
-    // If command not recognized, sendMessage and return
-    if (cmd == eGameCommand_COUNT) {  // COUNT is sentinel for "not found"
+    
+    if (cmd == eGameCommand_COUNT) {  
         player->sendMessage(L"Unknown command: " + cmdName);
         return;
     }
     
-    // Parse arguments based on command type
-    // Each command expects specific binary data format
+    
+    
     std::vector<uint8_t> commandData;
     std::wstring arg1, arg2, arg3;
-    std::wstring arg1_orig, arg2_orig, arg3_orig;  // Keep original case for player names
-    ss >> arg1;  // First argument
-    ss >> arg2;  // Second argument (if exists)
-    ss >> arg3;  // Third argument (if exists)
+    std::wstring arg1_orig, arg2_orig, arg3_orig;  
+    ss >> arg1;  
+    ss >> arg2;  
+    ss >> arg3;  
     
-    // Save originals before converting to lowercase
+    
     arg1_orig = arg1;
     arg2_orig = arg2;
     arg3_orig = arg3;
     
-    // Convert all arguments to lowercase for case-insensitive matching
+    
     arg1 = toLower(arg1);
     arg2 = toLower(arg2);
     arg3 = toLower(arg3);
     
-    // 4J - FIX: Serialize arguments in correct format for each command
-    // Commands use DataInputStream to deserialize, so we need proper binary format
+    
+    
     try {
         ByteArrayOutputStream baos;
         DataOutputStream dos(&baos);
         
         switch (cmd) {
             case eGameCommand_Time: {
-                // /time set [day|night|noon|midnight|sunrise|sunset|N]
+                
                 if (arg1 == L"set") {
                     int timeValue = 0;
-                    // Parse time value with all supported names
+                    
                     if (arg2 == L"sunrise") {
-                        timeValue = 0;       // Beginning of day
+                        timeValue = 0;       
                     } else if (arg2 == L"day") {
-                        timeValue = 1000;    // Morning/Day
+                        timeValue = 1000;    
                     } else if (arg2 == L"noon") {
-                        timeValue = 6000;    // Noon
+                        timeValue = 6000;    
                     } else if (arg2 == L"sunset") {
-                        timeValue = 12000;   // Sunset
+                        timeValue = 12000;   
                     } else if (arg2 == L"night") {
-                        timeValue = 13000;   // Night
+                        timeValue = 13000;   
                     } else if (arg2 == L"midnight") {
-                        timeValue = 18000;   // Midnight
+                        timeValue = 18000;   
                     } else {
-                        // Try to parse as number
+                        
                         try {
                             timeValue = std::stoi(arg2);
-                            // Validate time value (0-23999 ticks)
+                            
                             if (timeValue < 0 || timeValue > 23999) {
                                 player->sendMessage(L"§cTime must be between 0 and 23999");
                                 return;
@@ -829,8 +829,8 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
             }
             
             case eGameCommand_GameMode: {
-                // /gamemode [survival|s|0|creative|c|1|adventure|a|2|spectator|sp|3]
-                int gameModeId = -1;  // Invalid default
+                
+                int gameModeId = -1;  
                 
                 if (arg1 == L"survival" || arg1 == L"s") {
                     gameModeId = 0;
@@ -841,7 +841,7 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
                 } else if (arg1 == L"spectator" || arg1 == L"sp" || arg1 == L"spc") {
                     gameModeId = 3;
                 } else {
-                    // Try to parse as numeric ID
+                    
                     try {
                         gameModeId = std::stoi(arg1);
                         if (gameModeId < 0 || gameModeId > 3) {
@@ -857,22 +857,22 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
                 }
                 
                 dos.writeInt(gameModeId);
-                // Optional: target player name (default: self)
+                
                 if (!arg2_orig.empty()) {
-                    // Write target player name as UTF string (keep original case for player name)
+                    
                     dos.writeUTF(arg2_orig);
                 }
                 break;
             }
             
             case eGameCommand_Give: {
-                // /give <player> <item> [count] [data]
+                
                 if (arg1_orig.empty() || arg2_orig.empty()) {
                     player->sendMessage(L"Usage: /give <player> <item> [count] [data]");
                     return;
                 }
-                dos.writeUTF(arg1_orig);  // Player name (original case)
-                dos.writeUTF(arg2_orig);  // Item ID (original case)
+                dos.writeUTF(arg1_orig);  
+                dos.writeUTF(arg2_orig);  
                 int count = 1;
                 if (!arg3.empty()) {
                     try {
@@ -886,25 +886,25 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
             }
             
             case eGameCommand_Kill: {
-                // /kill [self|@s|@e|@a|mobs|monsters|animals|<player>]
-                int killType = 0;  // KILL_TARGET_SELF
+                
+                int killType = 0;  
                 std::wstring targetPlayer;
                 if (arg1.empty() || arg1 == L"@s" || arg1 == L"self" ||
                     arg1 == L"me") {
-                    killType = 0;  // SELF
+                    killType = 0;  
                 } else if (arg1 == L"@e" || arg1 == L"all" ||
                            arg1 == L"entities") {
-                    killType = 4;  // ALL_ENTS
+                    killType = 4;  
                 } else if (arg1 == L"@a") {
-                    killType = 5;  // ALL_PLAYERS
+                    killType = 5;  
                 } else if (arg1 == L"mobs" || arg1 == L"monsters" ||
                            arg1 == L"hostile") {
-                    killType = 2;  // MOBS
+                    killType = 2;  
                 } else if (arg1 == L"animals" || arg1 == L"passive") {
-                    killType = 3;  // ANIMALS
+                    killType = 3;  
                 } else {
-                    // Treat as player name
-                    killType = 1;  // PLAYER
+                    
+                    killType = 1;  
                     targetPlayer = arg1_orig;
                 }
                 dos.writeInt(killType);
@@ -915,10 +915,10 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
             }
             
             case eGameCommand_Teleport: {
-                // /tp <player>
-                // /tp <x> <y> <z>
-                // /tp <subject> <target>
-                // /tp <subject> <x> <y> <z>
+                
+                
+                
+                
                 if (arg1_orig.empty()) {
                     player->sendMessage(L"§cUsage: /tp <player> | <x> <y> <z> | <subject> <target> | <subject> <x> <y> <z>");
                     return;
@@ -935,28 +935,28 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
                 };
 
                 if (arg2.empty()) {
-                    // /tp <player>
-                    dos.writeInt(0);  // TP_MODE_TO_PLAYER
+                    
+                    dos.writeInt(0);  
                     dos.writeUTF(arg1_orig);
                 } else if (arg3.empty()) {
-                    // 2 args: <subject> <target>
-                    dos.writeInt(2);  // TP_MODE_PLAYER_TO_PLAYER
+                    
+                    dos.writeInt(2);  
                     dos.writeUTF(arg1_orig);
                     dos.writeUTF(arg2_orig);
                 } else {
-                    // 3+ args: either coords or player+coords
+                    
                     std::wstring extra4;
                     ss >> extra4;
                     if (isNumeric(arg1) && isNumeric(arg2) && isNumeric(arg3)) {
-                        // /tp <x> <y> <z>
-                        dos.writeInt(1);  // TP_MODE_TO_COORDS
+                        
+                        dos.writeInt(1);  
                         dos.writeDouble(std::stod(arg1));
                         dos.writeDouble(std::stod(arg2));
                         dos.writeDouble(std::stod(arg3));
                     } else if (!extra4.empty() && isNumeric(arg2) &&
                                isNumeric(arg3) && isNumeric(extra4)) {
-                        // /tp <subject> <x> <y> <z>
-                        dos.writeInt(3);  // TP_MODE_PLAYER_TO_COORDS
+                        
+                        dos.writeInt(3);  
                         dos.writeUTF(arg1_orig);
                         dos.writeDouble(std::stod(arg2));
                         dos.writeDouble(std::stod(arg3));
@@ -970,7 +970,7 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
             }
             
             case eGameCommand_ToggleDownfall: {
-                // /weather [clear|rain|thunder|thunderstorm]
+                
                 int weatherType = 0;
                 if (arg1 == L"clear") {
                     weatherType = 0;
@@ -988,19 +988,19 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
             }
             
             case eGameCommand_Effect: {
-                // /effect <player> <effect> [duration] [amplifier]
+                
                 if (arg1_orig.empty() || arg2_orig.empty()) {
                     player->sendMessage(L"Usage: /effect <player> <effect> [duration] [amplifier]");
                     return;
                 }
-                dos.writeUTF(arg1_orig);  // Player (original case)
-                dos.writeUTF(arg2_orig);  // Effect name (original case)
-                // Duration and amplifier are optional
+                dos.writeUTF(arg1_orig);  
+                dos.writeUTF(arg2_orig);  
+                
                 break;
             }
             
             case eGameCommand_Experience: {
-                // /xp <amount>[L|l] [player]
+                
                 if (arg1.empty()) {
                     player->sendMessage(L"§cUsage: /xp <amount>[L|l] [player]");
                     return;
@@ -1023,12 +1023,12 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
                 }
                 dos.writeInt(amount);
                 dos.writeBoolean(levels);
-                dos.writeUTF(arg2_orig);  // Optional target player (empty = self)
+                dos.writeUTF(arg2_orig);  
                 break;
             }
 
             case eGameCommand_Summon: {
-                // /summon <mob> [x] [y] [z]
+                
                 if (arg1_orig.empty()) {
                     player->sendMessage(L"§cUsage: /summon <mob> [x] [y] [z]");
                     return;
@@ -1058,7 +1058,7 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
             }
 
             case eGameCommand_Help: {
-                // /help - listed below, intercepted directly without dispatch
+                
                 player->sendMessage(L"§e--- Available commands ---");
                 player->sendMessage(L"§e/gamemode <s|c|a|sp>  §7- change gamemode");
                 player->sendMessage(L"§e/give <player> <item> [count]  §7- give items");
@@ -1090,11 +1090,11 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
                 player->sendMessage(L"§e/home  §7- teleport to your home");
                 player->sendMessage(L"§e/back  §7- return to the previous location");
                 player->sendMessage(L"§e/r <message>  §7- reply to last whisper");
-                return;  // Don't dispatch
+                return;  
             }
 
             case eGameCommand_Say: {
-                // /say <message> - broadcast as server
+                
                 std::wstring rest;
                 std::getline(ss, rest);
                 if (!rest.empty() && rest.front() == L' ') rest.erase(0, 1);
@@ -1111,9 +1111,9 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
                     L"[Server] " + player->getName(),
                     ChatPacket::e_ChatCustom, -1);
                 chatPacket->m_stringArgs.push_back(full);
-                // 4J - broadcastAll handles locking + null-connection skips
+                
                 server->getPlayers()->broadcastAll(chatPacket);
-                return;  // Don't dispatch
+                return;  
             }
 
             case eGameCommand_List:
@@ -1123,12 +1123,12 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
             case eGameCommand_SetHome:
             case eGameCommand_Home:
             case eGameCommand_Back: {
-                // No arguments needed - dispatch with empty data
+                
                 break;
             }
 
             case eGameCommand_Reply: {
-                // /r <message...>
+                
                 if (arg1_orig.empty()) {
                     player->sendMessage(L"§cUsage: /r <message>");
                     return;
@@ -1152,8 +1152,8 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
 
             case eGameCommand_Heal:
             case eGameCommand_Feed: {
-                // /heal [player] - serialize optional player name
-                dos.writeUTF(arg1_orig);  // empty = self
+                
+                dos.writeUTF(arg1_orig);  
                 break;
             }
 
@@ -1176,13 +1176,13 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
             }
 
             case eGameCommand_Kick: {
-                // /kick <player> [reason...]
+                
                 if (arg1_orig.empty()) {
                     player->sendMessage(L"§cUsage: /kick <player> [reason]");
                     return;
                 }
                 dos.writeUTF(arg1_orig);
-                // Build reason from remaining tokens
+                
                 std::wstring reason;
                 if (!arg2_orig.empty()) {
                     reason = arg2_orig;
@@ -1201,7 +1201,7 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
             }
 
             case eGameCommand_Msg: {
-                // /msg <player> <message...>
+                
                 if (arg1_orig.empty() || arg2_orig.empty()) {
                     player->sendMessage(L"§cUsage: /msg <player> <message>");
                     return;
@@ -1224,13 +1224,13 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
             case eGameCommand_DefaultGameMode:
             case eGameCommand_EnchantItem:
             default: {
-                // Placeholder for unimplemented commands
+                
                 player->sendMessage(L"This command is not yet implemented");
                 return;
             }
         }
         
-        // Get serialized data from stream
+        
         commandData = baos.toByteArray();
         
     } catch (const std::exception& e) {
@@ -1238,14 +1238,14 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
         return;
     }
     
-    // Execute through CommandDispatcher
+    
     server->getCommandDispatcher()->performCommand(player, cmd, commandData);
 }
 
 EGameCommand PlayerConnection::parseCommandName(const std::wstring& cmdName) {
-    // 4J - FIX: Map command names to enum values
-    // This replaces the hardcoded if-else chain
-    // Note: cmdName should already be lowercase when received
+    
+    
+    
     
     if (cmdName == L"gamemode" || cmdName == L"gm") {
         return eGameCommand_GameMode;
@@ -1306,7 +1306,7 @@ EGameCommand PlayerConnection::parseCommandName(const std::wstring& cmdName) {
     } else if (cmdName == L"r" || cmdName == L"reply") {
         return eGameCommand_Reply;
     } else {
-        // Command not recognized - return sentinel value
+        
         return eGameCommand_COUNT;
     }
 }
@@ -1333,14 +1333,14 @@ void PlayerConnection::handlePlayerCommand(
         player->stopSleepInBed(false, true, true);
         synched = false;
     } else if (packet->action == PlayerCommandPacket::RIDING_JUMP) {
-        // currently only supported by horses...
+        
         if ((player->riding != nullptr) &&
             player->riding->GetType() == eTYPE_HORSE) {
             std::dynamic_pointer_cast<EntityHorse>(player->riding)
                 ->onPlayerJump(packet->data);
         }
     } else if (packet->action == PlayerCommandPacket::OPEN_INVENTORY) {
-        // also only supported by horses...
+        
         if ((player->riding != nullptr) &&
             player->riding->instanceof(eTYPE_HORSE)) {
             std::dynamic_pointer_cast<EntityHorse>(player->riding)
@@ -1357,8 +1357,8 @@ void PlayerConnection::setShowOnMaps(bool bVal) { player->setShowOnMaps(bVal); }
 
 void PlayerConnection::handleDisconnect(
     std::shared_ptr<DisconnectPacket> packet) {
-    // 4J Stu - Need to remove the player from the receiving list before their
-    // socket is NULLed so that we can find another player on their system
+    
+    
     server->getPlayers()->removePlayerFromReceiving(player);
     connection->close(DisconnectPacket::eDisconnect_Quitting);
 }
@@ -1368,15 +1368,15 @@ int PlayerConnection::countDelayedPackets() {
 }
 
 void PlayerConnection::info(const std::wstring& string) {
-    // 4J-PB - removed, since it needs to be localised in the language the
-    // client is in
-    // send( std::shared_ptr<ChatPacket>( new ChatPacket(L"§7" + string) ) );
+    
+    
+    
 }
 
 void PlayerConnection::warn(const std::wstring& string) {
-    // 4J-PB - removed, since it needs to be localised in the language the
-    // client is in
-    // send( std::shared_ptr<ChatPacket>( new ChatPacket(L"§9" + string) ) );
+    
+    
+    
 }
 
 std::wstring PlayerConnection::getConsoleName() { return player->getName(); }
@@ -1386,48 +1386,48 @@ void PlayerConnection::handleInteract(std::shared_ptr<InteractPacket> packet) {
     std::shared_ptr<Entity> target = level->getEntity(packet->target);
     player->resetLastActionTime();
 
-    // Fix for #8218 - Gameplay: Attacking zombies from a different level often
-    // results in no hits being registered 4J Stu - If the client says that we
-    // hit something, then agree with it. The canSee can fail here as it checks
-    // a ray from head->head, but we may actually be looking at a different part
-    // of the entity that can be seen even though the ray is blocked.
-    if (target != nullptr)  // && player->canSee(target) &&
-                            // player->distanceToSqr(target) < 6 * 6)
+    
+    
+    
+    
+    
+    if (target != nullptr)  
+                            
     {
-        // boole canSee = player->canSee(target);
-        // double maxDist = 6 * 6;
-        // if (!canSee)
-        //{
-        //	maxDist = 3 * 3;
-        // }
+        
+        
+        
+        
+        
+        
 
-        // if (player->distanceToSqr(target) < maxDist)
-        //{
+        
+        
         if (packet->action == InteractPacket::INTERACT) {
             player->interact(target);
         } else if (packet->action == InteractPacket::ATTACK) {
             if ((target->GetType() == eTYPE_ITEMENTITY) ||
                 (target->GetType() == eTYPE_EXPERIENCEORB) ||
                 (target->GetType() == eTYPE_ARROW) || target == player) {
-                // disconnect("Attempting to attack an invalid entity");
-                // server.warn("Player " + player.getName() + " tried to attack
-                // an invalid entity");
+                
+                
+                
                 return;
             }
             player->attack(target);
         }
-        //}
+        
     }
 }
 
 bool PlayerConnection::canHandleAsyncPackets() { return true; }
 
 void PlayerConnection::handleTexture(std::shared_ptr<TexturePacket> packet) {
-    // Both PlayerConnection and ClientConnection should handle this mostly the
-    // same way
+    
+    
 
     if (packet->dataBytes == 0) {
-        // Request for texture
+        
 #if !defined(_CONTENT_PACKAGE)
         wprintf(L"Server received request for custom texture %ls\n",
                 packet->textureName.c_str());
@@ -1443,7 +1443,7 @@ void PlayerConnection::handleTexture(std::shared_ptr<TexturePacket> packet) {
             m_texturesRequested.push_back(packet->textureName);
         }
     } else {
-        // Response with texture data
+        
 #if !defined(_CONTENT_PACKAGE)
         wprintf(L"Server received custom texture %ls\n",
                 packet->textureName.c_str());
@@ -1456,11 +1456,11 @@ void PlayerConnection::handleTexture(std::shared_ptr<TexturePacket> packet) {
 
 void PlayerConnection::handleTextureAndGeometry(
     std::shared_ptr<TextureAndGeometryPacket> packet) {
-    // Both PlayerConnection and ClientConnection should handle this mostly the
-    // same way
+    
+    
 
     if (packet->dwTextureBytes == 0) {
-        // Request for texture and geometry
+        
 #if !defined(_CONTENT_PACKAGE)
         wprintf(L"Server received request for custom texture %ls\n",
                 packet->textureName.c_str());
@@ -1484,8 +1484,8 @@ void PlayerConnection::handleTextureAndGeometry(
                                                      pbData, dwTextureBytes)));
                 }
             } else {
-                // we don't have the dlc skin, so retrieve the data from the app
-                // store
+                
+                
                 std::vector<SKIN_BOX*>* pvSkinBoxes =
                     app.GetAdditionalSkinBoxes(packet->dwSkinID);
                 unsigned int uiAnimOverrideBitmask =
@@ -1500,7 +1500,7 @@ void PlayerConnection::handleTextureAndGeometry(
             m_texturesRequested.push_back(packet->textureName);
         }
     } else {
-        // Response with texture and geometry data
+        
 #if !defined(_CONTENT_PACKAGE)
         wprintf(L"Server received custom texture %ls and geometry\n",
                 packet->textureName.c_str());
@@ -1508,7 +1508,7 @@ void PlayerConnection::handleTextureAndGeometry(
         app.AddMemoryTextureFile(packet->textureName, packet->pbData,
                                  packet->dwTextureBytes);
 
-        // add the geometry to the app list
+        
         if (packet->dwBoxC != 0) {
 #if !defined(_CONTENT_PACKAGE)
             wprintf(L"Adding skin boxes for skin id %X, box count %d\n",
@@ -1517,7 +1517,7 @@ void PlayerConnection::handleTextureAndGeometry(
             app.SetAdditionalSkinBoxes(packet->dwSkinID, packet->BoxDataA,
                                        packet->dwBoxC);
         }
-        // Add the anim override
+        
         app.SetAnimOverrideBitmask(packet->dwSkinID,
                                    packet->uiAnimOverrideBitmask);
 
@@ -1529,8 +1529,8 @@ void PlayerConnection::handleTextureAndGeometry(
 }
 
 void PlayerConnection::handleTextureReceived(const std::wstring& textureName) {
-    // This sends the server received texture out to any other players waiting
-    // for the data
+    
+    
     auto it = find(m_texturesRequested.begin(), m_texturesRequested.end(),
                    textureName);
     if (it != m_texturesRequested.end()) {
@@ -1548,8 +1548,8 @@ void PlayerConnection::handleTextureReceived(const std::wstring& textureName) {
 
 void PlayerConnection::handleTextureAndGeometryReceived(
     const std::wstring& textureName) {
-    // This sends the server received texture out to any other players waiting
-    // for the data
+    
+    
     auto it = find(m_texturesRequested.begin(), m_texturesRequested.end(),
                    textureName);
     if (it != m_texturesRequested.end()) {
@@ -1565,7 +1565,7 @@ void PlayerConnection::handleTextureAndGeometryReceived(
                     new TextureAndGeometryPacket(
                         textureName, pbData, dwTextureBytes, pDLCSkinFile)));
             } else {
-                // get the data from the app
+                
                 std::uint32_t dwSkinID = app.getSkinIdFromPath(textureName);
                 std::vector<SKIN_BOX*>* pvSkinBoxes =
                     app.GetAdditionalSkinBoxes(dwSkinID);
@@ -1595,7 +1595,7 @@ void PlayerConnection::handleTextureChange(
             break;
         case TextureChangePacket::e_TextureChange_Cape:
             player->setCustomCape(Player::getCapeIdFromPath(packet->path));
-            // player->customTextureUrl2 = packet->path;
+            
 #if !defined(_CONTENT_PACKAGE)
             wprintf(L"Cape for server player %ls has changed to %ls\n",
                     player->name.c_str(), player->customTextureUrl2.c_str());
@@ -1617,7 +1617,7 @@ void PlayerConnection::handleTextureChange(
         }
     } else if (!packet->path.empty() &&
                app.IsFileInMemoryTextures(packet->path)) {
-        // Update the ref count on the memory texture data
+        
         app.AddMemoryTextureFile(packet->path, nullptr, 0);
     }
     server->getPlayers()->broadcastAll(
@@ -1652,15 +1652,15 @@ void PlayerConnection::handleTextureAndGeometryChange(
         }
     } else if (!packet->path.empty() &&
                app.IsFileInMemoryTextures(packet->path)) {
-        // Update the ref count on the memory texture data
+        
         app.AddMemoryTextureFile(packet->path, nullptr, 0);
 
         player->setCustomSkin(packet->dwSkinID);
 
-        // If we already have the texture, then we already have the model parts
-        // too
-        // app.SetAdditionalSkinBoxes(packet->dwSkinID,)
-        // DebugBreak();
+        
+        
+        
+        
     }
     server->getPlayers()->broadcastAll(
         std::shared_ptr<TextureAndGeometryChangePacket>(
@@ -1671,8 +1671,8 @@ void PlayerConnection::handleTextureAndGeometryChange(
 void PlayerConnection::handleServerSettingsChanged(
     std::shared_ptr<ServerSettingsChangedPacket> packet) {
     if (packet->action == ServerSettingsChangedPacket::HOST_IN_GAME_SETTINGS) {
-        // Need to check that this player has permission to change each
-        // individual setting?
+        
+        
 
         INetworkPlayer* networkPlayer = getNetworkPlayer();
         if ((networkPlayer != nullptr && networkPlayer->IsHost()) ||
@@ -1718,7 +1718,7 @@ void PlayerConnection::handleServerSettingsChanged(
                         ServerSettingsChangedPacket::HOST_IN_GAME_SETTINGS,
                         app.GetGameHostOption(eGameHostOption_All))));
 
-            // Update the QoS data
+            
             g_NetworkManager.UpdateAndSetGameSessionData();
         }
     }
@@ -1748,24 +1748,24 @@ void PlayerConnection::handleClientCommand(
                 player, player->m_enteredEndExitPortal ? 0 : player->dimension,
                 true);
         }
-        // else if (player.getLevel().getLevelData().isHardcore())
-        //{
-        //	if (server.isSingleplayer() &&
-        // player.name.equals(server.getSingleplayerName()))
-        //	{
-        //		player.connection.disconnect("You have died. Game over,
-        // man, it's game over!"); 		server.selfDestruct();
-        //	}
-        //	else
-        //	{
-        //		BanEntry ban = new BanEntry(player.name);
-        //		ban.setReason("Death in Hardcore");
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
-        //		server.getPlayers().getBans().add(ban);
-        //		player.connection.disconnect("You have died. Game over,
-        // man, it's game over!");
-        //	}
-        //}
+        
+        
+        
+        
+        
         else {
             if (player->getHealth() > 0) return;
             player = server->getPlayers()->respawn(player, 0, false);
@@ -1822,7 +1822,7 @@ void PlayerConnection::handleContainerClick(
             packet->slotNum, packet->buttonNum, packet->clickType, player);
 
         if (ItemInstance::matches(packet->item, clicked)) {
-            // Yep, you sure did click what you claimed to click!
+            
             player->connection->send(std::make_shared<ContainerAckPacket>(
                 packet->containerId, packet->uid, true));
             player->ignoreSlotUpdateHack = true;
@@ -1830,7 +1830,7 @@ void PlayerConnection::handleContainerClick(
             player->broadcastCarriedItem();
             player->ignoreSlotUpdateHack = false;
         } else {
-            // No, you clicked the wrong thing!
+            
             expectedAcks[player->containerMenu->containerId] = packet->uid;
             player->connection->send(std::make_shared<ContainerAckPacket>(
                 packet->containerId, packet->uid, false));
@@ -1843,7 +1843,7 @@ void PlayerConnection::handleContainerClick(
             }
             player->refreshContainer(player->containerMenu, &items);
 
-            //                player.containerMenu.broadcastChanges();
+            
         }
     }
 }
@@ -1871,8 +1871,8 @@ void PlayerConnection::handleSetCreativeModeSlot(
             int centreXC = (int)(Math::round(player->x / scale) * scale);
             int centreZC = (int)(Math::round(player->z / scale) * scale);
 #else
-            // 4J-PB - for Xbox maps, we'll centre them on the origin of the
-            // world, since we can fit the whole world in our map
+            
+            
             int centreXC = 0;
             int centreZC = 0;
 #endif
@@ -1882,8 +1882,8 @@ void PlayerConnection::handleSetCreativeModeSlot(
 
             std::shared_ptr<MapItemSavedData> data =
                 MapItem::getSavedData(item->getAuxValue(), player->level);
-            // 4J Stu - We only have one map per player per dimension, so don't
-            // reset the one that they have when a new one is created
+            
+            
             wchar_t buf[64];
             swprintf(buf, 64, L"map_%d", item->getAuxValue());
             std::wstring id = std::wstring(buf);
@@ -1893,8 +1893,8 @@ void PlayerConnection::handleSetCreativeModeSlot(
             player->level->setSavedData(id, (std::shared_ptr<SavedData>)data);
 
             data->scale = mapScale;
-            // 4J-PB - for Xbox maps, we'll centre them on the origin of the
-            // world, since we can fit the whole world in our map
+            
+            
             data->x = centreXC;
             data->z = centreZC;
             data->dimension = (std::uint8_t)player->level->dimension->id;
@@ -1918,13 +1918,13 @@ void PlayerConnection::handleSetCreativeModeSlot(
                 player->inventoryMenu->setItem(packet->slotNum, item);
             }
             player->inventoryMenu->setSynched(player, true);
-            //                player.slotChanged(player.inventoryMenu,
-            //                packet.slotNum,
-            //                player.inventoryMenu.getSlot(packet.slotNum).getItem());
+            
+            
+            
         } else if (drop && validItem && validData) {
             if (dropSpamTickCount < SharedConstants::TICKS_PER_SECOND * 10) {
                 dropSpamTickCount += SharedConstants::TICKS_PER_SECOND;
-                // drop item
+                
                 std::shared_ptr<ItemEntity> dropped = player->drop(item);
                 if (dropped != nullptr) {
                     dropped->setShortLifeTime();
@@ -1933,10 +1933,10 @@ void PlayerConnection::handleSetCreativeModeSlot(
         }
 
         if (item != nullptr && item->id == Item::map_Id) {
-            // 4J Stu - Maps need to have their aux value update, so the client
-            // should always be assumed to be wrong This is how the Java works,
-            // as the client also incorrectly predicts the auxvalue of the
-            // mapItem
+            
+            
+            
+            
             std::vector<std::shared_ptr<ItemInstance> > items;
             for (unsigned int i = 0; i < player->inventoryMenu->slots.size();
                  i++) {
@@ -1978,7 +1978,7 @@ void PlayerConnection::handleSignUpdate(
             }
         }
 
-        // 4J-JEV: Changed to allow characters to display as a [].
+        
         if (std::dynamic_pointer_cast<SignTileEntity>(te) != nullptr) {
             int x = packet->x;
             int y = packet->y;
@@ -2006,14 +2006,14 @@ void PlayerConnection::handleKeepAlive(
 
 void PlayerConnection::handlePlayerInfo(
     std::shared_ptr<PlayerInfoPacket> packet) {
-    // Need to check that this player has permission to change each individual
-    // setting?
+    
+    
 
     INetworkPlayer* networkPlayer = getNetworkPlayer();
     if ((networkPlayer != nullptr && networkPlayer->IsHost()) ||
         player->isModerator()) {
         std::shared_ptr<ServerPlayer> serverPlayer;
-        // Find the player being edited
+        
         for (auto it = server->getPlayers()->players.begin();
              it != server->getPlayers()->players.end(); ++it) {
             std::shared_ptr<ServerPlayer> checkingPlayer = *it;
@@ -2063,7 +2063,7 @@ void PlayerConnection::handlePlayerInfo(
 #endif
                 }
                 if (cheats) {
-                    // Editing self
+                    
                     bool canBeInvisible =
                         Player::getPlayerGamePrivilege(
                             origPrivs,
@@ -2111,7 +2111,7 @@ void PlayerConnection::handlePlayerInfo(
                     }
                 }
             } else {
-                // Editing someone else
+                
                 if (!trustPlayers &&
                     !serverPlayer->connection->getNetworkPlayer()->IsHost()) {
                     serverPlayer->setPlayerGamePrivilege(
@@ -2195,31 +2195,31 @@ void PlayerConnection::handlePlayerAbilities(
         playerAbilitiesPacket->isFlying() && player->abilities.mayfly;
 }
 
-// void handleChatAutoComplete(ChatAutoCompletePacket packet) {
-//	StringBuilder result = new StringBuilder();
 
-//	for (String candidate : server.getAutoCompletions(player,
-// packet.getMessage())) { 		if (result.length() > 0)
-// result.append("\0");
 
-//		result.append(candidate);
-//	}
 
-//	player.connection.send(new ChatAutoCompletePacket(result.toString()));
-//}
 
-// void handleClientInformation(std::shared_ptr<ClientInformationPacket> packet)
-//{
-//	player->updateOptions(packet);
-// }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void PlayerConnection::handleClientInformation(
     std::shared_ptr<ClientInformationPacket> packet) {
-    // 4J macOS task 6.3 (Req 5.2/5.5/1.5) - stash the client's requested
-    // view distance (chunks). Applied on the server tick (see tick()) to
-    // avoid racing PlayerChunkMap subscription state from the network thread.
-    // Clamp here defensively so an out-of-range value never propagates;
-    // the connection is NOT dropped (Req 1.5).
+    
+    
+    
+    
+    
     int requested = clampViewDistance(packet->viewDistance);
     m_pendingClientViewDistance.store(requested, std::memory_order_relaxed);
 }
@@ -2240,7 +2240,7 @@ void PlayerConnection::handleCustomPayload(
                    customPayloadPacket->identifier) == 0) {
         if (!server->isCommandBlockEnabled()) {
             app.DebugPrintf("Command blocks not enabled");
-            // player->sendMessage(ChatMessageComponent.forTranslation("advMode.notEnabled"));
+            
         } else if (player->hasPermission(eGameCommand_Effect) &&
                    player->abilities.instabuild) {
             ByteArrayInputStream bais(customPayloadPacket->data);
@@ -2257,11 +2257,11 @@ void PlayerConnection::handleCustomPayload(
             if (tileEntity != nullptr && cbe != nullptr) {
                 cbe->setCommand(command);
                 player->level->sendTileUpdated(x, y, z);
-                // player->sendMessage(ChatMessageComponent.forTranslation("advMode.setCommand.success",
-                // command));
+                
+                
             }
         } else {
-            // player.sendMessage(ChatMessageComponent.forTranslation("advMode.notAllowed"));
+            
         }
     } else if (CustomPayloadPacket::SET_BEACON_PACKET.compare(
                    customPayloadPacket->identifier) == 0) {
@@ -2302,12 +2302,12 @@ void PlayerConnection::handleCustomPayload(
 
 bool PlayerConnection::isDisconnected() { return done; }
 
-// 4J Added
+
 
 void PlayerConnection::handleDebugOptions(
     std::shared_ptr<DebugOptionsPacket> packet) {
-    // Player player = std::dynamic_pointer_cast<Player>(
-    // player->shared_from_this() );
+    
+    
     player->SetDebugOptions(packet->m_uiVal);
 }
 
@@ -2329,7 +2329,7 @@ void PlayerConnection::handleCraftItem(
             std::dynamic_pointer_cast<Player>(player->shared_from_this()),
             pTempItemInst->count);
         if (player->inventory->add(pTempItemInst) == false) {
-            // no room in inventory, so throw it down
+            
             player->drop(pTempItemInst);
         }
     } else if (pTempItemInst->id == Item::fireworksCharge_Id ||
@@ -2337,21 +2337,21 @@ void PlayerConnection::handleCraftItem(
         CraftingMenu* menu = (CraftingMenu*)player->containerMenu;
         player->openFireworks(menu->getX(), menu->getY(), menu->getZ());
     } else {
-        // TODO 4J Stu - Assume at the moment that the client can work this out
-        // for us...
-        // if(pRecipeIngredientsRequired[iRecipe].bCanMake)
-        //{
+        
+        
+        
+        
         pTempItemInst->onCraftedBy(
             player->level,
             std::dynamic_pointer_cast<Player>(player->shared_from_this()),
             pTempItemInst->count);
 
-        // and remove those resources from your inventory
+        
         for (int i = 0; i < pRecipeIngredientsRequired[iRecipe].iIngC; i++) {
             for (int j = 0; j < pRecipeIngredientsRequired[iRecipe].iIngValA[i];
                  j++) {
                 std::shared_ptr<ItemInstance> ingItemInst = nullptr;
-                // do we need to remove a specific aux value?
+                
                 if (pRecipeIngredientsRequired[iRecipe].iIngAuxValA[i] !=
                     Recipes::ANY_AUX_VALUE) {
                     ingItemInst = player->inventory->getResourceItem(
@@ -2367,11 +2367,11 @@ void PlayerConnection::handleCraftItem(
                         pRecipeIngredientsRequired[iRecipe].iIngIDA[i]);
                 }
 
-                // 4J Stu - Fix for #13097 - Bug: Milk Buckets are removed when
-                // crafting Cake
+                
+                
                 if (ingItemInst != nullptr) {
                     if (ingItemInst->getItem()->hasCraftingRemainingItem()) {
-                        // replace item with remaining result
+                        
                         player->inventory->add(std::make_shared<ItemInstance>(
                             ingItemInst->getItem()
                                 ->getCraftingRemainingItem()));
@@ -2380,18 +2380,18 @@ void PlayerConnection::handleCraftItem(
             }
         }
 
-        // 4J Stu - Fix for #13119 - We should add the item after we remove the
-        // ingredients
+        
+        
         if (player->inventory->add(pTempItemInst) == false) {
-            // no room in inventory, so throw it down
+            
             player->drop(pTempItemInst);
         }
 
         if (pTempItemInst->id == Item::map_Id) {
-            // 4J Stu - Maps need to have their aux value update, so the client
-            // should always be assumed to be wrong This is how the Java works,
-            // as the client also incorrectly predicts the auxvalue of the
-            // mapItem
+            
+            
+            
+            
             std::vector<std::shared_ptr<ItemInstance> > items;
             for (unsigned int i = 0; i < player->containerMenu->slots.size();
                  i++) {
@@ -2399,12 +2399,12 @@ void PlayerConnection::handleCraftItem(
             }
             player->refreshContainer(player->containerMenu, &items);
         } else {
-            // Do same hack as PlayerConnection::handleContainerClick does - do
-            // our broadcast of changes just now, but with a hack so it just
-            // thinks it has sent things but hasn't really. This will stop the
-            // client getting a message back confirming the current inventory
-            // items, which might then arrive after another local change has
-            // been made on the client and be stale.
+            
+            
+            
+            
+            
+            
             player->ignoreSlotUpdateHack = true;
             player->containerMenu->broadcastChanges();
             player->broadcastCarriedItem();
@@ -2412,7 +2412,7 @@ void PlayerConnection::handleCraftItem(
         }
     }
 
-    // handle achievements
+    
     switch (pTempItemInst->id) {
         case Tile::workBench_Id:
             player->awardStat(GenericStats::buildWorkbench(),
@@ -2459,8 +2459,8 @@ void PlayerConnection::handleCraftItem(
                               GenericStats::param_bookcase());
             break;
     }
-    //}
-    // ELSE The server thinks the client was wrong...
+    
+    
 }
 
 void PlayerConnection::handleTradeItem(
@@ -2475,7 +2475,7 @@ void PlayerConnection::handleTradeItem(
             if (selectedShopItem < offers->size()) {
                 MerchantRecipe* activeRecipe = offers->at(selectedShopItem);
                 if (!activeRecipe->isDeprecated()) {
-                    // Do we have the ingredients?
+                    
                     std::shared_ptr<ItemInstance> buyAItem =
                         activeRecipe->getBuyAItem();
                     std::shared_ptr<ItemInstance> buyBItem =
@@ -2489,15 +2489,15 @@ void PlayerConnection::handleTradeItem(
                          buyBMatches >= buyBItem->count)) {
                         menu->getMerchant()->notifyTrade(activeRecipe);
 
-                        // Remove the items we are purchasing with
+                        
                         player->inventory->removeResources(buyAItem);
                         player->inventory->removeResources(buyBItem);
 
-                        // Add the item we have purchased
+                        
                         std::shared_ptr<ItemInstance> result =
                             activeRecipe->getSellItem()->copy();
 
-                        // 4J JEV - Award itemsBought stat.
+                        
                         player->awardStat(
                             GenericStats::itemsBought(result->getItem()->id),
                             GenericStats::param_itemsBought(

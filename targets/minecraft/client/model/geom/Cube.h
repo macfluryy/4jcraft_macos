@@ -25,7 +25,7 @@ public:
 public:
     Cube(ModelPart* modelPart, int xTexOffs, int yTexOffs, float x0, float y0,
          float z0, int w, int h, int d, float g, int faceMask = 63,
-         bool bFlipPoly3UVs = false);  // 4J - added faceMask
+         bool bFlipPoly3UVs = false);  
 
     void render(Tesselator* t, float scale);
     Cube* setId(const std::wstring& id);

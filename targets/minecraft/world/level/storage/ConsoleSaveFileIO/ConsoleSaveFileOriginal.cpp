@@ -41,9 +41,9 @@ unsigned int ConsoleSaveFileOriginal::pagesCommitted = 0;
 void* ConsoleSaveFileOriginal::pvHeap = nullptr;
 
 ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(
-    const std::wstring& fileName, void* pvSaveData /*= nullptr*/,
-    unsigned int initialFileSize /*= 0*/, bool forceCleanSave /*= false*/,
-    ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/) {
+    const std::wstring& fileName, void* pvSaveData ,
+    unsigned int initialFileSize , bool forceCleanSave ,
+    ESavePlatform plat ) {
     if (pvHeap == nullptr) {
         pvHeap = VirtualAlloc(nullptr, MAX_PAGE_COUNT * CSF_PAGE_SIZE,
                               RESERVE_ALLOCATION, PAGE_READWRITE);
@@ -253,9 +253,9 @@ bool ConsoleSaveFileOriginal::writeFile(FileEntry* file, const void* lpBuffer,
     PrepareForWrite(file, nNumberOfBytesToWrite);
 
     char* writeStartOffset = (char*)pvSaveMem + file->currentFilePointer;
-    // printf("Write: pvSaveMem = %0xd, currentFilePointer = %d,
-    // writeStartOffset = %0xd\n", pvSaveMem, file->currentFilePointer,
-    // writeStartOffset);
+    
+    
+    
 
     memcpy((void*)writeStartOffset, lpBuffer, nNumberOfBytesToWrite);
     *lpNumberOfBytesWritten = nNumberOfBytesToWrite;
@@ -264,8 +264,8 @@ bool ConsoleSaveFileOriginal::writeFile(FileEntry* file, const void* lpBuffer,
 
     file->currentFilePointer += *lpNumberOfBytesWritten;
 
-    // wprintf(L"Wrote %d bytes to %s, new file pointer is %I64d\n",
-    // *lpNumberOfBytesWritten, file->data.filename, file->currentFilePointer);
+    
+    
 
     file->updateLastModifiedTime();
 
@@ -287,9 +287,9 @@ bool ConsoleSaveFileOriginal::zeroFile(FileEntry* file,
     PrepareForWrite(file, nNumberOfBytesToWrite);
 
     char* writeStartOffset = (char*)pvSaveMem + file->currentFilePointer;
-    // printf("Write: pvSaveMem = %0xd, currentFilePointer = %d,
-    // writeStartOffset = %0xd\n", pvSaveMem, file->currentFilePointer,
-    // writeStartOffset);
+    
+    
+    
 
     memset((void*)writeStartOffset, 0, nNumberOfBytesToWrite);
     *lpNumberOfBytesWritten = nNumberOfBytesToWrite;
@@ -298,8 +298,8 @@ bool ConsoleSaveFileOriginal::zeroFile(FileEntry* file,
 
     file->currentFilePointer += *lpNumberOfBytesWritten;
 
-    // wprintf(L"Wrote %d bytes to %s, new file pointer is %I64d\n",
-    // *lpNumberOfBytesWritten, file->data.filename, file->currentFilePointer);
+    
+    
 
     file->updateLastModifiedTime();
 
@@ -320,8 +320,8 @@ bool ConsoleSaveFileOriginal::readFile(FileEntry* file, void* lpBuffer,
     LockSaveAccess();
 
     char* readStartOffset = (char*)pvSaveMem + file->currentFilePointer;
-    // printf("Read: pvSaveMem = %0xd, currentFilePointer = %d, readStartOffset
-    // = %0xd\n", pvSaveMem, file->currentFilePointer, readStartOffset);
+    
+    
 
     assert(nNumberOfBytesToRead <= file->getFileSize());
 
@@ -338,8 +338,8 @@ bool ConsoleSaveFileOriginal::readFile(FileEntry* file, void* lpBuffer,
 
     file->currentFilePointer += *lpNumberOfBytesRead;
 
-    // wprintf(L"Read %d bytes from %s, new file pointer is %I64d\n",
-    // *lpNumberOfBytesRead, file->data.filename, file->currentFilePointer);
+    
+    
 
     ReleaseSaveAccess();
 
@@ -367,7 +367,7 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(
 
     const unsigned int bufferSize = 4096;
     unsigned int amountToRead = bufferSize;
-    // assert( nNumberOfBytesToWrite <= bufferSize );
+    
     static std::uint8_t buffer1[bufferSize];
     static std::uint8_t buffer2[bufferSize];
     unsigned int buffer1Size = 0;
@@ -395,11 +395,11 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(
     char* readStartOffset = beginEndOfDataOffset;
     char* writeStartOffset = finishEndOfDataOffset;
 
-    // printf("\n******* MOVEDATABEYOND *******\n");
-    // printf("Space start: %d, space end: %d\n", spaceStartOffset - (char
-    // *)pvSaveMem, spaceEndOffset - (char *)pvSaveMem); printf("Current end of
-    // data: %d, new end of data: %d\n", beginEndOfDataOffset - (char
-    // *)pvSaveMem, finishEndOfDataOffset - (char *)pvSaveMem);
+    
+    
+    
+    
+    
     if ((nNumberOfBytesToWrite & 4095) == 0) {
         if (nNumberOfBytesToWrite > 0) {
             uintptr_t uiFromStart = (uintptr_t)spaceStartOffset;
@@ -433,8 +433,8 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(
             }
             readStartOffset -= amountToRead;
 
-            // printf("About to read %u from %d\n", amountToRead,
-            // readStartOffset - (char *)pvSaveMem );
+            
+            
             memcpy(buffer1, readStartOffset, amountToRead);
             numberOfBytesRead = amountToRead;
 
@@ -442,8 +442,8 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(
             writeStartOffset -= buffer2Size;
 
             if ((writeStartOffset + buffer2Size) <= finishEndOfDataOffset) {
-                // printf("About to write %u to %d\n", buffer2Size,
-                // writeStartOffset - (char *)pvSaveMem );
+                
+                
                 memcpy((void*)writeStartOffset, buffer2, buffer2Size);
                 numberOfBytesWritten = buffer2Size;
             } else {
@@ -453,8 +453,8 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(
             }
 
             if (numberOfBytesRead == 0) {
-                // printf("\n************** MOVE COMPLETED ***************
-                // \n\n");
+                
+                
                 assert(writeStartOffset == spaceEndOffset);
                 break;
             }
@@ -586,8 +586,8 @@ int ConsoleSaveFileOriginal::SaveSaveDataCallback(void* lpParam, bool bRes) {
 
 #ifndef _CONTENT_PACKAGE
 void ConsoleSaveFileOriginal::DebugFlushToFile(
-    void* compressedData /*= nullptr*/,
-    unsigned int compressedDataSize /*= 0*/) {
+    void* compressedData ,
+    unsigned int compressedDataSize ) {
     LockSaveAccess();
 
     finalizeWrite();

@@ -47,8 +47,8 @@ unsigned int ConsoleSaveFileSplit::pagesCommitted = 0;
 void* ConsoleSaveFileSplit::pvHeap = nullptr;
 
 ConsoleSaveFileSplit::RegionFileReference::RegionFileReference(
-    int index, unsigned int regionIndex, unsigned int length /*=0*/,
-    unsigned char* data /*=nullptr*/) {
+    int index, unsigned int regionIndex, unsigned int length ,
+    unsigned char* data ) {
     fileEntry = new FileEntry();
     fileEntry->currentFilePointer = 0;
     fileEntry->data.length = 0;
@@ -271,9 +271,9 @@ FileEntry* ConsoleSaveFileSplit::GetRegionFileEntry(unsigned int regionIndex) {
 }
 
 ConsoleSaveFileSplit::ConsoleSaveFileSplit(
-    const std::wstring& fileName, void* pvSaveData /*= nullptr*/,
-    unsigned int initialFileSize /*= 0*/, bool forceCleanSave /*= false*/,
-    ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/) {
+    const std::wstring& fileName, void* pvSaveData ,
+    unsigned int initialFileSize , bool forceCleanSave ,
+    ESavePlatform plat ) {
     unsigned int fileSize = initialFileSize;
 
     bool bLevelGenBaseSave = false;
@@ -1217,7 +1217,7 @@ void _CollectEntriesUnder(const std::filesystem::path& root,
         }
     }
 }
-}  // namespace
+}  
 
 int ConsoleSaveFileSplit::ReadEntriesFromFolderOnDisk(
     const std::wstring& worldName) {
@@ -1278,8 +1278,8 @@ int ConsoleSaveFileSplit::SaveRegionFilesCallback(void* lpParam, bool bRes) {
 
 #if !defined(_CONTENT_PACKAGE)
 void ConsoleSaveFileSplit::DebugFlushToFile(
-    void* compressedData /*= nullptr*/,
-    unsigned int compressedDataSize /*= 0*/) {
+    void* compressedData ,
+    unsigned int compressedDataSize ) {
     LockSaveAccess();
 
     finalizeWrite();

@@ -31,8 +31,8 @@
 #include "stb_vorbis.c"
 
 #if defined(__linux__) || defined(__APPLE__)
-// Fixes strcasecmp in miniaudio - Linux glibc doesn't always expose it
-// https://stackoverflow.com/questions/31127260/strcasecmp-a-non-standard-function
+
+
 int strcasecmp(const char* a, const char* b) {
     int ca, cb;
     do {
@@ -52,8 +52,8 @@ int strcasecmp(const char* a, const char* b) {
 #undef STB_VORBIS_HEADER_ONLY
 #include "stb_vorbis.c"
 
-// stb_vorbis leaks single-letter macros (C, L, R, etc.) that collide with
-// identifiers in other translation units during unity builds.
+
+
 #undef C
 #undef L
 #undef R
@@ -64,7 +64,7 @@ int strcasecmp(const char* a, const char* b) {
 #include "app/windows/WindowsGame.h"
 #endif
 
-// ASSETS
+
 const char* SoundEngine::m_szStreamFileA[eStream_Max] = {"calm1",
                                                          "calm2",
                                                          "calm3",
@@ -116,9 +116,9 @@ char SoundEngine::m_szSoundPath[] = {"Durango\\Sound\\"};
 char SoundEngine::m_szMusicPath[] = {"music\\"};
 char SoundEngine::m_szRedistName[] = {"redist64"};
 #endif
-// END ASSETS
 
-// Linux specific functions
+
+
 #if defined(__linux__) || defined(__APPLE__)
 std::wstring stws(const char* utf8) {
     size_t len = std::mbstowcs(nullptr, utf8, 0);
@@ -141,7 +141,7 @@ void SoundEngine::init(Options* pOptions) {
 
     m_bHeardTrackA = nullptr;
 
-    // Start the streaming music playing some music from the overworld
+    
     SetStreamingSounds(eStream_Overworld_Calm1, eStream_Overworld_piano3,
                        eStream_Nether1, eStream_Nether4, eStream_end_dragon,
                        eStream_end_end, eStream_CD_1);
@@ -308,9 +308,9 @@ int SoundEngine::getMusicID(int iDomain) {
     int iRandomVal = 0;
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
-    // Protection from errors
+    
     if (pMinecraft == nullptr || pMinecraft->skins == nullptr) {
-        // any track from the overworld
+        
         return GetRandomishTrack(m_iStream_Overworld_Min,
                                  m_iStream_Overworld_Max);
     }
@@ -318,35 +318,35 @@ int SoundEngine::getMusicID(int iDomain) {
     if (pMinecraft->skins->isUsingDefaultSkin()) {
         switch (iDomain) {
             case LevelData::DIMENSION_END:
-                // the end isn't random - it has different music depending
-                // whether the dragon is alive or not, but we've not
-                // added the dead dragon music yet
-                // haha they said wheter
+                
+                
+                
+                
                 return m_iStream_End_Min;
             case LevelData::DIMENSION_NETHER:
                 return GetRandomishTrack(m_iStream_Nether_Min,
                                          m_iStream_Nether_Max);
-                // return m_iStream_Nether_Min +
-                // random->nextInt(m_iStream_Nether_Max-m_iStream_Nether_Min);
-            default:  // overworld
-                // return m_iStream_Overworld_Min +
-                // random->nextInt(m_iStream_Overworld_Max-m_iStream_Overworld_Min);
+                
+                
+            default:  
+                
+                
                 return GetRandomishTrack(m_iStream_Overworld_Min,
                                          m_iStream_Overworld_Max);
         }
     } else {
-        // using a texture pack - may have multiple End music tracks
+        
         switch (iDomain) {
             case LevelData::DIMENSION_END:
                 return GetRandomishTrack(m_iStream_End_Min, m_iStream_End_Max);
             case LevelData::DIMENSION_NETHER:
-                // return m_iStream_Nether_Min +
-                // random->nextInt(m_iStream_Nether_Max-m_iStream_Nether_Min);
+                
+                
                 return GetRandomishTrack(m_iStream_Nether_Min,
                                          m_iStream_Nether_Max);
-            default:  // overworld
-                // return m_iStream_Overworld_Min +
-                // random->nextInt(m_iStream_Overworld_Max-m_iStream_Overworld_Min);
+            default:  
+                
+                
                 return GetRandomishTrack(m_iStream_Overworld_Min,
                                          m_iStream_Overworld_Max);
         }
@@ -382,13 +382,13 @@ void SoundEngine::playStreaming(const std::wstring& name, float x, float y,
     }
     app.DebugPrintf("playStreaming %S", name.c_str());
     if (name.empty()) {
-        // music, or stop CD
+        
         m_StreamingAudioInfo.bIs3D = false;
 
-        // we need a music id
-        // random delay of up to 3 minutes for music
+        
+        
         m_iMusicDelay = random->nextInt(
-            20 * 60 * 3);  // random->nextInt(20 * 60 * 10) + 20 * 60 * 10;
+            20 * 60 * 3);  
 
 #if defined(_DEBUG)
         m_iMusicDelay = 0;
@@ -417,7 +417,7 @@ void SoundEngine::playStreaming(const std::wstring& name, float x, float y,
             m_musicID = getMusicID(LevelData::DIMENSION_OVERWORLD);
         }
     } else {
-        // jukebox
+        
         m_StreamingAudioInfo.bIs3D = true;
         m_musicID = getMusicID(name);
         m_iMusicDelay = 0;
@@ -476,14 +476,14 @@ void SoundEngine::playMusicTick() {
 
                 for (const char* r : roots) {
                     for (const char* e : {".ogg", ".mp3", ".wav"}) {
-                        // try with folder prefix (music/ or cds/)
+                        
                         snprintf(m_szStreamName, sizeof(m_szStreamName), "%s%s%s%s%s", base.c_str(), r, folder,
                                  track, e);
                         if (PlatformFileIO.exists(m_szStreamName)) {
                             found = true;
                             break;
                         }
-                        // try without folder prefix
+                        
                         snprintf(m_szStreamName, sizeof(m_szStreamName), "%s%s%s%s", base.c_str(), r, track, e);
                         if (PlatformFileIO.exists(m_szStreamName)) {
                             found = true;
@@ -575,7 +575,7 @@ void SoundEngine::playMusicTick() {
                     }
                 }
 
-                // Handle Dimension Switching
+                
                 bool needsStop = false;
                 if (playerInEnd && !GetIsPlayingEndMusic()) {
                     m_musicID = getMusicID(LevelData::DIMENSION_END);
@@ -607,7 +607,7 @@ void SoundEngine::playMusicTick() {
 
                 if (needsStop) m_StreamState = eMusicStreamState_Stop;
 
-                // volume change required?
+                
                 if (m_musicStreamActive) {
                     float fFinal = m_StreamingAudioInfo.volume * fMusicVol;
                     ma_sound_set_volume(&m_musicStream, fFinal);
@@ -661,8 +661,8 @@ void SoundEngine::playMusicTick() {
             break;
     }
 
-    // check the status of the stream - this is for when a track completes
-    // rather than is stopped by the user action
+    
+    
 
     if (m_musicStreamActive && !ma_sound_is_playing(&m_musicStream) &&
         ma_sound_at_end(&m_musicStream)) {
@@ -755,7 +755,7 @@ void SoundEngine::updateMiniAudio() {
 }
 
 void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
-    // update the listener positions
+    
     int listenerCount = 0;
     if (players) {
         bool bListenerPostionSet = false;
@@ -772,7 +772,7 @@ void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
                 float yCos = (float)cos(yRot * Mth::DEG_TO_RAD);
                 float ySin = (float)sin(yRot * Mth::DEG_TO_RAD);
 
-                // store the listener positions for splitscreen
+                
                 m_ListenerA[i].vPosition.x = x;
                 m_ListenerA[i].vPosition.y = y;
                 m_ListenerA[i].vPosition.z = z;
@@ -788,7 +788,7 @@ void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
         }
     }
 
-    // If there were no valid players set, make up a default listener
+    
     if (listenerCount == 0) {
         m_ListenerA[0].vPosition.x = 0;
         m_ListenerA[0].vPosition.y = 0;
@@ -801,7 +801,7 @@ void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
     m_validListenerCount = listenerCount;
     updateMiniAudio();
 }
-// Classic sound module
+
 #else
 void SoundEngine::init(Options* pOptions) {
     app.DebugPrintf("---SoundEngine::init\n");
@@ -820,7 +820,7 @@ void SoundEngine::init(Options* pOptions) {
 
     int iNumberOfChannels = initAudioHardware(8);
 
-    // Create a driver to render our audio - 44khz, 16 bit,
+    
     m_hDriver = AIL_open_digital_driver(44100, 16, MSS_MC_USE_SYSTEM_CONFIG, 0);
     if (m_hDriver == 0) {
         app.DebugPrintf("Couldn't open digital sound driver. (%s)\n",
@@ -834,13 +834,13 @@ void SoundEngine::init(Options* pOptions) {
 
     AIL_set_3D_rolloff_factor(m_hDriver, 1.0);
 
-    // Create an event system tied to that driver - let Miles choose memory
-    // defaults.
-    // if (AIL_startup_event_system(m_hDriver, 0, 0, 0) == 0)
-    // 4J-PB - Durango complains that the default memory (64k)isn't enough
-    // Error: MilesEvent: Out of event system memory (pool passed to event
-    // system startup exhausted). AP - increased command buffer from the default
-    // 5K to 20K for Vita
+    
+    
+    
+    
+    
+    
+    
 
     if (AIL_startup_event_system(m_hDriver, 1024 * 20, 0, 1024 * 128) == 0) {
         app.DebugPrintf("Couldn't init event system (%s).\n", AIL_last_error());
@@ -866,7 +866,7 @@ void SoundEngine::init(Options* pOptions) {
         return;
     }
 
-    // #ifdef _DEBUG
+    
     HMSSENUM token = MSS_FIRST;
     char const* Events[1] = {0};
     S32 EventCount = 0;
@@ -875,7 +875,7 @@ void SoundEngine::init(Options* pOptions) {
 
         EventCount++;
     }
-    // #endif
+    
 
     U64 u64Result;
     u64Result = AIL_enqueue_event_by_name("Minecraft/CacheSounds");
@@ -883,41 +883,41 @@ void SoundEngine::init(Options* pOptions) {
     m_MasterMusicVolume = 1.0f;
     m_MasterEffectsVolume = 1.0f;
 
-    // AIL_set_variable_float(0,"UserEffectVol",1);
+    
 
     m_bSystemMusicPlaying = false;
 
     m_openStreamThread = nullptr;
 }
 
-// AP - moved to a separate function so it can be called from the mixer callback
-// on Vita
+
+
 void SoundEngine::updateMiles() {
     if (m_validListenerCount == 1) {
         for (int i = 0; i < MAX_LOCAL_PLAYERS; i++) {
-            // set the listener as the first player we find
+            
             if (m_ListenerA[i].bValid) {
                 AIL_set_listener_3D_position(
                     m_hDriver, m_ListenerA[i].vPosition.x,
                     m_ListenerA[i].vPosition.y,
                     -m_ListenerA[i]
-                         .vPosition.z);  // Flipped sign of z as Miles is
-                                         // expecting left handed coord system
+                         .vPosition.z);  
+                                         
                 AIL_set_listener_3D_orientation(
                     m_hDriver, -m_ListenerA[i].vOrientFront.x,
                     m_ListenerA[i].vOrientFront.y,
                     m_ListenerA[i].vOrientFront.z, 0, 1,
-                    0);  // Flipped sign of z as Miles is expecting left handed
-                         // coord system
+                    0);  
+                         
                 break;
             }
         }
     } else {
-        // 4J-PB - special case for splitscreen
-        // the shortest distance between any listener and a sound will be used
-        // to play a sound a set distance away down the z axis. The listener
-        // position will be set to 0,0,0, and the orientation will be facing
-        // down the z axis
+        
+        
+        
+        
+        
 
         AIL_set_listener_3D_position(m_hDriver, 0, 0, 0);
         AIL_set_listener_3D_orientation(m_hDriver, 0, 0, 1, 0, 1, 0);
@@ -925,7 +925,7 @@ void SoundEngine::updateMiles() {
 
     AIL_begin_event_queue_processing();
 
-    // Iterate over the sounds
+    
     S32 StartedCount = 0, CompletedCount = 0, TotalCount = 0;
     HMSSENUM token = MSS_FIRST;
     MILESEVENTSOUNDINFO SoundInfo;
@@ -938,8 +938,8 @@ void SoundEngine::updateMiles() {
         }
 
         if (SoundInfo.Status != MILESEVENT_SOUND_STATUS_COMPLETE) {
-            // apply the master volume
-            // watch for the 'special' volume levels
+            
+            
             bool isThunder = false;
             if (game_data->volume == 10000.0f) {
                 isThunder = true;
@@ -954,9 +954,9 @@ void SoundEngine::updateMiles() {
             float distanceScaler = 16.0f;
             switch (SoundInfo.Status) {
                 case MILESEVENT_SOUND_STATUS_PENDING:
-                    // 4J-PB - causes the falloff to be calculated on the PPU
-                    // instead of the SPU, and seems to resolve our distorted
-                    // sound issue
+                    
+                    
+                    
                     AIL_register_falloff_function_callback(
                         SoundInfo.Sample, &custom_falloff_function);
 
@@ -965,7 +965,7 @@ void SoundEngine::updateMiles() {
 
                         int iSound = game_data->iSound - eSFX_MAX;
                         switch (iSound) {
-                            // Is this the Dragon?
+                            
                             case eSoundType_MOB_ENDERDRAGON_GROWL:
                             case eSoundType_MOB_ENDERDRAGON_MOVE:
                             case eSoundType_MOB_ENDERDRAGON_END:
@@ -987,8 +987,8 @@ void SoundEngine::updateMiles() {
                                 break;
                         }
 
-                        // Set a special distance scaler for thunder, which we
-                        // respond to by having no attenutation
+                        
+                        
                         if (isThunder) {
                             distanceScaler = 10000.0f;
                         }
@@ -998,7 +998,7 @@ void SoundEngine::updateMiles() {
 
                     AIL_set_sample_3D_distances(SoundInfo.Sample,
                                                 distanceScaler, 1, 0);
-                    // set the pitch
+                    
                     if (!game_data->bUseSoundsPitchVal) {
                         AIL_set_sample_playback_rate_factor(SoundInfo.Sample,
                                                             game_data->pitch);
@@ -1010,9 +1010,9 @@ void SoundEngine::updateMiles() {
                             int iClosestListener = 0;
                             float fClosestX = 0.0f, fClosestY = 0.0f,
                                   fClosestZ = 0.0f, fDist;
-                            // need to calculate the distance from the sound to
-                            // the nearest listener - use Manhattan Distance as
-                            // the decision
+                            
+                            
+                            
                             for (int i = 0; i < MAX_LOCAL_PLAYERS; i++) {
                                 if (m_ListenerA[i].bValid) {
                                     float x, y, z;
@@ -1035,24 +1035,24 @@ void SoundEngine::updateMiles() {
                                 }
                             }
 
-                            // our distances in the world aren't very big, so
-                            // floats rather than casts to doubles should be
-                            // fine
+                            
+                            
+                            
                             fDist = sqrtf((fClosestX * fClosestX) +
                                           (fClosestY * fClosestY) +
                                           (fClosestZ * fClosestZ));
                             AIL_set_sample_3D_position(SoundInfo.Sample, 0, 0,
                                                        fDist);
 
-                            // app.DebugPrintf("Playing sound %d %f from nearest
-                            // listener
-                            // [%d]\n",SoundInfo.EventID,fDist,iClosestListener);
+                            
+                            
+                            
                         } else {
                             AIL_set_sample_3D_position(
                                 SoundInfo.Sample, game_data->x, game_data->y,
-                                -game_data->z);  // Flipped sign of z as Miles
-                                                 // is expecting left handed
-                                                 // coord system
+                                -game_data->z);  
+                                                 
+                                                 
                         }
                     }
                     break;
@@ -1064,9 +1064,9 @@ void SoundEngine::updateMiles() {
                             int iClosestListener = 0;
                             float fClosestX = 0.0f, fClosestY = 0.0f,
                                   fClosestZ = 0.0f, fDist;
-                            // need to calculate the distance from the sound to
-                            // the nearest listener - use Manhattan Distance as
-                            // the decision
+                            
+                            
+                            
                             for (int i = 0; i < MAX_LOCAL_PLAYERS; i++) {
                                 if (m_ListenerA[i].bValid) {
                                     float x, y, z;
@@ -1088,24 +1088,24 @@ void SoundEngine::updateMiles() {
                                     }
                                 }
                             }
-                            // our distances in the world aren't very big, so
-                            // floats rather than casts to doubles should be
-                            // fine
+                            
+                            
+                            
                             fDist = sqrtf((fClosestX * fClosestX) +
                                           (fClosestY * fClosestY) +
                                           (fClosestZ * fClosestZ));
                             AIL_set_sample_3D_position(SoundInfo.Sample, 0, 0,
                                                        fDist);
 
-                            // app.DebugPrintf("Playing sound %d %f from nearest
-                            // listener
-                            // [%d]\n",SoundInfo.EventID,fDist,iClosestListener);
+                            
+                            
+                            
                         } else {
                             AIL_set_sample_3D_position(
                                 SoundInfo.Sample, game_data->x, game_data->y,
-                                -game_data->z);  // Flipped sign of z as Miles
-                                                 // is expecting left handed
-                                                 // coord system
+                                -game_data->z);  
+                                                 
+                                                 
                         }
                     }
                     break;
@@ -1115,22 +1115,22 @@ void SoundEngine::updateMiles() {
     AIL_complete_event_queue_processing();
 }
 
-// #define DISTORTION_TEST
+
 #if defined(DISTORTION_TEST)
 static float fVal = 0.0f;
 #endif
-/////////////////////////////////////////////
-//
-//	tick
-//
-/////////////////////////////////////////////
+
+
+
+
+
 
 void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
 #if defined(__DISABLE_MILES__)
     return;
 #endif
 
-    // update the listener positions
+    
     int listenerCount = 0;
 #if defined(DISTORTION_TEST)
     float fX, fY, fZ;
@@ -1152,7 +1152,7 @@ void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
                 float ySin =
                     (float)sin(-yRot * Mth::DEG_TO_RAD - std::numbers::pi);
 
-                // store the listener positions for splitscreen
+                
                 m_ListenerA[i].vPosition.x = x;
                 m_ListenerA[i].vPosition.y = y;
                 m_ListenerA[i].vPosition.z = z;
@@ -1168,7 +1168,7 @@ void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
         }
     }
 
-    // If there were no valid players set, make up a default listener
+    
     if (listenerCount == 0) {
         m_ListenerA[0].vPosition.x = 0;
         m_ListenerA[0].vPosition.y = 0;
@@ -1191,7 +1191,7 @@ SoundEngine::SoundEngine() {
 
     m_bHeardTrackA = nullptr;
 
-    // Start the streaming music playing some music from the overworld
+    
     SetStreamingSounds(eStream_Overworld_Calm1, eStream_Overworld_piano3,
                        eStream_Nether1, eStream_Nether4, eStream_end_dragon,
                        eStream_end_end, eStream_CD_1);
@@ -1218,11 +1218,11 @@ void SoundEngine::GetSoundName(char* szSoundName, int iSound) {
     strcat((char*)szSoundName, SoundName);
 }
 #endif
-/////////////////////////////////////////////
-//
-//	play
-//
-/////////////////////////////////////////////
+
+
+
+
+
 void SoundEngine::play(int iSound, float x, float y, float z, float volume,
                        float pitch) {
     U8 szSoundName[256];
@@ -1232,19 +1232,19 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
         return;
     }
 
-    // AP removed old counting system. Now relying on Miles' Play Count Limit
-    /*	// if we are already playing loads of this sounds ignore this one
-    if(CurrentSoundsPlaying[iSound+eSFX_MAX]>MAX_SAME_SOUNDS_PLAYING)
-    {
-    // 		std::wstring name = wchSoundNames[iSound];
-    // 		char *SoundName = (char *)ConvertSoundPathToName(name);
-    // 		app.DebugPrintf("Too many %s sounds playing!\n",SoundName);
-    return;
-    }*/
+    
+    
 
-    // if (iSound != eSoundType_MOB_IRONGOLEM_WALK) return;
 
-    // build the name
+
+
+
+
+
+
+    
+
+    
     strcpy((char*)szSoundName, "Minecraft/");
 
 #if defined(DISTORTION_TEST)
@@ -1256,8 +1256,8 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
     char* SoundName = (char*)ConvertSoundPathToName(name);
     strcat((char*)szSoundName, SoundName);
 
-    //	app.DebugPrintf(6,"PlaySound - %d - %s - %s (%f %f %f, vol %f, pitch
-    //%f)\n",iSound, SoundName, szSoundName,x,y,z,volume,pitch);
+    
+    
 
     AUDIO_INFO AudioInfo;
     AudioInfo.x = x;
@@ -1277,50 +1277,50 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
     AIL_enqueue_event_end_named(token, (char*)szSoundName);
 }
 
-/////////////////////////////////////////////
-//
-//	playUI
-//
-/////////////////////////////////////////////
+
+
+
+
+
 void SoundEngine::playUI(int iSound, float volume, float pitch) {
     U8 szSoundName[256];
     std::wstring name;
-    // we have some game sounds played as UI sounds...
-    // Not the best way to do this, but it seems to only be the portal sounds
+    
+    
 
     if (iSound >= eSFX_MAX) {
-        // AP removed old counting system. Now relying on Miles' Play Count
-        // Limit
-        /*		// if we are already playing loads of this sounds ignore
-        this one
-        if(CurrentSoundsPlaying[iSound+eSFX_MAX]>MAX_SAME_SOUNDS_PLAYING)
-        return;*/
+        
+        
+        
 
-        // build the name
+
+
+
+        
         strcpy((char*)szSoundName, "Minecraft/");
         name = wchSoundNames[iSound];
     } else {
-        // AP removed old counting system. Now relying on Miles' Play Count
-        // Limit
-        /*		// if we are already playing loads of this sounds ignore
-        this one if(CurrentSoundsPlaying[iSound]>MAX_SAME_SOUNDS_PLAYING)
-        return;*/
+        
+        
+        
 
-        // build the name
+
+
+        
         strcpy((char*)szSoundName, "Minecraft/UI/");
         name = wchUISoundNames[iSound];
     }
 
     char* SoundName = (char*)ConvertSoundPathToName(name);
     strcat((char*)szSoundName, SoundName);
-    //	app.DebugPrintf("UI: Playing %s, volume %f, pitch
-    //%f\n",SoundName,volume,pitch);
+    
+    
 
-    // app.DebugPrintf("PlaySound - %d - %s\n",iSound, SoundName);
+    
 
     AUDIO_INFO AudioInfo;
     memset(&AudioInfo, 0, sizeof(AUDIO_INFO));
-    AudioInfo.volume = volume;  // will be multiplied by the master volume
+    AudioInfo.volume = volume;  
     AudioInfo.pitch = pitch;
     AudioInfo.bUseSoundsPitchVal = true;
     if (iSound >= eSFX_MAX) {
@@ -1332,24 +1332,24 @@ void SoundEngine::playUI(int iSound, float volume, float pitch) {
     strncpy(AudioInfo.chName, (char*)szSoundName, 64);
 #endif
 
-    // 4J-PB - not going to stop UI events happening based on the number of
-    // currently playing sounds
+    
+    
     S32 token = AIL_enqueue_event_start();
     AIL_enqueue_event_buffer(&token, &AudioInfo, sizeof(AUDIO_INFO), 0);
     AIL_enqueue_event_end_named(token, (char*)szSoundName);
 }
-/////////////////////////////////////////////
-//
-//	playStreaming
-//
-/////////////////////////////////////////////
+
+
+
+
+
 void SoundEngine::playStreaming(const std::wstring& name, float x, float y,
                                 float z, float volume, float pitch,
                                 bool bMusicDelay) {
-    // This function doesn't actually play a streaming sound, just sets states
-    // and an id for the music tick to play it Level audio will be played when a
-    // play with an empty name comes in CD audio will be played when a named
-    // stream comes in
+    
+    
+    
+    
 
     m_StreamingAudioInfo.x = x;
     m_StreamingAudioInfo.y = y;
@@ -1364,13 +1364,13 @@ void SoundEngine::playStreaming(const std::wstring& name, float x, float y,
     }
 
     if (name.empty()) {
-        // music, or stop CD
+        
         m_StreamingAudioInfo.bIs3D = false;
 
-        // we need a music id
-        // random delay of up to 3 minutes for music
+        
+        
         m_iMusicDelay = random->nextInt(
-            20 * 60 * 3);  // random->nextInt(20 * 60 * 10) + 20 * 60 * 10;
+            20 * 60 * 3);  
 
 #if defined(_DEBUG)
         m_iMusicDelay = 0;
@@ -1399,7 +1399,7 @@ void SoundEngine::playStreaming(const std::wstring& name, float x, float y,
             m_musicID = getMusicID(LevelData::DIMENSION_OVERWORLD);
         }
     } else {
-        // jukebox
+        
         m_StreamingAudioInfo.bIs3D = true;
         m_musicID = getMusicID(name);
         m_iMusicDelay = 0;
@@ -1414,20 +1414,20 @@ int SoundEngine::OpenStreamThreadProc(void* lpParameter) {
         AIL_open_stream(soundEngine->m_hDriver, soundEngine->m_szStreamName, 0);
     return 0;
 }
-/////////////////////////////////////////////
-//
-//	playMusicTick
-//
-/////////////////////////////////////////////
+
+
+
+
+
 void SoundEngine::playMusicTick() {
-    // AP - vita will update the music during the mixer callback
+    
     playMusicUpdate();
 }
 
-// AP - moved to a separate function so it can be called from the mixer callback
-// on Vita
+
+
 void SoundEngine::playMusicUpdate() {
-    // return;
+    
     static bool firstCall = true;
     static float fMusicVol = 0.0f;
     if (firstCall) {
@@ -1438,23 +1438,23 @@ void SoundEngine::playMusicUpdate() {
     switch (m_StreamState) {
         case eMusicStreamState_Idle:
 
-            // start a stream playing
+            
             if (m_iMusicDelay > 0) {
                 m_iMusicDelay--;
                 return;
             }
 
             if (m_musicID != -1) {
-                // start playing it
+                
 
                 strcpy((char*)m_szStreamName, m_szMusicPath);
-                // are we using a mash-up pack?
-                // if(pMinecraft && !pMinecraft->skins->isUsingDefaultSkin() &&
-                // pMinecraft->skins->getSelected()->hasAudio())
+                
+                
+                
                 if (Minecraft::GetInstance()
                         ->skins->getSelected()
                         ->hasAudio()) {
-                    // It's a mash-up - need to use the DLC path for the music
+                    
                     TexturePack* pTexPack =
                         Minecraft::GetInstance()->skins->getSelected();
                     DLCTexturePack* pDLCTexPack = (DLCTexturePack*)pTexPack;
@@ -1464,10 +1464,10 @@ void SoundEngine::playMusicUpdate() {
 
                     app.DebugPrintf("Mashup pack \n");
 
-                    // build the name
+                    
 
-                    // if the music ID is beyond the end of the texture pack
-                    // music files, then it's a CD
+                    
+                    
                     if (m_musicID < m_iStream_CD_1) {
                         SetIsPlayingStreamingGameMusic(true);
                         SetIsPlayingStreamingCDMusic(false);
@@ -1490,8 +1490,8 @@ void SoundEngine::playMusicUpdate() {
                         m_MusicType = eMusicType_CD;
                         m_StreamingAudioInfo.bIs3D = true;
 
-                        // Need to adjust to index into the cds in the game's
-                        // m_szStreamFileA
+                        
+                        
                         strcat((char*)m_szStreamName, "cds/");
                         strcat((char*)m_szStreamName,
                                m_szStreamFileA[m_musicID - m_iStream_CD_1 +
@@ -1499,36 +1499,36 @@ void SoundEngine::playMusicUpdate() {
                         strcat((char*)m_szStreamName, ".binka");
                     }
                 } else {
-                    // 4J-PB - if this is a PS3 disc patch, we have to check if
-                    // the music file is in the patch data
+                    
+                    
                     if (m_musicID < m_iStream_CD_1) {
                         SetIsPlayingStreamingGameMusic(true);
                         SetIsPlayingStreamingCDMusic(false);
                         m_MusicType = eMusicType_Game;
                         m_StreamingAudioInfo.bIs3D = false;
-                        // build the name
+                        
                         strcat((char*)m_szStreamName, "music/");
                     } else {
                         SetIsPlayingStreamingGameMusic(false);
                         SetIsPlayingStreamingCDMusic(true);
                         m_MusicType = eMusicType_CD;
                         m_StreamingAudioInfo.bIs3D = true;
-                        // build the name
+                        
                         strcat((char*)m_szStreamName, "cds/");
                     }
                     strcat((char*)m_szStreamName, m_szStreamFileA[m_musicID]);
                     strcat((char*)m_szStreamName, ".binka");
                 }
 
-                // std::wstring name =
-                // m_szStreamFileA[m_musicID];char*SoundName=(char
-                // *)ConvertSoundPathToName(name);strcat((char
-                // *)szStreamName,SoundName);
+                
+                
+                
+                
 
                 app.DebugPrintf("Starting streaming - %s\n", m_szStreamName);
 
-                // Don't actually open in this thread, as it can block for
-                // ~300ms.
+                
+                
                 m_openStreamThread = new C4JThread(OpenStreamThreadProc, this,
                                                    "OpenStreamThreadProc");
                 m_openStreamThread->run();
@@ -1537,32 +1537,32 @@ void SoundEngine::playMusicUpdate() {
             break;
 
         case eMusicStreamState_Opening:
-            // If the open stream thread is complete, then we are ready to
-            // proceed to actually playing
+            
+            
             if (!m_openStreamThread->isRunning()) {
                 delete m_openStreamThread;
                 m_openStreamThread = nullptr;
 
                 HSAMPLE hSample = AIL_stream_sample_handle(m_hStream);
 
-                // 4J-PB - causes the falloff to be calculated on the PPU
-                // instead of the SPU, and seems to resolve our distorted sound
-                // issue
+                
+                
+                
                 AIL_register_falloff_function_callback(
                     hSample, &custom_falloff_function);
 
                 if (m_StreamingAudioInfo.bIs3D) {
                     AIL_set_sample_3D_distances(
                         hSample, 64.0f, 1,
-                        0);  // Larger distance scaler for music discs
+                        0);  
                     if (m_validListenerCount > 1) {
                         float fClosest = 10000.0f;
                         int iClosestListener = 0;
                         float fClosestX = 0.0f, fClosestY = 0.0f,
                               fClosestZ = 0.0f, fDist;
-                        // need to calculate the distance from the sound to the
-                        // nearest listener - use Manhattan Distance as the
-                        // decision
+                        
+                        
+                        
                         for (int i = 0; i < MAX_LOCAL_PLAYERS; i++) {
                             if (m_ListenerA[i].bValid) {
                                 float x, y, z;
@@ -1585,8 +1585,8 @@ void SoundEngine::playMusicUpdate() {
                             }
                         }
 
-                        // our distances in the world aren't very big, so floats
-                        // rather than casts to doubles should be fine
+                        
+                        
                         fDist = sqrtf((fClosestX * fClosestX) +
                                       (fClosestY * fClosestY) +
                                       (fClosestZ * fClosestZ));
@@ -1596,20 +1596,20 @@ void SoundEngine::playMusicUpdate() {
                             hSample, m_StreamingAudioInfo.x,
                             m_StreamingAudioInfo.y,
                             -m_StreamingAudioInfo
-                                 .z);  // Flipped sign of z as Miles is
-                                       // expecting left handed coord system
+                                 .z);  
+                                       
                     }
                 } else {
-                    // clear the 3d flag on the stream after a jukebox finishes
-                    // and streaming music starts
+                    
+                    
                     AIL_set_sample_is_3D(hSample, 0);
                 }
-                // set the pitch
+                
                 app.DebugPrintf("Sample rate:%d\n",
                                 AIL_sample_playback_rate(hSample));
                 AIL_set_sample_playback_rate_factor(hSample,
                                                     m_StreamingAudioInfo.pitch);
-                // set the volume
+                
                 AIL_set_sample_volume_levels(
                     hSample,
                     m_StreamingAudioInfo.volume * getMasterMusicVolume(),
@@ -1628,7 +1628,7 @@ void SoundEngine::playMusicUpdate() {
             }
             break;
         case eMusicStreamState_Stop:
-            // should gradually take the volume down in steps
+            
             AIL_pause_stream(m_hStream, 1);
             AIL_close_stream(m_hStream);
             m_hStream = 0;
@@ -1642,7 +1642,7 @@ void SoundEngine::playMusicUpdate() {
             break;
         case eMusicStreamState_Playing:
             if (GetIsPlayingStreamingGameMusic()) {
-                // if(m_MusicInfo.pCue!=nullptr)
+                
                 {
                     bool playerInEnd = false;
                     bool playerInNether = false;
@@ -1662,7 +1662,7 @@ void SoundEngine::playMusicUpdate() {
                     if (playerInEnd && !GetIsPlayingEndMusic()) {
                         m_StreamState = eMusicStreamState_Stop;
 
-                        // Set the end track
+                        
                         m_musicID = getMusicID(LevelData::DIMENSION_END);
                         SetIsPlayingEndMusic(true);
                         SetIsPlayingNetherMusic(false);
@@ -1670,14 +1670,14 @@ void SoundEngine::playMusicUpdate() {
                         if (playerInNether) {
                             m_StreamState = eMusicStreamState_Stop;
 
-                            // Set the end track
+                            
                             m_musicID = getMusicID(LevelData::DIMENSION_NETHER);
                             SetIsPlayingEndMusic(false);
                             SetIsPlayingNetherMusic(true);
                         } else {
                             m_StreamState = eMusicStreamState_Stop;
 
-                            // Set the end track
+                            
                             m_musicID =
                                 getMusicID(LevelData::DIMENSION_OVERWORLD);
                             SetIsPlayingEndMusic(false);
@@ -1685,20 +1685,20 @@ void SoundEngine::playMusicUpdate() {
                         }
                     } else if (playerInNether && !GetIsPlayingNetherMusic()) {
                         m_StreamState = eMusicStreamState_Stop;
-                        // set the Nether track
+                        
                         m_musicID = getMusicID(LevelData::DIMENSION_NETHER);
                         SetIsPlayingNetherMusic(true);
                         SetIsPlayingEndMusic(false);
                     } else if (!playerInNether && GetIsPlayingNetherMusic()) {
                         if (playerInEnd) {
                             m_StreamState = eMusicStreamState_Stop;
-                            // set the Nether track
+                            
                             m_musicID = getMusicID(LevelData::DIMENSION_END);
                             SetIsPlayingNetherMusic(false);
                             SetIsPlayingEndMusic(true);
                         } else {
                             m_StreamState = eMusicStreamState_Stop;
-                            // set the Nether track
+                            
                             m_musicID =
                                 getMusicID(LevelData::DIMENSION_OVERWORLD);
                             SetIsPlayingNetherMusic(false);
@@ -1706,24 +1706,24 @@ void SoundEngine::playMusicUpdate() {
                         }
                     }
 
-                    // volume change required?
+                    
                     if (fMusicVol != getMasterMusicVolume()) {
                         fMusicVol = getMasterMusicVolume();
                         HSAMPLE hSample = AIL_stream_sample_handle(m_hStream);
-                        // AIL_set_sample_3D_position( hSample,
-                        // m_StreamingAudioInfo.x, m_StreamingAudioInfo.y,
-                        // m_StreamingAudioInfo.z );
+                        
+                        
+                        
                         AIL_set_sample_volume_levels(hSample, fMusicVol,
                                                      fMusicVol);
                     }
                 }
             } else {
-                // Music disc playing - if it's a 3D stream, then set the
-                // position - we don't have any streaming audio in the world
-                // that moves, so this isn't required unless we have more than
-                // one listener, and are setting the listening position to the
-                // origin and setting a fake position for the sound down  the z
-                // axis
+                
+                
+                
+                
+                
+                
                 if (m_StreamingAudioInfo.bIs3D) {
                     if (m_validListenerCount > 1) {
                         float fClosest = 10000.0f;
@@ -1731,9 +1731,9 @@ void SoundEngine::playMusicUpdate() {
                         float fClosestX = 0.0f, fClosestY = 0.0f,
                               fClosestZ = 0.0f, fDist;
 
-                        // need to calculate the distance from the sound to the
-                        // nearest listener - use Manhattan Distance as the
-                        // decision
+                        
+                        
+                        
                         for (int i = 0; i < MAX_LOCAL_PLAYERS; i++) {
                             if (m_ListenerA[i].bValid) {
                                 float x, y, z;
@@ -1756,8 +1756,8 @@ void SoundEngine::playMusicUpdate() {
                             }
                         }
 
-                        // our distances in the world aren't very big, so floats
-                        // rather than casts to doubles should be fine
+                        
+                        
                         HSAMPLE hSample = AIL_stream_sample_handle(m_hStream);
                         fDist = sqrtf((fClosestX * fClosestX) +
                                       (fClosestY * fClosestY) +
@@ -1770,11 +1770,11 @@ void SoundEngine::playMusicUpdate() {
             break;
 
         case eMusicStreamState_Completed: {
-            // random delay of up to 3 minutes for music
+            
             m_iMusicDelay = random->nextInt(
-                20 * 60 * 3);  // random->nextInt(20 * 60 * 10) + 20 * 60 * 10;
-            // Check if we have a local player in The Nether or in The End, and
-            // play that music if they are
+                20 * 60 * 3);  
+            
+            
             Minecraft* pMinecraft = Minecraft::GetInstance();
             bool playerInEnd = false;
             bool playerInNether = false;
@@ -1808,11 +1808,11 @@ void SoundEngine::playMusicUpdate() {
         } break;
     }
 
-    // check the status of the stream - this is for when a track completes
-    // rather than is stopped by the user action
+    
+    
 
     if (m_hStream != 0) {
-        if (AIL_stream_status(m_hStream) == SMP_DONE)  // SMP_DONE
+        if (AIL_stream_status(m_hStream) == SMP_DONE)  
         {
             AIL_close_stream(m_hStream);
             m_hStream = 0;
@@ -1828,11 +1828,11 @@ F32 AILCALLBACK custom_falloff_function(HSAMPLE S, F32 distance,
                                         F32 max_dist) {
     F32 result;
 
-    // This is now emulating the linear fall-off function that we used on the
-    // Xbox 360. The parameter which is passed as "max_dist" is the only one
-    // actually used, and is generally used as CurveDistanceScaler is used on
-    // XACT on the Xbox. A special value of 10000.0f is passed for thunder,
-    // which has no attenuation
+    
+    
+    
+    
+    
 
     if (max_dist == 10000.0f) {
         return 1.0f;
@@ -1846,8 +1846,8 @@ F32 AILCALLBACK custom_falloff_function(HSAMPLE S, F32 distance,
 }
 #endif
 
-// Universal, these functions shouldn't need platform specific
-// implementations
+
+
 void SoundEngine::updateMusicVolume(float fVal) { m_MasterMusicVolume = fVal; }
 void SoundEngine::updateSystemMusicPlaying(bool isPlaying) {
     m_bSystemMusicPlaying = isPlaying;
@@ -1866,7 +1866,7 @@ void SoundEngine::SetStreamingSounds(int iOverworldMin, int iOverWorldMax,
     m_iStream_End_Max = iEndMax;
     m_iStream_CD_1 = iCD1;
 
-    // array to monitor recently played tracks
+    
     if (m_bHeardTrackA) {
         delete[] m_bHeardTrackA;
     }
@@ -1874,10 +1874,10 @@ void SoundEngine::SetStreamingSounds(int iOverworldMin, int iOverWorldMax,
     memset(m_bHeardTrackA, 0, sizeof(bool) * (iEndMax + 1));
 }
 int SoundEngine::GetRandomishTrack(int iStart, int iEnd) {
-    // 4J-PB - make it more likely that we'll get a track we've not heard for a
-    // while, although repeating tracks sometimes is fine
+    
+    
 
-    // if all tracks have been heard, clear the flags
+    
     bool bAllTracksHeard = true;
     int iVal = iStart;
     for (size_t i = iStart; i <= iEnd; i++) {
@@ -1896,12 +1896,12 @@ int SoundEngine::GetRandomishTrack(int iStart, int iEnd) {
         }
     }
 
-    // trying to get a track we haven't heard, but not too hard
+    
     for (size_t i = 0; i <= ((iEnd - iStart) / 2); i++) {
-        // random->nextInt(1) will always return 0
+        
         iVal = random->nextInt((iEnd - iStart) + 1) + iStart;
         if (m_bHeardTrackA[iVal] == false) {
-            // not heard this
+            
             app.DebugPrintf("(%d) Not heard track %d yet, so playing it now\n",
                             i, iVal);
             m_bHeardTrackA[iVal] = true;
@@ -1928,7 +1928,7 @@ void SoundEngine::addMusic(const std::wstring& name, File* file) {}
 void SoundEngine::addStreaming(const std::wstring& name, File* file) {}
 
 bool SoundEngine::isStreamingWavebankReady() { return true; }
-// This is unused by the linux version, it'll need to be changed
+
 char* SoundEngine::ConvertSoundPathToName(const std::wstring& name,
                                           bool bConvertSpaces) {
     return nullptr;

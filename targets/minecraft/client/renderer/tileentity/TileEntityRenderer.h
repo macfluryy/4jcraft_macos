@@ -18,16 +18,16 @@ protected:
 public:
     virtual void render(std::shared_ptr<TileEntity> entity, double x, double y,
                         double z, float a, bool setColor, float alpha,
-                        bool useCompiled) = 0;  // 4J added setColor param,
-                                                // alpha and useCompiled
+                        bool useCompiled) = 0;  
+                                                
     virtual void onNewLevel(Level* level) {}
 
 protected:
     void bindTexture(
-        ResourceLocation* location);  // 4J - changed from std::wstring to int
+        ResourceLocation* location);  
     void bindTexture(
         const std::wstring& urlTexture,
-        ResourceLocation* location);  // 4J - changed from std::wstring to int
+        ResourceLocation* location);  
 private:
     Level* getLevel();
 

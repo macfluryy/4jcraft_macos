@@ -24,14 +24,14 @@ class Random;
 class ClientInformationPacket;
 
 class PlayerConnection : public PacketListener, public ConsoleInputSource {
-    //    public static Logger logger = Logger.getLogger("Minecraft");
+    
 
 public:
     Connection* connection;
     bool done;
     std::mutex done_cs;
 
-    // 4J Stu - Added this so that we can manage UGC privileges
+    
     PlayerUID m_offlineXUID, m_onlineXUID;
     bool m_friendsOnlyUGC;
 
@@ -66,14 +66,14 @@ public:
     virtual void handlePlayerInput(std::shared_ptr<PlayerInputPacket> packet);
     virtual void handleMovePlayer(std::shared_ptr<MovePlayerPacket> packet);
     void teleport(double x, double y, double z, float yRot, float xRot,
-                  bool sendPacket = true);  // 4J Added sendPacket param
+                  bool sendPacket = true);  
     virtual void handlePlayerAction(std::shared_ptr<PlayerActionPacket> packet);
     virtual void handleUseItem(std::shared_ptr<UseItemPacket> packet);
     virtual void onDisconnect(DisconnectPacket::eDisconnectReason reason,
                               void* reasonObjects);
     virtual void onUnhandledPacket(std::shared_ptr<Packet> packet);
     void send(std::shared_ptr<Packet> packet);
-    void queueSend(std::shared_ptr<Packet> packet);  // 4J Added
+    void queueSend(std::shared_ptr<Packet> packet);  
     virtual void handleSetCarriedItem(
         std::shared_ptr<SetCarriedItemPacket> packet);
     virtual void handleChat(std::shared_ptr<ChatPacket> packet);
@@ -81,7 +81,7 @@ public:
 private:
     void handleCommand(const std::wstring& message);
     
-    // 4J - Parse command string to enum (e.g. "gamemode" → eGameCommand_GameMode)
+    
     EGameCommand parseCommandName(const std::wstring& cmdName);
 
 public:
@@ -105,7 +105,7 @@ private:
     std::unordered_map<int, short, IntKeyHash, IntKeyEq> expectedAcks;
 
 public:
-    // 4J Stu - Handlers only valid in debug mode
+    
 #ifndef _CONTENT_PACKAGE
     virtual void handleContainerSetSlot(
         std::shared_ptr<ContainerSetSlotPacket> packet);
@@ -120,20 +120,20 @@ public:
     virtual void handleSignUpdate(std::shared_ptr<SignUpdatePacket> packet);
     virtual void handleKeepAlive(std::shared_ptr<KeepAlivePacket> packet);
     virtual void handlePlayerInfo(
-        std::shared_ptr<PlayerInfoPacket> packet);  // 4J Added
+        std::shared_ptr<PlayerInfoPacket> packet);  
     virtual bool isServerPacketListener();
     virtual void handlePlayerAbilities(
         std::shared_ptr<PlayerAbilitiesPacket> playerAbilitiesPacket);
     virtual void handleCustomPayload(
         std::shared_ptr<CustomPayloadPacket> customPayloadPacket);
-    // 4J macOS task 6.3 (Req 5.2/5.5/1.5) - receive the client's requested
-    // view distance. Stashed here (possibly on the network thread) and applied
-    // on the server tick; see tick() and m_pendingClientViewDistance.
+    
+    
+    
     virtual void handleClientInformation(
         std::shared_ptr<ClientInformationPacket> packet);
     virtual bool isDisconnected();
 
-    // 4J Added
+    
     virtual void handleCraftItem(std::shared_ptr<CraftItemPacket> packet);
     virtual void handleTradeItem(std::shared_ptr<TradeItemPacket> packet);
     virtual void handleDebugOptions(std::shared_ptr<DebugOptionsPacket> packet);
@@ -153,17 +153,17 @@ public:
     bool isLocal();
     bool isGuest();
 
-    // 4J Added as we need to set this from outside sometimes
+    
     void setPlayer(std::shared_ptr<ServerPlayer> player) {
         this->player = player;
     }
     std::shared_ptr<ServerPlayer> getPlayer() { return player; }
 
-    // 4J Added to signal a disconnect from another thread
+    
     void closeOnTick() { m_bCloseOnTick = true; }
 
-    // 4J Added so that we can send on textures that get received after this
-    // connection requested them
+    
+    
     void handleTextureReceived(const std::wstring& textureName);
     void handleTextureAndGeometryReceived(const std::wstring& textureName);
 
@@ -172,7 +172,7 @@ public:
     void setWasKicked() { m_bWasKicked = true; }
     bool getWasKicked() { return m_bWasKicked; }
 
-    // 4J Added
+    
     bool hasClientTickedOnce() { return m_bHasClientTickedOnce; }
 
 private:
@@ -181,12 +181,12 @@ private:
 
     bool m_bWasKicked;
 
-    // 4J macOS task 6.3 (Req 5.2/5.5/1.5) - the client's most recently
-    // requested view distance (in chunks), or -1 when there is no pending
-    // change. Written from handleClientInformation (which may run on the
-    // network thread because canHandleAsyncPackets() == true) and
-    // read/reset from tick() on the server thread, so it is atomic. The actual
-    // ServerPlayer::setEffectiveViewDistance call (which mutates PlayerChunkMap
-    // subscription state) happens only on the server tick.
+    
+    
+    
+    
+    
+    
+    
     std::atomic<int> m_pendingClientViewDistance{-1};
 };

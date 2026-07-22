@@ -47,9 +47,9 @@ BatModel::BatModel() : Model() {
     rightWing->addChild(rightWingTip);
     leftWing->addChild(leftWingTip);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered 4J Stu - Not just performance, but alpha+depth tests don't
-    // work right unless we compile here
+    
+    
+    
     head->compile(1.0f / 16.0f);
     body->compile(1.0f / 16.0f);
     rightWing->compile(1.0f / 16.0f);

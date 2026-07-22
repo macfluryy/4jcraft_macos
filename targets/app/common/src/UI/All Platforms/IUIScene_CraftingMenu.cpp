@@ -46,13 +46,13 @@ Recipy::_eGroupType IUIScene_CraftingMenu::m_GroupTypeMapping9GridA
 };
 
 const wchar_t* IUIScene_CraftingMenu::m_GroupIconNameA[m_iMaxGroup3x3] = {
-    L"Structures",  // Recipy::eGroupType_Structure,
-    L"Tools",       // Recipy::eGroupType_Tool,
-    L"Food",        // Recipy::eGroupType_Food,
-    L"Armour",      // Recipy::eGroupType_Armour,
-    L"Mechanisms",  // Recipy::eGroupType_Mechanism,
-    L"Transport",   // Recipy::eGroupType_Transport,
-    L"Decoration",  // Recipy::eGroupType_Decoration,
+    L"Structures",  
+    L"Tools",       
+    L"Food",        
+    L"Armour",      
+    L"Mechanisms",  
+    L"Transport",   
+    L"Decoration",  
 };
 
 IUIScene_CraftingMenu::_eGroupTab
@@ -67,39 +67,39 @@ IUIScene_CraftingMenu::_eGroupTab
         eGroupTab_Middle, eGroupTab_Middle, eGroupTab_Right,
 };
 
-// mapping array to map the base objects to their description string
-// This should map the enums
-// enum
-// {
-// 	eBaseItemType_undefined=0,
-// 	eBaseItemType_sword,
-// 	eBaseItemType_shovel,
-// 	eBaseItemType_pickaxe,
-// 	eBaseItemType_hatchet,
-// 	eBaseItemType_hoe,
-// 	eBaseItemType_door,
-// 	eBaseItemType_helmet,
-// 	eBaseItemType_chestplate,
-// 	eBaseItemType_leggings,
-// 	eBaseItemType_boots,
-// 	eBaseItemType_ingot,
-// 	eBaseItemType_rail,
-// 	eBaseItemType_block,
-// 	eBaseItemType_pressureplate,
-// 	eBaseItemType_stairs,
-// 	eBaseItemType_cloth,
-// 	eBaseItemType_dyepowder,
-//  eBaseItemType_structplanks
-// 	eBaseItemType_structblock,
-// 	eBaseItemType_slab,
-// 	eBaseItemType_halfslab,
-// 	eBaseItemType_torch,
-// 	eBaseItemType_bow,
-// 	eBaseItemType_pockettool,
-// 	eBaseItemType_utensil,
-//
-// }
-// eBaseItemType;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 IUIScene_CraftingMenu::IUIScene_CraftingMenu() {
     m_iCurrentSlotHIndex = 0;
@@ -114,7 +114,7 @@ IUIScene_CraftingMenu::IUIScene_CraftingMenu() {
     m_iGroupIndex = 0;
 
     for (int i = 0; i < m_iMaxDisplayedVSlotC; i++) {
-        iVSlotIndexA[i] = i;  // start with 0,1,2
+        iVSlotIndexA[i] = i;  
     }
 
     m_iDisplayDescription = DISPLAY_INVENTORY;
@@ -146,8 +146,8 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
 
     if (m_bIgnoreKeyPresses) return bHandled;
 
-    // ignore key repeats of the X key - because it's X to open this menu, it
-    // can come through as a repeat on opening
+    
+    
     if (bRepeat && (iAction == ACTION_MENU_X)) {
         return 0;
     }
@@ -169,7 +169,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
     switch (iAction) {
         case ACTION_MENU_X:
 
-            // change the display
+            
             m_iDisplayDescription++;
             if (m_iDisplayDescription == DISPLAY_MAX)
                 m_iDisplayDescription = DISPLAY_INVENTORY;
@@ -183,20 +183,20 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             ui.ShowTooltip(iPad, eToolTipButtonB, false);
             ui.ShowTooltip(iPad, eToolTipButtonA, false);
             ui.ShowTooltip(iPad, eToolTipButtonRB, false);
-            // kill the crafting xui
-            // ui.PlayUISFX(eSFX_Back);
+            
+            
             ui.CloseUIScenes(iPad);
 
             bHandled = true;
             break;
         case ACTION_MENU_A:
-            // Do some crafting!
+            
             if (m_pPlayer && m_pPlayer->inventory) {
-                // std::vector<Recipy*> *recipes = ((Recipes
-                // *)Recipes::getInstance())->getRecipies();
+                
+                
                 Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
                     Recipes::getInstance()->getRecipeIngredientsArray();
-                // Force a make if the debug is on
+                
                 if (app.DebugSettingsOn() &&
                     app.GetGameSettingsDebugMask(
                         ProfileManager.GetPrimaryPad()) &
@@ -209,8 +209,8 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                         std::shared_ptr<ItemInstance> pTempItemInst =
                             pRecipeIngredientsRequired[iRecipe]
                                 .pRecipy->assemble(nullptr);
-                        // int
-                        // iIcon=pTempItemInst->getItem()->getIcon(pTempItemInst->getAuxValue());
+                        
+                        
 
                         if (pMinecraft->localgameModes[iPad] != nullptr) {
                             Tutorial* tutorial =
@@ -224,12 +224,12 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                             iRecipe, m_pPlayer);
 
                         if (m_pPlayer->inventory->add(pTempItemInst) == false) {
-                            // no room in inventory, so throw it down
+                            
                             m_pPlayer->drop(pTempItemInst);
                         }
-                        // play a sound
-                        // pMinecraft->soundEngine->playUI(
-                        // L"random.pop", 1.0f, 1.0f);
+                        
+                        
+                        
                         ui.PlayUISFX(eSFX_Craft);
                     }
                 } else if (CanBeMadeA[m_iCurrentSlotHIndex].iCount != 0) {
@@ -244,8 +244,8 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                     std::shared_ptr<ItemInstance> pTempItemInst =
                         pRecipeIngredientsRequired[iRecipe].pRecipy->assemble(
                             nullptr);
-                    // int
-                    // iIcon=pTempItemInst->getItem()->getIcon(pTempItemInst->getAuxValue());
+                    
+                    
 
                     if (pMinecraft->localgameModes[iPad] != nullptr) {
                         Tutorial* tutorial =
@@ -264,20 +264,20 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                             std::dynamic_pointer_cast<Player>(
                                 m_pPlayer->shared_from_this()),
                             pTempItemInst->count);
-                        // TODO 4J Stu - handleCraftItem should do a lot more
-                        // than what it does, loads of the "can we craft" code
-                        // should also probably be shifted to the GameMode
+                        
+                        
+                        
                         pMinecraft->localgameModes[iPad]->handleCraftItem(
                             iRecipe, m_pPlayer);
 
-                        // play a sound
-                        // pMinecraft->soundEngine->playUI(
-                        // L"random.pop", 1.0f, 1.0f);
+                        
+                        
+                        
                         ui.PlayUISFX(eSFX_Craft);
 
                         if (pTempItemInst->id != Item::fireworksCharge_Id &&
                             pTempItemInst->id != Item::fireworks_Id) {
-                            // and remove those resources from your inventory
+                            
                             for (int i = 0;
                                  i < pRecipeIngredientsRequired[iRecipe].iIngC;
                                  i++) {
@@ -287,8 +287,8 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                                      j++) {
                                     std::shared_ptr<ItemInstance> ingItemInst =
                                         nullptr;
-                                    // do we need to remove a specific aux
-                                    // value?
+                                    
+                                    
                                     if (pRecipeIngredientsRequired[iRecipe]
                                             .iIngAuxValA[i] !=
                                         Recipes::ANY_AUX_VALUE) {
@@ -318,13 +318,13 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                                                 .iIngIDA[i]);
                                     }
 
-                                    // 4J Stu - Fix for #13097 - Bug: Milk
-                                    // Buckets are removed when crafting Cake
+                                    
+                                    
                                     if (ingItemInst != nullptr) {
                                         if (ingItemInst->getItem()
                                                 ->hasCraftingRemainingItem()) {
-                                            // replace item with remaining
-                                            // result
+                                            
+                                            
                                             m_pPlayer->inventory->add(
                                                 std::shared_ptr<
                                                     ItemInstance>(new ItemInstance(
@@ -335,15 +335,15 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                                 }
                             }
 
-                            // 4J Stu - Fix for #13119 - We should add the item
-                            // after we remove the ingredients
+                            
+                            
                             if (m_pPlayer->inventory->add(pTempItemInst) ==
                                 false) {
-                                // no room in inventory, so throw it down
+                                
                                 m_pPlayer->drop(pTempItemInst);
                             }
 
-                            // 4J Gordon: Achievements
+                            
                             switch (pTempItemInst->id) {
                                 case Tile::workBench_Id:
                                     m_pPlayer->awardStat(
@@ -403,17 +403,17 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                                     break;
                             }
 
-                            // We've used some ingredients from our inventory,
-                            // so update the recipes we can make
+                            
+                            
                             CheckRecipesAvailable();
-                            // don't reset the vertical slots - we want to stay
-                            // where we are
+                            
+                            
                             UpdateVerticalSlots();
                             UpdateHighlight();
                         }
                     } else {
-                        // pMinecraft->soundEngine->playUI(
-                        // L"btn.back", 1.0f, 1.0f);
+                        
+                        
                         ui.PlayUISFX(eSFX_CraftFail);
                     }
                 }
@@ -421,7 +421,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             break;
 
         case ACTION_MENU_LEFT_SCROLL:
-            // turn off the old group tab
+            
             showTabHighlight(m_iGroupIndex, false);
 
             if (m_iGroupIndex == 0) {
@@ -433,14 +433,14 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             } else {
                 m_iGroupIndex--;
             }
-            // turn on the new group
+            
             showTabHighlight(m_iGroupIndex, true);
 
             m_iCurrentSlotHIndex = 0;
             m_iCurrentSlotVIndex = 1;
 
             CheckRecipesAvailable();
-            // reset the vertical slots
+            
             iVSlotIndexA[0] = CanBeMadeA[m_iCurrentSlotHIndex].iCount - 1;
             iVSlotIndexA[1] = 0;
             iVSlotIndexA[2] = 1;
@@ -451,7 +451,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
 
             break;
         case ACTION_MENU_RIGHT_SCROLL:
-            // turn off the old group tab
+            
             showTabHighlight(m_iGroupIndex, false);
 
             m_iGroupIndex++;
@@ -460,13 +460,13 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             } else {
                 if (m_iGroupIndex == m_iMaxGroup2x2) m_iGroupIndex = 0;
             }
-            // turn on the new group
+            
             showTabHighlight(m_iGroupIndex, true);
 
             m_iCurrentSlotHIndex = 0;
             m_iCurrentSlotVIndex = 1;
             CheckRecipesAvailable();
-            // reset the vertical slots
+            
             iVSlotIndexA[0] = CanBeMadeA[m_iCurrentSlotHIndex].iCount - 1;
             iVSlotIndexA[1] = 0;
             iVSlotIndexA[2] = 1;
@@ -477,16 +477,16 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             break;
     }
 
-    // 4J-Tomk - check if we've only got one vertical scroll slot (480, splits &
-    // Vita)
+    
+    
     bool bNoScrollSlots = false;
     if (m_bSplitscreen ||
         (!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())) {
         bNoScrollSlots = true;
     }
 
-    // 4J Stu - We did used to swap the thumsticks based on Southpaw in this
-    // scene, but ONLY in this scene
+    
+    
     switch (iAction) {
         case ACTION_MENU_OTHER_STICK_UP:
             scrollDescriptionUp();
@@ -501,14 +501,14 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             if (m_iCurrentSlotHIndex >= m_iCraftablesMaxHSlotC)
                 m_iCurrentSlotHIndex = 0;
             m_iCurrentSlotVIndex = 1;
-            // clear the indices
+            
             iVSlotIndexA[0] = CanBeMadeA[m_iCurrentSlotHIndex].iCount - 1;
             iVSlotIndexA[1] = 0;
             iVSlotIndexA[2] = 1;
 
             UpdateVerticalSlots();
             UpdateHighlight();
-            // re-enable the old hslot
+            
             if (CanBeMadeA[iOldHSlot].iCount > 0) {
                 setShowCraftHSlot(iOldHSlot, true);
             }
@@ -523,14 +523,14 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                 else
                     m_iCurrentSlotHIndex--;
                 m_iCurrentSlotVIndex = 1;
-                // clear the indices
+                
                 iVSlotIndexA[0] = CanBeMadeA[m_iCurrentSlotHIndex].iCount - 1;
                 iVSlotIndexA[1] = 0;
                 iVSlotIndexA[2] = 1;
 
                 UpdateVerticalSlots();
                 UpdateHighlight();
-                // re-enable the old hslot
+                
                 if (CanBeMadeA[iOldHSlot].iCount > 0) {
                     setShowCraftHSlot(iOldHSlot, true);
                 }
@@ -551,14 +551,14 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                 } else if (CanBeMadeA[m_iCurrentSlotHIndex].iCount > 2) {
                     {
                         if (m_iCurrentSlotVIndex != 0) {
-                            // just move the highlight
+                            
                             m_iCurrentSlotVIndex--;
                             ui.PlayUISFX(eSFX_Focus);
                         } else {
-                            // move the slots
+                            
                             iVSlotIndexA[2] = iVSlotIndexA[1];
                             iVSlotIndexA[1] = iVSlotIndexA[0];
-                            // on 0 and went up, so cycle the values
+                            
                             if (iVSlotIndexA[0] == 0) {
                                 iVSlotIndexA[0] =
                                     CanBeMadeA[m_iCurrentSlotHIndex].iCount - 1;
@@ -570,7 +570,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                     }
                 } else {
                     if (m_iCurrentSlotVIndex != 1) {
-                        // just move the highlight
+                        
                         m_iCurrentSlotVIndex--;
                         ui.PlayUISFX(eSFX_Focus);
                     }
@@ -622,35 +622,35 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
     return bHandled;
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-//	CheckRecipesAvailable
-//
-//////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 void IUIScene_CraftingMenu::CheckRecipesAvailable() {
     int iHSlotBrushControl = 0;
 
-    // clear the current list
+    
     memset(CanBeMadeA, 0, sizeof(CANBEMADE) * m_iCraftablesMaxHSlotC);
 
     hideAllHSlots();
 
     if (m_pPlayer && m_pPlayer->inventory) {
-        // dump out the inventory
-        /*		for (unsigned int k = 0; k <
-        m_pPlayer->inventory->items.size(); k++)
-        {
-        if (m_pPlayer->inventory->items[k] != nullptr)
-        {
-        std::wstring itemstring=m_pPlayer->inventory->items[k]->toString();
+        
+        
 
-        //printf("--- Player has ");
-        OutputDebugStringW(itemstring.c_str());
-        //printf(" with Aux val = %d, base type = %d, Material =
-        %d\n",m_pPlayer->inventory->items[k]->getAuxValue(),m_pPlayer->inventory->items[k]->getItem()->getBaseItemType(),m_pPlayer->inventory->items[k]->getItem()->getMaterial());
-        }
-        }
-        */
+
+
+
+
+
+
+
+
+
+
+
+
         std::vector<Recipy*>* recipes =
             ((Recipes*)Recipes::getInstance())->getRecipies();
         Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
@@ -658,94 +658,94 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
         int iRecipeC = (int)recipes->size();
         auto itRecipe = recipes->begin();
 
-        // dump out the recipe products
+        
 
-        // 		for (int i = 0; i < iRecipeC; i++)
-        // 		{
-        // 			std::shared_ptr<ItemInstance>
-        // pTempItemInst=pRecipeIngredientsRequired[i].pRecipy->assemble(nullptr);
-        // 			if (pTempItemInst != nullptr)
-        // 			{
-        // 				std::wstring
-        // itemstring=pTempItemInst->toString();
-        //
-        // 				printf("Recipe [%d] = ",i);
-        // 				OutputDebugStringW(itemstring.c_str());
-        // 				if(pTempItemInst->id!=0)
-        // 				{
-        // 					if(pTempItemInst->id<256)
-        // 					{
-        // 						Tile
-        // *pTile=Tile::tiles[pTempItemInst->id];
-        // printf("[TILE] ID\t%d\tAux val\t%d\tBase type\t%d\tMaterial\t%d\t
-        // Count=%d\n",pTempItemInst->id,
-        // pTempItemInst->getAuxValue(),pTile->getBaseItemType(),pTile->getMaterial(),pTempItemInst->GetCount());
-        // 					}
-        // 					else
-        // 					{
-        // 						printf("ID\t%d\tAux
-        // val\t%d\tBase type\t%d\tMaterial\t%d Count=%d\n",pTempItemInst->id,
-        // pTempItemInst->getAuxValue(),pTempItemInst->getItem()->getBaseItemType(),pTempItemInst->getItem()->getMaterial(),pTempItemInst->GetCount());
-        // 					}
-        //
-        // 				}
-        // 			}
-        // 		}
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         for (int i = 0; i < iRecipeC; i++) {
             Recipy* r = *itRecipe;
 
-            // If this recipe isn't in the current grouptype, skip it
+            
             if (r->getGroup() != m_pGroupA[m_iGroupIndex]) {
                 itRecipe++;
                 pRecipeIngredientsRequired[i].bCanMake[getPad()] = false;
                 continue;
             }
-            // if we are in the inventory menu, then we have 2x2 crafting
-            // available only
+            
+            
             if ((m_iContainerType == RECIPE_TYPE_2x2) &&
                 (pRecipeIngredientsRequired[i].iType == RECIPE_TYPE_3x3)) {
-                // need a crafting table for this recipe
+                
                 itRecipe++;
                 pRecipeIngredientsRequired[i].bCanMake[getPad()] = false;
                 continue;
             }
-            // clear the mask showing which ingredients are missing
+            
             pRecipeIngredientsRequired[i]
                 .usBitmaskMissingGridIngredients[getPad()] = 0;
 
-            // bool bCanMakeRecipe=true;
+            
             bool* bFoundA = new bool[pRecipeIngredientsRequired[i].iIngC];
             for (int j = 0; j < pRecipeIngredientsRequired[i].iIngC; j++) {
                 bFoundA[j] = false;
                 int iTotalCount = 0;
 
-                // Does the player have this ingredient?
+                
                 for (unsigned int k = 0; k < m_pPlayer->inventory->items.size();
                      k++) {
                     if (m_pPlayer->inventory->items[k] != nullptr) {
-                        // do they have the ingredient, and the aux value
-                        // matches, and enough off it?
+                        
+                        
                         if ((m_pPlayer->inventory->items[k]->id ==
                              pRecipeIngredientsRequired[i].iIngIDA[j]) &&
-                            // check if the ingredient required doesn't care
-                            // about the aux value, or if it does, does the
-                            // inventory item aux match it
+                            
+                            
+                            
                             ((pRecipeIngredientsRequired[i].iIngAuxValA[j] ==
                               Recipes::ANY_AUX_VALUE) ||
                              (pRecipeIngredientsRequired[i].iIngAuxValA[j] ==
                               m_pPlayer->inventory->items[k]->getAuxValue()))) {
-                            // do they have enough? We need to check the whole
-                            // inventory, since they may have enough in
-                            // different slots (milk isn't milkx3, but
-                            // milk,milk,milk)
+                            
+                            
+                            
+                            
                             if (m_pPlayer->inventory->items[k]->GetCount() >=
                                 pRecipeIngredientsRequired[i].iIngValA[j]) {
-                                // they have enough with one slot
+                                
                                 bFoundA[j] = true;
                             } else {
-                                // look at the combined value from the whole
-                                // inventory
+                                
+                                
 
                                 for (unsigned int l = 0;
                                      l < m_pPlayer->inventory->items.size();
@@ -776,23 +776,23 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
                                 }
                             }
 
-                            // 4J Stu - TU-1 hotfix
-                            // Fix for #13143 - Players are able to craft items
-                            // they do not have enough ingredients for if they
-                            // store the ingredients in multiple, smaller stacks
+                            
+                            
+                            
+                            
                             break;
                         }
                     }
                 }
-                // if bFoundA[j] is false, then we didn't have enough of the
-                // ingredient required by the recipe, so mark the grid items
-                // we're short of
+                
+                
+                
                 if (bFoundA[j] == false) {
                     int iMissing =
                         pRecipeIngredientsRequired[i].iIngValA[j] - iTotalCount;
                     int iGridIndex = 0;
                     while (iMissing != 0) {
-                        // need to check if there is an aux val and match that
+                        
                         if (((pRecipeIngredientsRequired[i]
                                   .uiGridA[iGridIndex] &
                               0x00FFFFFF) ==
@@ -804,8 +804,8 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
                                     .uiGridA[iGridIndex] &
                                 0xFF000000) >>
                                24)))) {
-                            // this grid entry is the ingredient we don't have
-                            // enough of
+                            
+                            
                             pRecipeIngredientsRequired[i]
                                 .usBitmaskMissingGridIngredients[getPad()] |=
                                 1 << iGridIndex;
@@ -816,7 +816,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
                 }
             }
 
-            // so can we make it?
+            
             bool bCanMake = true;
             for (int j = 0; j < pRecipeIngredientsRequired[i].iIngC; j++) {
                 if (bFoundA[j] == false) {
@@ -827,31 +827,31 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
 
             pRecipeIngredientsRequired[i].bCanMake[getPad()] = bCanMake;
 
-            // Add the recipe to the CanBeMade list of lists
+            
             if (iHSlotBrushControl <= m_iCraftablesMaxHSlotC) {
                 bool bFound = false;
                 std::shared_ptr<ItemInstance> pTempItemInst =
                     pRecipeIngredientsRequired[i].pRecipy->assemble(nullptr);
-                // int
-                // iIcon=pTempItemInst->getItem()->getIcon(pTempItemInst->getAuxValue());
+                
+                
                 int iID = pTempItemInst->getItem()->id;
                 int iBaseType;
 
-                if (iID < 256)  // is it a tile?
+                if (iID < 256)  
                 {
                     iBaseType = Tile::tiles[iID]->getBaseItemType();
                 } else {
                     iBaseType = pTempItemInst->getItem()->getBaseItemType();
                 }
 
-                // ignore for the misc base type - these have not been placed in
-                // a base type group
+                
+                
                 if (iBaseType != Item::eBaseItemType_undefined) {
                     for (int k = 0; k < iHSlotBrushControl; k++) {
-                        // if the item base type is the same as one already in,
-                        // then add it to that list
+                        
+                        
                         if (CanBeMadeA[k].iItemBaseType == iBaseType) {
-                            // base item type already in our list
+                            
                             bFound = true;
                             if (CanBeMadeA[k].iCount < m_iMaxVSlotC) {
                                 CanBeMadeA[k].iRecipeA[CanBeMadeA[k].iCount++] =
@@ -866,7 +866,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
 
                 if (!bFound) {
                     if (iHSlotBrushControl < m_iCraftablesMaxHSlotC) {
-                        // add to the list
+                        
                         CanBeMadeA[iHSlotBrushControl].iItemBaseType =
                             iBaseType;
                         CanBeMadeA[iHSlotBrushControl]
@@ -891,10 +891,10 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
         }
     }
 
-    // run through the canbemade list and update the icons displayed
+    
     int iIndex = 0;
-    // std::vector<Recipy*> *recipes = ((Recipes
-    // *)Recipes::getInstance())->getRecipies();
+    
+    
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
@@ -919,9 +919,9 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
             }
         }
 
-        // 4J Stu - For clocks and compasses we set the aux value to a special
-        // one that signals we should use a default texture rather than the
-        // dynamic one for the player
+        
+        
+        
         if (pTempItemInst->id == Item::clock_Id ||
             pTempItemInst->id == Item::compass_Id) {
             pTempItemInst->setAuxValue(255);
@@ -931,32 +931,32 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
         iIndex++;
     }
 
-    // 4J-PB - Removed - UpdateTooltips will do this
-    // Update tooltips
-    /*if(CanBeMadeA[m_iCurrentSlotHIndex].iCount!=0)
-    {
-            ui.ShowTooltip( getPad(), eToolTipButtonA, true );
-            // 4J-PB - not implemented !
-            //ui.EnableTooltip( getPad(), eToolTipButtonA, true );
-    }
-    else
-    {
-            ui.ShowTooltip( getPad(), eToolTipButtonA, false );
-    }*/
+    
+    
+    
+
+
+
+
+
+
+
+
+
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-//	UpdateHighlight
-//
-//////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 void IUIScene_CraftingMenu::UpdateHighlight() {
     updateHighlightAndScrollPositions();
 
     bool bCanBeMade = CanBeMadeA[m_iCurrentSlotHIndex].iCount != 0;
     if (bCanBeMade) {
-        // std::vector<Recipy*> *recipes = ((Recipes
-        // *)Recipes::getInstance())->getRecipies();
+        
+        
         Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
             Recipes::getInstance()->getRecipeIngredientsArray();
         int iSlot;
@@ -970,7 +970,7 @@ void IUIScene_CraftingMenu::UpdateHighlight() {
                                            .iRecipeA[iSlot]]
                 .pRecipy->assemble(nullptr);
 
-        // special case for the torch coal/charcoal
+        
         int id = pTempItemInstAdditional->getDescriptionId();
         const wchar_t* itemstring;
 
@@ -1010,29 +1010,29 @@ void IUIScene_CraftingMenu::UpdateHighlight() {
     UpdateTooltips();
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-//	UpdateVerticalSlots
-//
-//////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 void IUIScene_CraftingMenu::UpdateVerticalSlots() {
-    // std::vector<Recipy*> *recipes = ((Recipes
-    // *)Recipes::getInstance())->getRecipies();
+    
+    
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
-    // update the vertical items for the current horizontal slot
+    
     hideAllVSlots();
 
-    // could have either 1 or 2 vertical slots, above and below the horizontal
-    // slot
+    
+    
     if (CanBeMadeA[m_iCurrentSlotHIndex].iCount > 1) {
-        // turn off the horizontal one since we could be cycling through others
+        
         setShowCraftHSlot(m_iCurrentSlotHIndex, false);
         int iSlots = (CanBeMadeA[m_iCurrentSlotHIndex].iCount > 2) ? 3 : 2;
 
-        // 4J-Tomk - check if we've only got one vertical scroll slot (480,
-        // splits & Vita)
+        
+        
         bool bNoScrollSlots = false;
         if (m_bSplitscreen ||
             (!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())) {
@@ -1040,8 +1040,8 @@ void IUIScene_CraftingMenu::UpdateVerticalSlots() {
         }
 
         for (int i = 0; i < iSlots; i++) {
-            // 4J this check determines if the crafting scene has only one
-            // vertical scroll slot
+            
+            
             if (bNoScrollSlots) {
                 if (i != 1) continue;
             }
@@ -1067,9 +1067,9 @@ void IUIScene_CraftingMenu::UpdateVerticalSlots() {
                 }
             }
 
-            // 4J Stu - For clocks and compasses we set the aux value to a
-            // special one that signals we should use a default texture rather
-            // than the dynamic one for the player
+            
+            
+            
             if (pTempItemInstAdditional->id == Item::clock_Id ||
                 pTempItemInstAdditional->id == Item::compass_Id) {
                 pTempItemInstAdditional->setAuxValue(255);
@@ -1082,18 +1082,18 @@ void IUIScene_CraftingMenu::UpdateVerticalSlots() {
     }
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-//	DisplayIngredients
-//
-//////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 void IUIScene_CraftingMenu::DisplayIngredients() {
-    // std::vector<Recipy*> *recipes = ((Recipes
-    // *)Recipes::getInstance())->getRecipies();
+    
+    
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
-    // hide the previous ingredients
+    
     hideAllIngredientsSlots();
 
     if (CanBeMadeA[m_iCurrentSlotHIndex].iCount != 0) {
@@ -1106,7 +1106,7 @@ void IUIScene_CraftingMenu::DisplayIngredients() {
             iRecipy = CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[0];
         }
 
-        // show the 2x2 or 3x3 to make the current item
+        
         int iBoxWidth = (m_iContainerType == RECIPE_TYPE_2x2) ? 2 : 3;
         int iRecipe = CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iSlot];
         bool bCanMakeRecipe =
@@ -1116,8 +1116,8 @@ void IUIScene_CraftingMenu::DisplayIngredients() {
 
         m_iIngredientsC = pRecipeIngredientsRequired[iRecipe].iIngC;
 
-        // update the ingredients required - these will all be hidden until
-        // cycled by the user
+        
+        
         for (int i = 0; i < pRecipeIngredientsRequired[iRecipe].iIngC; i++) {
             int id = pRecipeIngredientsRequired[iRecipe].iIngIDA[i];
             int iAuxVal = pRecipeIngredientsRequired[iRecipe].iIngAuxValA[i];
@@ -1128,9 +1128,9 @@ void IUIScene_CraftingMenu::DisplayIngredients() {
                     item, pRecipeIngredientsRequired[iRecipe].iIngValA[i],
                     iAuxVal));
 
-            // 4J-PB - a very special case - the bed can use any kind of wool,
-            // so we can't use the item description and the same goes for the
-            // painting
+            
+            
+            
             int idescID;
 
             if (((pTempItemInst->id == Item::bed_Id) &&
@@ -1144,12 +1144,12 @@ void IUIScene_CraftingMenu::DisplayIngredients() {
             setIngredientDescriptionText(i, app.GetString(idescID));
 
             if ((iAuxVal & 0xFF) ==
-                0xFF)  // 4J Stu - If the aux value is set to match any
+                0xFF)  
                 iAuxVal = 0;
 
-            // 4J Stu - For clocks and compasses we set the aux value to a
-            // special one that signals we should use a default texture rather
-            // than the dynamic one for the player
+            
+            
+            
             if (id == Item::clock_Id || id == Item::compass_Id) {
                 iAuxVal = 0xFF;
             }
@@ -1159,15 +1159,15 @@ void IUIScene_CraftingMenu::DisplayIngredients() {
             setIngredientDescriptionRedBox(i, false);
         }
 
-        // 4J Stu - For clocks and compasses we set the aux value to a special
-        // one that signals we should use a default texture rather than the
-        // dynamic one for the player
+        
+        
+        
         if (pTempItemInst->id == Item::clock_Id ||
             pTempItemInst->id == Item::compass_Id) {
             pTempItemInst->setAuxValue(255);
         }
 
-        // don't grey out the output icon
+        
         setCraftingOutputSlotItem(getPad(), pTempItemInst);
 
         if (app.DebugSettingsOn() &&
@@ -1195,9 +1195,9 @@ void IUIScene_CraftingMenu::DisplayIngredients() {
                                    0xFF000000) >>
                                   24;
 
-                    // 4J Stu - For clocks and compasses we set the aux value to
-                    // a special one that signals we should use a default
-                    // texture rather than the dynamic one for the player
+                    
+                    
+                    
                     if (id == Item::clock_Id || id == Item::compass_Id) {
                         iAuxVal = 0xFF;
                     } else if (pTempItemInst->id == Item::fireworksCharge_Id &&
@@ -1208,8 +1208,8 @@ void IUIScene_CraftingMenu::DisplayIngredients() {
                         std::shared_ptr<ItemInstance>(
                             new ItemInstance(id, 1, iAuxVal));
                     setIngredientSlotItem(getPad(), index, itemInst);
-                    // show the ingredients we don't have if we can't make the
-                    // recipe
+                    
+                    
                     if (app.DebugSettingsOn() &&
                         app.GetGameSettingsDebugMask(
                             ProfileManager.GetPrimaryPad()) &
@@ -1235,7 +1235,7 @@ void IUIScene_CraftingMenu::DisplayIngredients() {
         setCraftingOutputSlotRedBox(false);
         m_iIngredientsC = 0;
         int iIngredientsSlots;
-        // if it's a 2x2 , only clear the 4 m_pCraftingIngredientA slots
+        
         if (m_iContainerType == RECIPE_TYPE_2x2) {
             iIngredientsSlots = 4;
         } else {
@@ -1249,26 +1249,26 @@ void IUIScene_CraftingMenu::DisplayIngredients() {
     }
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-//	UpdateDescriptionText
-//
-//////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade) {
     int iIDSString = 0;
-    // std::vector<Recipy*> *recipes = ((Recipes
-    // *)Recipes::getInstance())->getRecipies();
+    
+    
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
     if (bCanBeMade) {
-        int iSlot;  //,iRecipy;
+        int iSlot;  
         if (CanBeMadeA[m_iCurrentSlotHIndex].iCount > 1) {
             iSlot = iVSlotIndexA[m_iCurrentSlotVIndex];
-            // iRecipy=CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iSlot];
+            
         } else {
             iSlot = 0;
-            // iRecipy=CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[0];
+            
         }
 
         std::shared_ptr<ItemInstance> pTempItemInst =
@@ -1279,7 +1279,7 @@ void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade) {
         int iAuxVal = pTempItemInst->getAuxValue();
         int iBaseType;
 
-        if (iID < 256)  // is it a tile?
+        if (iID < 256)  
         {
             iBaseType = Tile::tiles[iID]->getBaseItemType();
 
@@ -1290,8 +1290,8 @@ void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade) {
             iIDSString = pTempItemInst->getUseDescriptionId();
         }
 
-        // A few special cases where the description required is specific to
-        // crafting, rather than the normal description
+        
+        
         if (iBaseType != Item::eBaseItemType_undefined) {
             switch (iBaseType) {
                 case Item::eBaseItemType_cloth:
@@ -1304,15 +1304,15 @@ void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade) {
             }
         }
 
-        // set the string mapped to by the base object mapping array
+        
 
         if (iIDSString >= 0) {
-            // this is an html control now, so set the font size and colour
-            // std::wstring wsText=app.GetString(iIDSString);
+            
+            
             std::wstring wsText =
                 app.FormatHTMLString(getPad(), app.GetString(iIDSString));
 
-            // 12 for splitscreen, 14 for normal
+            
             EHTMLFontSize size = eHTMLSize_Normal;
             if (m_bSplitscreen ||
                 (!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())) {
@@ -1325,7 +1325,7 @@ void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade) {
 
             setDescriptionText(wsText.c_str());
         } else {
-            /// Missing string!
+            
 #if defined(_DEBUG)
             setDescriptionText(
                 L"This is some placeholder description text about the "
@@ -1339,17 +1339,17 @@ void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade) {
     }
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-//	UpdateTooltips
-//
-//////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 void IUIScene_CraftingMenu::UpdateTooltips() {
-    // std::vector<Recipy*> *recipes = ((Recipes
-    // *)Recipes::getInstance())->getRecipies();
+    
+    
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
-    // Update tooltips
+    
 
     bool bDisplayCreate;
 
@@ -1390,35 +1390,35 @@ void IUIScene_CraftingMenu::UpdateTooltips() {
             break;
     }
 
-    /*if(CanBeMadeA[m_iCurrentSlotHIndex].iCount!=0)
-    {
-            int iSlot;
-            if(CanBeMadeA[m_iCurrentSlotHIndex].iCount>1)
-            {
-                    iSlot=iVSlotIndexA[m_iCurrentSlotVIndex];
-            }
-            else
-            {
-                    iSlot=0;
-            }
+    
 
-            if(pRecipeIngredientsRequired[CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iSlot]].bCanMake[getPad()])
-            {
-                    ui.EnableTooltip( getPad(), eToolTipButtonA, true );
-            }
-            else
-            {
-                    ui.EnableTooltip( getPad(), eToolTipButtonA, false );
-            }
-    }
-    else
-    {
-            ui.ShowTooltip( getPad(), eToolTipButtonA, false );
-    }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void IUIScene_CraftingMenu::HandleInventoryUpdated() {
-    // Check which recipes are available with the resources we have
+    
     CheckRecipesAvailable();
     UpdateVerticalSlots();
     UpdateHighlight();
@@ -1428,8 +1428,8 @@ void IUIScene_CraftingMenu::HandleInventoryUpdated() {
 bool IUIScene_CraftingMenu::isItemSelected(int itemId) {
     bool isSelected = false;
     if (m_pPlayer && m_pPlayer->inventory) {
-        // std::vector<Recipy*> *recipes = ((Recipes
-        // *)Recipes::getInstance())->getRecipies();
+        
+        
         Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
             Recipes::getInstance()->getRecipeIngredientsArray();
 

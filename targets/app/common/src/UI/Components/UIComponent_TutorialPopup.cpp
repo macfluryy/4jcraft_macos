@@ -24,7 +24,7 @@
 UIComponent_TutorialPopup::UIComponent_TutorialPopup(int iPad, void* initData,
                                                      UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_interactScene = nullptr;
@@ -40,7 +40,7 @@ UIComponent_TutorialPopup::UIComponent_TutorialPopup(int iPad, void* initData,
 
     m_labelDescription.init(L"");
 
-    // 4jcraft added
+    
     m_tutorial = nullptr;
 }
 
@@ -64,8 +64,8 @@ std::wstring UIComponent_TutorialPopup::getMoviePath() {
 }
 
 void UIComponent_TutorialPopup::UpdateTutorialPopup() {
-    // has the Splitscreen Gamertag visibility been changed? Re-Adjust Layout to
-    // prevent overlaps!
+    
+    
     if (m_bSplitscreenGamertagVisible !=
         (bool)(app.GetGameSettings(ProfileManager.GetPrimaryPad(),
                                    eGameSetting_DisplaySplitscreenGamertags) !=
@@ -86,8 +86,8 @@ void UIComponent_TutorialPopup::handleReload() {
         (bool)((app.GetGameSettings(ProfileManager.GetPrimaryPad(),
                                     eGameSetting_DisplaySplitscreenGamertags) !=
                 0) &&
-               !m_bContainerMenuVisible);  // 4J - TomK - Offset for splitscreen
-                                           // gamertag?
+               !m_bContainerMenuVisible);  
+                                           
     IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                             IggyPlayerRootPath(getMovie()),
                                             m_funcAdjustLayout, 1, value);
@@ -99,7 +99,7 @@ void UIComponent_TutorialPopup::SetTutorialDescription(
     TutorialPopupInfo* info) {
     m_interactScene = info->interactScene;
 
-    // 4jcraft added
+    
     m_tutorial = info->tutorial;
 
     std::wstring parsed =
@@ -126,7 +126,7 @@ void UIComponent_TutorialPopup::SetVisible(bool visible) {
     m_parentLayer->showComponent(0, eUIComponent_TutorialPopup, visible);
 
     if (visible && m_bAllowFade) {
-        // Initialise a timer to fade us out again
+        
         app.DebugPrintf(
             "UIComponent_TutorialPopup::SetVisible: setting "
             "TUTORIAL_POPUP_FADE_TIMER_ID to %d\n",
@@ -182,7 +182,7 @@ void UIComponent_TutorialPopup::_SetDescription(UIScene* interactScene,
                  TUTORIAL_POPUP_MOVE_SCENE_TIME);
 
         if (allowFade) {
-            // Initialise a timer to fade us out again
+            
             app.DebugPrintf(
                 "_SetDescription: setting TUTORIAL_POPUP_FADE_TIMER_ID\n");
             addTimer(TUTORIAL_POPUP_FADE_TIMER_ID,
@@ -198,12 +198,12 @@ void UIComponent_TutorialPopup::_SetDescription(UIScene* interactScene,
             std::wstring text(app.GetString(IDS_TUTORIAL_REMINDER));
             text.append(desc);
             stripWhitespaceForHtml(text);
-            // set the text colour
+            
             wchar_t formatting[40];
-            // 4J Stu - Don't set HTML font size, that's set at design time in
-            // flash
-            // swprintf(formatting, 40, L"<font color=\"#%08x\"
-            // size=\"%d\">",app.GetHTMLColour(eHTMLColor_White),m_textFontSize);
+            
+            
+            
+            
             swprintf(formatting, 40, L"<font color=\"#%08x\">",
                      app.GetHTMLColour(eHTMLColor_White));
             text = formatting + text;
@@ -212,12 +212,12 @@ void UIComponent_TutorialPopup::_SetDescription(UIScene* interactScene,
         } else {
             std::wstring text(desc);
             stripWhitespaceForHtml(text);
-            // set the text colour
+            
             wchar_t formatting[40];
-            // 4J Stu - Don't set HTML font size, that's set at design time in
-            // flash
-            // swprintf(formatting, 40, L"<font color=\"#%08x\"
-            // size=\"%d\">",app.GetHTMLColour(eHTMLColor_White),m_textFontSize);
+            
+            
+            
+            
             swprintf(formatting, 40, L"<font color=\"#%08x\">",
                      app.GetHTMLColour(eHTMLColor_White));
             text = formatting + text;
@@ -228,8 +228,8 @@ void UIComponent_TutorialPopup::_SetDescription(UIScene* interactScene,
         m_labelTitle.setLabel(title, true);
         m_labelTitle.setVisible(!title.empty());
 
-        // read host setting if gamertag is visible or not and pass on to Adjust
-        // Layout function (so we can offset it to stay clear of the gamertag)
+        
+        
         m_bSplitscreenGamertagVisible =
             (bool)(app.GetGameSettings(
                        ProfileManager.GetPrimaryPad(),
@@ -239,8 +239,8 @@ void UIComponent_TutorialPopup::_SetDescription(UIScene* interactScene,
         value[0].type = IGGY_DATATYPE_boolean;
         value[0].boolval =
             (m_bSplitscreenGamertagVisible &&
-             !m_bContainerMenuVisible);  // 4J - TomK - Offset for splitscreen
-                                         // gamertag?
+             !m_bContainerMenuVisible);  
+                                         
         IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                                 IggyPlayerRootPath(getMovie()),
                                                 m_funcAdjustLayout, 1, value);
@@ -290,7 +290,7 @@ std::wstring UIComponent_TutorialPopup::_SetIcon(int icon, int iAuxVal,
             }
         }
 
-        // remove any icon text
+        
         else if (temp.find(L"{*CraftingTableIcon*}") != std::wstring::npos) {
             m_iconItem = std::shared_ptr<ItemInstance>(
                 new ItemInstance(Tile::workBench_Id, 1, 0));
@@ -357,7 +357,7 @@ std::wstring UIComponent_TutorialPopup::_SetIcon(int icon, int iAuxVal,
 }
 
 std::wstring UIComponent_TutorialPopup::_SetImage(std::wstring& desc) {
-    // 4J Stu - Unused
+    
     return desc;
 }
 
@@ -387,11 +387,11 @@ std::wstring UIComponent_TutorialPopup::ParseDescription(int iPad,
     if (pos != std::wstring::npos) exitScreenshot = true;
     text = replaceAll(text, L"{*EXIT_PICTURE*}", L"");
     m_controlExitScreenshot.setVisible(exitScreenshot);
-    /*
-#define MINECRAFT_ACTION_RENDER_DEBUG		ACTION_INGAME_13
-#define MINECRAFT_ACTION_PAUSEMENU			ACTION_INGAME_15
-#define MINECRAFT_ACTION_SNEAK_TOGGLE		ACTION_INGAME_17
-*/
+    
+
+
+
+
 
     return app.FormatHTMLString(iPad, text);
 }
@@ -399,8 +399,8 @@ std::wstring UIComponent_TutorialPopup::ParseDescription(int iPad,
 void UIComponent_TutorialPopup::UpdateInteractScenePosition(bool visible) {
     if (m_interactScene == nullptr) return;
 
-    // 4J-PB - check this players screen section to see if we should allow the
-    // animation
+    
+    
     bool bAllowAnim = false;
     bool isCraftingScene =
         (m_interactScene->getSceneType() == eUIScene_Crafting2x2Menu) ||
@@ -416,8 +416,8 @@ void UIComponent_TutorialPopup::UpdateInteractScenePosition(bool visible) {
             bAllowAnim = true;
             break;
         default:
-            // anim allowed for everything except the crafting 2x2 and 3x3, and
-            // the creative menu
+            
+            
             if (!isCraftingScene && !isCreativeScene && !isTradingScene) {
                 bAllowAnim = true;
             }
@@ -467,7 +467,7 @@ void UIComponent_TutorialPopup::render(S32 width, S32 height,
             default:
                 break;
         }
-        // Adjust for safezone
+        
         switch (viewport) {
             case C4JRender::VIEWPORT_TYPE_SPLIT_TOP:
             case C4JRender::VIEWPORT_TYPE_SPLIT_LEFT:

@@ -90,16 +90,16 @@ void FireTile::tick(Level* level, int x, int y, int z, Random* random) {
         return;
     }
 
-    // 4J added - we don't want fire to do anything that might create new fire,
-    // or destroy this fire, if we aren't actually tracking (for network) the
-    // chunk this is in in the player chunk map. If we did change something in
-    // that case, then the change wouldn't get sent to any player that had
-    // already received that full chunk, and so we'd just become desynchronised.
-    // Seems safest just to do an addToTickNextTick here instead with a decent
-    // delay, to make sure that we will get ticked again in the future, when we
-    // might again be in a chunk that is being tracked.
-    if (!level->isClientSide)  // Note - should only be being ticked on the
-                               // server
+    
+    
+    
+    
+    
+    
+    
+    
+    if (!level->isClientSide)  
+                               
     {
         if (!MinecraftServer::getInstance()->getPlayers()->isTrackingTile(
                 x, y, z, level->dimension->id)) {
@@ -109,7 +109,7 @@ void FireTile::tick(Level* level, int x, int y, int z, Random* random) {
     }
 
     bool infiniBurn = level->getTile(x, y - 1, z) == Tile::netherRack_Id;
-    if (level->dimension->id == 1)  // 4J - was == instanceof TheEndDimension
+    if (level->dimension->id == 1)  
     {
         if (level->getTile(x, y - 1, z) == Tile::unbreakable_Id)
             infiniBurn = true;

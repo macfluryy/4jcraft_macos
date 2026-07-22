@@ -23,9 +23,9 @@ void CritParticle2::_init(double xa, double ya, double za, float scale) {
     noPhysics = false;
 
     setMiscTex(16 * 4 + 1);
-    // 4J-PB - can't use a shared_from_this in the constructor
-    // tick();
-    m_bAgeUniformly = false;  // 4J added
+    
+    
+    m_bAgeUniformly = false;  
 }
 
 CritParticle2::CritParticle2(Level* level, double x, double y, double z,

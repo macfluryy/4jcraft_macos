@@ -62,7 +62,7 @@ void PathfinderMob::serverAiStep() {
         if (attackTarget != nullptr) {
             setPath(level->findPath(
                 shared_from_this(), attackTarget, maxDist, true, false, false,
-                true));  // 4J - changed to setPath from path =
+                true));  
         }
     } else {
         if (attackTarget->isAlive()) {
@@ -75,25 +75,25 @@ void PathfinderMob::serverAiStep() {
         }
     }
 
-    /*
-     * if (holdGround) { xxa = 0; yya = 0; jumping = false; return; }
-     */
+    
 
-    // 4J - a few changes here so that we can call findRandomStrollLocation for
-    // a sub-set of things that it normally wouldn't be in the java game. This
-    // is so that we can have entities wander around a little, in order that we
-    // can measure how far they wander and then determine (if they wander too
-    // far) that they aren't enclosed. We don't want the extra network overhead
-    // of just having Everything wandering round all the time, so have put a
-    // management system in place that selects a subset of entities which have
-    // had their flag set through the considerForExtraWandering method so that
-    // these can keep doing random strolling.
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     if (!holdGround && (attackTarget != nullptr &&
                         (path == nullptr || random->nextInt(20) == 0))) {
         setPath(level->findPath(shared_from_this(), attackTarget, maxDist, true,
                                 false, false,
-                                true));  // 4J - changed to setPath from path =
+                                true));  
     } else if (!holdGround &&
                ((path == nullptr && (random->nextInt(180) == 0) ||
                  fleeTime > 0) ||
@@ -104,20 +104,20 @@ void PathfinderMob::serverAiStep() {
     } else if (!holdGround && (path == nullptr)) {
         if ((noActionTime >= SharedConstants::TICKS_PER_SECOND * 5) &&
             isExtraWanderingEnabled()) {
-            // This entity wouldn't normally be randomly strolling. However, if
-            // our management system says that it should do, then do. Don't
-            // bother waiting for random conditions to be met before picking a
-            // direction though as the point here is to see if it is possible to
-            // stroll out of a given area and so waiting around is just wasting
-            // time
+            
+            
+            
+            
+            
+            
             findRandomStrollLocation(getWanderingQuadrant());
         }
     }
 
-    // Consider this for extra strolling if it is protected against despawning.
-    // We aren't interested in ones that aren't protected as the whole point of
-    // this extra wandering is to potentially transition from protected to not
-    // protected.
+    
+    
+    
+    
     considerForExtraWandering(isDespawnProtected());
 
     int yFloor = Mth::floor(bb.y0 + 0.5f);
@@ -127,7 +127,7 @@ void PathfinderMob::serverAiStep() {
     xRot = 0;
     if (path == nullptr || random->nextInt(100) == 0) {
         this->Mob::serverAiStep();
-        setPath(nullptr);  // 4J - changed to setPath from path =
+        setPath(nullptr);  
         return;
     }
 
@@ -136,49 +136,49 @@ void PathfinderMob::serverAiStep() {
     while (target.distanceToSqr(x, target.y, z) < r * r) {
         path->next();
         if (path->isDone()) {
-            setPath(nullptr);  // 4J - changed to setPath from path =
+            setPath(nullptr);  
             break;
         } else
             target = path->currentPos(shared_from_this());
     }
 
     jumping = false;
-    // 4jcraft - refactoring Vec3 shows this branch never hits
-    /*
-    if (target != nullptr) {
-        double xd = target->x - x;
-        double zd = target->z - z;
-        double yd = target->y - yFloor;
-        float yRotD = (float)(atan2(zd, xd) * 180 / std::numbers::pi) - 90;
-        float rotDiff = Mth::wrapDegrees(yRotD - yRot);
-        yya = (float)getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)
-                  ->getValue();
-        if (rotDiff > MAX_TURN) {
-            rotDiff = MAX_TURN;
-        }
-        if (rotDiff < -MAX_TURN) {
-            rotDiff = -MAX_TURN;
-        }
-        yRot += rotDiff;
+    
+    
 
-        if (holdGround) {
-            if (attackTarget != nullptr) {
-                double xd2 = attackTarget->x - x;
-                double zd2 = attackTarget->z - z;
 
-                float oldyRot = yRot;
-                yRot = (float)(atan2(zd2, xd2) * 180 / std::numbers::pi) - 90;
 
-                rotDiff = ((oldyRot - yRot) + 90) * std::numbers::pi / 180;
-                xxa = -sinf(rotDiff) * yya * 1.0f;
-                yya = cosf(rotDiff) * yya * 1.0f;
-            }
-        }
-        if (yd > 0) {
-            jumping = true;
-        }
-    }
-    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     if (attackTarget != nullptr) {
         lookAt(attackTarget, 30, 30);
@@ -189,7 +189,7 @@ void PathfinderMob::serverAiStep() {
 }
 
 void PathfinderMob::findRandomStrollLocation(
-    int quadrant /*=-1*/)  // 4J - added quadrant
+    int quadrant )  
 {
     bool hasBest = false;
     int xBest = -1;
@@ -197,9 +197,9 @@ void PathfinderMob::findRandomStrollLocation(
     int zBest = -1;
     float best = -99999;
     for (int i = 0; i < 10; i++) {
-        // 4J - added quadrant parameter to this method so that the caller can
-        // request that only stroll locations in one quadrant be found. If -1 is
-        // passed then behaviour is the same as the java game
+        
+        
+        
         int xt, zt;
         int yt = Mth::floor(y + random->nextInt(7) - 3);
         if (quadrant == -1) {
@@ -223,7 +223,7 @@ void PathfinderMob::findRandomStrollLocation(
     if (hasBest) {
         setPath(level->findPath(shared_from_this(), xBest, yBest, zBest, 10,
                                 true, false, false,
-                                true));  // 4J - changed to setPath from path =
+                                true));  
     }
 }
 
@@ -257,7 +257,7 @@ void PathfinderMob::setAttackTarget(std::shared_ptr<Entity> attacker) {
     attackTarget = attacker;
 }
 
-// might move to navigation, might make area
+
 bool PathfinderMob::isWithinRestriction() {
     return isWithinRestriction(Mth::floor(x), Mth::floor(y), Mth::floor(z));
 }
@@ -285,7 +285,7 @@ void PathfinderMob::tickLeash() {
 
     if (isLeashed() && getLeashHolder() != nullptr &&
         getLeashHolder()->level == this->level) {
-        // soft restriction
+        
         std::shared_ptr<Entity> leashHolder = getLeashHolder();
         restrictTo((int)leashHolder->x, (int)leashHolder->y,
                    (int)leashHolder->z, 5);
@@ -312,11 +312,11 @@ void PathfinderMob::tickLeash() {
         onLeashDistance(_distanceTo);
 
         if (_distanceTo > 4) {
-            // harder restriction
+            
             getNavigation()->moveTo(leashHolder, 1.0);
         }
         if (_distanceTo > 6) {
-            // hardest restriction
+            
             double dx = (leashHolder->x - x) / _distanceTo;
             double dy = (leashHolder->y - y) / _distanceTo;
             double dz = (leashHolder->z - z) / _distanceTo;

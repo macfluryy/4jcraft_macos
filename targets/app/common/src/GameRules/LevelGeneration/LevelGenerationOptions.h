@@ -1,7 +1,7 @@
 #pragma once
-// using namespace std;
 
-// #pragma message("LevelGenerationOptions.h ")
+
+
 
 #include <cstdint>
 #include <string>
@@ -27,10 +27,10 @@ class StringTable;
 
 class GrSource {
 public:
-    // 4J-JEV:
-    // Moved all this here; I didn't like that all this header information
-    // was being mixed in with all the game information as they have
-    // completely different lifespans.
+    
+    
+    
+    
 
     virtual ~GrSource() {}
     virtual bool requiresTexturePack() = 0;
@@ -52,7 +52,7 @@ public:
 
     virtual bool ready() = 0;
 
-    // virtual void getGrfData(std::uint8_t *&pData, unsigned int &pSize)=0;
+    
 };
 
 class JustGrSource : public GrSource {
@@ -94,13 +94,13 @@ public:
     enum eSrc {
         eSrc_none,
 
-        eSrc_fromSave,  // Neither content or header is persistent.
+        eSrc_fromSave,  
 
-        eSrc_fromDLC,  // Header is persistent, content should be deleted to
-                       // conserve space.
+        eSrc_fromDLC,  
+                       
 
-        eSrc_tutorial,  // Both header and content is persistent, content cannot
-                        // be reloaded.
+        eSrc_tutorial,  
+                        
 
         eSrc_MAX
     };
@@ -179,7 +179,7 @@ public:
     void setLoadedData();
 
 private:
-    // This should match the "MapOptionsRule" definition in the XML schema
+    
     int64_t m_seed;
     bool m_useFlatWorld;
     Pos* m_spawnPos;
@@ -258,13 +258,13 @@ public:
     void loadBaseSaveData();
     int onPackMounted(int iPad, uint32_t dwErr, uint32_t dwLicenceMask);
 
-    // 4J-JEV:
-    // ApplySchematicRules contain limited state
-    // which needs to be reset BEFORE a new game starts.
+    
+    
+    
     void reset_start();
 
-    // 4J-JEV:
-    // This file contains state that needs to be deleted
-    // or reset once a game has finished.
+    
+    
+    
     void reset_finish();
 };

@@ -53,15 +53,15 @@ int TntTile::getResourceCount(Random* random) { return 1; }
 
 void TntTile::wasExploded(Level* level, int x, int y, int z,
                           Explosion* explosion) {
-    // 4J - added - don't every create on the client, I think this must be the
-    // cause of a bug reported in the java version where white tnts are created
-    // in the network game
+    
+    
+    
     if (level->isClientSide) return;
 
-    // 4J - added condition to have finite limit of these
-    // 4J-JEV: Fix for #90934 - Customer Encountered: TU11: Content: Gameplay:
-    // TNT blocks are triggered by explosions even though "TNT explodes" option
-    // is unchecked.
+    
+    
+    
+    
     if (level->newPrimedTntAllowed() &&
         app.GetGameHostOption(eGameHostOption_TNT)) {
         std::shared_ptr<PrimedTnt> primed = std::shared_ptr<PrimedTnt>(
@@ -82,7 +82,7 @@ void TntTile::destroy(Level* level, int x, int y, int z, int data,
     if (level->isClientSide) return;
 
     if ((data & EXPLODE_BIT) == 1) {
-        // 4J - added condition to have finite limit of these
+        
         if (level->newPrimedTntAllowed() &&
             app.GetGameHostOption(eGameHostOption_TNT)) {
             std::shared_ptr<PrimedTnt> tnt = std::shared_ptr<PrimedTnt>(
@@ -96,7 +96,7 @@ void TntTile::destroy(Level* level, int x, int y, int z, int data,
 bool TntTile::use(Level* level, int x, int y, int z,
                   std::shared_ptr<Player> player, int clickedFace, float clickX,
                   float clickY, float clickZ,
-                  bool soundOnly /*=false*/)  // 4J added soundOnly param
+                  bool soundOnly )  
 {
     if (soundOnly) return false;
     if (player->getSelectedItem() != nullptr &&

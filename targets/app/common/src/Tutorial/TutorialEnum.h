@@ -17,18 +17,18 @@ typedef struct {
 #define TUTORIAL_NO_TEXT -1
 #define TUTORIAL_NO_ICON -1
 
-// If you want to make these bigger, be aware that that will affect what is
-// stored after the tutorial data in the profile data See Xbox_App.h for the
-// struct
+
+
+
 #define TUTORIAL_PROFILE_STORAGE_BITS 512
 #define TUTORIAL_PROFILE_STORAGE_BYTES (TUTORIAL_PROFILE_STORAGE_BITS / 8)
 
-// 4J Stu - The total number of eTutorial_State and eTutorial_Hint must be less
-// than 512, as we only have 512 bits of profile data to flag whether or not the
-// player has seen them In general a block or tool will have one each. We have a
-// state if we need more than one message, or a hint if just once message will
-// suffice Tasks added here should also be added in the Tutorial::staticCtor()
-// if you wish to store completion in the profile data
+
+
+
+
+
+
 enum eTutorial_State {
     e_Tutorial_State_Any = -2,
     e_Tutorial_State_None = -1,
@@ -50,9 +50,9 @@ enum eTutorial_State {
     e_Tutorial_State_Trap_Menu,
     e_Tutorial_State_Redstone_And_Piston,
     e_Tutorial_State_Portal,
-    e_Tutorial_State_Creative_Inventory_Menu,  // Added TU5
-    e_Tutorial_State_Food_Bar,                 // Added TU5
-    e_Tutorial_State_CreativeMode,             // Added TU7
+    e_Tutorial_State_Creative_Inventory_Menu,  
+    e_Tutorial_State_Food_Bar,                 
+    e_Tutorial_State_CreativeMode,             
     e_Tutorial_State_Brewing,
     e_Tutorial_State_Brewing_Menu,
     e_Tutorial_State_Enchanting,
@@ -77,8 +77,8 @@ enum eTutorial_State {
     e_Tutorial_State_Max
 };
 
-// Hints added here should also be added in the Tutorial::staticCtor() if you
-// wish to store completion in the profile data
+
+
 enum eTutorial_Hint {
     e_Tutorial_Hint_Always_On = e_Tutorial_State_Max,
 
@@ -321,7 +321,7 @@ enum eTutorial_Hint {
     e_Tutorial_Hint_Item_Max,
 };
 
-// We store the first time that we complete these tasks to be used in telemetry
+
 enum eTutorial_Telemetry {
     eTutorial_Telemetry_None = e_Tutorial_Hint_Item_Max,
 
@@ -343,19 +343,19 @@ enum eTutorial_Telemetry {
 
 enum eTutorial_CompletionAction {
     e_Tutorial_Completion_None,
-    e_Tutorial_Completion_Complete_State,  // This will make the current
-                                           // tutorial state complete
-    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,  // This will
-                                                                // make the
-                                                                // current
-                                                                // tutorial
-                                                                // state
-                                                                // complete, and
-                                                                // move the
-                                                                // delayed
-                                                                // constraints
-                                                                // to the
-                                                                // gameplay
-                                                                // state
+    e_Tutorial_Completion_Complete_State,  
+                                           
+    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,  
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
     e_Tutorial_Completion_Jump_To_Last_Task,
 };

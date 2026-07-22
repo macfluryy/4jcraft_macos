@@ -25,7 +25,7 @@ class UILayer;
 UIScene_InGameHostOptionsMenu::UIScene_InGameHostOptionsMenu(
     int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_checkboxFireSpreads.init(
@@ -43,7 +43,7 @@ UIScene_InGameHostOptionsMenu::UIScene_InGameHostOptionsMenu(
         app.GetString(IDS_NATURAL_REGEN), eControl_NaturalRegeneration,
         app.GetGameHostOption(eGameHostOption_NaturalRegeneration));
 
-    // If cheats are disabled, remove checkboxes
+    
     if (!app.GetGameHostOption(eGameHostOption_CheatsEnabled)) {
         removeControl(&m_checkboxMobGriefing, true);
         removeControl(&m_checkboxKeepInventory, true);
@@ -96,7 +96,7 @@ void UIScene_InGameHostOptionsMenu::updateTooltips() {
 void UIScene_InGameHostOptionsMenu::handleReload() {
     UIScene::handleReload();
 
-    // If cheats are disabled, remove checkboxes
+    
     if (!app.GetGameHostOption(eGameHostOption_CheatsEnabled)) {
         removeControl(&m_checkboxMobGriefing, true);
         removeControl(&m_checkboxKeepInventory, true);
@@ -120,9 +120,9 @@ void UIScene_InGameHostOptionsMenu::handleReload() {
 void UIScene_InGameHostOptionsMenu::handleInput(int iPad, int key, bool repeat,
                                                 bool pressed, bool released,
                                                 bool& handled) {
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
 
     ui.AnimateKeyPress(iPad, key, repeat, pressed, released);
     switch (key) {
@@ -142,7 +142,7 @@ void UIScene_InGameHostOptionsMenu::handleInput(int iPad, int key, bool repeat,
                     hostOptions, eGameHostOption_NaturalRegeneration,
                     m_checkboxNaturalRegeneration.IsChecked());
 
-                // If cheats are enabled, set cheat values
+                
                 if (app.GetGameHostOption(eGameHostOption_CheatsEnabled)) {
                     app.SetGameHostOption(hostOptions,
                                           eGameHostOption_MobGriefing,
@@ -158,7 +158,7 @@ void UIScene_InGameHostOptionsMenu::handleInput(int iPad, int key, bool repeat,
                         m_checkboxDoDaylightCycle.IsChecked());
                 }
 
-                // Send update settings packet to server
+                
                 if (hostOptions != app.GetGameHostOption(eGameHostOption_All)) {
                     Minecraft* pMinecraft = Minecraft::GetInstance();
                     std::shared_ptr<MultiplayerLocalPlayer> player =

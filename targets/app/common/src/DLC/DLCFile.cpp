@@ -9,7 +9,7 @@ DLCFile::DLCFile(DLCManager::EDLCType type, const std::wstring& path) {
     m_type = type;
     m_path = path;
 
-    // store the id
+    
     bool dlcSkin = path.substr(0, 3).compare(L"dlc") == 0;
 
     if (dlcSkin) {

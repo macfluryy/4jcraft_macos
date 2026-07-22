@@ -12,8 +12,8 @@ private:
     OutputStream* stream;
 
 protected:
-    std::vector<uint8_t> buf;  // The internal buffer where data is stored.
-    unsigned int count;        // The number of valid bytes in the buffer.
+    std::vector<uint8_t> buf;  
+    unsigned int count;        
 
 public:
     BufferedOutputStream(OutputStream* out, int size);

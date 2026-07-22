@@ -4,7 +4,7 @@
 
 #include "EntityRenderDispatcher.h"
 #include "minecraft/client/renderer/TileRenderer.h"
-// #include "ItemFrame"
+
 #include "platform/sdl2/Render.h"
 #include "ItemFrameRenderer.h"
 #include "minecraft/Direction.h"
@@ -39,9 +39,9 @@ void ItemFrameRenderer::registerTerrainTextures(IconRegister* iconRegister) {
 
 void ItemFrameRenderer::render(std::shared_ptr<Entity> _itemframe, double x,
                                double y, double z, float rot, float a) {
-    // 4J - original version used generics and thus had an input parameter of
-    // type EnderCrystal rather than shared_ptr<Entity>  we have here - do some
-    // casting around instead
+    
+    
+    
     std::shared_ptr<ItemFrame> itemFrame =
         std::dynamic_pointer_cast<ItemFrame>(_itemframe);
 
@@ -75,7 +75,7 @@ void ItemFrameRenderer::drawFrame(std::shared_ptr<ItemFrame> itemFrame) {
     float width = 12.0f / 16.0f;
     float widthHalf = width / 2.0f;
 
-    // Back
+    
     glPushMatrix();
 
     tileRenderer->setFixedShape(0, 0.5f - widthHalf + 1.0f / 16.0f,
@@ -91,7 +91,7 @@ void ItemFrameRenderer::drawFrame(std::shared_ptr<ItemFrame> itemFrame) {
     tileRenderer->setFixedTexture(
         Tile::wood->getTexture(Facing::UP, TreeTile::BIRCH_TRUNK));
 
-    // Bottom
+    
     glPushMatrix();
     tileRenderer->setFixedShape(0, 0.5f - widthHalf, 0.5f - widthHalf,
                                 depth + 0.0001f, depth + 0.5f - widthHalf,
@@ -99,7 +99,7 @@ void ItemFrameRenderer::drawFrame(std::shared_ptr<ItemFrame> itemFrame) {
     tileRenderer->renderTile(wood, 0, 1);
     glPopMatrix();
 
-    // Top
+    
     glPushMatrix();
     tileRenderer->setFixedShape(0, 0.5f + widthHalf - depth, 0.5f - widthHalf,
                                 depth + 0.0001f, 0.5f + widthHalf,
@@ -107,14 +107,14 @@ void ItemFrameRenderer::drawFrame(std::shared_ptr<ItemFrame> itemFrame) {
     tileRenderer->renderTile(wood, 0, 1);
     glPopMatrix();
 
-    // Right
+    
     glPushMatrix();
     tileRenderer->setFixedShape(0, 0.5f - widthHalf, 0.5f - widthHalf, depth,
                                 0.5f + widthHalf, depth + 0.5f - widthHalf);
     tileRenderer->renderTile(wood, 0, 1);
     glPopMatrix();
 
-    // Left
+    
     glPushMatrix();
     tileRenderer->setFixedShape(0, 0.5f - widthHalf, 0.5f + widthHalf - depth,
                                 depth, 0.5f + widthHalf, 0.5f + widthHalf);

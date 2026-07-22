@@ -39,13 +39,13 @@ public:
     virtual void getBiomeIndexBlock(std::vector<uint8_t>& biomeIndices, int x,
                                     int z, int w, int h, bool useCache) const;
 
-    // 4J-PB added in from beyond 1.8.2
+    
     virtual std::vector<Biome*> getRawBiomeBlock(int x, int z, int w,
                                                  int h) const;
     virtual void getRawBiomeBlock(std::vector<Biome*>& biomes, int x, int z,
                                   int w, int h) const;
 
-    ////////////////////////////////////
+    
     virtual TilePos* findBiome(int x, int z, int r, Biome* toFind,
                                Random* random);
     virtual TilePos* findBiome(int x, int z, int r,

@@ -27,8 +27,8 @@ void SimpleContainer::addListener(
 
 void SimpleContainer::removeListener(
     net_minecraft_world::ContainerListener* listener) {
-    // 4J Java has a remove function on lists that will find the first occurence
-    // of an object and remove it. We need to replicate that ourselves
+    
+    
 
     std::vector<net_minecraft_world::ContainerListener*>::iterator it =
         listeners->begin();
@@ -102,7 +102,7 @@ int SimpleContainer::getMaxStackSize() {
 void SimpleContainer::setChanged() {
     if (listeners != nullptr)
         for (unsigned int i = 0; i < listeners->size(); i++) {
-            listeners->at(i)->containerChanged();  // shared_from_this());
+            listeners->at(i)->containerChanged();  
         }
 }
 

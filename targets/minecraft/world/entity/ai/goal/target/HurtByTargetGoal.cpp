@@ -39,7 +39,7 @@ void HurtByTargetGoal::start() {
             if (this->mob->shared_from_this() == other) continue;
             if (other->getTarget() != nullptr) continue;
             if (other->isAlliedTo(mob->getLastHurtByMob()))
-                continue;  // don't target allies
+                continue;  
             other->setTarget(mob->getLastHurtByMob());
         }
         delete nearby;

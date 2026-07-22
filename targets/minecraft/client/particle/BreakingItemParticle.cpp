@@ -64,7 +64,7 @@ void BreakingItemParticle::render(Tesselator* t, float a, float xa, float ya,
     float br =
         SharedConstants::TEXTURE_LIGHTING
             ? 1
-            : getBrightness(a);  // 4J - change brought forward from 1.8.2
+            : getBrightness(a);  
     t->color(br * rCol, br * gCol, br * bCol);
 
     t->vertexUV((float)(x - xa * r - xa2 * r), (float)(y - ya * r),

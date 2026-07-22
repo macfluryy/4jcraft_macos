@@ -1,5 +1,5 @@
 #pragma once
-// using namespace std;
+
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -25,15 +25,15 @@ public:
         e_DLCType_All,
     };
 
-    // If you add to the Enum,then you need to add the array of type names
-    // These are the names used in the XML for the parameters
+    
+    
     enum EDLCParameterType {
         e_DLCParamType_Invalid = -1,
 
         e_DLCParamType_DisplayName = 0,
         e_DLCParamType_ThemeName,
-        e_DLCParamType_Free,    // identify free skins
-        e_DLCParamType_Credit,  // legal credits for DLC
+        e_DLCParamType_Free,    
+        e_DLCParamType_Credit,  
         e_DLCParamType_Cape,
         e_DLCParamType_Box,
         e_DLCParamType_Anim,
@@ -51,7 +51,7 @@ public:
 
 private:
     std::vector<DLCPack*> m_packs;
-    // bool m_bNeedsUpdated;
+    
     bool m_bNeedsCorruptCheck;
     unsigned int m_dwUnnamedCorruptDLCCount;
 
@@ -63,8 +63,8 @@ public:
 
     unsigned int getPackCount(EDLCType type = e_DLCType_All);
 
-    // bool NeedsUpdated() { return m_bNeedsUpdated; }
-    // void SetNeedsUpdated(bool val) { m_bNeedsUpdated = val; }
+    
+    
 
     bool NeedsCorruptCheck() { return m_bNeedsCorruptCheck; }
     void SetNeedsCorruptCheck(bool val) { m_bNeedsCorruptCheck = val; }
@@ -82,8 +82,8 @@ public:
     unsigned int getPackIndex(DLCPack* pack, bool& found,
                               EDLCType type = e_DLCType_All);
     DLCSkinFile* getSkinFile(
-        const std::wstring& path);  // Will hunt all packs of type skin to find
-                                    // the right skinfile
+        const std::wstring& path);  
+                                    
 
     DLCPack* getPackContainingSkin(const std::wstring& path);
     unsigned int getPackIndexContainingSkin(const std::wstring& path,

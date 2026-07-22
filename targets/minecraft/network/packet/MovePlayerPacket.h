@@ -16,7 +16,7 @@ public:
     float yRot, xRot;
     bool onGround;
     bool hasPos, hasRot;
-    bool isFlying;  // 4J Added
+    bool isFlying;  
 
     MovePlayerPacket();
     MovePlayerPacket(bool onGround, bool isFlying);

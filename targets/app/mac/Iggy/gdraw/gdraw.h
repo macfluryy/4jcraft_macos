@@ -49,4 +49,4 @@ extern void gdraw_GL_DestroyTextureFromResource(GDrawTexture* tex);
 }
 #endif
 
-#endif  // __LINUX_IGGY_GDRAW_H__
+#endif  

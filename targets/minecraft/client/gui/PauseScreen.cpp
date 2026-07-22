@@ -33,7 +33,7 @@ void PauseScreen::init() {
     saveStep = 0;
     buttons.clear();
     int yo = -16;
-    // 4jcraft: solves the issue of client-side only pausing in the java gui
+    
     if (g_NetworkManager.IsLocalGame() &&
         g_NetworkManager.GetPlayerCount() == 1)
         app.SetXuiServerAction(InputManager.GetPrimaryPad(),
@@ -58,16 +58,16 @@ void PauseScreen::init() {
                                  98, 20, I18n::get(L"gui.achievements")));
     buttons.push_back(new Button(6, width / 2 + 2, height / 4 + 24 * 2 + yo, 98,
                                  20, I18n::get(L"gui.stats")));
-    /*
-     * if (minecraft->serverConnection!=null) { buttons.get(1).active =
-     * false; buttons.get(2).active = false; buttons.get(3).active = false;
-     * }
-     */
+    
+
+
+
+
 }
 
 void PauseScreen::exitWorld(Minecraft* minecraft, bool save) {
-    // 4jcraft: made our own static method for use in the java gui (other
-    // places such as the deathscreen need this)
+    
+    
     MinecraftServer* server = MinecraftServer::getInstance();
 
     minecraft->setScreen(new MessageScreen(L"Leaving world"));
@@ -82,33 +82,33 @@ void PauseScreen::buttonClicked(Button* button) {
         minecraft->setScreen(new OptionsScreen(this, minecraft->options));
     }
     if (button->id == 1) {
-        // if (minecraft->isClientSide())
-        // {
-        //     minecraft->level->disconnect();
-        // }
+        
+        
+        
+        
 
-        // minecraft->setLevel(nullptr);
-        // minecraft->setScreen(new TitleScreen());
+        
+        
 
-        // 4jcraft: exit with our new exitWorld method
+        
         exitWorld(minecraft, true);
     }
     if (button->id == 4) {
         app.SetXuiServerAction(InputManager.GetPrimaryPad(),
                                eXuiServerAction_PauseServer, (void*)false);
         minecraft->setScreen(nullptr);
-        //       minecraft->grabMouse();		// 4J - removed
+        
     }
 
     if (button->id == 5) {
-        // 4jcraft: re-enable the achievements screen for the java GUI path.
-        // Minecraft::stats is per-pad, so route through the active player's
-        // pad index, mirroring what InventoryScreen does.
+        
+        
+        
         minecraft->setScreen(new AchievementScreen(
             minecraft->stats[minecraft->player->GetXboxPad()]));
     }
     if (button->id == 6) {
-        // 4jcraft: re-enable the stats screen alongside achievements.
+        
         minecraft->setScreen(new StatsScreen(
             this, minecraft->stats[minecraft->player->GetXboxPad()]));
     }
@@ -116,7 +116,7 @@ void PauseScreen::buttonClicked(Button* button) {
 
 void PauseScreen::keyPressed(wchar_t eventCharacter, int eventKey) {
     if (eventKey == Keyboard::KEY_ESCAPE) {
-        // Ignore the keydown that opened the pause screen.
+        
         if (visibleTime == 0) {
             return;
         }
@@ -138,7 +138,7 @@ void PauseScreen::tick() {
 void PauseScreen::render(int xm, int ym, float a) {
     renderBackground();
 
-    bool isSaving = false;  //! minecraft->level->pauseSave(saveStep++);
+    bool isSaving = false;  
     if (isSaving || visibleTime < 20) {
         float col = ((visibleTime % 10) + a) / 10.0f;
         col = sinf(col * std::numbers::pi * 2) * 0.2f + 0.8f;

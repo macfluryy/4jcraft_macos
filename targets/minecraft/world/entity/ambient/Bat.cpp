@@ -21,8 +21,8 @@
 #include "nbt/CompoundTag.h"
 
 Bat::Bat(Level* level) : AmbientCreature(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -47,28 +47,28 @@ int Bat::getAmbientSound() {
     if (isResting() && random->nextInt(4) != 0) {
         return -1;
     }
-    return eSoundType_MOB_BAT_IDLE;  //"mob.bat.idle";
+    return eSoundType_MOB_BAT_IDLE;  
 }
 
 int Bat::getHurtSound() {
-    return eSoundType_MOB_BAT_HURT;  //"mob.bat.hurt";
+    return eSoundType_MOB_BAT_HURT;  
 }
 
 int Bat::getDeathSound() {
-    return eSoundType_MOB_BAT_DEATH;  //"mob.bat.death";
+    return eSoundType_MOB_BAT_DEATH;  
 }
 
 bool Bat::isPushable() {
-    // bats can't be pushed by other mobs
+    
     return false;
 }
 
 void Bat::doPush(std::shared_ptr<Entity> e) {
-    // bats don't push other mobs
+    
 }
 
 void Bat::pushEntities() {
-    // bats don't push other mobs
+    
 }
 
 void Bat::registerAttributes() {
@@ -168,8 +168,8 @@ bool Bat::makeStepSound() { return false; }
 void Bat::causeFallDamage(float distance) {}
 
 void Bat::checkFallDamage(double ya, bool onGround) {
-    // this method is empty because flying creatures should
-    // not trigger the "fallOn" tile calls (such as trampling crops)
+    
+    
 }
 
 bool Bat::isIgnoringTileTriggers() { return true; }

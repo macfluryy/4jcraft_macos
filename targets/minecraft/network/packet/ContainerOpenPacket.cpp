@@ -33,7 +33,7 @@ void ContainerOpenPacket::handle(PacketListener* listener) {
     listener->handleContainerOpen(shared_from_this());
 }
 
-void ContainerOpenPacket::read(DataInputStream* dis)  // throws IOException
+void ContainerOpenPacket::read(DataInputStream* dis)  
 {
     containerId = dis->readByte() & 0xff;
     type = dis->readByte() & 0xff;
@@ -47,7 +47,7 @@ void ContainerOpenPacket::read(DataInputStream* dis)  // throws IOException
     }
 }
 
-void ContainerOpenPacket::write(DataOutputStream* dos)  // throws IOException
+void ContainerOpenPacket::write(DataOutputStream* dos)  
 {
     dos->writeByte(containerId & 0xff);
     dos->writeByte(type & 0xff);

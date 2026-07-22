@@ -25,7 +25,7 @@
 
 #define _360_JOY_BUTTON_DPAD_LEFT 0x00001000
 #define _360_JOY_BUTTON_DPAD_RIGHT 0x00002000
-// fake digital versions of analog values
+
 #define _360_JOY_BUTTON_LSTICK_RIGHT 0x00004000
 #define _360_JOY_BUTTON_LSTICK_LEFT 0x00008000
 
@@ -39,13 +39,13 @@
 #define _360_JOY_BUTTON_RT 0x00400000
 #define _360_JOY_BUTTON_LT 0x00800000
 
-// Stick axis maps - to allow changes for SouthPaw in-game axis mapping
+
 #define AXIS_MAP_LX 0
 #define AXIS_MAP_LY 1
 #define AXIS_MAP_RX 2
 #define AXIS_MAP_RY 3
 
-// Trigger map - to allow for swap triggers in-game
+
 #define TRIGGER_MAP_0 0
 #define TRIGGER_MAP_1 1
 
@@ -64,12 +64,12 @@ public:
     void SetJoypadSensitivity(int iPad, float fSensitivity);
     unsigned int GetValue(int iPad, unsigned char ucAction,
                           bool bRepeat = false);
-    bool ButtonPressed(int iPad, unsigned char ucAction = 255);  // toggled
-    bool ButtonReleased(int iPad, unsigned char ucAction);       // toggled
+    bool ButtonPressed(int iPad, unsigned char ucAction = 255);  
+    bool ButtonReleased(int iPad, unsigned char ucAction);       
     bool ButtonDown(int iPad,
-                    unsigned char ucAction = 255);  // button held down
-    // Functions to remap the axis and triggers for in-game (not menus) -
-    // SouthPaw, etc
+                    unsigned char ucAction = 255);  
+    
+    
     void SetJoypadStickAxisMap(int iPad, unsigned int uiFrom,
                                unsigned int uiTo);
     void SetJoypadStickTriggerMap(int iPad, unsigned int uiFrom,
@@ -80,8 +80,8 @@ public:
     float GetIdleSeconds(int iPad);
     bool IsPadConnected(int iPad);
 
-    // In-Game values which may have been remapped due to Southpaw, swap
-    // triggers, etc
+    
+    
     float GetJoypadStick_LX(int iPad, bool bCheckMenuDisplay = true);
     float GetJoypadStick_LY(int iPad, bool bCheckMenuDisplay = true);
     float GetJoypadStick_RX(int iPad, bool bCheckMenuDisplay = true);
@@ -94,8 +94,8 @@ public:
     int GetScrollDelta();
     int GetChatScrollDelta();
 
-    // Legacy keyboard request overloads with integer string-table ids used to
-    // live here. The remaining public API keeps the direct text/callback form.
+    
+    
     EKeyboardResult RequestKeyboard(const wchar_t* Title, const wchar_t* Text,
                                     int iPad, unsigned int uiMaxChars,
                                     std::function<int(bool)> callback,
@@ -103,29 +103,29 @@ public:
     bool GetMenuDisplayed(int);
     const char* GetText();
 
-    // Online check strings against offensive list - TCR 92
-    // 	TCR # 092  CMTV Player Text String Verification
-    // 		Requirement Any player-entered text visible to another player on
-    // Xbox LIVE must be verified using the Xbox LIVE service before being
-    // transmitted. Text that is rejected by the Xbox LIVE service must not be
-    // displayed.
-    //
-    // 		Remarks
-    // 		This requirement applies to any player-entered string that can
-    // be exposed to other players on Xbox LIVE. It includes session names,
-    // content descriptions, text messages, tags, team names, mottos, comments,
-    // and so on.
-    //
-    // 		Games may decide to not send the text, blank it out, or use
-    // generic text if the text was rejected by the Xbox LIVE service.
-    //
-    // 		Games verify the text by calling the XStringVerify function.
-    //
-    // 		Exemption It is not required to use the Xbox LIVE service to
-    // verify real-time text communication. An example of real-time text
-    // communication is in-game text chat.
-    //
-    // 		Intent Protect players from inappropriate language.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     bool VerifyStrings(wchar_t** pwStringA, int iStringC,
                        std::function<int(STRING_VERIFY_RESPONSE*)> callback);
     void CancelQueuedVerifyStrings(
@@ -135,12 +135,12 @@ public:
     int GetMouseX();
     int GetMouseY();
 
-    // Primary pad (moved from Profile)
+    
     int GetPrimaryPad();
     void SetPrimaryPad(int iPad);
 
-    // bool InputDetected(int userIndex, wchar_t* inputText);
+    
 };
 
-// Singleton
+
 extern C_4JInput InputManager;

@@ -35,8 +35,8 @@ std::shared_ptr<ItemInstance> FishingRodItem::use(
         level->playEntitySound(player, eSoundType_RANDOM_BOW, 0.5f,
                                0.4f / (random->nextFloat() * 0.4f + 0.8f));
         if (!level->isClientSide) {
-            // 4J Stu - Move the player->fishing out of the ctor as we cannot
-            // reference 'this'
+            
+            
             std::shared_ptr<FishingHook> hook =
                 std::make_shared<FishingHook>(level, player);
             player->fishing = hook;

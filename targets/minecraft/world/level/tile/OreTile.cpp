@@ -38,7 +38,7 @@ void OreTile::spawnResources(Level* level, int x, int y, int z, int data,
                              float odds, int playerBonusLevel) {
     Tile::spawnResources(level, x, y, z, data, odds, playerBonusLevel);
 
-    // also spawn experience if the block is broken
+    
     if (getResource(data, level->random, playerBonusLevel) != id) {
         int magicCount = 0;
         if (id == Tile::coalOre_Id) {
@@ -57,7 +57,7 @@ void OreTile::spawnResources(Level* level, int x, int y, int z, int data,
 }
 
 int OreTile::getSpawnResourcesAuxValue(int data) {
-    // lapis spawns blue dye
+    
     if (id == Tile::lapisOre_Id) return DyePowderItem::BLUE;
     return 0;
 }

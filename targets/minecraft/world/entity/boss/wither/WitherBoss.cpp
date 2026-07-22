@@ -52,10 +52,10 @@ bool LivingEntitySelector::matches(std::shared_ptr<Entity> entity) const {
 }
 
 WitherBoss::WitherBoss(Level* level) : Monster(level) {
-    // 4jcraft: moved to per-instance
+    
     livingEntitySelector = new LivingEntitySelector();
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -72,10 +72,10 @@ WitherBoss::WitherBoss(Level* level) : Monster(level) {
 
     setSize(.9f, 4);
 
-    //        noPhysics = true;
+    
     fireImmune = true;
 
-    //        noCulling = true;
+    
 
     getNavigation()->setCanFloat(true);
 
@@ -120,15 +120,15 @@ void WitherBoss::readAdditionalSaveData(CompoundTag* tag) {
 float WitherBoss::getShadowHeightOffs() { return bbHeight / 8; }
 
 int WitherBoss::getAmbientSound() {
-    return eSoundType_MOB_WITHER_IDLE;  //"mob.wither.idle";
+    return eSoundType_MOB_WITHER_IDLE;  
 }
 
 int WitherBoss::getHurtSound() {
-    return eSoundType_MOB_WITHER_HURT;  //"mob.wither.hurt";
+    return eSoundType_MOB_WITHER_HURT;  
 }
 
 int WitherBoss::getDeathSound() {
-    return eSoundType_MOB_WITHER_DEATH;  //"mob.wither.death";
+    return eSoundType_MOB_WITHER_DEATH;  
 }
 
 void WitherBoss::aiStep() {
@@ -259,8 +259,8 @@ void WitherBoss::newServerAiStep() {
             if (headTarget > 0) {
                 std::shared_ptr<Entity> current = level->getEntity(headTarget);
 
-                // 4J: Added check for instance of living entity, had a problem
-                // with IDs being recycled to other entities
+                
+                
                 if (current == nullptr ||
                     !current->instanceof(eTYPE_LIVINGENTITY) ||
                     !current->isAlive() || distanceToSqr(current) > 30 * 30 ||
@@ -280,7 +280,7 @@ void WitherBoss::newServerAiStep() {
                 std::vector<std::shared_ptr<Entity> >* entities =
                     level->getEntitiesOfClass(typeid(LivingEntity), &grown,
                                               livingEntitySelector);
-                // randomly try to find a target 10 times
+                
                 for (int attempt = 0; attempt < 10 && !entities->empty();
                      attempt++) {
                     int randomIndex = random->nextInt(entities->size());
@@ -304,7 +304,7 @@ void WitherBoss::newServerAiStep() {
                             break;
                         }
                     }
-                    // don't pick this again
+                    
                     entities->erase(entities->begin() + randomIndex);
                 }
                 delete entities;
@@ -323,8 +323,8 @@ void WitherBoss::newServerAiStep() {
 
         if (destroyBlocksTick == 0 &&
             level->getGameRules()->getBoolean(GameRules::RULE_MOBGRIEFING)) {
-            // destroy all blocks that are within 1 range, counting from
-            // feet and 3 blocks up
+            
+            
 
             int feet = Mth::floor(y);
             int ox = Mth::floor(x);
@@ -462,7 +462,7 @@ bool WitherBoss::hurt(DamageSource* source, float dmg) {
         } else if (sourceEntity->instanceof(eTYPE_LIVINGENTITY) &&
                    std::dynamic_pointer_cast<LivingEntity>(sourceEntity)
                            ->getMobType() == getMobType()) {
-            // can't be harmed by other undead
+            
             return false;
         }
     }
@@ -492,7 +492,7 @@ bool WitherBoss::isPickable() { return !removed; }
 void WitherBoss::causeFallDamage(float distance) {}
 
 void WitherBoss::addEffect(MobEffectInstance* newEffect) {
-    // do nothing
+    
 }
 
 bool WitherBoss::useNewAi() { return true; }
@@ -503,8 +503,8 @@ void WitherBoss::registerAttributes() {
     getAttribute(SharedMonsterAttributes::MAX_HEALTH)->setBaseValue(300);
     getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)->setBaseValue(0.6f);
 
-    // 4J Stu - Don't make it so far!
-    // getAttribute(SharedMonsterAttributes::FOLLOW_RANGE)->setBaseValue(40);
+    
+    
 }
 
 float WitherBoss::getHeadYRot(int i) { return yRotHeads[i]; }

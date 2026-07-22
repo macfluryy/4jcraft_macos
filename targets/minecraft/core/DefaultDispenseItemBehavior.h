@@ -12,13 +12,13 @@ class Level;
 class DefaultDispenseItemBehavior : public DispenseItemBehavior {
 protected:
     enum eOUTCOME {
-        // Item has special behaviour that was executed successfully.
+        
         ACTIVATED_ITEM = 0,
 
-        // Item was dispenced onto the ground as a pickup.
+        
         DISPENCED_ITEM = 1,
 
-        // Execution failed, the item was left unaffected.
+        
         LEFT_ITEM = 2,
     };
 
@@ -29,8 +29,8 @@ public:
         BlockSource* source, std::shared_ptr<ItemInstance> dispensed);
 
 protected:
-    // 4J-JEV: Added value used to play FAILED sound effect upon reaching spawn
-    // limits.
+    
+    
     virtual std::shared_ptr<ItemInstance> execute(
         BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
         eOUTCOME& outcome);

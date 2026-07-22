@@ -10,7 +10,7 @@
 
 class UIScene;
 
-// This class for any name object in the flash scene
+
 class UIControl {
 public:
     enum eUIControlType {
@@ -43,7 +43,7 @@ public:
 protected:
     eUIControlType m_eControlType;
     int m_id;
-    bool m_bHidden;  // set by the Remove call
+    bool m_bHidden;  
     bool m_isValid;
 
 public:

@@ -86,8 +86,8 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
 
     random = new Random(seed);
     pprandom = new Random(
-        seed);  // 4J - added, so that we can have a separate random for doing
-                // post-processing in parallel with creation
+        seed);  
+                
     perlinNoise3 = new PerlinNoise(random, 4);
 #endif
 }
@@ -130,36 +130,36 @@ void CustomLevelSource::prepareHeights(int xOffs, int zOffs,
                                 (xMapStart * 16 + x + (xc * CHUNK_WIDTH));
                             int mapHeight = m_heightmapOverride[mapIndex];
                             waterHeight = m_waterheightOverride[mapIndex];
-                            // app.DebugPrintf("MapHeight = %d, y = %d\n",
-                            // mapHeight, yc * CHUNK_HEIGHT + y);
-                            ///////////////////////////////////////////////////////////////////
-                            // 4J - add this chunk of code to make land
-                            // "fall-off" at the edges of a finite world - size
-                            // of that world is currently hard-coded in here
+                            
+                            
+                            
+                            
+                            
+                            
                             const int worldSize = m_XZSize * 16;
                             const int falloffStart =
-                                32;  // chunks away from edge were we start
-                                     // doing fall-off
+                                32;  
+                                     
                             const float falloffMax =
-                                128.0f;  // max value we need to get to falloff
-                                         // by the edge of the map
+                                128.0f;  
+                                         
 
                             int xxx = ((xOffs * 16) + x + (xc * CHUNK_WIDTH));
                             int zzz = ((zOffs * 16) + z + (zc * CHUNK_WIDTH));
 
-                            // Get distance to edges of world in x
+                            
                             int xxx0 = xxx + (worldSize / 2);
                             if (xxx0 < 0) xxx0 = 0;
                             int xxx1 = ((worldSize / 2) - 1) - xxx;
                             if (xxx1 < 0) xxx1 = 0;
 
-                            // Get distance to edges of world in z
+                            
                             int zzz0 = zzz + (worldSize / 2);
                             if (zzz0 < 0) zzz0 = 0;
                             int zzz1 = ((worldSize / 2) - 1) - zzz;
                             if (zzz1 < 0) zzz1 = 0;
 
-                            // Get min distance to any edge
+                            
                             int emin = xxx0;
                             if (xxx1 < emin) emin = xxx1;
                             if (zzz0 < emin) emin = zzz0;
@@ -167,33 +167,33 @@ void CustomLevelSource::prepareHeights(int xOffs, int zOffs,
 
                             float comp = 0.0f;
 
-                            // Calculate how much we want the world to fall
-                            // away, if we're in the defined region to do so
+                            
+                            
                             if (emin < falloffStart) {
                                 int falloff = falloffStart - emin;
                                 comp = ((float)falloff / (float)falloffStart) *
                                        falloffMax;
                             }
-                            // 4J - end of extra code
-                            ///////////////////////////////////////////////////////////////////
+                            
+                            
                             int tileId = 0;
-                            // 4J - this comparison used to just be with 0.0f
-                            // but is now varied by block above
+                            
+                            
                             if (yc * CHUNK_HEIGHT + y < mapHeight) {
                                 tileId = (uint8_t)Tile::stone_Id;
                             } else if (yc * CHUNK_HEIGHT + y < waterHeight) {
                                 tileId = (uint8_t)Tile::calmWater_Id;
                             }
 
-                            // 4J - more extra code to make sure that the column
-                            // at the edge of the world is just water & rock, to
-                            // match the infinite sea that continues on after
-                            // the edge of the world.
+                            
+                            
+                            
+                            
 
                             if (emin == 0) {
-                                // This matches code in MultiPlayerChunkCache
-                                // that makes the geometry which continues at
-                                // the edge of the world
+                                
+                                
+                                
                                 if (yc * CHUNK_HEIGHT + y <=
                                     (level->getSeaLevel() - 10))
                                     tileId = Tile::stone_Id;
@@ -238,8 +238,8 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs,
     double s = 1 / 32.0;
 
     std::vector<double> depthBuffer(
-        16 * 16);  // 4J - used to be declared with class level
-                   // scope but moved here for thread safety
+        16 * 16);  
+                   
 
     depthBuffer = perlinNoise3->getRegion(depthBuffer, xOffs * 16, zOffs * 16,
                                           0, 16, 16, 1, s * 2, s * 2, s * 2);
@@ -277,10 +277,10 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs,
                            offsAdjustment;
 
                 if (y <= 1 + random->nextInt(
-                                 2))  // 4J - changed to make the bedrock not
-                                      // have bits you can get stuck in
-                                      //                if (y <= 0 +
-                                      //                random->nextInt(5))
+                                 2))  
+                                      
+                                      
+                                      
                 {
                     blocks[offs] = (uint8_t)Tile::unbreakable_Id;
                 } else {
@@ -318,8 +318,8 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs,
                             run--;
                             blocks[offs] = material;
 
-                            // place a few sandstone blocks beneath sand
-                            // runs
+                            
+                            
                             if (run == 0 && material == Tile::sand_Id) {
                                 run = random->nextInt(4);
                                 material = (uint8_t)Tile::sandStone_Id;
@@ -346,23 +346,23 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
 #if defined(_OVERRIDE_HEIGHTMAP)
     random->setSeed(xOffs * 341873128712l + zOffs * 132897987541l);
 
-    // 4J - now allocating this with a physical alloc & bypassing general memory
-    // management so that it will get cleanly freed
+    
+    
     int blocksSize = Level::maxBuildHeight * 16 * 16;
     uint8_t* tileData = (uint8_t*)malloc(blocksSize);
     memset(tileData, 0, blocksSize);
     std::vector<uint8_t> blocks =
         std::vector<uint8_t>(tileData, tileData + blocksSize);
-    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth *
-    //    16);
+    
+    
 
-    // LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
-    // // 4J - moved to below
+    
+    
 
     prepareHeights(xOffs, zOffs, blocks);
 
-    // 4J - Some changes made here to how biomes, temperatures and downfalls are
-    // passed around for thread safety
+    
+    
     std::vector<Biome*> biomes;
     level->getBiomeSource()->getBiomeBlock(biomes, xOffs * 16, zOffs * 16, 16,
                                            16, true);
@@ -370,9 +370,9 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
     buildSurfaces(xOffs, zOffs, blocks, biomes);
 
     caveFeature->apply(this, level, xOffs, zOffs, blocks);
-    // 4J Stu Design Change - 1.8 gen goes stronghold, mineshaft, village,
-    // canyon this changed in 1.2 to canyon, mineshaft, village, stronghold This
-    // change makes sense as it stops canyons running through other structures
+    
+    
+    
     canyonFeature->apply(this, level, xOffs, zOffs, blocks);
     if (generateStructures) {
         mineShaftFeature->apply(this, level, xOffs, zOffs, blocks);
@@ -380,18 +380,18 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
         strongholdFeature->apply(this, level, xOffs, zOffs, blocks);
         scatteredFeature->apply(this, level, xOffs, zOffs, blocks);
     }
-    //        canyonFeature.apply(this, level, xOffs, zOffs, blocks);
-    // townFeature.apply(this, level, xOffs, zOffs, blocks);
-    // addCaves(xOffs, zOffs, blocks);
-    // addTowns(xOffs, zOffs, blocks);
+    
+    
+    
+    
 
-    //    levelChunk->recalcHeightmap();		// 4J - removed & moved
-    //    into its own method
+    
+    
 
-    // 4J - this now creates compressed block data from the blocks array passed
-    // in, so moved it until after the blocks are actually finalised. We also
-    // now need to free the passed in blocks as the LevelChunk doesn't use the
-    // passed in allocation anymore.
+    
+    
+    
+    
     LevelChunk* levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     free(tileData);
 
@@ -401,14 +401,14 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
 #endif
 }
 
-// 4J - removed & moved into its own method from getChunk, so we can call
-// recalcHeightmap after the chunk is added into the cache. Without doing this,
-// then loads of the lightgaps() calls will fail to add any lights, because
-// adding a light checks if the cache has this chunk in. lightgaps also does
-// light 1 block into the neighbouring chunks, and maybe that is somehow enough
-// to get lighting to propagate round the world, but this just doesn't seem
-// right - this isn't a new fault in the 360 version, have checked that java
-// does the same.
+
+
+
+
+
+
+
+
 void CustomLevelSource::lightChunk(LevelChunk* lc) {
 #if defined(_OVERRIDE_HEIGHTMAP)
     lc->recalcHeightmap();
@@ -487,8 +487,8 @@ void CustomLevelSource::calcWaterDepths(ChunkSource* parent, int xt, int zt) {
 #endif
 }
 
-// 4J - changed this to used pprandom rather than random, so that we can run it
-// concurrently with getChunk
+
+
 void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
 #if defined(_OVERRIDE_HEIGHTMAP)
     HeavyTile::instaFall = true;
@@ -532,7 +532,7 @@ void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     MobSpawner::postProcessSpawnMobs(level, biome, xo + 8, zo + 8, 16, 16,
                                      pprandom);
 
-    // 4J - brought forward from 1.2.3 to get snow back in taiga biomes
+    
     xo += 8;
     zo += 8;
     for (int x = 0; x < 16; x++) {
@@ -542,10 +542,10 @@ void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
             if (level->shouldFreezeIgnoreNeighbors(x + xo, y - 1, z + zo)) {
                 level->setTileAndData(
                     x + xo, y - 1, z + zo, Tile::ice_Id, 0,
-                    Tile::UPDATE_INVISIBLE);  // 4J - changed from setTile,
-                                              // otherwise we end up creating a
-                                              // *lot* of dynamic water tiles as
-                                              // these ice tiles are set
+                    Tile::UPDATE_INVISIBLE);  
+                                              
+                                              
+                                              
             }
             if (level->shouldSnow(x + xo, y, z + zo)) {
                 level->setTileAndData(x + xo, y, z + zo, Tile::topSnow_Id, 0,

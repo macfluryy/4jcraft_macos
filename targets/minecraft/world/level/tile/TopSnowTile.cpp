@@ -15,7 +15,7 @@
 #include "minecraft/world/phys/AABB.h"
 
 const int TopSnowTile::MAX_HEIGHT = 6;
-const int TopSnowTile::HEIGHT_MASK = 7;  // max 8 steps
+const int TopSnowTile::HEIGHT_MASK = 7;  
 
 TopSnowTile::TopSnowTile(int id) : Tile(id, Material::topSnow, false) {
     setShape(0, 0, 0, 1, 2 / 16.0f, 1);
@@ -51,7 +51,7 @@ void TopSnowTile::updateDefaultShape() { updateShape(0); }
 void TopSnowTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     updateShape(level->getData(x, y, z));
 }
@@ -68,9 +68,9 @@ bool TopSnowTile::mayPlace(Level* level, int x, int y, int z) {
     if (t == id &&
         (level->getData(x, y - 1, z) & HEIGHT_MASK) == MAX_HEIGHT + 1)
         return true;
-    // 4J Stu - Assume when placing that this is the server level and we don't
-    // care how it's going to be rendered Fix for #9407 - Gameplay: Destroying a
-    // block of snow on top of trees, removes any adjacent snow.
+    
+    
+    
     if (t != Tile::leaves_Id && !Tile::tiles[t]->isSolidRender(true))
         return false;
     return level->getMaterial(x, y - 1, z)->blocksMotion();
@@ -114,17 +114,17 @@ void TopSnowTile::tick(Level* level, int x, int y, int z, Random* random) {
 bool TopSnowTile::shouldRenderFace(LevelSource* level, int x, int y, int z,
                                    int face) {
     if (face == 1) return true;
-    // 4J - don't render faces if neighbouring tiles are also TopSnowTile with
-    // at least the same height as this one Otherwise we get horrible artifacts
-    // from the non-manifold geometry created. Fixes bug #8506
+    
+    
+    
     if ((level->getTile(x, y, z) == Tile::topSnow_Id) && (face >= 2)) {
         int h0 = level->getData(x, y, z) & HEIGHT_MASK;
         int xx = x;
         int yy = y;
         int zz = z;
-        // Work out coords of tile who's face we're considering (rather than
-        // it's neighbour which is passed in here as x,y,z already offsetting by
-        // the face direction)
+        
+        
+        
         switch (face) {
             case 2:
                 zz += 1;

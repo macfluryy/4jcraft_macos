@@ -45,7 +45,7 @@ public:
 
     LevelChunk* create(int x, int z);
     LevelChunk* getChunk(int xOffs, int zOffs);
-    virtual void lightChunk(LevelChunk* lc);  // 4J added
+    virtual void lightChunk(LevelChunk* lc);  
 
 public:
     virtual bool hasChunk(int x, int y);

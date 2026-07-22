@@ -25,8 +25,8 @@
 class Inventory;
 class Level;
 
-// 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
-// IUIScene_AnvilMenu (from iggy UI)
+
+
 #ifdef ENABLE_JAVA_GUIS
 ResourceLocation GUI_ANVIL_LOCATION = ResourceLocation(TN_GUI_ANVIL);
 #endif
@@ -105,18 +105,18 @@ void RepairScreen::renderLabels() {
             int costX = imageWidth - 8 - font->width(costString);
             int costY = 67;
 
-            // if (this.fontRenderer.getUnicodeFlag())
-            // {
-            //     drawRect(i1 - 3, b0 - 2, this.xSize - 7, b0 + 10, -16777216);
-            //     drawRect(i1 - 2, b0 - 1, this.xSize - 8, b0 + 9, -12895429);
-            // }
-            // else
-            // {
+            
+            
+            
+            
+            
+            
+            
             font->draw(costString, costX, costY + 1, shadowColor);
             font->draw(costString, costX + 1, costY, shadowColor);
             font->draw(costString, costX + 1, costY + 1, shadowColor);
             font->draw(costString, costX, costY, textColor);
-            // }
+            
         }
     }
 }
@@ -176,8 +176,8 @@ void RepairScreen::updateItemName() {
             CustomPayloadPacket::SET_ITEM_NAME_PACKET, baos.toByteArray()));
 }
 
-// 4jcraft: these 3 are to implement Containerlistener (see IUIScene_AnvilMenu
-// and net.minecraft.world.inventory.ContainerListener)
+
+
 void RepairScreen::refreshContainer(
     AbstractContainerMenu* container,
     std::vector<std::shared_ptr<ItemInstance> >* items) {

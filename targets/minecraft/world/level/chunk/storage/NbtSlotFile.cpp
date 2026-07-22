@@ -36,7 +36,7 @@ bool ReadExact(std::FILE* file, void* buffer, std::size_t size) {
 bool WriteExact(std::FILE* file, const void* buffer, std::size_t size) {
     return std::fwrite(buffer, 1, size, file) == size;
 }
-}  // namespace
+}  
 
 std::vector<uint8_t> NbtSlotFile::READ_BUFFER(1024 * 1024);
 int64_t NbtSlotFile::largest = 0;
@@ -78,12 +78,12 @@ void NbtSlotFile::readHeader() {
     SeekFile(raf, 0);
     int magic;
     ReadExact(raf, &magic, sizeof(magic));
-    //    if (magic != MAGIC_NUMBER) throw new IOException("Bad magic number: "
-    //    + magic);		// 4J - TODO
+    
+    
     short version;
     ReadExact(raf, &version, sizeof(version));
-    //    if (version != 0) throw new IOException("Bad version number: " +
-    //    version);		// 4J - TODO
+    
+    
     ReadExact(raf, &totalFileSlots, sizeof(totalFileSlots));
 }
 
@@ -114,7 +114,7 @@ std::vector<CompoundTag*>* NbtSlotFile::readAll(int slot) {
 
     auto itEnd = fileSlots->end();
     for (auto it = fileSlots->begin(); it != itEnd; it++) {
-        int c = *it;  // fileSlots->at(i);
+        int c = *it;  
 
         int pos = 0;
         int continuesAt = -1;
@@ -132,13 +132,13 @@ std::vector<CompoundTag*>* NbtSlotFile::readAll(int slot) {
             seekSlot(c);
             if (expectedSlot > 0 && oldSlot == -expectedSlot) {
                 skipped++;
-                goto fileSlotLoop;  // 4J - used to be continue fileSlotLoop,
-                                    // with for loop labelled as fileSlotLoop
+                goto fileSlotLoop;  
+                                    
             }
 
-            //            if (oldSlot != expectedSlot) throw new
-            //            IOException("Wrong slot! Got " + oldSlot + ", expected
-            //            " + expectedSlot);	// 4J - TODO
+            
+            
+            
 
             ReadExact(raf, READ_BUFFER.data() + pos, size);
 
@@ -159,13 +159,13 @@ std::vector<CompoundTag*>* NbtSlotFile::readAll(int slot) {
 int NbtSlotFile::getFreeSlot() {
     int fileSlot;
 
-    // 4J - removed - don't see how toReplace can ever have anything in here,
-    // and might not be initialised
-    //    if (toReplace->size() > 0)
-    //	{
-    //		fileSlot = toReplace->back();
-    //		toReplace->pop_back();
-    //    } else
+    
+    
+    
+    
+    
+    
+    
 
     if (freeFileSlots.size() > 0) {
         fileSlot = freeFileSlots.back();
@@ -183,7 +183,7 @@ void NbtSlotFile::replaceSlot(int slot, std::vector<CompoundTag*>* tags) {
 
     auto itEndTags = tags->end();
     for (auto it = tags->begin(); it != itEndTags; it++) {
-        CompoundTag* tag = *it;  // tags->at(i);
+        CompoundTag* tag = *it;  
         std::vector<uint8_t> compressed = NbtIo::compress(tag);
         if (compressed.size() > largest) {
             wchar_t buf[256];
@@ -238,7 +238,7 @@ void NbtSlotFile::replaceSlot(int slot, std::vector<CompoundTag*>* tags) {
 
     auto itEndToRep = toReplace->end();
     for (auto it = toReplace->begin(); it != itEndToRep; it++) {
-        int c = *it;  // toReplace->at(i);
+        int c = *it;  
 
         freeFileSlots.push_back(c);
 

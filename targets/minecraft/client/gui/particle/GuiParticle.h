@@ -16,7 +16,7 @@ public:
 
     double r, g, b, a;
     double oR, oG, oB,
-        oA;  // MGH - remaned these, as PS3 complained about "or" var name
+        oA;  
 
     GuiParticle(double x, double y, double xa, double ya);
     void tick(GuiParticles* guiParticles);

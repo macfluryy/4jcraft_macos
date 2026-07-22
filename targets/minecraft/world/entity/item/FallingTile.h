@@ -22,7 +22,7 @@ private:
     int fallDamageMax;
     float fallDamageAmount;
 
-    // 4J - added for common ctor code
+    
     void _init();
 
 public:

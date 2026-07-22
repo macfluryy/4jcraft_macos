@@ -14,7 +14,7 @@ const std::wstring NameEntryScreen::allowedChars =
 
 NameEntryScreen::NameEntryScreen(Screen* lastScreen,
                                  const std::wstring& oldName, int slot) {
-    frame = 0;  // 4J added
+    frame = 0;  
 
     this->lastScreen = lastScreen;
     this->slot = slot;
@@ -42,7 +42,7 @@ void NameEntryScreen::buttonClicked(Button button) {
     if (button.id == 0 && trimString(name).length() > 1) {
         minecraft->saveSlot(slot, trimString(name));
         minecraft->setScreen(nullptr);
-        //        minecraft->grabMouse();	// 4J - removed
+        
     }
     if (button.id == 1) {
         minecraft->setScreen(lastScreen);

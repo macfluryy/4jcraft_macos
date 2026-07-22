@@ -27,13 +27,13 @@ public:
     bool setTileAndData(int x, int y, int z, int _tile, int _data);
     bool setTile(int x, int y, int z, int _tile);
     bool setData(int x, int y, int z, int val, int mask,
-                 bool* maskedBitsChanged);  // 4J added mask
+                 bool* maskedBitsChanged);  
     void setBrightness(LightLayer::variety layer, int x, int y, int z,
                        int brightness);
     void setLevelChunkBrightness(
         LightLayer::variety layer, int x, int y, int z,
-        int brightness);  // 4J added - calls the setBrightness method of the
-                          // parent class
+        int brightness);  
+                          
     void addEntity(std::shared_ptr<Entity> e);
     void removeEntity(std::shared_ptr<Entity> e);
     void removeEntity(std::shared_ptr<Entity> e, int yc);
@@ -44,8 +44,8 @@ public:
                        std::shared_ptr<TileEntity> tileEntity);
     void removeTileEntity(int x, int y, int z);
     void load();
-    void unload(bool unloadTileEntities);  // 4J - added parameter
-    bool containsPlayer();                 // 4J added
+    void unload(bool unloadTileEntities);  
+    bool containsPlayer();                 
     void markUnsaved();
     void getEntities(std::shared_ptr<Entity> except, AABB bb,
                      std::vector<std::shared_ptr<Entity> >& es);
@@ -57,10 +57,10 @@ public:
     int setBlocksAndData(
         std::vector<uint8_t>& data, int x0, int y0, int z0, int x1, int y1,
         int z1, int p,
-        bool includeLighting = true);  // 4J - added includeLighting parameter;
+        bool includeLighting = true);  
     bool testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0,
                               int z0, int x1, int y1, int z1, int p);
     Random* getRandom(int64_t l);
     virtual Biome* getBiome(int x, int z, BiomeSource* biomeSource);
-    virtual void reSyncLighting() {};  // 4J added
+    virtual void reSyncLighting() {};  
 };

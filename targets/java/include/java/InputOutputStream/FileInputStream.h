@@ -1,5 +1,5 @@
 #pragma once
-// 4J Stu - Represents Java standard library class
+
 
 #include <cstdint>
 #include <cstdio>

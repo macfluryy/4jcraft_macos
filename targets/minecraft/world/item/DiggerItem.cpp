@@ -13,7 +13,7 @@
 DiggerItem::DiggerItem(int id, float attackDamage, const Tier* tier,
                        std::vector<Tile*>* tiles)
     : Item(id), tier(tier) {
-    // this->tier = tier;
+    
     this->tiles = tiles;
     maxStackSize = 1;
     setMaxDamage(tier->getUses());
@@ -38,7 +38,7 @@ bool DiggerItem::hurtEnemy(std::shared_ptr<ItemInstance> itemInstance,
 bool DiggerItem::mineBlock(std::shared_ptr<ItemInstance> itemInstance,
                            Level* level, int tile, int x, int y, int z,
                            std::shared_ptr<LivingEntity> owner) {
-    // Don't damage tools if the tile can be destroyed in one hit.
+    
     if (Tile::tiles[tile]->getDestroySpeed(level, x, y, z) != 0.0)
         itemInstance->hurtAndBreak(1, owner);
     return true;

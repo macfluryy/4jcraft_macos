@@ -20,7 +20,7 @@ public:
 
     virtual ~IPlatformProfile() = default;
 
-    // Lifecycle
+    
     virtual void Initialise(std::uint32_t dwTitleID, std::uint32_t dwOfferID,
                             unsigned short usProfileVersion,
                             unsigned int uiProfileValuesC,
@@ -30,7 +30,7 @@ public:
                             unsigned int* puiGameDefinedDataChangedBitmask) = 0;
     virtual void Tick() = 0;
 
-    // Sign-in
+    
     [[nodiscard]] virtual int GetLockedProfile() = 0;
     virtual void SetLockedProfile(int iProf) = 0;
     [[nodiscard]] virtual bool IsSignedIn(int iQuadrant) = 0;
@@ -58,7 +58,7 @@ public:
         int iPad, bool* pbChatRestricted, bool* pbContentRestricted,
         int* piAge) = 0;
 
-    // System
+    
     [[nodiscard]] virtual int GetPrimaryPad() = 0;
     virtual void SetPrimaryPad(int iPad) = 0;
     [[nodiscard]] virtual char* GetGamertag(int iPad) = 0;
@@ -74,7 +74,7 @@ public:
     virtual void SetProfileReadErrorCallback(
         std::function<void()> callback) = 0;
 
-    // Profile data
+    
     virtual int SetDefaultOptionsCallback(
         std::function<int(PROFILESETTINGS*, int)> callback) = 0;
     virtual int SetOldProfileVersionCallback(
@@ -88,7 +88,7 @@ public:
     [[nodiscard]] virtual void* GetGameDefinedProfileData(int iQuadrant) = 0;
     virtual void ResetProfileProcessState() = 0;
 
-    // Content
+    
     virtual void AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly,
                                              bool* allAllowed,
                                              bool* friendsAllowed) = 0;
@@ -101,7 +101,7 @@ public:
         std::function<int(std::uint8_t*, unsigned int)> callback) = 0;
     virtual void CancelProfileAvatarRequest() = 0;
 
-    // Achievements
+    
     virtual void RegisterAward(int iAwardNumber, int iGamerconfigID,
                                EAwardType eType,
                                bool bLeaderboardAffected = false,
@@ -118,7 +118,7 @@ public:
                        bool bForce = false) = 0;
     [[nodiscard]] virtual bool IsAwardsFlagSet(int iQuadrant, int iAward) = 0;
 
-    // Rich presence
+    
     virtual void RichPresenceInit(int iPresenceCount, int iContextCount) = 0;
     virtual void RegisterRichPresenceContext(int iGameConfigContextID) = 0;
     virtual void SetRichPresenceContextValue(int iPad, int iContextID,
@@ -126,6 +126,6 @@ public:
     virtual void SetCurrentGameActivity(int iPad, int iNewPresence,
                                         bool bSetOthersToIdle = false) = 0;
 
-    // Debug
+    
     virtual void SetDebugFullOverride(bool bVal) = 0;
 };

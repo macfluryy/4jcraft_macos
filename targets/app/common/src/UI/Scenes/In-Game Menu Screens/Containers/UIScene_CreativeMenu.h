@@ -82,12 +82,12 @@ protected:
                                     int buttonNum, bool quickKey);
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 
 private:
-    // IUIScene_CreativeMenu
+    
     void updateTabHighlightAndText(ECreativeInventoryTabs tab);
     void updateScrollCurrentPage(int currentPage, int pageCount);
     bool m_bFirstCall;

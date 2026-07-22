@@ -9,12 +9,12 @@
 
 class Tesselator;
 
-// void Cube::addBox(float x0, float y0, float z0, int w, int h, int d, float g)
+
 Cube::Cube(ModelPart* modelPart, int xTexOffs, int yTexOffs, float x0, float y0,
-           float z0, int w, int h, int d, float g, int faceMask /* = 63 */,
+           float z0, int w, int h, int d, float g, int faceMask ,
            bool bFlipPoly3UVs)
-    :  // 4J - added faceMask, added bFlipPoly3UVs to reverse the uvs back so
-       // player skins display right
+    :  
+       
       x0(x0),
       y0(y0),
       z0(z0),
@@ -62,47 +62,47 @@ Cube::Cube(ModelPart* modelPart, int xTexOffs, int yTexOffs, float x0, float y0,
     vertices[6] = l2;
     vertices[7] = l3;
 
-    // 4J - added ability to mask individual faces
+    
     faceCount = 0;
     if (faceMask & 1)
         polygons[faceCount++] = _Polygon(
             std::array<const Vertex, 4>{l1, u1, u2, l2}, xTexOffs + d + w,
             yTexOffs + d, xTexOffs + d + w + d, yTexOffs + d + h,
-            modelPart->xTexSize, modelPart->yTexSize);  // Right
+            modelPart->xTexSize, modelPart->yTexSize);  
     if (faceMask & 2)
         polygons[faceCount++] = _Polygon(
             std::array<const Vertex, 4>{u0, l0, l3, u3}, xTexOffs + 0,
             yTexOffs + d, xTexOffs + d, yTexOffs + d + h, modelPart->xTexSize,
-            modelPart->yTexSize);  // Left
+            modelPart->yTexSize);  
     if (faceMask & 4)
         polygons[faceCount++] = _Polygon(
             std::array<const Vertex, 4>{l1, l0, u0, u1}, xTexOffs + d,
             yTexOffs + 0, xTexOffs + d + w, yTexOffs + d, modelPart->xTexSize,
-            modelPart->yTexSize);  // Up
+            modelPart->yTexSize);  
     if (bFlipPoly3UVs) {
         if (faceMask & 8)
             polygons[faceCount++] = _Polygon(
                 std::array<const Vertex, 4>{u2, u3, l3, l2}, xTexOffs + d + w,
                 yTexOffs + 0, xTexOffs + d + w + w, yTexOffs + d,
-                modelPart->xTexSize, modelPart->yTexSize);  // Down
+                modelPart->xTexSize, modelPart->yTexSize);  
     } else {
         if (faceMask & 8)
             polygons[faceCount++] = _Polygon(
                 std::array<const Vertex, 4>{u2, u3, l3, l2}, xTexOffs + d + w,
                 yTexOffs + d, xTexOffs + d + w + w, yTexOffs + 0,
-                modelPart->xTexSize, modelPart->yTexSize);  // Down
+                modelPart->xTexSize, modelPart->yTexSize);  
     }
     if (faceMask & 16)
         polygons[faceCount++] =
             _Polygon(std::array<const Vertex, 4>{u1, u0, u3, u2}, xTexOffs + d,
                      yTexOffs + d, xTexOffs + d + w, yTexOffs + d + h,
-                     modelPart->xTexSize, modelPart->yTexSize);  // Front
+                     modelPart->xTexSize, modelPart->yTexSize);  
     if (faceMask & 32)
         polygons[faceCount++] = _Polygon(
             std::array<const Vertex, 4>{l0, l1, l2, l3}, xTexOffs + d + w + d,
             yTexOffs + d, xTexOffs + d + w + d + w, yTexOffs + d + h,
             modelPart->xTexSize,
-            modelPart->yTexSize);  // Back
+            modelPart->yTexSize);  
 
     if (modelPart->bMirror) {
         for (unsigned int i = 0; i < polygons.size(); i++) polygons[i].mirror();

@@ -29,10 +29,10 @@ void BeaconRenderer::render(std::shared_ptr<TileEntity> _beacon, double x,
 
         bindTexture(&BEAM_LOCATION);
 
-        // TODO: 4J: Put this back in
-        // assert(0);
-        // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        
+        
+        
 
         glDisable(GL_LIGHTING);
         glDisable(GL_CULL_FACE);

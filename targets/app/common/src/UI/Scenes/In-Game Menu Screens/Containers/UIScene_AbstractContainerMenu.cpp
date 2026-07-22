@@ -28,8 +28,8 @@ UIScene_AbstractContainerMenu::UIScene_AbstractContainerMenu(
     int iPad, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
     m_focusSection = eSectionNone;
-    // in this scene, we override the press sound with our own for crafting
-    // success or fail
+    
+    
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_X, true);
@@ -60,11 +60,11 @@ void UIScene_AbstractContainerMenu::handleDestroy() {
                 m_previousTutorialState);
     }
 
-    // 4J Stu - Fix for #11302 - TCR 001: Network Connectivity: Host crashed
-    // after being killed by the client while accessing a chest during burst
-    // packet loss. We need to make sure that we call closeContainer() anytime
-    // this menu is closed, even if it is forced to close by some other reason
-    // (like the player dying)
+    
+    
+    
+    
+    
     if (pMinecraft->localplayers[m_iPad] != nullptr &&
         pMinecraft->localplayers[m_iPad]->containerMenu->containerId ==
             m_menu->containerId) {
@@ -95,14 +95,14 @@ void UIScene_AbstractContainerMenu::PlatformInitialize(int iPad,
         m_slotListHotbar.addSlots(startIndex + 27, 9);
     }
 
-    // Determine min and max extents for pointer, it needs to be able to move
-    // off the container to drop items.
+    
+    
     float fPanelWidth, fPanelHeight;
     float fPanelX, fPanelY;
     float fPointerWidth, fPointerHeight;
 
-    // We may have varying depths of controls here, so base off the pointers
-    // parent
+    
+    
 #if TO_BE_IMPLEMENTED
     HXUIOBJ parent;
     XuiElementGetBounds(m_pointerControl->m_hObj, &fPointerWidth,
@@ -116,18 +116,18 @@ void UIScene_AbstractContainerMenu::PlatformInitialize(int iPad,
     fPanelHeight = m_controlBackgroundPanel.getHeight();
     fPanelX = m_controlBackgroundPanel.getXPos();
     fPanelY = m_controlBackgroundPanel.getYPos();
-    // Get size of pointer
-    m_fPointerImageOffsetX = 0;  // floor(fPointerWidth/2.0f);
-    m_fPointerImageOffsetY = 0;  // floor(fPointerHeight/2.0f);
+    
+    m_fPointerImageOffsetX = 0;  
+    m_fPointerImageOffsetY = 0;  
 
     m_fPanelMinX = fPanelX;
     m_fPanelMaxX = fPanelX + fPanelWidth;
     m_fPanelMinY = fPanelY;
     m_fPanelMaxY = fPanelY + fPanelHeight;
 
-    // 4J-PB - need to limit this in splitscreen
+    
     if (app.GetLocalPlayerCount() > 1) {
-        // don't let the pointer go into someone's screen
+        
         m_fPointerMinY = floor(fPointerHeight / 2.0f);
     } else {
         m_fPointerMinY = fPanelY - fPointerHeight;
@@ -136,10 +136,10 @@ void UIScene_AbstractContainerMenu::PlatformInitialize(int iPad,
     m_fPointerMaxX = m_fPanelMaxX + fPointerWidth;
     m_fPointerMaxY = m_fPanelMaxY + (fPointerHeight / 2);
 
-    // 	m_hPointerText=nullptr;
-    // 	m_hPointerTextBkg=nullptr;
+    
+    
 
-    // Put the pointer over first item in use row to start with.
+    
     UIVec2D itemPos;
     UIVec2D itemSize;
     GetItemScreenData(m_eCurrSection, 0, &(itemPos), &(itemSize));
@@ -155,7 +155,7 @@ void UIScene_AbstractContainerMenu::PlatformInitialize(int iPad,
     vPointerPos.x -= m_fPointerImageOffsetX;
     vPointerPos.y -= m_fPointerImageOffsetY;
 
-    // m_pointerControl->SetPosition( &vPointerPos );
+    
     m_pointerPos = vPointerPos;
 
     IggyEvent mouseEvent;
@@ -188,7 +188,7 @@ void UIScene_AbstractContainerMenu::tick() {
     S32 y = m_pointerPos.y * ((float)height / m_movieHeight);
     IggyMakeEventMouseMove(&mouseEvent, x, y);
 
-    // 4J Stu - This seems to be broken on Durango, so do it ourself
+    
 
     IggyEventResult result;
     IggyPlayerDispatchEventRS(getMovie(), &mouseEvent, &result);
@@ -250,9 +250,9 @@ void UIScene_AbstractContainerMenu::handleInput(int iPad, int key, bool repeat,
                                                 bool& handled) {
     if (m_bIgnoreInput) return;
 
-    // app.DebugPrintf("UIScene_InventoryMenu handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     if (pressed) {
@@ -272,9 +272,9 @@ void UIScene_AbstractContainerMenu::setSectionFocus(ESceneSection eSection,
 
     if (m_focusSection != eSectionNone) {
         UIControl* currentFocus = getSection(m_focusSection);
-        // 4J-TomK only set current focus to false if it differs from last
-        // (previously this continuously fired iggy functions when they were
-        // identical!
+        
+        
+        
         if (currentFocus != newFocus)
             if (currentFocus) currentFocus->setFocus(false);
     }
@@ -318,5 +318,5 @@ bool UIScene_AbstractContainerMenu::isSlotEmpty(ESceneSection eSection,
 }
 
 void UIScene_AbstractContainerMenu::adjustPointerForSafeZone() {
-    // Handled by AS
+    
 }

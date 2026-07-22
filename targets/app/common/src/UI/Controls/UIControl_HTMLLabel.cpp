@@ -16,7 +16,7 @@ bool UIControl_HTMLLabel::setupControl(UIScene* scene, IggyValuePath* parent,
     UIControl::setControlType(UIControl::eHTMLLabel);
     bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-    // Label specific initialisers
+    
     m_funcStartAutoScroll = registerFastName(L"StartAutoScroll");
     m_funcTouchScroll = registerFastName(L"TouchScroll");
     m_funcGetRealWidth = registerFastName(L"GetRealWidth");
@@ -34,8 +34,8 @@ void UIControl_HTMLLabel::startAutoScroll() {
 
 void UIControl_HTMLLabel::ReInit() {
     UIControl_Base::ReInit();
-    // Don't set the label, HTML sizes will have changed. Let the scene update
-    // us.
+    
+    
     init(L"");
 }
 

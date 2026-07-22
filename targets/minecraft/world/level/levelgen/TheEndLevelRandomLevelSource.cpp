@@ -23,7 +23,7 @@ TheEndLevelRandomLevelSource::TheEndLevelRandomLevelSource(Level* level,
     this->level = level;
 
     random = new Random(seed);
-    pprandom = new Random(seed);  // 4J added
+    pprandom = new Random(seed);  
     lperlinNoise1 = new PerlinNoise(random, 16);
     lperlinNoise2 = new PerlinNoise(random, 16);
     perlinNoise1 = new PerlinNoise(random, 8);
@@ -46,8 +46,8 @@ void TheEndLevelRandomLevelSource::prepareHeights(int xOffs, int zOffs,
                                                   std::vector<uint8_t>& blocks,
                                                   std::vector<Biome*>& biomes) {
     std::vector<double>
-        buffer;  // 4J - used to be declared with class level scope but
-                 // tidying up for thread safety reasons
+        buffer;  
+                 
 
     int xChunks = 16 / CHUNK_WIDTH;
 
@@ -179,35 +179,35 @@ LevelChunk* TheEndLevelRandomLevelSource::getChunk(int xOffs, int zOffs) {
     random->setSeed(xOffs * 341873128712l + zOffs * 132897987541l);
 
     std::vector<Biome*> biomes;
-    // 4J - now allocating this with a physical alloc & bypassing general memory
-    // management so that it will get cleanly freed
+    
+    
     unsigned int blocksSize = Level::genDepth * 16 * 16;
     uint8_t* tileData = (uint8_t*)malloc(blocksSize);
     memset(tileData, 0, blocksSize);
     std::vector<uint8_t> blocks =
         std::vector<uint8_t>(tileData, tileData + blocksSize);
-    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth *
-    //    16);
+    
+    
 
-    //    LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
-    //    // 4J moved below
+    
+    
     level->getBiomeSource()->getBiomeBlock(biomes, xOffs * 16, zOffs * 16, 16,
                                            16, true);
 
     prepareHeights(xOffs, zOffs, blocks, biomes);
     buildSurfaces(xOffs, zOffs, blocks, biomes);
 
-    // 4J - this now creates compressed block data from the blocks array passed
-    // in, so moved it until after the blocks are actually finalised. We also
-    // now need to free the passed in blocks as the LevelChunk doesn't use the
-    // passed in allocation anymore.
+    
+    
+    
+    
     LevelChunk* levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     free(tileData);
 
     levelChunk->recalcHeightmap();
 
-    // delete blocks.data(); // Don't delete the blocks as the array data is
-    // actually owned by the chunk now
+    
+    
 
     return levelChunk;
 }
@@ -223,8 +223,8 @@ std::vector<double> TheEndLevelRandomLevelSource::getHeights(
     double hs = 1 * 684.412;
 
     std::vector<double> pnr, ar, br, sr, dr, fi,
-        fis;  // 4J - used to be declared with class level scope but moved here
-              // for thread safety
+        fis;  
+              
 
     sr = scaleNoise->getRegion(sr, x, z, xSize, zSize, 1.121, 1.121, 0.5);
     dr = depthNoise->getRegion(dr, x, z, xSize, zSize, 200.0, 200.0, 0.5);
@@ -383,12 +383,12 @@ void TheEndLevelRandomLevelSource::postProcess(ChunkSource* parent, int xt,
     int xo = xt * 16;
     int zo = zt * 16;
 
-    // 4J - added. The original java didn't do any setting of the random seed
-    // here, and passes the level random to the biome decorator. We'll be
-    // running our postProcess in parallel with getChunk etc. so we need to use
-    // a separate random - have used the same initialisation code as used in
-    // RandomLevelSource::postProcess to make sure this random value is
-    // consistent for each world generation.
+    
+    
+    
+    
+    
+    
     pprandom->setSeed(level->getSeed());
     int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
     int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
@@ -397,8 +397,8 @@ void TheEndLevelRandomLevelSource::postProcess(ChunkSource* parent, int xt,
     Biome* biome = level->getBiome(xo + 16, zo + 16);
     biome->decorate(
         level, pprandom, xo,
-        zo);  // 4J - passing pprandom rather than level->random here to make
-              // this consistent with our parallel world generation
+        zo);  
+              
 
     HeavyTile::instaFall = false;
 

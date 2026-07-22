@@ -21,7 +21,7 @@
 UIComponent_Panorama::UIComponent_Panorama(int iPad, void* initData,
                                            UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_bShowingDay = true;
@@ -58,8 +58,8 @@ void UIComponent_Panorama::tick() {
         std::lock_guard<std::recursive_mutex> lock(pMinecraft->m_setLevelCS);
         if (pMinecraft->level != nullptr) {
             int64_t i64TimeOfDay = 0;
-            // are we in the Nether? - Leave the time as 0 if we are, so we show
-            // daylight
+            
+            
             if (pMinecraft->level->dimension->id == 0) {
                 i64TimeOfDay =
                     pMinecraft->level->getLevelData()->getGameTime() % 24000;
@@ -102,8 +102,8 @@ void UIComponent_Panorama::render(S32 width, S32 height,
 
         if ((viewport == C4JRender::VIEWPORT_TYPE_SPLIT_LEFT) ||
             (viewport == C4JRender::VIEWPORT_TYPE_SPLIT_RIGHT)) {
-            // Need to render at full height, but only the left side of the
-            // scene
+            
+            
             S32 tileXStart = 0;
             S32 tileYStart = 0;
             S32 tileWidth = width;
@@ -120,8 +120,8 @@ void UIComponent_Panorama::render(S32 width, S32 height,
                                0);
             IggyPlayerDrawTilesEnd(getMovie());
         } else {
-            // Need to render at full height, and full width. But compressed
-            // into the viewport
+            
+            
             IggyPlayerSetDisplaySize(getMovie(), ui.getScreenWidth(),
                                      ui.getScreenHeight() / 2);
             IggyPlayerDraw(getMovie());

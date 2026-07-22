@@ -18,7 +18,7 @@
 UIScene_NewUpdateMessage::UIScene_NewUpdateMessage(int iPad, void* initData,
                                                    UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     parentLayer->addComponent(iPad, eUIComponent_Panorama);
@@ -74,10 +74,10 @@ void UIScene_NewUpdateMessage::handleInput(int iPad, int key, bool repeat,
                 app.GetGameSettings(m_iPad, eGameSetting_DisplayUpdateMessage);
             if (iVal > 0) iVal--;
 
-            // set the update text as seen, by clearing the flag
+            
             app.SetGameSettings(m_iPad, eGameSetting_DisplayUpdateMessage,
                                 iVal);
-            // force a profile write
+            
             app.CheckGameSettingsChanged(true, m_iPad);
             ui.NavigateBack(m_iPad);
         } break;
@@ -96,17 +96,17 @@ void UIScene_NewUpdateMessage::handleInput(int iPad, int key, bool repeat,
 void UIScene_NewUpdateMessage::handlePress(F64 controlId, F64 childId) {
     switch ((int)controlId) {
         case eControl_Confirm: {
-            // CD - Added for audio
+            
             ui.PlayUISFX(eSFX_Press);
 
             int iVal =
                 app.GetGameSettings(m_iPad, eGameSetting_DisplayUpdateMessage);
             if (iVal > 0) iVal--;
 
-            // set the update text as seen, by clearing the flag
+            
             app.SetGameSettings(m_iPad, eGameSetting_DisplayUpdateMessage,
                                 iVal);
-            // force a profile write
+            
             app.CheckGameSettingsChanged(true, m_iPad);
             ui.NavigateBack(m_iPad);
         } break;

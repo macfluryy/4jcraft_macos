@@ -12,9 +12,9 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/redstone/Redstone.h"
 
-// 4J Stu - The java does not have ctor here (being an abstract) but we need one
-// to initialise the member variables
-// TODO Make sure all derived classes also call this
+
+
+
 AbstractContainerMenu::AbstractContainerMenu() {
     containerId = 0;
 
@@ -76,10 +76,10 @@ void AbstractContainerMenu::broadcastChanges() {
         std::shared_ptr<ItemInstance> current = slots.at(i)->getItem();
         std::shared_ptr<ItemInstance> expected = lastSlots.at(i);
         if (!ItemInstance::matches(expected, current)) {
-            // 4J Stu - Added 0 count check. There is a bug in the Java with
-            // anvils that means this broadcast happens while we are in the
-            // middle of quickmoving, and before the slot properly gets set to
-            // null
+            
+            
+            
+            
             expected = (current == nullptr || current->count == 0)
                            ? nullptr
                            : current->copy();
@@ -120,7 +120,7 @@ Slot* AbstractContainerMenu::getSlotFor(std::shared_ptr<Container> c,
                                         int index) {
     auto itEnd = slots.end();
     for (auto it = slots.begin(); it != itEnd; it++) {
-        Slot* slot = *it;  // slots->at(i);
+        Slot* slot = *it;  
         if (slot->isAt(c, index)) {
             return slot;
         }
@@ -141,7 +141,7 @@ std::shared_ptr<ItemInstance> AbstractContainerMenu::quickMoveStack(
 
 std::shared_ptr<ItemInstance> AbstractContainerMenu::clicked(
     int slotIndex, int buttonNum, int clickType, std::shared_ptr<Player> player,
-    bool looped)  // 4J Added looped param
+    bool looped)  
 {
     std::shared_ptr<ItemInstance> clickedEntity = nullptr;
     std::shared_ptr<Inventory> inventory = player->inventory;
@@ -245,27 +245,27 @@ std::shared_ptr<ItemInstance> AbstractContainerMenu::clicked(
                 if (piiClicked != nullptr) {
                     int oldType = piiClicked->id;
 
-                    // 4J Stu - We ignore the return value for loopClicks, so
-                    // don't make a copy
+                    
+                    
                     if (!looped) {
                         clickedEntity = piiClicked->copy();
                     }
 
-                    // 4J Stu - Remove the reference to this before we start a
-                    // recursive loop
+                    
+                    
                     piiClicked = nullptr;
 
                     if (slot != nullptr) {
                         if (slot->getItem() != nullptr &&
                             slot->getItem()->id == oldType) {
                             if (looped) {
-                                // Return a non-null value to indicate that we
-                                // want to loop more
+                                
+                                
                                 clickedEntity = std::shared_ptr<ItemInstance>(
                                     new ItemInstance(0, 1, 0));
                             } else {
-                                // 4J Stu - Brought forward loopClick from 1.2
-                                // to fix infinite recursion bug in creative
+                                
+                                
                                 loopClick(slotIndex, buttonNum, true, player);
                             }
                         }
@@ -298,7 +298,7 @@ std::shared_ptr<ItemInstance> AbstractContainerMenu::clicked(
                         }
                     }
                 }
-                // 4J Added for dyable armour and combinining damaged items
+                
                 else if (buttonNum == 1 && mayCombine(slot, carried)) {
                     std::shared_ptr<ItemInstance> combined =
                         slot->combine(carried);
@@ -311,7 +311,7 @@ std::shared_ptr<ItemInstance> AbstractContainerMenu::clicked(
                     }
                 } else if (slot->mayPickup(player)) {
                     if (carried == nullptr) {
-                        // pick up to empty hand
+                        
                         int c = buttonNum == 0 ? clicked->count
                                                : (clicked->count + 1) / 2;
                         std::shared_ptr<ItemInstance> removed = slot->remove(c);
@@ -322,17 +322,17 @@ std::shared_ptr<ItemInstance> AbstractContainerMenu::clicked(
                         }
                         slot->onTake(player, inventory->getCarried());
                     } else if (slot->mayPlace(carried)) {
-                        // put down and/or pick up
+                        
                         if (clicked->id != carried->id ||
                             clicked->getAuxValue() != carried->getAuxValue() ||
                             !ItemInstance::tagMatches(clicked, carried)) {
-                            // no match, replace
+                            
                             if (carried->count <= slot->getMaxStackSize()) {
                                 slot->set(carried);
                                 inventory->setCarried(clicked);
                             }
                         } else {
-                            // match, attempt to fill slot
+                            
                             int c = buttonNum == 0 ? carried->count : 1;
                             if (c > slot->getMaxStackSize() - clicked->count) {
                                 c = slot->getMaxStackSize() - clicked->count;
@@ -348,7 +348,7 @@ std::shared_ptr<ItemInstance> AbstractContainerMenu::clicked(
                             clicked->count += c;
                         }
                     } else {
-                        // pick up to non-empty hand
+                        
                         if (clicked->id == carried->id &&
                             carried->getMaxStackSize() > 1 &&
                             (!clicked->isStackedByData() ||
@@ -432,7 +432,7 @@ std::shared_ptr<ItemInstance> AbstractContainerMenu::clicked(
             int step = buttonNum == 0 ? 1 : -1;
 
             for (int pass = 0; pass < 2; pass++) {
-                // In the first pass, we only get partial stacks.
+                
                 for (int i = start; i >= 0 && i < slots.size() &&
                                     carried->count < carried->getMaxStackSize();
                      i += step) {
@@ -472,7 +472,7 @@ bool AbstractContainerMenu::canTakeItemForPickAll(
     return true;
 }
 
-// 4J Stu - Brought forward from 1.2 to fix infinite recursion bug in creative
+
 void AbstractContainerMenu::loopClick(int slotIndex, int buttonNum,
                                       bool quickKeyHeld,
                                       std::shared_ptr<Player> player) {
@@ -495,8 +495,8 @@ void AbstractContainerMenu::removed(std::shared_ptr<Player> player) {
 }
 
 void AbstractContainerMenu::
-    slotsChanged()  // 4J used to take a shared_ptr<Container> but wasn't using
-                    // it, so removed to simplify things
+    slotsChanged()  
+                    
 {
     broadcastChanges();
 }
@@ -537,8 +537,8 @@ void AbstractContainerMenu::setSynched(std::shared_ptr<Player> player,
     }
 }
 
-// 4J Stu - Brought a few changes in this function forward from 1.2 to make it
-// return a bool
+
+
 bool AbstractContainerMenu::moveItemStackTo(
     std::shared_ptr<ItemInstance> itemStack, int startSlot, int endSlot,
     bool backwards) {
@@ -549,7 +549,7 @@ bool AbstractContainerMenu::moveItemStackTo(
         destSlot = endSlot - 1;
     }
 
-    // find stackable slots first
+    
     if (itemStack->isStackable()) {
         while (itemStack->count > 0 && ((!backwards && destSlot < endSlot) ||
                                         (backwards && destSlot >= startSlot))) {
@@ -582,7 +582,7 @@ bool AbstractContainerMenu::moveItemStackTo(
         }
     }
 
-    // find empty slot
+    
     if (itemStack->count > 0) {
         if (backwards) {
             destSlot = endSlot - 1;
@@ -689,7 +689,7 @@ int AbstractContainerMenu::getRedstoneSignalFromContainer(
            (count > 0 ? 1 : 0);
 }
 
-// 4J Added
+
 bool AbstractContainerMenu::isValidIngredient(
     std::shared_ptr<ItemInstance> item, int slotId) {
     return true;

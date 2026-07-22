@@ -31,9 +31,9 @@ SignTileEntity::SignTileEntity() : TileEntity() {
 }
 
 SignTileEntity::~SignTileEntity() {
-    // TODO ORBIS_STUBBED;
-    // 4J-PB - we don't need to verify strings anymore -
-    // PlatformInput.CancelQueuedVerifyStrings([this](STRING_VERIFY_RESPONSE* r) { return handleStringVerify(r); });
+    
+    
+    
 }
 
 void SignTileEntity::save(CompoundTag* tag) {
@@ -69,8 +69,8 @@ void SignTileEntity::load(CompoundTag* tag) {
     }
 #endif
 
-    // 4J Stu - Fix for #13531 - Bug: Signs do not Censor after loading a save
-    // Set verified as false so that it can be re-verified
+    
+    
     m_bVerified = false;
 
     setChanged();
@@ -105,51 +105,51 @@ std::shared_ptr<Player> SignTileEntity::getPlayerWhoMayEdit() {
 void SignTileEntity::setChanged() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
-    // 4J-PB - For TU14 we are allowed to not verify strings anymore !
+    
     m_bVerified = true;
-    /*
-    if(!g_NetworkManager.IsLocalGame() && !m_bVerified)
-    //if (pMinecraft->level->isClientSide)
-    {
-            wchar_t *wcMessages[MAX_SIGN_LINES];
-            for (int i = 0; i < MAX_SIGN_LINES; ++i)
-            {
-                    wcMessages[i]=new wchar_t [MAX_LINE_LENGTH+1];
-                    memset(wcMessages[i], 0,
-sizeof(wchar_t)*(MAX_LINE_LENGTH+1)); if(m_wsmessages[i].length()>0)
-                    {
-                            memcpy(wcMessages[i],m_wsmessages[i].c_str(),m_wsmessages[i].length()*sizeof(wchar_t));
-                    }
-            }
-            // at this point, we can ask the online string verifier if our sign
-text is ok #if 0 m_bVerified=true; #else
+    
 
-            if(!PlatformInput.VerifyStrings((wchar_t**)&wcMessages,MAX_SIGN_LINES,[this](STRING_VERIFY_RESPONSE* r) { return handleStringVerify(r); }))
-            {
-                    // Nothing to verify
-                    m_bVerified=true;
-            }
-            for(unsigned int i = 0; i < MAX_SIGN_LINES; ++i)
-            {
-                    delete [] wcMessages[i];
-            }
-#endif
-    }
-    else
-    {
-            // set the sign to allowed (local game)
-            m_bVerified=true;
-    }
-    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void SignTileEntity::SetMessage(int iIndex, std::wstring& wsText) {
     m_wsmessages[iIndex] = wsText;
 }
 
-// 4J-PB - added for string verification
+
 int SignTileEntity::handleStringVerify(STRING_VERIFY_RESPONSE* pResults) {
-    // results will be in m_pStringVerifyResponse
+    
     m_bVerified = true;
     m_bCensored = false;
     for (int i = 0; i < pResults->wNumStrings; i++) {
@@ -160,17 +160,17 @@ int SignTileEntity::handleStringVerify(STRING_VERIFY_RESPONSE* pResults) {
 
     if (!level->isClientSide) {
         ServerLevel* serverLevel = (ServerLevel*)level;
-        // 4J Stu - This callback gets called on the main thread, but tried to
-        // access things on the server thread. Change to go through the
-        // protected method.
-        // level->sendTileUpdated(x, y, z);
+        
+        
+        
+        
         serverLevel->queueSendTileUpdate(x, y, z);
     }
 
     return 0;
 }
 
-// 4J Added
+
 std::shared_ptr<TileEntity> SignTileEntity::clone() {
     std::shared_ptr<SignTileEntity> result = std::make_shared<SignTileEntity>();
     TileEntity::clone(result);

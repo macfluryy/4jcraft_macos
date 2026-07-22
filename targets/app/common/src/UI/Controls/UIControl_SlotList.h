@@ -13,8 +13,8 @@
 
 class UIControl_SlotList : public UIControl_Base {
 private:
-    // IggyName m_addSlotFunc, m_getSlotFunc, m_setRedBoxFunc,
-    // m_setHighlightFunc;
+    
+    
     IggyName m_addSlotFunc, m_setRedBoxFunc, m_setHighlightFunc;
 
     int m_lastHighlighted;

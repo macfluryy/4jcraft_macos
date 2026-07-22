@@ -11,32 +11,32 @@ SheepFurModel::SheepFurModel() : QuadrupedModel(12, 0) {
     headXRot = 0.0f;
 
     head = new ModelPart(this, 0, 0);
-    head->addBox(-3, -4, -4, 6, 6, 6, 0.6f);  // Head
+    head->addBox(-3, -4, -4, 6, 6, 6, 0.6f);  
     head->setPos(0, 12 - 6, -8);
 
     body = new ModelPart(this, 28, 8);
-    body->addBox(-4, -10, -7, 8, 16, 6, 1.75f);  // Body
+    body->addBox(-4, -10, -7, 8, 16, 6, 1.75f);  
     body->setPos(0, 11 + 6 - 12, 2);
 
     float g = 0.5f;
     leg0 = new ModelPart(this, 0, 16);
-    leg0->addBox(-2, 0, -2, 4, 6, 4, g);  // Leg0
+    leg0->addBox(-2, 0, -2, 4, 6, 4, g);  
     leg0->setPos(-3, 18 + 6 - 12, 7);
 
     leg1 = new ModelPart(this, 0, 16);
-    leg1->addBox(-2, 0, -2, 4, 6, 4, g);  // Leg1
+    leg1->addBox(-2, 0, -2, 4, 6, 4, g);  
     leg1->setPos(3, 18 + 6 - 12, 7);
 
     leg2 = new ModelPart(this, 0, 16);
-    leg2->addBox(-2, 0, -2, 4, 6, 4, g);  // Leg2
+    leg2->addBox(-2, 0, -2, 4, 6, 4, g);  
     leg2->setPos(-3, 18 + 6 - 12, -5);
 
     leg3 = new ModelPart(this, 0, 16);
-    leg3->addBox(-2, 0, -2, 4, 6, 4, g);  // Leg3
+    leg3->addBox(-2, 0, -2, 4, 6, 4, g);  
     leg3->setPos(3, 18 + 6 - 12, -5);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     head->compile(1.0f / 16.0f);
     body->compile(1.0f / 16.0f);
     leg0->compile(1.0f / 16.0f);

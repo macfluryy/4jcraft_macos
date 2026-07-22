@@ -10,7 +10,7 @@ private:
     static const int MIN_BOOST_TIME = SharedConstants::TICKS_PER_SECOND * 7;
     static const int MAX_BOOST_TIME = SharedConstants::TICKS_PER_SECOND * 35;
 
-    Mob* mob;  // Owner of this goal
+    Mob* mob;  
     float maxSpeed;
     float walkSpeed;
     float speed;
@@ -20,7 +20,7 @@ private:
 
 public:
     ControlledByPlayerGoal(Mob* mob, float maxSpeed,
-                           float walkSpeed);  // 4J Added walkSpeed param
+                           float walkSpeed);  
 
     void start();
     void stop();

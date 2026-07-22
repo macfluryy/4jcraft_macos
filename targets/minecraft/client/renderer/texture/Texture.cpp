@@ -41,27 +41,27 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
     }
 
     rect = new Rect2i(0, 0, width, height);
-    // 4J Removed 1D and 3D
-    // if (height == 1 && depth == 1)
-    //{
-    //	type = GL_TEXTURE_1D;
-    //}
-    // else if(depth == 1)
-    //{
+    
+    
+    
+    
+    
+    
+    
     type = GL_TEXTURE_2D;
-    //}
-    // else
-    //{
-    //	type = GL_TEXTURE_3D;
-    //}
+    
+    
+    
+    
+    
 
     mipmapped = mipMap || (minFilter != GL_NEAREST && minFilter != GL_LINEAR) ||
                 (magFilter != GL_NEAREST && magFilter != GL_LINEAR);
     m_iMipLevels = 1;
 
     if (mipmapped) {
-        // 4J-PB - In the new XDK, the CreateTexture will fail if the number of
-        // mipmaps is higher than the width & height passed in will allow!
+        
+        
         int iWidthMips = 1;
         int iHeightMips = 1;
         while ((8 << iWidthMips) < width) iWidthMips++;
@@ -69,7 +69,7 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
 
         m_iMipLevels = (iWidthMips < iHeightMips) ? iWidthMips : iHeightMips;
 
-        // TODO - The render libs currently limit max mip map levels to 5
+        
         if (m_iMipLevels > MAX_MIP_LEVELS) m_iMipLevels = MAX_MIP_LEVELS;
     }
 
@@ -172,11 +172,11 @@ Texture::~Texture() {
 const Rect2i* Texture::getRect() { return rect; }
 
 void Texture::fill(const Rect2i* rect, int color) {
-    // 4J Remove 3D
-    // if (type == GL_TEXTURE_3D)
-    //{
-    //	return;
-    //}
+    
+    
+    
+    
+    
 
     Rect2i* myRect = new Rect2i(0, 0, width, height);
     myRect->intersect(rect);
@@ -206,21 +206,21 @@ void Texture::fill(const Rect2i* rect, int color) {
 }
 
 void Texture::writeAsBMP(const std::wstring& name) {
-    // 4J Don't need
+    
 }
 
 void Texture::writeAsPNG(const std::wstring& filename) {
-    // 4J Don't need
+    
 }
 
 void Texture::blit(int x, int y, Texture* source) { blit(x, y, source, false); }
 
 void Texture::blit(int x, int y, Texture* source, bool rotated) {
-    // 4J Remove 3D
-    // if (type == GL_TEXTURE_3D)
-    //{
-    //	return;
-    //}
+    
+    
+    
+    
+    
 
     for (unsigned int level = 0; level < m_iMipLevels; ++level) {
         ByteBuffer* srcBuffer = source->getData(level);
@@ -260,8 +260,8 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
                 data[level]->put(dstPos + 3, srcBuffer->get(srcPos + 3));
             }
         }
-        // Don't delete this, as it belongs to the source texture
-        // delete srcBuffer;
+        
+        
         data[level]->position(ww * hh * 4);
     }
 
@@ -273,18 +273,18 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
 }
 
 void Texture::transferFromBuffer(const std::vector<int>& buffer) {
-    // if (depth == 1) {
-    //     return;
-    // }
-    //  4jcraft - move pos out of loops
+    
+    
+    
+    
     data[0]->clear();
-    // #if 0
-    // 	int byteRemapRGBA[] = { 3, 0, 1, 2 };
-    // 	int byteRemapBGRA[] = { 3, 2, 1, 0 };
-    // #else
+    
+    
+    
+    
     int byteRemapRGBA[] = {0, 1, 2, 3};
     int byteRemapBGRA[] = {2, 1, 0, 3};
-    // #endif
+    
     int* byteRemap = ((format == TFMT_BGRA) ? byteRemapBGRA : byteRemapRGBA);
 
     int totalPixels = width * height * depth;
@@ -304,46 +304,46 @@ void Texture::transferFromBuffer(const std::vector<int>& buffer) {
         updateOnGPU();
     }
 
-    /* for (int z = 0; z < depth; z++) {
-        int plane = z * height * width * 4;
-        for (int y = 0; y < height; y++) {
-            int column = plane + y * width * 4;
-            for (int x = 0; x < width; x++) {
-                int texel = column + x * 4;
-                data[0]->position(0);
-                data[0]->put(texel + byteRemap[0],
-                             (uint8_t)((buffer[texel >> 2] >> 24) & 0xff));
-                data[0]->put(texel + byteRemap[1],
-                             (uint8_t)((buffer[texel >> 2] >> 16) & 0xff));
-                data[0]->put(texel + byteRemap[2],
-                             (uint8_t)((buffer[texel >> 2] >> 8) & 0xff));
-                data[0]->put(texel + byteRemap[3],
-                             (uint8_t)((buffer[texel >> 2] >> 0) & 0xff));
-            }
-        }
-    }
+    
 
-    data[0]->position(width * height * depth * 4);
-    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     updateOnGPU();
 }
 
 void Texture::transferFromImage(BufferedImage* image) {
-    // 4J Remove 3D
-    // if (type == GL_TEXTURE_3D)
-    //{
-    //	return;
-    //}
+    
+    
+    
+    
+    
 
     int imgWidth = image->getWidth();
     int imgHeight = image->getHeight();
     if (imgWidth > width || imgHeight > height) {
-        // Minecraft::GetInstance().getLogger().warning("transferFromImage
-        // called with a BufferedImage with dimensions (" + 	imgWidth + ", "
-        // +
-        // imgHeight + ") larger than the Texture dimensions (" + width +
-        //	", " + height + "). Ignoring.");
+        
+        
+        
+        
+        
         app.DebugPrintf(
             "transferFromImage called with a BufferedImage with dimensions "
             "(%d, %d) larger than the Texture dimensions (%d, %d). Ignoring.\n",
@@ -351,13 +351,13 @@ void Texture::transferFromImage(BufferedImage* image) {
         return;
     }
 
-    // #if 0
-    // 	int byteRemapRGBA[] = { 0, 1, 2, 3 };
-    // 	int byteRemapBGRA[] = { 2, 1, 0, 3 };
-    // #else
+    
+    
+    
+    
     int byteRemapRGBA[] = {3, 0, 1, 2};
     int byteRemapBGRA[] = {3, 2, 1, 0};
-    // #endif
+    
     int* byteRemap = ((format == TFMT_BGRA) ? byteRemapBGRA : byteRemapRGBA);
 
     std::vector<int> tempPixels = std::vector<int>(width * height);
@@ -370,7 +370,7 @@ void Texture::transferFromImage(BufferedImage* image) {
             int intIndex = y * width + x;
             int byteIndex = intIndex * 4;
 
-            // Pull ARGB bytes into either RGBA or BGRA depending on format
+            
 
             tempBytes[byteIndex + byteRemap[0]] =
                 (uint8_t)((tempPixels[intIndex] >> 24) & 0xff);
@@ -411,8 +411,8 @@ void Texture::transferFromImage(BufferedImage* image) {
                         int intIndex = y * ww + x;
                         int byteIndex = intIndex * 4;
 
-                        // Pull ARGB bytes into either RGBA or BGRA depending on
-                        // format
+                        
+                        
 
                         tempBytes[byteIndex + byteRemap[0]] =
                             (uint8_t)((tempData[intIndex] >> 24) & 0xff);
@@ -437,9 +437,9 @@ void Texture::transferFromImage(BufferedImage* image) {
                             ((x * 2 + 1) + (y * 2 + 1) * ow) * 4);
                         int c3 = data[level - 1]->getInt(
                             ((x * 2 + 0) + (y * 2 + 1) * ow) * 4);
-                        // 4J - convert our RGBA texels to ARGB that crispBlend
-                        // is expecting 4jcraft, added uint cast to pervent
-                        // shift of neg int
+                        
+                        
+                        
                         c0 =
                             ((c0 >> 8) & 0x00ffffff) | ((unsigned int)c0 << 24);
                         c1 =
@@ -450,15 +450,15 @@ void Texture::transferFromImage(BufferedImage* image) {
                             ((c3 >> 8) & 0x00ffffff) | ((unsigned int)c3 << 24);
                         int col =
                             crispBlend(crispBlend(c0, c1), crispBlend(c2, c3));
-                        // 4J - and back from ARGB -> RGBA
-                        // col = ( col << 8 ) | (( col >> 24 ) & 0xff);
-                        // tempData[x + y * ww] = col;
+                        
+                        
+                        
 
                         int intIndex = y * ww + x;
                         int byteIndex = intIndex * 4;
 
-                        // Pull ARGB bytes into either RGBA or BGRA depending on
-                        // format
+                        
+                        
 
                         tempBytes[byteIndex + byteRemap[0]] =
                             (uint8_t)((col >> 24) & 0xff);
@@ -486,8 +486,8 @@ void Texture::transferFromImage(BufferedImage* image) {
     }
 }
 
-// 4J Kept from older versions for where we create mip-maps for levels that do
-// not have pre-made graphics
+
+
 int Texture::crispBlend(int c0, int c1) {
     int a0 = (int)(((c0 & 0xff000000) >> 24)) & 0xff;
     int a1 = (int)(((c1 & 0xff000000) >> 24)) & 0xff;
@@ -535,15 +535,15 @@ void Texture::setImmediateUpdate(bool immediateUpdate) {
 }
 
 void Texture::bind(int mipMapIndex) {
-    // 4J Removed 3D
-    // if (depth == 1)
-    //{
+    
+    
+    
     glEnable(GL_TEXTURE_2D);
-    //}
-    // else
-    //{
-    //	glEnable(GL_TEXTURE_3D);
-    //}
+    
+    
+    
+    
+    
 
     glActiveTexture(GL_TEXTURE0 + mipMapIndex);
     glBindTexture(type, glId);
@@ -561,18 +561,18 @@ void Texture::updateOnGPU() {
             data[level]->flip();
         }
     }
-    // 4J remove 3D and 1D
-    // if (height != 1 && depth != 1)
-    //{
-    //	glTexImage3D(type, 0, format, width, height, depth, 0, format,
-    // GL_UNSIGNED_BYTE, data);
-    //}
-    // else if(height != 1)
-    //{
-    // 4J Added check so we can differentiate between which RenderManager
-    // function to call
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     if (!m_bInitialised) {
-        RenderManager.TextureSetTextureLevels(m_iMipLevels);  // 4J added
+        RenderManager.TextureSetTextureLevels(m_iMipLevels);  
 
         RenderManager.TextureData(width, height, data[0]->getBuffer(), 0,
                                   C4JRender::TEXTURE_FORMAT_RxGyBzAw);
@@ -606,13 +606,13 @@ void Texture::updateOnGPU() {
             }
         }
     }
-    // glTexImage2D(type, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE,
-    // data);
-    //}
-    // else
-    //{
-    //	glTexImage1D(type, 0, format, width, 0, format, GL_UNSIGNED_BYTE, data);
-    //}
+    
+    
+    
+    
+    
+    
+    
     updated = true;
 }
 

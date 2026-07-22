@@ -14,10 +14,10 @@ std::unordered_map<Level*, std::deque<NotGateTile::Toggle>*>
     NotGateTile::recentToggles =
         std::unordered_map<Level*, std::deque<NotGateTile::Toggle>*>();
 
-// 4J - added, to tie in with other changes brought forward from 1.3.2 to
-// associate toggles with a level. In addition to what the java version does, we
-// are also removing any references to levels that we are storing when they hit
-// their dtor.
+
+
+
+
 void NotGateTile::removeLevelReferences(Level* level) {
     if (recentToggles.find(level) != recentToggles.end()) {
         delete recentToggles[level];
@@ -27,7 +27,7 @@ void NotGateTile::removeLevelReferences(Level* level) {
 
 bool NotGateTile::isToggledTooFrequently(Level* level, int x, int y, int z,
                                          bool add) {
-    // 4J - brought forward changes to associate toggles with a level from 1.3.2
+    
     if (recentToggles.find(level) == recentToggles.end()) {
         recentToggles[level] = new std::deque<Toggle>;
     }
@@ -106,7 +106,7 @@ bool NotGateTile::hasNeighborSignal(Level* level, int x, int y, int z) {
 void NotGateTile::tick(Level* level, int x, int y, int z, Random* random) {
     bool neighborSignal = hasNeighborSignal(level, x, y, z);
 
-    // 4J - brought forward changes from 1.3.2 to associate toggles with level
+    
     if (recentToggles.find(level) != recentToggles.end()) {
         std::deque<Toggle>* toggles = recentToggles[level];
         while (!toggles->empty() &&

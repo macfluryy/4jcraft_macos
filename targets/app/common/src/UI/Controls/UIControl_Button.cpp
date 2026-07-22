@@ -17,7 +17,7 @@ bool UIControl_Button::setupControl(UIScene* scene, IggyValuePath* parent,
     UIControl::setControlType(UIControl::eButton);
     bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-    // Button specific initialisers
+    
     m_funcEnableButton = registerFastName(L"EnableButton");
 
     return success;

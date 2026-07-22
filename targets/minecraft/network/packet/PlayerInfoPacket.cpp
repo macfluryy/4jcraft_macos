@@ -6,7 +6,7 @@
 #include "minecraft/server/network/PlayerConnection.h"
 #ifndef __linux__ && defined(__APPLE__)
 #include <qnet.h>
-#endif  // __linux__
+#endif  
 #include "PlayerInfoPacket.h"
 
 PlayerInfoPacket::PlayerInfoPacket() {

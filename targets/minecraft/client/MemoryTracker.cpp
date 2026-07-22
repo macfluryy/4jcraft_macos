@@ -37,7 +37,7 @@ void MemoryTracker::releaseTextures() {
 }
 
 void MemoryTracker::release() {
-    // for (Map.Entry<Integer, Integer> entry : GL_LIST_IDS.entrySet())
+    
     for (auto it = GL_LIST_IDS.begin(); it != GL_LIST_IDS.end(); ++it) {
         glDeleteLists(it->first, it->second);
     }
@@ -47,7 +47,7 @@ void MemoryTracker::release() {
 }
 
 ByteBuffer* MemoryTracker::createByteBuffer(int size) {
-    // 4J - was ByteBuffer.allocateDirect(size).order(std::endian.nativeOrder())
+    
     ByteBuffer* bb = ByteBuffer::allocate(size);
     return bb;
 }

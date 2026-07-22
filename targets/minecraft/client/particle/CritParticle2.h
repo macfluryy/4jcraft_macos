@@ -8,7 +8,7 @@ class Level;
 class CritParticle2 : public Particle {
 public:
     float oSize;
-    bool m_bAgeUniformly;  // 4J added for Halo texture pack
+    bool m_bAgeUniformly;  
 
     virtual eINSTANCEOF GetType() { return eType_CRITPARTICLE2; }
     void _init(double xa, double ya, double za, float scale);

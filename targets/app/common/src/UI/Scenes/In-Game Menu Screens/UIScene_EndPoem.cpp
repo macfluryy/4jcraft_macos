@@ -27,29 +27,29 @@ class UILayer;
 
 UIScene_EndPoem::UIScene_EndPoem(int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // ui.setFontCachingCalculationBuffer(20000);
+    
 
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_bIgnoreInput = false;
 
-    // 4J Stu - Don't need these, the AS handles the scrolling and makes it look
-    // nice
+    
+    
 
-    // wchar_t startTags[64];
-    // swprintf(startTags,64,L"<font
-    // size=\"%d\">",app.GetHTMLFontSize(eHTMLSize_EndPoem));
-    // noNoiseString.append(halfScreenLineBreaks);
-    // noNoiseString.append(halfScreenLineBreaks);
+    
+    
+    
+    
+    
     noNoiseString.append(app.GetString(IDS_WIN_TEXT));
     noNoiseString.append(app.GetString(IDS_WIN_TEXT_PART_2));
     noNoiseString.append(app.GetString(IDS_WIN_TEXT_PART_3));
 
-    // noNoiseString.append(halfScreenLineBreaks);
+    
 
-    // 4J Stu - Iggy seems to strip our trailing linebreaks, so added a space to
-    // made sure it scrolls this far
+    
+    
     noNoiseString.append(L" ");
 
     noNoiseString = app.FormatHTMLString(m_iPad, noNoiseString, 0xff000000);
@@ -78,7 +78,7 @@ UIScene_EndPoem::UIScene_EndPoem(int iPad, void* initData, UILayer* parentLayer)
 
     updateNoise();
 
-    // 4J-JEV: Find paragraph start and end points.
+    
     m_paragraphs = std::vector<std::wstring>();
     int lastIndex = 0;
     for (int index = 0; index != std::wstring::npos;
@@ -87,16 +87,16 @@ UIScene_EndPoem::UIScene_EndPoem(int iPad, void* initData, UILayer* parentLayer)
             noiseString.substr(lastIndex, index - lastIndex));
         lastIndex = index;
     }
-    // lastIndex += 12;
+    
     m_paragraphs.push_back(
         noiseString.substr(lastIndex, noiseString.length() - lastIndex));
 
-    // m_htmlPoem.init(noiseString.c_str());
-    // m_htmlPoem.startAutoScroll();
+    
+    
 
-    // std::wstring result = m_htmlControl.GetText();
+    
 
-    // wcout << result.c_str();
+    
 
 #if TO_BE_IMPLEMENTED
     m_scrollDir = 1;
@@ -166,7 +166,7 @@ void UIScene_EndPoem::handleInput(int iPad, int key, bool repeat, bool pressed,
                     }
                 }
 
-                // This just allows it to be shown
+                
                 if (pMinecraft
                         ->localgameModes[ProfileManager.GetPrimaryPad()] !=
                     nullptr)
@@ -190,7 +190,7 @@ void UIScene_EndPoem::handleInput(int iPad, int key, bool repeat, bool pressed,
 }
 
 void UIScene_EndPoem::handleDestroy() {
-    // ui.setFontCachingCalculationBuffer(-1);
+    
 }
 
 void UIScene_EndPoem::handleRequestMoreData(F64 startIndex, bool up) {
@@ -223,8 +223,8 @@ void UIScene_EndPoem::updateNoise() {
                 randomChar = SharedConstants::acceptableLetters[random->nextInt(
                     (int)SharedConstants::acceptableLetters.length())];
             } else {
-                // 4J-JEV: It'd be nice to avoid null characters when using
-                // asian languages.
+                
+                
                 static std::wstring acceptableLetters =
                     L"!\"#$%&'()*+,-./0123456789:;<=>?@[\\]^_'|}~";
                 randomChar = acceptableLetters[random->nextInt(
@@ -263,14 +263,14 @@ void UIScene_EndPoem::updateNoise() {
 
         noiseString.replace(found, tag.length(), replaceString);
 
-        // int pos = 0;
-        // do {
-        //	pos =
-        // random->nextInt(SharedConstants::acceptableLetters.length()); } while
-        // (pMinecraft->font->charWidths[ch + 32] !=
-        // pMinecraft->font->charWidths[pos + 32]); ib.put(listPos + 256 +
-        // random->nextInt(2) + 8 + (darken ? 16 : 0)); ib.put(listPos + pos +
-        // 32);
+        
+        
+        
+        
+        
+        
+        
+        
 
         found = (int)noiseString.find(tag, found + 1);
     }

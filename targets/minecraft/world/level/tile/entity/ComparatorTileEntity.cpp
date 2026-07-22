@@ -20,7 +20,7 @@ int ComparatorTileEntity::getOutputSignal() { return output; }
 
 void ComparatorTileEntity::setOutputSignal(int value) { output = value; }
 
-// 4J Added
+
 std::shared_ptr<TileEntity> ComparatorTileEntity::clone() {
     std::shared_ptr<ComparatorTileEntity> result =
         std::make_shared<ComparatorTileEntity>();

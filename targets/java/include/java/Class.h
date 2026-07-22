@@ -2,71 +2,71 @@
 
 class InputStream;
 
-// This file aims to provide functionality to mimic the subset of java's Class
-// class that we require. Classes that require this functionality derive from
-// BaseObject, and each contain a unique nested class definition Class. There
-// are #defines here to simplify declaring classes with this added
-// functionality.
 
-//		 0b FFFF CCCC CCCC CCCC CCCC CCCC CCEE EEEE
-//			|||| |||| |||| |||| |||| |||| |||| ||||
-//          |||| |||| |||| |||| |||| |||| |||| |||\- BIT00: ENUM:
-//          |||| |||| |||| |||| |||| |||| |||| ||\-- BIT01: ENUM:
-//          |||| |||| |||| |||| |||| |||| |||| |\--- BIT02: ENUM:
-//          |||| |||| |||| |||| |||| |||| |||| \---- BIT03: ENUM:
-//          |||| |||| |||| |||| |||| |||| ||||
-//          |||| |||| |||| |||| |||| |||| |||\------ BIT04: ENUM:
-//          |||| |||| |||| |||| |||| |||| ||\------- BIT05: ENUM:
-//          |||| |||| |||| |||| |||| |||| |\-------- BIT06: CLASS: WATER_MOB
-//          |||| |||| |||| |||| |||| |||| \--------- BIT07: CLASS: AMBIENT_MOB
-//          |||| |||| |||| |||| |||| ||||
-//          |||| |||| |||| |||| |||| |||\----------- BIT08: CLASS: !ENTITY (so
-//          we can hide TILE_ENTITY and DISPENSER_TILE_ENTITY bits which aren't
-//          relevant for entities)
-//          |||| |||| |||| |||| |||| ||\------------ BIT09: CLASS:
-//          MINECART_CONTAINER
-//          |||| |||| |||| |||| |||| |\------------- BIT10: CLASS: SLIME
-//          |||| |||| |||| |||| |||| \-------------- BIT11: CLASS: ZOMBIE
-//          |||| |||| |||| |||| ||||
-//          |||| |||| |||| |||| |||\---------------- BIT12: CLASS: SPIDER
-//          |||| |||| |||| |||| ||\----------------- BIT13: CLASS: COW
-//          |||| |||| |||| |||| |\------------------ BIT14: CLASS: TAMABLE
-//          |||| |||| |||| |||| \------------------- BIT15: CLASS: ANIMAL
-//			|||| |||| |||| ||||
-//			|||| |||| |||| |||\--------------------- BIT16: CLASS:
-// MONSTER
-//			|||| |||| |||| ||\---------------------- BIT17: CLASS:
-// GOLEM
-//          |||| |||| |||| |\----------------------- BIT18: CLASS: AGABLE_MOB
-//			|||| |||| |||| \------------------------ BIT19: CLASS:
-// PATHFINDER_MOB
-//			|||| |||| ||||
-//			|||| |||| |||\-------------------------- BIT20: CLASS:
-// PLAYER
-//			|||| |||| ||\--------------------------- BIT21: CLASS:
-// MOB
-//			|||| |||| |\---------------------------- BIT22: CLASS:
-// HANGING_ENTITY
-//			|||| |||| \----------------------------- BIT23: CLASS:
-// THROWABLE
-//			|||| ||||
-//          |||| |||\------------------------------- BIT24: CLASS: FIREBALL
-//          |||| ||\-------------------------------- BIT25: CLASS: MINECART
-//          |||| |\--------------------------------- BIT26: CLASS: LIVING_ENTITY
-//          |||| \---------------------------------- BIT27: CLASS: ENTITY
-//          ||||
-//          |||\------------------------------------ BIT28: FLAGS: valid in
-//          spawner flag
-//          ||\------------------------------------- BIT29: FLAGS:
-//          Spawnlimitcheck
-//          |\-------------------------------------- BIT30: FLAGS: Enemy
-//          \--------------------------------------- BIT31: FLAGS: projectile
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #define Bit(a) ((1) << (a))
 
 const unsigned int BIT_NOT_LIVING_ENTITY = Bit(25);
 
-// Classes
+
 
 const unsigned int BIT_FLYING_MOB = Bit(9);
 const unsigned int BIT_WATER_MOB = Bit(10);
@@ -94,36 +94,36 @@ const unsigned int BIT_MINECART = Bit(23) | BIT_NOT_LIVING_ENTITY;
 
 const unsigned int BIT_MOB = Bit(24);
 const unsigned int BIT_GLOBAL_ENTITY = Bit(24) | BIT_NOT_LIVING_ENTITY;
-// const unsigned int BIT_NOT_LIVING_ENTITY
-// = Bit(25);
+
+
 const unsigned int BIT_LIVING_ENTITY = Bit(26);
 const unsigned int BIT_ENTITY = Bit(27);
 
-// Flags
+
 const unsigned int BIT_VALID_IN_SPAWNER = Bit(28);
 const unsigned int BIT_ANIMALS_SPAWN_LIMIT_CHECK = Bit(29);
 const unsigned int BIT_ENEMY = Bit(30);
 const unsigned int BIT_PROJECTILE = Bit(31U);
 
-// Tile Entities
+
 const unsigned int BIT_TILE_ENTITY = Bit(24) | BIT_NOT_ENTITY;
 const unsigned int BIT_DISPENSERTILEENTITY = Bit(25) | BIT_NOT_ENTITY;
 const unsigned int BIT_OTHER_NOT_ENTITIES = Bit(26) | BIT_NOT_ENTITY;
 
-// 4J-JEV: These abstract classes only have one subclass, so ignore them.
-// const unsigned int BIT_WATER_MOB					=
-// Bit(15); const unsigned int BIT_FLYING_MOB = Bit(17); const unsigned int
-// BIT_AMBIENT_MOB				= Bit(18); const unsigned int
-// BIT_GLOBAL_ENTITY				= Bit();
 
-// #define ETYPE(a,b,c) ( (a) | (b) | (c) )
 
-// 4J Stu - This Enum can be used as a more lightweight version of the above,
-// without having do dynamic casts 4J-PB - for replacement of instanceof
+
+
+
+
+
+
+
+
 enum eINSTANCEOF {
     eTYPE_NOTSET = 0,
 
-    // Flags.
+    
     eTYPE_VALID_IN_SPAWNER_FLAG = BIT_VALID_IN_SPAWNER,
     eTYPE_ANIMALS_SPAWN_LIMIT_CHECK = BIT_ANIMALS_SPAWN_LIMIT_CHECK,
     eTYPE_ENEMY = BIT_ENEMY,
@@ -139,11 +139,11 @@ enum eINSTANCEOF {
 
     eTYPE_AGABLE_MOB = eTYPE_PATHFINDER_MOB | BIT_AGABLE_MOB,
 
-    eTYPE_VILLAGER = eTYPE_AGABLE_MOB | 0x1,  // 0x12000,
+    eTYPE_VILLAGER = eTYPE_AGABLE_MOB | 0x1,  
 
-    // 4J Stu - When adding new categories, please also update
-    // ConsoleSchematicFile::generateSchematicFile so these can be saved out to
-    // schematics
+    
+    
+    
     eTYPE_ANIMAL = eTYPE_AGABLE_MOB | BIT_ANIMAL,
 
     eTYPE_TAMABLE_ANIMAL = eTYPE_ANIMAL | BIT_TAMABLE,
@@ -159,16 +159,16 @@ enum eINSTANCEOF {
     eTYPE_COW = eTYPE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | BIT_COW,
     eTYPE_MUSHROOMCOW = eTYPE_COW | 0x1,
 
-    eTYPE_WATERANIMAL = eTYPE_PATHFINDER_MOB | BIT_WATER_MOB,  // 0x100,
+    eTYPE_WATERANIMAL = eTYPE_PATHFINDER_MOB | BIT_WATER_MOB,  
     eTYPE_SQUID = eTYPE_WATERANIMAL | 0x1,
 
     eTYPE_GOLEM = eTYPE_PATHFINDER_MOB | BIT_GOLEM,
 
     eTYPE_SNOWMAN =
-        eTYPE_GOLEM | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | 0x1,  // 0x4,
-    eTYPE_VILLAGERGOLEM = eTYPE_GOLEM | 0x2,                  // 0x1000,
+        eTYPE_GOLEM | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | 0x1,  
+    eTYPE_VILLAGERGOLEM = eTYPE_GOLEM | 0x2,                  
 
-    // 4J Stu - If you add new hostile mobs here you should also update the
+    
     eTYPE_MONSTER = eTYPE_ENEMY | eTYPE_PATHFINDER_MOB | BIT_MONSTER,
 
     eTYPE_SPIDER = eTYPE_MONSTER | eTYPE_VALID_IN_SPAWNER_FLAG | BIT_SPIDER,
@@ -199,7 +199,7 @@ enum eINSTANCEOF {
 
     eTYPE_ENDERDRAGON = eTYPE_MOB | 0x5,
 
-    eTYPE_PLAYER = eTYPE_LIVINGENTITY | BIT_PLAYER,  // 0x8000,
+    eTYPE_PLAYER = eTYPE_LIVINGENTITY | BIT_PLAYER,  
     eTYPE_SERVERPLAYER = eTYPE_PLAYER | 0x1,
     eTYPE_REMOTEPLAYER = eTYPE_PLAYER | 0x2,
     eTYPE_LOCALPLAYER = eTYPE_PLAYER | 0x3,
@@ -207,7 +207,7 @@ enum eINSTANCEOF {
     eTYPE_GLOBAL_ENTITY = eTYPE_ENTITY | BIT_GLOBAL_ENTITY,
     eTYPE_LIGHTNINGBOLT = eTYPE_GLOBAL_ENTITY | 0x1,
 
-    eTYPE_MINECART = eTYPE_ENTITY | BIT_MINECART,  // 0x200000,
+    eTYPE_MINECART = eTYPE_ENTITY | BIT_MINECART,  
 
     eTYPE_MINECART_RIDEABLE = eTYPE_MINECART | 0x1,
     eTYPE_MINECART_SPAWNER = eTYPE_MINECART | 0x6,
@@ -219,7 +219,7 @@ enum eINSTANCEOF {
     eTYPE_MINECART_CHEST = eTYPE_MINECART_CONTAINER | 0x2,
     eTYPE_MINECART_HOPPER = eTYPE_MINECART_CONTAINER | 0x5,
 
-    eTYPE_FIREBALL = eTYPE_ENTITY | eTYPE_PROJECTILE | BIT_FIREBALL,  // 0x2,
+    eTYPE_FIREBALL = eTYPE_ENTITY | eTYPE_PROJECTILE | BIT_FIREBALL,  
 
     eTYPE_DRAGON_FIREBALL = eTYPE_FIREBALL | 0x1,
     eTYPE_WITHER_SKULL = eTYPE_FIREBALL | 0x2,
@@ -240,15 +240,15 @@ enum eINSTANCEOF {
     eTYPE_ITEM_FRAME = eTYPE_HANGING_ENTITY | 0x2,
     eTYPE_LEASHFENCEKNOT = eTYPE_HANGING_ENTITY | 0x3,
 
-    // Other Entities.
+    
 
     eTYPE_OTHER_ENTITIES = eTYPE_ENTITY + 1,
 
-    eTYPE_EXPERIENCEORB = (eTYPE_OTHER_ENTITIES + 2),  // 1.8.2
+    eTYPE_EXPERIENCEORB = (eTYPE_OTHER_ENTITIES + 2),  
     eTYPE_EYEOFENDERSIGNAL = (eTYPE_OTHER_ENTITIES + 3) | eTYPE_PROJECTILE,
     eTYPE_FIREWORKS_ROCKET = (eTYPE_OTHER_ENTITIES + 4) | eTYPE_PROJECTILE,
     eTYPE_FISHINGHOOK = (eTYPE_OTHER_ENTITIES + 5) | eTYPE_PROJECTILE,
-    eTYPE_DELAYEDRELEASE = (eTYPE_OTHER_ENTITIES + 6),  // 1.8.2
+    eTYPE_DELAYEDRELEASE = (eTYPE_OTHER_ENTITIES + 6),  
     eTYPE_BOAT = (eTYPE_OTHER_ENTITIES + 7),
     eTYPE_FALLINGTILE = (eTYPE_OTHER_ENTITIES + 8),
     eTYPE_ITEMENTITY = (eTYPE_OTHER_ENTITIES + 9),
@@ -258,7 +258,7 @@ enum eINSTANCEOF {
     eTYPE_NETHER_SPHERE = (eTYPE_OTHER_ENTITIES + 13),
     eTYPE_ENDER_CRYSTAL = (eTYPE_OTHER_ENTITIES + 14),
 
-    // === PARTICLES === //
+    
 
     eType_BREAKINGITEMPARTICLE,
     eType_BUBBLEPARTICLE,
@@ -277,7 +277,7 @@ enum eINSTANCEOF {
     eType_TERRAINPARTICLE,
     eType_WATERDROPPARTICLE,
 
-    // 1.8.2
+    
     eType_CRITPARTICLE,
     eType_CRITPARTICLE2,
     eType_HUGEEXPLOSIONPARTICLE,
@@ -286,12 +286,12 @@ enum eINSTANCEOF {
     eType_SUSPENDEDPARTICLE,
     eType_SUSPENDEDTOWNPARTICLE,
 
-    // 1.0.1
+    
     eTYPE_DRIPPARTICLE,
     eTYPE_ENCHANTMENTTABLEPARTICLE,
     eTYPE_SPELLPARTICLE,
 
-    // TU9
+    
     eTYPE_DRAGONBREATHPARTICLE,
     eType_ENDERPARTICLE,
 
@@ -299,7 +299,7 @@ enum eINSTANCEOF {
     eType_FIREWORKSSPARKPARTICLE,
     eType_FIREWORKSOVERLAYPARTICLE,
 
-    // === Tile Entities === //
+    
 
     eTYPE_TILEENTITY = BIT_TILE_ENTITY,
 
@@ -324,8 +324,8 @@ enum eINSTANCEOF {
     eTYPE_DISPENSERTILEENTITY = eTYPE_TILEENTITY | BIT_DISPENSERTILEENTITY,
     eTYPE_DROPPERTILEENTITY = eTYPE_DISPENSERTILEENTITY | 0x1,
 
-    // === Never used === //
-    // exists to ensure all later entities don't match the bitmasks above
+    
+    
 
     eTYPE_OTHERS = BIT_OTHER_NOT_ENTITIES,
 
@@ -348,7 +348,7 @@ inline bool eTYPE_FLAGSET(eINSTANCEOF flag, eINSTANCEOF claz) {
     return (flag & claz) == flag;
 }
 
-/// FOR CHECKING ///
+
 
 #if !(defined _WINDOWS64)
 
@@ -550,8 +550,8 @@ public:
         classes->push_back(
             SUBCLASS(eTYPE_LIGHTNINGBOLT)->addParent(eTYPE_GLOBAL_ENTITY));
 
-        // classes->push_back( SUBCLASS(eTYPE_OTHER_ENTITIES )->addParent(
-        // eTYPE_ENTITY ) );
+        
+        
         classes->push_back(
             SUBCLASS(eTYPE_EXPERIENCEORB)->addParent(eTYPE_ENTITY));
         classes->push_back(SUBCLASS(eTYPE_EYEOFENDERSIGNAL)
@@ -682,7 +682,7 @@ public:
         classes->push_back(SUBCLASS(eTYPE_DROPPERTILEENTITY)
                                ->addParent(eTYPE_DISPENSERTILEENTITY));
 
-        // classes->push_back( SUBCLASS(eTYPE_OTHERS) );
+        
         classes->push_back(SUBCLASS(eType_NODE));
         classes->push_back(SUBCLASS(eType_ITEM));
         classes->push_back(SUBCLASS(eType_ITEMINSTANCE));
@@ -696,15 +696,15 @@ public:
         std::vector<SubClass*>::iterator it1;
         for (it1 = classes->begin(); it1 != classes->end(); it1++) {
             SubClass* current = *it1;
-            // if ( current->justFlag() ) continue;
+            
 
             std::vector<SubClass*>::iterator it2;
             for (it2 = classes->begin(); it2 != classes->end(); it2++) {
                 SubClass* comparing = *it2;
-                // if ( comparing->justFlag() ) continue;
+                
 
-                // We shouldn't be comparing to leaf classes anyway.
-                // if ( comparing->m_isTerminal ) continue;
+                
+                
 
                 eINSTANCEOF typeCurr, typeComp;
                 typeCurr = current->m_id;

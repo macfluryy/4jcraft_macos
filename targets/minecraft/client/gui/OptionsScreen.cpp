@@ -13,7 +13,7 @@
 #include "minecraft/locale/Language.h"
 
 OptionsScreen::OptionsScreen(Screen* lastScreen, Options* options) {
-    title = L"Options";  // 4J added
+    title = L"Options";  
 
     this->lastScreen = lastScreen;
     this->options = options;
@@ -25,8 +25,8 @@ void OptionsScreen::init() {
 
     int position = 0;
 
-    // 4J - this was as static array but moving it into the function to remove
-    // any issues with static initialisation order
+    
+    
     const Options::Option* items[5] = {
         Options::Option::MUSIC, Options::Option::SOUND,
         Options::Option::INVERT_MOUSE, Options::Option::SENSITIVITY,

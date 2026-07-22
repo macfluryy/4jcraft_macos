@@ -6,9 +6,9 @@
 WstringLookup::WstringLookup() { numIDs = 0; }
 
 std::wstring WstringLookup::lookup(unsigned int id) {
-    // TODO
-    // if (id > currentMaxID)
-    //	throw error
+    
+    
+    
 
     return int2str.at(id);
 }
@@ -28,17 +28,17 @@ unsigned int WstringLookup::lookup(std::wstring str) {
 }
 
 void WstringLookup::getTable(std::wstring** lookup, unsigned int* len) {
-    // Outputs
+    
     std::wstring* out_lookup;
     unsigned int out_len;
 
-    // Fill lookup.
+    
     out_lookup = new std::wstring[int2str.size()];
     for (unsigned int i = 0; i < numIDs; i++) out_lookup[i] = int2str.at(i);
 
     out_len = numIDs;
 
-    // Return.
+    
     *lookup = out_lookup;
     *len = out_len;
     return;

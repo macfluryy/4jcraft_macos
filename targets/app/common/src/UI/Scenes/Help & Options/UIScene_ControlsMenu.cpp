@@ -25,7 +25,7 @@ class UILayer;
 UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
                                            UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     IggyDataValue result;
@@ -46,7 +46,7 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
         m_labelVersion.init(layoutString);
         delete[] layoutString;
     }
-    // 4J-PB - stop the label showing in the in-game controls menu
+    
     else {
         m_labelVersion.init(L" ");
     }
@@ -121,9 +121,9 @@ void UIScene_ControlsMenu::tick() {
 void UIScene_ControlsMenu::handleInput(int iPad, int key, bool repeat,
                                        bool pressed, bool released,
                                        bool& handled) {
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {
@@ -135,7 +135,7 @@ void UIScene_ControlsMenu::handleInput(int iPad, int key, bool repeat,
             break;
         case ACTION_MENU_OK:
             if (pressed) {
-                // CD - Added for audio
+                
                 ui.PlayUISFX(eSFX_Press);
             }
             sendInputToMovie(key, repeat, pressed, released);
@@ -224,25 +224,25 @@ void UIScene_ControlsMenu::PositionAllText(int iPad) {
                  MINECRAFT_ACTION_RENDER_THIRD_PERSON);
     PositionText(iPad, IDS_CONTROLS_PLAYERS, MINECRAFT_ACTION_GAME_INFO);
 
-    // Swap for southpaw.
+    
     if (app.GetGameSettings(m_iPad, eGameSetting_ControlSouthPaw)) {
-        // Move
+        
         PositionText(iPad, IDS_CONTROLS_LOOK, MINECRAFT_ACTION_RIGHT);
-        // Look
+        
         PositionText(iPad, IDS_CONTROLS_MOVE, MINECRAFT_ACTION_LOOK_RIGHT);
-    } else  // Normal right handed.
+    } else  
     {
-        // Move
+        
         PositionText(iPad, IDS_CONTROLS_MOVE, MINECRAFT_ACTION_RIGHT);
-        // Look
+        
         PositionText(iPad, IDS_CONTROLS_LOOK, MINECRAFT_ACTION_LOOK_RIGHT);
     }
 
     bool layoutHasDpadFly;
     layoutHasDpadFly = m_iCurrentNavigatedControlsLayout == 0;
 
-    // If we're in controls mode 1, and creative mode show the dpad for Creative
-    // Mode
+    
+    
     if (m_bCreativeMode && layoutHasDpadFly) {
         PositionText(iPad, IDS_CONTROLS_DPAD, MINECRAFT_ACTION_DPAD_LEFT);
     }
@@ -275,10 +275,10 @@ void UIScene_ControlsMenu::PositionText(int iPad, int iTextID,
         PositionTextDirect(iPad, iTextID, e_PadRS_1, true);
     if (uiVal & _360_JOY_BUTTON_LTHUMB)
         PositionTextDirect(iPad, iTextID, e_PadLS_1, true);
-    // Look
+    
     if (uiVal & _360_JOY_BUTTON_RSTICK_RIGHT)
         PositionTextDirect(iPad, iTextID, e_PadRS_2, true);
-    // Move
+    
     if (uiVal & _360_JOY_BUTTON_LSTICK_RIGHT)
         PositionTextDirect(iPad, iTextID, e_PadLS_2, true);
     if (uiVal & _360_JOY_BUTTON_RT)

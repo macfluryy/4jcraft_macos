@@ -37,7 +37,7 @@ TallGrass::TallGrass(int id) : Bush(id, Material::replaceable_plant) {
     this->updateDefaultShape();
 }
 
-// 4J Added override
+
 void TallGrass::updateDefaultShape() {
     float ss = 0.4f;
     this->setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, 0.8f, 0.5f + ss);
@@ -55,11 +55,11 @@ int TallGrass::getColor(int auxData) {
 }
 
 int TallGrass::getColor() const {
-    // 4J Stu - Not using this any more
-    // double temp = 0.5;
-    // double rain = 1.0;
+    
+    
+    
 
-    // return GrassColor::get(temp, rain);
+    
 
     return Minecraft::GetInstance()->getColourTable()->getColor(
         eMinecraftColour_Grass_Common);
@@ -69,8 +69,8 @@ int TallGrass::getColor(LevelSource* level, int x, int y, int z) {
     return getColor(level, x, y, z, level->getData(x, y, z));
 }
 
-// 4J - changed interface to have data passed in, and put existing interface as
-// wrapper above
+
+
 int TallGrass::getColor(LevelSource* level, int x, int y, int z, int data) {
     int d = data;
     if (d == DEAD_SHRUB) return 0xffffff;
@@ -97,7 +97,7 @@ void TallGrass::playerDestroy(Level* level, std::shared_ptr<Player> player,
         player->awardStat(GenericStats::blocksMined(id),
                           GenericStats::param_blocksMined(id, data, 1));
 
-        // drop leaf block instead of sapling
+        
         popResource(level, x, y, z,
                     std::shared_ptr<ItemInstance>(
                         new ItemInstance(Tile::tallgrass, 1, data)));
@@ -110,7 +110,7 @@ int TallGrass::cloneTileData(Level* level, int x, int y, int z) {
     return level->getData(x, y, z);
 }
 
-unsigned int TallGrass::getDescriptionId(int iData /*= -1*/) {
+unsigned int TallGrass::getDescriptionId(int iData ) {
     if (iData < 0) iData = 0;
     return TallGrass::TALL_GRASS_TILE_NAMES[iData];
 }

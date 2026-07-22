@@ -5,7 +5,7 @@
 
 class Tutorial;
 
-// Same as choice task, but switches description based on horse type.
+
 class HorseChoiceTask : public ChoiceTask {
 protected:
     int m_eHorseType;

@@ -66,6 +66,6 @@ public:
     double getClearColorScale();
     virtual bool isFoggyAt(int x, int z);
 
-    // 4J Added
+    
     virtual int getXZSize();
 };

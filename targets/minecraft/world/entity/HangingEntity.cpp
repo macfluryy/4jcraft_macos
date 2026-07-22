@@ -77,8 +77,8 @@ void HangingEntity::setDir(int dir) {
 
     float ss = -(0.5f / 16.0f);
 
-    // 4J Stu - Due to rotations the bb couold be set with a lower bound x/z
-    // being higher than the higher bound
+    
+    
     float x0 = x - w - ss;
     float x1 = x + w + ss;
     float y0 = y - h - ss;
@@ -109,7 +109,7 @@ void HangingEntity::tick() {
 }
 
 bool HangingEntity::survives() {
-    if (level->getCubes(shared_from_this(), &bb)->size() != 0)  // isEmpty())
+    if (level->getCubes(shared_from_this(), &bb)->size() != 0)  
     {
         return false;
     } else {
@@ -187,7 +187,7 @@ bool HangingEntity::hurt(DamageSource* source, float damage) {
         std::shared_ptr<Entity> e = source->getEntity();
         if ((e != nullptr) &&
             e->instanceof(
-                eTYPE_PLAYER))  // check if it's serverplayer or player
+                eTYPE_PLAYER))  
         {
             player = std::dynamic_pointer_cast<Player>(e);
         }
@@ -201,7 +201,7 @@ bool HangingEntity::hurt(DamageSource* source, float damage) {
     return true;
 }
 
-// 4J - added noEntityCubes parameter
+
 void HangingEntity::move(double xa, double ya, double za, bool noEntityCubes) {
     if (!level->isClientSide && !removed && (xa * xa + ya * ya + za * za) > 0) {
         remove();
@@ -222,7 +222,7 @@ void HangingEntity::addAdditonalSaveData(CompoundTag* tag) {
     tag->putInt(L"TileY", yTile);
     tag->putInt(L"TileZ", zTile);
 
-    // Back compat
+    
     switch (dir) {
         case Direction::NORTH:
             tag->putByte(L"Dir", (uint8_t)0);

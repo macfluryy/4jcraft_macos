@@ -17,7 +17,7 @@ class VillagePieces {
 private:
     static const int MAX_DEPTH = 50;
     static const int BASE_ROAD_DEPTH = 3;
-    // the dungeon starts at 64 and traverses downwards to this point
+    
     static const int LOWEST_Y_POSITION = 10;
 
 public:
@@ -25,8 +25,8 @@ public:
     static const int SIZE_BIG = 1;
     static const int SIZE_BIGGEST = 2;
 
-    // 4J - added to replace use of Class<? extends VillagePiece> within this
-    // class
+    
+    
     enum EPieceClass {
         EPieceClass_SimpleHouse,
         EPieceClass_SmallTemple,
@@ -44,20 +44,20 @@ public:
     class PieceWeight {
     public:
         EPieceClass
-            pieceClass;  // 4J - EPieceClass was Class<? extends VillagePiece>
+            pieceClass;  
         const int weight;
         int placeCount;
         int maxPlaceCount;
 
         PieceWeight(EPieceClass pieceClass, int weight,
-                    int maxPlaceCount);  // 4J - EPieceClass was Class<? extends
-                                         // VillagePiece>
+                    int maxPlaceCount);  
+                                         
         bool doPlace(int depth);
         bool isValid();
     };
 
     static std::list<PieceWeight*>* createPieceSet(
-        Random* random, int villageSize);  // 4J - was ArrayList
+        Random* random, int villageSize);  
 
     class StartPiece;
 
@@ -65,7 +65,7 @@ private:
     class VillagePiece;
 
     static int updatePieceWeight(
-        std::list<PieceWeight*>* currentPieces);  // 4J = was array list
+        std::list<PieceWeight*>* currentPieces);  
     static VillagePiece* findAndCreatePieceFactory(
         StartPiece* startPiece, PieceWeight* piece,
         std::list<StructurePiece*>* pieces, Random* random, int footX,
@@ -83,10 +83,10 @@ private:
         Random* random, int footX, int footY, int footZ, int direction,
         int depth);
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 private:
     class VillagePiece : public StructurePiece {
     protected:
@@ -111,7 +111,7 @@ private:
             Random* random, int yOff, int zOff);
         int getAverageGroundHeight(Level* level, BoundingBox* chunkBB);
         static bool isOkBox(BoundingBox* box,
-                            StartPiece* startRoom);  // 4J added startRoom param
+                            StartPiece* startRoom);  
         void spawnVillagers(Level* level, BoundingBox* chunkBB, int x, int y,
                             int z, int count);
         virtual int getVillagerProfession(int villagerNumber);
@@ -126,10 +126,10 @@ private:
                                     int startY, int z, BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class Well : public VillagePiece {
     public:
@@ -162,8 +162,8 @@ public:
         }
 
     public:
-        // these fields are only used in generation step and aren't serialized
-        // :{
+        
+        
         BiomeSource* biomeSource;
         bool isDesertVillage;
 
@@ -173,15 +173,15 @@ public:
         std::list<PieceWeight*>* pieceSet;
         Level* m_level;
 
-        // these queues are used so that the addChildren calls are called in a
-        // random order
+        
+        
         std::vector<StructurePiece*> pendingHouses;
         std::vector<StructurePiece*> pendingRoads;
 
         StartPiece();
         StartPiece(BiomeSource* biomeSource, int genDepth, Random* random,
                    int west, int north, std::list<PieceWeight*>* pieceSet,
-                   int villageSize, Level* level);  // 4J Added level param
+                   int villageSize, Level* level);  
         virtual ~StartPiece();
 
         BiomeSource* getBiomeSource();
@@ -195,10 +195,10 @@ public:
             : VillagePiece(startPiece, genDepth) {}
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class StraightRoad : public VillageRoadPiece {
     public:
@@ -232,10 +232,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class SimpleHouse : public VillagePiece {
     public:

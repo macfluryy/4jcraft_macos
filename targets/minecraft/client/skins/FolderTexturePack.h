@@ -17,16 +17,16 @@ public:
                       TexturePack* fallback);
 
 protected:
-    //@Override
+    
     InputStream* getResourceImplementation(
-        const std::wstring& name);  // throws IOException
+        const std::wstring& name);  
 
 public:
-    //@Override
+    
     bool hasFile(const std::wstring& name);
     bool isTerrainUpdateCompatible();
 
-    // 4J Added
+    
     virtual std::wstring getPath(bool bTitleUpdateTexture = false,
                                  const char* pchBDPatchFilename = nullptr);
     virtual void loadUI();

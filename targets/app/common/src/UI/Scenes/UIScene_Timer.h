@@ -23,8 +23,8 @@ public:
 
     virtual EUIScene getSceneType() { return eUIScene_Timer; }
 
-    // Returns true if lower scenes in this scenes layer, or in any layer below
-    // this scenes layers should be hidden
+    
+    
     virtual bool hidesLowerScenes() { return true; }
     virtual void reloadMovie(bool force);
     virtual bool needsReloaded();

@@ -17,17 +17,17 @@
 class Level;
 class Textures;
 
-/*
-    protected int tex;
-    protected float gravity;
-        */
+
+
+
+
 
 double Particle::xOff = 0;
 double Particle::yOff = 0;
 double Particle::zOff = 0;
 
 void Particle::_init(Level* level, double x, double y, double z) {
-    // 4J - added these initialisers
+    
     alpha = 1.0f;
     tex = nullptr;
     gravity = 0.0f;
@@ -93,7 +93,7 @@ void Particle::setColor(float r, float g, float b) {
 }
 
 void Particle::setAlpha(float alpha) {
-    // 4J - brought forward from Java 1.8
+    
     if (this->alpha == 1.0f && alpha < 1.0f) {
         Minecraft::GetInstance()->particleEngine->markTranslucent(
             std::dynamic_pointer_cast<Particle>(shared_from_this()));
@@ -154,7 +154,7 @@ void Particle::render(Tesselator* t, float a, float xa, float ya, float za,
     float y = (float)(yo + (this->y - yo) * a - yOff);
     float z = (float)(zo + (this->z - zo) * a - zOff);
 
-    float br = 1.0f;  // 4J - change brought forward from 1.8.2
+    float br = 1.0f;  
     if (!SharedConstants::TEXTURE_LIGHTING) {
         br = getBrightness(a);
     }
@@ -187,8 +187,8 @@ void Particle::setTex(Textures* textures, Icon* icon) {
         printf("Invalid call to Particle.setTex, use coordinate methods\n");
         __debugbreak();
 #endif
-        // throw new RuntimeException("Invalid call to Particle.setTex, use
-        // coordinate methods");
+        
+        
     }
 }
 
@@ -198,7 +198,7 @@ void Particle::setMiscTex(int slotIndex) {
 #if !defined(_CONTENT_PACKAGE)
         printf("Invalid call to Particle.setMixTex\n");
         __debugbreak();
-        // throw new RuntimeException("Invalid call to Particle.setMiscTex");
+        
 #endif
     }
     texX = slotIndex % 16;
@@ -209,9 +209,9 @@ void Particle::setNextMiscAnimTex() { texX++; }
 
 bool Particle::isAttackable() { return false; }
 
-//@Override
+
 std::wstring Particle::toString() {
-    return L"A particle";  // getClass()->getSimpleName() + ", Pos (" + x + ","
-                           // + y + "," + z + "), RGBA (" + rCol + "," + gCol +
-                           // "," + bCol + "," + alpha + "), Age " + age;
+    return L"A particle";  
+                           
+                           
 }

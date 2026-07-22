@@ -24,11 +24,11 @@
 #include "nbt/Tag.h"
 
 SavedDataStorage::SavedDataStorage(LevelStorage* levelStorage) {
-    /*
-    cache = new unordered_map<wstring, shared_ptr<SavedData> >;
-    savedDatas = new vector<shared_ptr<SavedData> >;
-    usedAuxIds = new unordered_map<wstring, short*>;
-    */
+    
+
+
+
+
 
     this->levelStorage = levelStorage;
     loadAuxValues();
@@ -41,14 +41,14 @@ std::shared_ptr<SavedData> SavedDataStorage::get(const std::type_info& clazz,
 
     std::shared_ptr<SavedData> data = nullptr;
     if (levelStorage != nullptr) {
-        // File file = levelStorage->getDataFile(id);
+        
         ConsoleSavePath file = levelStorage->getDataFile(id);
         if (!file.getName().empty() &&
             levelStorage->getSaveFile()->doesFileExist(file)) {
-            // mob = std::dynamic_pointer_cast<Mob>(Mob::_class->newInstance(
-            // level
-            // ));
-            // data = clazz.getConstructor(String.class).newInstance(id);
+            
+            
+            
+            
 
             if (clazz == typeid(MapItemSavedData)) {
                 data = std::dynamic_pointer_cast<SavedData>(
@@ -62,7 +62,7 @@ std::shared_ptr<SavedData> SavedDataStorage::get(const std::type_info& clazz,
                     std::shared_ptr<StructureFeatureSavedData>(
                         new StructureFeatureSavedData(id)));
             } else {
-                // Handling of new SavedData class required
+                
                 __debugbreak();
             }
 
@@ -88,7 +88,7 @@ std::shared_ptr<SavedData> SavedDataStorage::get(const std::type_info& clazz,
 void SavedDataStorage::set(const std::wstring& id,
                            std::shared_ptr<SavedData> data) {
     if (data == nullptr) {
-        // TODO 4J Stu - throw new RuntimeException("Can't set null data");
+        
         assert(false);
     }
     auto it = cache.find(id);
@@ -106,7 +106,7 @@ void SavedDataStorage::set(const std::wstring& id,
 void SavedDataStorage::save() {
     auto itEnd = savedDatas.end();
     for (auto it = savedDatas.begin(); it != itEnd; it++) {
-        std::shared_ptr<SavedData> data = *it;  // savedDatas->at(i);
+        std::shared_ptr<SavedData> data = *it;  
         if (data->isDirty()) {
             save(data);
             data->setDirty(false);
@@ -116,7 +116,7 @@ void SavedDataStorage::save() {
 
 void SavedDataStorage::save(std::shared_ptr<SavedData> data) {
     if (levelStorage == nullptr) return;
-    // File file = levelStorage->getDataFile(data->id);
+    
     ConsoleSavePath file = levelStorage->getDataFile(data->id);
     if (!file.getName().empty()) {
         CompoundTag* dataTag = new CompoundTag();
@@ -138,7 +138,7 @@ void SavedDataStorage::loadAuxValues() {
     usedAuxIds.clear();
 
     if (levelStorage == nullptr) return;
-    // File file = levelStorage->getDataFile(L"idcounts");
+    
     ConsoleSavePath file = levelStorage->getDataFile(L"idcounts");
     if (!file.getName().empty() &&
         levelStorage->getSaveFile()->doesFileExist(file)) {
@@ -174,13 +174,13 @@ int SavedDataStorage::getFreeAuxValueFor(const std::wstring& id) {
 
     usedAuxIds[id] = val;
     if (levelStorage == nullptr) return val;
-    // File file = levelStorage->getDataFile(L"idcounts");
+    
     ConsoleSavePath file = levelStorage->getDataFile(L"idcounts");
     if (!file.getName().empty()) {
         CompoundTag* tag = new CompoundTag();
 
-        // TODO 4J Stu - This was iterating over the keySet in Java, so
-        // potentially we are looking at more items?
+        
+        
         auto itEndAuxIds = usedAuxIds.end();
         for (uaiMapType::iterator it2 = usedAuxIds.begin(); it2 != itEndAuxIds;
              it2++) {
@@ -197,7 +197,7 @@ int SavedDataStorage::getFreeAuxValueFor(const std::wstring& id) {
     return val;
 }
 
-// 4J Added
+
 int SavedDataStorage::getAuxValueForMap(PlayerUID xuid, int dimension,
                                         int centreXC, int centreZC, int scale) {
     if (levelStorage == nullptr) {

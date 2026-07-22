@@ -87,18 +87,18 @@ bool MakeLoveGoal::villageNeedsMoreVillagers() {
     }
 
     int idealSize = (int)((float)_village->getDoorCount() * 0.35);
-    // System.out.println("idealSize: " + idealSize + " pop: " +
-    // village.getPopulationSize());
+    
+    
     return _village->getPopulationSize() < idealSize;
 }
 
 void MakeLoveGoal::breed() {
-    // 4J Stu - This sets a timer that stops these villagers from trying to
-    // breed again We should do this even if breeding fails due to vilalger
-    // count to stop them continually trying to breed
+    
+    
+    
     partner.lock()->setAge(5 * 60 * 20);
     villager->setAge(5 * 60 * 20);
-    // 4J - added limit to number of animals that can be bred
+    
     if (level->canCreateMore(eTYPE_VILLAGER, Level::eSpawnType_Breed)) {
         std::shared_ptr<Villager> child = std::dynamic_pointer_cast<Villager>(
             villager->getBreedOffspring(partner.lock()));

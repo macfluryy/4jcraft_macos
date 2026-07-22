@@ -22,7 +22,7 @@ class UILayer;
 UIScene_HopperMenu::UIScene_HopperMenu(int iPad, void* _initData,
                                        UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     HopperScreenInput* initData = (HopperScreenInput*)_initData;

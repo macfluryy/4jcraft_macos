@@ -20,16 +20,16 @@ SubselectEntitySelector::SubselectEntitySelector(
 }
 
 SubselectEntitySelector::~SubselectEntitySelector() {
-    // 4J macOS - DO NOT delete m_subselector. The selector pointers
-    // we receive are shared singletons (Enemy::ENEMY_SELECTOR,
-    // livingEntitySelector, etc.) owned by the entity-AI subsystem,
-    // not by us. The original code did `delete m_subselector` which
-    // double-freed the singleton on the second mob teardown - any
-    // VillagerGolem / SnowMan / WitherBoss being unloaded after the
-    // first one would crash with a SIGSEGV inside ~Mob ->
-    // ~GoalSelector -> ~NearestAttackableTargetGoal ->
-    // ~SubselectEntitySelector. Leaving the pointer alone is correct:
-    // the singletons live for the lifetime of the process.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 bool SubselectEntitySelector::matches(std::shared_ptr<Entity> entity) const {
@@ -46,7 +46,7 @@ NearestAttackableTargetGoal::DistComp::DistComp(Entity* source) {
 
 bool NearestAttackableTargetGoal::DistComp::operator()(
     std::shared_ptr<Entity> e1, std::shared_ptr<Entity> e2) {
-    // Should return true if e1 comes before e2 in the sorted list
+    
     double distSqr1 = source->distanceToSqr(e1);
     double distSqr2 = source->distanceToSqr(e2);
     if (distSqr1 < distSqr2) return true;
@@ -56,8 +56,8 @@ bool NearestAttackableTargetGoal::DistComp::operator()(
 
 NearestAttackableTargetGoal::NearestAttackableTargetGoal(
     PathfinderMob* mob, const std::type_info& targetType, int randomInterval,
-    bool mustSee, bool mustReach /*= false*/,
-    EntitySelector* entitySelector /* =nullptr */)
+    bool mustSee, bool mustReach ,
+    EntitySelector* entitySelector )
     : TargetGoal(mob, mustSee, mustReach), targetType(targetType) {
     this->randomInterval = randomInterval;
     this->distComp = new DistComp(mob);

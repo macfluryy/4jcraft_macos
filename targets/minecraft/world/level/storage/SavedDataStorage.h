@@ -39,7 +39,7 @@ private:
 public:
     int getFreeAuxValueFor(const std::wstring& id);
 
-    // 4J Added
+    
     int getAuxValueForMap(PlayerUID xuid, int dimension, int centreXC,
                           int centreZC, int scale);
 };

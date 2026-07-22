@@ -35,7 +35,7 @@ private:
 
     static thread_local bool m_tlsIgnoreUpdate;
 
-    // 4J - was just a static but implemented with TLS for our version
+    
     static bool ignoreUpdate();
     static void ignoreUpdate(bool set);
 
@@ -55,7 +55,7 @@ public:
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
-                     bool soundOnly = false);  // 4J added soundOnly param
+                     bool soundOnly = false);  
     virtual void setPlacedBy(Level* level, int x, int y, int z,
                              std::shared_ptr<LivingEntity> by,
                              std::shared_ptr<ItemInstance> itemInstance);
@@ -72,7 +72,7 @@ public:
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
-            TileEntity>());  // 4J added forceData, forceEntity param
+            TileEntity>());  
     virtual void updateDefaultShape();
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
                           std::vector<AABB>* boxes,
@@ -90,7 +90,7 @@ private:
                            bool allowDestroyable);
     static bool canPush(Level* level, int sx, int sy, int sz, int facing);
     static void stopSharingIfServer(Level* level, int x, int y,
-                                    int z);  // 4J added
+                                    int z);  
 
     bool createPush(Level* level, int sx, int sy, int sz, int facing);
 };

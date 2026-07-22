@@ -3,7 +3,7 @@
 #include "GL/gl.h"
 #include <OpenGL/gl3ext.h>
 
-/* Texture env / combine (GL_ARB_texture_env_combine) */
+
 #ifndef GL_COMBINE
 #define GL_COMBINE                     0x8570
 #endif
@@ -59,7 +59,7 @@
 #define GL_PREVIOUS                    0x8578
 #endif
 
-/* Texture LOD bias (GL_EXT_texture_lod_bias) */
+
 #ifndef GL_MAX_TEXTURE_LOD_BIAS
 #define GL_MAX_TEXTURE_LOD_BIAS        0x84FD
 #endif
@@ -70,12 +70,12 @@
 #define GL_TEXTURE_LOD_BIAS            0x8501
 #endif
 
-/* Texture border clamp (GL_ARB_texture_border_clamp) */
+
 #ifndef GL_CLAMP_TO_BORDER
 #define GL_CLAMP_TO_BORDER             0x812D
 #endif
 
-/* Texture max anisotropy (GL_EXT_texture_filter_anisotropic) */
+
 #ifndef GL_TEXTURE_MAX_ANISOTROPY_EXT
 #define GL_TEXTURE_MAX_ANISOTROPY_EXT  0x84FE
 #endif
@@ -83,7 +83,7 @@
 #define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
 #endif
 
-/* Packed depth/stencil (GL_EXT_packed_depth_stencil) */
+
 #ifndef GL_DEPTH_STENCIL
 #define GL_DEPTH_STENCIL               0x84F9
 #endif
@@ -97,7 +97,7 @@
 #define GL_TEXTURE_STENCIL_SIZE        0x88F1
 #endif
 
-/* Depth texture (GL_ARB_depth_texture) */
+
 #ifndef GL_DEPTH_COMPONENT16
 #define GL_DEPTH_COMPONENT16           0x81A5
 #endif
@@ -108,7 +108,7 @@
 #define GL_DEPTH_COMPONENT32           0x81A7
 #endif
 
-/* Shadow / compare mode (GL_ARB_shadow) */
+
 #ifndef GL_TEXTURE_COMPARE_MODE
 #define GL_TEXTURE_COMPARE_MODE        0x884C
 #endif
@@ -119,7 +119,7 @@
 #define GL_COMPARE_R_TO_TEXTURE        0x884E
 #endif
 
-/* Float textures (GL_ARB_texture_float) */
+
 #ifndef GL_RGBA32F
 #define GL_RGBA32F                     0x8814
 #endif
@@ -133,12 +133,12 @@
 #define GL_RGB16F                      0x881B
 #endif
 
-/* Half float pixel type (GL_ARB_half_float_pixel) */
+
 #ifndef GL_HALF_FLOAT
 #define GL_HALF_FLOAT                  0x140B
 #endif
 
-/* Point sprites (GL_ARB_point_sprite) */
+
 #ifndef GL_POINT_SPRITE
 #define GL_POINT_SPRITE                0x8861
 #endif
@@ -146,12 +146,12 @@
 #define GL_COORD_REPLACE               0x8862
 #endif
 
-/* Secondary color (GL_EXT_secondary_color) */
+
 #ifndef GL_COLOR_SUM
 #define GL_COLOR_SUM                   0x8458
 #endif
 
-/* Blend equation (GL_EXT_blend_minmax) */
+
 #ifndef GL_MIN
 #define GL_MIN                         0x8007
 #endif
@@ -168,7 +168,7 @@
 #define GL_FUNC_REVERSE_SUBTRACT       0x800B
 #endif
 
-/* Blend color (GL_EXT_blend_color) */
+
 #ifndef GL_CONSTANT_COLOR
 #define GL_CONSTANT_COLOR              0x8001
 #endif
@@ -182,7 +182,7 @@
 #define GL_ONE_MINUS_CONSTANT_ALPHA    0x8004
 #endif
 
-/* Occlusion query (GL_ARB_occlusion_query) */
+
 #ifndef GL_SAMPLES_PASSED
 #define GL_SAMPLES_PASSED              0x8914
 #endif
@@ -193,7 +193,7 @@
 #define GL_QUERY_RESULT_AVAILABLE      0x8867
 #endif
 
-/* Pixel buffer objects (GL_ARB_pixel_buffer_object) */
+
 #ifndef GL_PIXEL_PACK_BUFFER
 #define GL_PIXEL_PACK_BUFFER           0x88EB
 #endif
@@ -207,7 +207,7 @@
 #define GL_PIXEL_UNPACK_BUFFER_BINDING 0x88EF
 #endif
 
-/* Buffer usage hints */
+
 #ifndef GL_STREAM_DRAW
 #define GL_STREAM_DRAW                 0x88E0
 #endif
@@ -221,7 +221,7 @@
 #define GL_DYNAMIC_DRAW                0x88E8
 #endif
 
-/* Buffer map access */
+
 #ifndef GL_READ_ONLY
 #define GL_READ_ONLY                   0x88B8
 #endif
@@ -232,7 +232,7 @@
 #define GL_READ_WRITE                  0x88BA
 #endif
 
-/* Separate blend functions (GL_EXT_blend_func_separate) */
+
 #ifndef GL_BLEND_DST_RGB
 #define GL_BLEND_DST_RGB               0x80C8
 #endif
@@ -246,7 +246,7 @@
 #define GL_BLEND_SRC_ALPHA             0x80CB
 #endif
 
-/* Framebuffer status codes (GL_EXT_framebuffer_object) */
+
 #ifndef GL_FRAMEBUFFER_COMPLETE
 #define GL_FRAMEBUFFER_COMPLETE        0x8CD5
 #endif
@@ -275,7 +275,7 @@
 #define GL_FRAMEBUFFER                 0x8D40
 #endif
 
-/* MSAA resolve (GL_EXT_framebuffer_blit) */
+
 #ifndef GL_READ_FRAMEBUFFER
 #define GL_READ_FRAMEBUFFER            0x8CA8
 #endif

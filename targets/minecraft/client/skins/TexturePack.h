@@ -26,9 +26,9 @@ public:
     virtual void load(Textures* textures) = 0;
     virtual InputStream* getResource(
         const std::wstring& name,
-        bool allowFallback) = 0;  // throws IOException;
-    // virtual InputStream *getResource(const std::wstring &name) = 0;// throws
-    // IOException;
+        bool allowFallback) = 0;  
+    
+    
     virtual std::uint32_t getId() = 0;
     virtual std::wstring getName() = 0;
     virtual std::wstring getDesc1() = 0;
@@ -37,17 +37,17 @@ public:
     virtual bool isTerrainUpdateCompatible() = 0;
 
     virtual std::wstring getResource(
-        const std::wstring& name)  // 4J - changed to just return a name rather
-                                   // than an input stream
+        const std::wstring& name)  
+                                   
     {
-        /* 4J - TODO
-return TexturePack.class.getResourceAsStream(name);
-        */
+        
+
+
         return name;
     }
     virtual DLCPack* getDLCPack() { return nullptr; }
 
-    // 4J Added
+    
     virtual std::wstring getPath(bool bTitleUpdateTexture = false,
                                  const char* pchBDPatchFilename = nullptr);
     virtual std::wstring getAnimationString(const std::wstring& textureName,

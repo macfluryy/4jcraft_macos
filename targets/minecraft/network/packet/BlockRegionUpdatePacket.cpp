@@ -14,8 +14,8 @@
 
 #define BLOCK_REGION_UPDATE_FULLCHUNK 0x01
 #define BLOCK_REGION_UPDATE_ZEROHEIGHT \
-    0x02  // added so we can still send a byte for ys, which really needs the
-          // range 0-256
+    0x02  
+          
 
 BlockRegionUpdatePacket::~BlockRegionUpdatePacket() {}
 
@@ -44,10 +44,10 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs,
         ((level->dimension->id == 0) ? 0
                                      : ((level->dimension->id == -1) ? 1 : 2));
 
-    // 4J - if we are compressing a full chunk, re-order the blocks so that they
-    // compress better
-    // TODO - we should be using compressed data directly here rather than
-    // decompressing first and then recompressing...
+    
+    
+    
+    
     std::vector<uint8_t> rawBuffer;
 
     if (xs == 16 && ys == Level::maxBuildHeight && zs == 16 &&
@@ -65,17 +65,17 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs,
         size = 0;
         buffer = std::vector<uint8_t>();
     } else {
-        // We don't know how this will compress - just make a fixed length
-        // buffer to initially decompress into Some small sets of blocks can end
-        // up compressing into something bigger than their source
+        
+        
+        
         unsigned int inputSize = (unsigned int)rawBuffer.size() * 2;
         unsigned char* ucTemp = new unsigned char[inputSize];
 
         Compression::getCompression()->CompressLZXRLE(
             ucTemp, &inputSize, rawBuffer.data(),
             (unsigned int)rawBuffer.size());
-        // app.DebugPrintf("Chunk (%d,%d) compressed from %d to size %d\n",
-        // x>>4, z>>4, rawBuffer.size(), inputSize);
+        
+        
         unsigned char* ucTemp2 = new unsigned char[inputSize];
         memcpy(ucTemp2, ucTemp, inputSize);
         delete[] ucTemp;
@@ -85,7 +85,7 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs,
     }
 }
 
-void BlockRegionUpdatePacket::read(DataInputStream* dis)  // throws IOException
+void BlockRegionUpdatePacket::read(DataInputStream* dis)  
 {
     uint8_t chunkFlags = dis->readByte();
     x = dis->readInt();
@@ -109,7 +109,7 @@ void BlockRegionUpdatePacket::read(DataInputStream* dis)  // throws IOException
         bool success = dis->readFully(compressedBuffer);
 
         int bufferSize = xs * ys * zs * 5 / 2;
-        // Add the size of the biome data if it's a full chunk
+        
         if (bIsFullChunk) bufferSize += (16 * 16);
         buffer = std::vector<uint8_t>(bufferSize);
         unsigned int outputSize = buffer.size();
@@ -122,15 +122,15 @@ void BlockRegionUpdatePacket::read(DataInputStream* dis)  // throws IOException
                 "Not decompressing packet that wasn't fully read\n");
         }
 
-        //	printf("Block (%d %d %d), (%d %d %d) coming in decomp from %d to
-        //%d\n",x,y,z,xs,ys,zs,size,outputSize);
+        
+        
 
         assert(buffer.size() == outputSize);
     }
 }
 
 void BlockRegionUpdatePacket::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     uint8_t chunkFlags = 0;
     if (bIsFullChunk) chunkFlags |= BLOCK_REGION_UPDATE_FULLCHUNK;

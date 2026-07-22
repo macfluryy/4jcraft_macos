@@ -17,7 +17,7 @@ void HatchetItem::staticCtor() {
     (*diggables)[1] = Tile::bookshelf;
     (*diggables)[2] = Tile::treeTrunk;
     (*diggables)[3] = Tile::chest;
-    // 4J - brought forward from 1.2.3
+    
     (*diggables)[4] = Tile::stoneSlab;
     (*diggables)[5] = Tile::stoneSlabHalf;
     (*diggables)[6] = Tile::pumpkin;
@@ -27,7 +27,7 @@ void HatchetItem::staticCtor() {
 HatchetItem::HatchetItem(int id, const Tier* tier)
     : DiggerItem(id, 3, tier, diggables) {}
 
-// 4J - brought forward from 1.2.3
+
 float HatchetItem::getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance,
                                    Tile* tile) {
     if (tile != nullptr && (tile->material == Material::wood ||

@@ -28,9 +28,9 @@ EndermanRenderer::EndermanRenderer() : MobRenderer(new EndermanModel(), 0.5f) {
 
 void EndermanRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
                               double z, float rot, float a) {
-    // 4J - original version used generics and thus had an input parameter of
-    // type Boat rather than shared_ptr<Entity>  we have here - do some casting
-    // around instead
+    
+    
+    
     std::shared_ptr<EnderMan> mob = std::dynamic_pointer_cast<EnderMan>(_mob);
 
     model->carrying = mob->getCarryingTile() > 0;
@@ -52,9 +52,9 @@ ResourceLocation* EndermanRenderer::getTextureLocation(
 
 void EndermanRenderer::additionalRendering(std::shared_ptr<LivingEntity> _mob,
                                            float a) {
-    // 4J - original version used generics and thus had an input parameter of
-    // type Boat rather than shared_ptr<Entity>  we have here - do some casting
-    // around instead
+    
+    
+    
     std::shared_ptr<EnderMan> mob = std::dynamic_pointer_cast<EnderMan>(_mob);
 
     MobRenderer::additionalRendering(_mob, a);
@@ -80,7 +80,7 @@ void EndermanRenderer::additionalRendering(std::shared_ptr<LivingEntity> _mob,
         }
 
         glColor4f(1, 1, 1, 1);
-        bindTexture(&TextureAtlas::LOCATION_BLOCKS);  // TODO: bind by icon
+        bindTexture(&TextureAtlas::LOCATION_BLOCKS);  
         tileRenderer->renderTile(Tile::tiles[mob->getCarryingTile()],
                                  mob->getCarryingData(), 1);
         glPopMatrix();
@@ -90,20 +90,20 @@ void EndermanRenderer::additionalRendering(std::shared_ptr<LivingEntity> _mob,
 
 int EndermanRenderer::prepareArmor(std::shared_ptr<LivingEntity> _mob,
                                    int layer, float a) {
-    // 4J - original version used generics and thus had an input parameter of
-    // type Boat rather than shared_ptr<Entity>  we have here - do some casting
-    // around instead
+    
+    
+    
     std::shared_ptr<EnderMan> mob = std::dynamic_pointer_cast<EnderMan>(_mob);
 
     if (layer != 0) return -1;
 
-    bindTexture(&ENDERMAN_EYES_LOCATION);  // 4J was L"/mob/enderman_eyes.png"
+    bindTexture(&ENDERMAN_EYES_LOCATION);  
     float br = 1;
     glEnable(GL_BLEND);
-    // 4J Stu - We probably don't need to do this on 360 either (as we force it
-    // back on the renderer) However we do want it off for other platforms that
-    // don't force it on in the render lib CBuff handling Several texture packs
-    // have fully transparent bits that break if this is off
+    
+    
+    
+    
     glBlendFunc(GL_ONE, GL_ONE);
     glDisable(GL_LIGHTING);
 

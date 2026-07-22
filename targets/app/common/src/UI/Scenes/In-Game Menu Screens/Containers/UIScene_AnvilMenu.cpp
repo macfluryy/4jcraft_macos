@@ -32,7 +32,7 @@ class UILayer;
 UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void* _initData,
                                      UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_showingCross = false;
@@ -73,7 +73,7 @@ UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void* _initData,
             m_costString = app.GetString(IDS_REPAIR_EXPENSIVE);
             expensive = true;
         } else if (!m_repairMenu->getSlot(AnvilMenu::RESULT_SLOT)->hasItem()) {
-            // Do nothing
+            
         } else {
             const wchar_t* costString = app.GetString(IDS_REPAIR_COST);
             wchar_t temp[256];
@@ -319,7 +319,7 @@ void UIScene_AnvilMenu::handleEditNamePressed() {
     InputManager.RequestKeyboard(
         app.GetString(IDS_TITLE_RENAME), m_textInputAnvil.getLabel(), m_iPad, 30,
         [this](bool bRes) -> int {
-            // 4J HEG - No reason to set value if keyboard was cancelled
+            
             setIgnoreInput(false);
             if (bRes) {
                 std::wstring str = convStringToWstring(InputManager.GetText());
@@ -374,7 +374,7 @@ void UIScene_AnvilMenu::showCross(bool show) {
 }
 
 void UIScene_AnvilMenu::handleDestroy() {
-    // another player destroyed the anvil, so shut down the keyboard if it is
-    // displayed
+    
+    
     UIScene_AbstractContainerMenu::handleDestroy();
 }

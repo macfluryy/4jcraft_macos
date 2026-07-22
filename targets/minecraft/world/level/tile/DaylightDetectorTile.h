@@ -16,7 +16,7 @@ private:
 public:
     DaylightDetectorTile(int id);
 
-    virtual void updateDefaultShape();  // 4J Added override
+    virtual void updateDefaultShape();  
     virtual void updateShape(LevelSource* level, int x, int y, int z,
                              int forceData = -1,
                              std::shared_ptr<TileEntity> forceEntity =

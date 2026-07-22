@@ -115,7 +115,7 @@ std::vector<LevelSummary*>* McRegionLevelStorageSource::getLevelList() {
 
         levels->push_back(new LevelSummary(levelId, levelName, lastPlayed,
                                            sizeOnDisk, gameMode,
-                                           /*requiresConversion*/ false,
+                                            false,
                                            hardcore, hasCheats));
 
         delete entry;
@@ -206,8 +206,8 @@ void McRegionLevelStorageSource::deleteLevel(const std::wstring& levelId) {
 std::shared_ptr<LevelStorage> McRegionLevelStorageSource::selectLevel(
     ConsoleSaveFile* saveFile, const std::wstring& levelId,
     bool createPlayerDir) {
-    //        return new LevelStorageProfilerDecorator(new
-    //        McRegionLevelStorage(baseDir, levelId, createPlayerDir));
+    
+    
     return std::shared_ptr<LevelStorage>(
         new McRegionLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
 }
@@ -255,7 +255,7 @@ void McRegionLevelStorageSource::eraseFolders(std::vector<File*>* folders,
     File* folder;
     auto itEnd = folders->end();
     for (auto it = folders->begin(); it != itEnd; it++) {
-        folder = *it;  // folders->at(i);
+        folder = *it;  
 
         std::vector<File*>* files = folder->listFiles();
         deleteRecursive(files);

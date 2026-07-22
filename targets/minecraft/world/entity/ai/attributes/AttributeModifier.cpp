@@ -19,7 +19,7 @@ void AttributeModifier::_init(eMODIFIER_ID id, const std::wstring name,
 }
 
 AttributeModifier::AttributeModifier(double amount, int operation) {
-    // Create an anonymous attribute
+    
     _init(eModifierId_ANONYMOUS, name, amount, operation);
 }
 
@@ -27,9 +27,9 @@ AttributeModifier::AttributeModifier(eMODIFIER_ID id, double amount,
                                      int operation) {
     _init(id, name, amount, operation);
 
-    // Validate.notEmpty(name, "Modifier name cannot be empty");
-    // Validate.inclusiveBetween(0, TOTAL_OPERATIONS - 1, operation, "Invalid
-    // operation");
+    
+    
+    
 }
 
 eMODIFIER_ID AttributeModifier::getId() { return id; }
@@ -50,7 +50,7 @@ AttributeModifier* AttributeModifier::setSerialize(bool serialize) {
 bool AttributeModifier::equals(AttributeModifier* modifier) {
     if (this == modifier) return true;
     if (modifier == nullptr)
-        return false;  //|| getClass() != o.getClass()) return false;
+        return false;  
 
     if (id != modifier->id) return false;
 
@@ -60,13 +60,13 @@ bool AttributeModifier::equals(AttributeModifier* modifier) {
 std::wstring AttributeModifier::toString() {
     return L"";
 
-    /*return L"AttributeModifier{" +
-    L"amount=" + amount +
-    L", operation=" + operation +
-    L", name='" + name + '\'' +
-    L", id=" + id +
-    L", serialize=" + serialize +
-    L'}';*/
+    
+
+
+
+
+
+
 }
 
 HtmlString AttributeModifier::getHoverText(eATTRIBUTE_ID attribute) {
@@ -99,7 +99,7 @@ HtmlString AttributeModifier::getHoverText(eATTRIBUTE_ID attribute) {
             percentage = true;
             break;
         default:
-            // No other operations
+            
             assert(0);
     }
 

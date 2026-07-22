@@ -22,14 +22,14 @@ SetEntityLinkPacket::SetEntityLinkPacket(int linkType,
 
 int SetEntityLinkPacket::getEstimatedSize() { return 8; }
 
-void SetEntityLinkPacket::read(DataInputStream* dis)  // throws IOException
+void SetEntityLinkPacket::read(DataInputStream* dis)  
 {
     sourceId = dis->readInt();
     destId = dis->readInt();
     type = dis->readUnsignedByte();
 }
 
-void SetEntityLinkPacket::write(DataOutputStream* dos)  // throws IOException
+void SetEntityLinkPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(sourceId);
     dos->writeInt(destId);

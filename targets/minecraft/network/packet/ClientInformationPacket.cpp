@@ -14,12 +14,12 @@ ClientInformationPacket::ClientInformationPacket(int viewDistance) {
     this->viewDistance = viewDistance;
 }
 
-void ClientInformationPacket::read(DataInputStream* dis)  // throws IOException
+void ClientInformationPacket::read(DataInputStream* dis)  
 {
     viewDistance = dis->readInt();
 }
 
-void ClientInformationPacket::write(DataOutputStream* dos)  // throws IOException
+void ClientInformationPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(viewDistance);
 }

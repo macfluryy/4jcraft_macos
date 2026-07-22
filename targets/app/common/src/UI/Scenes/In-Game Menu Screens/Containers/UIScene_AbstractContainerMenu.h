@@ -75,9 +75,9 @@ protected:
 public:
     virtual void tick();
 
-    // 4J - TomK If update tooltips is called then make sure the correct parent
-    // is invoked! (both UIScene AND IUIScene_AbstractContainerMenu have an
-    // instance of said function!)
+    
+    
+    
     virtual void updateTooltips() {
         IUIScene_AbstractContainerMenu::UpdateTooltips();
     }
@@ -86,7 +86,7 @@ public:
                         C4JRender::eViewportType viewpBort);
     virtual void customDraw(IggyCustomDrawCallbackRegion* region);
 
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 };

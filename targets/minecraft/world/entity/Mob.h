@@ -33,7 +33,7 @@ class Mob : public LivingEntity {
     friend class MobSpawner;
 
 public:
-    // 4J-PB - added to replace (e instanceof Type), avoiding dynamic casts
+    
     eINSTANCEOF GetType() { return eTYPE_MOB; }
     static Entity* create(Level* level) { return nullptr; }
 
@@ -78,7 +78,7 @@ private:
     bool persistenceRequired;
 
 protected:
-    // 4J - added for common ctor code
+    
     void _init();
 
 public:
@@ -181,18 +181,18 @@ protected:
     virtual void populateDefaultEquipmentEnchantments();
 
 public:
-    /**
-     * Added this method so mobs can handle their own spawn settings instead of
-     * hacking MobSpawner.java
-     *
-     * @param groupData
-     *            TODO
-     * @return TODO
-     */
+    
+
+
+
+
+
+
+
     virtual MobGroupData* finalizeMobSpawn(
         MobGroupData* groupData,
-        int extraData = 0);  // 4J Added extraData param
-    virtual void finalizeSpawnEggSpawn(int extraData);  // 4J Added
+        int extraData = 0);  
+    virtual void finalizeSpawnEggSpawn(int extraData);  
     virtual bool canBeControlledByRider();
     virtual std::wstring getAName();
     virtual void setPersistenceRequired();
@@ -211,7 +211,7 @@ public:
 protected:
     virtual bool mobInteract(std::shared_ptr<Player> player);
 
-    // roper / leash methods
+    
 
 private:
     bool _isLeashed;
@@ -233,7 +233,7 @@ private:
     virtual bool shouldRender(Vec3* c);
 
 public:
-    // 4J Added override to update ai elements when loading entity from
-    // schematics
+    
+    
     virtual void setLevel(Level* level);
 };

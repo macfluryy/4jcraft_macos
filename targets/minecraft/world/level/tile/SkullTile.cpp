@@ -99,14 +99,14 @@ int SkullTile::getSpawnResourcesAuxValue(int data) { return data; }
 
 void SkullTile::spawnResources(Level* level, int x, int y, int z, int data,
                                float odds, int playerBonusLevel) {
-    // do nothing, resource is popped by onRemove
-    // ... because the tile entity is removed prior to spawnResources
+    
+    
 }
 
 void SkullTile::playerWillDestroy(Level* level, int x, int y, int z, int data,
                                   std::shared_ptr<Player> player) {
     if (player->abilities.instabuild) {
-        // prevent resource drop
+        
         data |= NO_DROP_BIT;
         level->setData(x, y, z, data, Tile::UPDATE_NONE);
     }
@@ -141,20 +141,20 @@ void SkullTile::checkMobSpawn(Level* level, int x, int y, int z,
                               std::shared_ptr<SkullTileEntity> placedSkull) {
     if (placedSkull->getSkullType() == SkullTileEntity::TYPE_WITHER && y >= 2 &&
         level->difficulty > Difficulty::PEACEFUL && !level->isClientSide) {
-        // Check wither boss spawn
+        
         int ss = Tile::soulsand_Id;
 
-        // North-south alignment
+        
         for (int zo = -2; zo <= 0; zo++) {
-            if (                                               //
-                level->getTile(x, y - 1, z + zo) == ss &&      //
-                level->getTile(x, y - 1, z + zo + 1) == ss &&  //
-                level->getTile(x, y - 2, z + zo + 1) == ss &&  //
-                level->getTile(x, y - 1, z + zo + 2) == ss &&  //
+            if (                                               
+                level->getTile(x, y - 1, z + zo) == ss &&      
+                level->getTile(x, y - 1, z + zo + 1) == ss &&  
+                level->getTile(x, y - 2, z + zo + 1) == ss &&  
+                level->getTile(x, y - 1, z + zo + 2) == ss &&  
                 isSkullAt(level, x, y, z + zo,
-                          SkullTileEntity::TYPE_WITHER) &&  //
+                          SkullTileEntity::TYPE_WITHER) &&  
                 isSkullAt(level, x, y, z + zo + 1,
-                          SkullTileEntity::TYPE_WITHER) &&  //
+                          SkullTileEntity::TYPE_WITHER) &&  
                 isSkullAt(level, x, y, z + zo + 2,
                           SkullTileEntity::TYPE_WITHER)) {
                 level->setData(x, y, z + zo, NO_DROP_BIT, Tile::UPDATE_CLIENTS);
@@ -176,11 +176,11 @@ void SkullTile::checkMobSpawn(Level* level, int x, int y, int z,
                 level->setTileAndData(x, y - 2, z + zo + 1, 0, 0,
                                       Tile::UPDATE_CLIENTS);
 
-                // 4J: Check that we can spawn a Wither
+                
                 if (level->canCreateMore(eTYPE_WITHERBOSS,
                                          Level::eSpawnType_Egg)) {
-                    // 4J: Removed !isClientSide check because there's one
-                    // earlier on
+                    
+                    
                     std::shared_ptr<WitherBoss> witherBoss =
                         std::make_shared<WitherBoss>(level);
                     witherBoss->moveTo(x + 0.5, y - 1.45, z + zo + 1.5, 90, 0);
@@ -188,7 +188,7 @@ void SkullTile::checkMobSpawn(Level* level, int x, int y, int z,
                     witherBoss->makeInvulnerable();
                     level->addEntity(witherBoss);
                 } else {
-                    // 4J: Can't spawn, drop resource instead
+                    
                     Tile::tiles[Tile::soulsand_Id]->spawnResources(
                         level, x, y - 1, z + zo, 0, 0);
                     Tile::tiles[Tile::soulsand_Id]->spawnResources(
@@ -226,17 +226,17 @@ void SkullTile::checkMobSpawn(Level* level, int x, int y, int z,
                 return;
             }
         }
-        // West-east alignment
+        
         for (int xo = -2; xo <= 0; xo++) {
-            if (                                               //
-                level->getTile(x + xo, y - 1, z) == ss &&      //
-                level->getTile(x + xo + 1, y - 1, z) == ss &&  //
-                level->getTile(x + xo + 1, y - 2, z) == ss &&  //
-                level->getTile(x + xo + 2, y - 1, z) == ss &&  //
+            if (                                               
+                level->getTile(x + xo, y - 1, z) == ss &&      
+                level->getTile(x + xo + 1, y - 1, z) == ss &&  
+                level->getTile(x + xo + 1, y - 2, z) == ss &&  
+                level->getTile(x + xo + 2, y - 1, z) == ss &&  
                 isSkullAt(level, x + xo, y, z,
-                          SkullTileEntity::TYPE_WITHER) &&  //
+                          SkullTileEntity::TYPE_WITHER) &&  
                 isSkullAt(level, x + xo + 1, y, z,
-                          SkullTileEntity::TYPE_WITHER) &&  //
+                          SkullTileEntity::TYPE_WITHER) &&  
                 isSkullAt(level, x + xo + 2, y, z,
                           SkullTileEntity::TYPE_WITHER)) {
                 level->setData(x + xo, y, z, NO_DROP_BIT, Tile::UPDATE_CLIENTS);
@@ -258,18 +258,18 @@ void SkullTile::checkMobSpawn(Level* level, int x, int y, int z,
                 level->setTileAndData(x + xo + 1, y - 2, z, 0, 0,
                                       Tile::UPDATE_CLIENTS);
 
-                // 4J: Check that we can spawn a Wither
+                
                 if (level->canCreateMore(eTYPE_WITHERBOSS,
                                          Level::eSpawnType_Egg)) {
-                    // 4J: Removed !isClientSide check because there's one
-                    // earlier on
+                    
+                    
                     std::shared_ptr<WitherBoss> witherBoss =
                         std::make_shared<WitherBoss>(level);
                     witherBoss->moveTo(x + xo + 1.5, y - 1.45, z + .5, 0, 0);
                     witherBoss->makeInvulnerable();
                     level->addEntity(witherBoss);
                 } else {
-                    // 4J: Can't spawn, drop resource instead
+                    
                     Tile::tiles[Tile::soulsand_Id]->spawnResources(
                         level, x + xo, y - 1, z, 0, 0);
                     Tile::tiles[Tile::soulsand_Id]->spawnResources(
@@ -324,7 +324,7 @@ bool SkullTile::isSkullAt(Level* level, int x, int y, int z, int skullType) {
 }
 
 void SkullTile::registerIcons(IconRegister* iconRegister) {
-    // None
+    
 }
 
 Icon* SkullTile::getTexture(int face, int data) {

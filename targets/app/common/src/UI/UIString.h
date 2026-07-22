@@ -49,13 +49,13 @@ protected:
 public:
     UIString();
 
-    UIString(int ids);  // Create a dynamic UI std::string from a std::string id
-                        // value.
+    UIString(int ids);  
+                        
 
-    UIString(StringBuilder wstrBuilder);  // Create a dynamic UI std::string
-                                          // with a custom update function.
+    UIString(StringBuilder wstrBuilder);  
+                                          
 
-    // Create a UIString with a constant value.
+    
     UIString(const std::string& constant);
     UIString(const std::wstring& constant);
     UIString(const wchar_t* constant);
@@ -65,9 +65,9 @@ public:
     bool empty();
     bool compare(const UIString& uiString);
 
-    bool needsUpdating();  // Language has been change since the last time
-                           // setUpdated was called.
-    void setUpdated();     // The new text has been used.
+    bool needsUpdating();  
+                           
+    void setUpdated();     
 
     std::wstring& getString();
 

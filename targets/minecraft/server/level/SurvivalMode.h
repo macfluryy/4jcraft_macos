@@ -8,7 +8,7 @@ private:
     int zDestroyBlock;
     float destroyProgress;
     float oDestroyProgress;
-    int destroyTicks;  // 4J was float but doesn't seem to need to be
+    int destroyTicks;  
     int destroyDelay;
 
 public:

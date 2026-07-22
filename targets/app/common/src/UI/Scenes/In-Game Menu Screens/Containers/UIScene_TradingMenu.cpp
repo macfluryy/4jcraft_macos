@@ -31,14 +31,14 @@ class UILayer;
 UIScene_TradingMenu::UIScene_TradingMenu(int iPad, void* _initData,
                                          UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_showingLeftArrow = true;
     m_showingRightArrow = true;
 
-    // 4J-PB - "Villager" appears for a short time on opening the trading menu
-    // m_labelTrading.init( app.GetString(IDS_VILLAGER) );
+    
+    
     m_labelTrading.init(L"");
     m_labelInventory.init(app.GetString(IDS_INVENTORY));
     m_labelRequired.init(app.GetString(IDS_REQUIRED_ITEMS_FOR_TRADE));
@@ -73,8 +73,8 @@ UIScene_TradingMenu::UIScene_TradingMenu(int iPad, void* _initData,
 
     if (initData) delete initData;
 
-    // in this scene, we override the press sound with our own for crafting
-    // success or fail
+    
+    
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_LEFT_SCROLL, true);
@@ -110,11 +110,11 @@ void UIScene_TradingMenu::handleDestroy() {
                 m_previousTutorialState);
     }
 
-    // 4J Stu - Fix for #11302 - TCR 001: Network Connectivity: Host crashed
-    // after being killed by the client while accessing a chest during burst
-    // packet loss. We need to make sure that we call closeContainer() anytime
-    // this menu is closed, even if it is forced to close by some other reason
-    // (like the player dying)
+    
+    
+    
+    
+    
     if (pMinecraft->localplayers[m_iPad] != nullptr)
         pMinecraft->localplayers[m_iPad]->closeContainer();
 
@@ -157,9 +157,9 @@ void UIScene_TradingMenu::tick() {
 void UIScene_TradingMenu::handleInput(int iPad, int key, bool repeat,
                                       bool pressed, bool released,
                                       bool& handled) {
-    // app.DebugPrintf("UIScene_InventoryMenu handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {

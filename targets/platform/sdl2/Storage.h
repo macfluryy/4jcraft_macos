@@ -5,16 +5,16 @@
 #include <functional>
 #include <string>
 #include <vector>
-// #include <xtms.h>
+
 
 #include "../PlatformTypes.h"
 #include "../IPlatformStorage.h"
 
 class C4JStringTable;
 
-#define MAX_DISPLAYNAME_LENGTH 128  // CELL_SAVEDATA_SYSP_SUBTITLE_SIZE on PS3
-#define MAX_DETAILS_LENGTH 128      // CELL_SAVEDATA_SYSP_SUBTITLE_SIZE on PS3
-#define MAX_SAVEFILENAME_LENGTH 32  // CELL_SAVEDATA_DIRNAME_SIZE
+#define MAX_DISPLAYNAME_LENGTH 128  
+#define MAX_DETAILS_LENGTH 128      
+#define MAX_SAVEFILENAME_LENGTH 32  
 
 struct CONTAINER_METADATA {
     time_t modifiedTime;
@@ -38,9 +38,9 @@ using PSAVE_DETAILS = SAVE_DETAILS*;
 
 typedef std::vector<PXMARKETPLACE_CONTENTOFFER_INFO> OfferDataArray;
 typedef std::vector<PXCONTENT_DATA> XContentDataArray;
-// typedef std::vector <PSAVE_DETAILS> SaveDetailsArray;
 
-// Current version of the dlc data creator
+
+
 #define CURRENT_DLC_VERSION_NUM 3
 
 class C4JStorage : public IPlatformStorage {
@@ -108,7 +108,7 @@ public:
 
     void Tick(void);
 
-    // Messages
+    
     C4JStorage::EMessageResult RequestMessageBox(
         unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
         unsigned int uiOptionC, unsigned int pad = XUSER_INDEX_ANY,
@@ -163,7 +163,7 @@ public:
         std::function<int(SAVE_DETAILS* pSaveDetails, const bool)> callback,
         char* pszSavePackName);
     PSAVE_DETAILS ReturnSavesInfo();
-    void ClearSavesInfo();  // Clears results
+    void ClearSavesInfo();  
     C4JStorage::ESaveGameState LoadSaveDataThumbnail(
         PSAVE_INFO pSaveInfo,
         std::function<int(std::uint8_t* thumbnailData,
@@ -181,7 +181,7 @@ public:
         PSAVE_INFO pSaveInfo,
         std::function<int(const bool)> callback);
 
-    // DLC
+    
     void RegisterMarketplaceCountsCallback(
         std::function<int(C4JStorage::DLC_TMS_DETAILS*, int)> callback);
     void SetDLCPackageRoot(char* pszDLCRoot);
@@ -209,7 +209,7 @@ public:
                                std::vector<std::string>& fileList);
     std::string GetMountedPath(std::string szMount);
 
-    // Global title storage
+    
     C4JStorage::ETMSStatus ReadTMSFile(
         int iQuadrant, eGlobalStorage eStorageFacility,
         C4JStorage::eTMS_FileType eFileType, wchar_t* pwchFilename,
@@ -223,7 +223,7 @@ public:
                        wchar_t* pwchFilename);
     void StoreTMSPathName(wchar_t* pwchName = nullptr);
 
-    // TMS++
+    
 #ifdef _XBOX
     C4JStorage::ETMSStatus WriteTMSFile(
         int iPad, C4JStorage::eGlobalStorage eStorageFacility,

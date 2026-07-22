@@ -9,8 +9,8 @@ SignModel::SignModel() {
     cube2 = new ModelPart(this, 0, 14);
     cube2->addBox(-1, -2, -1, 2, 14, 2, 0);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     cube->compile(1.0f / 16.0f);
     cube2->compile(1.0f / 16.0f);
 }

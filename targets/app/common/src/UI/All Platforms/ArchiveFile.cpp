@@ -22,7 +22,7 @@ void ArchiveFile::_readHeader(DataInputStream* dis) {
         meta->ptr = dis->readInt();
         meta->filesize = dis->readInt();
 
-        // Filenames preceeded by an asterisk have been compressed.
+        
         if (meta->filename[0] == '*') {
             meta->filename = meta->filename.substr(1);
             meta->isCompressed = true;
@@ -45,7 +45,7 @@ ArchiveFile::ArchiveFile(File file) {
 #endif
 
     if (!file.exists()) {
-        app.DebugPrintf("Failed to load archive file!\n");  //,file.getPath());
+        app.DebugPrintf("Failed to load archive file!\n");  
         app.FatalLoadError();
     }
 
@@ -135,13 +135,13 @@ std::vector<uint8_t> ArchiveFile::getFile(const std::wstring& filename) {
         }
 #endif
 
-        // Compressed filenames are preceeded with an asterisk.
+        
         if (data->isCompressed && !out.empty()) {
-            /* 4J-JEV:
-             * If a compressed file is accessed before compression object is
-             * initialized it will crash here (Compression::getCompression).
-             */
-            /// 4 279 553 556
+            
+
+
+
+            
 
             ByteArrayInputStream bais(out);
             DataInputStream dis(&bais);
@@ -159,7 +159,7 @@ std::vector<uint8_t> ArchiveFile::getFile(const std::wstring& filename) {
             delete[] uncompressedBuffer;
         }
 
-        assert(!out.empty());  // THERE IS NO FILE WITH THIS NAME!
+        assert(!out.empty());  
     }
 
     return out;

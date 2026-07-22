@@ -18,7 +18,7 @@ bool UIControl_CheckBox::setupControl(UIScene* scene, IggyValuePath* parent,
     UIControl::setControlType(UIControl::eCheckBox);
     bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-    // CheckBox specific initialisers
+    
     m_checkedProp = registerFastName(L"Checked");
     m_funcEnable = registerFastName(L"EnableCheckBox");
     m_funcSetCheckBox = registerFastName(L"SetCheckBox");
@@ -76,8 +76,8 @@ void UIControl_CheckBox::SetEnable(bool enable) {
                                getIggyValuePath(), m_funcEnable, 1, value);
 }
 
-// 4J HEG - this is only ever used when required, most of this should happen in
-// the flash
+
+
 void UIControl_CheckBox::setChecked(bool checked) {
     IggyDataValue result;
     IggyDataValue value[1];
@@ -88,8 +88,8 @@ void UIControl_CheckBox::setChecked(bool checked) {
                                getIggyValuePath(), m_funcSetCheckBox, 1, value);
 }
 
-// 4J-TomK we need to trigger this one via function instead of key down event
-// because of how it works
+
+
 void UIControl_CheckBox::TouchSetCheckbox(bool checked) {
     IggyDataValue result;
     IggyDataValue value[1];

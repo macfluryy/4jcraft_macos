@@ -32,11 +32,11 @@ private:
     } PlayerInfo;
 
     bool m_isHostPlayer;
-    // int m_playersCount;
-    std::vector<PlayerInfo*> m_players;  // A std::vector of player info structs
-    // char m_playersVoiceState[MINECRAFT_NET_MAX_PLAYERS];
-    // short m_playersColourState[MINECRAFT_NET_MAX_PLAYERS];
-    // std::wstring m_playerNames[MINECRAFT_NET_MAX_PLAYERS];
+    
+    std::vector<PlayerInfo*> m_players;  
+    
+    
+    
 
     UIControl_Button m_buttonGameOptions;
     UIControl_PlayerList m_playerList;
@@ -58,11 +58,11 @@ public:
     virtual void tick();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

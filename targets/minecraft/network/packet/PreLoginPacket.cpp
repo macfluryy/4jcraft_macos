@@ -58,7 +58,7 @@ PreLoginPacket::~PreLoginPacket() {
     if (m_playerXuids != nullptr) delete[] m_playerXuids;
 }
 
-void PreLoginPacket::read(DataInputStream* dis)  // throws IOException
+void PreLoginPacket::read(DataInputStream* dis)  
 {
     m_netcodeVersion = dis->readShort();
 
@@ -81,11 +81,11 @@ void PreLoginPacket::read(DataInputStream* dis)  // throws IOException
 
     m_texturePackId = static_cast<std::uint32_t>(dis->readInt());
 
-    // Set the name of the map so we can check it for players banned lists
+    
     app.SetUniqueMapName((char*)m_szUniqueSaveName);
 }
 
-void PreLoginPacket::write(DataOutputStream* dos)  // throws IOException
+void PreLoginPacket::write(DataOutputStream* dos)  
 {
     dos->writeShort(MINECRAFT_NET_VERSION);
 

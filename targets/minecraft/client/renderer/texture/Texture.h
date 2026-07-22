@@ -14,17 +14,17 @@ class Texture {
 public:
     static const int WM_WRAP = GL_REPEAT;
     static const int WM_CLAMP = GL_CLAMP;
-    static const int WM_MIRROR = 0;  // GL_MIRRORED_REPEAT;
+    static const int WM_MIRROR = 0;  
 
     static const int TFMT_RGBA = GL_RGBA;
     static const int TFMT_BGRA = GL_BGRA;
 
     static const int TFLT_NEAREST = GL_NEAREST;
     static const int TFLT_LINEAR = GL_LINEAR;
-    static const int TFLT_LINEAR_MIP_NEAREST = 0;  // GL_LINEAR_MIPMAP_NEAREST;
-    static const int TFLT_LINEAR_MIP_LINEAR = 0;   // GL_LINEAR_MIPMAP_LINEAR;
+    static const int TFLT_LINEAR_MIP_NEAREST = 0;  
+    static const int TFLT_LINEAR_MIP_LINEAR = 0;   
     static const int TFLT_NEAREST_MIP_NEAREST =
-        0;  // GL_NEAREST_MIPMAP_NEAREST;
+        0;  
     static const int TFLT_NEAREST_MIP_LINEAR = GL_NEAREST_MIPMAP_LINEAR;
 
     static const int TM_STATIC = 0;
@@ -35,12 +35,12 @@ private:
     int glId;
     int managerId;
 
-    // Indicates certain aspects of this texture's behavior in terms of how
-    // tightly it is bound, conceptually. A static texture is loaded once,
-    // uploaded to the GPU, and discarded CPU-side. A dynamic texture is kept on
-    // both the CPU and GPU, as it will likely be dynamically updated on the
-    // CPU. A container texture exists only to keep the data on the CPU, usually
-    // for later combination into a larger texture via the Stitcher class.
+    
+    
+    
+    
+    
+    
     int mode;
 
     int width;
@@ -60,10 +60,10 @@ private:
     bool immediateUpdate;
     bool updated;
     int m_iMipLevels;
-    ByteBuffer* data[10];  // Arrays for mipmaps - nullptr if not used
+    ByteBuffer* data[10];  
 
 public:
-    bool m_bInitialised;  // 4J Added
+    bool m_bInitialised;  
 
     ~Texture();
 

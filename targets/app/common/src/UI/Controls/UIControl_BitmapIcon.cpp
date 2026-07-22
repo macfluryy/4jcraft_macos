@@ -13,7 +13,7 @@ bool UIControl_BitmapIcon::setupControl(UIScene* scene, IggyValuePath* parent,
     UIControl::setControlType(UIControl::eBitmapIcon);
     bool success = UIControl::setupControl(scene, parent, controlName);
 
-    // SlotList specific initialisers
+    
     m_funcSetTextureName = registerFastName(L"SetTextureName");
 
     return success;

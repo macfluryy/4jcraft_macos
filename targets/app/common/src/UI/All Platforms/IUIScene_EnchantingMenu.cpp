@@ -20,7 +20,7 @@ IUIScene_EnchantingMenu::GetSectionAndSlotInDirection(
     IUIScene_AbstractContainerMenu::ESceneSection newSection = eSection;
     int xOffset = 0;
 
-    // Find the new section if there is one
+    
     switch (eSection) {
         case eSectionEnchantInventory:
             if (eTapDirection == eTapStateDown) {
@@ -103,7 +103,7 @@ void IUIScene_EnchantingMenu::handleOtherClicked(int iPad,
                                                  ESceneSection eSection,
                                                  int buttonNum, bool quickKey) {
     int index = -1;
-    // Old xui code
+    
 
     switch (eSection) {
         case eSectionEnchantButton1:

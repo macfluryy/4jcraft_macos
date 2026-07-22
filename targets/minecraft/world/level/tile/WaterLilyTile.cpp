@@ -18,7 +18,7 @@ class Random;
 
 WaterlilyTile::WaterlilyTile(int id) : Bush(id) { this->updateDefaultShape(); }
 
-// 4J Added override
+
 void WaterlilyTile::updateDefaultShape() {
     float ss = 0.5f;
     float hh = 0.25f / 16.0f;
@@ -37,7 +37,7 @@ void WaterlilyTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
 
 std::optional<AABB> WaterlilyTile::getAABB(Level* level, int x, int y, int z) {
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return AABB(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
                 y + tls->yy1, z + tls->zz1);
@@ -45,21 +45,21 @@ std::optional<AABB> WaterlilyTile::getAABB(Level* level, int x, int y, int z) {
 
 int WaterlilyTile::getColor() const {
     return Minecraft::GetInstance()->getColourTable()->getColor(
-        eMinecraftColour_Tile_WaterLily);  // 0x208030
+        eMinecraftColour_Tile_WaterLily);  
 }
 
 int WaterlilyTile::getColor(int auxData) {
     return Minecraft::GetInstance()->getColourTable()->getColor(
-        eMinecraftColour_Tile_WaterLily);  // 0x208030
+        eMinecraftColour_Tile_WaterLily);  
 }
 
 int WaterlilyTile::getColor(LevelSource* level, int x, int y, int z) {
     return Minecraft::GetInstance()->getColourTable()->getColor(
-        eMinecraftColour_Tile_WaterLily);  // 0x208030
+        eMinecraftColour_Tile_WaterLily);  
 }
 
 int WaterlilyTile::getColor(LevelSource* level, int x, int y, int z,
-                            int data)  // 0x208030
+                            int data)  
 {
     return getColor(level, x, y, z);
 }

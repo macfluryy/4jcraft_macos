@@ -30,7 +30,7 @@ class UILayer;
 UIScene_CreativeMenu::UIScene_CreativeMenu(int iPad, void* _initData,
                                            UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     InventoryScreenInput* initData = (InventoryScreenInput*)_initData;
@@ -48,8 +48,8 @@ UIScene_CreativeMenu::UIScene_CreativeMenu(int iPad, void* _initData,
     m_labelInventory.setLabel(L"");
     m_bFirstCall = true;
 
-    // m_slotListContainer.addSlots(0,TabSpec::MAX_SIZE);
-    // m_slotListHotbar.addSlots(TabSpec::MAX_SIZE,TabSpec::MAX_SIZE + 9);
+    
+    
     for (unsigned int i = 0; i < TabSpec::MAX_SIZE; ++i) {
         m_slotListContainer.addSlot(i);
     }
@@ -130,19 +130,19 @@ void UIScene_CreativeMenu::handleReload() {
 void UIScene_CreativeMenu::handleInput(int iPad, int key, bool repeat,
                                        bool pressed, bool released,
                                        bool& handled) {
-    // 4J-PB - going to ignore repeats on this scene
+    
     if (repeat) return;
 
-    // app.DebugPrintf("UIScene_CreativeMenu handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     int dir = 1;
     switch (key) {
         case VK_PAD_LSHOULDER:
             dir = -1;
-            // Fall through intentional
+            
         case VK_PAD_RSHOULDER: {
             ECreativeInventoryTabs tab =
                 (ECreativeInventoryTabs)(m_curTab + dir);
@@ -154,7 +154,7 @@ void UIScene_CreativeMenu::handleInput(int iPad, int key, bool repeat,
             ui.PlayUISFX(eSFX_Focus);
         } break;
         case VK_PAD_LTRIGGER:
-            // change the potion strength
+            
             {
                 ++m_tabDynamicPos[m_curTab];
                 if (m_tabDynamicPos[m_curTab] >=

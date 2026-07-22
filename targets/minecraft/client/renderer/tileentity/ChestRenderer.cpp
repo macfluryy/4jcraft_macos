@@ -18,14 +18,14 @@
 
 ResourceLocation ChestRenderer::CHEST_LARGE_TRAP_LOCATION =
     ResourceLocation(TN_TILE_LARGE_TRAP_CHEST);
-// ResourceLocation ChestRenderer::CHEST_LARGE_XMAS_LOCATION =
-// ResourceLocation(TN_TILE_LARGE_XMAS_CHEST);
+
+
 ResourceLocation ChestRenderer::CHEST_LARGE_LOCATION =
     ResourceLocation(TN_TILE_LARGE_CHEST);
 ResourceLocation ChestRenderer::CHEST_TRAP_LOCATION =
     ResourceLocation(TN_TILE_TRAP_CHEST);
-// ResourceLocation ChestRenderer::CHEST_XMAS_LOCATION =
-// ResourceLocation(TN_TILE_XMAS_CHEST);
+
+
 ResourceLocation ChestRenderer::CHEST_LOCATION =
     ResourceLocation(TN_TILE_CHEST);
 
@@ -35,7 +35,7 @@ ChestRenderer::ChestRenderer() : TileEntityRenderer() {
 
     xmasTextures = false;
 
-    // 4J Stu - Disable this
+    
 }
 
 ChestRenderer::~ChestRenderer() {
@@ -46,7 +46,7 @@ ChestRenderer::~ChestRenderer() {
 void ChestRenderer::render(std::shared_ptr<TileEntity> _chest, double x,
                            double y, double z, float a, bool setColor,
                            float alpha, bool useCompiled) {
-    // 4J Convert as we aren't using a templated class
+    
     std::shared_ptr<ChestTileEntity> chest =
         std::dynamic_pointer_cast<ChestTileEntity>(_chest);
 
@@ -76,10 +76,10 @@ void ChestRenderer::render(std::shared_ptr<TileEntity> _chest, double x,
         if (chest->getType() == ChestTile::TYPE_TRAP) {
             bindTexture(&CHEST_LARGE_TRAP_LOCATION);
         }
-        // else if (xmasTextures)
-        //{
-        //	bindTexture(&CHEST_LARGE_XMAS_LOCATION);
-        // }
+        
+        
+        
+        
         else {
             bindTexture(&CHEST_LARGE_LOCATION);
         }
@@ -88,10 +88,10 @@ void ChestRenderer::render(std::shared_ptr<TileEntity> _chest, double x,
         if (chest->getType() == ChestTile::TYPE_TRAP) {
             bindTexture(&CHEST_TRAP_LOCATION);
         }
-        // else if (xmasTextures)
-        //{
-        //	bindTexture(&CHEST_XMAS_LOCATION);
-        // }
+        
+        
+        
+        
         else {
             bindTexture(&CHEST_LOCATION);
         }
@@ -99,7 +99,7 @@ void ChestRenderer::render(std::shared_ptr<TileEntity> _chest, double x,
 
     glPushMatrix();
     glEnable(GL_RESCALE_NORMAL);
-    // if( setColor ) glColor4f(1, 1, 1, 1);
+    
     if (setColor) glColor4f(1, 1, 1, alpha);
     glTranslatef((float)x, (float)y + 1, (float)z + 1);
     glScalef(1, -1, -1);

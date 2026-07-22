@@ -41,8 +41,8 @@
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 
 void Minecraft_RunStaticCtors() {
-    // The ordering of these static ctors can be important. If they are within
-    // statement blocks then DO NOT CHANGE the ordering - 4J Stu
+    
+    
 
     Packet::staticCtor();
 
@@ -61,8 +61,8 @@ void Minecraft_RunStaticCtors() {
         Recipes::staticCtor();
         GenericStats::setInstance(new CommonStats());
         Stats::staticCtor();
-        // Achievements::staticCtor(); // 4J Stu - This is now called from
-        // within the Stats::staticCtor()
+        
+        
         TileEntity::staticCtor();
         EntityIO::staticCtor();
         MobCategory::staticCtor();

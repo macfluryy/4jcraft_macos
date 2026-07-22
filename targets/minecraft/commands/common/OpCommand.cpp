@@ -39,7 +39,7 @@ void applyOp(std::shared_ptr<CommandSender> source,
     target->setPlayerGamePrivilege(Player::ePlayerGamePrivilege_Op,
                                    grant ? 1u : 0u);
 
-    // Broadcast updated privileges so clients refresh their UI state
+    
     if (target->connection != nullptr &&
         target->connection->getNetworkPlayer() != nullptr) {
         server->getPlayers()->broadcastAll(std::make_shared<PlayerInfoPacket>(
@@ -67,7 +67,7 @@ std::wstring readUtfArg(std::vector<uint8_t>& commandData) {
     }
 }
 
-}  // namespace
+}  
 
 EGameCommand OpCommand::getId() { return eGameCommand_Op; }
 int OpCommand::getPermissionLevel() { return LEVEL_OWNERS; }

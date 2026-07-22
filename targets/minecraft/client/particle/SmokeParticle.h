@@ -10,7 +10,7 @@ public:
 
 private:
     void init(Level* level, double x, double y, double z, double xa, double ya,
-              double za, float scale);  // 4J - added
+              double za, float scale);  
 public:
     SmokeParticle(Level* level, double x, double y, double z, double xa,
                   double ya, double za);

@@ -12,7 +12,7 @@ class Container;
 class ItemInstance;
 
 class BrewingStandMenu : public AbstractContainerMenu {
-    // 4J Stu - Made public so that we can access these from the XUI menus
+    
 public:
     static const int INGREDIENT_SLOT = 3;
     static const int BOTTLE_SLOT_START = 0;
@@ -57,7 +57,7 @@ private:
                             std::shared_ptr<ItemInstance> carried);
         static bool mayPlaceItem(std::shared_ptr<ItemInstance> item);
         virtual bool mayCombine(
-            std::shared_ptr<ItemInstance> item);  // 4J Added
+            std::shared_ptr<ItemInstance> item);  
     };
 
     class IngredientsSlot : public Slot {
@@ -68,6 +68,6 @@ private:
         virtual bool mayPlace(std::shared_ptr<ItemInstance> item);
         virtual int getMaxStackSize();
         virtual bool mayCombine(
-            std::shared_ptr<ItemInstance> item);  // 4J Added
+            std::shared_ptr<ItemInstance> item);  
     };
 };

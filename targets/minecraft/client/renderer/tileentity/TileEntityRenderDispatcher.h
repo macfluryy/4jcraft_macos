@@ -16,7 +16,7 @@ class Textures;
 
 class TileEntityRenderDispatcher {
 public:
-    static void staticCtor();  // 4J added
+    static void staticCtor();  
 
 private:
     typedef std::unordered_map<eINSTANCEOF, TileEntityRenderer*,
@@ -52,7 +52,7 @@ public:
     void render(std::shared_ptr<TileEntity> e, float a, bool setColor = true);
     void render(std::shared_ptr<TileEntity> entity, double x, double y,
                 double z, float a, bool setColor = true, float alpha = 1.0f,
-                bool useCompiled = true);  // 4J Added useCompiled
+                bool useCompiled = true);  
     void setLevel(Level* level);
     double distanceToSqr(double x, double y, double z);
     Font* getFont();

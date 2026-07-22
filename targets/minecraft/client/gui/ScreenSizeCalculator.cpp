@@ -4,9 +4,9 @@
 
 #include "minecraft/client/Options.h"
 
-// who the fuck thought this was a good idea
+
 ScreenSizeCalculator::ScreenSizeCalculator(Options* options, int width,
-                                           int height, int forceScale /*=-1*/) {
+                                           int height, int forceScale ) {
     w = width;
     h = height;
     if (forceScale == -1) {
@@ -15,7 +15,7 @@ ScreenSizeCalculator::ScreenSizeCalculator(Options* options, int width,
         int maxScale = options->guiScale;
         if (maxScale == 0) maxScale = 1000;
         while (scale < maxScale && w / (scale + 1) >= 320 &&
-               h / (scale + 1) >= 240)  // ughh
+               h / (scale + 1) >= 240)  
         {
             scale++;
         }

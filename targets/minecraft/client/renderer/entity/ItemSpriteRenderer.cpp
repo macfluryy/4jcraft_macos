@@ -16,21 +16,21 @@
 #include "minecraft/world/item/alchemy/PotionBrewing.h"
 
 ItemSpriteRenderer::ItemSpriteRenderer(Item* sourceItem,
-                                       int sourceItemAuxValue /*= 0*/)
+                                       int sourceItemAuxValue )
     : EntityRenderer() {
     this->sourceItem = sourceItem;
     this->sourceItemAuxValue = sourceItemAuxValue;
 }
 
-// ItemSpriteRenderer::ItemSpriteRenderer(int icon) : EntityRenderer()
-//{
-//	this(sourceItem, 0);
-// }
+
+
+
+
 
 void ItemSpriteRenderer::render(std::shared_ptr<Entity> e, double x, double y,
                                 double z, float rot, float a) {
-    // the icon is already cached in the item object, so there should not be any
-    // performance impact by not caching it here
+    
+    
     Icon* icon = sourceItem->getIcon(sourceItemAuxValue);
     if (icon == nullptr) {
         return;

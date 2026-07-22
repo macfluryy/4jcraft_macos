@@ -71,14 +71,14 @@ struct VillagerShuffleRandom {
 
     Random* random;
 };
-}  // namespace
+}  
 
 std::unordered_map<int, std::pair<int, int> > Villager::MIN_MAX_VALUES;
 std::unordered_map<int, std::pair<int, int> > Villager::MIN_MAX_PRICES;
 
 void Villager::_init(int profession) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -163,9 +163,9 @@ void Villager::serverAiMobStep() {
         updateMerchantTimer--;
         if (updateMerchantTimer <= 0) {
             if (addRecipeOnUpdate) {
-                // improve max uses for all obsolete recipes
+                
                 if (offers->size() > 0) {
-                    // for (MerchantRecipe recipe : offers)
+                    
                     for (auto it = offers->begin(); it != offers->end(); ++it) {
                         MerchantRecipe* recipe = *it;
                         if (recipe->isDeprecated()) {
@@ -193,16 +193,16 @@ void Villager::serverAiMobStep() {
 }
 
 bool Villager::mobInteract(std::shared_ptr<Player> player) {
-    // [EB]: Truly dislike this code but I don't see another easy way
+    
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
     bool holdingSpawnEgg = item != nullptr && item->id == Item::spawnEgg_Id;
 
     if (!holdingSpawnEgg && isAlive() && !isTrading() && !isBaby()) {
         if (!level->isClientSide) {
-            // note: stop() logic is controlled by trading ai goal
+            
             setTradingPlayer(player);
 
-            // 4J-JEV: Villagers in PC game don't display professions.
+            
             player->openTrading(
                 std::dynamic_pointer_cast<Merchant>(shared_from_this()),
                 getDisplayName());
@@ -300,8 +300,8 @@ void Villager::die(DamageSource* source) {
                 _village->resetNoBreedTimer();
             }
         } else if (sourceEntity == nullptr) {
-            // if the villager was killed by the world (such as lava or
-            // falling), blame the nearest player by not reproducing for a while
+            
+            
             std::shared_ptr<Player> nearestPlayer =
                 level->getNearestPlayer(shared_from_this(), 16.0f);
             if (nearestPlayer != nullptr) {
@@ -328,8 +328,8 @@ void Villager::notifyTrade(MerchantRecipe* activeRecipe) {
     ambientSoundTime = -getAmbientSoundInterval();
     playSound(eSoundType_MOB_VILLAGER_YES, getSoundVolume(), getVoicePitch());
 
-    // when the player buys the latest item, we improve the merchant a little
-    // while later
+    
+    
     if (activeRecipe->isSame(offers->at(offers->size() - 1))) {
         updateMerchantTimer = SharedConstants::TICKS_PER_SECOND * 2;
         addRecipeOnUpdate = true;
@@ -495,8 +495,8 @@ void Villager::addOffers(int addCount) {
                               getRecipeChance(.8f));
             addItemForTradeIn(newOffers, Item::book_Id, random,
                               getRecipeChance(.8f));
-            // addItemForTradeIn(newOffers, Item::writtenBook_Id, random,
-            // getRecipeChance(0.3f));
+            
+            
             addItemForPurchase(newOffers, Tile::bookshelf_Id, random,
                                getRecipeChance(.8f));
             addItemForPurchase(newOffers, Tile::glass_Id, random,
@@ -562,7 +562,7 @@ void Villager::addOffers(int addCount) {
         addItemForTradeIn(newOffers, Item::goldIngot_Id, random, 1.0f);
     }
 
-    // shuffle the list to make it more interesting
+    
     std::shuffle(newOffers->begin(), newOffers->end(),
                  VillagerShuffleRandom(random));
 
@@ -571,7 +571,7 @@ void Villager::addOffers(int addCount) {
     }
     for (int i = 0; i < addCount && i < newOffers->size(); i++) {
         if (offers->addIfNewOrBetter(newOffers->at(i))) {
-            // 4J Added so we can delete newOffers
+            
             newOffers->erase(newOffers->begin() + i);
         }
     }
@@ -587,7 +587,7 @@ void Villager::staticCtor() {
     MIN_MAX_VALUES[Item::diamond_Id] = std::pair<int, int>(4, 6);
     MIN_MAX_VALUES[Item::paper_Id] = std::pair<int, int>(24, 36);
     MIN_MAX_VALUES[Item::book_Id] = std::pair<int, int>(11, 13);
-    // MIN_MAX_VALUES.insert(Item::writtenBook_Id, pair<int,int>(1, 1));
+    
     MIN_MAX_VALUES[Item::enderPearl_Id] = std::pair<int, int>(3, 4);
     MIN_MAX_VALUES[Item::eyeOfEnder_Id] = std::pair<int, int>(2, 3);
     MIN_MAX_VALUES[Item::porkChop_raw_Id] = std::pair<int, int>(14, 18);
@@ -648,14 +648,14 @@ void Villager::staticCtor() {
     MIN_MAX_PRICES[Item::arrow_Id] = std::pair<int, int>(-12, -8);
 }
 
-/**
- * Adds a merchant recipe that trades items for a single ruby.
- *
- * @param list
- * @param itemId
- * @param random
- * @param likelyHood
- */
+
+
+
+
+
+
+
+
 void Villager::addItemForTradeIn(MerchantRecipeList* list, int itemId,
                                  Random* random, float likelyHood) {
     if (random->nextFloat() < likelyHood) {
@@ -682,15 +682,15 @@ int Villager::getTradeInValue(int itemId, Random* random) {
     return minMax.first + random->nextInt(minMax.second - minMax.first);
 }
 
-/**
- * Adds a merchant recipe that trades rubies for an item. If the cost is
- * negative, one ruby will give several of that item.
- *
- * @param list
- * @param itemId
- * @param random
- * @param likelyHood
- */
+
+
+
+
+
+
+
+
+
 void Villager::addItemForPurchase(MerchantRecipeList* list, int itemId,
                                   Random* random, float likelyHood) {
     if (random->nextFloat() < likelyHood) {
@@ -748,7 +748,7 @@ void Villager::addParticlesAroundSelf(ePARTICLE_TYPE particle) {
 }
 
 MobGroupData* Villager::finalizeMobSpawn(
-    MobGroupData* groupData, int extraData /*= 0*/)  // 4J Added extraData param
+    MobGroupData* groupData, int extraData )  
 {
     groupData = AgableMob::finalizeMobSpawn(groupData);
 
@@ -763,7 +763,7 @@ void Villager::setRewardPlayersInVillage() {
 
 std::shared_ptr<AgableMob> Villager::getBreedOffspring(
     std::shared_ptr<AgableMob> target) {
-    // 4J - added limit to villagers that can be bred
+    
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
         std::shared_ptr<Villager> villager = std::make_shared<Villager>(level);
         villager->finalizeMobSpawn(nullptr);

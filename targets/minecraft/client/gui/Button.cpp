@@ -23,7 +23,7 @@ Button::Button(int id, int x, int y, int w, int h, const std::wstring& msg) {
 void Button::init(int id, int x, int y, int w, int h, const std::wstring& msg) {
     active = true;
     visible = true;
-    hovered = false; // 4J macOS - initialize hover state
+    hovered = false; 
 
     this->id = id;
     this->x = x;
@@ -51,23 +51,23 @@ void Button::render(Minecraft* minecraft, int xm, int ym) {
     minecraft->textures->bindTexture(&GUI_GUI_LOCATION);
     glColor4f(1, 1, 1, 1);
 
-    // 4J macOS - improved hover detection with bounds checking
+    
     hovered = isMouseInBounds(xm, ym);
     int yImage = getYImage(hovered);
 
-    // Draw button texture parts
+    
     blit(x, y, 0, 46 + yImage * 20, w / 2, h);
     blit(x + w / 2, y, 200 - w / 2, 46 + yImage * 20, w / 2, h);
 
     renderBg(minecraft, xm, ym);
 
-    // 4J macOS - improved text rendering with color based on state
-    int textColor = 0xe0e0e0; // default color
+    
+    int textColor = 0xe0e0e0; 
     
     if (!active) {
-        textColor = 0xffa0a0a0; // disabled color
+        textColor = 0xffa0a0a0; 
     } else if (hovered) {
-        textColor = 0xffffa0; // hover color (yellow-ish)
+        textColor = 0xffffa0; 
     }
     
     drawCenteredString(font, msg, x + w / 2, y + (h - 8) / 2, textColor);
@@ -79,6 +79,6 @@ void Button::renderBg(Minecraft* minecraft, int xm, int ym) {}
 void Button::released(int mx, int my) {}
 
 bool Button::clicked(Minecraft* minecraft, int mx, int my) {
-    // 4J macOS - improved click detection using bounds checking method
+    
     return isMouseInBounds(mx, my);
 }

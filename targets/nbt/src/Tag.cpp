@@ -25,9 +25,9 @@ Tag::Tag(const std::wstring& name) {
     }
 }
 
-// 4J - Was Object obj
+
 bool Tag::equals(Tag* obj) {
-    if (obj == nullptr)  // || !(obj instanceof Tag))
+    if (obj == nullptr)  
     {
         return false;
     }
@@ -72,19 +72,19 @@ Tag* Tag::readNamedTag(DataInput* dis, int tagDepth) {
     uint8_t type = dis->readByte();
     if (static_cast<int>(type) == 0) return new EndTag();
 
-    // 4J Stu - readByte can return -1, so if it's that then also mark as the
-    // end tag
+    
+    
     if (static_cast<int>(type) == 255) {
         fprintf(stderr, "readNamedTag read a type of 255\n");
         return new EndTag();
     }
 
-    std::wstring name = dis->readUTF();  // new String(bytes, "UTF-8");
+    std::wstring name = dis->readUTF();  
 
     Tag* tag = newTag(type, name);
-    //        short length = dis.readShort();
-    //        byte[] bytes = new uint8_t[length];
-    //        dis.readFully(bytes);
+    
+    
+    
 
     tag->load(dis, tagDepth);
     return tag;
@@ -94,9 +94,9 @@ void Tag::writeNamedTag(Tag* tag, DataOutput* dos) {
     dos->writeByte(tag->getId());
     if (tag->getId() == Tag::TAG_End) return;
 
-    //        byte[] bytes = tag.getName().getBytes("UTF-8");
-    //        dos.writeShort(bytes.size());
-    //        dos.write(bytes);
+    
+    
+    
     dos->writeUTF(tag->getName());
 
     tag->write(dos);

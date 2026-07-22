@@ -18,7 +18,7 @@ public:
     int xs, ys, zs;
     std::vector<uint8_t> buffer;
     int levelIdx;
-    bool bIsFullChunk;  // 4J Added
+    bool bIsFullChunk;  
 
 private:
     int size;

@@ -9,23 +9,23 @@
 #include "minecraft/world/item/ShearsItem.h"
 #include "minecraft/world/level/tile/Tile.h"
 
-// 4J-PB - adding "" on the end of these so we can detect it
+
 std::wstring ToolRecipies::shapes[][4] = {
-    {L"XXX",   //
-     L" # ",   //
-     L" # "},  //
+    {L"XXX",   
+     L" # ",   
+     L" # "},  
 
-    {L"X",   //
-     L"#",   //
-     L"#"},  //
+    {L"X",   
+     L"#",   
+     L"#"},  
 
-    {L"XX",   //
-     L"X#",   //
-     L" #"},  //
+    {L"XX",   
+     L"X#",   
+     L" #"},  
 
-    {L"XX",   //
-     L" #",   //
-     L" #"},  //
+    {L"XX",   
+     L" #",   
+     L" #"},  
 };
 
 void ToolRecipies::_init() {
@@ -84,7 +84,7 @@ void ToolRecipies::addRecipes(Recipes* r) {
 
                     L'#', Item::stick, L'X', pObjMaterial->tile, L'T');
             } else {
-                // must be Item
+                
                 wchTypes[4] = L'i';
                 r->addShapedRecipy(
                     new ItemInstance(target), wchTypes, shapes[t],
@@ -94,7 +94,7 @@ void ToolRecipies::addRecipes(Recipes* r) {
         }
     }
     r->addShapedRecipy(new ItemInstance((Item*)Item::shears), L"sscig",
-                       L" #",  //
-                       L"# ",  //
+                       L" #",  
+                       L"# ",  
                        L'#', Item::ironIngot, L'T');
 }

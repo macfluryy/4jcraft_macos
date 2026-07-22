@@ -42,8 +42,8 @@ bool BirchFeature::place(Level* level, Random* random, int x, int y, int z) {
         y >= Level::maxBuildHeight - treeHeight - 1)
         return false;
 
-    // 4J Stu Added to stop tree features generating areas previously place by
-    // game rule generation
+    
+    
     if (app.getLevelGenerationOptions() != nullptr) {
         LevelGenerationOptions* levelGenOptions =
             app.getLevelGenerationOptions();
@@ -52,8 +52,8 @@ bool BirchFeature::place(Level* level, Random* random, int x, int y, int z) {
             x - radius, y - 1, z - radius, x + radius, y + treeHeight,
             z + radius);
         if (intersects) {
-            // app.DebugPrintf("Skipping reeds feature generation as it overlaps
-            // a game rule structure\n");
+            
+            
             return false;
         }
     }

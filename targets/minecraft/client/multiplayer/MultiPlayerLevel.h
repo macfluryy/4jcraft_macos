@@ -30,24 +30,24 @@ private:
     };
 
     std::vector<ResetInfo>
-        updatesToReset;  // 4J - was linked list but std::vector seems more
-                         // appropriate
-    bool m_bEnableResetChanges;  // 4J Added
+        updatesToReset;  
+                         
+    bool m_bEnableResetChanges;  
 public:
-    void unshareChunkAt(int x, int z);  // 4J - added
-    void shareChunkAt(int x, int z);    // 4J - added
+    void unshareChunkAt(int x, int z);  
+    void shareChunkAt(int x, int z);    
 
     void enableResetChanges(bool enable) {
         m_bEnableResetChanges = enable;
-    }  // 4J Added
+    }  
 private:
-    int unshareCheckX;   // 4J - added
-    int unshareCheckZ;   // 4J - added
-    int compressCheckX;  // 4J - added
-    int compressCheckZ;  // 4J - added
+    int unshareCheckX;   
+    int unshareCheckZ;   
+    int compressCheckX;  
+    int compressCheckZ;  
     std::vector<ClientConnection*>
-        connections;  // 4J Stu - Made this a std::vector as we can have more
-                      // than one local connection
+        connections;  
+                      
     MultiPlayerChunkCache* chunkCache;
     Minecraft* minecraft;
     Scoreboard* scoreboard;
@@ -62,7 +62,7 @@ public:
 
 protected:
     ChunkSource*
-    createChunkSource();  // 4J - was virtual, but was called from parent ctor
+    createChunkSource();  
 public:
     virtual void validateSpawn();
 
@@ -74,7 +74,7 @@ public:
 
 private:
     std::unordered_map<int, std::shared_ptr<Entity>, IntKeyHash2, IntKeyEq>
-        entitiesById;  // 4J - was IntHashMap
+        entitiesById;  
     std::unordered_set<std::shared_ptr<Entity> > forced;
     std::unordered_set<std::shared_ptr<Entity> > reEntries;
 
@@ -91,7 +91,7 @@ public:
     std::shared_ptr<Entity> getEntity(int id);
     std::shared_ptr<Entity> removeEntity(int id);
     virtual void removeEntities(
-        std::vector<std::shared_ptr<Entity> >* list);  // 4J Added override
+        std::vector<std::shared_ptr<Entity> >* list);  
     virtual bool setData(int x, int y, int z, int data, int updateFlags,
                          bool forceUpdate = false);
     virtual bool setTileAndData(int x, int y, int z, int tile, int data,
@@ -107,8 +107,8 @@ protected:
     static const int ANIMATE_TICK_MAX_PARTICLES = 500;
 
 public:
-    void animateTickDoWork();                 // 4J added
-    std::unordered_set<int> chunksToAnimate;  // 4J added
+    void animateTickDoWork();                 
+    std::unordered_set<int> chunksToAnimate;  
 
 public:
     void removeAllPendingEntityRemovals();
@@ -126,13 +126,13 @@ public:
     virtual void setScoreboard(Scoreboard* scoreboard);
     virtual void setDayTime(int64_t newTime);
 
-    // 4J Stu - Added so we can have multiple local connections
+    
     void addClientConnection(ClientConnection* c) { connections.push_back(c); }
     void removeClientConnection(ClientConnection* c, bool sendDisconnect);
 
     void tickAllConnections();
 
-    void dataReceivedForChunk(int x, int z);  // 4J added
+    void dataReceivedForChunk(int x, int z);  
     void removeUnusedTileEntitiesInRegion(int x0, int y0, int z0, int x1,
-                                          int y1, int z1);  // 4J added
+                                          int y1, int z1);  
 };

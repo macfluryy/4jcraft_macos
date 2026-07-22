@@ -154,7 +154,7 @@ std::shared_ptr<Entity> BaseMobSpawner::loadDataAndAddEntity(
         entity->load(data);
         if (entity->level != nullptr) entity->level->addEntity(entity);
 
-        // add mounts
+        
         std::shared_ptr<Entity> rider = entity;
         while (data->contains(Entity::RIDING_TAG)) {
             CompoundTag* ridingTag = data->getCompound(Entity::RIDING_TAG);

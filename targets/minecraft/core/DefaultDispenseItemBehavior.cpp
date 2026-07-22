@@ -67,7 +67,7 @@ void DefaultDispenseItemBehavior::playSound(BlockSource* source,
                                        source->getBlockX(), source->getBlockY(),
                                        source->getBlockZ(), 0);
     } else {
-        // some negative sound effect?
+        
         source->getWorld()->levelEvent(LevelEvent::SOUND_CLICK_FAIL,
                                        source->getBlockX(), source->getBlockY(),
                                        source->getBlockZ(), 0);

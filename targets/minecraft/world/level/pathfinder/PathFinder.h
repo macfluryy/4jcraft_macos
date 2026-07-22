@@ -17,7 +17,7 @@ private:
 
     BinaryHeap openSet;
 
-    // 4J Jev, was a IntHashMap, thought this was close enough.
+    
     std::unordered_map<int, Node*, IntKeyHash, IntKeyEq> nodes;
 
     std::vector<Node*>* neighbors;
@@ -38,13 +38,13 @@ public:
 private:
     Path* findPath(Entity* e, double xt, double yt, double zt, float maxDist);
 
-    // function A*(start,goal)
+    
     Path* findPath(Entity* e, Node* from, Node* to, Node* size, float maxDist);
     int getNeighbors(Entity* entity, Node* pos, Node* size, Node* target,
                      float maxDist);
     Node* getNode(Entity* entity, int x, int y, int z, Node* size,
                   int jumpSize);
-    /*final*/ Node* getNode(int x, int y, int z);
+     Node* getNode(int x, int y, int z);
 
 public:
     static const int TYPE_TRAP = -4;
@@ -59,6 +59,6 @@ public:
     static int isFree(Entity* entity, int x, int y, int z, Node* size,
                       bool avoidWater, bool canOpenDoors, bool canPassDoors);
 
-    // function reconstruct_path(came_from,current_node)
+    
     Path* reconstruct_path(Node* from, Node* to);
 };

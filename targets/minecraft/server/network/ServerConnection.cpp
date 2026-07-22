@@ -14,7 +14,7 @@
 #include "minecraft/server/level/ServerPlayer.h"
 
 ServerConnection::ServerConnection(MinecraftServer* server) {
-    // 4J - added initialiser
+    
     connectionCounter = 0;
 
     this->server = server;
@@ -22,8 +22,8 @@ ServerConnection::ServerConnection(MinecraftServer* server) {
 
 ServerConnection::~ServerConnection() {}
 
-// 4J - added to handle incoming connections, to replace thread that original
-// used to have
+
+
 void ServerConnection::NewIncomingSocket(Socket* socket) {
     std::shared_ptr<PendingConnection> unconnectedClient =
         std::make_shared<PendingConnection>(
@@ -67,8 +67,8 @@ void ServerConnection::stop() {
 
 void ServerConnection::tick() {
     {
-        // MGH - changed this so that the the CS lock doesn't cover the tick
-        // (was causing a lockup when 2 players tried to join)
+        
+        
         std::vector<std::shared_ptr<PendingConnection> > tempPending;
         {
             std::lock_guard<std::mutex> lock(pending_cs);
@@ -77,18 +77,18 @@ void ServerConnection::tick() {
 
         for (unsigned int i = 0; i < tempPending.size(); i++) {
             std::shared_ptr<PendingConnection> uc = tempPending[i];
-            //        try {	// 4J - removed try/catch
+            
             uc->tick();
-            //        } catch (Exception e) {
-            //            uc.disconnect("Internal server error");
-            //            logger.log(Level.WARNING, "Failed to handle packet: "
-            //            + e, e);
-            //        }
+            
+            
+            
+            
+            
             if (uc->connection != nullptr) uc->connection->flush();
         }
     }
 
-    // now remove from the pending list
+    
     {
         std::lock_guard<std::mutex> lock(pending_cs);
         for (unsigned int i = 0; i < pending.size(); i++)
@@ -98,10 +98,10 @@ void ServerConnection::tick() {
             }
     }
 
-    // 4J - copy player connections under players_cs so the iteration is not
-    // racy with addPlayerConnection() / external removals. The shared_ptr
-    // copies keep the underlying objects alive even if removed from the
-    // vector mid-iteration.
+    
+    
+    
+    
     std::vector<std::shared_ptr<PlayerConnection> > playersSnapshot;
     {
         std::lock_guard<std::mutex> lock(players_cs);
@@ -117,7 +117,7 @@ void ServerConnection::tick() {
         player->tick();
         if (player->connection != nullptr) player->connection->flush();
     }
-    // Now compact the live list: remove anything marked done.
+    
     {
         std::lock_guard<std::mutex> lock(players_cs);
         for (unsigned int i = 0; i < players.size();) {
@@ -139,12 +139,12 @@ bool ServerConnection::addPendingTextureRequest(
         return true;
     }
 
-    // 4J Stu - We want to request this texture from everyone, if we have a
-    // duplicate it's most likely because the first person we asked for it
-    // didn't have it eg They selected a skin then deleted the skin pack. The
-    // side effect of this change is that in certain cases we can send a few
-    // more requests, and receive a few more responses if people join with the
-    // same skin in a short space of time
+    
+    
+    
+    
+    
+    
     return true;
 }
 
@@ -202,32 +202,32 @@ void ServerConnection::handleServerSettingsChanged(
             }
         }
     }
-    // 	else
-    // if(packet->action==ServerSettingsChangedPacket::HOST_IN_GAME_SETTINGS)//
-    // options
-    // 	{
-    // 		app.SetGameHostOption(eGameHostOption_All,packet->m_serverSettings)
-    // 	}
-    // 	else
-    // 	{
-    // 		unsigned char ucData=(unsigned char)packet->data;
-    // 		if(ucData&1)
-    // 		{
-    // 			// hide gamertags
-    // 			pMinecraft->options->SetGamertagSetting(true);
-    // 		}
-    // 		else
-    // 		{
-    // 			pMinecraft->options->SetGamertagSetting(false);
-    // 		}
-    //
-    // 		for (unsigned int i = 0; i < players.size(); i++)
-    // 		{
-    // 			shared_ptr<PlayerConnection> playerconnection =
-    // players[i];
-    // 			playerconnection->setShowOnMaps(pMinecraft->options->GetGamertagSetting());
-    // 		}
-    // 	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 std::vector<std::shared_ptr<PlayerConnection> >*

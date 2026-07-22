@@ -20,7 +20,7 @@ bool HoeItem::useOn(std::shared_ptr<ItemInstance> instance,
                     bool bTestUseOnOnly) {
     if (!player->mayUseItemAt(x, y, z, face, instance)) return false;
 
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
 
     int targetType = level->getTile(x, y, z);
     int above = level->getTile(x, y + 1, z);

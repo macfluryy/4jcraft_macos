@@ -54,12 +54,12 @@ std::shared_ptr<ItemInstance> ContainerMenu::quickMoveStack(
         if (slotIndex < containerRows * 9) {
             if (!moveItemStackTo(stack, containerRows * 9, (int)slots.size(),
                                  true)) {
-                // 4J Stu - Brought forward from 1.2
+                
                 return nullptr;
             }
         } else {
             if (!moveItemStackTo(stack, 0, containerRows * 9, false)) {
-                // 4J Stu - Brought forward from 1.2
+                
                 return nullptr;
             }
         }
@@ -81,7 +81,7 @@ std::shared_ptr<Container> ContainerMenu::getContainer() { return container; }
 
 std::shared_ptr<ItemInstance> ContainerMenu::clicked(
     int slotIndex, int buttonNum, int clickType, std::shared_ptr<Player> player,
-    bool looped)  // 4J Added looped param
+    bool looped)  
 {
     std::shared_ptr<ItemInstance> out = AbstractContainerMenu::clicked(
         slotIndex, buttonNum, clickType, player, looped);
@@ -91,7 +91,7 @@ std::shared_ptr<ItemInstance> ContainerMenu::clicked(
         std::dynamic_pointer_cast<LocalPlayer>(player);
 
     if (localPlayer !=
-        nullptr)  // 4J-JEV: For "Chestful o'Cobblestone" achievement.
+        nullptr)  
     {
         int cobblecount = 0;
         for (int i = 0; i < container->getContainerSize(); i++) {
@@ -101,8 +101,8 @@ std::shared_ptr<ItemInstance> ContainerMenu::clicked(
             }
         }
 
-        // 4J-JEV: This check performed on XboxOne servers, for other platforms
-        // check here.
+        
+        
         StatsCounter* sc =
             Minecraft::GetInstance()->stats[localPlayer->GetXboxPad()];
         int minedCount =

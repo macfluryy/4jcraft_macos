@@ -1,6 +1,6 @@
 #pragma once
 #include <stdint.h>
-// using namespace std;
+
 #include <format>
 #include <string>
 #include <vector>
@@ -23,18 +23,18 @@ class INetworkPlayer;
 
 const int NON_QNET_SENDDATA_ACK_REQUIRED = 1;
 
-// This class implements the game-side interface to the networking system. As
-// such, it is platform independent and may contain bits of game-side code where
-// appropriate. It shouldn't ever reference any platform specifics of the
-// network implementation (eg QNET), rather it should interface with an
-// implementation of PlatformNetworkManager to provide this functionality.
+
+
+
+
+
 
 class CGameNetworkManager {
     friend class IPlatformNetworkStub;
 
 public:
     CGameNetworkManager();
-    // Misc high level flow
+    
 
     typedef enum {
         JOINGAME_SUCCESS,
@@ -49,7 +49,7 @@ public:
     bool StartNetworkGame(Minecraft* minecraft, void* lpParameter);
     int CorrectErrorIDS(int IDS);
 
-    // Player management
+    
 
     static int GetLocalPlayerMask(int playerIndex);
     int GetPlayerCount();
@@ -69,14 +69,14 @@ public:
     void HandleSignInChange();
     bool ShouldMessageForFullSession();
 
-    // State management
+    
 
     bool IsInSession();
     bool IsInGameplay();
     bool IsLeavingGame();
     bool IsReadyToPlayOrIdle();
 
-    // Hosting and game type
+    
 
     bool SetLocalGame(bool isLocal);
     bool IsLocalGame();
@@ -88,7 +88,7 @@ public:
     bool IsHost();
     bool IsInStatsEnabledSession();
 
-    // Client session discovery
+    
 
     bool SessionHasSpace(unsigned int spaceRequired = 1);
     std::vector<FriendSessionInfo*>* GetSessionList(int iPad, int localPlayers,
@@ -101,14 +101,14 @@ public:
         std::function<void(bool success)> callback);
     void ForceFriendsSessionRefresh();
 
-    // Session joining and leaving
+    
 
     bool JoinGameFromInviteInfo(int userIndex, int userMask,
                                 const INVITE_INFO* pInviteInfo);
     eJoinGameResult JoinGame(FriendSessionInfo* searchResult,
                              int localUsersMask);
     static void CancelJoinGame(
-        void* lpParam);  // Not part of the shared interface
+        void* lpParam);  
     bool LeaveGame(bool bMigrateHost);
     static int JoinFromInvite_SignInReturned(void* pParam, bool bContinue,
                                              int iPad);
@@ -117,7 +117,7 @@ public:
     void SendInviteGUI(int iPad);
     void ResetLeavingGame();
 
-    // Threads
+    
 
     bool IsNetworkThreadRunning();
     static int RunNetworkGameThreadProc(void* lpParameter);
@@ -127,43 +127,43 @@ public:
     static void _LeaveGame();
     static int ChangeSessionTypeThreadProc(void* lpParam);
 
-    // System flags
+    
 
     void SystemFlagSet(INetworkPlayer* pNetworkPlayer, int index);
     bool SystemFlagGet(INetworkPlayer* pNetworkPlayer, int index);
     void SystemFlagClear(INetworkPlayer* pNetworkPlayer, int index);
 
-    // Events
+    
 
     void ServerReadyCreate(
-        bool create);           // Create the signal (or set to nullptr)
-    void ServerReady();         // Signal that we are ready
-    void ServerReadyWait();     // Wait for the signal
-    void ServerReadyDestroy();  // Destroy signal
-    bool ServerReadyValid();    // Is non-nullptr
+        bool create);           
+    void ServerReady();         
+    void ServerReadyWait();     
+    void ServerReadyDestroy();  
+    bool ServerReadyValid();    
 
-    void ServerStoppedCreate(bool create);  // Create the signal
-    void ServerStopped();                   // Signal that we are ready
-    void ServerStoppedWait();               // Wait for the signal
-    void ServerStoppedDestroy();            // Destroy signal
-    bool ServerStoppedValid();              // Is non-nullptr
+    void ServerStoppedCreate(bool create);  
+    void ServerStopped();                   
+    void ServerStoppedWait();               
+    void ServerStoppedDestroy();            
+    bool ServerStoppedValid();              
 
-    // Debug output
+    
 
     std::wstring GatherStats();
     void renderQueueMeter();
     std::wstring GatherRTTStats();
 
-    // GUI debug output
+    
 
-    // Used for debugging output
+    
     static const int messageQueue_length = 512;
     static int64_t messageQueue[messageQueue_length];
     static const int byteQueue_length = 512;
     static int64_t byteQueue[byteQueue_length];
     static int messageQueuePos;
 
-    // Methods called from PlatformNetworkManager
+    
 private:
     void StateChange_AnyToHosting();
     void StateChange_AnyToJoining();
@@ -194,7 +194,7 @@ private:
     bool m_bInitialised;
 
 private:
-    float m_lastPlayerEventTimeStart;  // For telemetry
+    float m_lastPlayerEventTimeStart;  
     static IPlatformNetwork* s_pPlatformNetworkManager;
     bool m_bNetworkThreadRunning;
     int GetJoiningReadyPercentage();
@@ -202,8 +202,8 @@ private:
     bool m_bFullSessionMessageOnNextSessionChange;
 
 public:
-    void FakeLocalPlayerJoined();  // Temporary method whilst we don't have real
-                                   // networking to make this happen
+    void FakeLocalPlayerJoined();  
+                                   
     void DirectConnectPlayerJoining(INetworkPlayer* pNetworkPlayer) {
         PlayerJoining(pNetworkPlayer);
     }

@@ -16,7 +16,7 @@ public:
     double getMaxValue();
     double sanitizeValue(double value);
 
-    // 4J: Removed legacy name
-    // RangedAttribute *importLegacyName(const std::wstring &name);
-    // std::wstring getImportLegacyName();
+    
+    
+    
 };

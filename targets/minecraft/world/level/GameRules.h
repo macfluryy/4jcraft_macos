@@ -23,8 +23,8 @@ private:
     };
 
 public:
-    // 4J: Originally strings
-    // default rules
+    
+    
     static const int RULE_DOFIRETICK;
     static const int RULE_MOBGRIEFING;
     static const int RULE_KEEPINVENTORY;
@@ -44,14 +44,14 @@ public:
 
     bool getBoolean(const int rule);
 
-    // 4J: Removed unused functions
-    /*void set(const std::wstring &ruleName, const std::wstring &newValue);
-    void registerRule(const std::wstring &name, const std::wstring &startValue);
-    std::wstring get(const std::wstring &ruleName);
-    int getInt(const std::wstring &ruleName);
-    double getDouble(const std::wstring &ruleName);
-    CompoundTag *createTag();
-    void loadFromTag(CompoundTag *tag);
-    vector<std::wstring> *getRuleNames();
-    bool contains(const std::wstring &rule);*/
+    
+    
+
+
+
+
+
+
+
+
 };

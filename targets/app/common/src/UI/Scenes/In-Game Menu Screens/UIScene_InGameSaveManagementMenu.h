@@ -52,7 +52,7 @@ private:
     bool m_bExitScene;
     int m_iSaveInfoC;
     int m_iSaveListIndex;
-    // int *m_iConfigA; // track the texture packs that we don't have installed
+    
 
     bool m_bUpdateSaveSize;
 
@@ -65,7 +65,7 @@ public:
 
     virtual void handleReload();
     virtual void handleGainFocus(bool navBack);
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
     virtual void handleFocusChange(F64 controlId, F64 childId);
@@ -73,8 +73,8 @@ public:
 
     virtual EUIScene getSceneType() { return eUIScene_LoadOrJoinMenu; }
 
-    // Returns true if lower scenes in this scenes layer, or in any layer below
-    // this scenes layers should be hidden
+    
+    
     virtual bool hidesLowerScenes() { return true; }
 
     virtual bool hasFocus(int iPad);
@@ -86,7 +86,7 @@ private:
     void GetSaveInfo();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:

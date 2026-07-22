@@ -14,7 +14,7 @@
 
 class UIControl_EnchantmentButton : public UIControl_Button {
 private:
-    // Maps to values in AS
+    
     enum EState {
         eState_Inactive = 0,
         eState_Active = 1,

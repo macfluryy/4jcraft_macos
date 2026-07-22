@@ -100,8 +100,8 @@ Vec3 Vec3::lerp(const Vec3& v, const double a) const {
 }
 
 void Vec3::xRot(const float degs) {
-    double _cos = cos(degs);  // 4J - cos/sin were floats but seems pointless
-                              // wasting precision here
+    double _cos = cos(degs);  
+                              
     double _sin = sin(degs);
 
     double xx = x;
@@ -114,8 +114,8 @@ void Vec3::xRot(const float degs) {
 }
 
 void Vec3::yRot(const float degs) {
-    double _cos = cos(degs);  // 4J - cos/sin were floats but seems pointless
-                              // wasting precision here
+    double _cos = cos(degs);  
+                              
     double _sin = sin(degs);
 
     double xx = x * _cos + z * _sin;
@@ -128,8 +128,8 @@ void Vec3::yRot(const float degs) {
 }
 
 void Vec3::zRot(const float degs) {
-    double _cos = cos(degs);  // 4J - cos/sin were floats but seems pointless
-                              // wasting precision here
+    double _cos = cos(degs);  
+                              
     double _sin = sin(degs);
 
     double xx = x * _cos + y * _sin;
@@ -141,9 +141,9 @@ void Vec3::zRot(const float degs) {
     z = zz;
 }
 
-// Returns 0 if this point is within the box
-// Otherwise returns the distance to the box
-// TODO: rewrite this function
+
+
+
 double Vec3::distanceTo(AABB* box) {
     if (box->contains(*this)) return 0;
 

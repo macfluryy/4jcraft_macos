@@ -236,12 +236,12 @@ void EntityIO::staticCtor() {
 
     setId(EnderCrystal::create, eTYPE_ENDER_CRYSTAL, L"EnderCrystal", 200);
 
-    // 4J Added
+    
     setId(DragonFireball::create, eTYPE_DRAGON_FIREBALL, L"DragonFireball",
           1000);
 
-    // 4J-PB - moved to allow the eggs to be named and coloured in the Creative
-    // Mode menu 4J Added for custom spawn eggs
+    
+    
     setId(EntityHorse::create, eTYPE_HORSE, L"EntityHorse",
           100 | ((EntityHorse::TYPE_DONKEY + 1) << 12),
           eMinecraftColour_Mob_Horse_Colour1,
@@ -288,7 +288,7 @@ std::shared_ptr<Entity> EntityIO::newEntity(const std::wstring& id,
         if (create != nullptr) entity = std::shared_ptr<Entity>(create(level));
         if ((entity != nullptr) && entity->GetType() == eTYPE_ENDERDRAGON) {
             std::dynamic_pointer_cast<EnderDragon>(entity)
-                ->AddParts();  // 4J added to finalise creation
+                ->AddParts();  
         }
     }
 
@@ -299,7 +299,7 @@ std::shared_ptr<Entity> EntityIO::loadStatic(CompoundTag* tag, Level* level) {
     std::shared_ptr<Entity> entity;
 
     if (tag->getString(L"id").compare(L"Minecart") == 0) {
-        // I don't like this any more than you do. Sadly, compatibility...
+        
 
         switch (tag->getInt(L"Type")) {
             case Minecart::TYPE_CHEST:
@@ -322,7 +322,7 @@ std::shared_ptr<Entity> EntityIO::loadStatic(CompoundTag* tag, Level* level) {
         if (create != nullptr) entity = std::shared_ptr<Entity>(create(level));
         if ((entity != nullptr) && entity->GetType() == eTYPE_ENDERDRAGON) {
             std::dynamic_pointer_cast<EnderDragon>(entity)
-                ->AddParts();  // 4J added to finalise creation
+                ->AddParts();  
         }
     }
 
@@ -346,13 +346,13 @@ std::shared_ptr<Entity> EntityIO::newById(int id, Level* level) {
         if (create != nullptr) entity = std::shared_ptr<Entity>(create(level));
         if ((entity != nullptr) && entity->GetType() == eTYPE_ENDERDRAGON) {
             std::dynamic_pointer_cast<EnderDragon>(entity)
-                ->AddParts();  // 4J added to finalise creation
+                ->AddParts();  
         }
     }
 
     if (entity != nullptr) {
     } else {
-        // printf("Skipping Entity with id %d\n", id ) ;
+        
     }
     return entity;
 }
@@ -372,7 +372,7 @@ std::shared_ptr<Entity> EntityIO::newByEnumType(eINSTANCEOF eType,
                 entity = std::shared_ptr<Entity>(create(level));
             if ((entity != nullptr) && entity->GetType() == eTYPE_ENDERDRAGON) {
                 std::dynamic_pointer_cast<EnderDragon>(entity)
-                    ->AddParts();  // 4J added to finalise creation
+                    ->AddParts();  
             }
         }
     }
@@ -400,18 +400,18 @@ std::wstring EntityIO::getEncodeId(std::shared_ptr<Entity> entity) {
 int EntityIO::getId(const std::wstring& encodeId) {
     auto it = idNumMap->find(encodeId);
     if (it == idNumMap->end()) {
-        // defaults to pig...
+        
         return 90;
     }
     return it->second;
 }
 
 std::wstring EntityIO::getEncodeId(int entityIoValue) {
-    // Class<? extends Entity> class1 = numClassMap.get(entityIoValue);
-    // if (class1 != null)
-    //{
-    // return classIdMap.get(class1);
-    // }
+    
+    
+    
+    
+    
 
     auto it = numClassMap->find(entityIoValue);
     if (it != numClassMap->end()) {

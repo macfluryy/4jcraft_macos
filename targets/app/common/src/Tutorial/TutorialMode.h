@@ -1,5 +1,5 @@
 #pragma once
-// using namespace std;
+
 
 #include "Tutorial.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
@@ -13,7 +13,7 @@ protected:
     Tutorial* tutorial;
     int m_iPad;
 
-    // Function to make this an abstract class
+    
     virtual bool isImplemented() = 0;
 
 public:

@@ -48,21 +48,21 @@ void KickPlayerCommand::execute(std::shared_ptr<CommandSender> source,
             return;
         }
 
-        // Don't allow kicking the host (source) accidentally
+        
         if (target == source) {
             source->sendMessage(L"§cCannot kick yourself");
             return;
         }
 
-        // Notify target before kick
+        
         if (!reason.empty()) {
             target->sendMessage(L"§cKicked: " + reason);
         } else {
             target->sendMessage(L"§cYou were kicked from the server");
         }
 
-        // Use the existing kick infrastructure if available; otherwise
-        // disconnect the connection directly.
+        
+        
         if (target->connection != nullptr) {
             target->connection->setWasKicked();
             if (target->connection->connection != nullptr &&

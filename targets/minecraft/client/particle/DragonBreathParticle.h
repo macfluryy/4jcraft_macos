@@ -11,7 +11,7 @@ public:
 private:
     bool m_bHasHitGround;
     void init(Level* level, double x, double y, double z, double xa, double ya,
-              double za, float scale);  // 4J - added
+              double za, float scale);  
 public:
     DragonBreathParticle(Level* level, double x, double y, double z, double xa,
                          double ya, double za);

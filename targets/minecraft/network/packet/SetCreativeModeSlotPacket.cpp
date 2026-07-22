@@ -13,8 +13,8 @@ SetCreativeModeSlotPacket::SetCreativeModeSlotPacket() {
 SetCreativeModeSlotPacket::SetCreativeModeSlotPacket(
     int slotNum, std::shared_ptr<ItemInstance> item) {
     this->slotNum = slotNum;
-    // 4J - take copy of item as we want our packets to have full ownership of
-    // any referenced data
+    
+    
     this->item = item ? item->copy() : std::shared_ptr<ItemInstance>();
 }
 

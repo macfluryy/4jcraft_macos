@@ -1,20 +1,20 @@
-// 4J-PB -
-// The ATG Framework is a common set of C++ class libraries that is used by the
-// samples in the XDK, and was developed by the Advanced Technology Group (ATG).
-// The ATG Framework offers a clean and consistent format for the samples. These
-// classes define functions used by all the samples. The ATG Framework together
-// with the samples demonstrates best practices and innovative techniques for
-// Xbox 360. There are many useful sections of code in the samples. You are
-// encouraged to incorporate this code into your titles.
 
-//-------------------------------------------------------------------------------------
-//  AtgXmlParser.cpp
-//
-//  Simple callback non-validating XML parser implementation.
-//
-//  Xbox Advanced Technology Group.
-//  Copyright (C) Microsoft Corporation. All rights reserved.
-//-------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #include "ATGXmlParser.h"
 
@@ -22,9 +22,9 @@
 
 namespace ATG {
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::XMLParser
-//-------------------------------------------------------------------------------------
+
+
+
 XMLParser::XMLParser() {
     m_pWritePtr = m_pWriteBuf;
     m_pReadPtr = m_pReadBuf;
@@ -32,15 +32,15 @@ XMLParser::XMLParser() {
     m_hFile = INVALID_HANDLE_VALUE;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::~XMLParser
-//-------------------------------------------------------------------------------------
+
+
+
 XMLParser::~XMLParser() {}
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::FillBuffer
-// Desc: Reads a block from the current open file
-//-------------------------------------------------------------------------------------
+
+
+
+
 void XMLParser::FillBuffer() {
     uint32_t NChars;
 
@@ -73,20 +73,20 @@ void XMLParser::FillBuffer() {
     m_pReadBuf[NChars + 1] = '\0';
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::SkipNextAdvance
-// Desc: Puts the last character read back on the input stream
-//-------------------------------------------------------------------------------------
+
+
+
+
 void XMLParser::SkipNextAdvance() { m_bSkipNextAdvance = true; }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::ConsumeSpace
-// Desc: Skips spaces in the current stream
-//-------------------------------------------------------------------------------------
+
+
+
+
 int32_t XMLParser::ConsumeSpace() {
     int32_t hr;
 
-    // Skip spaces
+    
     if (FAILED(hr = AdvanceCharacter())) return hr;
 
     while ((m_Ch == ' ') || (m_Ch == '\t') || (m_Ch == '\n') ||
@@ -97,24 +97,24 @@ int32_t XMLParser::ConsumeSpace() {
     return 0;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::ConvertEscape
-// Desc: Copies and converts an escape sequence into m_pWriteBuf
-//-------------------------------------------------------------------------------------
+
+
+
+
 int32_t XMLParser::ConvertEscape() {
     int32_t hr;
     wchar_t wVal = 0;
 
     if (FAILED(hr = AdvanceCharacter())) return hr;
 
-    // all escape sequences start with &, so ignore the first character
+    
 
     if (FAILED(hr = AdvanceCharacter())) return hr;
 
-    if (m_Ch == '#')  // character as hex or decimal
+    if (m_Ch == '#')  
     {
         if (FAILED(hr = AdvanceCharacter())) return hr;
-        if (m_Ch == 'x')  // hex number
+        if (m_Ch == 'x')  
         {
             if (FAILED(hr = AdvanceCharacter())) return hr;
 
@@ -135,7 +135,7 @@ int32_t XMLParser::ConvertEscape() {
 
                 if (FAILED(hr = AdvanceCharacter())) return hr;
             }
-        } else  // decimal number
+        } else  
         {
             while (m_Ch != ';') {
                 wVal *= 10;
@@ -153,13 +153,13 @@ int32_t XMLParser::ConvertEscape() {
             }
         }
 
-        // copy character into the buffer
+        
         m_Ch = wVal;
 
         return 0;
     }
 
-    // must be an entity reference
+    
 
     wchar_t* pEntityRefVal = m_pWritePtr;
     uint32_t EntityRefLen;
@@ -189,8 +189,8 @@ int32_t XMLParser::ConvertEscape() {
         Error(E_INVALID_XML_SYNTAX,
               "Unrecognized entity name after & - (should be lt, gt, amp, "
               "apos, or quot)");
-        return E_INVALID_XML_SYNTAX;  // return false if unrecognized token
-                                      // sequence
+        return E_INVALID_XML_SYNTAX;  
+                                      
     }
 
     if (FAILED(hr = AdvanceCharacter())) return hr;
@@ -198,19 +198,19 @@ int32_t XMLParser::ConvertEscape() {
     if (m_Ch != ';') {
         Error(E_INVALID_XML_SYNTAX,
               "Expected terminating ; for entity reference");
-        return E_INVALID_XML_SYNTAX;  // malformed reference - needs terminating
-                                      // ;
+        return E_INVALID_XML_SYNTAX;  
+                                      
     }
 
     m_Ch = wVal;
     return 0;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::AdvanceAttrVal
-// Desc: Copies an attribute value into m_pWrite buf, skipping surrounding
-// quotes
-//-------------------------------------------------------------------------------------
+
+
+
+
+
 int32_t XMLParser::AdvanceAttrVal() {
     int32_t hr;
     wchar_t wQuoteChar;
@@ -238,7 +238,7 @@ int32_t XMLParser::AdvanceAttrVal() {
             return E_INVALID_XML_SYNTAX;
         }
 
-        // copy character into the buffer
+        
 
         if (m_pWritePtr - m_pWriteBuf >= XML_WRITE_BUFFER_SIZE) {
             Error(E_INVALID_XML_SYNTAX,
@@ -253,12 +253,12 @@ int32_t XMLParser::AdvanceAttrVal() {
     return 0;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::AdvanceName
-// Desc: Copies a name into the m_pWriteBuf - returns true on success, false on
-// failure
-//       Ignores leading whitespace.  Currently does not support unicode names
-//-------------------------------------------------------------------------------------
+
+
+
+
+
+
 int32_t XMLParser::AdvanceName() {
     int32_t hr;
 
@@ -292,29 +292,29 @@ int32_t XMLParser::AdvanceName() {
     return 0;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::AdvanceCharacter
-// Desc: Copies the character at *m_pReadPtr to m_Ch
-//       handling difference in UTF16 / UTF8, and big/little endian
-//       and getting another chunk of the file if needed
-//       Returns S_OK if there are more characters, E_ABORT for no characters to
-//       read
-//-------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
 int32_t XMLParser::AdvanceCharacter(bool bOkToFail) {
     if (m_bSkipNextAdvance) {
         m_bSkipNextAdvance = false;
         return 0;
     }
 
-    // If we hit EOF in the middle of a character,
-    // it's ok-- we'll just have a corrupt last character
-    // (the buffer is padded with double NULLs )
+    
+    
+    
 
     if ((m_pReadPtr[0] == '\0') && (m_pReadPtr[1] == '\0')) {
-        // Read more from the file
+        
         FillBuffer();
 
-        // We are at EOF if it is still nullptr
+        
         if ((m_pReadPtr[0] == '\0') && (m_pReadPtr[1] == '\0')) {
             if (!bOkToFail) {
                 Error(E_INVALID_XML_SYNTAX,
@@ -329,7 +329,7 @@ int32_t XMLParser::AdvanceCharacter(bool bOkToFail) {
     if (m_bUnicode == false) {
         m_Ch = *((char*)m_pReadPtr);
         m_pReadPtr++;
-    } else  // if( m_bUnicode == true )
+    } else  
     {
         m_Ch = *((wchar_t*)m_pReadPtr);
 
@@ -349,19 +349,19 @@ int32_t XMLParser::AdvanceCharacter(bool bOkToFail) {
     return 0;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::AdvanceElement
-// Desc: Builds <element> data, calls callback
-//-------------------------------------------------------------------------------------
+
+
+
+
 int32_t XMLParser::AdvanceElement() {
     int32_t hr;
 
-    // write ptr at the beginning of the buffer
+    
     m_pWritePtr = m_pWriteBuf;
 
     if (FAILED(hr = AdvanceCharacter())) return hr;
 
-    // if first character wasn't '<', we wouldn't be here
+    
 
     if (FAILED(hr = AdvanceCharacter())) return hr;
 
@@ -431,8 +431,8 @@ int32_t XMLParser::AdvanceElement() {
             return E_INVALID_XML_SYNTAX;
         }
     } else if (m_Ch == '?') {
-        // just skip any xml header tag since not really important after
-        // identifying character set
+        
+        
         for (;;) {
             if (FAILED(hr = AdvanceCharacter())) return hr;
 
@@ -449,7 +449,7 @@ int32_t XMLParser::AdvanceElement() {
 
         SkipNextAdvance();
 
-        // Entity tag
+        
         if (FAILED(hr = AdvanceName())) return hr;
 
         EntityRefLen = (uint32_t)(m_pWritePtr - pEntityRefVal);
@@ -458,7 +458,7 @@ int32_t XMLParser::AdvanceElement() {
 
         if (FAILED(hr = AdvanceCharacter())) return hr;
 
-        // read attributes
+        
         while ((m_Ch != '>') && (m_Ch != '/')) {
             SkipNextAdvance();
 
@@ -471,7 +471,7 @@ int32_t XMLParser::AdvanceElement() {
 
             Attributes[NumAttrs].strName = m_pWritePtr;
 
-            // Attribute name
+            
             if (FAILED(hr = AdvanceName())) return hr;
 
             Attributes[NumAttrs].NameLen =
@@ -528,10 +528,10 @@ int32_t XMLParser::AdvanceElement() {
     return 0;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::AdvanceCDATA
-// Desc: Read a CDATA section
-//-------------------------------------------------------------------------------------
+
+
+
+
 int32_t XMLParser::AdvanceCDATA() {
     int32_t hr;
     uint16_t wStage = 0;
@@ -573,10 +573,10 @@ int32_t XMLParser::AdvanceCDATA() {
     return 0;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::AdvanceComment
-// Desk: Skips over a comment
-//-------------------------------------------------------------------------------------
+
+
+
+
 int32_t XMLParser::AdvanceComment() {
     int32_t hr;
     uint16_t wStage;
@@ -598,24 +598,24 @@ int32_t XMLParser::AdvanceComment() {
     return 0;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::RegisterSAXCallbackInterface
-// Desc: Registers callback interface
-//-------------------------------------------------------------------------------------
+
+
+
+
 void XMLParser::RegisterSAXCallbackInterface(ISAXCallback* pISAXCallback) {
     m_pISAXCallback = pISAXCallback;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::GetSAXCallbackInterface
-// Desc: Returns current callback interface
-//-------------------------------------------------------------------------------------
+
+
+
+
 ISAXCallback* XMLParser::GetSAXCallbackInterface() { return m_pISAXCallback; }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::MainParseLoop
-// Desc: Main Loop to Parse Data - source agnostic
-//-------------------------------------------------------------------------------------
+
+
+
+
 int32_t XMLParser::MainParseLoop() {
     bool bWhiteSpaceOnly = true;
     int32_t hr = 0;
@@ -715,10 +715,10 @@ int32_t XMLParser::MainParseLoop() {
     }
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::ParseXMLFile
-// Desc: Builds element data
-//-------------------------------------------------------------------------------------
+
+
+
+
 int32_t XMLParser::ParseXMLFile(const char* strFilename) {
     int32_t hr;
 
@@ -727,7 +727,7 @@ int32_t XMLParser::ParseXMLFile(const char* strFilename) {
     m_pISAXCallback->m_LineNum = 1;
     m_pISAXCallback->m_LinePos = 0;
     m_pISAXCallback->m_strFilename =
-        strFilename;  // save this off only while we parse the file
+        strFilename;  
 
     m_bSkipNextAdvance = false;
     m_pReadPtr = m_pReadBuf;
@@ -752,20 +752,20 @@ int32_t XMLParser::ParseXMLFile(const char* strFilename) {
         hr = MainParseLoop();
     }
 
-    // Close the file
+    
     if (m_hFile != INVALID_HANDLE_VALUE) CloseHandle(m_hFile);
     m_hFile = INVALID_HANDLE_VALUE;
 
-    // we no longer own strFilename, so un-set it
+    
     m_pISAXCallback->m_strFilename = nullptr;
 
     return hr;
 }
 
-//-------------------------------------------------------------------------------------
-// Name: XMLParser::ParseXMLFile
-// Desc: Builds element data
-//-------------------------------------------------------------------------------------
+
+
+
+
 int32_t XMLParser::ParseXMLBuffer(const char* strBuffer, uint32_t uBufferSize) {
     int32_t hr;
 
@@ -774,7 +774,7 @@ int32_t XMLParser::ParseXMLBuffer(const char* strBuffer, uint32_t uBufferSize) {
     m_pISAXCallback->m_LineNum = 1;
     m_pISAXCallback->m_LinePos = 0;
     m_pISAXCallback->m_strFilename =
-        "";  // save this off only while we parse the file
+        "";  
 
     m_bSkipNextAdvance = false;
     m_pReadPtr = m_pReadBuf;
@@ -790,17 +790,17 @@ int32_t XMLParser::ParseXMLBuffer(const char* strBuffer, uint32_t uBufferSize) {
 
     hr = MainParseLoop();
 
-    // we no longer own strFilename, so un-set it
+    
     m_pISAXCallback->m_strFilename = nullptr;
 
     return hr;
 }
 
-//-------------------------------------------------------------------------------------
-// XMLParser::Error()
-//      Logs an error through the callback interface
-//-------------------------------------------------------------------------------------
-#ifdef _Printf_format_string_  // VC++ 2008 and later support this annotation
+
+
+
+
+#ifdef _Printf_format_string_  
 void XMLParser::Error(int32_t hErr,
                       _In_z_ _Printf_format_string_ const char* strFormat, ...)
 #else
@@ -818,4 +818,4 @@ void XMLParser::Error(int32_t hErr, const char* strFormat, ...)
     va_end(pArglist);
 }
 
-}  // namespace ATG
+}  

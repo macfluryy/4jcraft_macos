@@ -6,7 +6,7 @@
 
 FullTutorialActiveTask::FullTutorialActiveTask(
     Tutorial* tutorial,
-    eTutorial_CompletionAction completeAction /*= e_Tutorial_Completion_None*/)
+    eTutorial_CompletionAction completeAction )
     : TutorialTask(tutorial, -1, false, nullptr, false, false, false) {
     m_completeAction = completeAction;
 }

@@ -20,7 +20,7 @@ public:
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
-                     bool soundOnly = false);  // 4J added soundOnly param
+                     bool soundOnly = false);  
 private:
     virtual void interact(Level* level, int x, int y, int z);
 
@@ -33,8 +33,8 @@ public:
                                 float odds, int playerBonusLevel);
     virtual void animateTick(Level* level, int x, int y, int z, Random* random);
 
-    // 4J Added so we can check before we try to add a tile to the tick list if
-    // it's actually going to do seomthing
+    
+    
     virtual bool shouldTileTick(Level* level, int x, int y, int z);
 
 private:

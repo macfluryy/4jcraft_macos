@@ -55,7 +55,7 @@ void GoldenAppleItem::addEatEffect(std::shared_ptr<ItemInstance> instance,
     }
 }
 
-unsigned int GoldenAppleItem::getUseDescriptionId(int iData /*= -1*/) {
+unsigned int GoldenAppleItem::getUseDescriptionId(int iData ) {
     if (iData == 0)
         return IDS_DESC_GOLDENAPPLE;
     else

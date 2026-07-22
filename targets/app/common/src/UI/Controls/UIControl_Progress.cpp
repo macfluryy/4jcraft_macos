@@ -23,7 +23,7 @@ bool UIControl_Progress::setupControl(UIScene* scene, IggyValuePath* parent,
     UIControl::setControlType(UIControl::eProgress);
     bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-    // Progress specific initialisers
+    
     m_setProgressFunc = registerFastName(L"setProgress");
     m_showBarFunc = registerFastName(L"ShowBar");
 
@@ -66,8 +66,8 @@ void UIControl_Progress::setProgress(int current) {
 
     if (percent != m_lastPercent) {
         m_lastPercent = percent;
-        // app.DebugPrintf("Setting progress value to %d/%f\n", m_current,
-        // percent);
+        
+        
 
         IggyDataValue result;
         IggyDataValue value[1];
@@ -82,8 +82,8 @@ void UIControl_Progress::setProgress(int current) {
 void UIControl_Progress::showBar(bool show) {
     if (show != m_showingBar) {
         m_showingBar = show;
-        // app.DebugPrintf("Setting progress value to %d/%f\n", m_current,
-        // percent);
+        
+        
 
         IggyDataValue result;
         IggyDataValue value[1];

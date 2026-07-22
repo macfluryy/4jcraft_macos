@@ -10,7 +10,7 @@ class Player;
 
 class Score {
 public:
-    // 4J Not converted
+    
 
 private:
     Scoreboard* scoreboard;

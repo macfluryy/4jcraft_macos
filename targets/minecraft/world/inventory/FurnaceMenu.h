@@ -8,7 +8,7 @@ class FurnaceTileEntity;
 class Inventory;
 
 class FurnaceMenu : public AbstractContainerMenu {
-    // 4J Stu Made these public for UI menus, perhaps should make friend class?
+    
 public:
     static const int INGREDIENT_SLOT = 0;
     static const int FUEL_SLOT = 1;
@@ -38,7 +38,7 @@ public:
     virtual std::shared_ptr<ItemInstance> quickMoveStack(
         std::shared_ptr<Player> player, int slotIndex);
 
-    // 4J Added looped param
+    
     virtual std::shared_ptr<ItemInstance> clicked(
         int slotIndex, int buttonNum, int clickType,
         std::shared_ptr<Player> player, bool looped = false);

@@ -13,7 +13,7 @@ public:
     const std::wstring recording;
 
 public
-    :  // 4J Stu - Was protected in Java, but the can't access it where we need
+    :  
     RecordingItem(int id, const std::wstring& recording);
 
     Icon* getIcon(int auxValue);

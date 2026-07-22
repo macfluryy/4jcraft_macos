@@ -24,14 +24,14 @@ void XZPacket::handle(PacketListener* listener) {
     listener->handleXZ(shared_from_this());
 }
 
-void XZPacket::read(DataInputStream* dis)  // throws IOException
+void XZPacket::read(DataInputStream* dis)  
 {
     action = dis->read();
     x = dis->readInt();
     z = dis->readInt();
 }
 
-void XZPacket::write(DataOutputStream* dos)  // throws IOException
+void XZPacket::write(DataOutputStream* dos)  
 {
     dos->write(action);
     dos->writeInt(x);

@@ -33,7 +33,7 @@ float Mth::cos(float i) {
                     (SIN_TAB_CNT - 1)];
 }
 
-// 4J Changed this to remove the use of the actual UUID type
+
 std::wstring Mth::createInsecureUUID(Random* random) {
     wchar_t output[33];
     output[32] = 0;

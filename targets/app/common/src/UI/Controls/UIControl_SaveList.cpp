@@ -16,7 +16,7 @@ bool UIControl_SaveList::setupControl(UIScene* scene, IggyValuePath* parent,
     bool success =
         UIControl_ButtonList::setupControl(scene, parent, controlName);
 
-    // SlotList specific initialisers
+    
     m_funcSetTextureName = registerFastName(L"SetTextureName");
 
     return success;

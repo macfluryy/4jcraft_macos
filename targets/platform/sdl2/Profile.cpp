@@ -16,55 +16,55 @@
 C_4JProfile ProfileManager;
 
 namespace {
-// 4J macOS - profile persistence path. We dump the per-pad
-// GAME_DEFINED_PROFILE_DATA blocks into a single file under the
-// app support folder so settings (volume, sensitivity, gamma, HUD,
-// FOV, view bobbing, control scheme, language, etc.) survive
-// across launches. Original Xbox builds rely on the platform
-// profile system which is a no-op on macOS.
-//
-// Format (versioned, append-only safe):
-//   bytes 0..3   : magic 'M4JP'
-//   bytes 4..7   : little-endian uint32 version
-//   bytes 8..11  : little-endian uint32 perPadSize
-//   bytes 12..15 : little-endian uint32 padCount
-//   bytes 16..   : padCount * perPadSize bytes of game-defined data
-//
-// On a size mismatch (game updated, struct grew) we fall back to the
-// defaults rather than corrupting memory.
-constexpr uint32_t kProfileMagic = 0x4D34504AU;  // 'M4JP'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+constexpr uint32_t kProfileMagic = 0x4D34504AU;  
 constexpr uint32_t kProfileVersion = 1U;
 
 std::string GetProfileDataPath() {
     const char* home = std::getenv("HOME");
     if (home == nullptr) {
-        // Fall back to the user database if HOME is unset (e.g.
-        // double-clicked .app launched without a shell environment).
+        
+        
         struct passwd* pw = getpwuid(getuid());
         if (pw != nullptr) home = pw->pw_dir;
     }
     if (home == nullptr) return "";
     std::string base = home;
     base += "/Library/Application Support/4jcraft";
-    // mkdir -p (best effort, ignore EEXIST).
+    
     ::mkdir(base.c_str(), 0755);
     return base + "/profile.dat";
 }
 
-// 4J macOS - base XUID used to be a constexpr constant, which meant every
-// Minecraft.Client instance on the same machine had the same XUID. That
-// caused ClientConnection::handleAddPlayer to reject remote players as
-// "local" due to XUID equality. Randomise a per-process offset at startup
-// so host and each remote client get distinct XUIDs.
-//
-// 4J macOS - but a fully random per-process base meant `players/<xuid>.dat`
-// changed every launch, so single-player saves never recovered the
-// player's position / inventory: each new launch wrote a fresh .dat
-// alongside the old ones. We now persist the chosen XUID base in
-// xuid.dat in the app support folder. On first launch we randomise
-// once and write it; on subsequent launches we read the same value
-// back. Different physical machines still get different bases, so
-// multiplayer XUID disambiguation still works.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 PlayerUID LoadOrCreatePersistentXuidBase() {
     const char* home = std::getenv("HOME");
     if (home == nullptr) {
@@ -92,7 +92,7 @@ PlayerUID LoadOrCreatePersistentXuidBase() {
         }
     }
 
-    // First launch: randomise a fresh base and persist it.
+    
     PlayerUID base = 0xe000d45248242f2eULL;
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
@@ -154,16 +154,16 @@ C_4JProfile::PROFILESETTINGS s_dashboardSettings[XUSER_MAX_COUNT] = {};
 char s_gamertags[XUSER_MAX_COUNT][16] = {};
 std::wstring s_displayNames[XUSER_MAX_COUNT];
 int s_lockedProfile = 0;
-int s_perPadProfileSize = 0;  // 4J macOS - cached from Initialise
+int s_perPadProfileSize = 0;  
 std::function<int(C_4JProfile::PROFILESETTINGS*, int)>
     s_defaultOptionsCallback;
 
 bool isValidPad(int iPad) { return iPad >= 0 && iPad < XUSER_MAX_COUNT; }
 
-// 4J macOS - load persisted game-defined profile data from
-// ~/Library/Application Support/4jcraft/profile.dat into the in-memory
-// per-pad buffers. Returns true if the file was present and matches
-// the expected layout; false otherwise (caller leaves defaults intact).
+
+
+
+
 bool LoadProfileFromDisk(int perPadSize) {
     std::string path = GetProfileDataPath();
     if (path.empty()) {
@@ -214,12 +214,12 @@ bool LoadProfileFromDisk(int perPadSize) {
     return ok;
 }
 
-// 4J macOS - persist all per-pad profile blocks to disk. Atomic write
-// via temp file + rename so a crash mid-write can't truncate the
-// real file. Best-effort: any IO error is silently swallowed because
-// settings persistence is a soft requirement (we don't want to spam
-// stderr on every shutdown of an app launched without a writable
-// home directory).
+
+
+
+
+
+
 void SaveProfileToDisk(int perPadSize) {
     if (perPadSize <= 0) {
         std::fprintf(stderr,
@@ -285,13 +285,13 @@ void ensureFakeIdentity(int iPad) {
         return;
     }
 
-    // 4J macOS - For direct-connect multiplayer two clients on the same
-    // machine would otherwise both call themselves "Player1" because the
-    // gamertag was deterministic per-pad. We derive a stable per-machine
-    // suffix from the persisted XUID base (see kFakeXuidBase /
-    // LoadOrCreatePersistentXuidBase) so the gamertag stays the same
-    // across launches and the host's chat / tab list / players/<xuid>
-    // .dat file all line up.
+    
+    
+    
+    
+    
+    
+    
     unsigned int suffix =
         (unsigned int)((kFakeXuidBase ^ (kFakeXuidBase >> 16)) % 10000);
     std::snprintf(s_gamertags[iPad], sizeof(s_gamertags[iPad]), "Player%u",
@@ -336,16 +336,16 @@ void initialiseDefaultGameSettings(ProfileGameSettings* gameSettings) {
     gameSettings->ucTutorialCompletion[2] = 0x0F;
     gameSettings->ucTutorialCompletion[28] |= 1 << 0;
 }
-}  // namespace
+}  
 
-// 4J macOS - direct-connect MP override. When two Minecraft.Client processes
-// run on the same machine and connect to one another, both read the same
-// xuid.dat and end up with identical XUIDs. handleAddPlayer on each side
-// then treats the remote peer as "actually a local player" and drops the
-// packet, so neither shows up in the other's tab list or world. Calling
-// this from TemporaryDirectConnectStart re-randomises the in-memory XUID
-// for the joining client only - we do NOT rewrite xuid.dat, so singleplayer
-// saves keyed by the original XUID still recover correctly.
+
+
+
+
+
+
+
+
 void OverrideXuidBaseForDirectConnect() {
     PlayerUID base = 0xe000d45248242f2eULL;
     struct timespec ts;
@@ -354,7 +354,7 @@ void OverrideXuidBaseForDirectConnect() {
                    ((uint64_t)ts.tv_sec << 16) ^ (uint64_t)(uintptr_t)&ts;
     kFakeXuidBase =
         (base & 0xffff000000000000ULL) | (mix & 0x0000ffffffffffffULL);
-    // Reset cached gamertags so they regenerate against the new base.
+    
     for (int i = 0; i < XUSER_MAX_COUNT; ++i) {
         s_gamertags[i][0] = '\0';
     }
@@ -364,15 +364,15 @@ void OverrideXuidBaseForDirectConnect() {
                  (unsigned long long)kFakeXuidBase);
 }
 
-// 4J macOS - persistent user-chosen gamertag override. When the player
-// picks a name on the Title -> Username screen we mirror it into
-// s_gamertags / s_displayNames so subsequent ProfileManager.GetGamertag()
-// / GetDisplayName() calls return that name. This is what overrides the
-// Player%random% string the rest of the engine assembles from the XUID
-// when no human-readable identity is set.
+
+
+
+
+
+
 void SetUserGamertag(int iPad, const std::wstring& nick) {
     int p = (iPad >= 0 && iPad < XUSER_MAX_COUNT) ? iPad : 0;
-    // Clip to s_gamertags fixed buffer (16 bytes incl. nul).
+    
     std::string ascii;
     ascii.reserve(nick.size());
     for (wchar_t wc : nick) {
@@ -404,10 +404,10 @@ void C_4JProfile::Initialise(std::uint32_t, std::uint32_t, unsigned short,
         ensureFakeIdentity(i);
     }
 
-    // 4J macOS - try to overlay persisted user settings on top of the
-    // defaults. If the file is missing / version-mismatched / size-
-    // mismatched the defaults stay in place and the next save will
-    // create a fresh file with the current layout.
+    
+    
+    
+    
     LoadProfileFromDisk(perPad);
 }
 
@@ -467,13 +467,13 @@ void* C_4JProfile::GetGameDefinedProfileData(int iQuadrant) {
     return isValidPad(iQuadrant) ? s_profileData[iQuadrant] : nullptr;
 }
 
-// 4J macOS - real persistence hooks. Game.cpp calls these after the
-// player tweaks any setting (volume, sensitivity, gamma, FOV, ...).
-// The originals were no-ops on macOS so settings only lived in
-// memory. Now they atomically write the per-pad GAME_DEFINED data to
-// ~/Library/Application Support/4jcraft/profile.dat. The original
-// signature has parameters we ignore (Xbox queue/timer flags) -
-// every call just flushes immediately.
+
+
+
+
+
+
+
 void C_4JProfile::WriteToProfile(int iPad,
                                  bool bGameDefinedDataChanged,
                                  bool bOverrideTimeLimit) {
@@ -501,9 +501,9 @@ bool C_4JProfile::CanViewPlayerCreatedContent(int, bool, PlayerUID*,
     return true;
 }
 
-// GetPrimaryPad/SetPrimaryPad — delegates to InputManager.
-// Kept here temporarily for call sites that still use ProfileManager.
-// These forward to the canonical copies in C_4JInput.
+
+
+
 int C_4JProfile::GetPrimaryPad() {
     extern C_4JInput InputManager;
     return InputManager.GetPrimaryPad();

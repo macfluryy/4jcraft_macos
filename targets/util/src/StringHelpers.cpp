@@ -14,10 +14,10 @@ std::wstring toLower(const std::wstring& a) {
     return out;
 }
 
-// 4jcraft TODO: this intentionally returns the original string (not empty)
-// for whitespace-only input. Callers in animation file parsing
-// (AbstractTexturePack::getAnimationString) depend on this behavior -
-// returning empty here breaks clock/compass texture frame loading.
+
+
+
+
 std::wstring trimString(const std::wstring& a) {
     std::wstring b;
     int start = (int)a.find_first_not_of(L" \t\n\r");
@@ -55,12 +55,12 @@ std::wstring convStringToWstring(const std::string& converting) {
 
 std::wstring u16string_to_wstring(const std::u16string& converting) {
     if constexpr (sizeof(wchar_t) == 2) {
-        // on Windows, wchar_t is UTF-16 so we can get away with just a type
-        // transmutation
+        
+        
         return std::wstring(reinterpret_cast<const wchar_t*>(converting.data()),
                             converting.size());
     } else if constexpr (sizeof(wchar_t) == 4) {
-        // POSIX has wchar_t as UTF-32 instead so simdutf time :>>>
+        
         if (converting.empty()) return {};
 
         std::wstring result(simdutf::utf32_length_from_utf16(converting.data(),
@@ -80,12 +80,12 @@ std::wstring u16string_to_wstring(const std::u16string& converting) {
 
 std::u16string wstring_to_u16string(const std::wstring& converting) {
     if constexpr (sizeof(wchar_t) == 2) {
-        // Windows, UTF-16
+        
         return std::u16string(
             reinterpret_cast<const char16_t*>(converting.data()),
             converting.size());
     } else if constexpr (sizeof(wchar_t) == 4) {
-        // POSIX, UTF-32
+        
         if (converting.empty()) return {};
 
         auto data32 = reinterpret_cast<const char32_t*>(converting.data());
@@ -173,7 +173,7 @@ bool BothAreSpaces(wchar_t lhs, wchar_t rhs) {
 }
 
 void stripWhitespaceForHtml(std::wstring& string, bool bRemoveNewline) {
-    // Strip newline chars
+    
     if (bRemoveNewline) {
         string.erase(std::remove(string.begin(), string.end(), '\n'),
                      string.end());
@@ -183,7 +183,7 @@ void stripWhitespaceForHtml(std::wstring& string, bool bRemoveNewline) {
 
     string.erase(std::remove(string.begin(), string.end(), '\t'), string.end());
 
-    // Strip duplicate spaces
+    
     string.erase(std::unique(string.begin(), string.end(), BothAreSpaces),
                  string.end());
 
@@ -193,8 +193,8 @@ void stripWhitespaceForHtml(std::wstring& string, bool bRemoveNewline) {
 std::wstring escapeXML(const std::wstring& in) {
     std::wstring out = in;
     out = replaceAll(out, L"&", L"&amp;");
-    // out = replaceAll(out, L"\"", L"&quot;");
-    // out = replaceAll(out, L"'", L"&apos;");
+    
+    
     out = replaceAll(out, L"<", L"&lt;");
     out = replaceAll(out, L">", L"&gt;");
     return out;
@@ -203,8 +203,8 @@ std::wstring escapeXML(const std::wstring& in) {
 std::wstring parseXMLSpecials(const std::wstring& in) {
     std::wstring out = in;
     out = replaceAll(out, L"&amp;", L"&");
-    // out = replaceAll(out, L"\"", L"&quot;");
-    // out = replaceAll(out, L"'", L"&apos;");
+    
+    
     out = replaceAll(out, L"&lt;", L"<");
     out = replaceAll(out, L"&gt;", L">");
     return out;

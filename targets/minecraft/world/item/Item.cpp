@@ -82,15 +82,15 @@
 
 typedef Item::Tier _Tier;
 
-// const UUID Item::BASE_ATTACK_DAMAGE_UUID =
-// UUID::fromWString(L"CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
+
+
 
 std::wstring Item::ICON_DESCRIPTION_PREFIX = L"item.";
 
-const _Tier* _Tier::WOOD = new _Tier(0, 59, 2, 0, 15);       //
-const _Tier* _Tier::STONE = new _Tier(1, 131, 4, 1, 5);      //
-const _Tier* _Tier::IRON = new _Tier(2, 250, 6, 2, 14);      //
-const _Tier* _Tier::DIAMOND = new _Tier(3, 1561, 8, 3, 10);  //
+const _Tier* _Tier::WOOD = new _Tier(0, 59, 2, 0, 15);       
+const _Tier* _Tier::STONE = new _Tier(1, 131, 4, 1, 5);      
+const _Tier* _Tier::IRON = new _Tier(2, 250, 6, 2, 14);      
+const _Tier* _Tier::DIAMOND = new _Tier(3, 1561, 8, 3, 10);  
 const _Tier* _Tier::GOLD = new _Tier(0, 32, 12, 0, 22);
 
 Random* Item::random = new Random();
@@ -272,15 +272,15 @@ Item* Item::spawnEgg = nullptr;
 
 Item* Item::expBottle = nullptr;
 
-// TU9
+
 Item* Item::fireball = nullptr;
 Item* Item::frame = nullptr;
 
 Item* Item::skull = nullptr;
 
-// TU14
-// Item *Item::writingBook = nullptr;
-// Item *Item::writtenBook = nullptr;
+
+
+
 
 Item* Item::emerald = nullptr;
 
@@ -662,7 +662,7 @@ void Item::staticCtor() {
             ->setDescriptionId(IDS_ITEM_INGOT_GOLD)
             ->setUseDescriptionId(IDS_DESC_INGOT);
 
-    // 4J-PB - todo - add materials and base types to the ones below
+    
     Item::bucket_empty =
         (new BucketItem(69, 0))
             ->setBaseItemTypeAndMaterial(eBaseItemType_utensil, eMaterial_water)
@@ -821,7 +821,7 @@ void Item::staticCtor() {
                                          eMaterial_apple)
             ->setIconName(L"appleGold")
             ->setDescriptionId(
-                IDS_ITEM_APPLE_GOLD);  //->setUseDescriptionId(IDS_DESC_GOLDENAPPLE);
+                IDS_ITEM_APPLE_GOLD);  
 
     Item::sign = (new SignItem(67))
                      ->setBaseItemTypeAndMaterial(eBaseItemType_HangingItem,
@@ -941,10 +941,10 @@ void Item::staticCtor() {
                       ->setDescriptionId(IDS_ITEM_SUGAR)
                       ->setUseDescriptionId(IDS_DESC_SUGAR)
                       ->setPotionBrewingFormula(PotionBrewing::MOD_SUGAR);
-    // 4J-PB  - changing the cake to be stackable - Jens ok'ed this 23/10/12
-    // Item::cake = ( new TilePlanterItem(98, Tile::cake)
-    // )->setMaxStackSize(1)->setIcon(13,
-    // 1)->setDescriptionId(IDS_ITEM_CAKE)->setUseDescriptionId(IDS_DESC_CAKE);
+    
+    
+    
+    
     Item::cake = (new TilePlanterItem(98, Tile::cake))
                      ->setIconName(L"cake")
                      ->setDescriptionId(IDS_ITEM_CAKE)
@@ -1120,7 +1120,7 @@ void Item::staticCtor() {
                          ->setDescriptionId(IDS_ITEM_MONSTER_SPAWNER)
                          ->setUseDescriptionId(IDS_DESC_MONSTER_SPAWNER);
 
-    // 4J Stu - Brought this forward
+    
     Item::expBottle = (new ExperienceItem(128))
                           ->setIconName(L"expBottle")
                           ->setDescriptionId(IDS_ITEM_EXP_BOTTLE)
@@ -1135,7 +1135,7 @@ void Item::staticCtor() {
                           ->setDescriptionId(IDS_ITEM_RECORD_02)
                           ->setUseDescriptionId(IDS_DESC_RECORD);
 
-    // 4J - new records brought forward from 1.2.3
+    
     Item::record_03 = (new RecordingItem(2002, L"blocks"))
                           ->setIconName(L"record")
                           ->setDescriptionId(IDS_ITEM_RECORD_03)
@@ -1177,9 +1177,9 @@ void Item::staticCtor() {
                           ->setDescriptionId(IDS_ITEM_RECORD_12)
                           ->setUseDescriptionId(IDS_DESC_RECORD);
 
-    // TU9
-    // putting the fire charge in as a torch, so that it stacks without being
-    // near the middle of the selection boxes
+    
+    
+    
     Item::fireball =
         (new FireChargeItem(129))
             ->setBaseItemTypeAndMaterial(eBaseItemType_torch, eMaterial_setfire)
@@ -1193,16 +1193,16 @@ void Item::staticCtor() {
                       ->setDescriptionId(IDS_ITEM_ITEMFRAME)
                       ->setUseDescriptionId(IDS_DESC_ITEMFRAME);
 
-    // TU12
+    
     Item::skull = (new SkullItem(141))
                       ->setIconName(L"skull")
                       ->setDescriptionId(IDS_ITEM_SKULL)
                       ->setUseDescriptionId(IDS_DESC_SKULL);
 
-    // TU14
-    // Item::writingBook = (new WritingBookItem(130))->setIcon(11,
-    // 11)->setDescriptionId("writingBook"); Item::writtenBook = (new
-    // WrittenBookItem(131))->setIcon(12, 11)->setDescriptionId("writtenBook");
+    
+    
+    
+    
 
     Item::emerald = (new Item(132))
                         ->setBaseItemTypeAndMaterial(eBaseItemType_treasure,
@@ -1339,8 +1339,8 @@ void Item::staticCtor() {
                         ->setUseDescriptionId(IDS_DESC_NAME_TAG);
 }
 
-// 4J Stu - We need to do this after the staticCtor AND after staticCtors for
-// other class eg Recipes
+
+
 void Item::staticInit() { Stats::buildItemStats(); }
 
 _Tier::Tier(int level, int uses, float speed, float damage,
@@ -1390,10 +1390,10 @@ Item::Item(int id) : id(256 + id) {
     m_iBaseItemType = eBaseItemType_undefined;
     m_textureName = L"";
 
-    // TODO Init this string
-    // string descriptionId;
+    
+    
 
-    // this->id = 256 + id;
+    
     if (items[256 + id] != nullptr) {
         app.DebugPrintf("CONFLICT @ %d", id);
     }
@@ -1401,8 +1401,8 @@ Item::Item(int id) : id(256 + id) {
     items[256 + id] = this;
 }
 
-// 4J-PB - adding so we can class different items together for the new crafting
-// menu so pickaxe_stone would get tagged with pickaxe and stone
+
+
 Item* Item::setBaseItemTypeAndMaterial(int iType, int iMaterial) {
     this->m_iBaseItemType = iType;
     this->m_iMaterial = iMaterial;
@@ -1483,31 +1483,31 @@ Item* Item::setMaxDamage(int maxDamage) {
 
 bool Item::canBeDepleted() { return maxDamage > 0 && !m_isStackedByData; }
 
-/**
- * Returns true when the item was used to deal more than default damage
- *
- * @param itemInstance
- * @param mob
- * @param attacker
- * @return
- */
+
+
+
+
+
+
+
+
 bool Item::hurtEnemy(std::shared_ptr<ItemInstance> itemInstance,
                      std::shared_ptr<LivingEntity> mob,
                      std::shared_ptr<LivingEntity> attacker) {
     return false;
 }
 
-/**
- * Returns true when the item was used to mine more efficiently
- *
- * @param itemInstance
- * @param tile
- * @param x
- * @param y
- * @param z
- * @param owner
- * @return
- */
+
+
+
+
+
+
+
+
+
+
+
 bool Item::mineBlock(std::shared_ptr<ItemInstance> itemInstance, Level* level,
                      int tile, int x, int y, int z,
                      std::shared_ptr<LivingEntity> owner) {
@@ -1540,15 +1540,15 @@ Item* Item::setDescriptionId(unsigned int id) {
 
 const wchar_t* Item::getDescription() {
     return app.GetString(getDescriptionId());
-    // return I18n::get(getDescriptionId());
+    
 }
 
 const wchar_t* Item::getDescription(std::shared_ptr<ItemInstance> instance) {
     return app.GetString(getDescriptionId(instance));
-    // return I18n::get(getDescriptionId(instance));
+    
 }
 
-unsigned int Item::getDescriptionId(int iData /*= -1*/) {
+unsigned int Item::getDescriptionId(int iData ) {
     return descriptionId;
 }
 
@@ -1574,7 +1574,7 @@ Item* Item::setCraftingRemainingItem(Item* craftingRemainingItem) {
 
 bool Item::shouldMoveCraftingResultToInventory(
     std::shared_ptr<ItemInstance> instance) {
-    // Default is good for the vast majority of items
+    
     return true;
 }
 
@@ -1587,7 +1587,7 @@ bool Item::hasCraftingRemainingItem() {
 }
 
 std::wstring Item::getName() {
-    return L"";  // I18n::get(getDescriptionId() + L".name");
+    return L"";  
 }
 
 int Item::getColor(std::shared_ptr<ItemInstance> item, int spriteLayer) {
@@ -1624,7 +1624,7 @@ std::wstring Item::getPotionBrewingFormula() { return potionBrewingFormula; }
 
 bool Item::hasPotionBrewingFormula() { return !potionBrewingFormula.empty(); }
 
-// 4jcraft: re-added old TU18 overload for java gui
+
 void Item::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
                            std::shared_ptr<Player> player,
                            std::vector<std::wstring>* lines, bool advanced,
@@ -1635,9 +1635,9 @@ void Item::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
                            std::vector<HtmlString>* lines, bool advanced) {}
 
 std::wstring Item::getHoverName(std::shared_ptr<ItemInstance> itemInstance) {
-    // String elementName = ("" +
-    // Language.getInstance().getElementName(getDescription(itemInstance))).trim();
-    // return elementName;
+    
+    
+    
     return app.GetString(getDescriptionId(itemInstance));
 }
 
@@ -1708,10 +1708,10 @@ attrAttrModMap* Item::getDefaultAttributeModifiers() {
     return new attrAttrModMap();
 }
 
-/*
-        4J: These are necesary on the PS3.
-                (and 4 and Vita).
-*/
+
+
+
+
 #if (0 || 0 || 0 || defined(__linux__) || defined(__APPLE__))
 const int Item::shovel_iron_Id;
 const int Item::pickAxe_iron_Id;

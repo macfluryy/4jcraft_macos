@@ -16,14 +16,14 @@ SetSpawnPositionPacket::SetSpawnPositionPacket(int x, int y, int z) {
     this->z = z;
 }
 
-void SetSpawnPositionPacket::read(DataInputStream* dis)  // throws IOException
+void SetSpawnPositionPacket::read(DataInputStream* dis)  
 {
     x = dis->readInt();
     y = dis->readInt();
     z = dis->readInt();
 }
 
-void SetSpawnPositionPacket::write(DataOutputStream* dos)  // throws IOException
+void SetSpawnPositionPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(x);
     dos->writeInt(y);

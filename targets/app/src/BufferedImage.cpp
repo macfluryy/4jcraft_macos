@@ -30,13 +30,13 @@ void BufferedImage::ByteFlip4(unsigned int& data) {
     data = (data >> 24) | ((data >> 8) & 0x0000ff00) |
            ((data << 8) & 0x00ff0000) | (data << 24);
 }
-// Loads a bitmap into a buffered image - only currently supports the 2 types of
-// 32-bit image that we've made so far and determines which of these is which by
-// the compression method. Compression method 3 is a 32-bit image with only
-// 24-bits used (ie no alpha channel) whereas method 0 is a full 32-bit image
-// with a valid alpha channel.
 
-// 4jcraft: mostly rewrote this function
+
+
+
+
+
+
 BufferedImage::BufferedImage(const std::wstring& File,
                              bool filenameHasExtension,
                              bool bTitleUpdateTexture,
@@ -112,7 +112,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
             }
         } else {
             if (l == 0) {
-                // safety dummy to prevent crash
+                
                 width = 1;
                 height = 1;
                 data[0] = new int[1];
@@ -207,30 +207,30 @@ int* BufferedImage::getData(int level) { return data[level]; }
 
 Graphics* BufferedImage::getGraphics() { return nullptr; }
 
-// Returns the transparency. Returns either OPAQUE, BITMASK, or TRANSLUCENT.
-// Specified by:
-// getTransparency in interface Transparency
-// Returns:
-// the transparency of this BufferedImage.
+
+
+
+
+
 int BufferedImage::getTransparency() {
-    // TODO - 4J Implement?
+    
     return 0;
 }
 
-// Returns a subimage defined by a specified rectangular region. The returned
-// BufferedImage shares the same data array as the original image. Parameters:
-// x, y - the coordinates of the upper-left corner of the specified rectangular
-// region w - the width of the specified rectangular region h - the height of
-// the specified rectangular region Returns: a BufferedImage that is the
-// subimage of this BufferedImage.
+
+
+
+
+
+
 BufferedImage* BufferedImage::getSubimage(int x, int y, int w, int h) {
-    // TODO - 4J Implement
+    
 
     BufferedImage* img = new BufferedImage(w, h, 0);
 
-    // 4jcraft: Copy pixel data directly into img->data[0].
-    // The old arrayWithLength.h (custom vector impl) was a non-owning wrapper,
-    // std::vector copies so we write to the raw array directly instead.
+    
+    
+    
     int srcW = width;
     for (int row = 0; row < h; row++) {
         for (int col = 0; col < w; col++) {
@@ -268,7 +268,7 @@ void BufferedImage::preMultiplyAlpha() {
     int b = 0;
 
     int total = width * height;
-    // why was it unsigned??
+    
     for (int i = 0; i < total; ++i) {
         cur = curData[i];
         alpha = (cur >> 24) & 0xff;

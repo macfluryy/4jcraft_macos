@@ -31,7 +31,7 @@ bool LeapAtTargetGoal::canContinueToUse() {
 }
 
 void LeapAtTargetGoal::start() {
-    // TODO: move to control?
+    
     double xdd = target.lock()->x - mob->x;
     double zdd = target.lock()->z - mob->z;
     float dd = sqrt(xdd * xdd + zdd * zdd);

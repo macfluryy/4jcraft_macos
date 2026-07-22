@@ -9,7 +9,7 @@ class LivingEntity;
 
 class OwnerHurtByTargetGoal : public TargetGoal {
 private:
-    TamableAnimal* tameAnimal;  // Owner of this goal
+    TamableAnimal* tameAnimal;  
     std::weak_ptr<LivingEntity> ownerLastHurtBy;
     int timestamp;
 

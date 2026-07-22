@@ -14,33 +14,33 @@ int FlippedIcon::getWidth() const { return base->getWidth(); }
 
 int FlippedIcon::getHeight() const { return base->getHeight(); }
 
-float FlippedIcon::getU0(bool adjust /*=false*/) const {
+float FlippedIcon::getU0(bool adjust ) const {
     if (horizontal) return base->getU1(adjust);
     return base->getU0(adjust);
 }
 
-float FlippedIcon::getU1(bool adjust /*=false*/) const {
+float FlippedIcon::getU1(bool adjust ) const {
     if (horizontal) return base->getU0(adjust);
     return base->getU1(adjust);
 }
 
-float FlippedIcon::getU(double offset, bool adjust /*=false*/) const {
+float FlippedIcon::getU(double offset, bool adjust ) const {
     float diff = getU1(adjust) - getU0(adjust);
     return getU0(adjust) +
            (diff * ((float)offset / SharedConstants::WORLD_RESOLUTION));
 }
 
-float FlippedIcon::getV0(bool adjust /*=false*/) const {
+float FlippedIcon::getV0(bool adjust ) const {
     if (vertical) return base->getV0(adjust);
     return base->getV0(adjust);
 }
 
-float FlippedIcon::getV1(bool adjust /*=false*/) const {
+float FlippedIcon::getV1(bool adjust ) const {
     if (vertical) return base->getV0(adjust);
     return base->getV1(adjust);
 }
 
-float FlippedIcon::getV(double offset, bool adjust /*=false*/) const {
+float FlippedIcon::getV(double offset, bool adjust ) const {
     float diff = getV1(adjust) - getV0(adjust);
     return getV0(adjust) +
            (diff * ((float)offset / SharedConstants::WORLD_RESOLUTION));

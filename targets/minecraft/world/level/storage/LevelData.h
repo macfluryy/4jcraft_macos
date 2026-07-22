@@ -20,7 +20,7 @@ class LevelData {
 
 private:
     int64_t seed;
-    LevelType* m_pGenerator;  // = LevelType.normal;
+    LevelType* m_pGenerator;  
     std::wstring generatorOptions;
     int xSpawn;
     int ySpawn;
@@ -29,7 +29,7 @@ private:
     int64_t dayTime;
     int64_t lastPlayed;
     int64_t sizeOnDisk;
-    //    CompoundTag *loadedPlayerTag;	// 4J removed
+    
     int dimension;
     std::wstring levelName;
     int version;
@@ -44,26 +44,26 @@ private:
     bool hardcore;
     bool allowCommands;
     bool initialized;
-    bool newSeaLevel;        // 4J added
-    bool hasBeenInCreative;  // 4J added
-    // 4J macOS - persisted host game-rule bitmask (PVP, TNT, fire spread,
-    // mob griefing, keep-inventory, daylight cycle, etc). Mirror of
-    // Game::m_uiGameHostSettings (eGameHostOption_All). 0 means "not
-    // stored" (older saves) - in that case we keep whatever the host
-    // picked in the create/load screen.
-    unsigned int m_gameHostSettings = 0;  // 4J macOS added
-    bool spawnBonusChest;    // 4J added
-    int m_xzSize;            // 4J Added
+    bool newSeaLevel;        
+    bool hasBeenInCreative;  
+    
+    
+    
+    
+    
+    unsigned int m_gameHostSettings = 0;  
+    bool spawnBonusChest;    
+    int m_xzSize;            
 #ifdef _LARGE_WORLDS
-    int m_xzSizeOld;  // 4J MGH Added, for expanding worlds
+    int m_xzSizeOld;  
     int m_hellScaleOld;
     bool m_classicEdgeMoat;
     bool m_smallEdgeMoat;
     bool m_mediumEdgeMoat;
 #endif
-    int m_hellScale;  // 4J Added
+    int m_hellScale;  
 
-    // 4J added
+    
     int xStronghold;
     int yStronghold;
     int zStronghold;
@@ -89,7 +89,7 @@ public:
 
 protected:
     virtual void setTagData(
-        CompoundTag* tag);  // 4J - removed  CompoundTag *playerTag
+        CompoundTag* tag);  
 
 public:
     virtual int64_t getSeed();
@@ -104,7 +104,7 @@ public:
     virtual int64_t getDayTime();
     virtual int64_t getSizeOnDisk();
     virtual CompoundTag* getLoadedPlayerTag();
-    // int getDimension(); // 4J Removed TU 9 as it's never accurate
+    
     virtual void setSeed(int64_t seed);
     virtual void setXSpawn(int xSpawn);
     virtual void setYSpawn(int ySpawn);
@@ -122,7 +122,7 @@ public:
     virtual void setDayTime(int64_t time);
     virtual void setSizeOnDisk(int64_t sizeOnDisk);
     virtual void setLoadedPlayerTag(CompoundTag* loadedPlayerTag);
-    // void setDimension(int dimension); // 4J Removed TU 9 as it's never used
+    
     virtual void setSpawn(int xSpawn, int ySpawn, int zSpawn);
     virtual std::wstring getLevelName();
     virtual void setLevelName(const std::wstring& levelName);
@@ -142,9 +142,9 @@ public:
     virtual bool getSpawnBonusChest();
     virtual void setGameType(GameType* gameType);
     virtual bool useNewSeaLevel();
-    virtual bool getHasBeenInCreative();            // 4J Added
-    virtual void setHasBeenInCreative(bool value);  // 4J Added
-    // 4J macOS - persisted host game-rule bitmask accessors.
+    virtual bool getHasBeenInCreative();            
+    virtual void setHasBeenInCreative(bool value);  
+    
     unsigned int getGameHostSettings() { return m_gameHostSettings; }
     void setGameHostSettings(unsigned int v) { m_gameHostSettings = v; }
     virtual LevelType* getGenerator();
@@ -157,13 +157,13 @@ public:
     virtual bool isInitialized();
     virtual void setInitialized(bool initialized);
     virtual GameRules* getGameRules();
-    virtual int getXZSize();  // 4J Added
+    virtual int getXZSize();  
 #ifdef _LARGE_WORLDS
-    virtual int getXZSizeOld();  // 4J Added
+    virtual int getXZSizeOld();  
     virtual void getMoatFlags(bool* bClassicEdgeMoat, bool* bSmallEdgeMoat,
-                              bool* bMediumEdgeMoat);  // 4J MGH - added
-    virtual int getXZHellSizeOld();                    // 4J Added
+                              bool* bMediumEdgeMoat);  
+    virtual int getXZHellSizeOld();                    
 
 #endif
-    virtual int getHellScale();  // 4J Addded
+    virtual int getHellScale();  
 };

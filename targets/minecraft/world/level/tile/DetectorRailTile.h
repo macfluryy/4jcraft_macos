@@ -33,9 +33,9 @@ private:
                               int currentData);
 
 public:
-    //@Override
+    
     void registerIcons(IconRegister* iconRegister);
 
-    //@Override
+    
     Icon* getTexture(int face, int data);
 };

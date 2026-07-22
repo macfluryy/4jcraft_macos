@@ -38,8 +38,8 @@ public:
     void updateShape(LevelSource* level, int x, int y, int z,
                      int forceData = -1,
                      std::shared_ptr<TileEntity> forceEntity =
-                         std::shared_ptr<TileEntity>());  // 4J added forceData,
-                                                          // forceEntity param
+                         std::shared_ptr<TileEntity>());  
+                                                          
 
 protected:
     void updateShape(int data);
@@ -69,7 +69,7 @@ public:
 public:
     bool shouldRenderFace(LevelSource* level, int x, int y, int z, int face);
 
-    // 4J Added so we can check before we try to add a tile to the tick list if
-    // it's actually going to do seomthing
+    
+    
     virtual bool shouldTileTick(Level* level, int x, int y, int z);
 };

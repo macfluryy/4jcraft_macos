@@ -42,7 +42,7 @@ public:
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
-            TileEntity>());  // 4J added forceData, forceEntity param
+            TileEntity>());  
 
 private:
     void updateShape(int data);
@@ -54,7 +54,7 @@ public:
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
-                     bool soundOnly = false);  // 4J added soundOnly param
+                     bool soundOnly = false);  
     virtual void onRemove(Level* level, int x, int y, int z, int id, int data);
     virtual int getSignal(LevelSource* level, int x, int y, int z, int dir);
     virtual int getDirectSignal(LevelSource* level, int x, int y, int z,
@@ -72,7 +72,7 @@ private:
 public:
     void registerIcons(IconRegister* iconRegister);
 
-    // 4J Added so we can check before we try to add a tile to the tick list if
-    // it's actually going to do seomthing
+    
+    
     virtual bool shouldTileTick(Level* level, int x, int y, int z);
 };

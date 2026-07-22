@@ -10,7 +10,7 @@
 #include "minecraft/locale/Language.h"
 
 ControlsScreen::ControlsScreen(Screen* lastScreen, Options* options) {
-    // 4J - added initialisers
+    
     title = L"Controls";
     selectedKey = -1;
 

@@ -29,8 +29,8 @@ private:
     Objective* displayObjectives[DISPLAY_SLOTS] = {};
     std::unordered_map<std::wstring, PlayerTeam*> teamsByName;
     std::unordered_map<std::wstring, PlayerTeam*> teamsByPlayer;
-    // Bumped on every mutation; lets the HUD cache its rendered sidebar and
-    // rebuild only when something actually changed.
+    
+    
     int m_revision = 0;
 
 public:

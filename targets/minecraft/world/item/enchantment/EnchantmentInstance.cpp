@@ -15,7 +15,7 @@ EnchantmentInstance::EnchantmentInstance(int id, int level)
       enchantment(Enchantment::enchantments[id]),
       level(level) {}
 
-// 4J Added
+
 EnchantmentInstance* EnchantmentInstance::copy() {
     return new EnchantmentInstance((Enchantment*)enchantment, (int)level);
 }

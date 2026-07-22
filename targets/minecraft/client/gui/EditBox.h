@@ -18,11 +18,11 @@ public:
     std::wstring value;
     int maxLength;
     bool active;
-    bool inFocus; // 4J macOS - critical for proper focus handling
+    bool inFocus; 
     int frame;
     bool enableBackgroundDrawing;
     
-    // 4J macOS - add cursor position tracking
+    
     size_t cursorPos;
     
     EditBox(Screen* screen, Font* font, int x, int y, int width, int height, 

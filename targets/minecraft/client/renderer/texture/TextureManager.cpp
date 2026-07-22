@@ -45,9 +45,9 @@ void TextureManager::registerName(const std::wstring& name, Texture* texture) {
 void TextureManager::registerTexture(Texture* texture) {
     for (auto it = idToTextureMap.begin(); it != idToTextureMap.end(); ++it) {
         if (it->second == texture) {
-            // Minecraft.getInstance().getLogger().warning("TextureManager.registerTexture
-            // called, but this texture has " + "already been registered.
-            // ignoring.");
+            
+            
+            
             app.DebugPrintf(
                 "TextureManager.registerTexture called, but this texture has "
                 "already been registered. ignoring.");
@@ -78,12 +78,12 @@ std::vector<Texture*>* TextureManager::createTextures(
     const std::wstring& filename, bool mipmap) {
     std::vector<Texture*>* result = new std::vector<Texture*>();
     TexturePack* texturePack = Minecraft::GetInstance()->skins->getSelected();
-    // try {
-    int mode = Texture::TM_CONTAINER;  // Most important -- so it doesn't get
-                                       // uploaded to videoram
-    int clamp = Texture::WM_WRAP;  // 4J Stu - Don't clamp as it causes issues
-                                   // with how we signal non-mipmmapped textures
-                                   // to the pixel shader //Texture::WM_CLAMP;
+    
+    int mode = Texture::TM_CONTAINER;  
+                                       
+    int clamp = Texture::WM_WRAP;  
+                                   
+                                   
     int format = Texture::TFMT_RGBA;
     int minFilter = Texture::TFLT_NEAREST;
     int magFilter = Texture::TFLT_NEAREST;
@@ -99,9 +99,9 @@ std::vector<Texture*>* TextureManager::createTextures(
         }
     }
 
-    // BufferedImage *image = new BufferedImage(texturePack->getResource(L"/" +
-    // filename),false,true,drive);
-    // //ImageIO::read(texturePack->getResource(L"/" + filename));
+    
+    
+    
 
     BufferedImage* image =
         texturePack->getImageResource(filename, false, true, drive);
@@ -111,11 +111,11 @@ std::vector<Texture*>* TextureManager::createTextures(
     std::wstring texName = getTextureNameFromPath(filename);
 
     if (isAnimation(filename, texturePack)) {
-        // TODO: Read this information from the animation file later
+        
         int frameWidth = width;
         int frameHeight = width;
 
-        // This could end as 0 frames
+        
         int frameCount = height / frameWidth;
         for (int i = 0; i < frameCount; i++) {
             BufferedImage* subImage =
@@ -128,16 +128,16 @@ std::vector<Texture*>* TextureManager::createTextures(
             result->push_back(texture);
         }
     } else {
-        // TODO: Remove this hack -- fix proper rotation support (needed for
-        // 'off-aspect textures')
+        
+        
         if (width == height) {
             result->push_back(createTexture(
                 texName, mode, width, height, clamp, format, minFilter,
                 magFilter, mipmap || image->getData(1) != nullptr, image));
         } else {
-            // Minecraft.getInstance().getLogger().warning("TextureManager.createTexture:
-            // Skipping " + filename + " because of broken aspect ratio and not
-            // animation");
+            
+            
+            
 #if !defined(_CONTENT_PACKAGE)
             wprintf(
                 L"TextureManager.createTexture: Skipping %ls because of broken "
@@ -148,15 +148,15 @@ std::vector<Texture*>* TextureManager::createTextures(
     }
     delete image;
 
-    // return result;
-    // } catch (FileNotFoundException e) {
-    //	Minecraft.getInstance().getLogger().warning("TextureManager.createTexture
-    // called for file " + filename + ", but that file does not exist.
-    // Ignoring."); } catch (IOException e) {
-    //	Minecraft.getInstance().getLogger().warning("TextureManager.createTexture
-    // encountered an IOException when " + "trying to read file " + filename +
-    // ". Ignoring.");
-    // }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     return result;
 }
 
@@ -188,10 +188,10 @@ Texture* TextureManager::createTexture(const std::wstring& name, int mode,
 Texture* TextureManager::createTexture(const std::wstring& name, int mode,
                                        int width, int height, int format,
                                        bool mipmap) {
-    // 4J Stu - Don't clamp as it causes issues with how we signal
-    // non-mipmmapped textures to the pixel shader
-    // return createTexture(name, mode, width, height, Texture::WM_CLAMP,
-    // format, Texture::TFLT_NEAREST, Texture::TFLT_NEAREST, mipmap, nullptr);
+    
+    
+    
+    
     return createTexture(name, mode, width, height, Texture::WM_WRAP, format,
                          Texture::TFLT_NEAREST, Texture::TFLT_NEAREST, mipmap,
                          nullptr);

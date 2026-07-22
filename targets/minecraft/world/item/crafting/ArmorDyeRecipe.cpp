@@ -107,7 +107,7 @@ std::shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(
 
     float averageIntensity = (float)intensityTotal / colourCounts;
     float resultIntensity = (float)std::max(red, std::max(green, blue));
-    //        System.out.println(averageIntensity + ", " + resultIntensity);
+    
 
     red = (int)((float)red * averageIntensity / resultIntensity);
     green = (int)((float)green * averageIntensity / resultIntensity);
@@ -132,19 +132,19 @@ const ItemInstance* ArmorDyeRecipe::getResultItem() { return nullptr; }
 
 const int ArmorDyeRecipe::getGroup() { return ShapedRecipy::eGroupType_Armour; }
 
-// 4J-PB
+
 bool ArmorDyeRecipe::requiresRecipe(int iRecipe) { return false; }
 
 void ArmorDyeRecipe::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
-    // int iCount=0;
-    // bool bFound;
-    // int j;
+    
+    
+    
     INGREDIENTS_REQUIRED TempIngReq;
 
-    // shapeless doesn't have the 3x3 shape, but we'll just use this to store
-    // the ingredients anyway
+    
+    
     TempIngReq.iIngC = 0;
-    TempIngReq.iType = RECIPE_TYPE_2x2;  // all the dyes can be made in a 2x2
+    TempIngReq.iType = RECIPE_TYPE_2x2;  
     TempIngReq.uiGridA = new unsigned int[9];
     TempIngReq.iIngIDA = new int[3 * 3];
     TempIngReq.iIngValA = new int[3 * 3];

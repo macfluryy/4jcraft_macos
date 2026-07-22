@@ -58,8 +58,8 @@ bool AddEnchantmentRuleDefinition::enchantItem(
     std::shared_ptr<ItemInstance> item) {
     bool enchanted = false;
     if (item != nullptr) {
-        // 4J-JEV: Ripped code from enchantmenthelpers
-        // Maybe we want to add an addEnchantment method to EnchantmentHelpers
+        
+        
         if (item->id == Item::enchantedBook_Id) {
             Item::enchantedBook->addEnchantment(
                 item,

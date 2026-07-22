@@ -56,7 +56,7 @@ public:
     virtual std::shared_ptr<Entity> getAttackTarget();
     virtual void setAttackTarget(std::shared_ptr<Entity> attacker);
 
-    // might move to navigation, might make area
+    
     virtual bool isWithinRestriction();
     virtual bool isWithinRestriction(int x, int y, int z);
     virtual void restrictTo(int x, int y, int z, int radius);
@@ -69,7 +69,7 @@ protected:
     void tickLeash();
     void onLeashDistance(float distanceToLeashHolder);
 
-    // 4J added
+    
 public:
     virtual bool couldWander();
 };

@@ -26,7 +26,7 @@ public:
     static const int MAX_CHANGES_BEFORE_RESEND = 10;
     static const int MIN_TICKS_BETWEEN_REGION_UPDATE = 10;
 
-    // 4J - added
+    
     class PlayerChunkAddRequest {
     public:
         int x, z;
@@ -40,9 +40,9 @@ public:
         friend class PlayerChunkMap;
 
     private:
-        PlayerChunkMap* parent;  // 4J added
+        PlayerChunkMap* parent;  
         std::vector<std::shared_ptr<ServerPlayer> > players;
-        // int x, z;
+        
         ChunkPos pos;
 
         std::vector<short> changedTiles;
@@ -50,16 +50,16 @@ public:
         int xChangeMin, xChangeMax;
         int yChangeMin, yChangeMax;
         int zChangeMin, zChangeMax;
-        int ticksToNextRegionUpdate;  // 4J added
-        bool prioritised;             // 4J added
+        int ticksToNextRegionUpdate;  
+        bool prioritised;             
         int64_t firstInhabitedTime;
 
     public:
         PlayerChunk(int x, int z, PlayerChunkMap* pcm);
         ~PlayerChunk();
 
-        // 4J Added sendPacket param so we can aggregate the initial send into
-        // one much smaller packet
+        
+        
         void add(std::shared_ptr<ServerPlayer> player, bool sendPacket = true);
         void remove(std::shared_ptr<ServerPlayer> player);
         void updateInhabitedTime();
@@ -69,9 +69,9 @@ public:
 
     public:
         void tileChanged(int x, int y, int z);
-        void prioritiseTileChanges();  // 4J added
+        void prioritiseTileChanges();  
         void broadcast(std::shared_ptr<Packet> packet);
-        bool broadcastChanges(bool allowRegionUpdate);  // 4J - added parm
+        bool broadcastChanges(bool allowRegionUpdate);  
 
     private:
         void broadcast(std::shared_ptr<TileEntity> te);
@@ -80,14 +80,14 @@ public:
 public:
     std::vector<std::shared_ptr<ServerPlayer> > players;
     void flagEntitiesToBeRemoved(unsigned int* flags,
-                                 bool* removedFound);  // 4J added
+                                 bool* removedFound);  
 private:
     std::unordered_map<int64_t, PlayerChunk*, LongKeyHash, LongKeyEq>
-        chunks;  // 4J - was LongHashMap
+        chunks;  
     std::vector<PlayerChunk*> changedChunks;
     std::vector<PlayerChunk*> knownChunks;
-    std::vector<PlayerChunkAddRequest> addRequests;              // 4J added
-    void tickAddRequests(std::shared_ptr<ServerPlayer> player);  // 4J added
+    std::vector<PlayerChunkAddRequest> addRequests;              
+    void tickAddRequests(std::shared_ptr<ServerPlayer> player);  
 
     ServerLevel* level;
     int radius;
@@ -104,15 +104,15 @@ public:
 private:
     PlayerChunk* getChunk(int x, int z, bool create);
     void getChunkAndAddPlayer(
-        int x, int z, std::shared_ptr<ServerPlayer> player);  // 4J added
+        int x, int z, std::shared_ptr<ServerPlayer> player);  
     void getChunkAndRemovePlayer(
-        int x, int z, std::shared_ptr<ServerPlayer> player);  // 4J added
+        int x, int z, std::shared_ptr<ServerPlayer> player);  
 public:
     void broadcastTileUpdate(std::shared_ptr<Packet> packet, int x, int y,
                              int z);
     void tileChanged(int x, int y, int z);
-    bool isTrackingTile(int x, int y, int z);         // 4J added
-    void prioritiseTileChanges(int x, int y, int z);  // 4J added
+    bool isTrackingTile(int x, int y, int z);         
+    void prioritiseTileChanges(int x, int y, int z);  
     void add(std::shared_ptr<ServerPlayer> player);
     void remove(std::shared_ptr<ServerPlayer> player);
 
@@ -126,18 +126,18 @@ public:
                     int zChunk);
     static int convertChunkRangeToBlock(int radius);
 
-    // AP added for Vita
+    
     void setRadius(int newRadius);
 
-    // 4J macOS - adjust a SINGLE player's effective view-distance (in chunks)
-    // around their current chunk, square-radius model matching add()/move()/
-    // setRadius(). Both oldChunks and newChunks are bounded to
-    // [MIN_VIEW_DISTANCE, this->radius] (a per-player view distance can never
-    // exceed the server-level radius the map maintains subscriptions for, nor
-    // drop below MIN_VIEW_DISTANCE). On increase, newly-in-range chunks are
-    // subscribed via getChunkAndAddPlayer; on decrease, now-excess chunks are
-    // unsubscribed via getChunkAndRemovePlayer; equal is a no-op.
-    // MUST be called from the server tick only (not the network thread).
+    
+    
+    
+    
+    
+    
+    
+    
+    
     void adjustPlayerViewDistance(std::shared_ptr<ServerPlayer> player,
                                   int oldChunks, int newChunks);
 };

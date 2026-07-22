@@ -31,13 +31,13 @@ private:
     static void setId(tileEntityCreateFn createFn, eINSTANCEOF clas,
                       std::wstring id);
     bool remove;
-    unsigned char renderRemoveStage;  // 4J added
+    unsigned char renderRemoveStage;  
 
 public:
     Level* level;
     int x, y, z;
 
-    // 4J added
+    
     enum RenderRemoveStage {
         e_RenderRemoveStageKeep,
         e_RenderRemoveStageFlaggedAtChunk,
@@ -48,15 +48,15 @@ public:
     Tile* tile;
 
 public:
-    // 4J Java does not have a ctor, but we need one to do some initialisation
-    // of the member variables
+    
+    
     TileEntity();
     virtual ~TileEntity() {}
 
-    void setRenderRemoveStage(unsigned char stage);  // 4J added
-    void upgradeRenderRemoveStage();                 // 4J added
-    bool finalizeRenderRemoveStage();                // 4J added
-    bool shouldRemoveForRender();                    // 4J added
+    void setRenderRemoveStage(unsigned char stage);  
+    void upgradeRenderRemoveStage();                 
+    bool finalizeRenderRemoveStage();                
+    bool shouldRemoveForRender();                    
 
     virtual Level* getLevel();
     virtual void setLevel(Level* level);
@@ -79,7 +79,7 @@ public:
     virtual bool triggerEvent(int b0, int b1);
     virtual void clearCache();
 
-    // 4J Added
+    
     virtual std::shared_ptr<TileEntity> clone() = 0;
 
 protected:

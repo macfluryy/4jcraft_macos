@@ -39,7 +39,7 @@ void WeighedTreasure::addChestItems(Random* random,
             copy->count = count;
             dest->setItem(random->nextInt(dest->getContainerSize()), copy);
         } else {
-            // use multiple slots
+            
             for (int c = 0; c < count; c++) {
                 std::shared_ptr<ItemInstance> copy = treasure->item->copy();
                 copy->count = 1;
@@ -65,7 +65,7 @@ void WeighedTreasure::addDispenserItems(
             copy->count = count;
             dest->setItem(random->nextInt(dest->getContainerSize()), copy);
         } else {
-            // use multiple slots
+            
             for (int c = 0; c < count; c++) {
                 std::shared_ptr<ItemInstance> copy = treasure->item->copy();
                 copy->count = 1;

@@ -1,6 +1,6 @@
 #pragma once
 #include <stdint.h>
-// using namespace std;
+
 #include <string>
 #include <vector>
 
@@ -83,13 +83,13 @@ private:
         unsigned char privateSlots = 0);
     virtual bool _StartGame();
 
-    IQNet* m_pIQNet;  // pointer to QNet interface
+    IQNet* m_pIQNet;  
 
     void* m_notificationListener;
 
     std::vector<IQNetPlayer*>
-        m_machineQNetPrimaryPlayers;  // collection of players that we deem to
-                                      // be the main one for that system
+        m_machineQNetPrimaryPlayers;  
+                                      
 
     bool m_bLeavingGame;
     bool m_bLeaveGameOnTick;
@@ -100,7 +100,7 @@ private:
     bool m_bIsPrivateGame;
     int m_flagIndexSize;
 
-    // This is only maintained by the host, and is not valid on client machines
+    
     GameSessionData m_hostGameSessionData;
     CGameNetworkManager* m_pGameNetworkManager;
 
@@ -115,7 +115,7 @@ private:
     static int RemovePlayerOnSocketClosedThreadProc(void* lpParam);
     virtual bool RemoveLocalPlayer(INetworkPlayer* pNetworkPlayer);
 
-    // Things for handling per-system flags
+    
     class PlayerFlags {
     public:
         INetworkPlayer* m_pNetworkPlayer;
@@ -134,7 +134,7 @@ public:
     virtual bool SystemFlagGet(INetworkPlayer* pNetworkPlayer, int index);
     virtual void SystemFlagClear(INetworkPlayer* pNetworkPlayer, int index);
 
-    // For telemetry
+    
 private:
     float m_lastPlayerEventTimeStart;
 
@@ -147,12 +147,12 @@ private:
     int m_searchResultsCount[XUSER_MAX_COUNT];
     int m_lastSearchStartTime[XUSER_MAX_COUNT];
 
-    // The results that will be filled in with the current search
+    
     XSESSION_SEARCHRESULT_HEADER* m_pSearchResults[XUSER_MAX_COUNT];
     XNQOS* m_pQoSResult[XUSER_MAX_COUNT];
 
-    // The results from the previous search, which are currently displayed in
-    // the game
+    
+    
     XSESSION_SEARCHRESULT_HEADER* m_pCurrentSearchResults[XUSER_MAX_COUNT];
     XNQOS* m_pCurrentQoSResult[XUSER_MAX_COUNT];
     int m_currentSearchResultsCount[XUSER_MAX_COUNT];

@@ -19,13 +19,13 @@ ComplexItemDataPacket::ComplexItemDataPacket(short itemType, short itemId,
     shouldDelay = true;
     this->itemType = itemType;
     this->itemId = itemId;
-    // Take copy of array passed in as we want the packets to have full
-    // ownership of any data they reference
+    
+    
     this->data = std::vector<char>(data.size());
     memcpy(this->data.data(), data.data(), data.size());
 }
 
-void ComplexItemDataPacket::read(DataInputStream* dis)  // throws IOException
+void ComplexItemDataPacket::read(DataInputStream* dis)  
 {
     itemType = dis->readShort();
     itemId = dis->readShort();
@@ -34,7 +34,7 @@ void ComplexItemDataPacket::read(DataInputStream* dis)  // throws IOException
     dis->readFully(data);
 }
 
-void ComplexItemDataPacket::write(DataOutputStream* dos)  // throws IOException
+void ComplexItemDataPacket::write(DataOutputStream* dos)  
 {
     dos->writeShort(itemType);
     dos->writeShort(itemId);

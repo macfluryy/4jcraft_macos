@@ -16,7 +16,7 @@ class LevelChunk;
 
 class OldChunkStorage : public ChunkStorage {
 private:
-    // 4J added so we can have separate storage arrays for different threads
+    
     class ThreadStorage {
     public:
         std::vector<uint8_t> blockData;
@@ -31,9 +31,9 @@ private:
     static ThreadStorage* m_defaultThreadStorage;
 
 public:
-    // Each new thread that needs to use Compression will need to call one of
-    // the following 2 functions, to either create its own local storage, or
-    // share the default storage already allocated by the main thread
+    
+    
+    
     static void CreateNewThreadStorage();
     static void UseDefaultThreadStorage();
     static void ReleaseThreadStorage();
@@ -53,13 +53,13 @@ public:
     virtual void save(Level* level, LevelChunk* levelChunk);
 
     static bool saveEntities(LevelChunk* lc, Level* level,
-                             CompoundTag* tag);  // 4J Added
+                             CompoundTag* tag);  
     static void save(LevelChunk* lc, Level* level,
-                     DataOutputStream* dos);  // 4J Added
+                     DataOutputStream* dos);  
     static void save(LevelChunk* lc, Level* level, CompoundTag* tag);
     static void loadEntities(LevelChunk* lc, Level* level, CompoundTag* tag);
     static LevelChunk* load(Level* level, CompoundTag* tag);
-    static LevelChunk* load(Level* level, DataInputStream* dis);  // 4J Added
+    static LevelChunk* load(Level* level, DataInputStream* dis);  
 
     virtual void tick();
     virtual void flush();

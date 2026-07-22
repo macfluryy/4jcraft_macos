@@ -33,7 +33,7 @@ class FloatTag;
 template <class T>
 class ListTag;
 
-// 4J Stu Added this mainly to allow is to record telemetry for player deaths
+
 enum EEntityDamageType {
     eEntityDamageType_Entity,
     eEntityDamageType_Fall,
@@ -46,11 +46,11 @@ enum EEntityDamageType {
 };
 
 class Entity : public std::enable_shared_from_this<Entity> {
-    friend class Gui;  // 4J Stu - Added to be able to access the shared flag
-                       // functions and constants, without making them publicly
-                       // available to everything
+    friend class Gui;  
+                       
+                       
 public:
-    // 4J-PB - added to replace (e instanceof Type), avoiding dynamic casts
+    
     virtual eINSTANCEOF GetType() = 0;
 
     inline bool instanceof(eINSTANCEOF super) {
@@ -73,8 +73,8 @@ public:
     double viewScale;
 
     bool blocksBuilding;
-    std::weak_ptr<Entity> rider;  // Changed to weak to avoid circular
-                                  // dependency between rider/riding entity
+    std::weak_ptr<Entity> rider;  
+                                  
     std::shared_ptr<Entity> riding;
     bool forcedLoading;
 
@@ -84,7 +84,7 @@ public:
     double xd, yd, zd;
     float yRot, xRot;
     float yRotO, xRotO;
-    /*const*/ AABB bb;  // 4J Was final
+     AABB bb;  
     bool onGround;
     bool horizontalCollision, verticalCollision;
     bool collision;
@@ -138,21 +138,21 @@ private:
 protected:
     bool fireImmune;
 
-    // values that need to be sent to clients in SMP
+    
     std::shared_ptr<SynchedEntityData> entityData;
 
 private:
-    // shared flags that are sent to clients (max 8)
+    
     static const int DATA_SHARED_FLAGS_ID = 0;
     static const int FLAG_ONFIRE = 0;
     static const int FLAG_SNEAKING = 1;
-    // static const int FLAG_ = 2;
+    
     static const int FLAG_SPRINTING = 3;
     static const int FLAG_USING_ITEM = 4;
     static const int FLAG_INVISIBLE = 5;
     static const int FLAG_IDLEANIM = 6;
     static const int FLAG_EFFECT_WEAKENED =
-        7;  // 4J ADDED, needed for cure villager tooltip.
+        7;  
     static const int DATA_AIR_SUPPLY_ID = 1;
 
 private:
@@ -181,19 +181,19 @@ private:
     std::wstring uuid;
 
 protected:
-    // 4J Added so that client side simulations on the host are not affected by
-    // zero-lag
+    
+    
     bool m_ignoreVerticalCollisions;
 
     bool m_ignorePortal;
 
 public:
     Entity(Level* level,
-           bool useSmallId = true);  // 4J - added useSmallId parameter
+           bool useSmallId = true);  
     virtual ~Entity();
 
 protected:
-    // 4J - added for common ctor code
+    
     void _init(bool useSmallId, Level* level);
 
 protected:
@@ -202,18 +202,18 @@ protected:
 public:
     std::shared_ptr<SynchedEntityData> getEntityData();
 
-    /*
-    public bool equals(Object obj) {
-    if (obj instanceof Entity) {
-    return ((Entity) obj).entityId == entityId;
-    }
-    return false;
-    }
+    
 
-    public int hashCode() {
-    return entityId;
-    }
-    */
+
+
+
+
+
+
+
+
+
+
 
 protected:
     virtual void resetPos();
@@ -249,7 +249,7 @@ public:
     bool isFree(double xa, double ya, double za);
     virtual void move(
         double xa, double ya, double za,
-        bool noEntityCubes = false);  // 4J - added noEntityCubes parameter
+        bool noEntityCubes = false);  
 
 protected:
     virtual void checkInsideTiles();
@@ -283,7 +283,7 @@ public:
     bool isInLava();
     void moveRelative(float xa, float za, float speed);
     virtual int getLightColor(
-        float a);  // 4J - change brought forward from 1.8.2
+        float a);  
     virtual float getBrightness(float a);
     virtual void setLevel(Level* level);
     void absMoveTo(double x, double y, double z, float yRot, float xRot);
@@ -300,7 +300,7 @@ protected:
     void markHurt();
 
 public:
-    // 4J Added damageSource param to enable telemetry on player deaths
+    
     virtual bool hurt(DamageSource* source, float damage);
     bool intersects(double x0, double y0, double z0, double x1, double y1,
                     double z1);
@@ -323,10 +323,10 @@ protected:
 public:
     virtual void readAdditionalSaveData(CompoundTag* tag) = 0;
     virtual void addAdditonalSaveData(CompoundTag* tag) = 0;
-    /**
-     * Called after load() has finished and the entity has been added to the
-     * world
-     */
+    
+
+
+
     virtual void onLoadedFromSave();
 
 protected:
@@ -362,13 +362,13 @@ public:
     virtual void handleEntityEvent(uint8_t eventId);
     virtual void animateHurt();
     virtual std::vector<std::shared_ptr<ItemInstance>>
-    getEquipmentSlots();  // ItemInstance[]
+    getEquipmentSlots();  
     virtual void setEquippedSlot(
         int slot, std::shared_ptr<ItemInstance>
-                      item);  // 4J Stu - Brought forward change from 1.3 to fix
-                              // #64688 - Customer Encountered: TU7: Content:
-                              // Art: Aura of enchanted item is not displayed
-                              // for other players in online game
+                      item);  
+                              
+                              
+                              
     virtual bool isOnFire();
     virtual bool isRiding();
     virtual bool isSneaking();
@@ -383,8 +383,8 @@ public:
     virtual bool isUsingItemFlag();
     virtual void setUsingItemFlag(bool value);
 
-    // 4J-ADDED, we need to see if this is weakened
-    // on the client for the cure villager tooltip.
+    
+    
     bool isWeakened();
     void setWeakened(bool value);
 
@@ -393,9 +393,9 @@ protected:
     void setSharedFlag(int flag, bool value);
 
 public:
-    // 4J Stu - Brought forward from 1.2.3 to fix 38654 - Gameplay: Player will
-    // take damage when air bubbles are present if resuming game from
-    // load/autosave underwater.
+    
+    
+    
     int getAirSupply();
     void setAirSupply(int supply);
 
@@ -410,23 +410,23 @@ public:
 
     virtual std::wstring getAName();
 
-    // 4J - added to manage allocation of small ids
+    
 private:
-    // Things also added here to be able to manage the concept of a number of
-    // extra "wandering" entities - normally path finding entities aren't
-    // allowed to randomly wander about once they are a certain distance away
-    // from any player, but we want to be able to (in a controlled fashion)
-    // allow some to be able to move so that we can determine whether they have
-    // been enclosed in some kind of farm, and so be able to better determine
-    // what shouldn't or shouldn't be despawned.
+    
+    
+    
+    
+    
+    
+    
     static const int EXTRA_WANDER_MAX =
-        3;  // Number of entities that can simultaneously wander (in addition to
-            // the ones that would be wandering in java)
+        3;  
+            
     static const int EXTRA_WANDER_TICKS =
         20 *
-        30;  // Number of ticks each extra entity will be allowed to wander for.
-             // This should be enough for it to realistically be able to walk
-             // further than the biggest enclosure we want to consider
+        30;  
+             
+             
 
     int getSmallId();
     void freeSmallId(int index);
@@ -471,7 +471,7 @@ public:
     virtual std::wstring getUUID();
     virtual bool isPushedByWater();
     virtual std::wstring getDisplayName();
-    virtual std::wstring getNetworkName();  // 4J: Added
+    virtual std::wstring getNetworkName();  
 
 private:
     unsigned int m_uiAnimOverrideBitmask;
@@ -480,7 +480,7 @@ public:
     void setAnimOverrideBitmask(unsigned int uiBitmask);
     unsigned int getAnimOverrideBitmask();
 
-    // 4J added
+    
     virtual bool isDespawnProtected() { return false; }
     virtual void setDespawnProtected() {}
     virtual bool couldWander() { return false; }

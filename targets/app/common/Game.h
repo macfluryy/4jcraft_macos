@@ -7,7 +7,7 @@
 #include "platform/sdl2/Profile.h"
 #include "platform/sdl2/Storage.h"
 
-// using namespace std;
+
 
 #include "app/common/IPlatformGame.h"
 #include "app/common/App_structs.h"
@@ -26,9 +26,9 @@
 #include "minecraft/world/entity/item/MinecartHopper.h"
 
 typedef struct _JoinFromInviteData {
-    std::uint32_t dwUserIndex;       // dwUserIndex
-    std::uint32_t dwLocalUsersMask;  // dwUserMask
-    const INVITE_INFO* pInviteInfo;  // pInviteInfo
+    std::uint32_t dwUserIndex;       
+    std::uint32_t dwLocalUsersMask;  
+    const INVITE_INFO* pInviteInfo;  
 } JoinFromInviteData;
 
 class Player;
@@ -41,7 +41,7 @@ class SignTileEntity;
 class BrewingStandTileEntity;
 class CommandBlockEntity;
 class HopperTileEntity;
-// class MinecartHopper;
+
 class EntityHorse;
 class BeaconTileEntity;
 class LocalPlayer;
@@ -62,33 +62,33 @@ private:
 public:
     Game();
 
-    static const float fSafeZoneX;  // 5% of 1280
-    static const float fSafeZoneY;  // 5% of 720
+    static const float fSafeZoneX;  
+    static const float fSafeZoneY;  
 
     typedef std::vector<PMEMDATA> VMEMFILES;
     typedef std::vector<PNOTIFICATION> VNOTIFICATIONS;
 
-    // storing skin files
+    
     std::vector<std::wstring> vSkinNames;
     DLCManager m_dlcManager;
 
-    // storing credits text from the DLC
+    
     std::vector<std::wstring> m_vCreditText;
     static const int GAME_SETTINGS_PROFILE_DATA_BYTES = 204;
 
 #if defined(_EXTENDED_ACHIEVEMENTS)
-    static const int GAME_DEFINED_PROFILE_DATA_BYTES = 2 * 972;  // per user
+    static const int GAME_DEFINED_PROFILE_DATA_BYTES = 2 * 972;  
 #else
-    static const int GAME_DEFINED_PROFILE_DATA_BYTES = 972;  // per user
+    static const int GAME_DEFINED_PROFILE_DATA_BYTES = 972;  
 #endif
     unsigned int uiGameDefinedDataChangedBitmask;
 
     void DebugPrintf(const char* szFormat, ...);
     void DebugPrintfVerbose(bool bVerbose, const char* szFormat,
-                            ...);  // Conditional printf
+                            ...);  
     void DebugPrintf(int user, const char* szFormat, ...);
 
-    static const int USER_NONE = 0;  // disables printf
+    static const int USER_NONE = 0;  
     static const int USER_GENERAL = 1;
     static const int USER_JV = 2;
     static const int USER_MH = 3;
@@ -96,7 +96,7 @@ public:
     static const int USER_RR = 5;
     static const int USER_SR = 6;
     static const int USER_UI =
-        7;  // 4J Stu - This also makes it appear on the UI console
+        7;  
 
     void HandleButtonPresses();
     bool IntroRunning() { return m_bIntroRunning; }
@@ -222,12 +222,12 @@ public:
         m_bReallyChangingSessionType = bVal;
     }
 
-    // 4J Stu - Added so that we can call this when a confirmation box is
-    // selected
+    
+    
     static void SetActionConfirmed(void* param);
     void HandleXuiActions(void);
 
-    // 4J Stu - Functions used for Minecon and other promo work
+    
     bool GetLoadSavesFromFolderEnabled() {
         return m_bLoadSavesFromFolderEnabled;
     }
@@ -235,7 +235,7 @@ public:
         m_bLoadSavesFromFolderEnabled = bVal;
     }
 
-    // 4J Stu - Useful for debugging
+    
     bool GetWriteSavesToFolderEnabled() { return m_bWriteSavesToFolderEnabled; }
     void SetWriteSavesToFolderEnabled(bool bVal) {
         m_bWriteSavesToFolderEnabled = bVal;
@@ -250,12 +250,12 @@ public:
     bool GetFreezePlayers() { return m_bFreezePlayers; }
     void SetFreezePlayers(bool bVal) { m_bFreezePlayers = bVal; }
 
-    // debug -0 show safe area
+    
     void ShowSafeArea(bool show) {}
-    // 4J-PB - to capture the social post screenshot
+    
     virtual void CaptureScreenshot(int iPad) {};
-    // void			GetPreviewImage(int iPad,XSOCIAL_PREVIEWIMAGE
-    // *preview);
+    
+    
 
     void InitGameSettings();
     static int OldProfileVersionCallback(void* pParam, unsigned char* pucData,
@@ -271,7 +271,7 @@ public:
 
     void SetGameSettings(int iPad, eGameSetting eVal, unsigned char ucVal);
     unsigned char GetGameSettings(int iPad, eGameSetting eVal);
-    unsigned char GetGameSettings(eGameSetting eVal);  // for the primary pad
+    unsigned char GetGameSettings(eGameSetting eVal);  
     void SetPlayerSkin(int iPad, const std::wstring& name);
     void SetPlayerSkin(int iPad, std::uint32_t dwSkinId);
     void SetPlayerCape(int iPad, const std::wstring& name);
@@ -282,27 +282,27 @@ public:
     void SetPlayerFavoriteSkinsPos(int iPad, int iPos);
     unsigned int GetPlayerFavoriteSkinsCount(int iPad);
     void ValidateFavoriteSkins(
-        int iPad);  // check the DLC is available for the skins
+        int iPad);  
 
-    // Mash-up pack worlds hide/display
+    
     void HideMashupPackWorld(int iPad, unsigned int iMashupPackID);
     void EnableMashupPackWorlds(int iPad);
     unsigned int GetMashupPackWorlds(int iPad);
 
-    // Minecraft language select
+    
     void SetMinecraftLanguage(int iPad, unsigned char ucLanguage);
     unsigned char GetMinecraftLanguage(int iPad);
     void SetMinecraftLocale(int iPad, unsigned char ucLanguage);
     unsigned char GetMinecraftLocale(int iPad);
 
-    // 4J-PB - set a timer when the user navigates the quickselect, so we can
-    // bring the opacity back to defaults for a short time
+    
+    
     unsigned int GetOpacityTimer(int iPad) {
         return m_uiOpacityCountDown[iPad];
     }
     void SetOpacityTimer(int iPad) {
         m_uiOpacityCountDown[iPad] = 120;
-    }  // 6 seconds
+    }  
     void TickOpacityTimer(int iPad) {
         if (m_uiOpacityCountDown[iPad] > 0) m_uiOpacityCountDown[iPad]--;
     }
@@ -323,10 +323,10 @@ public:
     void SetGameSettingsDebugMask(int iPad, unsigned int uiVal);
     void ActionDebugMask(int iPad, bool bSetAllClear = false);
 
-    //
+    
     bool IsLocalMultiplayerAvailable();
 
-    // for sign in change monitoring
+    
     static void SignInChangeCallback(void* pParam, bool bVal,
                                      unsigned int uiSignInData);
     static void ClearSignInChangeUsersMask();
@@ -337,15 +337,15 @@ public:
                                           const C4JStorage::EMessageResult);
     static void ProfileReadErrorCallback(void* pParam);
 
-    // FATAL LOAD ERRORS
+    
     virtual void FatalLoadError();
 
-    // Notifications from the game listener to be passed to the qnet listener
+    
     static void NotificationsCallback(void* pParam,
                                       std::uint32_t dwNotification,
                                       unsigned int uiParam);
 
-    // for the ethernet being disconnected
+    
     static void LiveLinkChangeCallback(void* pParam, bool bConnected);
     bool GetLiveLinkRequired() { return m_bLiveLinkRequired; }
     void SetLiveLinkRequired(bool required) { m_bLiveLinkRequired = required; }
@@ -358,18 +358,18 @@ public:
     bool DebugArtToolsOn() { return false; }
 #endif
     void SetDebugSequence(const char* pchSeq);
-    // bool			UploadFileToGlobalStorage(int iQuadrant,
-    // C4JStorage::eGlobalStorage eStorageFacility, std::wstring *wsFile  );
+    
+    
 
-    // Installed DLC
+    
     bool StartInstallDLCProcess(int iPad);
     int dlcInstalledCallback(int iOfferC, int iPad);
     void HandleDLCLicenseChange();
     int dlcMountedCallback(int iPad, std::uint32_t dwErr,
                            std::uint32_t dwLicenceMask);
     void MountNextDLC(int iPad);
-    // static int DLCReadCallback(void* pParam,C4JStorage::DLC_FILE_DETAILS
-    // *pDLCData);
+    
+    
     void HandleDLC(DLCPack* pack);
     bool DLCInstallPending() { return m_bDLCInstallPending; }
     bool DLCInstallProcessCompleted() { return m_bDLCInstallProcessCompleted; }
@@ -394,8 +394,8 @@ public:
             return false;
     }
 
-    // functions to store launch data, and to exit the game - required due to
-    // possibly being on a demo disc
+    
+    
     virtual void StoreLaunchData();
     virtual void ExitGame();
 
@@ -409,7 +409,7 @@ public:
                            unsigned int* pByteCount);
     bool IsFileInMemoryTextures(const std::wstring& wName);
 
-    // Texture Pack Data files (icon, banner, comparison shot & text)
+    
     void AddMemoryTPDFile(int iConfig, std::uint8_t* pbData,
                           unsigned int byteCount);
     void RemoveMemoryTPDFile(int iConfig);
@@ -419,38 +419,38 @@ public:
     int GetTPConfigVal(wchar_t* pwchDataFile);
 
     bool DefaultCapeExists();
-    // void InstallDefaultCape(); // attempt  to install the default cape once
-    // per game launch
+    
+    
 
-    // invites
-    // void ProcessInvite(JoinFromInviteData *pJoinData);
+    
+    
     void ProcessInvite(std::uint32_t dwUserIndex,
                        std::uint32_t dwLocalUsersMask,
                        const INVITE_INFO* pInviteInfo);
 
-    // Add credits for DLC installed
+    
     void AddCreditText(const wchar_t* lpStr);
 
 private:
     PlayerUID m_xuidNotch;
     std::unordered_map<PlayerUID, std::uint8_t*> m_GTS_Files;
 
-    // for storing memory textures - player skin
+    
     std::unordered_map<std::wstring, PMEMDATA> m_MEM_Files;
-    // for storing texture pack data files
+    
     std::unordered_map<int, PMEMDATA> m_MEM_TPD;
-    std::mutex csMemFilesLock;  // For locking access to the above map
-    std::mutex csMemTPDLock;    // For locking access to the above map
+    std::mutex csMemFilesLock;  
+    std::mutex csMemTPDLock;    
 
     VNOTIFICATIONS m_vNotifications;
 
 public:
-    // launch data
+    
     std::uint8_t* m_pLaunchData;
     unsigned int m_dwLaunchDataSize;
 
 public:
-    // BAN LIST
+    
     void AddLevelToBannedLevelList(int iPad, PlayerUID xuid, char* pszLevelName,
                                    bool bWriteToTMS);
     bool IsInBannedLevelList(int iPad, PlayerUID xuid, char* pszLevelName);
@@ -473,8 +473,8 @@ public:
     bool m_bChangingSessionType;
     bool m_bReallyChangingSessionType;
 
-    // trial, and trying to unlock full
-    // version on an upsell
+    
+    
 
     void loadMediaArchive();
     void loadStringTable();
@@ -500,14 +500,14 @@ private:
 
     bool m_bResourcesLoaded;
 
-    // Global string table for this application.
-    // CXuiStringTable StringTable;
+    
+    
 
-    // Container scene for some menu
+    
 
-    //	CXuiScene debugContainerScene;
+    
 
-    // bool m_bSplitScreenEnabled;
+    
 
 #if defined(_CONTENT_PACKAGE)
 #if !defined(_FINAL_BUILD)
@@ -515,27 +515,27 @@ private:
 #endif
 #endif
 
-    eGameMode m_eGameMode;  // single or multiplayer
+    eGameMode m_eGameMode;  
 
     static unsigned int m_uiLastSignInData;
 
-    // We've got sizeof(GAME_SETTINGS) bytes reserved at the start of the
-    // gamedefined data per player for settings
+    
+    
     GAME_SETTINGS* GameSettingsA[XUSER_MAX_COUNT];
 
-    // For promo work
+    
     bool m_bLoadSavesFromFolderEnabled;
 
-    // For debugging
+    
     bool m_bWriteSavesToFolderEnabled;
     bool m_bMobsDontAttack;
     bool m_bUseDPadForDebug;
     bool m_bMobsDontTick;
     bool m_bFreezePlayers;
 
-    // 4J : WESTY : For taking screen shots.
-    // bool m_bInterfaceRenderingOff;
-    // bool m_bHandRenderingOff;
+    
+    
+    
 
     DisconnectPacket::eDisconnectReason m_disconnectReason;
     std::wstring m_disconnectReasonText;
@@ -545,21 +545,21 @@ public:
 
     static constexpr unsigned int m_dwOfferID = 0x00000001;
 
-    // timer
+    
     void InitTime();
     void UpdateTime();
 
-    // trial timer
+    
     void SetTrialTimerStart(void);
     float getTrialTimer(void);
 
-    // notifications from the game for qnet
+    
     VNOTIFICATIONS* GetNotifications() { return &m_vNotifications; }
 
 private:
-    // To avoid problems with threads being kicked off from xuis that alter
-    // things that may be in progress within the run_middle, we'll action these
-    // at the end of the game loop
+    
+    
+    
     eXuiAction m_eXuiAction[XUSER_MAX_COUNT];
     eTMSAction m_eTMSAction[XUSER_MAX_COUNT];
     void* m_eXuiActionParam[XUSER_MAX_COUNT];
@@ -592,9 +592,9 @@ private:
         void* pParam, int iPad, C4JStorage::EMessageResult result);
 
     JoinFromInviteData m_InviteData;
-    bool m_bDebugOptions;  // toggle debug things on or off
+    bool m_bDebugOptions;  
 
-    // Trial timer
+    
     float m_fTrialTimerStart, mfTrialPausedTime;
     typedef struct TimeInfo {
         time_util::time_point qwTime;
@@ -638,9 +638,9 @@ private:
     unsigned int m_uiCurrentTip;
     static int TipsSortFunction(const void* a, const void* b);
 
-    // XML
+    
 public:
-    // Hold a vector of terrain feature positions
+    
     void AddTerrainFeaturePosition(_eTerrainFeatureType, int, int);
     void ClearTerrainFeaturePosition();
     _eTerrainFeatureType IsTerrainFeature(int x, int z);
@@ -663,13 +663,13 @@ public:
     unsigned int GetDLCCreditsCount();
     SCreditTextItemDef* GetDLCCredits(int iIndex);
 
-    // TMS
+    
     void ReadDLCFileFromTMS(int iPad, eTMSAction action,
                             bool bCallback = false);
     void ReadXuidsFileFromTMS(int iPad, eTMSAction action,
                               bool bCallback = false);
 
-    // images for save thumbnail/social post
+    
     void CaptureSaveThumbnail() override = 0;
     void GetSaveThumbnail(std::uint8_t** thumbnailData,
                           unsigned int* thumbnailSize) override = 0;
@@ -685,44 +685,44 @@ private:
 
     static std::unordered_map<PlayerUID, MOJANG_DATA*> MojangData;
     static std::unordered_map<int, uint64_t>
-        DLCTextures_PackID;  // for mash-up packs & texture packs
+        DLCTextures_PackID;  
     static std::unordered_map<uint64_t, DLC_INFO*>
-        DLCInfo_Trial;  // full offerid, dlc_info
+        DLCInfo_Trial;  
     static std::unordered_map<uint64_t, DLC_INFO*>
-        DLCInfo_Full;  // full offerid, dlc_info
+        DLCInfo_Full;  
     static std::unordered_map<std::wstring, uint64_t>
-        DLCInfo_SkinName;  // skin name, full offer id
-    //	bool m_bRead_TMS_XUIDS_XML; // track whether we have already read the
-    // TMS xuids.xml file 	bool m_bRead_TMS_DLCINFO_XML; // track whether
-    // we have already read the TMS DLC.xml file
+        DLCInfo_SkinName;  
+    
+    
+    
 
-    bool m_bDefaultCapeInstallAttempted;  // have we attempted to install the
-                                          // default cape from tms
+    bool m_bDefaultCapeInstallAttempted;  
+                                          
 
-    // bool m_bwasHidingGui; // 4J Stu - Removed 1.8.2 bug fix (TU6) as not
-    // needed
+    
+    
     bool m_bDLCInstallProcessCompleted;
     bool m_bDLCInstallPending;
     int m_iTotalDLC;
     int m_iTotalDLCInstalled;
 
 public:
-    // 4J Stu - We need to be able to detect when a guest player signs in or out
-    // causing other guest players to change their xuid The simplest way to do
-    // this is to check if their guest number has changed, so store the last
-    // known one here 4J Stu - Now storing the whole XUSER_SIGNIN_INFO so we can
-    // detect xuid changes
+    
+    
+    
+    
+    
     XUSER_SIGNIN_INFO m_currentSigninInfo[XUSER_MAX_COUNT];
 
-    // void OverrideFontRenderer(bool set, bool immediate = true);
-    //	void ToggleFontRenderer() {
-    // OverrideFontRenderer(!m_bFontRendererOverridden,false); }
+    
+    
+    
     BANNEDLIST BannedListA[XUSER_MAX_COUNT];
 
 private:
-    // 	XUI_FontRenderer *m_fontRenderer;
-    // 	bool m_bFontRendererOverridden;
-    // 	bool m_bOverrideFontRenderer;
+    
+    
+    
 
     bool m_bRead_BannedListA[XUSER_MAX_COUNT];
     char m_pszUniqueMapName[14];
@@ -731,7 +731,7 @@ private:
 public:
     void SetBanListCheck(int iPad, bool bVal) { m_BanListCheck[iPad] = bVal; }
     bool GetBanListCheck(int iPad) { return m_BanListCheck[iPad]; }
-    // AUTOSAVE
+    
 public:
     void SetAutosaveTimerTime(void);
     bool AutosaveDue(void);
@@ -741,11 +741,11 @@ private:
     time_util::time_point m_uiAutosaveTimer;
     unsigned int m_uiOpacityCountDown[XUSER_MAX_COUNT];
 
-    // DLC
+    
     bool m_bNewDLCAvailable;
     bool m_bSeenNewDLCTip;
 
-    // Host options
+    
 private:
     unsigned int m_uiGameHostSettings;
     static unsigned char m_szPNG[8];
@@ -783,7 +783,7 @@ public:
     bool GetResetNether() { return m_bResetNether; }
     bool CanRecordStatsAndAchievements();
 
-    // World seed from png image
+    
     void GetImageTextData(std::uint8_t* imageData, unsigned int imageBytes,
                           unsigned char* seedText, unsigned int& uiHostOptions,
                           bool& bHostOptionsRead, std::uint32_t& uiTexturePack);
@@ -791,7 +791,7 @@ public:
                                      bool hasSeed, unsigned int uiHostOptions,
                                      unsigned int uiTexturePackId);
 
-    // Game rules
+    
     GameRuleManager m_gameRules;
 
 public:
@@ -811,8 +811,8 @@ public:
     const wchar_t* GetGameRulesString(const std::wstring& key);
 
 private:
-    std::uint8_t m_playerColours[MINECRAFT_NET_MAX_PLAYERS];  // An array of
-                                                              // QNet small-id's
+    std::uint8_t m_playerColours[MINECRAFT_NET_MAX_PLAYERS];  
+                                                              
     unsigned int m_playerGamePrivileges[MINECRAFT_NET_MAX_PLAYERS];
 
 public:
@@ -864,9 +864,9 @@ public:
 private:
     std::mutex m_saveNotificationMutex;
     int m_saveNotificationDepth;
-    // Download Status
+    
 
-    // Request current_download;
+    
     std::vector<DLCRequest*> m_DLCDownloadQueue;
     std::vector<TMSPPRequest*> m_TMSPPDownloadQueue;
     static std::uint32_t m_dwContentTypeA[e_Marketplace_MAX];
@@ -890,14 +890,14 @@ public:
     unsigned int m_dwDLCFileSize;
     std::uint8_t* m_pDLCFileBuffer;
 
-    // 	static int CallbackReadXuidsFileFromTMS(void* lpParam, wchar_t
-    // *wchFilename, int iPad, bool bResult, int iAction); 	static int
-    // CallbackDLCFileFromTMS(void* lpParam, wchar_t *wchFilename, int iPad,
-    // bool bResult, int iAction); 	static int
-    // CallbackBannedListFileFromTMS(void* lpParam, wchar_t *wchFilename, int
-    // iPad, bool bResult, int iAction);
+    
+    
+    
+    
+    
+    
 
-    // Storing additional model parts per skin texture
+    
     void SetAdditionalSkinBoxes(std::uint32_t dwSkinID, SKIN_BOX* SkinBoxA,
                                 unsigned int dwSkinBoxC);
     std::vector<ModelPart*>* SetAdditionalSkinBoxes(
@@ -946,11 +946,11 @@ public:
         *pByteCount = 0;
     }
 
-    // XTITLE_DEPLOYMENT_TYPE getDeploymentType() { return
-    // m_titleDeploymentType; }
+    
+    
 
 private:
-    // vector of additional skin model parts, indexed by the skin texture id
+    
     std::unordered_map<std::uint32_t, std::vector<ModelPart*>*>
         m_AdditionalModelParts;
     std::unordered_map<std::uint32_t, std::vector<SKIN_BOX*>*>
@@ -960,7 +960,7 @@ private:
     bool m_bResetNether;
     std::uint32_t m_dwRequiredTexturePackID;
 
-    // 4J-PB - language and locale functions
+    
 public:
     void LocaleAndLanguageInit();
     void getLocale(std::vector<std::wstring>& vecWstrLocales);
@@ -982,12 +982,11 @@ private:
 
 public:
 #if defined(_WINDOWS64)
-    // CMinecraftAudio audio;
+    
 #else
 
 #endif
 };
 
 
-// singleton
-// extern CMinecraftApp app;
+

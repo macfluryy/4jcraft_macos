@@ -60,6 +60,6 @@ public:
                                std::shared_ptr<Player> player,
                                std::shared_ptr<LivingEntity> mob);
 
-    //@Override
+    
     void registerIcons(IconRegister* iconRegister);
 };

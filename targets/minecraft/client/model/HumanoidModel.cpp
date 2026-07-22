@@ -10,7 +10,7 @@
 #include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/world/entity/Entity.h"
 
-// 4J added
+
 
 ModelPart* HumanoidModel::AddOrRetrievePart(SKIN_BOX* pBox) {
     ModelPart* pAttachTo = nullptr;
@@ -38,7 +38,7 @@ ModelPart* HumanoidModel::AddOrRetrievePart(SKIN_BOX* pBox) {
             break;
     }
 
-    // first check this box doesn't already exist
+    
     ModelPart* pNewBox = pAttachTo->retrieveChild(pBox);
 
     if (pNewBox) {
@@ -51,16 +51,16 @@ ModelPart* HumanoidModel::AddOrRetrievePart(SKIN_BOX* pBox) {
         }
     }
     if (pNewBox == nullptr) {
-        // app.DebugPrintf("HumanoidModel::AddOrRetrievePart - Adding box to
-        // model part\n");
+        
+        
 
         pNewBox = new ModelPart(this, (int)pBox->fU, (int)pBox->fV);
         pNewBox->visible = false;
         pNewBox->addHumanoidBox(pBox->fX, pBox->fY, pBox->fZ, pBox->fW,
                                 pBox->fH, pBox->fD, 0);
-        // 4J-PB - don't compile here, since the lighting isn't set up. It'll be
-        // compiled on first use.
-        // pNewBox->compile(1.0f/16.0f);
+        
+        
+        
         pAttachTo->addChild(pNewBox);
     }
 
@@ -73,44 +73,44 @@ void HumanoidModel::_init(float g, float yOffset, int texWidth, int texHeight) {
 
     m_fYOffset = yOffset;
     cloak = new ModelPart(this, 0, 0);
-    cloak->addHumanoidBox(-5, -0, -1, 10, 16, 1, g);  // Cloak
+    cloak->addHumanoidBox(-5, -0, -1, 10, 16, 1, g);  
 
     ear = new ModelPart(this, 24, 0);
-    ear->addHumanoidBox(-3, -6, -1, 6, 6, 1, g);  // Ear
+    ear->addHumanoidBox(-3, -6, -1, 6, 6, 1, g);  
 
     head = new ModelPart(this, 0, 0);
-    head->addHumanoidBox(-4, -8, -4, 8, 8, 8, g);  // Head
+    head->addHumanoidBox(-4, -8, -4, 8, 8, 8, g);  
     head->setPos(0, 0 + yOffset, 0);
 
     hair = new ModelPart(this, 32, 0);
-    hair->addHumanoidBox(-4, -8, -4, 8, 8, 8, g + 0.5f);  // Head
+    hair->addHumanoidBox(-4, -8, -4, 8, 8, 8, g + 0.5f);  
     hair->setPos(0, 0 + yOffset, 0);
 
     body = new ModelPart(this, 16, 16);
-    body->addHumanoidBox(-4, 0, -2, 8, 12, 4, g);  // Body
+    body->addHumanoidBox(-4, 0, -2, 8, 12, 4, g);  
     body->setPos(0, 0 + yOffset, 0);
 
     arm0 = new ModelPart(this, 24 + 16, 16);
-    arm0->addHumanoidBox(-3, -2, -2, 4, 12, 4, g);  // Arm0
+    arm0->addHumanoidBox(-3, -2, -2, 4, 12, 4, g);  
     arm0->setPos(-5, 2 + yOffset, 0);
 
     arm1 = new ModelPart(this, 24 + 16, 16);
     arm1->bMirror = true;
-    arm1->addHumanoidBox(-1, -2, -2, 4, 12, 4, g);  // Arm1
+    arm1->addHumanoidBox(-1, -2, -2, 4, 12, 4, g);  
     arm1->setPos(5, 2 + yOffset, 0);
 
     leg0 = new ModelPart(this, 0, 16);
-    leg0->addHumanoidBox(-2, 0, -2, 4, 12, 4, g);  // Leg0
+    leg0->addHumanoidBox(-2, 0, -2, 4, 12, 4, g);  
     leg0->setPos(-1.9, 12 + yOffset, 0);
 
     leg1 = new ModelPart(this, 0, 16);
     leg1->bMirror = true;
-    leg1->addHumanoidBox(-2, 0, -2, 4, 12, 4, g);  // Leg1
+    leg1->addHumanoidBox(-2, 0, -2, 4, 12, 4, g);  
     leg1->setPos(1.9, 12 + yOffset, 0);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered 4J Stu - Not just performance, but alpha+depth tests don't
-    // work right unless we compile here
+    
+    
+    
     cloak->compile(1.0f / 16.0f);
     ear->compile(1.0f / 16.0f);
     head->compile(1.0f / 16.0f);
@@ -127,7 +127,7 @@ void HumanoidModel::_init(float g, float yOffset, int texWidth, int texHeight) {
     idle = false;
     bowAndArrow = false;
 
-    // 4J added
+    
     eating = false;
     eating_t = 0.0f;
     eating_swing = 0.0f;
@@ -199,7 +199,7 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
                               float xRot, float scale,
                               std::shared_ptr<Entity> entity,
                               unsigned int uiBitmaskOverrideAnim) {
-    // bool bIsAttacking = (attackTime > -9990.0f);
+    
 
     {
         head->yRot = yRot / (float)(180.0f / std::numbers::pi);
@@ -208,7 +208,7 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
         hair->xRot = head->xRot;
         body->z = 0.0f;
 
-        // Does the skin have an override for anim?
+        
 
         if (uiBitmaskOverrideAnim & (1 << eAnim_ArmsDown)) {
             arm0->xRot = 0.0f;
@@ -229,8 +229,8 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             arm0->zRot = 0.0f;
             arm1->zRot = 0.0f;
         }
-        // 4J-PB - Weeping Angel - does't look good holding something in the arm
-        // that's up
+        
+        
         else if ((uiBitmaskOverrideAnim & (1 << eAnim_StatueOfLiberty)) &&
                  (holdingRightHand == 0) && (attackTime == 0.0f)) {
             arm0->xRot = -std::numbers::pi;
@@ -244,11 +244,11 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             arm0->zRot = 0.0f;
             arm1->zRot = 0.0f;
         }
-        //        arm0.zRot = ((float) (util.Mth.cos(time * 0.2312f) + 1) * 1) *
-        //        r;
+        
+        
 
-        //        arm1.zRot = ((float) (util.Mth.cos(time * 0.2812f) - 1) * 1) *
-        //        r;
+        
+        
 
         leg0->yRot = 0.0f;
         leg1->yRot = 0.0f;
@@ -314,7 +314,7 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             float aa = sinf(swing * std::numbers::pi);
             float bb = sinf(attackTime * std::numbers::pi) *
                        -(head->xRot - 0.7f) * 0.75f;
-            arm0->xRot -= aa * 1.2f + bb;  // 4J - changed 1.2 -> 1.2f
+            arm0->xRot -= aa * 1.2f + bb;  
             arm0->yRot += body->yRot * 2.0f;
 
             if ((uiBitmaskOverrideAnim & (1 << eAnim_StatueOfLiberty)) &&
@@ -325,10 +325,10 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             }
         }
 
-        // 4J added
+        
         if (eating) {
-            // These factors are largely lifted from ItemInHandRenderer to try
-            // and keep the 3rd person eating animation as similar as possible
+            
+            
             float is = 1 - eating_swing;
             is = is * is * is;
             is = is * is * is;
@@ -337,12 +337,12 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             arm0->xRot =
                 -std::abs(cosf(eating_t / 4.0f * std::numbers::pi) * 0.1f) *
                 (eating_swing > 0.2 ? 1.0f : 0.0f) *
-                2.0f;  // This factor is the chomping bit (conditional
-                       // factor is so that he doesn't eat whilst the
-                       // food is being pulled away at the end)
+                2.0f;  
+                       
+                       
             arm0->yRot -=
-                iss * 0.5f;  // This factor and the following to the general arm
-                             // movement through the life of the swing
+                iss * 0.5f;  
+                             
             arm0->xRot -= iss * 1.2f;
         }
 

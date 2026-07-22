@@ -1,5 +1,5 @@
 #pragma once
-////using namespace std;
+
 
 #include <stdint.h>
 
@@ -17,7 +17,7 @@ class RootGameRulesDefinition;
 class LevelChunk;
 class DLCPack;
 class DLCGameRulesFile;
-// class DLCGameRulesHeader;
+
 class StringTable;
 class GameRuleDefinition;
 class DataInputStream;
@@ -29,7 +29,7 @@ class LevelRuleset;
 
 #define GAME_RULE_SAVENAME L"requiredGameRules.grf"
 
-// 4J-JEV:
+
 #define LEVEL_GEN_ID int
 #define LEVEL_GEN_ID_NULL 0
 
@@ -65,8 +65,8 @@ private:
 public:
     bool readRuleFile(LevelGenerationOptions* lgo, uint8_t* dIn,
                       unsigned int dSize,
-                      StringTable* strings);  //(DLCGameRulesFile *dlcFile,
-                                              // StringTable *strings);
+                      StringTable* strings);  
+                                              
 
 private:
     void readAttributes(DataInputStream* dis,
@@ -100,7 +100,7 @@ public:
     }
     const wchar_t* GetGameRulesString(const std::wstring& key);
 
-    // 4J-JEV:
-    // Properly cleans-up and unloads the current set of gameRules.
+    
+    
     void unloadCurrentGameRules();
 };

@@ -83,8 +83,8 @@
 
 class MobEffectInstance;
 
-// 4J - this class is fairly substantially altered as there didn't seem any
-// point in porting code for banning, whitelisting, ops etc.
+
+
 
 PlayerList::PlayerList(MinecraftServer* server) {
     playerIo = nullptr;
@@ -95,14 +95,14 @@ PlayerList::PlayerList(MinecraftServer* server) {
     overrideGameMode = nullptr;
     allowCheatsForAllPlayers = false;
 
-    // 4J macOS - Server_View_Distance is now configurable through the
-    // server.properties "view-distance" key instead of being hardcoded.
-    // Default is 16 on _LARGE_WORLDS (matches the client render area) and
-    // 10 otherwise. The raw value is clamped into
-    // [PlayerChunkMap::MIN_VIEW_DISTANCE, PlayerChunkMap::MAX_VIEW_DISTANCE];
-    // an out-of-range configured value is corrected and a warning is logged.
-    // All three PlayerChunkMaps (Dimension::id 0, -1, 1) pick this up via the
-    // ServerLevel ctor (new PlayerChunkMap(.., getViewDistance())).
+    
+    
+    
+    
+    
+    
+    
+    
 #if defined(_LARGE_WORLDS)
     int defaultVD = 16;
 #else
@@ -118,31 +118,31 @@ PlayerList::PlayerList(MinecraftServer* server) {
             PlayerChunkMap::MAX_VIEW_DISTANCE, viewDistance);
     }
 
-    // 4J macOS - Req 2.4: persist the current (clamped) Server_View_Distance
-    // back into the "view-distance" key. getInt lazily stored the raw value;
-    // here we overwrite it with the authoritative clamped value so the
-    // persisted key always reflects the in-use Server_View_Distance and reads
-    // back identically via getInt.
+    
+    
+    
+    
+    
     server->settings->setIntAndSave(L"view-distance", viewDistance);
 
     maxPlayers = server->settings->getInt(L"max-players", 20);
     doWhiteList = false;
 
-    // 4J macOS - multiplayer persistence hardening. Initialise the
-    // flush throttle so the first remote disconnect can immediately
-    // flush; afterwards we throttle to once per 60s. The autosave
-    // countdown starts at the multiplayer interval so we flush
-    // periodically while remote players are connected.
+    
+    
+    
+    
+    
     m_lastFullDiskFlushMs = 0;
-    m_mpAutosaveCountdown = 20 * 90;  // 90s at 20Hz
+    m_mpAutosaveCountdown = 20 * 90;  
 }
 
 PlayerList::~PlayerList() {
     for (auto it = players.begin(); it < players.end(); it++) {
-        (*it)->connection = nullptr;  // Must remove reference to connection, or
-                                      // else there is a circular dependency
-        delete (*it)->gameMode;  // Gamemode also needs deleted as it references
-                                 // back to this player
+        (*it)->connection = nullptr;  
+                                      
+        delete (*it)->gameMode;  
+                                 
         (*it)->gameMode = nullptr;
     }
 }
@@ -157,22 +157,22 @@ void PlayerList::placeNewPlayer(Connection* connection,
     player->setLevel(server->getLevel(player->dimension));
     player->gameMode->setLevel((ServerLevel*)player->level);
 
-    // Make sure these privileges are always turned off for the host player
+    
     INetworkPlayer* networkPlayer = connection->getSocket()->getPlayer();
     if (networkPlayer != nullptr && networkPlayer->IsHost()) {
         player->enableAllPlayerPrivileges(true);
         player->setPlayerGamePrivilege(Player::ePlayerGamePrivilege_HOST, 1);
     }
 
-    // 4J Stu - TU-1 hotfix
-    // Fix for #13150 - When a player loads/joins a game after saving/leaving in
-    // the nether, sometimes they are spawned on top of the nether and cannot
-    // mine down
+    
+    
+    
+    
     validatePlayerSpawnPosition(player);
 
-    //        logger.info(getName() + " logged in with entity id " +
-    //        playerEntity.entityId + " at (" + playerEntity.x + ", " +
-    //        playerEntity.y + ", " + playerEntity.z + ")");
+    
+    
+    
 
     ServerLevel* level = server->getLevel(player->dimension);
 
@@ -194,13 +194,13 @@ void PlayerList::placeNewPlayer(Connection* connection,
     player->setCustomSkin(packet->m_playerSkinId);
     player->setCustomCape(packet->m_playerCapeId);
 
-    // 4J-JEV: Moved this here so we can send player-model texture and geometry
-    // data.
+    
+    
     std::shared_ptr<PlayerConnection> playerConnection =
         std::shared_ptr<PlayerConnection>(
             new PlayerConnection(server, connection, player));
-    // player->connection = playerConnection;	// Used to be assigned in
-    // PlayerConnection ctor but moved out so we can use std::shared_ptr
+    
+    
 
     if (newPlayer) {
         int mapScale = 3;
@@ -209,12 +209,12 @@ void PlayerList::placeNewPlayer(Connection* connection,
         int centreXC = (int)(Math::round(player->x / scale) * scale);
         int centreZC = (int)(Math::round(player->z / scale) * scale);
 #else
-        // 4J-PB - for Xbox maps, we'll centre them on the origin of the world,
-        // since we can fit the whole world in our map
+        
+        
         int centreXC = 0;
         int centreZC = 0;
 #endif
-        // 4J Added - Give every player a map the first time they join a server
+        
         player->inventory->setItem(
             9, std::make_shared<ItemInstance>(
                    Item::map_Id, 1,
@@ -242,7 +242,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
         }
     } else if (!player->customTextureUrl.empty() &&
                app.IsFileInMemoryTextures(player->customTextureUrl)) {
-        // Update the ref count on the memory texture data
+        
         app.AddMemoryTextureFile(player->customTextureUrl, nullptr, 0);
     }
 
@@ -262,7 +262,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
         }
     } else if (!player->customTextureUrl2.empty() &&
                app.IsFileInMemoryTextures(player->customTextureUrl2)) {
-        // Update the ref count on the memory texture data
+        
         app.AddMemoryTextureFile(player->customTextureUrl2, nullptr, 0);
     }
 
@@ -272,7 +272,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
 
     updatePlayerGameMode(player, nullptr, level);
 
-    // Update the privileges with the correct game mode
+    
     GameType* gameType = Player::getPlayerGamePrivilege(
                              player->getAllPlayerGamePrivileges(),
                              Player::ePlayerGamePrivilege_CreativeMode)
@@ -285,20 +285,20 @@ void PlayerList::placeNewPlayer(Connection* connection,
             player->gameMode->getGameModeForPlayer()->getId());
     }
 
-    // std::shared_ptr<PlayerConnection> playerConnection =
-    // std::make_shared<PlayerConnection>(server,
-    // connection, player);
+    
+    
+    
     player->connection =
-        playerConnection;  // Used to be assigned in PlayerConnection ctor but
-                           // moved out so we can use std::shared_ptr
+        playerConnection;  
+                           
 
-    // 4J Added to store UGC settings
+    
     playerConnection->m_friendsOnlyUGC = packet->m_friendsOnlyUGC;
     playerConnection->m_offlineXUID = packet->m_offlineXuid;
     playerConnection->m_onlineXUID = packet->m_onlineXuid;
 
-    // This player is now added to the list, so incrementing this value
-    // invalidates all previous PreLogin packets
+    
+    
     if (packet->m_friendsOnlyUGC) ++server->m_ugcPlayersVersion;
 
     addPlayerToReceiving(player);
@@ -308,13 +308,13 @@ void PlayerList::placeNewPlayer(Connection* connection,
         level->getSeed(), player->gameMode->getGameModeForPlayer()->getId(),
         (uint8_t)level->dimension->id, (uint8_t)level->getMaxBuildHeight(),
         (uint8_t)getMaxPlayers(), level->difficulty,
-        0 /*TelemetryManager->GetMultiplayerInstanceID()*/,
+        0 ,
         (uint8_t)playerIndex, level->useNewSeaLevel(),
         player->getAllPlayerGamePrivileges(),
         level->getLevelData()->getXZSize(),
         level->getLevelData()->getHellScale(),
-        getViewDistance()));  // 4J macOS - Server_View_Distance (clamped in
-                              // PlayerList ctor); sent before any BRUP
+        getViewDistance()));  
+                              
     playerConnection->send(std::shared_ptr<SetSpawnPositionPacket>(
         new SetSpawnPositionPacket(spawnPos->x, spawnPos->y, spawnPos->z)));
     playerConnection->send(std::shared_ptr<PlayerAbilitiesPacket>(
@@ -327,19 +327,19 @@ void PlayerList::placeNewPlayer(Connection* connection,
 
     sendLevelInfo(player, level);
 
-    // 4J macOS - We previously sent a forced RespawnPacket here for the
-    // join-the-game flow, but the client doesn't have its chunks rebuilt
-    // around the correct player position at that point (the chunk grid
-    // gets initialised at the origin during Minecraft::setLevel because
-    // cameraTargetPlayer is still nullptr when LevelRenderer::allChanged
-    // first runs). Instead, the client now triggers a fresh respawn-style
-    // chunk grid rebuild from inside handleMovePlayer once the actual
-    // player position arrives - see ClientConnection::handleMovePlayer.
+    
+    
+    
+    
+    
+    
+    
+    
 
-    // 4J-PB - removed, since it needs to be localised in the language the
-    // client is in
-    // server->players->broadcastAll( std::shared_ptr<ChatPacket>( new
-    // ChatPacket(L"§e" + playerEntity->name + L" joined the game.") ) );
+    
+    
+    
+    
     broadcastAll(std::shared_ptr<ChatPacket>(
         new ChatPacket(player->name, ChatPacket::e_ChatPlayerJoinedGame)));
 
@@ -347,8 +347,8 @@ void PlayerList::placeNewPlayer(Connection* connection,
 
     player->doTick(
         true, true,
-        false);  // 4J - added - force sending of the nearest chunk before the
-                 // player is teleported, so we have somewhere to arrive on...
+        false);  
+                 
     playerConnection->teleport(player->x, player->y, player->z, player->yRot,
                                player->xRot);
     if (!playerConnection->isLocal() && !g_NetworkManager.SystemFlagGet(
@@ -374,7 +374,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
     player->initMenu();
 
     if (playerTag != nullptr && playerTag->contains(Entity::RIDING_TAG)) {
-        // this player has been saved with a mount tag
+        
         std::shared_ptr<Entity> mount = EntityIO::loadStatic(
             playerTag->getCompound(Entity::RIDING_TAG), level);
         if (mount != nullptr) {
@@ -385,9 +385,9 @@ void PlayerList::placeNewPlayer(Connection* connection,
         }
     }
 
-    // If we are joining at the same time as someone in the end on this system
-    // is travelling through the win portal, then we should set our wonGame flag
-    // to true so that respawning works when the EndPoem is closed
+    
+    
+    
     INetworkPlayer* thisPlayer = player->connection->getNetworkPlayer();
     if (thisPlayer != nullptr) {
         for (auto it = players.begin(); it != players.end(); ++it) {
@@ -405,31 +405,31 @@ void PlayerList::placeNewPlayer(Connection* connection,
 
 void PlayerList::updateEntireScoreboard(ServerScoreboard* scoreboard,
                                         std::shared_ptr<ServerPlayer> player) {
-    // unordered_set<Objective *> objectives;
+    
 
-    // for (PlayerTeam team : scoreboard->getPlayerTeams())
-    //{
-    //	player->connection->send( shared_ptr<SetPlayerTeamPacket>(new
-    // SetPlayerTeamPacket(team, SetPlayerTeamPacket::METHOD_ADD)));
-    // }
+    
+    
+    
+    
+    
 
-    // for (int slot = 0; slot < Scoreboard::DISPLAY_SLOTS; slot++)
-    //{
-    //	Objective objective = scoreboard->getDisplayObjective(slot);
+    
+    
+    
 
-    //	if (objective != nullptr && !objectives->contains(objective))
-    //	{
-    //		vector<shared_ptr<Packet> > *packets =
-    // scoreboard->getStartTrackingPackets(objective);
+    
+    
+    
+    
 
-    //		for (Packet packet : packets)
-    //		{
-    //			player->connection->send(packet);
-    //		}
+    
+    
+    
+    
 
-    //		objectives->add(objective);
-    //	}
-    //}
+    
+    
+    
 }
 
 void PlayerList::setLevel(std::vector<ServerLevel*>& levels) {
@@ -458,17 +458,17 @@ void PlayerList::save(std::shared_ptr<ServerPlayer> player) {
     playerIo->save(player);
 }
 
-// 4J Stu - TU-1 hotifx
-// Add this function to take some of the code from the PlayerList::add function
-// with the fixes for checking spawn area, especially in the nether. These
-// needed to be done in a different order from before Fix for #13150 - When a
-// player loads/joins a game after saving/leaving in the nether, sometimes they
-// are spawned on top of the nether and cannot mine down
+
+
+
+
+
+
 void PlayerList::validatePlayerSpawnPosition(
     std::shared_ptr<ServerPlayer> player) {
-    // 4J Stu - Some adjustments to make sure the current players position is
-    // correct Make sure that the player is on the ground, and in the centre x/z
-    // of the current column
+    
+    
+    
     app.DebugPrintf("Original pos is %f, %f, %f in dimension %d\n", player->x,
                     player->y, player->z, player->dimension);
 
@@ -500,13 +500,13 @@ void PlayerList::validatePlayerSpawnPosition(
     app.DebugPrintf("Final pos is %f, %f, %f in dimension %d\n", player->x,
                     player->y, player->z, player->dimension);
 
-    // 4J Stu - If we are in the nether and the above while loop has put us
-    // above the nether then we have a problem Finding a valid, safe spawn point
-    // is potentially computationally expensive (may have to hunt through a
-    // large part of the nether) so move the player to their spawn position in
-    // the overworld so that they do not lose their inventory 4J Stu - We also
-    // use this mechanism to force a spawn point in the overworld for players
-    // who were in the save when the reset nether option was applied
+    
+    
+    
+    
+    
+    
+    
     if (level->dimension->id == -1 && player->y > 125) {
         app.DebugPrintf(
             "Player in the nether tried to spawn at y = %f, moving to "
@@ -544,51 +544,51 @@ void PlayerList::validatePlayerSpawnPosition(
 }
 
 void PlayerList::add(std::shared_ptr<ServerPlayer> player) {
-    // broadcastAll(std::shared_ptr<PlayerInfoPacket>( new
-    // PlayerInfoPacket(player->name, true, 1000) ) );
+    
+    
     if (player->connection->getNetworkPlayer()) {
         broadcastAll(std::make_shared<PlayerInfoPacket>(player));
     }
 
     players.push_back(player);
 
-    // 4J Added
+    
     addPlayerToReceiving(player);
 
-    // Ensure the area the player is spawning in is loaded!
+    
     ServerLevel* level = server->getLevel(player->dimension);
 
-    // 4J Stu - TU-1 hotfix
-    // Fix for #13150 - When a player loads/joins a game after saving/leaving in
-    // the nether, sometimes they are spawned on top of the nether and cannot
-    // mine down Some code from here has been moved to the above
-    // validatePlayerSpawnPosition function
+    
+    
+    
+    
+    
 
-    // 4J Stu - Swapped these lines about so that we get the chunk visiblity
-    // packet way ahead of all the add tracked entity packets Fix for #9169 -
-    // ART : Sign text is replaced with the words Awaiting approval.
+    
+    
+    
     changeDimension(player, nullptr);
     level->addEntity(player);
 
     for (int i = 0; i < players.size(); i++) {
         std::shared_ptr<ServerPlayer> op = players.at(i);
-        // player->connection->send(std::shared_ptr<PlayerInfoPacket>( new
-        // PlayerInfoPacket(op->name, true, op->latency) ) );
+        
+        
         if (op->connection->getNetworkPlayer()) {
             player->connection->send(std::make_shared<PlayerInfoPacket>(op));
         }
     }
 
-    // 4J macOS - The vanilla flow only delivers AddPlayerPacket via the
-    // EntityTracker, which is gated on visibility (default 32 chunks =
-    // 512 blocks). Two players spawned far apart never see each other in
-    // the tab list / tracked-entity scoreboard until one teleports into
-    // tracker range. We bridge the gap by sending an AddPlayerPacket for
-    // every existing player to the joiner, and an AddPlayerPacket for
-    // the joiner to every existing player. Mirror what
-    // TrackedEntity::getAddEntityPacket would produce; the client code in
-    // handleAddPlayer is idempotent so re-sending later from the tracker
-    // is harmless.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     auto buildAddPacket = [](std::shared_ptr<ServerPlayer> p) {
         int xp = (int)std::floor(p->x * 32.0);
         int yp = (int)std::floor(p->y * 32.0);
@@ -603,13 +603,13 @@ void PlayerList::add(std::shared_ptr<ServerPlayer> player) {
     };
 
     if (player->connection->getNetworkPlayer()) {
-        // Tell every already-online player about the joiner - but NOT the
-        // joiner themselves. broadcastAll would include the new player,
-        // and because remote players now use a name-hashed pseudo-XUID
-        // (see getPlayerForLogin) the joiner's own XUID no longer matches
-        // their local ProfileManager XUID, so handleAddPlayer's
-        // "this is me" guard fails to fire and we'd spawn a duplicate
-        // phantom of the joiner. Send per-connection and skip self.
+        
+        
+        
+        
+        
+        
+        
         auto joinerPacket = buildAddPacket(player);
         for (auto& op : players) {
             if (op == player) continue;
@@ -619,8 +619,8 @@ void PlayerList::add(std::shared_ptr<ServerPlayer> player) {
             }
         }
 
-        // Tell the joiner about every already-online player (excluding
-        // themselves; they were just push_back-ed above).
+        
+        
         for (auto& op : players) {
             if (op == player) continue;
             if (op->connection != nullptr &&
@@ -653,14 +653,14 @@ void PlayerList::move(std::shared_ptr<ServerPlayer> player) {
 void PlayerList::remove(std::shared_ptr<ServerPlayer> player) {
     save(player);
 
-    // 4J macOS - Phase A persistence hardening. The vanilla path only
-    // writes the player's NBT into the in-memory ConsoleSaveFile cache.
-    // If the host crashes or hard-quits before the next autosave the
-    // .dat is lost. Force a cached-data flush on every disconnect so
-    // every remote player's inventory / position / XP is at least
-    // staged on the cache, then on a 60s rate-limit also flush the
-    // whole level to disk. The 60s rate-limit prevents stalls when a
-    // player join/leave-spams.
+    
+    
+    
+    
+    
+    
+    
+    
     if (playerIo != nullptr) {
         playerIo->saveAllCachedData();
         playerIo->saveMapIdLookup();
@@ -670,19 +670,19 @@ void PlayerList::remove(std::shared_ptr<ServerPlayer> player) {
             m_lastFullDiskFlushMs = nowMs;
             ServerLevel* level0 = server->getLevel(0);
             if (level0 != nullptr) {
-                level0->saveToDisc(nullptr, true);  // autosave-mode flush
+                level0->saveToDisc(nullptr, true);  
             }
         }
     }
 
-    // 4J Stu - We don't want to save the map data for guests, so when we are
-    // sure that the player is gone delete the map
+    
+    
     if (player->isGuest()) playerIo->deleteMapFilesForPlayer(player);
     ServerLevel* level = player->getLevel();
     if (player->riding != nullptr) {
-        // remove mount first because the player unmounts when being
-        // removed, also remove mount because it's saved in the player's
-        // save tag
+        
+        
+        
         level->removeEntityImmediately(player->riding);
         app.DebugPrintf("removing player mount");
     }
@@ -692,14 +692,14 @@ void PlayerList::remove(std::shared_ptr<ServerPlayer> player) {
     if (it != players.end()) {
         players.erase(it);
     }
-    // broadcastAll(std::shared_ptr<PlayerInfoPacket>( new
-    // PlayerInfoPacket(player->name, false, 9999) ) );
+    
+    
 
-    // 4J macOS - Mirror the explicit AddPlayerPacket broadcast in add():
-    // when a player leaves we need every other client to drop them from
-    // the tab list / world even if the leaver was outside their tracker
-    // visibility range. EntityTracker::removeEntity already sends a
-    // RemoveEntitiesPacket but only to peers that had this entity tracked.
+    
+    
+    
+    
+    
     {
         std::vector<int> ids;
         ids.push_back(player->entityId);
@@ -707,14 +707,14 @@ void PlayerList::remove(std::shared_ptr<ServerPlayer> player) {
     }
 
     removePlayerFromReceiving(player);
-    player->connection = nullptr;  // Must remove reference to connection, or
-                                   // else there is a circular dependency
-    delete player->gameMode;  // Gamemode also needs deleted as it references
-                              // back to this player
+    player->connection = nullptr;  
+                                   
+    delete player->gameMode;  
+                              
     player->gameMode = nullptr;
 
-    // 4J Stu - Save all the players currently in the game, which will also free
-    // up unused map id slots if required, and remove old players
+    
+    
     saveAll(nullptr, false);
 }
 
@@ -729,18 +729,18 @@ std::shared_ptr<ServerPlayer> PlayerList::getPlayerForLogin(
     std::shared_ptr<ServerPlayer> player = std::shared_ptr<ServerPlayer>(
         new ServerPlayer(server, server->getLevel(0), userName,
                          new ServerPlayerGameMode(server->getLevel(0))));
-    player->gameMode->player = player;  // 4J added as had to remove this
-                                        // assignment from ServerPlayer ctor
+    player->gameMode->player = player;  
+                                        
 
-    // 4J macOS - persistent remote-player saves. Direct-connect clients
-    // re-randomise their XUID every launch (see
-    // OverrideXuidBaseForDirectConnect in Profile.cpp), so the
-    // players/<xuid>.dat file the server writes would change name every
-    // session and the player's position / inventory would never be
-    // recovered. For NON-HOST players we derive a stable pseudo-XUID
-    // from a hash of their (case-sensitive) username, so the same
-    // nickname always maps to the same save file. The host keeps its
-    // real persisted XUID so its single-player saves keep loading.
+    
+    
+    
+    
+    
+    
+    
+    
+    
     PlayerUID effectiveXuid = xuid;
     {
         INetworkPlayer* np =
@@ -750,9 +750,9 @@ std::shared_ptr<ServerPlayer> PlayerList::getPlayerForLogin(
                 : nullptr;
         bool isHost = (np != nullptr && np->IsHost());
         if (!isHost && !userName.empty()) {
-            // FNV-1a 64-bit over the UTF-32 name. Mask the top bits to
-            // 0xC... so the value can't collide with the host's
-            // 0xE000-prefixed XUID space and is never INVALID_XUID(0).
+            
+            
+            
             uint64_t h = 1469598103934665603ULL;
             for (wchar_t wc : userName) {
                 h ^= (uint64_t)(uint32_t)wc;
@@ -767,10 +767,10 @@ std::shared_ptr<ServerPlayer> PlayerList::getPlayerForLogin(
                     userName.c_str(), (unsigned long long)effectiveXuid);
         }
     }
-    player->setXuid(effectiveXuid);     // 4J Added
-    player->setOnlineXuid(onlineXuid);  // 4J Added
+    player->setXuid(effectiveXuid);     
+    player->setOnlineXuid(onlineXuid);  
 
-    // Work out the base server player settings
+    
     INetworkPlayer* networkPlayer =
         pendingConnection->connection->getSocket()->getPlayer();
     if (networkPlayer != nullptr && !networkPlayer->IsHost()) {
@@ -778,7 +778,7 @@ std::shared_ptr<ServerPlayer> PlayerList::getPlayerForLogin(
             app.GetGameHostOption(eGameHostOption_TrustPlayers) > 0);
     }
 
-    // 4J Added
+    
     LevelRuleset* serverRuleDefs = app.getGameRuleDefinitions();
     if (serverRuleDefs != nullptr) {
         player->gameMode->setGameRules(
@@ -793,10 +793,10 @@ std::shared_ptr<ServerPlayer> PlayerList::getPlayerForLogin(
 std::shared_ptr<ServerPlayer> PlayerList::respawn(
     std::shared_ptr<ServerPlayer> serverPlayer, int targetDimension,
     bool keepAllPlayerData) {
-    // 4J macOS - capture death location for /back BEFORE we tear the
-    // player down. The respawned ServerPlayer below is a fresh object
-    // with restoreFrom() copying selected fields, so we have to stash
-    // both into the temp here and re-apply at the end.
+    
+    
+    
+    
     bool deathHadBack = serverPlayer->m_hasBack;
     double deathBackX = serverPlayer->m_backX;
     double deathBackY = serverPlayer->m_backY;
@@ -808,7 +808,7 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
     double deathHomeZ = serverPlayer->m_homeZ;
     int deathHomeDim = serverPlayer->m_homeDim;
     std::wstring deathReplyTo = serverPlayer->m_lastReplyTo;
-    // The location we just died at is the back point.
+    
     bool dyingHasBack = true;
     double dyingBackX = serverPlayer->x;
     double dyingBackY = serverPlayer->y;
@@ -818,19 +818,19 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
          serverPlayer->level->dimension != nullptr)
             ? serverPlayer->level->dimension->id
             : 0;
-    // How we handle the entity tracker depends on whether we are the primary
-    // player currently, and whether there will be any player in the same system
-    // in the same dimension once we finish respawning.
+    
+    
+    
     bool isPrimary = canReceiveAllPackets(
-        serverPlayer);  // Is this the primary player in its current dimension?
+        serverPlayer);  
     int oldDimension = serverPlayer->dimension;
     bool isEmptying =
         (targetDimension !=
-         oldDimension);  // We're not emptying this dimension on this machine if
-                         // this player is going back into the same dimension
+         oldDimension);  
+                         
 
-    // Also consider if there is another player on this machine which is in the
-    // same dimension and can take over as primary player
+    
+    
     if (isEmptying) {
         INetworkPlayer* thisPlayer =
             serverPlayer->connection->getNetworkPlayer();
@@ -843,20 +843,20 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
             INetworkPlayer* otherPlayer = ep->connection->getNetworkPlayer();
             if (otherPlayer != nullptr &&
                 thisPlayer->IsSameSystem(otherPlayer)) {
-                // There's another player here in the same dimension - we're not
-                // the last one out
+                
+                
                 isEmptying = false;
             }
         }
     }
 
-    // Now we know where we stand, the actions to take are as follows:
-    // (1) if this isn't the primary player, then we just need to remove it from
-    // the entity tracker (2) if this Is the primary player then:
-    //		(a) if isEmptying is true, then remove the player from the
-    // tracker, and send "remove entity" packets for anything seen (this is the
-    // original behaviour of the code) 		(b) if isEmptying is false, then
-    // we'll be transferring control of entity tracking to another player
+    
+    
+    
+    
+    
+    
+    
 
     if (isPrimary) {
         if (isEmptying) {
@@ -899,25 +899,25 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
     player->connection = serverPlayer->connection;
     player->restoreFrom(serverPlayer, keepAllPlayerData);
     if (keepAllPlayerData) {
-        // Fix for #81759 - TU9: Content: Gameplay: Entering The End Exit Portal
-        // replaces the Player's currently held item with the first one from the
-        // Quickbar
+        
+        
+        
         player->inventory->selected = serverPlayer->inventory->selected;
     }
-    player->gameMode->player = player;  // 4J added as had to remove this
-                                        // assignment from ServerPlayer ctor
-    player->setXuid(playerXuid);        // 4J Added
-    player->setOnlineXuid(playerOnlineXuid);  // 4J Added
+    player->gameMode->player = player;  
+                                        
+    player->setXuid(playerXuid);        
+    player->setOnlineXuid(playerOnlineXuid);  
 
-    // 4J macOS - carry our home/back/reply state across respawn. Without
-    // this, /home, /back and /r would forget their state on every death.
+    
+    
     player->m_hasHome = deathHadHome;
     player->m_homeX = deathHomeX;
     player->m_homeY = deathHomeY;
     player->m_homeZ = deathHomeZ;
     player->m_homeDim = deathHomeDim;
-    // Prefer the just-died location as the new /back target so the player
-    // can return to where they died, falling back to the previous /back.
+    
+    
     if (dyingHasBack) {
         player->m_hasBack = true;
         player->m_backX = dyingBackX;
@@ -933,10 +933,10 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
     }
     player->m_lastReplyTo = deathReplyTo;
 
-    // 4J Stu - Don't reuse the id. If we do, then the player can be re-added
-    // after being removed, but the add packet gets sent before the remove
-    // packet
-    // player->entityId = serverPlayer->entityId;
+    
+    
+    
+    
 
     player->setPlayerDefaultSkin(skin);
     player->setIsGuest(serverPlayer->isGuest());
@@ -948,33 +948,33 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
     player->gameMode->setGameRules(serverPlayer->gameMode->getGameRules());
     player->dimension = targetDimension;
 
-    // 4J Stu - Added this as we need to know earlier if the player is the
-    // player for this connection so that we can work out if they are the
-    // primary for the system and can receive all packets
+    
+    
+    
     player->connection->setPlayer(player);
 
     addPlayerToReceiving(player);
 
     ServerLevel* level = server->getLevel(serverPlayer->dimension);
 
-    // reset the player's game mode (first pick from old, then copy level if
-    // necessary)
+    
+    
     updatePlayerGameMode(player, serverPlayer, level);
 
     if (serverPlayer->wonGame && targetDimension == oldDimension &&
         serverPlayer->getHealth() > 0) {
-        // If the player is still alive and respawning to the same dimension,
-        // they are just being added back from someone else viewing the Win
-        // screen
+        
+        
+        
         player->moveTo(serverPlayer->x, serverPlayer->y, serverPlayer->z,
                        serverPlayer->yRot, serverPlayer->xRot);
         if (bedPosition != nullptr) {
             player->setRespawnPosition(bedPosition, spawnForced);
             delete bedPosition;
         }
-        // Fix for #81759 - TU9: Content: Gameplay: Entering The End Exit Portal
-        // replaces the Player's currently held item with the first one from the
-        // Quickbar
+        
+        
+        
         player->inventory->selected = serverPlayer->inventory->selected;
     } else if (bedPosition != nullptr) {
         Pos* respawnPosition = Player::checkBedValidRespawnPosition(
@@ -991,7 +991,7 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
         delete bedPosition;
     }
 
-    // Ensure the area the player is spawning in is loaded!
+    
     level->cache->create(((int)player->x) >> 4, ((int)player->z) >> 4);
 
     while (!level->getCubes(player, &player->bb)->empty()) {
@@ -1034,8 +1034,8 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
     player->initMenu();
     player->setHealth(player->getHealth());
 
-    // 4J-JEV - Dying before this point in the tutorial is pretty annoying,
-    // making sure to remove health/hunger and give you back your meat.
+    
+    
     if (Minecraft::GetInstance()->isTutorial() &&
         (!Minecraft::GetInstance()->gameMode->getTutorial()->isStateCompleted(
             e_Tutorial_State_Food_Bar))) {
@@ -1052,15 +1052,15 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
 void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player,
                                  int targetDimension) {
     int lastDimension = player->dimension;
-    // How we handle the entity tracker depends on whether we are the primary
-    // player currently, and whether there will be any player in the same system
-    // in the same dimension once we finish respawning.
+    
+    
+    
     bool isPrimary = canReceiveAllPackets(
-        player);  // Is this the primary player in its current dimension?
+        player);  
     bool isEmptying = true;
 
-    // Also consider if there is another player on this machine which is in the
-    // same dimension and can take over as primary player
+    
+    
     INetworkPlayer* thisPlayer = player->connection->getNetworkPlayer();
 
     for (unsigned int i = 0; i < players.size(); i++) {
@@ -1070,19 +1070,19 @@ void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player,
 
         INetworkPlayer* otherPlayer = ep->connection->getNetworkPlayer();
         if (otherPlayer != nullptr && thisPlayer->IsSameSystem(otherPlayer)) {
-            // There's another player here in the same dimension - we're not the
-            // last one out
+            
+            
             isEmptying = false;
         }
     }
 
-    // Now we know where we stand, the actions to take are as follows:
-    // (1) if this isn't the primary player, then we just need to remove it from
-    // the entity tracker (2) if this Is the primary player then:
-    //		(a) if isEmptying is true, then remove the player from the
-    // tracker, and send "remove entity" packets for anything seen (this is the
-    // original behaviour of the code) 		(b) if isEmptying is false, then
-    // we'll be transferring control of entity tracking to another player
+    
+    
+    
+    
+    
+    
+    
 
     if (isPrimary) {
         if (isEmptying) {
@@ -1099,8 +1099,8 @@ void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player,
 
     ServerLevel* oldLevel = server->getLevel(player->dimension);
 
-    // 4J Stu - Do this much earlier so we don't end up unloading chunks in the
-    // wrong dimension
+    
+    
     player->getLevel()->getChunkMap()->remove(player);
 
     if (player->dimension != 1 && targetDimension == 1) {
@@ -1113,12 +1113,12 @@ void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player,
 
     ServerLevel* newLevel = server->getLevel(player->dimension);
 
-    // 4J Stu - Fix for #46423 - TU5: Art: Code: No burning animation visible
-    // after entering The Nether while burning
-    player->clearFire();  // Stop burning if travelling through a portal
+    
+    
+    player->clearFire();  
 
-    // 4J Stu Added so that we remove entities from the correct level, after the
-    // respawn packet we will be in the wrong level
+    
+    
     player->flushEntitiesToRemove();
 
     player->connection->send(std::make_shared<RespawnPacket>(
@@ -1137,7 +1137,7 @@ void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player,
 
     player->gameMode->setLevel(newLevel);
 
-    // Resend the teleport if we haven't yet sent the chunk they will land on
+    
     if (!g_NetworkManager.SystemFlagGet(
             player->connection->getNetworkPlayer(),
             ServerPlayer::getFlagIndexForChunk(
@@ -1145,15 +1145,15 @@ void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player,
                 player->level->dimension->id))) {
         player->connection->teleport(player->x, player->y, player->z,
                                      player->yRot, player->xRot, false);
-        // Force sending of the current chunk
+        
         player->doTick(true, true, true);
     }
 
     player->connection->teleport(player->x, player->y, player->z, player->yRot,
                                  player->xRot);
 
-    // 4J Stu - Fix for #64683 - Customer Encountered: TU7: Content: Gameplay:
-    // Potion effects are removed after using the Nether Portal
+    
+    
     std::vector<MobEffectInstance*>* activeEffects = player->getActiveEffects();
     for (auto it = activeEffects->begin(); it != activeEffects->end(); ++it) {
         MobEffectInstance* effect = *it;
@@ -1180,7 +1180,7 @@ void PlayerList::repositionAcrossDimension(std::shared_ptr<Entity> entity,
     float yRotOriginal = entity->yRot;
     double scale =
         newLevel->getLevelData()
-            ->getHellScale();  // 4J Scale was 8 but this is all we can fit in
+            ->getHellScale();  
     if (entity->dimension == -1) {
         xt /= scale;
         zt /= scale;
@@ -1199,10 +1199,10 @@ void PlayerList::repositionAcrossDimension(std::shared_ptr<Entity> entity,
         Pos* p;
 
         if (lastDimension == 1) {
-            // Coming from the end
+            
             p = newLevel->getSharedSpawnPos();
         } else {
-            // Going to the end
+            
             p = newLevel->getDimensionSpecificSpawn();
         }
 
@@ -1243,17 +1243,17 @@ void PlayerList::repositionAcrossDimension(std::shared_ptr<Entity> entity,
 }
 
 void PlayerList::tick() {
-    // 4J - brought changes to how often this is sent forward from 1.2.3
+    
     if (++sendAllPlayerInfoIn > SEND_PLAYER_INFO_INTERVAL) {
         sendAllPlayerInfoIn = 0;
     }
 
-    // 4J macOS - Phase C multiplayer autosave override. The host's
-    // local autosave timer (eGameSetting_Autosave, default 5+ minutes)
-    // is too coarse for shared worlds where remote players may build
-    // for an hour and then crash before any save lands. While at least
-    // one remote player is connected we run a level flush every 90s.
-    // Single-player and host-only sessions keep the vanilla cadence.
+    
+    
+    
+    
+    
+    
     bool hasRemotePlayer = false;
     for (size_t i = 0; i < players.size(); i++) {
         std::shared_ptr<ServerPlayer> sp = players[i];
@@ -1272,7 +1272,7 @@ void PlayerList::tick() {
     }
     if (hasRemotePlayer) {
         if (--m_mpAutosaveCountdown <= 0) {
-            m_mpAutosaveCountdown = 20 * 90;  // re-arm 90s
+            m_mpAutosaveCountdown = 20 * 90;  
             if (playerIo != nullptr &&
                 !StorageManager.GetSaveDisabled()) {
                 playerIo->saveAllCachedData();
@@ -1285,19 +1285,19 @@ void PlayerList::tick() {
             }
         }
     } else {
-        // Hold the counter at the start value while no remote players
-        // are present so the next remote join doesn't trigger an
-        // immediate flush.
+        
+        
+        
         m_mpAutosaveCountdown = 20 * 90;
     }
 
     if (sendAllPlayerInfoIn < players.size()) {
         std::shared_ptr<ServerPlayer> op = players[sendAllPlayerInfoIn];
-        // broadcastAll(std::shared_ptr<PlayerInfoPacket>( new
-        // PlayerInfoPacket(op->name, true, op->latency) ) );
-        // 4J - guard against op->connection being null. PlayerList::remove()
-        // sets connection to nullptr before erasing the entry; if tick() runs
-        // between those two operations we would otherwise null-deref.
+        
+        
+        
+        
+        
         if (op != nullptr && op->connection != nullptr &&
             op->connection->getNetworkPlayer()) {
             broadcastAll(std::make_shared<PlayerInfoPacket>(op));
@@ -1314,8 +1314,8 @@ void PlayerList::tick() {
 
             for (unsigned int i = 0; i < players.size(); i++) {
                 std::shared_ptr<ServerPlayer> p = players.at(i);
-                // 4J Stu - May be being a bit overprotective with all the
-                // nullptr checks, but adding late in TU7 so want to be safe
+                
+                
                 if (p != nullptr && p->connection != nullptr &&
                     p->connection->connection != nullptr &&
                     p->connection->connection->getSocket() != nullptr &&
@@ -1342,9 +1342,9 @@ void PlayerList::tick() {
                 g_NetworkManager.GetPlayerBySmallId(smallId);
             if (selectedPlayer != nullptr) {
                 if (selectedPlayer->IsLocal() != true) {
-                    // #if 0
+                    
                     PlayerUID xuid = selectedPlayer->GetUID();
-                    // Kick this player from the game
+                    
                     std::shared_ptr<ServerPlayer> player = nullptr;
 
                     for (unsigned int i = 0; i < players.size(); i++) {
@@ -1359,9 +1359,9 @@ void PlayerList::tick() {
 
                     if (player != nullptr) {
                         m_bannedXuids.push_back(player->getOnlineXuid());
-                        // 4J Stu - If we have kicked a player, make sure that
-                        // they have no privileges if they later try to join the
-                        // world when trust players is off
+                        
+                        
+                        
                         player->enableAllPlayerPrivileges(false);
                         player->connection->setWasKicked();
                         player->connection->send(
@@ -1369,14 +1369,14 @@ void PlayerList::tick() {
                                 new DisconnectPacket(
                                     DisconnectPacket::eDisconnect_Kicked)));
                     }
-                    // #endif
+                    
                 }
             }
         }
     }
 
-    // Check our receiving players, and if they are dead see if we can replace
-    // them
+    
+    
     for (unsigned int dim = 0; dim < 2; ++dim) {
         for (unsigned int i = 0; i < receiveAllPlayers[dim].size(); ++i) {
             std::shared_ptr<ServerPlayer> currentPlayer =
@@ -1401,18 +1401,18 @@ bool PlayerList::isTrackingTile(int x, int y, int z, int dimension) {
     return server->getLevel(dimension)->getChunkMap()->isTrackingTile(x, y, z);
 }
 
-// 4J added - make sure that any tile updates for the chunk at this location get
-// prioritised for sending
+
+
 void PlayerList::prioritiseTileChanges(int x, int y, int z, int dimension) {
     server->getLevel(dimension)->getChunkMap()->prioritiseTileChanges(x, y, z);
 }
 
 void PlayerList::broadcastAll(std::shared_ptr<Packet> packet) {
-    // 4J - take a snapshot of player pointers so a remove() racing with us
-    // (or a disconnect triggered as a side-effect of send()) cannot
-    // invalidate the iteration. Skip players whose connection has already
-    // been nulled out by PlayerList::remove() since their entry will be
-    // erased on the next tick.
+    
+    
+    
+    
+    
     std::vector<std::shared_ptr<ServerPlayer> > snapshot = players;
     for (auto& player : snapshot) {
         if (player == nullptr) continue;
@@ -1462,8 +1462,8 @@ std::shared_ptr<ServerPlayer> PlayerList::getPlayer(const std::wstring& name) {
     for (unsigned int i = 0; i < players.size(); i++) {
         std::shared_ptr<ServerPlayer> p = players[i];
         if (p->name ==
-            name)  // 4J - used to be case insensitive (using equalsIgnoreCase)
-                   // - imagine we'll be shifting to XUIDs anyway
+            name)  
+                   
         {
             return p;
         }
@@ -1471,14 +1471,14 @@ std::shared_ptr<ServerPlayer> PlayerList::getPlayer(const std::wstring& name) {
     return nullptr;
 }
 
-// 4J Added
+
 std::shared_ptr<ServerPlayer> PlayerList::getPlayer(PlayerUID uid) {
     for (unsigned int i = 0; i < players.size(); i++) {
         std::shared_ptr<ServerPlayer> p = players[i];
         if (p->getXuid() == uid ||
-            p->getOnlineXuid() == uid)  // 4J - used to be case insensitive
-                                        // (using equalsIgnoreCase) - imagine
-                                        // we'll be shifting to XUIDs anyway
+            p->getOnlineXuid() == uid)  
+                                        
+                                        
         {
             return p;
         }
@@ -1518,53 +1518,53 @@ std::vector<ServerPlayer>* PlayerList::getPlayers(
     app.DebugPrintf("getPlayers NOT IMPLEMENTED!");
     return nullptr;
 
-    /*if (players.empty()) return nullptr;
-    vector<shared_ptr<ServerPlayer> > result = new
-    vector<shared_ptr<ServerPlayer> >(); bool reverse = count < 0; bool
-    playerNameNot = !playerName.empty() && playerName.startsWith("!"); bool
-    teamNameNot = !teamName.empty() && teamName.startsWith("!"); int rangeMinSqr
-    = rangeMin * rangeMin; int rangeMaxSqr = rangeMax * rangeMax; count =
-    Mth.abs(count);
+    
 
-    if (playerNameNot) playerName = playerName.substring(1);
-    if (teamNameNot) teamName = teamName.substring(1);
 
-    for (int i = 0; i < players.size(); i++) {
-    ServerPlayer player = players.get(i);
 
-    if (level != null && player.level != level) continue;
-    if (playerName != null) {
-    if (playerNameNot == playerName.equalsIgnoreCase(player.getAName()))
-    continue;
-    }
-    if (teamName != null) {
-    Team team = player.getTeam();
-    String actualName = team == null ? "" : team.getName();
-    if (teamNameNot == teamName.equalsIgnoreCase(actualName)) continue;
-    }
 
-    if (position != null && (rangeMin > 0 || rangeMax > 0)) {
-    float distance = position.distSqr(player.getCommandSenderWorldPosition());
-    if (rangeMin > 0 && distance < rangeMinSqr) continue;
-    if (rangeMax > 0 && distance > rangeMaxSqr) continue;
-    }
 
-    if (!meetsScoreRequirements(player, scoreRequirements)) continue;
 
-    if (mode != GameType.NOT_SET.getId() && mode !=
-    player.gameMode.getGameModeForPlayer().getId()) continue; if (levelMin > 0
-    && player.experienceLevel < levelMin) continue; if (player.experienceLevel >
-    levelMax) continue;
 
-    result.add(player);
-    }
 
-    if (position != null) Collections.sort(result, new
-    PlayerDistanceComparator(position)); if (reverse)
-    Collections.reverse(result); if (count > 0) result = result.subList(0,
-    Math.min(count, result.size()));
 
-    return result;*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 bool PlayerList::meetsScoreRequirements(
@@ -1573,32 +1573,32 @@ bool PlayerList::meetsScoreRequirements(
     app.DebugPrintf("meetsScoreRequirements NOT IMPLEMENTED!");
     return false;
 
-    // if (scoreRequirements == null || scoreRequirements.size() == 0) return
-    // true;
+    
+    
 
-    // for (Map.Entry<String, Integer> requirement :
-    // scoreRequirements.entrySet()) { 	String name = requirement.getKey();
-    //	bool min = false;
+    
+    
+    
 
-    //	if (name.endsWith("_min") && name.length() > 4) {
-    //		min = true;
-    //		name = name.substring(0, name.length() - 4);
-    //	}
+    
+    
+    
+    
 
-    //	Scoreboard scoreboard = player.getScoreboard();
-    //	Objective objective = scoreboard.getObjective(name);
-    //	if (objective == null) return false;
-    //	Score score = player.getScoreboard().getPlayerScore(player.getAName(),
-    // objective); 	int value = score.getScore();
+    
+    
+    
+    
+    
 
-    //	if (value < requirement.getValue() && min) {
-    //		return false;
-    //	} else if (value > requirement.getValue() && !min) {
-    //		return false;
-    //	}
-    //}
+    
+    
+    
+    
+    
+    
 
-    // return true;
+    
 }
 
 void PlayerList::sendMessage(const std::wstring& name,
@@ -1617,9 +1617,9 @@ void PlayerList::broadcast(double x, double y, double z, double range,
 void PlayerList::broadcast(std::shared_ptr<Player> except, double x, double y,
                            double z, double range, int dimension,
                            std::shared_ptr<Packet> packet) {
-    // 4J - altered so that we don't send to the same machine more than once.
-    // Add the source player to the machines we have "sent" to as it doesn't
-    // need to go to that machine either
+    
+    
+    
     std::vector<std::shared_ptr<ServerPlayer> > sentTo;
     if (except != nullptr) {
         sentTo.push_back(std::dynamic_pointer_cast<ServerPlayer>(except));
@@ -1630,7 +1630,7 @@ void PlayerList::broadcast(std::shared_ptr<Player> except, double x, double y,
         if (p == except) continue;
         if (p->dimension != dimension) continue;
 
-        // 4J - don't send to the same machine more than once
+        
         bool dontSend = false;
         if (sentTo.size()) {
             INetworkPlayer* thisPlayer = p->connection->getNetworkPlayer();
@@ -1663,18 +1663,18 @@ void PlayerList::broadcast(std::shared_ptr<Player> except, double x, double y,
 }
 
 void PlayerList::saveAll(ProgressListener* progressListener,
-                         bool bDeleteGuestMaps /*= false*/) {
+                         bool bDeleteGuestMaps ) {
     if (progressListener != nullptr)
         progressListener->progressStart(IDS_PROGRESS_SAVING_PLAYERS);
-    // 4J - playerIo can be nullptr if we have have to exit a game really early
-    // on due to network failure
+    
+    
     if (playerIo) {
         playerIo->saveAllCachedData();
         for (unsigned int i = 0; i < players.size(); i++) {
             playerIo->save(players[i]);
 
-            // 4J Stu - We don't want to save the map data for guests, so when
-            // we are sure that the player is gone delete the map
+            
+            
             if (bDeleteGuestMaps && players[i]->isGuest())
                 playerIo->deleteMapFilesForPlayer(players[i]);
 
@@ -1702,14 +1702,14 @@ void PlayerList::sendLevelInfo(std::shared_ptr<ServerPlayer> player,
         player->connection->send(std::shared_ptr<GameEventPacket>(
             new GameEventPacket(GameEventPacket::START_RAINING, 0)));
     } else {
-        // 4J Stu - Fix for #44836 - Customer Encountered: Out of Sync Weather
-        // [A-10] If it was raining when the player left the level, and is now
-        // not raining we need to make sure that state is updated
+        
+        
+        
         player->connection->send(std::shared_ptr<GameEventPacket>(
             new GameEventPacket(GameEventPacket::STOP_RAINING, 0)));
     }
 
-    // send the stronghold position if there is one
+    
     if ((level->dimension->id == 0) &&
         level->getLevelData()->getHasStronghold()) {
         player->connection->send(std::make_shared<XZPacket>(
@@ -1750,8 +1750,8 @@ void PlayerList::setOverrideGameMode(GameType* gameMode) {
 void PlayerList::updatePlayerGameMode(std::shared_ptr<ServerPlayer> newPlayer,
                                       std::shared_ptr<ServerPlayer> oldPlayer,
                                       Level* level) {
-    // reset the player's game mode (first pick from old, then copy level if
-    // necessary)
+    
+    
     if (oldPlayer != nullptr) {
         newPlayer->gameMode->setGameModeForPlayer(
             oldPlayer->gameMode->getGameModeForPlayer());
@@ -1794,8 +1794,8 @@ std::shared_ptr<ServerPlayer> PlayerList::findAlivePlayerOnSystem(
 }
 
 void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
-                                           bool usePlayerDimension /*= true*/,
-                                           int dimension /*= 0*/) {
+                                           bool usePlayerDimension ,
+                                           int dimension ) {
     int dimIndex, playerDim;
     dimIndex = playerDim = usePlayerDimension ? player->dimension : dimension;
     if (dimIndex == -1)
@@ -1848,9 +1848,9 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
             "players\n",
             player->name.c_str());
 #endif
-        // 4J Stu - Something went wrong, or possibly the QNet player left
-        // before we got here. Re-check all active players and make sure they
-        // have someone on their system to receive all packets
+        
+        
+        
         for (auto itP = players.begin(); itP != players.end(); ++itP) {
             std::shared_ptr<ServerPlayer> newPlayer = *itP;
             INetworkPlayer* checkingPlayer =
@@ -1997,17 +1997,17 @@ bool PlayerList::pardonXuid(PlayerUID xuid) {
     return false;
 }
 
-// AP added for Vita so the range can be increased once the level starts
+
 void PlayerList::setViewDistance(int newViewDistance) {
-    // 4J macOS task 8.2 (Req 7.4) - clamp the new Server_View_Distance and
-    // propagate it to every ServerLevel's chunk map radius and entity tracker
-    // range within this tick, so chunk streaming and entity visibility stay
-    // consistent after a live view-distance change.
+    
+    
+    
+    
     int clamped = clampViewDistance(newViewDistance);
     viewDistance = clamped;
     for (ServerLevel* level : server->levels) {
         if (level == nullptr) continue;
-        level->getChunkMap()->setRadius(clamped);  // keep chunk subscription radius in sync
-        level->getTracker()->updateMaxRange();      // Req 7.4 - recompute entity tracking range
+        level->getChunkMap()->setRadius(clamped);  
+        level->getTracker()->updateMaxRange();      
     }
 }

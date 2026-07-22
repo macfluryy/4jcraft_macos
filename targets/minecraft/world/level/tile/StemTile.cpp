@@ -35,8 +35,8 @@ void StemTile::tick(Level* level, int x, int y, int z, Random* random) {
     if (level->getRawBrightness(x, y + 1, z) >= Level::MAX_BRIGHTNESS - 6) {
         float growthSpeed = getGrowthSpeed(level, x, y, z);
 
-        // 4J Stu - Brought forward change from 1.2.3 to make fruit more likely
-        // to grow
+        
+        
         if (random->nextInt((int)(25 / growthSpeed) + 1) == 0) {
             int age = level->getData(x, y, z);
             if (age < 7) {
@@ -55,8 +55,8 @@ void StemTile::tick(Level* level, int x, int y, int z, Random* random) {
                 if (dir == 1) xx++;
                 if (dir == 2) zz--;
                 if (dir == 3) zz++;
-                // 4J Stu - Brought forward change from 1.2.3 to not require
-                // farmland to grow fruits
+                
+                
                 int below = level->getTile(xx, y - 1, zz);
                 if (level->getTile(xx, y, zz) == 0 &&
                     (below == Tile::farmland_Id || below == Tile::dirt_Id ||
@@ -112,10 +112,10 @@ float StemTile::getGrowthSpeed(Level* level, int x, int y, int z) {
 }
 
 int StemTile::getColor(int data) {
-    // int r = data * 32;
-    // int g = 255 - data * 8;
-    // int b = data * 4;
-    // return r << 16 | g << 8 | b;
+    
+    
+    
+    
 
     int colour = 0;
 
@@ -152,7 +152,7 @@ void StemTile::updateDefaultShape() {
 void StemTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     ThreadStorage* tls = m_tlsShape;
     tls->yy1 = (level->getData(x, y, z) * 2 + 2) / 16.0f;
@@ -172,10 +172,10 @@ int StemTile::getConnectDir(LevelSource* level, int x, int y, int z) {
     return -1;
 }
 
-/**
- * Using this method instead of destroy() to determine if seeds should be
- * dropped
- */
+
+
+
+
 void StemTile::spawnResources(Level* level, int x, int y, int z, int data,
                               float odds, int playerBonus) {
     Tile::spawnResources(level, x, y, z, data, odds, playerBonus);

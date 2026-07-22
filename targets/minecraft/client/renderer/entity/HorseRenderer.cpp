@@ -56,14 +56,14 @@ void HorseRenderer::renderModel(std::shared_ptr<LivingEntity> mob, float wp,
         EntityRenderer::bindTexture(mob);
         model->render(mob, wp, ws, bob, headRotMinusBodyRot, headRotx, scale,
                       true);
-        // Ensure that any extra layers of texturing are disabled after
-        // rendering this horse
+        
+        
         RenderManager.TextureBind(-1);
     }
 }
 
 void HorseRenderer::bindTexture(ResourceLocation* location) {
-    // Set up (potentially) multiple texture layers for the horse
+    
     entityRenderDispatcher->textures->bindTextureLayers(location);
 }
 

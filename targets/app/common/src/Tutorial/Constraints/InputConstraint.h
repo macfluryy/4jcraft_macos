@@ -4,7 +4,7 @@
 
 class InputConstraint : public TutorialConstraint {
 private:
-    int m_inputMapping;  // Should be one of the EControllerActions
+    int m_inputMapping;  
 public:
     virtual ConstraintType getType() { return e_ConstraintInput; }
 

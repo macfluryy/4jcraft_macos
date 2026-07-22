@@ -69,7 +69,7 @@ void FollowOwnerGoal::tick() {
         TeleportDistance * TeleportDistance)
         return;
 
-    // find a good spawn position nearby the owner
+    
     int sx = Mth::floor(owner.lock()->x) - 2;
     int sz = Mth::floor(owner.lock()->z) - 2;
     int y = Mth::floor(owner.lock()->bb.y0);

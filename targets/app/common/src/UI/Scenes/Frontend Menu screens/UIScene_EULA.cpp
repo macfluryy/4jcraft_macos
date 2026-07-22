@@ -20,7 +20,7 @@
 
 UIScene_EULA::UIScene_EULA(int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     parentLayer->addComponent(iPad, eUIComponent_Panorama);
@@ -44,7 +44,7 @@ UIScene_EULA::UIScene_EULA(int iPad, void* initData, UILayer* parentLayer)
         m_labelDescription.addText(paragraphs[i], i == (paragraphs.size() - 1));
     }
 
-    // 4J-PB - If we have a signed in user connected, let's get the DLC now
+    
     for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
         if ((InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i))) {
             if (!app.DLCInstallProcessCompleted() && !app.DLCInstallPending()) {
@@ -56,7 +56,7 @@ UIScene_EULA::UIScene_EULA(int iPad, void* initData, UILayer* parentLayer)
 
     m_bIgnoreInput = false;
 
-    // ui.setFontCachingCalculationBuffer(20000);
+    
 }
 
 UIScene_EULA::~UIScene_EULA() {
@@ -92,7 +92,7 @@ void UIScene_EULA::handleInput(int iPad, int key, bool repeat, bool pressed,
 void UIScene_EULA::handlePress(F64 controlId, F64 childId) {
     switch ((int)controlId) {
         case eControl_Confirm:
-            // CD - Added for audio
+            
             ui.PlayUISFX(eSFX_Press);
             app.SetGameSettings(0, eGameSetting_PS3_EULA_Read, 1);
             ui.NavigateToScene(0, eUIScene_SaveMessage);

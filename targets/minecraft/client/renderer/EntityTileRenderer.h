@@ -20,6 +20,6 @@ public:
     void render(Tile* tile, int data, float brightness, float alpha,
                 bool setColor = true,
                 bool useCompiled =
-                    true);  // 4J - added setColor parameter and alpha for chest
-                            // in the crafting menu, and added useCompiled
+                    true);  
+                            
 };

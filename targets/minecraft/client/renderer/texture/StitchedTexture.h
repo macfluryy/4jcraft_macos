@@ -80,21 +80,21 @@ public:
     Texture* getFrame(int i);
     virtual int getFrames();
 
-    /**
-     * Loads animation frames from a file with the syntax, <code>
-     * 0,1,2,3,
-     * 4*10,5*10,
-     * 4*10,3,2,1,
-     * 0
-     * </code> or similar
-     *
-     * @param bufferedReader
-     */
-    void loadAnimationFrames(BufferedReader* bufferedReader);
-    void loadAnimationFrames(const std::wstring& string);  // 4J Added
+    
 
-    int getFlags() const;              // 4J added
-    void setFlags(int flags);          // 4J added
-    virtual void freeFrameTextures();  // 4J added
-    virtual bool hasOwnData();         // 4J Added
+
+
+
+
+
+
+
+
+    void loadAnimationFrames(BufferedReader* bufferedReader);
+    void loadAnimationFrames(const std::wstring& string);  
+
+    int getFlags() const;              
+    void setFlags(int flags);          
+    virtual void freeFrameTextures();  
+    virtual bool hasOwnData();         
 };

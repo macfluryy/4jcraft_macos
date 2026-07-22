@@ -21,12 +21,12 @@ public:
     static const int RIDING_JUMP;
     static const int OPEN_INVENTORY;
 
-    // 4J Added
-    // 4J-PB - Making this host only setting
-    /*
-    static const int SHOW_ON_MAPS;
-    static const int HIDE_ON_MAPS;
-    */
+    
+    
+    
+
+
+
 
     int id;
     int action;

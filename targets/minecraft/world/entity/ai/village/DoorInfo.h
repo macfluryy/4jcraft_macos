@@ -8,8 +8,8 @@ public:
     bool removed;
 
 private:
-    // this is used for mobs to see how many mobs are
-    // present, it's not 100% accurate but may be good enough
+    
+    
     int bookings;
 
 public:

@@ -89,7 +89,7 @@ public:
     virtual void killed(std::shared_ptr<LivingEntity> mob);
     virtual MobGroupData* finalizeMobSpawn(
         MobGroupData* groupData,
-        int extraData = 0);  // 4J Added extraData param
+        int extraData = 0);  
     virtual bool mobInteract(std::shared_ptr<Player> player);
 
 protected:

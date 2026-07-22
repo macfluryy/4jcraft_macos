@@ -17,7 +17,7 @@ public:
     static inline constexpr int POTION_ID_FIRE_RESISTANCE = 16307;
 
     static const bool SIMPLIFIED_BREWING = true;
-    // 4J Stu - Made #define so we can use it to select const initialisation
+    
 #define _SIMPLIFIED_BREWING 1
 
     static inline constexpr int BREWING_TIME_SECONDS = 20;
@@ -55,7 +55,7 @@ public:
 
     static inline constexpr int NUM_BITS = 15;
 
-    // 4J Stu - Made public
+    
     static inline constexpr int BREW_MASK = 0x7fff;
 
 private:
@@ -121,5 +121,5 @@ public:
     static int valueOf(int brew, int p1, int p2, int p3, int p4);
     static int valueOf(int brew, int p1, int p2, int p3, int p4, int p5);
     static std::wstring toString(int brew);
-    // static void main(String[] args);
+    
 };

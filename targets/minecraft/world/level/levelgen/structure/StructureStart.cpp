@@ -13,7 +13,7 @@
 
 StructureStart::StructureStart() {
     chunkX = chunkZ = 0;
-    boundingBox = nullptr;  // 4J added initialiser
+    boundingBox = nullptr;  
 }
 
 StructureStart::StructureStart(int x, int z) {
@@ -40,8 +40,8 @@ void StructureStart::postProcess(Level* level, Random* random,
     while (it != pieces.end()) {
         if ((*it)->getBoundingBox()->intersects(chunkBB) &&
             !(*it)->postProcess(level, random, chunkBB)) {
-            // this piece can't be placed, so remove it to avoid future
-            // attempts
+            
+            
             it = pieces.erase(it);
         } else {
             it++;
@@ -103,14 +103,14 @@ void StructureStart::moveBelowSeaLevel(Level* level, Random* random,
                                        int offset) {
     const int MAX_Y = level->seaLevel - offset;
 
-    // set lowest possible position (at bedrock)
+    
     int y1Pos = boundingBox->getYSpan() + 1;
-    // move up randomly within the available span
+    
     if (y1Pos < MAX_Y) {
         y1Pos += random->nextInt(MAX_Y - y1Pos);
     }
 
-    // move all bounding boxes
+    
     int dy = y1Pos - boundingBox->y1;
     boundingBox->move(0, dy, 0);
     for (auto it = pieces.begin(); it != pieces.end(); it++) {
@@ -131,7 +131,7 @@ void StructureStart::moveInsideHeights(Level* level, Random* random,
         y0Pos = lowestAllowed;
     }
 
-    // move all bounding boxes
+    
     int dy = y0Pos - boundingBox->y0;
     boundingBox->move(0, dy, 0);
     for (auto it = pieces.begin(); it != pieces.end(); it++) {

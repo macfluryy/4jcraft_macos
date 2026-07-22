@@ -10,7 +10,7 @@
 #include "app/mac/Stubs/iggy_stubs.h"
 #endif
 
-// This class maps to the FJ_Base class in actionscript
+
 class UIControl_Base : public UIControl {
 protected:
     IggyName m_initFunc;
@@ -31,9 +31,9 @@ public:
 
     virtual void setLabel(UIString label, bool instant = false,
                           bool force = false);
-    // virtual void setLabel(std::wstring label, bool instant = false, bool
-    // force = false) { this->setLabel(UIString::CONSTANT(label), instant,
-    // force); }
+    
+    
+    
 
     const wchar_t* getLabel();
     virtual void setAllPossibleLabels(int labelCount, wchar_t labels[][256]);

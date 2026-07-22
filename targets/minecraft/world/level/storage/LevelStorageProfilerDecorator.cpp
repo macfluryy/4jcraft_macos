@@ -12,8 +12,8 @@ LevelData* LevelStorageProfilerDecorator::prepareLevel() {
     return capsulated->prepareLevel();
 }
 
-void LevelStorageProfilerDecorator::checkSession()  // throws
-                                                    // LevelConflictException
+void LevelStorageProfilerDecorator::checkSession()  
+                                                    
 {
     capsulated->checkSession();
 }

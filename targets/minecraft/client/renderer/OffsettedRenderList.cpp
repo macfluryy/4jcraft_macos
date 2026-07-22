@@ -4,7 +4,7 @@
 #include "java/IntBuffer.h"
 #include "minecraft/client/MemoryTracker.h"
 
-// 4J added
+
 OffsettedRenderList::OffsettedRenderList() {
     x = y = z = 0;
     xOff = yOff = zOff = 0;
@@ -32,8 +32,8 @@ bool OffsettedRenderList::isAt(int x, int y, int z) {
 }
 
 void OffsettedRenderList::add(int list) {
-    // 4J - added - chunkList::getList returns -1 when chunks aren't visible, we
-    // really don't want to end up sending that to glCallLists
+    
+    
     if (list >= 0) {
         lists->put(list);
     }

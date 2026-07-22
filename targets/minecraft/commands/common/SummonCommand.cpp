@@ -28,15 +28,15 @@ static std::wstring toLowerWStr(const std::wstring& str) {
     return result;
 }
 
-// Map of common, friendly mob names to their EntityIO numeric IDs.
-// Mirrors the IDs registered in EntityIO::staticCtor.
+
+
 struct MobNameMapEntry {
     const wchar_t* name;
     int id;
 };
 
 static const MobNameMapEntry kMobNameMap[] = {
-    // Hostile
+    
     {L"creeper", 50},
     {L"skeleton", 51},
     {L"spider", 52},
@@ -57,7 +57,7 @@ static const MobNameMapEntry kMobNameMap[] = {
     {L"wither", 64},
     {L"bat", 65},
     {L"witch", 66},
-    // Friendly
+    
     {L"pig", 90},
     {L"sheep", 91},
     {L"cow", 92},
@@ -80,7 +80,7 @@ int SummonCommand::resolveEntityIdByName(const std::wstring& name) {
     for (const auto& entry : kMobNameMap) {
         if (lower == entry.name) return entry.id;
     }
-    // Try numeric
+    
     try {
         return std::stoi(name);
     } catch (...) {
@@ -122,7 +122,7 @@ void SummonCommand::execute(std::shared_ptr<CommandSender> source,
         }
 
         if (!hasCoords) {
-            // Spawn just in front of the player
+            
             x = sourcePlayer->x;
             y = sourcePlayer->y;
             z = sourcePlayer->z;

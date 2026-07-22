@@ -29,18 +29,18 @@ BedTile::BedTile(int id) : DirectionalTile(id, Material::cloth, false) {
     iconTop = nullptr;
 }
 
-// 4J Added override
+
 void BedTile::updateDefaultShape() { setShape(); }
 
-// 4J-PB - Adding a TestUse for tooltip display
+
 bool BedTile::TestUse(Level* level, int x, int y, int z,
                       std::shared_ptr<Player> player) {
-    // if (level->isClientSide) return true;
+    
 
     int data = level->getData(x, y, z);
 
     if (!BedTile::isHeadPiece(data)) {
-        // fetch head piece instead
+        
         int direction = getDirection(data);
         x += HEAD_DIRECTION_OFFSETS[direction][0];
         z += HEAD_DIRECTION_OFFSETS[direction][1];
@@ -58,7 +58,7 @@ bool BedTile::TestUse(Level* level, int x, int y, int z,
     }
 
     Player::BedSleepingResult result = player->startSleepInBed(
-        x, y, z, true);  // true to just test the start sleep
+        x, y, z, true);  
     if (result == Player::OK) {
         return true;
     }
@@ -69,7 +69,7 @@ bool BedTile::TestUse(Level* level, int x, int y, int z,
 bool BedTile::use(Level* level, int x, int y, int z,
                   std::shared_ptr<Player> player, int clickedFace, float clickX,
                   float clickY, float clickZ,
-                  bool soundOnly /*=false*/)  // 4J added soundOnly param
+                  bool soundOnly )  
 {
     if (soundOnly) return false;
     if (level->isClientSide) return true;
@@ -77,7 +77,7 @@ bool BedTile::use(Level* level, int x, int y, int z,
     int data = level->getData(x, y, z);
 
     if (!isHeadPiece(data)) {
-        // fetch head piece instead
+        
         int direction = getDirection(data);
         x += HEAD_DIRECTION_OFFSETS[direction][0];
         z += HEAD_DIRECTION_OFFSETS[direction][1];
@@ -131,8 +131,8 @@ bool BedTile::use(Level* level, int x, int y, int z,
     Player::BedSleepingResult result = player->startSleepInBed(x, y, z);
     if (result == Player::OK) {
         setOccupied(level, x, y, z, true);
-        // 4J-PB added
-        // are there multiple players in the same world as us?
+        
+        
         if (level->AllPlayersAreSleeping() == false) {
             player->displayClientMessage(IDS_TILE_BED_PLAYERSLEEP);
         }
@@ -191,7 +191,7 @@ bool BedTile::isSolidRender(bool isServerLevel) { return false; }
 void BedTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     setShape();
 }
@@ -212,8 +212,8 @@ void BedTile::neighborChanged(Level* level, int x, int y, int z, int type) {
             if (!level->isClientSide) {
                 Tile::spawnResources(
                     level, x, y, z, data,
-                    0);  // 4J - had to add Tile:: here for C++ since this class
-                         // doesn't have this overloaded method itself
+                    0);  
+                         
             }
         }
     }
@@ -247,7 +247,7 @@ Pos* BedTile::findStandUpPosition(Level* level, int x, int y, int z,
     int data = level->getData(x, y, z);
     int direction = DirectionalTile::getDirection(data);
 
-    // try to find a clear location near the bed
+    
     for (int step = 0; step <= 1; step++) {
         int startX = x - HEAD_DIRECTION_OFFSETS[direction][0] * step - 1;
         int startZ = z - HEAD_DIRECTION_OFFSETS[direction][1] * step - 1;
@@ -256,9 +256,9 @@ Pos* BedTile::findStandUpPosition(Level* level, int x, int y, int z,
 
         for (int standX = startX; standX <= endX; standX++) {
             for (int standZ = startZ; standZ <= endZ; standZ++) {
-                // 4J Stu - Changed to check isSolidBlockingTile rather than
-                // isEmpty for the blocks that we wish to place the player This
-                // allows the player to spawn in blocks with snow, grass etc
+                
+                
+                
                 if (level->isTopSolidBlocking(standX, y - 1, standZ) &&
                     !level->getMaterial(standX, y, standZ)->isSolidBlocking() &&
                     !level->getMaterial(standX, y + 1, standZ)

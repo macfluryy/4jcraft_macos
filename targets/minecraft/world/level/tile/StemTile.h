@@ -41,15 +41,15 @@ public:
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
-            TileEntity>());  // 4J added forceData, forceEntity param
+            TileEntity>());  
     virtual int getRenderShape();
 
     int getConnectDir(LevelSource* level, int x, int y, int z);
 
-    /**
-     * Using this method instead of destroy() to determine if seeds should be
-     * dropped
-     */
+    
+
+
+
     virtual void spawnResources(Level* level, int x, int y, int z, int data,
                                 float odds, int playerBonus);
 

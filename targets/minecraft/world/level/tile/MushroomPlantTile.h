@@ -11,7 +11,7 @@ protected:
     Mushroom(int id);
 
 public:
-    virtual void updateDefaultShape();  // 4J Added override
+    virtual void updateDefaultShape();  
     virtual void tick(Level* level, int x, int y, int z, Random* random);
     virtual bool mayPlace(Level* level, int x, int y, int z);
 

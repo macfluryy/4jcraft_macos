@@ -34,9 +34,9 @@ public:
 
 private:
     static std::unordered_map<Level*, std::deque<Toggle>*>
-        recentToggles;  // 4J - brought forward change from 1.3.2
+        recentToggles;  
 public:
-    static void removeLevelReferences(Level* level);  // 4J added
+    static void removeLevelReferences(Level* level);  
 private:
     bool isToggledTooFrequently(Level* level, int x, int y, int z, bool add);
 

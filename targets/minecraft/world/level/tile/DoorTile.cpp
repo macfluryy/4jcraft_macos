@@ -104,7 +104,7 @@ std::optional<AABB> DoorTile::getAABB(Level* level, int x, int y, int z) {
 void DoorTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     setShape(getCompositeData(level, x, y, z));
 }
@@ -160,22 +160,22 @@ void DoorTile::setShape(int compositeData) {
 
 void DoorTile::attack(Level* level, int x, int y, int z,
                       std::shared_ptr<Player> player) {
-    // Fix for #92957 - TU11: Content: Multiplayer: Wooden Doors splits in half
-    // and glitch in open / close motion while being mined. In lastest PC
-    // version this is commented out, so do that now to fix bug above
-    // use(level, x, y, z, player);
+    
+    
+    
+    
 }
 
-// 4J-PB - Adding a TestUse for tooltip display
+
 bool DoorTile::TestUse() { return id == Tile::door_wood_Id; }
 
 bool DoorTile::use(Level* level, int x, int y, int z,
                    std::shared_ptr<Player> player, int clickedFace,
                    float clickX, float clickY, float clickZ,
-                   bool soundOnly /*=false*/)  // 4J added soundOnly param
+                   bool soundOnly )  
 {
     if (soundOnly) {
-        // 4J - added - just do enough to play the sound
+        
         if (material != Material::metal) {
             level->levelEvent(player, LevelEvent::SOUND_OPEN_DOOR, x, y, z, 0);
         }
@@ -291,7 +291,7 @@ int DoorTile::getCompositeData(LevelSource* level, int x, int y, int z) {
         upperData = level->getData(x, y + 1, z);
     }
 
-    // bits: dir, dir, open/closed, isUpper, isRightHinge
+    
     bool isRightHinge = (upperData & 1) != 0;
     return (lowerData & C_LOWER_DATA_MASK) | (isUpper ? 8 : 0) |
            (isRightHinge ? 16 : 0);

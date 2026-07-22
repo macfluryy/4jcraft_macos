@@ -32,9 +32,9 @@ private:
     static const int BURN_INTERVAL;
     std::vector<std::shared_ptr<ItemInstance>> items;
 
-    // 4J-JEV: Added for 'Renewable Energy' achievement.
-    // Should be true iff characoal was consumed whilst cooking the current
-    // stack.
+    
+    
+    
     bool m_charcoalUsed;
 
 public:
@@ -46,7 +46,7 @@ private:
     std::wstring name;
 
 public:
-    // 4J Stu - Need a ctor to initialise member variables
+    
     FurnaceTileEntity();
     virtual ~FurnaceTileEntity();
 
@@ -93,9 +93,9 @@ public:
                                         std::shared_ptr<ItemInstance> item,
                                         int face);
 
-    // 4J Added
+    
     virtual std::shared_ptr<TileEntity> clone();
 
-    // 4J-JEV: Added for 'Renewable Energy' achievement.
+    
     bool wasCharcoalUsed() { return m_charcoalUsed; }
 };

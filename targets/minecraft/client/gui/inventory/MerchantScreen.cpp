@@ -26,8 +26,8 @@
 
 class Level;
 
-// 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
-// container classes (and iggy too)
+
+
 #ifdef ENABLE_JAVA_GUIS
 ResourceLocation GUI_VILLAGER_LOCATION = ResourceLocation(TN_GUI_VILLAGER);
 #endif
@@ -174,7 +174,7 @@ void MerchantScreen::tick() {
             currentRecipeIndex = offerCount - 1;
             merchantMenu->setSelectionHint(currentRecipeIndex);
 
-            // 4jcraft: taken from IUIScene_TradingMenu
+            
             ByteArrayOutputStream rawOutput;
             DataOutputStream output(&rawOutput);
             output.writeInt(currentRecipeIndex);
@@ -203,7 +203,7 @@ void MerchantScreen::buttonClicked(Button* button) {
     if (changed) {
         merchantMenu->setSelectionHint(currentRecipeIndex);
 
-        // 4jcraft: taken from IUIScene_TradingMenu
+        
         ByteArrayOutputStream rawOutput;
         DataOutputStream output(&rawOutput);
         output.writeInt(currentRecipeIndex);

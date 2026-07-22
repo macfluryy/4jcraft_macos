@@ -23,7 +23,7 @@ DiodeTile::DiodeTile(int id, bool on)
     updateDefaultShape();
 }
 
-// 4J Added override
+
 void DiodeTile::updateDefaultShape() { setShape(0, 0, 0, 1, 2.0f / 16.0f, 1); }
 
 bool DiodeTile::isCubeShaped() { return false; }
@@ -50,8 +50,8 @@ void DiodeTile::tick(Level* level, int x, int y, int z, Random* random) {
             level->setTileAndData(x, y, z, getOffTile()->id, data,
                                   Tile::UPDATE_CLIENTS);
         } else if (!on) {
-            // when off-diodes are ticked, they always turn on for one tick and
-            // then off again if necessary
+            
+            
             level->setTileAndData(x, y, z, getOnTile()->id, data,
                                   Tile::UPDATE_CLIENTS);
             if (!sourceOn) {
@@ -63,7 +63,7 @@ void DiodeTile::tick(Level* level, int x, int y, int z, Random* random) {
 }
 
 Icon* DiodeTile::getTexture(int face, int data) {
-    // down is used by the torch tesselator
+    
     if (face == Facing::DOWN) {
         if (on) {
             return Tile::redstoneTorch_on->getTexture(face);
@@ -73,14 +73,14 @@ Icon* DiodeTile::getTexture(int face, int data) {
     if (face == Facing::UP) {
         return icon;
     }
-    // edge of stone half-step
+    
     return Tile::stoneSlab->getTexture(Facing::UP);
 }
 
 bool DiodeTile::shouldRenderFace(LevelSource* level, int x, int y, int z,
                                  int face) {
     if (face == Facing::DOWN || face == Facing::UP) {
-        // up and down is a special case handled by the shape renderer
+        
         return false;
     }
     return true;
@@ -141,7 +141,7 @@ void DiodeTile::checkTickOnNeighbor(Level* level, int x, int y, int z,
             !level->isTileToBeTickedAt(x, y, z, id)) {
             int prio = -1;
 
-            // if the tile in front is a repeater, we prioritize this update
+            
             if (shouldPrioritize(level, x, y, z, data)) {
                 prio = -3;
             } else if (on) {

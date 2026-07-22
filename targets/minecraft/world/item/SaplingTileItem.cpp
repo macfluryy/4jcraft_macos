@@ -18,7 +18,7 @@ Icon* SaplingTileItem::getIcon(int itemAuxValue) {
     return Tile::sapling->getTexture(0, itemAuxValue);
 }
 
-// 4J brought forward to have unique names for different sapling types
+
 unsigned int SaplingTileItem::getDescriptionId(
     std::shared_ptr<ItemInstance> instance) {
     int auxValue = instance->getAuxValue();

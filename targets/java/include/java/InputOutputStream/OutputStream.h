@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <vector>
 
-// 4J Stu - Represents Java standard lib abstract
+
 
 class OutputStream {
 public:

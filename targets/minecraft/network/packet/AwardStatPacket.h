@@ -14,7 +14,7 @@ class AwardStatPacket : public Packet,
 public:
     int statId;
 
-    // 4J-JEV: Changed to allow for Durango events.
+    
 protected:
     std::vector<uint8_t> m_paramData;
 
@@ -36,7 +36,7 @@ public:
     virtual int getId() { return 200; }
 
 public:
-    // 4J-JEV: New getters to help prevent unsafe access
+    
     int getCount();
     std::vector<uint8_t> getParamData();
 };

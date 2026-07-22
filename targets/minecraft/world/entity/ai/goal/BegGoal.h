@@ -10,7 +10,7 @@ class Player;
 
 class BegGoal : public Goal {
 private:
-    Wolf* wolf;  // Owner of this goal
+    Wolf* wolf;  
     std::weak_ptr<Player> player;
     Level* level;
     float lookDistance;
@@ -29,7 +29,7 @@ private:
     bool playerHoldingInteresting(std::shared_ptr<Player> player);
 
 public:
-    // 4J Added override to update ai elements when loading entity from
-    // schematics
+    
+    
     virtual void setLevel(Level* level) { this->level = level; }
 };

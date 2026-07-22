@@ -17,7 +17,7 @@ private:
     static ResourceLocation ZOMBIE_LOCATION;
     static ResourceLocation CREEPER_LOCATION;
 
-    // note: this head fits most mobs, just change texture
+    
     SkeletonHeadModel* skeletonModel;
     SkeletonHeadModel* zombieModel;
 

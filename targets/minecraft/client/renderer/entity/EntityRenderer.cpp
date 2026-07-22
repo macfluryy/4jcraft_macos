@@ -24,7 +24,7 @@
 ResourceLocation EntityRenderer::SHADOW_LOCATION =
     ResourceLocation(TN__CLAMP__MISC_SHADOW);
 
-// 4J - added
+
 EntityRenderer::EntityRenderer() {
     model = nullptr;
     tileRenderer = new TileRenderer();
@@ -46,9 +46,9 @@ bool EntityRenderer::bindTexture(const std::wstring& urlTexture,
                                  int backupTexture) {
     Textures* t = entityRenderDispatcher->textures;
 
-    // 4J-PB - no http textures on the xbox, mem textures instead
+    
 
-    // int id = t->loadHttpTexture(urlTexture, backupTexture);
+    
     int id = t->loadMemTexture(urlTexture, backupTexture);
 
     if (id >= 0) {
@@ -64,9 +64,9 @@ bool EntityRenderer::bindTexture(const std::wstring& urlTexture,
                                  const std::wstring& backupTexture) {
     Textures* t = entityRenderDispatcher->textures;
 
-    // 4J-PB - no http textures on the xbox, mem textures instead
+    
 
-    // int id = t->loadHttpTexture(urlTexture, backupTexture);
+    
     int id = t->loadMemTexture(urlTexture, backupTexture);
 
     if (id >= 0) {
@@ -170,9 +170,9 @@ void EntityRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y,
     double ex = e->xOld + (e->x - e->xOld) * a;
     double ey = e->yOld + (e->y - e->yOld) * a + e->getShadowHeightOffs();
 
-    // 4J-PB - local players seem to have a position at their head, and remote
-    // players have a foot position. get the shadow to render by changing the
-    // check here depending on the player type
+    
+    
+    
     if (e->instanceof(eTYPE_LOCALPLAYER)) {
         ey -= 1.62;
         fYLocalPlayerShadowOffset = -1.62f;
@@ -229,7 +229,7 @@ void EntityRenderer::renderTileShadow(Tile* tt, double x, double y, double z,
     if (a > 1) a = 1;
 
     t->color(1.0f, 1.0f, 1.0f, (float)a);
-    // glColor4f(1, 1, 1, (float) a);
+    
 
     double x0 = xt + tt->getShapeX0() + xo;
     double x1 = xt + tt->getShapeX1() + xo;
@@ -242,10 +242,10 @@ void EntityRenderer::renderTileShadow(Tile* tt, double x, double y, double z,
     float v0 = (float)((z - (z0)) / 2 / r + 0.5f);
     float v1 = (float)((z - (z1)) / 2 / r + 0.5f);
 
-    // u0 = 0;
-    // v0 = 0;
-    // u1 = 1;
-    // v1 = 1;
+    
+    
+    
+    
 
     t->vertexUV((float)(x0), (float)(y0), (float)(z0), (float)(u0),
                 (float)(v0));
@@ -301,7 +301,7 @@ void EntityRenderer::render(AABB* bb, double xo, double yo, double zo) {
     t->offset(0, 0, 0);
     t->end();
     glEnable(GL_TEXTURE_2D);
-    // model.render(0, 1)
+    
 }
 
 void EntityRenderer::renderFlat(AABB* bb) {
@@ -373,9 +373,9 @@ void EntityRenderer::postRender(std::shared_ptr<Entity> entity, double x,
                                 double y, double z, float rot, float a,
                                 bool bRenderPlayerShadow) {
     if (!entityRenderDispatcher
-             ->isGuiRender)  // 4J - added, don't render shadow in gui as it
-                             // uses its own blending, and we have globally
-                             // enabled blending for interface opacity
+             ->isGuiRender)  
+                             
+                             
     {
         if (bRenderPlayerShadow &&
             entityRenderDispatcher->options->fancyGraphics &&

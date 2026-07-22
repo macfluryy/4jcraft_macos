@@ -23,8 +23,8 @@ ChestModel::ChestModel() {
     bottom->y = 6;
     bottom->z = 1;
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     lid->compile(1.0f / 16.0f);
     lock->compile(1.0f / 16.0f);
     bottom->compile(1.0f / 16.0f);
@@ -36,9 +36,9 @@ void ChestModel::render(bool usecompiled) {
     lock->render(1 / 16.0f, usecompiled);
     bottom->render(1 / 16.0f, usecompiled);
 
-    // 4J - moved lid to last and added z-bias to avoid glitching caused by
-    // z-fighting between the area of overlap between the lid & bottom of the
-    // chest
+    
+    
+    
     glPolygonOffset(-0.3f, -0.3f);
     lid->render(1 / 16.0f, usecompiled);
     glPolygonOffset(0.0f, 0.0f);

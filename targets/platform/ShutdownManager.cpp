@@ -1,5 +1,5 @@
-// Linux stub implementations for ShutdownManager
-// The PS3/PSVita versions have full implementations; on Linux these are no-ops.
+
+
 #include "platform/ShutdownManager.h"
 #include "platform/C4JThread.h"
 
@@ -7,10 +7,10 @@ void ShutdownManager::Initialise() {}
 void ShutdownManager::StartShutdown() {}
 void ShutdownManager::MainThreadHandleShutdown() {}
 
-void ShutdownManager::HasStarted(ShutdownManager::EThreadId /*threadId*/) {}
-void ShutdownManager::HasStarted(ShutdownManager::EThreadId /*threadId*/,
-                                 C4JThread::EventArray* /*eventArray*/) {}
-bool ShutdownManager::ShouldRun(ShutdownManager::EThreadId /*threadId*/) {
+void ShutdownManager::HasStarted(ShutdownManager::EThreadId ) {}
+void ShutdownManager::HasStarted(ShutdownManager::EThreadId ,
+                                 C4JThread::EventArray* ) {}
+bool ShutdownManager::ShouldRun(ShutdownManager::EThreadId ) {
     return true;
 }
-void ShutdownManager::HasFinished(ShutdownManager::EThreadId /*threadId*/) {}
+void ShutdownManager::HasFinished(ShutdownManager::EThreadId ) {}

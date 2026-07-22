@@ -77,7 +77,7 @@ private:
     bool m_bThumbnailGetFailed;
     int64_t m_seed;
 
-    // int *m_iConfigA; // track the texture packs that we don't have installed
+    
 
     std::uint8_t* m_pbThumbnailData;
     unsigned int m_uiThumbnailSize;
@@ -100,11 +100,11 @@ public:
     virtual void handleTouchBoxRebuild();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
     virtual void handleTimerComplete(int id);

@@ -25,7 +25,7 @@ std::vector<int> VoronoiZoom::getArea(int xo, int yo, int w, int h) {
     int ph = (h >> bits) + 3;
     std::vector<int> p = parent->getArea(px, py, pw, ph);
 
-    // 4jcraft added all those casts to unsigned
+    
     int ww = (unsigned)pw << bits;
     int hh = (unsigned)ph << bits;
     std::vector<int> tmp(ww * hh);

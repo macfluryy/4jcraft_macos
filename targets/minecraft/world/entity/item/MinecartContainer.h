@@ -48,7 +48,7 @@ protected:
     virtual void applyNaturalSlowdown();
 
 public:
-    // 4J Stu - For container
+    
     virtual bool hasCustomName() { return Minecart::hasCustomName(); }
     virtual std::wstring getCustomName() { return Minecart::getCustomName(); }
 };

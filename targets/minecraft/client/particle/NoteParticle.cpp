@@ -16,24 +16,24 @@ void NoteParticle::init(Level* level, double x, double y, double z, double xa,
     zd *= 0.01f;
     yd += 0.2;
 
-    /*
-    unsigned int cMin = Minecraft::GetInstance()->getColourTable()->getColor(
-eMinecraftColour_Particle_NoteMin ); unsigned int cMax =
-Minecraft::GetInstance()->getColourTable()->getColor(
-eMinecraftColour_Particle_NoteMax ); double rMin = ( (cMin>>16)&0xFF )/255.0f,
-gMin = ( (cMin>>8)&0xFF )/255.0, bMin = ( cMin&0xFF )/255.0; double rMax = (
-(cMax>>16)&0xFF )/255.0f, gMax = ( (cMax>>8)&0xFF )/255.0, bMax = ( cMax&0xFF
-)/255.0;
+    
 
-rCol = sinf(((float) xa + 0.0f / 3) * std::numbers::pi * 2) * (rMax - rMin) +
-rMin; gCol = sinf(((float) xa + 1.0f / 3) * std::numbers::pi * 2) * (gMax -
-gMin) + gMin; bCol = sinf(((float) xa + 2.0f / 3) * std::numbers::pi * 2) *
-(bMax - bMin) + bMin;
-    */
 
-    // 4J-JEV: Added,
-    // There are 24 valid colours for this particle input through the 'xa' field
-    // (0.0-1.0).
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
     int note =
         (int)floor(0.5 + (xa * 24.0)) + (int)eMinecraftColour_Particle_Note_00;
     unsigned int col = Minecraft::GetInstance()->getColourTable()->getColor(

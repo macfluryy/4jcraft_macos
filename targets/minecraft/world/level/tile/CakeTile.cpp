@@ -26,7 +26,7 @@ CakeTile::CakeTile(int id) : Tile(id, Material::cake, false) {
 void CakeTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     int d = level->getData(x, y, z);
     float r = 1 / 16.0f;
@@ -76,13 +76,13 @@ bool CakeTile::isCubeShaped() { return false; }
 
 bool CakeTile::isSolidRender(bool isServerLevel) { return false; }
 
-// 4J-PB - Adding a TestUse for tooltip display
+
 bool CakeTile::TestUse() { return true; }
 
 bool CakeTile::use(Level* level, int x, int y, int z,
                    std::shared_ptr<Player> player, int clickedFace,
                    float clickX, float clickY, float clickZ,
-                   bool soundOnly /*=false*/)  // 4J added soundOnly param
+                   bool soundOnly )  
 {
     if (soundOnly) return false;
     eat(level, x, y, z, player);

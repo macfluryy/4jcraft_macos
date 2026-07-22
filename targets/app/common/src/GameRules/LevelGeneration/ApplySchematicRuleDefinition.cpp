@@ -68,8 +68,8 @@ void ApplySchematicRuleDefinition::addAttribute(
     const std::wstring& attributeName, const std::wstring& attributeValue) {
     if (attributeName.compare(L"filename") == 0) {
         m_schematicName = attributeValue;
-        // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
-        // filename=%s\n",m_schematicName.c_str());
+        
+        
 
         if (!m_schematicName.empty()) {
             if (m_schematicName
@@ -83,19 +83,19 @@ void ApplySchematicRuleDefinition::addAttribute(
     } else if (attributeName.compare(L"x") == 0) {
         m_location.x = fromWString<int>(attributeValue);
         if (((int)std::abs(m_location.x)) % 2 != 0) m_location.x -= 1;
-        // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
-        // x=%f\n",m_location->x);
+        
+        
     } else if (attributeName.compare(L"y") == 0) {
         m_location.y = fromWString<int>(attributeValue);
         if (((int)std::abs(m_location.y)) % 2 != 0) m_location.y -= 1;
         if (m_location.y < 0) m_location.y = 0;
-        // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
-        // y=%f\n",m_location->y);
+        
+        
     } else if (attributeName.compare(L"z") == 0) {
         m_location.z = fromWString<int>(attributeValue);
         if (((int)std::abs(m_location.z)) % 2 != 0) m_location.z -= 1;
-        // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
-        // z=%f\n",m_location->z);
+        
+        
     } else if (attributeName.compare(L"rot") == 0) {
         int degrees = fromWString<int>(attributeValue);
 
@@ -120,13 +120,13 @@ void ApplySchematicRuleDefinition::addAttribute(
                 break;
         };
 
-        // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
-        // rot=%d\n",m_rotation);
+        
+        
     } else if (attributeName.compare(L"dim") == 0) {
         m_dimension = fromWString<int>(attributeValue);
         if (m_dimension > 1 || m_dimension < -1) m_dimension = 0;
-        // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
-        // dimension=%d\n",m_dimension);
+        
+        
     } else {
         GameRuleDefinition::addAttribute(attributeName, attributeValue);
     }
@@ -179,20 +179,20 @@ void ApplySchematicRuleDefinition::processSchematic(AABB* chunkBox,
         m_totalBlocksChanged += m_schematic->applyBlocksAndData(
             chunk, chunkBox, &*m_locationBox, m_rotation);
 
-        // Add the tileEntities
+        
         m_schematic->applyTileEntities(chunk, chunkBox, &*m_locationBox,
                                        m_rotation);
 
-        // TODO This does not take into account things that go outside the
-        // bounds of the world
+        
+        
         int targetBlocks = (m_locationBox->x1 - m_locationBox->x0) *
                            (m_locationBox->y1 - m_locationBox->y0) *
                            (m_locationBox->z1 - m_locationBox->z0);
         if ((m_totalBlocksChanged == targetBlocks) &&
             (m_totalBlocksChangedLighting == targetBlocks)) {
             m_completed = true;
-            // m_levelGenOptions->releaseSchematicFile(m_schematicName);
-            // m_schematic = nullptr;
+            
+            
         }
     }
 }
@@ -217,16 +217,16 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
         m_totalBlocksChangedLighting += m_schematic->applyLighting(
             chunk, chunkBox, &*m_locationBox, m_rotation);
 
-        // TODO This does not take into account things that go outside the
-        // bounds of the world
+        
+        
         int targetBlocks = (m_locationBox->x1 - m_locationBox->x0) *
                            (m_locationBox->y1 - m_locationBox->y0) *
                            (m_locationBox->z1 - m_locationBox->z0);
         if ((m_totalBlocksChanged == targetBlocks) &&
             (m_totalBlocksChangedLighting == targetBlocks)) {
             m_completed = true;
-            // m_levelGenOptions->releaseSchematicFile(m_schematicName);
-            // m_schematic = nullptr;
+            
+            
         }
     }
 }

@@ -57,7 +57,7 @@ void AreaTask::onStateChange(eTutorial_State newState) {
         if (m_tutorialState == newState) {
             enableConstraints(true);
         } else if (m_tutorialState != e_Tutorial_State_Gameplay) {
-            // enableConstraints(false);
+            
         }
     }
 }

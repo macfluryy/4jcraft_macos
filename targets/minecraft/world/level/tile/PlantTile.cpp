@@ -16,7 +16,7 @@ Bush::Bush(int id, Material* material) : Tile(id, material, false) { _init(); }
 
 Bush::Bush(int id) : Tile(id, Material::plant, false) { _init(); }
 
-// 4J Added override
+
 void Bush::updateDefaultShape() {
     float ss = 0.2f;
     setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, ss * 3, 0.5f + ss);

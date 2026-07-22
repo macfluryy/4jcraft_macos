@@ -36,11 +36,11 @@ bool LeashItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
 
 bool LeashItem::bindPlayerMobs(std::shared_ptr<Player> player, Level* level,
                                int x, int y, int z) {
-    // check if there is a knot at the given coordinate
+    
     std::shared_ptr<LeashFenceKnotEntity> activeKnot =
         LeashFenceKnotEntity::findKnotAt(level, x, y, z);
 
-    // look for entities that can be attached to the fence
+    
     bool foundMobs = false;
     double range = 7;
     AABB mob_bb = AABB(x, y, z, x, y, z).grow(range, range, range);
@@ -62,10 +62,10 @@ bool LeashItem::bindPlayerMobs(std::shared_ptr<Player> player, Level* level,
     return foundMobs;
 }
 
-// 4J-JEV: Similar to bindPlayerMobs, but doesn't actually bind mobs,
+
 bool LeashItem::bindPlayerMobsTest(std::shared_ptr<Player> player, Level* level,
                                    int x, int y, int z) {
-    // look for entities that can be attached to the fence
+    
     double range = 7;
     AABB mob_bb = AABB(x, y, z, x, y, z).grow(range, range, range);
     std::vector<std::shared_ptr<Entity> >* mobs =

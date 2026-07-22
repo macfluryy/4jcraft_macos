@@ -291,7 +291,7 @@ void JavaServerListScreen::connectSelected() {
     g_activeJavaProxy = proxy;
 
     if (!app.TemporaryDirectConnectStartEx("127.0.0.1", proxyPort,
-                                           /*spawnOwnThread*/ false,
+                                            false,
                                            nick.c_str())) {
         proxy->requestStop();
         delete proxy;

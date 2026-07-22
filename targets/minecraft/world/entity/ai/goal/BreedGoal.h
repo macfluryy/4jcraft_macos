@@ -9,7 +9,7 @@ class Level;
 
 class BreedGoal : public Goal {
 private:
-    Animal* animal;  // Owner of this goal
+    Animal* animal;  
     Level* level;
     std::weak_ptr<Animal> partner;
     int loveTime;
@@ -28,7 +28,7 @@ private:
     void breed();
 
 public:
-    // 4J Added override to update ai elements when loading entity from
-    // schematics
+    
+    
     virtual void setLevel(Level* level) { this->level = level; }
 };

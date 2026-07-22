@@ -28,18 +28,18 @@ void ContainerSetSlotPacket::handle(PacketListener* listener) {
     listener->handleContainerSetSlot(shared_from_this());
 }
 
-void ContainerSetSlotPacket::read(DataInputStream* dis)  // throws IOException
+void ContainerSetSlotPacket::read(DataInputStream* dis)  
 {
-    // 4J Stu - TU-1 hotfix
-    // Fix for #13142 - Holding down the A button on the furnace ingredient slot
-    // causes the UI to display incorrect item counts
+    
+    
+    
     uint8_t byteId = dis->readByte();
     containerId = *(char*)&byteId;
     slot = dis->readShort();
     item = readItem(dis);
 }
 
-void ContainerSetSlotPacket::write(DataOutputStream* dos)  // throws IOException
+void ContainerSetSlotPacket::write(DataOutputStream* dos)  
 {
     dos->writeByte((uint8_t)containerId);
     dos->writeShort(slot);

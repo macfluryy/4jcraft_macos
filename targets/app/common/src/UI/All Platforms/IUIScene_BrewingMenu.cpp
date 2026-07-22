@@ -13,7 +13,7 @@ IUIScene_BrewingMenu::GetSectionAndSlotInDirection(ESceneSection eSection,
     ESceneSection newSection = eSection;
     int xOffset = 0;
 
-    // Find the new section if there is one
+    
     switch (eSection) {
         case eSectionBrewingBottle1:
             if (eTapDirection == eTapStateUp) {

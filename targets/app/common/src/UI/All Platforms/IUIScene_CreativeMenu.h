@@ -11,20 +11,20 @@
 
 class Inventory;
 class ItemInstance;
-// 4J Stu - This class is for code that is common between XUI and Iggy
+
 
 class SimpleContainer;
 
 class IUIScene_CreativeMenu : public virtual IUIScene_AbstractContainerMenu {
 public:
-    // 4J Stu - These map directly to the tabs seen on the screen
+    
     enum ECreativeInventoryTabs {
         eCreativeInventoryTab_BuildingBlocks = 0,
         eCreativeInventoryTab_Decorations,
         eCreativeInventoryTab_RedstoneAndTransport,
         eCreativeInventoryTab_Materials,
         eCreativeInventoryTab_Food,
-// 4jcraft: java search tab
+
 #ifdef ENABLE_JAVA_GUIS
         eCreativeInventoryTab_Search,
 #endif
@@ -34,8 +34,8 @@ public:
         eCreativeInventoryTab_COUNT,
     };
 
-    // 4J Stu - These are logical groupings of items, and are combined for
-    // tabs on-screen
+    
+    
     enum ECreative_Inventory_Groups {
         eCreativeInventory_BuildingBlocks,
         eCreativeInventory_Decoration,
@@ -43,7 +43,7 @@ public:
         eCreativeInventory_Transport,
         eCreativeInventory_Materials,
         eCreativeInventory_Food,
-// 4jcraft
+
 #ifdef ENABLE_JAVA_GUIS
         eCreativeInventory_Search,
 #endif
@@ -59,15 +59,15 @@ public:
         eCreativeInventoryGroupsCount
     };
 
-    // 4J JEV - Keeping all the tab specifications in one place.
+    
     struct TabSpec {
     public:
-        // 4J JEV - Layout
+        
         static const int rows = 5;
         static const int columns = 10;
         static const int MAX_SIZE = rows * columns;
 
-        // 4J JEV - Images
+        
         const wchar_t* m_icon;
         const int m_descriptionId;
         const int m_staticGroupsCount;
@@ -110,16 +110,16 @@ public:
         bool isOverrideResultClick(int slotNum, int buttonNum);
 
     protected:
-        // 4J Stu - Brought forward from 1.2 to fix infinite recursion bug in
-        // creative
+        
+        
         virtual void loopClick(int slotIndex, int buttonNum, bool quickKeyHeld,
-                               std::shared_ptr<Player> player) {}  // do nothing
+                               std::shared_ptr<Player> player) {}  
     }* itemPickerMenu;
 
-    // 4jcraft: changed these two from public to protected for the java UI
+    
     static std::vector<std::shared_ptr<ItemInstance> >
         categoryGroups[eCreativeInventoryGroupsCount];
-    // 4J JEV - Tabs
+    
     static TabSpec** specs;
 
 public:

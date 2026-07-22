@@ -24,13 +24,13 @@ EGameCommand KillCommand::getId() { return eGameCommand_Kill; }
 
 int KillCommand::getPermissionLevel() { return LEVEL_ALL; }
 
-// Kill targets:
-//  TARGET_SELF      - kill source player
-//  TARGET_PLAYER    - kill specific player by name
-//  TARGET_MOBS      - kill all hostile mobs
-//  TARGET_ANIMALS   - kill all animals
-//  TARGET_ALL_ENTS  - kill all entities (excluding players)
-//  TARGET_ALL_PLAYERS - kill all players
+
+
+
+
+
+
+
 static const int KILL_TARGET_SELF = 0;
 static const int KILL_TARGET_PLAYER = 1;
 static const int KILL_TARGET_MOBS = 2;
@@ -91,18 +91,18 @@ void KillCommand::execute(std::shared_ptr<CommandSender> source,
                 auto allEntities = ((Level*)level)->getAllEntities();
                 for (auto& e : allEntities) {
                     if (e == nullptr) continue;
-                    // Never kill players via these targets
+                    
                     if (e->instanceof(eTYPE_PLAYER)) continue;
 
                     bool shouldKill = false;
                     if (killType == KILL_TARGET_MOBS) {
                         shouldKill = e->instanceof(eTYPE_MONSTER);
                     } else if (killType == KILL_TARGET_ANIMALS) {
-                        // Animals + ambient + water animals etc.
+                        
                         shouldKill = e->instanceof(eTYPE_MOB) &&
                                      !e->instanceof(eTYPE_MONSTER);
                     } else {
-                        // ALL_ENTS - any entity except players
+                        
                         shouldKill = true;
                     }
 

@@ -33,19 +33,19 @@ enum eXuiAction {
     eAppAction_ExitWorld,
     eAppAction_ExitWorldCapturedThumbnail,
     eAppAction_ExitWorldTrial,
-    // eAppAction_ExitGameFatalLoadError,
+    
     eAppAction_Respawn,
     eAppAction_WaitForRespawnComplete,
     eAppAction_PrimaryPlayerSignedOut,
     eAppAction_PrimaryPlayerSignedOutReturned,
     eAppAction_PrimaryPlayerSignedOutReturned_Menus,
-    eAppAction_ExitPlayer,  // secondary player
+    eAppAction_ExitPlayer,  
     eAppAction_ExitPlayerPreLogin,
     eAppAction_TrialOver,
     eAppAction_ExitTrial,
     eAppAction_WaitForDimensionChangeComplete,
-    // eAppAction_SocialPost,
-    // eAppAction_SocialPostScreenshot,
+    
+    
     eAppAction_EthernetDisconnected,
     eAppAction_EthernetDisconnectedReturned,
     eAppAction_EthernetDisconnectedReturned_Menus,
@@ -68,8 +68,8 @@ enum eXuiAction {
 
     eAppAction_ReloadTexturePack,
     eAppAction_ReloadFont,
-    eAppAction_TexturePackRequired,  // when the user has joined from invite,
-                                     // but doesn't have the texture pack
+    eAppAction_TexturePackRequired,  
+                                     
 
     eAppAction_DebugText,
 
@@ -84,8 +84,8 @@ enum eTMSAction {
     eTMSAction_TMSPP_RetrieveFiles_DLCMain,
     eTMSAction_TMSPP_GlobalFileList,
     eTMSAction_TMSPP_GlobalFileList_Waiting,
-    // 	eTMSAction_TMSPP_ConfigFile,
-    // 	eTMSAction_TMSPP_ConfigFile_Waiting,
+    
+    
     eTMSAction_TMSPP_UserFileList,
     eTMSAction_TMSPP_UserFileList_Waiting,
     eTMSAction_TMSPP_XUIDSFile,
@@ -99,23 +99,23 @@ enum eTMSAction {
     eTMSAction_TMSPP_RetrieveUserFilelist_DLCFileOnly,
 };
 
-// The server runs on its own thread, so we need to call its actions there
-// rather than where all other Xui actions are performed In general these are
-// debugging options
+
+
+
 enum eXuiServerAction {
     eXuiServerAction_Idle = 0,
-    eXuiServerAction_DropItem,  // Debug
+    eXuiServerAction_DropItem,  
     eXuiServerAction_SaveGame,
     eXuiServerAction_AutoSaveGame,
-    eXuiServerAction_SpawnMob,  // Debug
+    eXuiServerAction_SpawnMob,  
     eXuiServerAction_PauseServer,
-    eXuiServerAction_ToggleRain,     // Debug
-    eXuiServerAction_ToggleThunder,  // Debug
+    eXuiServerAction_ToggleRain,     
+    eXuiServerAction_ToggleThunder,  
     eXuiServerAction_ServerSettingChanged_Gamertags,
     eXuiServerAction_ServerSettingChanged_Difficulty,
-    eXuiServerAction_ExportSchematic,  // Debug
+    eXuiServerAction_ExportSchematic,  
     eXuiServerAction_ServerSettingChanged_BedrockFog,
-    eXuiServerAction_SetCameraLocation,  // Debug
+    eXuiServerAction_SetCameraLocation,  
 };
 
 enum eGameSetting {
@@ -131,37 +131,37 @@ enum eGameSetting {
     eGameSetting_ControlSouthPaw,
     eGameSetting_SplitScreenVertical,
     eGameSetting_GamertagsVisible,
-    // Interim TU 1.6.6
+    
     eGameSetting_Autosave,
     eGameSetting_DisplaySplitscreenGamertags,
     eGameSetting_Hints,
     eGameSetting_InterfaceOpacity,
     eGameSetting_Tooltips,
-    // TU5
+    
     eGameSetting_Clouds,
     eGameSetting_Online,
     eGameSetting_InviteOnly,
     eGameSetting_FriendsOfFriends,
     eGameSetting_DisplayUpdateMessage,
 
-    // TU6
+    
     eGameSetting_BedrockFog,
     eGameSetting_DisplayHUD,
     eGameSetting_DisplayHand,
 
-    // TU7
+    
     eGameSetting_CustomSkinAnim,
 
-    // TU9
+    
     eGameSetting_DeathMessages,
     eGameSetting_UISize,
     eGameSetting_UISizeSplitscreen,
     eGameSetting_AnimatedCharacter,
 
-    // PS3
+    
     eGameSetting_PS3_EULA_Read,
 
-    // PSVita
+    
     eGameSetting_PSVita_NetworkModeAdhoc,
 
 };
@@ -481,39 +481,39 @@ enum eMinecraftColour {
     eTextColor_EnchantDisabled,
     eTextColor_RenamedItemTitle,
 
-    // eHTMLColor_0 = 0x000000, //r:0 , g: 0, b: 0, i: 0
-    // eHTMLColor_1 = 0x0000aa, //r:0 , g: 0, b: aa, i: 1 // blue, quite dark
-    // eHTMLColor_2 = 0x109e10, // Changed by request of Dave //0x00aa00, //r:0
-    // , g: aa, b: 0, i: 2 // green eHTMLColor_3 = 0x109e9e, // Changed by
-    // request of Dave //0x00aaaa, //r:0 , g: aa, b: aa, i: 3 // cyan
-    // eHTMLColor_4 = 0xaa0000, //r:aa , g: 0, b: 0, i: 4 // red
-    // eHTMLColor_5 = 0xaa00aa, //r:aa , g: 0, b: aa, i: 5 // purple
-    // eHTMLColor_6 = 0xffaa00, //r:ff , g: aa, b: 0, i: 6 // orange
-    // eHTMLColor_7 = 0xaaaaaa, //r:aa , g: aa, b: aa, i: 7 // light gray
-    // eHTMLColor_8 = 0x555555, //r:55 , g: 55, b: 55, i: 8 // gray
-    // eHTMLColor_9 = 0x5555ff, //r:55 , g: 55, b: ff, i: 9 // blue
-    // eHTMLColor_a = 0x55ff55, //r:55 , g: ff, b: 55, i: a // green
-    // eHTMLColor_b = 0x55ffff, //r:55 , g: ff, b: ff, i: b // cyan
-    // eHTMLColor_c = 0xff5555, //r:ff , g: 55, b: 55, i: c // red pink
-    // eHTMLColor_d = 0xff55ff, //r:ff , g: 55, b: ff, i: d // bright pink
-    // eHTMLColor_e = 0xffff55, //r:ff , g: ff, b: 55, i: e // yellow
-    // eHTMLColor_f = 0xffffff, //r:ff , g: ff, b: ff, i: f
-    // eHTMLColor_0_dark = 0x000000, //r:0 , g: 0, b: 0, i: 10
-    // eHTMLColor_1_dark = 0x00002a, //r:0 , g: 0, b: 2a, i: 11
-    // eHTMLColor_2_dark = 0x002a00, //r:0 , g: 2a, b: 0, i: 12
-    // eHTMLColor_3_dark = 0x002a2a, //r:0 , g: 2a, b: 2a, i: 13
-    // eHTMLColor_4_dark = 0x2a0000, //r:2a , g: 0, b: 0, i: 14
-    // eHTMLColor_5_dark = 0x2a002a, //r:2a , g: 0, b: 2a, i: 15
-    // eHTMLColor_6_dark = 0x2a2a00, //r:2a , g: 2a, b: 0, i: 16
-    // eHTMLColor_7_dark = 0x2a2a2a, //r:2a , g: 2a, b: 2a, i: 17 // dark gray
-    // eHTMLColor_8_dark = 0x151515, //r:15 , g: 15, b: 15, i: 18
-    // eHTMLColor_9_dark = 0x15153f, //r:15 , g: 15, b: 3f, i: 19
-    // eHTMLColor_a_dark = 0x153f15, //r:15 , g: 3f, b: 15, i: 1a
-    // eHTMLColor_b_dark = 0x153f3f, //r:15 , g: 3f, b: 3f, i: 1b
-    // eHTMLColor_c_dark = 0x3f1515, //r:3f , g: 15, b: 15, i: 1c // brown
-    // eHTMLColor_d_dark = 0x3f153f, //r:3f , g: 15, b: 3f, i: 1d
-    // eHTMLColor_e_dark = 0x3f3f15, //r:3f , g: 3f, b: 15, i: 1e
-    // eHTMLColor_f_dark = 0x3f3f3f, //r:3f , g: 3f, b: 3f, i: 1f
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     eMinecraftColour_COUNT,
 };
@@ -526,13 +526,13 @@ enum eDLCContentType {
     e_DLC_AvatarItems,
     e_DLC_Gamerpics,
     e_DLC_MAX_MinecraftStore,
-    e_DLC_TexturePackData,  // for the icon, banner and text
+    e_DLC_TexturePackData,  
     e_DLC_MAX,
     e_DLC_NotDefined,
 };
 
 enum eDLCMarketplaceType {
-    e_Marketplace_Content = 0,  // skins, texture packs and mashup packs
+    e_Marketplace_Content = 0,  
     e_Marketplace_Themes,
     e_Marketplace_AvatarItems,
     e_Marketplace_Gamerpics,
@@ -555,7 +555,7 @@ enum eTMSContentState {
 
 enum eXUID {
     eXUID_Undefined = 0,
-    eXUID_NoName,  // name not needed
+    eXUID_NoName,  
     eXUID_Notch,
     eXUID_Carl,
     eXUID_Daniel,
@@ -581,19 +581,19 @@ enum _eTerrainFeatureType {
     eTerrainFeature_Count
 };
 
-// 4J Stu - Whend adding new options you should consider whether having them on
-// should disable achievements, and if so add them to the
-// CanRecordStatsAndAchievements function 4J Stu - These options are now saved
-// in save data, so new options can ONLY be added to the end
+
+
+
+
 enum eGameHostOption {
     eGameHostOption_Difficulty = 0,
-    eGameHostOption_OnlineGame,  // Unused
-    eGameHostOption_InviteOnly,  // Unused
+    eGameHostOption_OnlineGame,  
+    eGameHostOption_InviteOnly,  
     eGameHostOption_FriendsOfFriends,
     eGameHostOption_Gamertags,
-    eGameHostOption_Tutorial,  // special case
+    eGameHostOption_Tutorial,  
     eGameHostOption_GameType,
-    eGameHostOption_LevelType,  // default, flat, large biomes or amplified
+    eGameHostOption_LevelType,  
     eGameHostOption_Structures,
     eGameHostOption_BonusChest,
     eGameHostOption_HasBeenInCreative,
@@ -601,7 +601,7 @@ enum eGameHostOption {
     eGameHostOption_TrustPlayers,
     eGameHostOption_TNT,
     eGameHostOption_FireSpreads,
-    eGameHostOption_CheatsEnabled,  // special case
+    eGameHostOption_CheatsEnabled,  
     eGameHostOption_HostCanFly,
     eGameHostOption_HostCanChangeHunger,
     eGameHostOption_HostCanBeInvisible,
@@ -611,9 +611,9 @@ enum eGameHostOption {
     eGameHostOption_All,
 
     eGameHostOption_DisableSaving,
-    eGameHostOption_WasntSaveOwner,  // Added for PS3 save transfer, so we can
-                                     // add a nice message in the future instead
-                                     // of the creative mode one
+    eGameHostOption_WasntSaveOwner,  
+                                     
+                                     
 
     eGameHostOption_MobGriefing,
     eGameHostOption_KeepInventory,
@@ -624,8 +624,8 @@ enum eGameHostOption {
     eGameHostOption_DoDaylightCycle,
 };
 
-// 4J-PB - If any new DLC items are added to the TMSFiles, this array needs
-// updated
+
+
 
 enum EHTMLFontSize {
     eHTMLSize_Normal,

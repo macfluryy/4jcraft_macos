@@ -20,8 +20,8 @@ ServerSettingsChangedPacket::ServerSettingsChangedPacket(char action,
     this->action = action;
     this->data = data;
 
-    // app.DebugPrintf("ServerSettingsChangedPacket - Difficulty =
-    // %d",difficulty);
+    
+    
 }
 
 void ServerSettingsChangedPacket::handle(PacketListener* listener) {
@@ -29,14 +29,14 @@ void ServerSettingsChangedPacket::handle(PacketListener* listener) {
 }
 
 void ServerSettingsChangedPacket::read(
-    DataInputStream* dis)  // throws IOException
+    DataInputStream* dis)  
 {
     action = dis->read();
     data = dis->readInt();
 }
 
 void ServerSettingsChangedPacket::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     dos->write(action);
     dos->writeInt(data);

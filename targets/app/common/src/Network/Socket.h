@@ -57,7 +57,7 @@ private:
         virtual void close();
         virtual int64_t skip(int64_t n) {
             return n;
-        }  // 4J Stu - Not implemented
+        }  
         virtual void flush() {}
     };
 
@@ -94,7 +94,7 @@ private:
         virtual void close();
         virtual int64_t skip(int64_t n) {
             return n;
-        }  // 4J Stu - Not implemented
+        }  
         virtual void flush() {}
     };
     class SocketOutputStreamNetwork : public SocketOutputStream {

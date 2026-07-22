@@ -113,7 +113,7 @@ void ConsoleGenerateStructure::addAttribute(
 
 BoundingBox* ConsoleGenerateStructure::getBoundingBox() {
     if (boundingBox == nullptr) {
-        // Find the max bounds
+        
         int maxX, maxY, maxZ;
         maxX = maxY = maxZ = 1;
         for (auto it = m_actions.begin(); it != m_actions.end(); ++it) {

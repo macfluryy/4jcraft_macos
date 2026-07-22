@@ -17,15 +17,15 @@
 SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"MOJANG", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eExtraLargeText},
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},  // extra blank line
+     eSmallText},  
     {L"%ls", IDS_CREDITS_ORIGINALDESIGN, NO_TRANSLATED_STRING, eLargeText},
     {L"Markus Persson", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},  // extra blank line
+     eSmallText},  
     {L"%ls", IDS_CREDITS_PMPROD, NO_TRANSLATED_STRING, eLargeText},
     {L"Daniel Kaplan", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},  // extra blank line
+     eSmallText},  
     {L"%ls", IDS_CREDITS_RESTOFMOJANG, NO_TRANSLATED_STRING, eMediumText},
     {L"%ls", IDS_CREDITS_LEADPC, NO_TRANSLATED_STRING, eLargeText},
     {L"Jens Bergensten", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
@@ -41,11 +41,11 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"%ls", IDS_CREDITS_CUSTOMERSUPPORT, NO_TRANSLATED_STRING, eLargeText},
     {L"Marc Watson", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},  // extra blank line
+     eSmallText},  
     {L"%ls", IDS_CREDITS_DESPROG, NO_TRANSLATED_STRING, eLargeText},
     {L"Aron Nieminen", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},  // extra blank line
+     eSmallText},  
     {L"%ls", IDS_CREDITS_CHIEFARCHITECT, NO_TRANSLATED_STRING, eLargeText},
     {L"Daniel Frisk", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"%ls", IDS_CREDITS_CODENINJA, NO_TRANSLATED_STRING, eLargeText},
@@ -71,9 +71,9 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"Daniel Rosenfeld (C418)", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},  // extra blank line
+     eSmallText},  
 
-    // Added credit for horses
+    
     {L"Developers of Mo' Creatures:", NO_TRANSLATED_STRING,
      NO_TRANSLATED_STRING, eExtraLargeText},
     {L"John Olarte (DrZhark)", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
@@ -82,7 +82,7 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
      eSmallText},
     {L"Dan Roque", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},  // extra blank line
+     eSmallText},  
 
     {L"4J Studios", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eExtraLargeText},
@@ -116,7 +116,7 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
      eSmallText},
     {L"George Vaughan", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},  // extra blank line
+     eSmallText},  
     {L"%ls", IDS_CREDITS_SPECIALTHANKS, NO_TRANSLATED_STRING, eLargeText},
     {L"Chris van der Kuyl", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},
@@ -124,46 +124,46 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"Anne Clarke", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"Anthony Kent", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
 
-    // Miles & Iggy credits
+    
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},                                      // extra blank line
-    {L"", CREDIT_ICON, eCreditIcon_Iggy, eSmallText},  // extra blank line
+     eSmallText},                                      
+    {L"", CREDIT_ICON, eCreditIcon_Iggy, eSmallText},  
     {L"Uses Iggy.", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},  // extra blank line
+     eSmallText},  
     {L"Copyright (C) 2009-2014 by RAD Game Tools, Inc.", NO_TRANSLATED_STRING,
-     NO_TRANSLATED_STRING, eSmallText},  // extra blank line
+     NO_TRANSLATED_STRING, eSmallText},  
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},                                       // extra blank line
-    {L"", CREDIT_ICON, eCreditIcon_Miles, eSmallText},  // extra blank line
+     eSmallText},                                       
+    {L"", CREDIT_ICON, eCreditIcon_Miles, eSmallText},  
     {L"Uses Miles Sound System.", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
-     eSmallText},  // extra blank line
+     eSmallText},  
     {L"Copyright (C) 1991-2014 by RAD Game Tools, Inc.", NO_TRANSLATED_STRING,
-     NO_TRANSLATED_STRING, eSmallText},  // extra blank line
+     NO_TRANSLATED_STRING, eSmallText},  
 };
 
 UIScene_Credits::UIScene_Credits(int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_bAddNextLabel = false;
 
-    // How many lines of text are in the credits?
+    
     m_iNumTextDefs = MAX_CREDIT_STRINGS;
 
-    // Are there any additional lines needed for the DLC credits?
+    
     m_iNumTextDefs += app.GetDLCCreditsCount();
 
     m_iCurrDefIndex = -1;
 
-    // Add the first 20 Flash can cope with
+    
     for (unsigned int i = 0; i < 20; ++i) {
         ++m_iCurrDefIndex;
 
-        // Set up the new text element.
+        
         if (gs_aCreditDefs[i].m_iStringID[0] == NO_TRANSLATED_STRING) {
             setNextLabel(gs_aCreditDefs[i].m_Text, gs_aCreditDefs[i].m_eType);
-        } else  // using additional translated string.
+        } else  
         {
             wchar_t* creditsString = new wchar_t[128];
             if (gs_aCreditDefs[i].m_iStringID[1] != NO_TRANSLATED_STRING) {
@@ -191,7 +191,7 @@ void UIScene_Credits::updateComponents() {
 }
 
 void UIScene_Credits::handleReload() {
-    // We don't allow this in splitscreen, so just go back
+    
     navigateBack();
 }
 
@@ -203,10 +203,10 @@ void UIScene_Credits::tick() {
 
         const SCreditTextItemDef* pDef;
 
-        // Time to create next text item.
+        
         ++m_iCurrDefIndex;
 
-        // Wrap back to start.
+        
         if (m_iCurrDefIndex >= m_iNumTextDefs) {
             m_iCurrDefIndex = 0;
         }
@@ -214,25 +214,25 @@ void UIScene_Credits::tick() {
         if (m_iCurrDefIndex >= MAX_CREDIT_STRINGS) {
             app.DebugPrintf("DLC credit %d\n",
                             m_iCurrDefIndex - MAX_CREDIT_STRINGS);
-            // DLC credit
+            
             pDef = app.GetDLCCredits(m_iCurrDefIndex - MAX_CREDIT_STRINGS);
         } else {
-            // Get text def for this item.
+            
             pDef = &(gs_aCreditDefs[m_iCurrDefIndex]);
         }
 
-        // Set up the new text element.
-        if (pDef->m_Text != nullptr)  // 4J-PB - think the RAD logo ones aren't
-                                      // set up yet and are coming is as null
+        
+        if (pDef->m_Text != nullptr)  
+                                      
         {
             if (pDef->m_iStringID[0] == CREDIT_ICON) {
                 addImage((ECreditIcons)pDef->m_iStringID[1]);
-            } else  // using additional translated string.
+            } else  
             {
                 std::wstring sanitisedString = std::wstring(pDef->m_Text);
 
-                // 4J-JEV: Some DLC credits contain copyright or registered
-                // symbols that are not rendered in some fonts.
+                
+                
                 if (!ui.UsingBitmapFont()) {
                     sanitisedString =
                         replaceAll(sanitisedString, L"\u00A9", L"(C)");
@@ -265,9 +265,9 @@ void UIScene_Credits::tick() {
 
 void UIScene_Credits::handleInput(int iPad, int key, bool repeat, bool pressed,
                                   bool released, bool& handled) {
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %ls, pressed- %ls, released- %ls\n", iPad, key,
-    // down?"true":"false", pressed?"true":"false", released?"true":"false");
+    
+    
+    
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 

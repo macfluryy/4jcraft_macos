@@ -17,13 +17,13 @@ public:
     static const int STITCH_ABORT = 2;
 
     static const int MAX_MIPLEVEL =
-        0;  // This should be 4 again later when we *ACTUALLY* mipmap
+        0;  
     static const int MIN_TEXEL = 1 << MAX_MIPLEVEL;
 
 private:
     std::set<TextureHolder*, TextureHolderLessThan>
-        texturesToBeStitched;          // = new HashSet<TextureHolder>(256);
-    std::vector<StitchSlot*> storage;  // = new ArrayList<StitchSlot>(256);
+        texturesToBeStitched;          
+    std::vector<StitchSlot*> storage;  
     int storageX;
     int storageY;
 
@@ -48,23 +48,23 @@ public:
     int getWidth();
     int getHeight();
     void addTexture(TextureHolder* textureHolder);
-    Texture* constructTexture(bool mipmap = true);  // 4J Added mipmap param
+    Texture* constructTexture(bool mipmap = true);  
     void stitch();
     std::vector<StitchSlot*>* gatherAreas();
 
 private:
-    // Based on:
-    // http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
+    
+    
     int smallestEncompassingPowerOfTwo(int input);
 
     bool addToStorage(TextureHolder* textureHolder);
 
-    /**
-     * Expand the current storage to take in account the new texture.
-     * This should only be called if it didn't fit anywhere.
-     *
-     * @param textureHolder
-     * @return Boolean indicating if it could accommodate for the growth
-     */
+    
+
+
+
+
+
+
     bool expand(TextureHolder* textureHolder);
 };

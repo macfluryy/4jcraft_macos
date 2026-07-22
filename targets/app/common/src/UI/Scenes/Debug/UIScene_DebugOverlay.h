@@ -73,7 +73,7 @@ public:
     virtual void customDraw(IggyCustomDrawCallbackRegion* region);
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

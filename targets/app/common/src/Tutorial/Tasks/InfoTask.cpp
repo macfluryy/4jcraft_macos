@@ -14,8 +14,8 @@
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/level/material/Material.h"
 
-InfoTask::InfoTask(Tutorial* tutorial, int descriptionId, int promptId /*= -1*/,
-                   bool requiresUserInput /*= false*/, int iMapping /*= 0*/)
+InfoTask::InfoTask(Tutorial* tutorial, int descriptionId, int promptId ,
+                   bool requiresUserInput , int iMapping )
     : TutorialTask(tutorial, descriptionId, false, nullptr, true, false,
                    false) {
     if (requiresUserInput == true) {
@@ -38,15 +38,15 @@ bool InfoTask::isCompleted() {
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
-    // If the player is under water then allow all keypresses so they can jump
-    // out
+    
+    
     if (pMinecraft->localplayers[tutorial->getPad()]->isUnderLiquid(
             Material::water))
         return false;
 
     if (ui.GetMenuDisplayed(tutorial->getPad())) {
-        // If a menu is displayed, then we use the handleUIInput to complete the
-        // task
+        
+        
         bAllComplete = true;
         for (auto it = completedMappings.begin(); it != completedMappings.end();
              ++it) {
@@ -89,7 +89,7 @@ int InfoTask::getPromptId() {
         return -1;
 }
 
-void InfoTask::setAsCurrentTask(bool active /*= true*/) {
+void InfoTask::setAsCurrentTask(bool active ) {
     enableConstraints(active);
     TutorialTask::setAsCurrentTask(active);
 }

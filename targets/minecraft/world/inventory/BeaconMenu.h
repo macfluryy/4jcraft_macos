@@ -30,7 +30,7 @@ private:
     std::shared_ptr<BeaconTileEntity> beacon;
     PaymentSlot* paymentSlot;
 
-    // copied values because container/client system is retarded
+    
     int levels;
     int primaryPower;
     int secondaryPower;

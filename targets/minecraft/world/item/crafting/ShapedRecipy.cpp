@@ -1,7 +1,7 @@
-// package net.minecraft.world.item.crafting;
-//
-// import net.minecraft.world.inventory.CraftingContainer;
-// import net.minecraft.world.item.ItemInstance;
+
+
+
+
 
 #include "ShapedRecipy.h"
 
@@ -15,8 +15,8 @@
 #include "minecraft/world/item/crafting/Recipy.h"
 #include "nbt/CompoundTag.h"
 
-// 4J-PB - for new crafting - Adding group to define type of item that the
-// recipe produces
+
+
 ShapedRecipy::ShapedRecipy(int width, int height, ItemInstance** recipeItems,
                            ItemInstance* result, int iGroup)
     : resultId(result->id) {
@@ -95,7 +95,7 @@ std::shared_ptr<ItemInstance> ShapedRecipy::assemble(
 
 int ShapedRecipy::size() { return width * height; }
 
-// 4J-PB
+
 bool ShapedRecipy::requiresRecipe(int iRecipe) {
     app.DebugPrintf("ShapedRecipy %d\n", iRecipe);
     int iCount = 0;
@@ -104,7 +104,7 @@ bool ShapedRecipy::requiresRecipe(int iRecipe) {
             if (x < width && y < height) {
                 ItemInstance* expected = recipeItems[x + y * width];
                 if (expected != nullptr) {
-                    // printf("\tIngredient %d is %d\n",iCount++,expected->id);
+                    
                 }
             }
         }
@@ -114,7 +114,7 @@ bool ShapedRecipy::requiresRecipe(int iRecipe) {
 }
 
 void ShapedRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
-    // printf("ShapedRecipy %d\n",iRecipe);
+    
 
     int iCount = 0;
     bool bFound;
@@ -122,8 +122,8 @@ void ShapedRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
     INGREDIENTS_REQUIRED TempIngReq;
     TempIngReq.iIngC = 0;
     TempIngReq.iType = ((width > 2) || (height > 2)) ? RECIPE_TYPE_3x3
-                                                     : RECIPE_TYPE_2x2;  // 3x3
-    // 3x3
+                                                     : RECIPE_TYPE_2x2;  
+    
     TempIngReq.uiGridA = new unsigned int[9];
     TempIngReq.iIngIDA = new int[9];
     TempIngReq.iIngValA = new int[9];
@@ -160,7 +160,7 @@ void ShapedRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
                         TempIngReq.iIngAuxValA[TempIngReq.iIngC] = iAuxVal;
                         TempIngReq.iIngValA[TempIngReq.iIngC++]++;
                     }
-                    // printf("\tIngredient %d is %d\n",iCount++,expected->id);
+                    
                 }
             }
         }

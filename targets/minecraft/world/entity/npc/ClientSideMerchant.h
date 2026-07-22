@@ -25,7 +25,7 @@ public:
                        const std::wstring& name);
     ~ClientSideMerchant();
 
-    void createContainer();  // 4J Added
+    void createContainer();  
     Container* getContainer();
     std::shared_ptr<Player> getTradingPlayer();
     void setTradingPlayer(std::shared_ptr<Player> player);

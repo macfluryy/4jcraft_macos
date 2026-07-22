@@ -8,7 +8,7 @@ public:
     static const int IS_GRASS_SIDE = 1;
     static const int IS_GRASS_TOP = 2;
 
-    virtual ~Icon() {}  // added by 4jcraft, needed for abstract class
+    virtual ~Icon() {}  
 
     virtual int getX() const = 0;
     virtual int getY() const = 0;
@@ -23,6 +23,6 @@ public:
     virtual std::wstring getName() const = 0;
     virtual int getSourceWidth() const = 0;
     virtual int getSourceHeight() const = 0;
-    virtual int getFlags() const = 0;      // 4J added
-    virtual void setFlags(int flags) = 0;  // 4J added
+    virtual int getFlags() const = 0;      
+    virtual void setFlags(int flags) = 0;  
 };

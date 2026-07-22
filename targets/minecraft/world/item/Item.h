@@ -35,7 +35,7 @@ class Rarity;
 
 class Item : public std::enable_shared_from_this<Item> {
 protected:
-    // static const UUID BASE_ATTACK_DAMAGE_UUID;
+    
 
 public:
     static const int ITEM_NUM_COUNT = 32000;
@@ -43,7 +43,7 @@ public:
     static void staticCtor();
     static void staticInit();
 
-    // 4J-PB - added for new crafting menu
+    
     enum {
         eMaterial_undefined = 0,
         eMaterial_wood,
@@ -52,7 +52,7 @@ public:
         eMaterial_gold,
         eMaterial_diamond,
         eMaterial_cloth,
-        eMaterial_chain,  // 4J Stu - It's available in creative in 1.8
+        eMaterial_chain,  
         eMaterial_detector,
         eMaterial_lapis,
         eMaterial_music,
@@ -150,16 +150,16 @@ public:
 protected:
     static const int ICON_COLUMNS = ITEM_ICON_COLUMNS;
     static std::wstring
-        ICON_DESCRIPTION_PREFIX;  // 4J Stu - Was const but we have to static
-                                  // initialise it outside of this class
+        ICON_DESCRIPTION_PREFIX;  
+                                  
 
 public:
     class Tier {
     public:
-        static const Tier* WOOD;     //
-        static const Tier* STONE;    //
-        static const Tier* IRON;     //
-        static const Tier* DIAMOND;  //
+        static const Tier* WOOD;     
+        static const Tier* STONE;    
+        static const Tier* IRON;     
+        static const Tier* DIAMOND;  
         static const Tier* GOLD;
 
     private:
@@ -169,8 +169,8 @@ public:
         const float damage;
         const int enchantmentValue;
 
-        // 4J Stu - Had to make this public but was protected
-        // We shouldn't be creating these except the static initialisation
+        
+        
     public:
         Tier(int level, int uses, float speed, float damage,
              int enchantmentValue);
@@ -375,13 +375,13 @@ public:
     static Item* record_11;
     static Item* record_12;
 
-    // TU9
+    
     static Item* fireball;
     static Item* frame;
 
-    // TU14
-    // static Item writingBook;
-    // static Item writtenBook;
+    
+    
+    
 
     static Item* emerald;
 
@@ -526,10 +526,10 @@ public:
     static const int cookie_Id = 357;
     static const int map_Id = 358;
 
-    // 1.7.3
+    
     static const int shears_Id = 359;
 
-    // 1.8.2
+    
     static const int melon_Id = 360;
     static const int seeds_pumpkin_Id = 361;
     static const int seeds_melon_Id = 362;
@@ -540,7 +540,7 @@ public:
     static const int rotten_flesh_Id = 367;
     static const int enderPearl_Id = 368;
 
-    // 1.0.1
+    
     static const int blazeRod_Id = 369;
     static const int ghastTear_Id = 370;
     static const int goldNugget_Id = 371;
@@ -556,12 +556,12 @@ public:
     static const int eyeOfEnder_Id = 381;
     static const int speckledMelon_Id = 382;
 
-    // 1.1
+    
     static const int spawnEgg_Id = 383;
 
     static const int expBottle_Id = 384;
 
-    // TU 12
+    
     static const int skull_Id = 397;
 
     static const int record_01_Id = 2256;
@@ -576,16 +576,16 @@ public:
     static const int record_11_Id = 2265;
     static const int record_12_Id = 2266;
 
-    // 4J-PB - this one isn't playable in the PC game, but is fine in ours
+    
     static const int record_08_Id = 2267;
 
-    // TU9
+    
     static const int fireball_Id = 385;
     static const int itemFrame_Id = 389;
 
-    // TU14
-    // static const int writingBook_Id			 = 130;
-    // static const int writtenBook_Id			 = 131;
+    
+    
+    
 
     static const int emerald_Id = 388;
 
@@ -632,7 +632,7 @@ private:
 
 protected:
     Icon* icon;
-    // 4J-PB - added for new crafting menu
+    
     int m_iBaseItemType;
     int m_iMaterial;
     bool m_handEquipped;
@@ -642,10 +642,10 @@ private:
     Item* craftingRemainingItem;
     std::wstring potionBrewingFormula;
 
-    // 4J Stu - A value from strings.h, that is the name of the item
+    
     unsigned int descriptionId;
 
-    // 4J Stu - A value from strings.h that says what this does
+    
     unsigned int useDescriptionId;
 
     std::wstring m_textureName;
@@ -654,7 +654,7 @@ protected:
     Item(int id);
 
 public:
-    // 4J Using per-item textures now
+    
     Item* setIconName(const std::wstring& name);
     std::wstring getIconName();
     Item* setMaxStackSize(int max);
@@ -696,29 +696,29 @@ protected:
 public:
     bool canBeDepleted();
 
-    /**
-     * Returns true when the item was used to deal more than default damage
-     *
-     * @param itemInstance
-     * @param mob
-     * @param attacker
-     * @return
-     */
+    
+
+
+
+
+
+
+
     virtual bool hurtEnemy(std::shared_ptr<ItemInstance> itemInstance,
                            std::shared_ptr<LivingEntity> mob,
                            std::shared_ptr<LivingEntity> attacker);
 
-    /**
-     * Returns true when the item was used to mine more efficiently
-     *
-     * @param itemInstance
-     * @param tile
-     * @param x
-     * @param yf
-     * @param z
-     * @param owner
-     * @return
-     */
+    
+
+
+
+
+
+
+
+
+
+
     virtual bool mineBlock(std::shared_ptr<ItemInstance> itemInstance,
                            Level* level, int tile, int x, int y, int z,
                            std::shared_ptr<LivingEntity> owner);
@@ -768,13 +768,13 @@ protected:
 public:
     virtual std::wstring getPotionBrewingFormula();
     virtual bool hasPotionBrewingFormula();
-    // 4jcraft: re-added old TU18 overload for java gui
+    
     virtual void appendHoverText(
         std::shared_ptr<ItemInstance> itemInstance,
         std::shared_ptr<Player> player, std::vector<std::wstring>* lines,
         bool advanced,
         std::vector<std::wstring>&
-            unformattedStrings);  // 4J Added unformattedStrings
+            unformattedStrings);  
     virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
                                  std::shared_ptr<Player> player,
                                  std::vector<HtmlString>* lines, bool advanced);

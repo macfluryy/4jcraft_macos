@@ -37,7 +37,7 @@ public:
     virtual bool hurt(DamageSource* source, float damage);
 
 protected:
-    // 4J Added TU9
+    
     virtual ePARTICLE_TYPE getTrailParticleType();
 
     virtual bool shouldBurn();

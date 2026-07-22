@@ -36,7 +36,7 @@ public:
     virtual void addAttribute(const std::wstring& attributeName,
                               const std::wstring& attributeValue);
 
-    // StructurePiece
+    
     virtual BoundingBox* getBoundingBox();
     virtual bool postProcess(Level* level, Random* random,
                              BoundingBox* chunkBB);

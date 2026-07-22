@@ -28,7 +28,7 @@ std::shared_ptr<ServerPlayer> requireServerPlayer(
     return sp;
 }
 
-// Remember the player's current location as their /back target.
+
 void rememberBackPosition(std::shared_ptr<ServerPlayer> sp) {
     sp->m_hasBack = true;
     sp->m_backX = sp->x;
@@ -45,9 +45,9 @@ void teleportTo(std::shared_ptr<ServerPlayer> sp, double x, double y, double z) 
     sp->connection->teleport(x, y, z, sp->yRot, sp->xRot);
 }
 
-}  // namespace
+}  
 
-// ---- /spawn -----------------------------------------------------------------
+
 
 EGameCommand SpawnCommand::getId() { return eGameCommand_Spawn; }
 int SpawnCommand::getPermissionLevel() { return LEVEL_ALL; }
@@ -59,7 +59,7 @@ void SpawnCommand::execute(std::shared_ptr<CommandSender> source,
 
     auto* server = MinecraftServer::getInstance();
     if (server == nullptr) return;
-    ServerLevel* level = server->getLevel(0);  // overworld spawn
+    ServerLevel* level = server->getLevel(0);  
     if (level == nullptr) {
         source->sendMessage(L"§cWorld is not loaded");
         return;
@@ -74,7 +74,7 @@ void SpawnCommand::execute(std::shared_ptr<CommandSender> source,
     source->sendMessage(L"§aTeleported to spawn");
 }
 
-// ---- /sethome ---------------------------------------------------------------
+
 
 EGameCommand SetHomeCommand::getId() { return eGameCommand_SetHome; }
 int SetHomeCommand::getPermissionLevel() { return LEVEL_ALL; }
@@ -94,7 +94,7 @@ void SetHomeCommand::execute(std::shared_ptr<CommandSender> source,
     source->sendMessage(L"§aHome set");
 }
 
-// ---- /home ------------------------------------------------------------------
+
 
 EGameCommand HomeCommand::getId() { return eGameCommand_Home; }
 int HomeCommand::getPermissionLevel() { return LEVEL_ALL; }
@@ -124,7 +124,7 @@ void HomeCommand::execute(std::shared_ptr<CommandSender> source,
     source->sendMessage(L"§aTeleported home");
 }
 
-// ---- /back ------------------------------------------------------------------
+
 
 EGameCommand BackCommand::getId() { return eGameCommand_Back; }
 int BackCommand::getPermissionLevel() { return LEVEL_ALL; }
@@ -149,8 +149,8 @@ void BackCommand::execute(std::shared_ptr<CommandSender> source,
         return;
     }
 
-    // /back swaps current and previous: the place we came from becomes the
-    // new back target so /back can toggle between two spots.
+    
+    
     double bx = sp->m_backX;
     double by = sp->m_backY;
     double bz = sp->m_backZ;
@@ -159,7 +159,7 @@ void BackCommand::execute(std::shared_ptr<CommandSender> source,
     source->sendMessage(L"§aTeleported to previous location");
 }
 
-// ---- /r (reply) -------------------------------------------------------------
+
 
 EGameCommand ReplyCommand::getId() { return eGameCommand_Reply; }
 int ReplyCommand::getPermissionLevel() { return LEVEL_ALL; }
@@ -199,6 +199,6 @@ void ReplyCommand::execute(std::shared_ptr<CommandSender> source,
     target->sendMessage(L"§d[" + sp->getName() + L" -> me] §r" + message);
     source->sendMessage(L"§d[me -> " + target->getName() + L"] §r" + message);
 
-    // Mutual /r: target's last reply target becomes us
+    
     target->m_lastReplyTo = sp->getName();
 }

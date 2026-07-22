@@ -79,9 +79,9 @@ void BreedGoal::breed() {
     animal->setDespawnProtected();
     partner.lock()->setDespawnProtected();
     if (offspring == nullptr) {
-        // This will be nullptr if we've hit our limits for spawning any
-        // particular type of animal... reset things as normally as we can,
-        // without actually producing any offspring
+        
+        
+        
         animal->resetLove();
         partner.lock()->resetLove();
         return;
@@ -93,13 +93,13 @@ void BreedGoal::breed() {
     }
 
     if (loveCause != nullptr) {
-        // Record mob bred stat.
+        
         loveCause->awardStat(
             GenericStats::breedEntity(offspring->GetType()),
             GenericStats::param_breedEntity(offspring->GetType()));
 
         if (animal->GetType() == eTYPE_COW) {
-            // loveCause->awardStat(Achievements.breedCow);
+            
         }
     }
 
@@ -126,8 +126,8 @@ void BreedGoal::breed() {
                 animal->bbWidth,
             xa, ya, za);
     }
-    // 4J-PB - Fix for 106869- Customer Encountered: TU12: Content: Gameplay:
-    // Breeding animals does not give any Experience Orbs.
+    
+    
     level->addEntity(std::make_shared<ExperienceOrb>(
         level, animal->x, animal->y, animal->z, random->nextInt(7) + 1));
 }

@@ -29,7 +29,7 @@ std::wstring readUtfArg(std::vector<uint8_t>& commandData) {
     }
 }
 
-}  // namespace
+}  
 
 EGameCommand BanCommand::getId() { return eGameCommand_Ban; }
 int BanCommand::getPermissionLevel() { return LEVEL_ADMINS; }
@@ -63,7 +63,7 @@ void BanCommand::execute(std::shared_ptr<CommandSender> source,
 
     target->sendMessage(L"§cYou have been banned from the server");
 
-    // Disconnect the now-banned player
+    
     if (target->connection != nullptr) {
         target->connection->setWasKicked();
         if (target->connection->connection != nullptr &&
@@ -95,9 +95,9 @@ void PardonCommand::execute(std::shared_ptr<CommandSender> source,
     if (server == nullptr) return;
     PlayerList* players = server->getPlayers();
 
-    // Best-effort: pardon by looking up the still-connected player record.
-    // If the player is not online, we cannot resolve their xuid and can only
-    // notify the issuer that the lookup failed.
+    
+    
+    
     auto target = players->getPlayer(targetName);
     if (target == nullptr) {
         source->sendMessage(

@@ -22,12 +22,12 @@ protected:
     static const int BUTTON_UP_ID = 4;
     static const int BUTTON_DOWN_ID = 5;
     static const int BUTTON_RENAME_ID = 6;
-    // 4J macOS - direct-connect multiplayer entry point on the world list.
+    
     static const int BUTTON_MULTIPLAYER_ID = 7;
 
 private:
-    //	final DateFormat DATE_FORMAT = new SimpleDateFormat();		// 4J -
-    // removed
+    
+    
 
 protected:
     Screen* lastScreen;
@@ -72,8 +72,8 @@ public:
     class WorldSelectionList : public ScrolledSelectionList {
     public:
         SelectWorldScreen* parent;
-        // 4J - had to add input parameters to ctor, original is a java subclass
-        // of the screen and can access its members
+        
+        
         WorldSelectionList(SelectWorldScreen* sws);
 
     protected:

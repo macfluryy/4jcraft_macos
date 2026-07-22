@@ -1,7 +1,7 @@
-// package net.minecraft.world.item.crafting;
 
-// import net.minecraft.world.item.*;
-// import net.minecraft.world.level.tile.Tile;
+
+
+
 #pragma once
 
 #include <format>
@@ -15,7 +15,7 @@ class Object;
 
 class ToolRecipies {
 public:
-    // 4J - added for common ctor code
+    
     void _init();
     ToolRecipies() { _init(); }
 

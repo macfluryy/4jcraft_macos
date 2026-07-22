@@ -1,6 +1,6 @@
 #pragma once
-// 4J Stu - We are not using GZIP compression, so this is just a pass through
-// class
+
+
 
 #include "OutputStream.h"
 

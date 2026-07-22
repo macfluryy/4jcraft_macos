@@ -37,7 +37,7 @@ MinecartFurnace::MinecartFurnace(Level* level, double x, double y, double z)
     xPush = zPush = 0.0f;
 }
 
-// 4J Added
+
 int MinecartFurnace::getContainerType() {
     return ContainerOpenPacket::MINECART_HOPPER;
 }

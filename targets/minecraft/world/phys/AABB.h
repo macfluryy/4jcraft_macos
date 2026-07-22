@@ -27,7 +27,7 @@ public:
     bool intersects(double x02, double y02, double z02, double x12, double y12,
                     double z12) const;
     bool contains(const Vec3& p) const;
-    bool containsIncludingLowerBound(const Vec3& p) const;  // 4J Added
+    bool containsIncludingLowerBound(const Vec3& p) const;  
     double getSize() const;
     AABB shrink(double xa, double ya, double za) const;
     HitResult* clip(const Vec3& a, const Vec3& b) const;

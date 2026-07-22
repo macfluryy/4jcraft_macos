@@ -37,7 +37,7 @@ static void sigsegv_handler(int sig) {
     write(STDERR_FILENO, msg2, sizeof(msg2) - 1);
     _exit(139);
 }
-#endif  // __APPLE__
+#endif  
 
 #include "minecraft/server/MinecraftServer.h"
 

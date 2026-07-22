@@ -14,13 +14,13 @@ class ItemInstance;
 
 class AbstractContainerScreen : public Screen {
 protected:
-    // 4jcraft: made protected to match JE 1.6.4
+    
     static ItemRenderer* itemRenderer;
 
 protected:
     int imageWidth;
     int imageHeight;
-    // int leftPos, topPos;
+    
 public:
     AbstractContainerMenu* menu;
 
@@ -31,16 +31,16 @@ public:
 protected:
     virtual void renderLabels();
     virtual void renderBg(float a) = 0;
-    // 4jcraft: promoted from private to protected so CreativeInventoryScreen
-    // can call findSlot() and isHovering() directly for its custom click
-    // handling.
+    
+    
+    
     virtual Slot* findSlot(int x, int y);
-    // 4jcraft: equivalent to MCP 8.11 (1.6.x)'s GuiContainer.isPointInRegion()
-    // for use in other derived classes
+    
+    
     virtual bool isHoveringOver(int x, int y, int w, int h, int xm, int ym);
     virtual bool isHovering(Slot* slot, int xm, int ym);
-    // 4jcraft: extracted from render() into a standalone method so this can be
-    // used in other places
+    
+    
     virtual void renderTooltipInternal(
         const std::vector<std::wstring>& cleanedLines,
         const std::vector<int>& lineColors, int xm, int ym);
@@ -61,7 +61,7 @@ public:
     virtual bool isPauseScreen() override;
     virtual void tick() override;
 
-    // 4jcraft: 1.6.x era overloads
+    
     virtual void renderTooltip(const std::vector<std::wstring>& lines, int xm,
                                int ym);
     virtual void renderTooltip(const std::wstring& line, int xm, int ym);

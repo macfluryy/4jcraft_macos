@@ -10,7 +10,7 @@
 #include "minecraft/sounds/SoundTypes.h"
 #include "strings.h"
 
-// strings for buttons in the list
+
 const unsigned int UIScene_LanguageSelector::m_uiHTPButtonNameA[] = {
     IDS_LANG_SYSTEM,
     IDS_LANG_ENGLISH,
@@ -32,8 +32,8 @@ const unsigned int UIScene_LanguageSelector::m_uiHTPButtonNameA[] = {
     IDS_LANG_RUSSIAN,
     IDS_LANG_SWEDISH,
     IDS_LANG_NORWEGIAN,
-    // IDS_LANG_SLOVAK,
-    // IDS_LANG_CZECH,
+    
+    
     IDS_LANG_GREEK,
     IDS_LANG_TURKISH,
 };
@@ -41,7 +41,7 @@ const unsigned int UIScene_LanguageSelector::m_uiHTPButtonNameA[] = {
 UIScene_LanguageSelector::UIScene_LanguageSelector(int iPad, void* initData,
                                                    UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_buttonListHowTo.init(eControl_Buttons);
@@ -86,16 +86,16 @@ void UIScene_LanguageSelector::handleReload() {
 void UIScene_LanguageSelector::handleInput(int iPad, int key, bool repeat,
                                            bool pressed, bool released,
                                            bool& handled) {
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {
         case ACTION_MENU_CANCEL:
             if (pressed) {
                 navigateBack();
-                // ui.NavigateToScene(m_iPad, eUIScene_SettingsOptionsMenu);
+                
             }
             break;
         case ACTION_MENU_OK:
@@ -112,7 +112,7 @@ void UIScene_LanguageSelector::handleInput(int iPad, int key, bool repeat,
 
 void UIScene_LanguageSelector::handlePress(F64 controlId, F64 childId) {
     if ((int)controlId == eControl_Buttons) {
-        // CD - Added for audio
+        
         ui.PlayUISFX(eSFX_Press);
 
         int newLanguage, newLocale;

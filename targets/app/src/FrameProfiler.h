@@ -79,7 +79,7 @@ public:
         bool m_enabled;
     };
 #else
-    // Safe fallback stubs so the game compiles without overhead when the profiler is disabled
+    
     static constexpr bool IsEnabled() noexcept { return false; }
     static inline void Record(Bucket, std::uint64_t) noexcept {}
     static inline void EndFrame(std::uint64_t) noexcept {}
@@ -98,4 +98,4 @@ public:
 #endif
 };
 
-#endif // FRAME_PROFILER_H
+#endif 

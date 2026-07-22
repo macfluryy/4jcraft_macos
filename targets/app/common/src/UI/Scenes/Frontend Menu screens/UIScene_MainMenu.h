@@ -32,14 +32,14 @@ private:
         eControl_Count,
     };
 
-    // #ifdef 0
-    // 	enum EPatchCheck
-    // 	{
-    // 		ePatchCheck_Idle,
-    // 		ePatchCheck_Init,
-    // 		ePatchCheck_Running,
-    // 	};
-    // #endif
+    
+    
+    
+    
+    
+    
+    
+    
 
     UIControl_Button m_buttons[eControl_Count];
     UIControl m_controlTimer;
@@ -68,8 +68,8 @@ private:
         eSplashMerryXmas,
         eSplashHappyNewYear,
 
-        // The start index in the splashes vector from which we can select a
-        // random splash
+        
+        
         eSplashRandomStart,
     };
 
@@ -85,7 +85,7 @@ private:
     eActions m_eAction;
 
 private:
-    // 4J-JEV: Delay navigation until font changes.
+    
     static int eNavigateWhenReady;
 
     static void proceedToScene(int iPad, EUIScene eScene) {
@@ -96,7 +96,7 @@ public:
     UIScene_MainMenu(int iPad, void* initData, UILayer* parentLayer);
     virtual ~UIScene_MainMenu();
 
-    // Returns true if this scene has focus for the pad passed in
+    
     virtual bool hasFocus(int iPad) { return bHasFocus; }
 
     virtual void updateTooltips();
@@ -114,7 +114,7 @@ protected:
 public:
     virtual void tick();
     virtual void handleReload();
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

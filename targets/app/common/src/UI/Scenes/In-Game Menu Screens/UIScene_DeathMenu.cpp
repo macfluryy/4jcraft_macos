@@ -25,7 +25,7 @@ class UILayer;
 UIScene_DeathMenu::UIScene_DeathMenu(int iPad, void* initData,
                                      UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_buttonRespawn.init(app.GetString(IDS_RESPAWN), eControl_Respawn);
@@ -40,7 +40,7 @@ UIScene_DeathMenu::UIScene_DeathMenu(int iPad, void* initData,
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[iPad];
 
-        // This just allows it to be shown
+        
         gameMode->getTutorial()->showTutorialPopup(false);
     }
 }
@@ -52,7 +52,7 @@ UIScene_DeathMenu::~UIScene_DeathMenu() {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[m_iPad];
 
-        // This just allows it to be shown
+        
         gameMode->getTutorial()->showTutorialPopup(true);
     }
 }
@@ -97,10 +97,10 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
             break;
         case eControl_ExitGame: {
             Minecraft* pMinecraft = Minecraft::GetInstance();
-            // 4J-PB - fix for #8333 - BLOCKER: If player decides to exit game,
-            // then cancels the exit player becomes stuck at game over screen
-            // m_bIgnoreInput = true;
-            // is it the primary player exiting?
+            
+            
+            
+            
             if (m_iPad == ProfileManager.GetPrimaryPad()) {
                 unsigned int uiIDA[3];
                 int playTime = -1;
@@ -139,7 +139,7 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                     }
                 }
             } else {
-                // just exit the player
+                
                 app.SetAction(m_iPad, eAppAction_ExitPlayer);
             }
         } break;

@@ -28,7 +28,7 @@ public:
     int getSize();
     int getInt();
     int getInt(unsigned int index);
-    void get(std::vector<uint8_t>) {}  // 4J - TODO
+    void get(std::vector<uint8_t>) {}  
     uint8_t get(int index);
     int64_t getLong();
     short getShort();

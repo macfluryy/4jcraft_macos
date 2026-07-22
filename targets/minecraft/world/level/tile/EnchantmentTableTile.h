@@ -21,7 +21,7 @@ private:
 public:
     EnchantmentTableTile(int id);
 
-    virtual void updateDefaultShape();  // 4J Added override
+    virtual void updateDefaultShape();  
     virtual bool isCubeShaped();
     virtual void animateTick(Level* level, int x, int y, int z, Random* random);
     virtual bool isSolidRender(bool isServerLevel = false);
@@ -30,7 +30,7 @@ public:
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
-                     bool soundOnly = false);  // 4J added soundOnly param
+                     bool soundOnly = false);  
     virtual void setPlacedBy(Level* level, int x, int y, int z,
                              std::shared_ptr<LivingEntity> by,
                              std::shared_ptr<ItemInstance> itemInstance);

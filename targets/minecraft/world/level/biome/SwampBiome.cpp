@@ -16,31 +16,30 @@ SwampBiome::SwampBiome(int id) : Biome(id) {
     decorator->clayCount = 1;
     decorator->waterlilyCount = 4;
 
-    // waterColor = 0xe0ffae;
+    
 
     enemies.push_back(new MobSpawnerData(eTYPE_SLIME, 1, 1, 1));
 }
 
 Feature* SwampBiome::getTreeFeature(Random* random) {
-    return new SwampTreeFeature();  // 4J used to return member swampTree, now
-                                    // returning newly created object so that
-                                    // caller can be consistently resposible for
-                                    // cleanup
+    return new SwampTreeFeature();  
+                                    
+                                    
+                                    
 }
 
-// 4J Stu - Not using these any more
-// int SwampBiome::getGrassColor()
-//{
-//    double temp = getTemperature();
-//    double rain = getDownfall();
-//
-//    return ((GrassColor::get(temp, rain) & 0xfefefe) + 0x4e0e4e) / 2;
-//}
-//
-// int SwampBiome::getFolageColor()
-//{
-//    double temp = getTemperature();
-//    double rain = getDownfall();
-//
-//    return ((FoliageColor::get(temp, rain) & 0xfefefe) + 0x4e0e4e) / 2;
-//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

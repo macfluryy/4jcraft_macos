@@ -46,7 +46,7 @@
 #include "nbt/ListTag.h"
 #include "strings.h"
 
-// 4J JEV - Images for each tab.
+
 IUIScene_CreativeMenu::TabSpec** IUIScene_CreativeMenu::specs = nullptr;
 
 std::vector<std::shared_ptr<ItemInstance> >
@@ -62,7 +62,7 @@ std::vector<std::shared_ptr<ItemInstance> >
 void IUIScene_CreativeMenu::staticCtor() {
     std::vector<std::shared_ptr<ItemInstance> >* list;
 
-    // Building Blocks
+    
     DEF(eCreativeInventory_BuildingBlocks)
     ITEM(Tile::stone_Id)
     ITEM(Tile::grass_Id)
@@ -129,8 +129,8 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM(Item::door_iron_Id)
     ITEM_AUX(Tile::stoneSlabHalf_Id, StoneSlabTile::STONE_SLAB)
     ITEM_AUX(Tile::stoneSlabHalf_Id, StoneSlabTile::SAND_SLAB)
-    // AP - changed oak slab to be wood because it wouldn't burn
-    //		ITEM_AUX(Tile::stoneSlabHalf_Id,StoneSlabTile::WOOD_SLAB)
+    
+    
     ITEM_AUX(Tile::woodSlabHalf_Id, 0)
     ITEM_AUX(Tile::woodSlabHalf_Id, TreeTile::DARK_TRUNK)
     ITEM_AUX(Tile::woodSlabHalf_Id, TreeTile::BIRCH_TRUNK)
@@ -152,24 +152,24 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM(Tile::stairs_quartz_Id)
 
     ITEM(Tile::clayHardened_Id)
-    ITEM_AUX(Tile::clayHardened_colored_Id, 14)  // Red
-    ITEM_AUX(Tile::clayHardened_colored_Id, 1)   // Orange
-    ITEM_AUX(Tile::clayHardened_colored_Id, 4)   // Yellow
-    ITEM_AUX(Tile::clayHardened_colored_Id, 5)   // Lime
-    ITEM_AUX(Tile::clayHardened_colored_Id, 3)   // Light Blue
-    ITEM_AUX(Tile::clayHardened_colored_Id, 9)   // Cyan
-    ITEM_AUX(Tile::clayHardened_colored_Id, 11)  // Blue
-    ITEM_AUX(Tile::clayHardened_colored_Id, 10)  // Purple
-    ITEM_AUX(Tile::clayHardened_colored_Id, 2)   // Magenta
-    ITEM_AUX(Tile::clayHardened_colored_Id, 6)   // Pink
-    ITEM_AUX(Tile::clayHardened_colored_Id, 0)   // White
-    ITEM_AUX(Tile::clayHardened_colored_Id, 8)   // Light Gray
-    ITEM_AUX(Tile::clayHardened_colored_Id, 7)   // Gray
-    ITEM_AUX(Tile::clayHardened_colored_Id, 15)  // Black
-    ITEM_AUX(Tile::clayHardened_colored_Id, 13)  // Green
-    ITEM_AUX(Tile::clayHardened_colored_Id, 12)  // Brown
+    ITEM_AUX(Tile::clayHardened_colored_Id, 14)  
+    ITEM_AUX(Tile::clayHardened_colored_Id, 1)   
+    ITEM_AUX(Tile::clayHardened_colored_Id, 4)   
+    ITEM_AUX(Tile::clayHardened_colored_Id, 5)   
+    ITEM_AUX(Tile::clayHardened_colored_Id, 3)   
+    ITEM_AUX(Tile::clayHardened_colored_Id, 9)   
+    ITEM_AUX(Tile::clayHardened_colored_Id, 11)  
+    ITEM_AUX(Tile::clayHardened_colored_Id, 10)  
+    ITEM_AUX(Tile::clayHardened_colored_Id, 2)   
+    ITEM_AUX(Tile::clayHardened_colored_Id, 6)   
+    ITEM_AUX(Tile::clayHardened_colored_Id, 0)   
+    ITEM_AUX(Tile::clayHardened_colored_Id, 8)   
+    ITEM_AUX(Tile::clayHardened_colored_Id, 7)   
+    ITEM_AUX(Tile::clayHardened_colored_Id, 15)  
+    ITEM_AUX(Tile::clayHardened_colored_Id, 13)  
+    ITEM_AUX(Tile::clayHardened_colored_Id, 12)  
 
-    // Decoration
+    
     DEF(eCreativeInventory_Decoration)
     ITEM_AUX(Item::skull_Id, SkullTileEntity::TYPE_SKELETON)
     ITEM_AUX(Item::skull_Id, SkullTileEntity::TYPE_WITHER)
@@ -201,7 +201,7 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM(Tile::mushroom_red_Id)
     ITEM(Tile::cactus_Id)
     ITEM(Tile::topSnow_Id)
-    // 4J-PB - Already got sugar cane in Materials ITEM_11(Tile::reeds_Id)
+    
     ITEM(Tile::web_Id)
     ITEM(Tile::thinGlass_Id)
     ITEM(Tile::glass_Id)
@@ -211,39 +211,39 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM(Tile::bookshelf_Id)
     ITEM(Item::flowerPot_Id)
     ITEM(Tile::hayBlock_Id)
-    ITEM_AUX(Tile::wool_Id, 14)  // Red
-    ITEM_AUX(Tile::wool_Id, 1)   // Orange
-    ITEM_AUX(Tile::wool_Id, 4)   // Yellow
-    ITEM_AUX(Tile::wool_Id, 5)   // Lime
-    ITEM_AUX(Tile::wool_Id, 3)   // Light Blue
-    ITEM_AUX(Tile::wool_Id, 9)   // Cyan
-    ITEM_AUX(Tile::wool_Id, 11)  // Blue
-    ITEM_AUX(Tile::wool_Id, 10)  // Purple
-    ITEM_AUX(Tile::wool_Id, 2)   // Magenta
-    ITEM_AUX(Tile::wool_Id, 6)   // Pink
-    ITEM_AUX(Tile::wool_Id, 0)   // White
-    ITEM_AUX(Tile::wool_Id, 8)   // Light Gray
-    ITEM_AUX(Tile::wool_Id, 7)   // Gray
-    ITEM_AUX(Tile::wool_Id, 15)  // Black
-    ITEM_AUX(Tile::wool_Id, 13)  // Green
-    ITEM_AUX(Tile::wool_Id, 12)  // Brown
+    ITEM_AUX(Tile::wool_Id, 14)  
+    ITEM_AUX(Tile::wool_Id, 1)   
+    ITEM_AUX(Tile::wool_Id, 4)   
+    ITEM_AUX(Tile::wool_Id, 5)   
+    ITEM_AUX(Tile::wool_Id, 3)   
+    ITEM_AUX(Tile::wool_Id, 9)   
+    ITEM_AUX(Tile::wool_Id, 11)  
+    ITEM_AUX(Tile::wool_Id, 10)  
+    ITEM_AUX(Tile::wool_Id, 2)   
+    ITEM_AUX(Tile::wool_Id, 6)   
+    ITEM_AUX(Tile::wool_Id, 0)   
+    ITEM_AUX(Tile::wool_Id, 8)   
+    ITEM_AUX(Tile::wool_Id, 7)   
+    ITEM_AUX(Tile::wool_Id, 15)  
+    ITEM_AUX(Tile::wool_Id, 13)  
+    ITEM_AUX(Tile::wool_Id, 12)  
 
-    ITEM_AUX(Tile::woolCarpet_Id, 14)  // Red
-    ITEM_AUX(Tile::woolCarpet_Id, 1)   // Orange
-    ITEM_AUX(Tile::woolCarpet_Id, 4)   // Yellow
-    ITEM_AUX(Tile::woolCarpet_Id, 5)   // Lime
-    ITEM_AUX(Tile::woolCarpet_Id, 3)   // Light Blue
-    ITEM_AUX(Tile::woolCarpet_Id, 9)   // Cyan
-    ITEM_AUX(Tile::woolCarpet_Id, 11)  // Blue
-    ITEM_AUX(Tile::woolCarpet_Id, 10)  // Purple
-    ITEM_AUX(Tile::woolCarpet_Id, 2)   // Magenta
-    ITEM_AUX(Tile::woolCarpet_Id, 6)   // Pink
-    ITEM_AUX(Tile::woolCarpet_Id, 0)   // White
-    ITEM_AUX(Tile::woolCarpet_Id, 8)   // Light Gray
-    ITEM_AUX(Tile::woolCarpet_Id, 7)   // Gray
-    ITEM_AUX(Tile::woolCarpet_Id, 15)  // Black
-    ITEM_AUX(Tile::woolCarpet_Id, 13)  // Green
-    ITEM_AUX(Tile::woolCarpet_Id, 12)  // Brown
+    ITEM_AUX(Tile::woolCarpet_Id, 14)  
+    ITEM_AUX(Tile::woolCarpet_Id, 1)   
+    ITEM_AUX(Tile::woolCarpet_Id, 4)   
+    ITEM_AUX(Tile::woolCarpet_Id, 5)   
+    ITEM_AUX(Tile::woolCarpet_Id, 3)   
+    ITEM_AUX(Tile::woolCarpet_Id, 9)   
+    ITEM_AUX(Tile::woolCarpet_Id, 11)  
+    ITEM_AUX(Tile::woolCarpet_Id, 10)  
+    ITEM_AUX(Tile::woolCarpet_Id, 2)   
+    ITEM_AUX(Tile::woolCarpet_Id, 6)   
+    ITEM_AUX(Tile::woolCarpet_Id, 0)   
+    ITEM_AUX(Tile::woolCarpet_Id, 8)   
+    ITEM_AUX(Tile::woolCarpet_Id, 7)   
+    ITEM_AUX(Tile::woolCarpet_Id, 15)  
+    ITEM_AUX(Tile::woolCarpet_Id, 13)  
+    ITEM_AUX(Tile::woolCarpet_Id, 12)  
 
 #if !defined(_CONTENT_PACKAGE)
     DEF(eCreativeInventory_ArtToolsDecorations)
@@ -271,43 +271,43 @@ void IUIScene_CreativeMenu::staticCtor() {
         BuildFirework(list, FireworksItem::TYPE_BIG, DyePowderItem::WHITE, 1,
                       true, true);
 
-        ITEM_AUX(Tile::stained_glass_Id, 14)  // Red
-        ITEM_AUX(Tile::stained_glass_Id, 1)   // Orange
-        ITEM_AUX(Tile::stained_glass_Id, 4)   // Yellow
-        ITEM_AUX(Tile::stained_glass_Id, 5)   // Lime
-        ITEM_AUX(Tile::stained_glass_Id, 3)   // Light Blue
-        ITEM_AUX(Tile::stained_glass_Id, 9)   // Cyan
-        ITEM_AUX(Tile::stained_glass_Id, 11)  // Blue
-        ITEM_AUX(Tile::stained_glass_Id, 10)  // Purple
-        ITEM_AUX(Tile::stained_glass_Id, 2)   // Magenta
-        ITEM_AUX(Tile::stained_glass_Id, 6)   // Pink
-        ITEM_AUX(Tile::stained_glass_Id, 0)   // White
-        ITEM_AUX(Tile::stained_glass_Id, 8)   // Light Gray
-        ITEM_AUX(Tile::stained_glass_Id, 7)   // Gray
-        ITEM_AUX(Tile::stained_glass_Id, 15)  // Black
-        ITEM_AUX(Tile::stained_glass_Id, 13)  // Green
-        ITEM_AUX(Tile::stained_glass_Id, 12)  // Brown
+        ITEM_AUX(Tile::stained_glass_Id, 14)  
+        ITEM_AUX(Tile::stained_glass_Id, 1)   
+        ITEM_AUX(Tile::stained_glass_Id, 4)   
+        ITEM_AUX(Tile::stained_glass_Id, 5)   
+        ITEM_AUX(Tile::stained_glass_Id, 3)   
+        ITEM_AUX(Tile::stained_glass_Id, 9)   
+        ITEM_AUX(Tile::stained_glass_Id, 11)  
+        ITEM_AUX(Tile::stained_glass_Id, 10)  
+        ITEM_AUX(Tile::stained_glass_Id, 2)   
+        ITEM_AUX(Tile::stained_glass_Id, 6)   
+        ITEM_AUX(Tile::stained_glass_Id, 0)   
+        ITEM_AUX(Tile::stained_glass_Id, 8)   
+        ITEM_AUX(Tile::stained_glass_Id, 7)   
+        ITEM_AUX(Tile::stained_glass_Id, 15)  
+        ITEM_AUX(Tile::stained_glass_Id, 13)  
+        ITEM_AUX(Tile::stained_glass_Id, 12)  
 
-        ITEM_AUX(Tile::stained_glass_pane_Id, 14)  // Red
-        ITEM_AUX(Tile::stained_glass_pane_Id, 1)   // Orange
-        ITEM_AUX(Tile::stained_glass_pane_Id, 4)   // Yellow
-        ITEM_AUX(Tile::stained_glass_pane_Id, 5)   // Lime
-        ITEM_AUX(Tile::stained_glass_pane_Id, 3)   // Light Blue
-        ITEM_AUX(Tile::stained_glass_pane_Id, 9)   // Cyan
-        ITEM_AUX(Tile::stained_glass_pane_Id, 11)  // Blue
-        ITEM_AUX(Tile::stained_glass_pane_Id, 10)  // Purple
-        ITEM_AUX(Tile::stained_glass_pane_Id, 2)   // Magenta
-        ITEM_AUX(Tile::stained_glass_pane_Id, 6)   // Pink
-        ITEM_AUX(Tile::stained_glass_pane_Id, 0)   // White
-        ITEM_AUX(Tile::stained_glass_pane_Id, 8)   // Light Gray
-        ITEM_AUX(Tile::stained_glass_pane_Id, 7)   // Gray
-        ITEM_AUX(Tile::stained_glass_pane_Id, 15)  // Black
-        ITEM_AUX(Tile::stained_glass_pane_Id, 13)  // Green
-        ITEM_AUX(Tile::stained_glass_pane_Id, 12)  // Brown
+        ITEM_AUX(Tile::stained_glass_pane_Id, 14)  
+        ITEM_AUX(Tile::stained_glass_pane_Id, 1)   
+        ITEM_AUX(Tile::stained_glass_pane_Id, 4)   
+        ITEM_AUX(Tile::stained_glass_pane_Id, 5)   
+        ITEM_AUX(Tile::stained_glass_pane_Id, 3)   
+        ITEM_AUX(Tile::stained_glass_pane_Id, 9)   
+        ITEM_AUX(Tile::stained_glass_pane_Id, 11)  
+        ITEM_AUX(Tile::stained_glass_pane_Id, 10)  
+        ITEM_AUX(Tile::stained_glass_pane_Id, 2)   
+        ITEM_AUX(Tile::stained_glass_pane_Id, 6)   
+        ITEM_AUX(Tile::stained_glass_pane_Id, 0)   
+        ITEM_AUX(Tile::stained_glass_pane_Id, 8)   
+        ITEM_AUX(Tile::stained_glass_pane_Id, 7)   
+        ITEM_AUX(Tile::stained_glass_pane_Id, 15)  
+        ITEM_AUX(Tile::stained_glass_pane_Id, 13)  
+        ITEM_AUX(Tile::stained_glass_pane_Id, 12)  
     }
 #endif
 
-    // Redstone
+    
     DEF(eCreativeInventory_Redstone)
     ITEM(Tile::dispenser_Id)
     ITEM(Tile::noteblock_Id)
@@ -333,7 +333,7 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM(Tile::weightedPlate_heavy_Id)
     ITEM(Tile::weightedPlate_light_Id)
 
-    // Transport
+    
     DEF(eCreativeInventory_Transport)
     ITEM(Tile::rail_Id)
     ITEM(Tile::goldenRail_Id)
@@ -348,7 +348,7 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM(Item::saddle_Id)
     ITEM(Item::boat_Id)
 
-    // Miscellaneous
+    
     DEF(eCreativeInventory_Misc)
     ITEM(Tile::chest_Id)
     ITEM(Tile::enderChest_Id)
@@ -373,34 +373,34 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM(Item::eyeOfEnder_Id)
     ITEM(Item::nameTag_Id)
     ITEM(Item::netherStar_Id)
-    ITEM_AUX(Item::spawnEgg_Id, 50);   // Creeper
-    ITEM_AUX(Item::spawnEgg_Id, 51);   // Skeleton
-    ITEM_AUX(Item::spawnEgg_Id, 52);   // Spider
-    ITEM_AUX(Item::spawnEgg_Id, 54);   // Zombie
-    ITEM_AUX(Item::spawnEgg_Id, 55);   // Slime
-    ITEM_AUX(Item::spawnEgg_Id, 56);   // Ghast
-    ITEM_AUX(Item::spawnEgg_Id, 57);   // Zombie Pigman
-    ITEM_AUX(Item::spawnEgg_Id, 58);   // Enderman
-    ITEM_AUX(Item::spawnEgg_Id, 59);   // Cave Spider
-    ITEM_AUX(Item::spawnEgg_Id, 60);   // Silverfish
-    ITEM_AUX(Item::spawnEgg_Id, 61);   // Blaze
-    ITEM_AUX(Item::spawnEgg_Id, 62);   // Magma Cube
-    ITEM_AUX(Item::spawnEgg_Id, 65);   // Bat
-    ITEM_AUX(Item::spawnEgg_Id, 66);   // Witch
-    ITEM_AUX(Item::spawnEgg_Id, 90);   // Pig
-    ITEM_AUX(Item::spawnEgg_Id, 91);   // Sheep
-    ITEM_AUX(Item::spawnEgg_Id, 92);   // Cow
-    ITEM_AUX(Item::spawnEgg_Id, 93);   // Chicken
-    ITEM_AUX(Item::spawnEgg_Id, 94);   // Squid
-    ITEM_AUX(Item::spawnEgg_Id, 95);   // Wolf
-    ITEM_AUX(Item::spawnEgg_Id, 96);   // Mooshroom
-    ITEM_AUX(Item::spawnEgg_Id, 98);   // Ozelot
-    ITEM_AUX(Item::spawnEgg_Id, 100);  // Horse
+    ITEM_AUX(Item::spawnEgg_Id, 50);   
+    ITEM_AUX(Item::spawnEgg_Id, 51);   
+    ITEM_AUX(Item::spawnEgg_Id, 52);   
+    ITEM_AUX(Item::spawnEgg_Id, 54);   
+    ITEM_AUX(Item::spawnEgg_Id, 55);   
+    ITEM_AUX(Item::spawnEgg_Id, 56);   
+    ITEM_AUX(Item::spawnEgg_Id, 57);   
+    ITEM_AUX(Item::spawnEgg_Id, 58);   
+    ITEM_AUX(Item::spawnEgg_Id, 59);   
+    ITEM_AUX(Item::spawnEgg_Id, 60);   
+    ITEM_AUX(Item::spawnEgg_Id, 61);   
+    ITEM_AUX(Item::spawnEgg_Id, 62);   
+    ITEM_AUX(Item::spawnEgg_Id, 65);   
+    ITEM_AUX(Item::spawnEgg_Id, 66);   
+    ITEM_AUX(Item::spawnEgg_Id, 90);   
+    ITEM_AUX(Item::spawnEgg_Id, 91);   
+    ITEM_AUX(Item::spawnEgg_Id, 92);   
+    ITEM_AUX(Item::spawnEgg_Id, 93);   
+    ITEM_AUX(Item::spawnEgg_Id, 94);   
+    ITEM_AUX(Item::spawnEgg_Id, 95);   
+    ITEM_AUX(Item::spawnEgg_Id, 96);   
+    ITEM_AUX(Item::spawnEgg_Id, 98);   
+    ITEM_AUX(Item::spawnEgg_Id, 100);  
     ITEM_AUX(Item::spawnEgg_Id,
-             100 | ((EntityHorse::TYPE_DONKEY + 1) << 12));  // Donkey
+             100 | ((EntityHorse::TYPE_DONKEY + 1) << 12));  
     ITEM_AUX(Item::spawnEgg_Id,
-             100 | ((EntityHorse::TYPE_MULE + 1) << 12));  // Mule
-    ITEM_AUX(Item::spawnEgg_Id, 120);                      // Villager
+             100 | ((EntityHorse::TYPE_MULE + 1) << 12));  
+    ITEM_AUX(Item::spawnEgg_Id, 120);                      
     ITEM(Item::record_01_Id)
     ITEM(Item::record_02_Id)
     ITEM(Item::record_03_Id)
@@ -429,22 +429,22 @@ void IUIScene_CreativeMenu::staticCtor() {
     DEF(eCreativeInventory_ArtToolsMisc)
     if (app.DebugSettingsOn()) {
         ITEM_AUX(Item::spawnEgg_Id,
-                 100 | ((EntityHorse::TYPE_SKELETON + 1) << 12));  // Skeleton
+                 100 | ((EntityHorse::TYPE_SKELETON + 1) << 12));  
         ITEM_AUX(Item::spawnEgg_Id,
-                 100 | ((EntityHorse::TYPE_UNDEAD + 1) << 12));  // Zombie
+                 100 | ((EntityHorse::TYPE_UNDEAD + 1) << 12));  
         ITEM_AUX(Item::spawnEgg_Id, 98 | ((Ocelot::TYPE_BLACK + 1) << 12));
         ITEM_AUX(Item::spawnEgg_Id, 98 | ((Ocelot::TYPE_RED + 1) << 12));
         ITEM_AUX(Item::spawnEgg_Id, 98 | ((Ocelot::TYPE_SIAMESE + 1) << 12));
-        ITEM_AUX(Item::spawnEgg_Id, 52 | (2 << 12));  // Spider-Jockey
-        ITEM_AUX(Item::spawnEgg_Id, 63);              // Enderdragon
+        ITEM_AUX(Item::spawnEgg_Id, 52 | (2 << 12));  
+        ITEM_AUX(Item::spawnEgg_Id, 63);              
     }
 #endif
 
-    // Food
+    
     DEF(eCreativeInventory_Food)
     ITEM(Item::apple_Id)
     ITEM(Item::apple_gold_Id)
-    ITEM_AUX(Item::apple_gold_Id, 1)  // Enchanted
+    ITEM_AUX(Item::apple_gold_Id, 1)  
     ITEM(Item::melon_Id)
     ITEM(Item::mushroomStew_Id)
     ITEM(Item::bread_Id)
@@ -467,12 +467,12 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM(Item::carrotGolden_Id)
     ITEM(Item::pumpkinPie_Id)
 
-// 4jcraft: Search
+
 #ifdef ENABLE_JAVA_GUIS
     DEF(eCreativeInventory_Search)
 #endif
 
-    // Tools, Armour and Weapons (Complete)
+    
     DEF(eCreativeInventory_ToolsArmourWeapons)
     ITEM(Item::compass_Id)
     ITEM(Item::helmet_leather_Id)
@@ -558,7 +558,7 @@ void IUIScene_CreativeMenu::staticCtor() {
     }
 #endif
 
-    // Materials
+    
     DEF(eCreativeInventory_Materials)
     ITEM(Item::coal_Id)
     ITEM_AUX(Item::coal_Id, 1)
@@ -590,66 +590,66 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM(Item::blazeRod_Id)
     ITEM(Item::goldNugget_Id)
     ITEM(Item::netherwart_seeds_Id)
-    ITEM_AUX(Item::dye_powder_Id, 1)   // Red
-    ITEM_AUX(Item::dye_powder_Id, 14)  // Orange
-    ITEM_AUX(Item::dye_powder_Id, 11)  // Yellow
-    ITEM_AUX(Item::dye_powder_Id, 10)  // Lime
-    ITEM_AUX(Item::dye_powder_Id, 12)  // Light Blue
-    ITEM_AUX(Item::dye_powder_Id, 6)   // Cyan
-    ITEM_AUX(Item::dye_powder_Id, 4)   // Blue
-    ITEM_AUX(Item::dye_powder_Id, 5)   // Purple
-    ITEM_AUX(Item::dye_powder_Id, 13)  // Magenta
-    ITEM_AUX(Item::dye_powder_Id, 9)   // Pink
-    ITEM_AUX(Item::dye_powder_Id, 15)  // Bone Meal
-    ITEM_AUX(Item::dye_powder_Id, 7)   // Light gray
-    ITEM_AUX(Item::dye_powder_Id, 8)   // Gray
-    ITEM_AUX(Item::dye_powder_Id, 0)   // black (ink sac)
-    ITEM_AUX(Item::dye_powder_Id, 2)   // Green
-    ITEM_AUX(Item::dye_powder_Id, 3)   // Brown
+    ITEM_AUX(Item::dye_powder_Id, 1)   
+    ITEM_AUX(Item::dye_powder_Id, 14)  
+    ITEM_AUX(Item::dye_powder_Id, 11)  
+    ITEM_AUX(Item::dye_powder_Id, 10)  
+    ITEM_AUX(Item::dye_powder_Id, 12)  
+    ITEM_AUX(Item::dye_powder_Id, 6)   
+    ITEM_AUX(Item::dye_powder_Id, 4)   
+    ITEM_AUX(Item::dye_powder_Id, 5)   
+    ITEM_AUX(Item::dye_powder_Id, 13)  
+    ITEM_AUX(Item::dye_powder_Id, 9)   
+    ITEM_AUX(Item::dye_powder_Id, 15)  
+    ITEM_AUX(Item::dye_powder_Id, 7)   
+    ITEM_AUX(Item::dye_powder_Id, 8)   
+    ITEM_AUX(Item::dye_powder_Id, 0)   
+    ITEM_AUX(Item::dye_powder_Id, 2)   
+    ITEM_AUX(Item::dye_powder_Id, 3)   
 
-    // Brewing (TODO)
+    
     DEF(eCreativeInventory_Brewing)
     ITEM(Item::expBottle_Id)
 
-    // 4J Stu - Anything else added here also needs to be added to the key
-    // handler below
+    
+    
     ITEM(Item::ghastTear_Id)
     ITEM(Item::fermentedSpiderEye_Id)
     ITEM(Item::blazePowder_Id)
     ITEM(Item::magmaCream_Id)
     ITEM(Item::speckledMelon_Id)
     ITEM(Item::glassBottle_Id)
-    ITEM_AUX(Item::potion_Id, 0)  // Water bottle
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, 0,
-    // MASK_TYPE_AWKWARD)) // Awkward Potion
+    ITEM_AUX(Item::potion_Id, 0)  
+    
+    
 
     DEF(eCreativeInventory_Potions_Basic)
     ITEM_AUX(Item::potion_Id, MACRO_MAKEPOTION_AUXVAL(0, 0, MASK_REGENERATION))
     ITEM_AUX(Item::potion_Id, MACRO_MAKEPOTION_AUXVAL(0, 0, MASK_SPEED))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, 0,
-    // MASK_FIRE_RESISTANCE))
+    
+    
     ITEM_AUX(Item::potion_Id, MACRO_MAKEPOTION_AUXVAL(0, 0, MASK_POISON))
     ITEM_AUX(Item::potion_Id, MACRO_MAKEPOTION_AUXVAL(0, 0, MASK_INSTANTHEALTH))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, 0, MASK_WEAKNESS))
+    
     ITEM_AUX(Item::potion_Id, MACRO_MAKEPOTION_AUXVAL(0, 0, MASK_STRENGTH))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, 0, MASK_SLOWNESS))
+    
     ITEM_AUX(Item::potion_Id, MACRO_MAKEPOTION_AUXVAL(0, 0, MASK_INSTANTDAMAGE))
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0, MASK_REGENERATION))
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0, MASK_SPEED))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0,
-    // MASK_FIRE_RESISTANCE))
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0, MASK_POISON))
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0, MASK_INSTANTHEALTH))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0,
-    // MASK_WEAKNESS))
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0, MASK_STRENGTH))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0,
-    // MASK_SLOWNESS))
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0, MASK_INSTANTDAMAGE))
 
@@ -662,18 +662,18 @@ void IUIScene_CreativeMenu::staticCtor() {
              MACRO_MAKEPOTION_AUXVAL(0, 0, MASK_FIRE_RESISTANCE))
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(0, MASK_LEVEL2, MASK_POISON))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, MASK_LEVEL2,
-    // MASK_INSTANTHEALTH)) ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0,
-    // MASK_LEVEL2, MASK_NIGHTVISION))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, MASK_LEVEL2,
-    // MASK_INVISIBILITY))
+    
+    
+    
+    
+    
 
     ITEM_AUX(Item::potion_Id, MACRO_MAKEPOTION_AUXVAL(0, 0, MASK_WEAKNESS))
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(0, MASK_LEVEL2, MASK_STRENGTH))
     ITEM_AUX(Item::potion_Id, MACRO_MAKEPOTION_AUXVAL(0, 0, MASK_SLOWNESS))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, MASK_LEVEL2,
-    // MASK_INSTANTDAMAGE))
+    
+    
     ITEM_AUX(Item::potion_Id, MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_LEVEL2,
                                                       MASK_REGENERATION))
     ITEM_AUX(Item::potion_Id,
@@ -682,76 +682,76 @@ void IUIScene_CreativeMenu::staticCtor() {
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0, MASK_FIRE_RESISTANCE))
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_LEVEL2, MASK_POISON))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH,
-    // MASK_LEVEL2, MASK_INSTANTHEALTH))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH,
-    // MASK_LEVEL2, MASK_NIGHTVISION))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH,
-    // MASK_LEVEL2, MASK_INVISIBILITY))
+    
+    
+    
+    
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0, MASK_WEAKNESS))
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_LEVEL2, MASK_STRENGTH))
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, 0, MASK_SLOWNESS))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH,
-    // MASK_LEVEL2, MASK_INSTANTDAMAGE))
+    
+    
 
     DEF(eCreativeInventory_Potions_Extended)
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(0, MASK_EXTENDED, MASK_REGENERATION))
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(0, MASK_EXTENDED, MASK_SPEED))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, MASK_EXTENDED,
-    // MASK_FIRE_RESISTANCE))
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(0, MASK_EXTENDED, MASK_POISON))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, MASK_LEVEL2,
-    // MASK_INSTANTHEALTH))
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(
-                 0, 0, MASK_NIGHTVISION))  // 4J- Moved here as there isn't a
-                                           // weak variant of this potion.
+                 0, 0, MASK_NIGHTVISION))  
+                                           
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(
-                 0, 0, MASK_INVISIBILITY))  // 4J- Moved here as there isn't a
-                                            // weak variant of this potion.
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, MASK_EXTENDED,
-    // MASK_WEAKNESS))
+                 0, 0, MASK_INVISIBILITY))  
+                                            
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(0, MASK_EXTENDED, MASK_STRENGTH))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, MASK_EXTENDED,
-    // MASK_SLOWNESS)) ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0,
-    // MASK_LEVEL2, MASK_INSTANTDAMAGE))
+    
+    
+    
     ITEM_AUX(
         Item::potion_Id,
         MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_EXTENDED, MASK_REGENERATION))
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_EXTENDED, MASK_SPEED))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH,
-    // MASK_EXTENDED, MASK_FIRE_RESISTANCE))
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_EXTENDED, MASK_POISON))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH,
-    // MASK_LEVEL2, MASK_INSTANTHEALTH))
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(
                  MASK_SPLASH, 0,
-                 MASK_NIGHTVISION))  // 4J- Moved here as there isn't a weak
-                                     // variant of this potion.
+                 MASK_NIGHTVISION))  
+                                     
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(
                  MASK_SPLASH, 0,
-                 MASK_INVISIBILITY))  // 4J- Moved here as there isn't a weak
-                                      // variant of this potion.
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH,
-    // MASK_EXTENDED, MASK_WEAKNESS))
+                 MASK_INVISIBILITY))  
+                                      
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_EXTENDED, MASK_STRENGTH))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH,
-    // MASK_EXTENDED, MASK_SLOWNESS))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH,
-    // MASK_LEVEL2, MASK_INSTANTDAMAGE))
+    
+    
+    
+    
 
     DEF(eCreativeInventory_Potions_Level2_Extended)
     ITEM_AUX(Item::potion_Id,
@@ -764,19 +764,19 @@ void IUIScene_CreativeMenu::staticCtor() {
              MACRO_MAKEPOTION_AUXVAL(0, MASK_LEVEL2EXTENDED, MASK_POISON))
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(0, MASK_LEVEL2, MASK_INSTANTHEALTH))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0, MASK_LEVEL2EXTENDED,
-    // MASK_NIGHTVISION)) ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(0,
-    // MASK_LEVEL2EXTENDED, MASK_INVISIBILITY))
+    
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(
                  0, MASK_EXTENDED,
-                 MASK_NIGHTVISION))  // 4J- Moved here as there isn't a weak
-                                     // variant of this potion.
+                 MASK_NIGHTVISION))  
+                                     
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(
                  0, MASK_EXTENDED,
-                 MASK_INVISIBILITY))  // 4J- Moved here as there isn't a weak
-                                      // variant of this potion.
+                 MASK_INVISIBILITY))  
+                                      
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(0, MASK_EXTENDED, MASK_WEAKNESS))
     ITEM_AUX(Item::potion_Id,
@@ -798,20 +798,20 @@ void IUIScene_CreativeMenu::staticCtor() {
         MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_LEVEL2EXTENDED, MASK_POISON))
     ITEM_AUX(Item::potion_Id, MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_LEVEL2,
                                                       MASK_INSTANTHEALTH))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH,
-    // MASK_LEVEL2EXTENDED, MASK_NIGHTVISION))
-    // ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH,
-    // MASK_LEVEL2EXTENDED, MASK_INVISIBILITY))
+    
+    
+    
+    
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(
                  MASK_SPLASH, MASK_EXTENDED,
-                 MASK_NIGHTVISION))  // 4J- Moved here as there isn't a weak
-                                     // variant of this potion.
+                 MASK_NIGHTVISION))  
+                                     
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(
                  MASK_SPLASH, MASK_EXTENDED,
-                 MASK_INVISIBILITY))  // 4J- Moved here as there isn't a weak
-                                      // variant of this potion.
+                 MASK_INVISIBILITY))  
+                                      
     ITEM_AUX(Item::potion_Id,
              MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_EXTENDED, MASK_WEAKNESS))
     ITEM_AUX(Item::potion_Id,
@@ -824,7 +824,7 @@ void IUIScene_CreativeMenu::staticCtor() {
 
     specs = new TabSpec*[eCreativeInventoryTab_COUNT];
 
-    // Top Row
+    
     ECreative_Inventory_Groups blocksGroup[] = {
         eCreativeInventory_BuildingBlocks};
     specs[eCreativeInventoryTab_BuildingBlocks] = new TabSpec(
@@ -860,7 +860,7 @@ void IUIScene_CreativeMenu::staticCtor() {
     specs[eCreativeInventoryTab_Food] =
         new TabSpec(L"Food", IDS_GROUPNAME_FOOD, 1, foodGroup);
 
-// 4jcraft
+
 #ifdef ENABLE_JAVA_GUIS
     ECreative_Inventory_Groups searchGroup[] = {eCreativeInventory_Search};
     specs[eCreativeInventoryTab_Search] =
@@ -877,19 +877,19 @@ void IUIScene_CreativeMenu::staticCtor() {
         eCreativeInventory_Potions_Extended, eCreativeInventory_Potions_Level2,
         eCreativeInventory_Potions_Basic};
 
-    // Just use the text LT - the graphic doesn't fit in splitscreen either
-    // In 480p there's not enough room for the LT button, so use text instead
-    // if(!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())
+    
+    
+    
     {
         specs[eCreativeInventoryTab_Brewing] =
             new TabSpec(L"Brewing", IDS_GROUPNAME_POTIONS_480, 5, brewingGroup);
     }
-    // 	else
-    // 	{
-    // 		specs[eCreativeInventoryTab_Brewing] = new
-    // TabSpec(L"icon_brewing.png", IDS_GROUPNAME_POTIONS, 1, brewingGroup, 4,
-    // potionsGroup);
-    // 	}
+    
+    
+    
+    
+    
+    
 
 #if !defined(_CONTENT_PACKAGE)
     ECreative_Inventory_Groups miscGroup[] = {eCreativeInventory_Misc};
@@ -909,17 +909,17 @@ IUIScene_CreativeMenu::IUIScene_CreativeMenu() {
     m_bCarryingCreativeItem = false;
     m_creativeSlotX = m_creativeSlotY = m_inventorySlotX = m_inventorySlotY = 0;
 
-    // 4J JEV - Setup Tabs
+    
     for (int i = 0; i < eCreativeInventoryTab_COUNT; i++) {
         m_tabDynamicPos[i] = 0;
         m_tabPage[i] = 0;
     }
 }
 
-/* 4J JEV - Switches between tabs.
- */
+
+
 void IUIScene_CreativeMenu::switchTab(ECreativeInventoryTabs tab) {
-    // Could just be changing page on the current tab
+    
     if (tab != m_curTab) updateTabHighlightAndText(tab);
 
     m_curTab = tab;
@@ -937,30 +937,30 @@ void IUIScene_CreativeMenu::ScrollBar(UIVec2D pointerPos) {
     GetItemScreenData(eSectionInventoryCreativeSlider, 0, &pos, &size);
     float fPosition = ((float)pointerPos.y - pos.y) / size.y;
 
-    // clamp
+    
     if (fPosition > 1)
         fPosition = 1.0f;
     else if (fPosition < 0)
         fPosition = 0.0f;
 
-    // calculate page position according to page count
+    
     int iCurrentPage =
         Math::round(fPosition * (specs[m_curTab]->getPageCount() - 1));
 
-    // set tab page
+    
     m_tabPage[m_curTab] = iCurrentPage;
 
-    // update tab
+    
     switchTab(m_curTab);
 }
 
-// 4J JEV - Tab Spec Struct
+
 
 IUIScene_CreativeMenu::TabSpec::TabSpec(
     const wchar_t* icon, int descriptionId, int staticGroupsCount,
     ECreative_Inventory_Groups* staticGroups, int dynamicGroupsCount,
-    ECreative_Inventory_Groups* dynamicGroups, int debugGroupsCount /*= 0*/,
-    ECreative_Inventory_Groups* debugGroups /*= nullptr*/)
+    ECreative_Inventory_Groups* dynamicGroups, int debugGroupsCount ,
+    ECreative_Inventory_Groups* debugGroups )
     : m_icon(icon),
       m_descriptionId(descriptionId),
       m_staticGroupsCount(staticGroupsCount),
@@ -1014,7 +1014,7 @@ void IUIScene_CreativeMenu::TabSpec::populateMenu(AbstractContainerMenu* menu,
                                                   unsigned int page) {
     int lastSlotIndex = 0;
 
-    // Fill the dynamic group
+    
     if (m_dynamicGroupsCount > 0 && m_dynamicGroupsA != nullptr) {
         for (auto it = categoryGroups[m_dynamicGroupsA[dynamicIndex]].rbegin();
              it != categoryGroups[m_dynamicGroupsA[dynamicIndex]].rend() &&
@@ -1025,11 +1025,11 @@ void IUIScene_CreativeMenu::TabSpec::populateMenu(AbstractContainerMenu* menu,
         }
     }
 
-    // Fill from the static groups
+    
     unsigned int startIndex = page * m_staticPerPage;
 
-    // Work out the first group with an item the want to display, and which item
-    // in that group
+    
+    
     unsigned int currentIndex = 0;
     unsigned int currentGroup = 0;
     unsigned int currentItem = 0;
@@ -1125,18 +1125,18 @@ unsigned int IUIScene_CreativeMenu::TabSpec::getPageCount() {
     }
 }
 
-// 4J JEV - Item Picker Menu
+
 IUIScene_CreativeMenu::ItemPickerMenu::ItemPickerMenu(
     std::shared_ptr<SimpleContainer> smp, std::shared_ptr<Inventory> inv)
     : AbstractContainerMenu() {
     inventory = inv;
     creativeContainer = smp;
 
-    // int startLength = slots->size();
+    
 
     Slot* slot = nullptr;
     for (int i = 0; i < TabSpec::MAX_SIZE; i++) {
-        // 4J JEV -  These values get set by addSlot anyway.
+        
         slot = new Slot(creativeContainer, i, -1, -1);
 
         ItemPickerMenu::addSlot(slot);
@@ -1147,7 +1147,7 @@ IUIScene_CreativeMenu::ItemPickerMenu::ItemPickerMenu(
         ItemPickerMenu::addSlot(slot);
     }
 
-    // 4J Stu - Give the creative menu a unique container id
+    
     containerId = CONTAINER_ID_CREATIVE;
 }
 
@@ -1168,7 +1168,7 @@ IUIScene_CreativeMenu::GetSectionAndSlotInDirection(ESceneSection eSection,
                                                     int* piTargetY) {
     ESceneSection newSection = eSection;
 
-    // Find the new section if there is one
+    
     switch (eSection) {
         case eSectionInventoryCreativeSelector:
             if (eTapDirection == eTapStateDown ||
@@ -1191,7 +1191,7 @@ IUIScene_CreativeMenu::GetSectionAndSlotInDirection(ESceneSection eSection,
         case eSectionInventoryCreativeTab_6:
         case eSectionInventoryCreativeTab_7:
         case eSectionInventoryCreativeSlider:
-            /* do nothing */
+            
             break;
         default:
             assert(false);
@@ -1206,7 +1206,7 @@ IUIScene_CreativeMenu::GetSectionAndSlotInDirection(ESceneSection eSection,
 
 bool IUIScene_CreativeMenu::handleValidKeyPress(int iPad, int buttonNum,
                                                 bool quickKeyHeld) {
-    // 4J Added - Make pressing the X button clear the hotbar
+    
     if (buttonNum == 1) {
         Minecraft* pMinecraft = Minecraft::GetInstance();
         for (unsigned int i = TabSpec::MAX_SIZE; i < TabSpec::MAX_SIZE + 9;
@@ -1216,7 +1216,7 @@ bool IUIScene_CreativeMenu::handleValidKeyPress(int iPad, int buttonNum,
 
             if (newItem != nullptr) {
                 m_menu->getSlot(i)->set(nullptr);
-                // call this function to synchronize multiplayer item bar
+                
                 pMinecraft->localgameModes[iPad]->handleCreativeModeItemAdd(
                     nullptr, i - (int)m_menu->slots.size() + 9 +
                                  InventoryMenu::USE_ROW_SLOT_START);
@@ -1229,7 +1229,7 @@ bool IUIScene_CreativeMenu::handleValidKeyPress(int iPad, int buttonNum,
 
 void IUIScene_CreativeMenu::handleOutsideClicked(int iPad, int buttonNum,
                                                  bool quickKeyHeld) {
-    // Drop items.
+    
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     std::shared_ptr<Inventory> playerInventory =
@@ -1250,9 +1250,9 @@ void IUIScene_CreativeMenu::handleOutsideClicked(int iPad, int buttonNum,
         }
     }
 
-    // pMinecraft->localgameModes[m_iPad]->handleInventoryMouseClick(menu->containerId,
-    // AbstractContainerMenu::CLICKED_OUTSIDE, buttonNum,
-    // quickKeyHeld?true:false, pMinecraft->localplayers[m_iPad] );
+    
+    
+    
 }
 
 void IUIScene_CreativeMenu::handleAdditionalKeyPress(int iAction) {
@@ -1260,7 +1260,7 @@ void IUIScene_CreativeMenu::handleAdditionalKeyPress(int iAction) {
     switch (iAction) {
         case ACTION_MENU_LEFT_SCROLL:
             dir = -1;
-            // Fall through intentional
+            
         case ACTION_MENU_RIGHT_SCROLL: {
             ECreativeInventoryTabs tab =
                 (ECreativeInventoryTabs)(m_curTab + dir);
@@ -1272,7 +1272,7 @@ void IUIScene_CreativeMenu::handleAdditionalKeyPress(int iAction) {
             ui.PlayUISFX(eSFX_Focus);
         } break;
         case ACTION_MENU_PAGEUP:
-            // change the potion strength
+            
             {
                 ++m_tabDynamicPos[m_curTab];
                 if (m_tabDynamicPos[m_curTab] >=
@@ -1349,7 +1349,7 @@ void IUIScene_CreativeMenu::handleSlotListClicked(ESceneSection eSection,
                         pMinecraft->localplayers[getPad()]);
         std::shared_ptr<ItemInstance> newItem =
             m_menu->getSlot(currentIndex)->getItem();
-        // call this function to synchronize multiplayer item bar
+        
         pMinecraft->localgameModes[getPad()]->handleCreativeModeItemAdd(
             newItem, currentIndex - (int)m_menu->slots.size() + 9 +
                          InventoryMenu::USE_ROW_SLOT_START);
@@ -1396,7 +1396,7 @@ bool IUIScene_CreativeMenu::getEmptyInventorySlot(
     std::shared_ptr<ItemInstance> item, int& slotX) {
     bool sameItemFound = false;
     bool emptySlotFound = false;
-    // Jump to the slot with this item already on it, if we can stack more
+    
     for (unsigned int i = TabSpec::MAX_SIZE; i < TabSpec::MAX_SIZE + 9; ++i) {
         std::shared_ptr<ItemInstance> slotItem = m_menu->getSlot(i)->getItem();
         if (slotItem != nullptr && slotItem->sameItemWithTags(item) &&
@@ -1409,7 +1409,7 @@ bool IUIScene_CreativeMenu::getEmptyInventorySlot(
     }
 
     if (!sameItemFound) {
-        // Find an empty slot
+        
         for (unsigned int i = TabSpec::MAX_SIZE; i < TabSpec::MAX_SIZE + 9;
              ++i) {
             if (m_menu->getSlot(i)->getItem() == nullptr) {
@@ -1453,7 +1453,7 @@ bool IUIScene_CreativeMenu::overrideTooltips(
             if (itemUnderPointer->isStackable()) {
                 buttonY = eToolTipPickUpAll;
             } else {
-                buttonY = eToolTipNone;  // eToolTipPickUpGeneric;
+                buttonY = eToolTipNone;  
             }
         }
     } else if (sectionUnderPointer == eSectionInventoryCreativeUsing) {
@@ -1467,10 +1467,10 @@ bool IUIScene_CreativeMenu::overrideTooltips(
 
 void IUIScene_CreativeMenu::BuildFirework(
     std::vector<std::shared_ptr<ItemInstance> >* list, uint8_t type, int color,
-    int sulphur, bool flicker, bool trail, int fadeColor /*= -1*/) {
-    /////////////////////////////////
-    // Create firecharge
-    /////////////////////////////////
+    int sulphur, bool flicker, bool trail, int fadeColor ) {
+    
+    
+    
 
     CompoundTag* expTag = new CompoundTag(FireworksItem::TAG_EXPLOSION);
 
@@ -1478,10 +1478,10 @@ void IUIScene_CreativeMenu::BuildFirework(
 
     colors.push_back(DyePowderItem::COLOR_RGB[color]);
 
-    // glowstone dust gives flickering
+    
     if (flicker) expTag->putBoolean(FireworksItem::TAG_E_FLICKER, true);
 
-    // diamonds give trails
+    
     if (trail) expTag->putBoolean(FireworksItem::TAG_E_TRAIL, true);
 
     std::vector<int> colorArray(colors.size());
@@ -1489,14 +1489,14 @@ void IUIScene_CreativeMenu::BuildFirework(
         colorArray[i] = colors.at(i);
     }
     expTag->putIntArray(FireworksItem::TAG_E_COLORS, colorArray);
-    // delete colorArray.data();
+    
 
     expTag->putByte(FireworksItem::TAG_E_TYPE, type);
 
     if (fadeColor != -1) {
-        ////////////////////////////////////
-        // Apply fade colors to firecharge
-        ////////////////////////////////////
+        
+        
+        
 
         std::vector<int> colors;
         colors.push_back(DyePowderItem::COLOR_RGB[fadeColor]);
@@ -1508,9 +1508,9 @@ void IUIScene_CreativeMenu::BuildFirework(
         expTag->putIntArray(FireworksItem::TAG_E_FADECOLORS, colorArray);
     }
 
-    /////////////////////////////////
-    // Create fireworks
-    /////////////////////////////////
+    
+    
+    
 
     std::shared_ptr<ItemInstance> firework;
 

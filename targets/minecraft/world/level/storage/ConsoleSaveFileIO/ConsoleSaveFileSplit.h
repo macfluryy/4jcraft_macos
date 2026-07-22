@@ -68,13 +68,13 @@ private:
     std::wstring m_fileName;
     bool m_autosave;
 
-    //	void* hHeap;
+    
     static void* pvHeap;
     static unsigned int pagesCommitted;
 #if defined(_LARGE_WORLDS)
     static const unsigned int CSF_PAGE_SIZE = 64 * 1024;
     static const unsigned int MAX_PAGE_COUNT =
-        32 * 1024;  // 2GB virtual allocation
+        32 * 1024;  
 #else
     static const unsigned int CSF_PAGE_SIZE = 64 * 1024;
     static const unsigned int MAX_PAGE_COUNT = 1024;

@@ -10,8 +10,8 @@ class Mob;
 
 class RangedAttackGoal : public Goal {
 private:
-    Mob* mob;                          // Owner
-    RangedAttackMob* rangedAttackMob;  // owner
+    Mob* mob;                          
+    RangedAttackMob* rangedAttackMob;  
     std::weak_ptr<LivingEntity> target;
     int attackTime;
     double speedModifier;
@@ -26,7 +26,7 @@ private:
                float attackRadius);
 
 public:
-    // 4J Added extra Mob param to avoid weird type conversion problems
+    
     RangedAttackGoal(RangedAttackMob* rangedMob, Mob* mob, double speedModifier,
                      int attackInterval, float attackRadius);
     RangedAttackGoal(RangedAttackMob* rangedMob, Mob* mob, double speedModifier,

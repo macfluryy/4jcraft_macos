@@ -21,7 +21,7 @@ bool TilePlanterItem::useOn(std::shared_ptr<ItemInstance> instance,
                             std::shared_ptr<Player> player, Level* level, int x,
                             int y, int z, int face, float clickX, float clickY,
                             float clickZ, bool bTestUseOnOnly) {
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
     int currentTile = level->getTile(x, y, z);
     if (currentTile == Tile::topSnow_Id &&
         (level->getData(x, y, z) & TopSnowTile::HEIGHT_MASK) < 1) {
@@ -48,15 +48,15 @@ bool TilePlanterItem::useOn(std::shared_ptr<ItemInstance> instance,
                 level, x, y, z, face, clickX, clickY, clickZ, 0);
             if (level->setTileAndData(x, y, z, tileId, dataValue,
                                       Tile::UPDATE_ALL)) {
-                // 4J-JEV: Hook for durango 'BlockPlaced' event.
+                
                 player->awardStat(GenericStats::blocksPlaced(tileId),
                                   GenericStats::param_blocksPlaced(
                                       tileId, instance->getAuxValue(), 1));
 
-                // 4J Original comment
-                // ok this may look stupid, but neighbor updates can cause the
-                // placed block to become something else before these methods
-                // are called
+                
+                
+                
+                
                 if (level->getTile(x, y, z) == tileId) {
                     Tile::tiles[tileId]->setPlacedBy(level, x, y, z, player,
                                                      instance);
@@ -67,8 +67,8 @@ bool TilePlanterItem::useOn(std::shared_ptr<ItemInstance> instance,
                                  tile->soundType->getPlaceSound(),
                                  (tile->soundType->getVolume() + 1) / 2,
                                  tile->soundType->getPitch() * 0.8f);
-                // 4J-PB - If we have the debug option on, don't reduce the
-                // number of this item
+                
+                
 #ifndef _FINAL_BUILD
                 if (!(app.DebugSettingsOn() &&
                       app.GetGameSettingsDebugMask() &
@@ -80,7 +80,7 @@ bool TilePlanterItem::useOn(std::shared_ptr<ItemInstance> instance,
             }
         }
     } else {
-        // Can't place, so return false
+        
         if (bTestUseOnOnly) return false;
     }
     return true;

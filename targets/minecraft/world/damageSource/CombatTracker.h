@@ -17,7 +17,7 @@ public:
     static const int RESET_COMBAT_STATUS_TIME =
         SharedConstants::TICKS_PER_SECOND * 15;
 
-    // 4J: This enum replaces
+    
     enum eLOCATION {
         eLocation_GENERIC = 0,
         eLocation_LADDER,
@@ -29,11 +29,11 @@ public:
 
 private:
     std::vector<CombatEntry*> entries;
-    LivingEntity* mob;  // Owner
+    LivingEntity* mob;  
     int lastDamageTime;
     bool inCombat;
     bool takingDamage;
-    eLOCATION nextLocation;  // 4J: Location is now an enum, not a std::string
+    eLOCATION nextLocation;  
 
 public:
     CombatTracker(LivingEntity* mob);
@@ -42,7 +42,7 @@ public:
     void prepareForDamage();
     void recordDamage(DamageSource* source, float health, float damage);
     std::shared_ptr<ChatPacket>
-    getDeathMessagePacket();  // 4J: Changed this to return a chat packet
+    getDeathMessagePacket();  
     std::shared_ptr<LivingEntity> getKiller();
 
 private:

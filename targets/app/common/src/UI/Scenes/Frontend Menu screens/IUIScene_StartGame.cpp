@@ -33,7 +33,7 @@ IUIScene_StartGame::IUIScene_StartGame(int iPad, UILayer* parentLayer)
 
 void IUIScene_StartGame::HandleDLCMountingComplete() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    // clear out the current texture pack list
+    
     m_texturePackList.clearSlots();
 
     int texturePacksCount = pMinecraft->skins->getTexturePackCount();
@@ -54,11 +54,11 @@ void IUIScene_StartGame::HandleDLCMountingComplete() {
 
     m_iTexturePacksNotInstalled = 0;
 
-    // 4J-PB - there may be texture packs we don't have, so use the info from
-    // TMS for this REMOVE UNTIL WORKING
+    
+    
     DLC_INFO* pDLCInfo = nullptr;
 
-    // first pass - look to see if there are any that are not in the list
+    
     bool bTexturePackAlreadyListed;
     bool bNeedToGetTPD = false;
 
@@ -73,7 +73,7 @@ void IUIScene_StartGame::HandleDLCMountingComplete() {
             }
         }
         if (bTexturePackAlreadyListed == false) {
-            // some missing
+            
             bNeedToGetTPD = true;
 
             m_iTexturePacksNotInstalled++;
@@ -82,7 +82,7 @@ void IUIScene_StartGame::HandleDLCMountingComplete() {
 
 #if TO_BE_IMPLEMENTED
     if (bNeedToGetTPD == true) {
-        // add a TMS request for them
+        
         app.DebugPrintf("+++ Adding TMSPP request for texture pack data\n");
         app.AddTMSPPFileTypeRequest(e_DLC_TexturePackData);
         if (m_iConfigA != nullptr) {
@@ -129,7 +129,7 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index) {
 
     if (tp == nullptr) {
 #if TO_BE_IMPLEMENTED
-        // this is probably a texture pack icon added from TMS
+        
 
         unsigned int dwBytes = 0;
         unsigned int dwFileBytes = 0;
@@ -137,7 +137,7 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index) {
         std::uint8_t* pbFileData = nullptr;
 
         CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
-        // get the current index of the list, and then get the data
+        
         ListItem = m_pTexturePacksList->GetData(index);
 
         app.GetTPD(ListItem.iData, &pbData, &dwBytes);
@@ -177,12 +177,12 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index) {
         std::uint32_t imageBytes = 0;
         std::uint8_t* imageData = tp->getPackIcon(imageBytes);
 
-        // if(imageBytes > 0 && imageData)
-        //{
-        //	registerSubstitutionTexture(L"texturePackIcon", imageData,
-        // imageBytes);
-        //	m_bitmapTexturePackIcon.setTextureName(L"texturePackIcon");
-        // }
+        
+        
+        
+        
+        
+        
 
         wchar_t imageName[64];
         swprintf(imageName, 64, L"tpack%08x", tp->getId());
@@ -205,17 +205,17 @@ void IUIScene_StartGame::UpdateCurrentTexturePack(int iSlot) {
     TexturePack* tp = Minecraft::GetInstance()->skins->getTexturePackByIndex(
         m_currentTexturePackIndex);
 
-    // if the texture pack is null, you don't have it yet
+    
     if (tp == nullptr) {
 #if TO_BE_IMPLEMENTED
-        // Upsell
+        
 
         CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
-        // get the current index of the list, and then get the data
+        
         ListItem = m_pTexturePacksList->GetData(m_currentTexturePackIndex);
 
-        // upsell the texture pack
-        // tell sentient about the upsell of the full version of the skin pack
+        
+        
         uint64_t ullOfferID_Full;
         app.GetDLCFullOfferIDForPackID(ListItem.iData, &ullOfferID_Full);
 
@@ -225,14 +225,14 @@ void IUIScene_StartGame::UpdateCurrentTexturePack(int iSlot) {
         uiIDA[1] = IDS_TEXTURE_PACK_TRIALVERSION;
         uiIDA[2] = IDS_CONFIRM_CANCEL;
 
-        // Give the player a warning about the texture pack missing
+        
         ui.RequestErrorMessage(IDS_DLC_TEXTUREPACK_NOT_PRESENT_TITLE,
                                IDS_DLC_TEXTUREPACK_NOT_PRESENT, uiIDA, 3,
                                ProfileManager.GetPrimaryPad(),
                                & : TexturePackDialogReturned, this);
 
-        // do set the texture pack id, and on the user pressing create world,
-        // check they have it
+        
+        
         m_MoreOptionsParams.dwTexturePack = ListItem.iData;
         return;
 #endif
@@ -259,8 +259,8 @@ int IUIScene_StartGame::UnlockTexturePackReturned(
 
     if (result == C4JStorage::EMessage_ResultAccept) {
         if (ProfileManager.IsSignedIn(iPad)) {
-            // the license change coming in when the offer has been installed
-            // will cause this scene to refresh
+            
+            
         }
     } else {
     }

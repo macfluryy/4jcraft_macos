@@ -74,16 +74,16 @@ bool Tutorial::PopupMessageDetails::isSameContent(PopupMessageDetails* other) {
 }
 
 void Tutorial::staticCtor() {
-    //
-    /*
-    *****
-    *****
-    THE ORDERING OF THESE SHOULD NOT CHANGE - Although the ordering may not be
-    totally logical due to the order tasks were added, these map to bits in the
-    profile data in this order. New tasks/hints should be added at the end.
-    *****
-    *****
-    */
+    
+    
+
+
+
+
+
+
+
+
     s_completableTasks.push_back(e_Tutorial_State_Inventory_Menu);
     s_completableTasks.push_back(e_Tutorial_State_2x2Crafting_Menu);
     s_completableTasks.push_back(e_Tutorial_State_3x3Crafting_Menu);
@@ -385,7 +385,7 @@ void Tutorial::staticCtor() {
     }
 }
 
-Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
+Tutorial::Tutorial(int iPad, bool isFullTutorial ) : m_iPad(iPad) {
     m_isFullTutorial = isFullTutorial;
     m_fullTutorialComplete = false;
     m_allTutorialsComplete = false;
@@ -399,7 +399,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
     m_bHasTickedOnce = false;
     m_firstTickTime = {};
 
-    // 4jcraft added, not initialized
+    
     m_bSceneIsSplitscreen = false;
 
     m_lastMessage = nullptr;
@@ -416,13 +416,13 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         currentFailedConstraint[i] = nullptr;
     }
 
-    // DEFAULT TASKS THAT ALL TUTORIALS SHARE
-    /*
-     *
-     *
-     * GAMEPLAY
-     *
-     */
+    
+    
+
+
+
+
+
 
     if (!isHintCompleted(e_Tutorial_Hint_Hold_To_Mine))
         addHint(e_Tutorial_State_Gameplay,
@@ -440,9 +440,9 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                                  IDS_TUTORIAL_HINT_SWIM_UP,
                                  TutorialHint::e_Hint_SwimUp));
 
-    /*
-     * TILE HINTS
-     */
+    
+
+
     int rockItems[] = {Tile::stone_Id};
     if (!isHintCompleted(e_Tutorial_Hint_Rock))
         addHint(e_Tutorial_State_Gameplay,
@@ -1239,9 +1239,9 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                 new LookAtTileHint(e_Tutorial_Hint_CoalBlock, this,
                                    coalBlockItems, 1));
 
-    /*
-     * ENTITY HINTS
-     */
+    
+
+
     if (!isHintCompleted(e_Tutorial_Hint_Squid))
         addHint(e_Tutorial_State_Gameplay,
                 new LookAtEntityHint(e_Tutorial_Hint_Squid, this,
@@ -1372,9 +1372,9 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                 new LookAtEntityHint(e_Tutorial_Hint_Horse, this,
                                      IDS_DESC_HORSE, IDS_HORSE, eTYPE_HORSE));
 
-    /*
-     * ITEM HINTS
-     */
+    
+
+
     int shovelItems[] = {Item::shovel_wood->id, Item::shovel_stone->id,
                          Item::shovel_iron->id, Item::shovel_gold->id,
                          Item::shovel_diamond->id};
@@ -1402,12 +1402,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                                    IDS_TUTORIAL_HINT_DIGGER_ITEM_PICKAXE,
                                    pickaxeItems, 5));
 
-    /*
-     *
-     *
-     * INVENTORY
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Inventory_Menu)) {
         ProcedureCompoundTask* inventoryOverviewTask =
             new ProcedureCompoundTask(this);
@@ -1430,12 +1430,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         addTask(e_Tutorial_State_Inventory_Menu, inventoryOverviewTask);
     }
 
-    /*
-     *
-     *
-     * CREATIVE INVENTORY
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial ||
         !isStateCompleted(e_Tutorial_State_Creative_Inventory_Menu)) {
         ProcedureCompoundTask* creativeInventoryOverviewTask =
@@ -1463,12 +1463,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                 creativeInventoryOverviewTask);
     }
 
-    /*
-     *
-     *
-     * CRAFTING
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial ||
         !isStateCompleted(e_Tutorial_State_2x2Crafting_Menu)) {
         ProcedureCompoundTask* craftingOverviewTask =
@@ -1500,7 +1500,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                          ACTION_MENU_X));
         addTask(e_Tutorial_State_2x2Crafting_Menu, craftingOverviewTask);
     }
-    // Other tasks can be added in the derived classes
+    
 
     addHint(e_Tutorial_State_2x2Crafting_Menu,
             new TutorialHint(e_Tutorial_Hint_Always_On, this,
@@ -1512,12 +1512,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                              IDS_TUTORIAL_HINT_CRAFT_NO_INGREDIENTS,
                              TutorialHint::e_Hint_NoIngredients));
 
-    /*
-     *
-     *
-     * FURNACE
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Furnace_Menu)) {
         ProcedureCompoundTask* furnaceOverviewTask =
             new ProcedureCompoundTask(this);
@@ -1536,14 +1536,14 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
         addTask(e_Tutorial_State_Furnace_Menu, furnaceOverviewTask);
     }
-    // Other tasks can be added in the derived classes
+    
 
-    /*
-     *
-     *
-     * BREWING MENU
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Brewing_Menu)) {
         ProcedureCompoundTask* brewingOverviewTask =
             new ProcedureCompoundTask(this);
@@ -1565,14 +1565,14 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
         addTask(e_Tutorial_State_Brewing_Menu, brewingOverviewTask);
     }
-    // Other tasks can be added in the derived classes
+    
 
-    /*
-     *
-     *
-     * ENCHANTING MENU
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Enchanting_Menu)) {
         ProcedureCompoundTask* enchantingOverviewTask =
             new ProcedureCompoundTask(this);
@@ -1597,14 +1597,14 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
         addTask(e_Tutorial_State_Enchanting_Menu, enchantingOverviewTask);
     }
-    // Other tasks can be added in the derived classes
+    
 
-    /*
-     *
-     *
-     * ANVIL MENU
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Anvil_Menu)) {
         ProcedureCompoundTask* anvilOverviewTask =
             new ProcedureCompoundTask(this);
@@ -1635,14 +1635,14 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
         addTask(e_Tutorial_State_Anvil_Menu, anvilOverviewTask);
     }
-    // Other tasks can be added in the derived classes
+    
 
-    /*
-     *
-     *
-     * TRADING MENU
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Trading_Menu)) {
         ProcedureCompoundTask* tradingOverviewTask =
             new ProcedureCompoundTask(this);
@@ -1667,14 +1667,14 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
         addTask(e_Tutorial_State_Trading_Menu, tradingOverviewTask);
     }
-    // Other tasks can be added in the derived classes
+    
 
-    /*
-     *
-     *
-     * HORSE ENCOUNTER
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Horse)) {
         addTask(e_Tutorial_State_Horse,
                 new HorseChoiceTask(
@@ -1702,7 +1702,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                              IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
                              ACTION_MENU_A));
 
-        // 4J-JEV: Only force the RideEntityTask if we're on the full-tutorial.
+        
         if (isFullTutorial)
             addTask(e_Tutorial_State_Horse,
                     new RideEntityTask(eTYPE_HORSE, this,
@@ -1728,12 +1728,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                              ACTION_MENU_A));
     }
 
-    /*
-     *
-     *
-     * HORSE MENU
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Horse_Menu)) {
         ProcedureCompoundTask* horseMenuTask = new ProcedureCompoundTask(this);
         horseMenuTask->AddTask(new ChoiceTask(
@@ -1752,12 +1752,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         addTask(e_Tutorial_State_Horse_Menu, horseMenuTask);
     }
 
-    /*
-     *
-     *
-     * FIREWORKS MENU
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Fireworks_Menu)) {
         ProcedureCompoundTask* fireworksMenuTask =
             new ProcedureCompoundTask(this);
@@ -1795,12 +1795,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         addTask(e_Tutorial_State_Fireworks_Menu, fireworksMenuTask);
     }
 
-    /*
-     *
-     *
-     * BEACON MENU
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Beacon_Menu)) {
         ProcedureCompoundTask* beaconMenuTask = new ProcedureCompoundTask(this);
         beaconMenuTask->AddTask(new ChoiceTask(
@@ -1819,12 +1819,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         addTask(e_Tutorial_State_Beacon_Menu, beaconMenuTask);
     }
 
-    /*
-     *
-     *
-     * MINECART
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Riding_Minecart)) {
         addTask(e_Tutorial_State_Riding_Minecart,
                 new ChoiceTask(
@@ -1846,12 +1846,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                              ACTION_MENU_A));
     }
 
-    /*
-     *
-     *
-     * BOAT
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Riding_Boat)) {
         addTask(e_Tutorial_State_Riding_Boat,
                 new ChoiceTask(
@@ -1865,12 +1865,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                              ACTION_MENU_A));
     }
 
-    /*
-     *
-     *
-     * FISHING
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Fishing)) {
         addTask(e_Tutorial_State_Fishing,
                 new ChoiceTask(
@@ -1892,12 +1892,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                              ACTION_MENU_A));
     }
 
-    /*
-     *
-     *
-     * BED
-     *
-     */
+    
+
+
+
+
+
     if (isFullTutorial || !isStateCompleted(e_Tutorial_State_Bed)) {
         addTask(e_Tutorial_State_Bed,
                 new ChoiceTask(
@@ -1915,12 +1915,12 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                              ACTION_MENU_A));
     }
 
-    /*
-     *
-     *
-     * FOOD BAR
-     *
-     */
+    
+
+
+
+
+
     if (!isFullTutorial && !isStateCompleted(e_Tutorial_State_Food_Bar)) {
         addTask(e_Tutorial_State_Food_Bar,
                 new ChoiceTask(
@@ -1976,11 +1976,11 @@ void Tutorial::debugResetPlayerSavedProgress(int iPad) {
 }
 
 void Tutorial::setCompleted(int completableId) {
-    // if(app.GetGameSettingsDebugMask(m_iPad) &&
-    // app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_TipsAlwaysOn))
-    //{
-    //	return;
-    // }
+    
+    
+    
+    
+    
 
     int completableIndex = -1;
     for (auto it = s_completableTasks.begin(); it < s_completableTasks.end();
@@ -1992,23 +1992,23 @@ void Tutorial::setCompleted(int completableId) {
     }
     if (completableIndex >= 0 &&
         completableIndex < TUTORIAL_PROFILE_STORAGE_BITS) {
-        // Set the bit for this position
+        
         GAME_SETTINGS* pGameSettings =
             (GAME_SETTINGS*)ProfileManager.GetGameDefinedProfileData(m_iPad);
         int arrayIndex = completableIndex >> 3;
         int bitIndex = 7 - (completableIndex % 8);
         pGameSettings->ucTutorialCompletion[arrayIndex] |= 1 << bitIndex;
-        // flag a profile write needed
+        
         pGameSettings->bSettingsChanged = true;
     }
 }
 
 bool Tutorial::getCompleted(int completableId) {
-    // if(app.GetGameSettingsDebugMask(m_iPad) &&
-    // app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_TipsAlwaysOn))
-    //{
-    //	return false;
-    // }
+    
+    
+    
+    
+    
 
     int completableIndex = -1;
     for (auto it = s_completableTasks.begin(); it < s_completableTasks.end();
@@ -2020,8 +2020,8 @@ bool Tutorial::getCompleted(int completableId) {
     }
     if (completableIndex >= 0 &&
         completableIndex < TUTORIAL_PROFILE_STORAGE_BITS) {
-        // Read the bit for this position
-        // Retrieve the data pointer from the profile
+        
+        
         GAME_SETTINGS* pGameSettings =
             (GAME_SETTINGS*)ProfileManager.GetGameDefinedProfileData(m_iPad);
         int arrayIndex = completableIndex >> 3;
@@ -2044,21 +2044,21 @@ bool Tutorial::isHintCompleted(eTutorial_Hint hint) {
 }
 
 void Tutorial::setHintCompleted(eTutorial_Hint hint) {
-    // if(app.GetGameSettingsDebugMask(m_iPad) &&
-    // app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_TipsAlwaysOn))
-    //{
-    //	return;
-    // }
+    
+    
+    
+    
+    
 
     setCompleted(hint);
 }
 
 void Tutorial::setHintCompleted(TutorialHint* hint) {
-    // if(app.GetGameSettingsDebugMask(m_iPad) &&
-    // app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_TipsAlwaysOn))
-    //{
-    //	return;
-    // }
+    
+    
+    
+    
+    
 
     eTutorial_Hint hintId = hint->getId();
 
@@ -2068,16 +2068,16 @@ void Tutorial::setHintCompleted(TutorialHint* hint) {
                                          hints[m_CurrentState].end(), hint));
         delete hint;
     }
-    // 	else
-    // 	{
-    // 		find(hints[m_CurrentState].begin(), hints[m_CurrentState].end(),
-    // hint);
-    // 	}
+    
+    
+    
+    
+    
 }
 
 void Tutorial::tick() {
-    // Don't do anything for the first 2 seconds so that the loading screen is
-    // gone
+    
+    
     if (!m_bHasTickedOnce) {
         auto now = time_util::clock::now();
         if (m_firstTickTime == time_util::time_point{}) {
@@ -2113,14 +2113,14 @@ void Tutorial::tick() {
         }
     }
 
-    // 4J Stu TODO - Make this a constraint
+    
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (m_freezeTime && !m_timeFrozen && !m_fullTutorialComplete) {
-        // Need to set the time on both levels to stop the flickering as the
-        // local level tries to predict the time
+        
+        
         MinecraftServer::SetTimeOfDay(m_iTutorialFreezeTimeValue);
         pMinecraft->level->setDayTime(
-            m_iTutorialFreezeTimeValue);  // Always daytime
+            m_iTutorialFreezeTimeValue);  
         m_timeFrozen = true;
     } else if (m_freezeTime && m_timeFrozen && m_fullTutorialComplete) {
         MinecraftServer::SetTimeOfDay(m_iTutorialFreezeTimeValue);
@@ -2144,7 +2144,7 @@ void Tutorial::tick() {
         ui.SetTutorial(m_iPad, this);
         hasRequestedUI = true;
     } else {
-        // if we've changed mode, we may need to change scene
+        
         if (m_bSceneIsSplitscreen != (app.GetLocalPlayerCount() > 1)) {
             ui.SetTutorial(m_iPad, this);
         }
@@ -2166,18 +2166,18 @@ void Tutorial::tick() {
         uiTempDisabled = false;
     }
 
-    // Check constraints
+    
     for (auto it = m_globalConstraints.begin(); it < m_globalConstraints.end();
          ++it) {
         TutorialConstraint* constraint = *it;
         constraint->tick(m_iPad);
     }
 
-    // Check hints
+    
     int hintNeeded = -1;
     if (!m_hintDisplayed) {
-        // 4J Stu - TU-1 interim
-        // Allow turning off all the hints
+        
+        
         bool hintsOn =
             m_isFullTutorial || app.GetGameSettings(m_iPad, eGameSetting_Hints);
 
@@ -2198,8 +2198,8 @@ void Tutorial::tick() {
         }
     }
 
-    // Check constraints
-    // Only need to update these if we aren't already failing something
+    
+    
     if (!m_allTutorialsComplete &&
         (currentFailedConstraint[m_CurrentState] == nullptr ||
          currentFailedConstraint[m_CurrentState]->isConstraintSatisfied(
@@ -2223,7 +2223,7 @@ void Tutorial::tick() {
 
     if (!m_allTutorialsComplete &&
         currentFailedConstraint[m_CurrentState] == nullptr) {
-        // Update tasks
+        
         bool isCurrentTask = true;
         auto it = activeTasks[m_CurrentState].begin();
         while (activeTasks[m_CurrentState].size() > 0 &&
@@ -2245,9 +2245,9 @@ void Tutorial::tick() {
                     if (activeTasks[m_CurrentState].size() > 0) {
                         switch (compAction) {
                             case e_Tutorial_Completion_Complete_State_Gameplay_Constraints: {
-                                // 4J Stu - Move the delayed constraints to the
-                                // gameplay state so that they are in effect for
-                                // a bit longer
+                                
+                                
+                                
                                 auto itCon =
                                     constraintsToRemove[m_CurrentState].begin();
                                 while (
@@ -2271,7 +2271,7 @@ void Tutorial::tick() {
                                                 .erase(itCon);
                                 }
                             }
-                                // Fall through the the normal complete state
+                                
                             case e_Tutorial_Completion_Complete_State:
                                 for (auto itRem =
                                          activeTasks[m_CurrentState].begin();
@@ -2313,8 +2313,8 @@ void Tutorial::tick() {
                     }
                     taskChanged = true;
 
-                    // If we can complete this early, check if we can complete
-                    // it right now
+                    
+                    
                     if (currentTask[m_CurrentState] != nullptr &&
                         currentTask[m_CurrentState]->isPreCompletionEnabled()) {
                         isCurrentTask = true;
@@ -2402,7 +2402,7 @@ void Tutorial::tick() {
         currentTask[m_CurrentState] != nullptr && (m_iTaskReminders != 0) &&
         (lastMessageTime + std::chrono::milliseconds(m_iTaskReminders * m_iTutorialReminderTime)) <
             time_util::clock::now()) {
-        // Reminder
+        
         PopupMessageDetails* message = new PopupMessageDetails();
         message->m_messageId = currentTask[m_CurrentState]->getDescriptionId();
         message->m_promptId = currentTask[m_CurrentState]->getPromptId();
@@ -2415,8 +2415,8 @@ void Tutorial::tick() {
 
     m_hasStateChanged = false;
 
-    // If we have completed this state, and it is one that occurs during normal
-    // gameplay then change back to the gameplay track
+    
+    
     if (m_CurrentState != e_Tutorial_State_Gameplay &&
         activeTasks[m_CurrentState].size() == 0 &&
         (isSelectedItemState() || !ui.GetMenuDisplayed(m_iPad))) {
@@ -2452,7 +2452,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
                 TutorialMessage* messageString = it->second;
                 text = std::wstring(messageString->getMessageForDisplay());
 
-                // 4J Stu - Quick fix for boat tutorial being incorrect
+                
                 if (message->m_messageId == IDS_TUTORIAL_TASK_BOAT_OVERVIEW) {
                     text = replaceAll(text, L"{*CONTROLLER_ACTION_USE*}",
                                       L"{*CONTROLLER_ACTION_DISMOUNT*}");
@@ -2460,7 +2460,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
             } else {
                 text = std::wstring(app.GetString(message->m_messageId));
 
-                // 4J Stu - Quick fix for boat tutorial being incorrect
+                
                 if (message->m_messageId == IDS_TUTORIAL_TASK_BOAT_OVERVIEW) {
                     text = replaceAll(text, L"{*CONTROLLER_ACTION_USE*}",
                                       L"{*CONTROLLER_ACTION_DISMOUNT*}");
@@ -2500,10 +2500,10 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
         }
     } else if ((m_lastMessage != nullptr &&
                 m_lastMessage->m_messageId !=
-                    -1))  //&& (lastMessageTime + m_iTutorialReminderTime ) >
-                          // time_util::tick_count32() )
+                    -1))  
+                          
     {
-        // This should cause the popup to dissappear
+        
         TutorialPopupInfo popupInfo;
         popupInfo.interactScene = m_UIScene;
         popupInfo.tutorial = this;
@@ -2517,8 +2517,8 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
 }
 
 bool Tutorial::setMessage(TutorialHint* hint, PopupMessageDetails* message) {
-    // 4J Stu - TU-1 interim
-    // Allow turning off all the hints
+    
+    
     bool hintsOn = m_isFullTutorial ||
                    (app.GetGameSettings(m_iPad, eGameSetting_Hints) &&
                     app.GetGameSettings(m_iPad, eGameSetting_DisplayHUD));
@@ -2592,8 +2592,8 @@ void Tutorial::completeUsingItem(std::shared_ptr<ItemInstance> item) {
         task->completeUsingItem(item);
     }
 
-    // Fix for #46922 - TU5: UI: Player receives a reminder that he is hungry
-    // while "hunger bar" is full (triggered in split-screen mode)
+    
+    
     if (m_CurrentState != e_Tutorial_State_Gameplay) {
         for (auto it = activeTasks[e_Tutorial_State_Gameplay].begin();
              it < activeTasks[e_Tutorial_State_Gameplay].end(); ++it) {
@@ -2668,12 +2668,12 @@ void Tutorial::itemDamaged(std::shared_ptr<ItemInstance> item) {
 void Tutorial::handleUIInput(int iAction) {
     if (m_hintDisplayed) return;
 
-    // for(auto it = activeTasks[m_CurrentState].begin(); it <
-    // activeTasks[m_CurrentState].end(); ++it)
-    //{
-    //	TutorialTask *task = *it;
-    //	task->handleUIInput(iAction);
-    // }
+    
+    
+    
+    
+    
+    
     if (currentTask[m_CurrentState] != nullptr)
         currentTask[m_CurrentState]->handleUIInput(iAction);
 }
@@ -2729,9 +2729,9 @@ void Tutorial::onTake(std::shared_ptr<ItemInstance> item,
 }
 
 void Tutorial::onSelectedItemChanged(std::shared_ptr<ItemInstance> item) {
-    // We only handle this if we are in a state that allows changing based on
-    // the selected item Menus and states like riding in a minecart will NOT
-    // allow this
+    
+    
+    
     if (isSelectedItemState()) {
         if (item != nullptr) {
             switch (item->id) {
@@ -2844,8 +2844,8 @@ bool Tutorial::canMoveToPosition(double xo, double yo, double zo, double xt,
 bool Tutorial::isInputAllowed(int mapping) {
     if (m_hintDisplayed) return true;
 
-    // If the player is under water then allow all keypresses so they can jump
-    // out
+    
+    
     if (Minecraft::GetInstance()->localplayers[m_iPad]->isUnderLiquid(
             Material::water))
         return true;
@@ -2883,21 +2883,21 @@ void Tutorial::AddConstraint(TutorialConstraint* c) {
 }
 
 void Tutorial::RemoveConstraint(TutorialConstraint* c,
-                                bool delayedRemove /*= false*/) {
+                                bool delayedRemove ) {
     if (currentFailedConstraint[m_CurrentState] == c)
         currentFailedConstraint[m_CurrentState] = nullptr;
 
     if (c->getQueuedForRemoval()) {
-        // If it is already queued for removal, remove it on the next tick
-        /*for(auto it = constraintsToRemove[m_CurrentState].begin(); it <
-        constraintsToRemove[m_CurrentState].end(); ++it)
-        {
-        if( it->first == c )
-        {
-        it->second = m_iTutorialConstraintDelayRemoveTicks;
-        break;
-        }
-        }*/
+        
+        
+
+
+
+
+
+
+
+
     } else if (delayedRemove) {
         c->setQueuedForRemoval(true);
         constraintsToRemove[m_CurrentState].push_back(
@@ -2918,7 +2918,7 @@ void Tutorial::RemoveConstraint(TutorialConstraint* c,
                 find(constraints[m_CurrentState].begin(),
                      constraints[m_CurrentState].end(), c));
 
-        // It may be in the gameplay list, so remove it from there if it is
+        
         it = find(constraints[e_Tutorial_State_Gameplay].begin(),
                   constraints[e_Tutorial_State_Gameplay].end(), c);
         if (it != constraints[e_Tutorial_State_Gameplay].end())
@@ -2940,39 +2940,39 @@ void Tutorial::addHint(eTutorial_State state, TutorialHint* h) {
 }
 
 void Tutorial::addMessage(
-    int messageId, bool limitRepeats /*= false*/,
-    unsigned char numRepeats /*= TUTORIAL_MESSAGE_DEFAULT_SHOW*/) {
+    int messageId, bool limitRepeats ,
+    unsigned char numRepeats ) {
     if (messageId >= 0 && messages.find(messageId) == messages.end())
         messages[messageId] =
             new TutorialMessage(messageId, limitRepeats, numRepeats);
 }
 
 void Tutorial::changeTutorialState(eTutorial_State newState,
-                                   UIScene* scene /*= nullptr*/) {
+                                   UIScene* scene ) {
     if (newState == m_CurrentState) {
-        // If clearing the scene, make sure that the tutorial popup has its
-        // reference to this scene removed
+        
+        
         if (scene == nullptr) {
             ui.RemoveInteractSceneReference(m_iPad, m_UIScene);
         }
         m_UIScene = scene;
         return;
     }
-    // 4J Stu - TU-1 interim
-    // Allow turning off all the hints
+    
+    
     bool hintsOn =
         m_isFullTutorial || app.GetGameSettings(m_iPad, eGameSetting_Hints);
 
     if (hintsOn) {
-        // If we have completed this state, and it is one that occurs during
-        // normal gameplay then change back to the gameplay track
+        
+        
         if (newState != e_Tutorial_State_Gameplay &&
             activeTasks[newState].size() == 0 && !ui.GetMenuDisplayed(m_iPad)) {
             return;
         }
 
-        // The action that caused the change of state may also have completed
-        // the current task
+        
+        
         if (currentTask[m_CurrentState] != nullptr &&
             currentTask[m_CurrentState]->isCompleted()) {
             activeTasks[m_CurrentState].erase(
@@ -2992,11 +2992,11 @@ void Tutorial::changeTutorialState(eTutorial_State newState,
             currentTask[m_CurrentState]->onStateChange(newState);
         }
 
-        // Make sure that the current message is cleared
+        
         setMessage(nullptr);
 
-        // If clearing the scene, make sure that the tutorial popup has its
-        // reference to this scene removed
+        
+        
         if (scene == nullptr) {
             ui.RemoveInteractSceneReference(m_iPad, m_UIScene);
         }

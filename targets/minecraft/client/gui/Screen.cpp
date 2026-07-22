@@ -23,7 +23,7 @@ void mac_setClipboard(const std::wstring& str);
 }
 #endif
 
-Screen::Screen()  // 4J added
+Screen::Screen()  
 {
     minecraft = nullptr;
     width = 0;
@@ -32,24 +32,24 @@ Screen::Screen()  // 4J added
     font = nullptr;
     particles = nullptr;
     clickedButton = nullptr;
-    // 4J - FIX: Initialize deferred rebuild flags
+    
     needsUIRebuild = false;
     pendingRebuildWidth = 0;
     pendingRebuildHeight = 0;
     
-    // 4J - SMOOTH GUI SCALE CHANGE: Initialize fade animation
+    
     isRebuildingUI = false;
-    uiFadeAlpha = 1.0f;        // Start fully visible
+    uiFadeAlpha = 1.0f;        
     rebuildFrameCounter = 0;
 }
 
 void Screen::render(int xm, int ym, float a) {
-    // 4J - SMOOTH GUI SCALE CHANGE: Don't render during rebuild to prevent flicker
+    
     if (isRebuildingUI) {
-        return;  // Skip rendering while UI is being rebuilt
+        return;  
     }
     
-    // 4J - Apply alpha fade for smooth transition
+    
     if (uiFadeAlpha < 1.0f) {
         glPushAttrib(GL_COLOR_BUFFER_BIT);
         glColor4f(1.0f, 1.0f, 1.0f, uiFadeAlpha);
@@ -57,11 +57,11 @@ void Screen::render(int xm, int ym, float a) {
     
     auto itEnd = buttons.end();
     for (auto it = buttons.begin(); it != itEnd; it++) {
-        Button* button = *it;  // buttons[i];
+        Button* button = *it;  
         button->render(minecraft, xm, ym);
     }
     
-    // 4J - Restore color state
+    
     if (uiFadeAlpha < 1.0f) {
         glPopAttrib();
     }
@@ -70,9 +70,9 @@ void Screen::render(int xm, int ym, float a) {
 void Screen::keyPressed(wchar_t eventCharacter, int eventKey) {
     if (eventKey == Keyboard::KEY_ESCAPE) {
         minecraft->setScreen(nullptr);
-        //    minecraft->grabMouse();	// 4J - removed
-        // 4jcraft: moved here from PauseScreen to ensure that serverside
-        // unpausing is done in all scenarios
+        
+        
+        
         if (g_NetworkManager.IsLocalGame() &&
             g_NetworkManager.GetPlayerCount() == 1)
             app.SetXuiServerAction(InputManager.GetPrimaryPad(),
@@ -95,18 +95,18 @@ void Screen::setClipboard(const std::wstring& str) {
 }
 
 void Screen::mouseClicked(int x, int y, int buttonNum) {
-    // 4J - SMOOTH GUI SCALE CHANGE: Ignore input during UI rebuild to prevent crashes
+    
     if (isRebuildingUI) return;
     
     if (buttonNum == 0) {
-        // 4J - FIX: Check buttons vector is not empty before iterating
-        // This prevents crashes when UI is being rebuilt
+        
+        
         if (buttons.empty()) return;
         
         auto itEnd = buttons.end();
         for (auto it = buttons.begin(); it != itEnd; it++) {
-            Button* button = *it;  // buttons[i];
-            // 4J - FIX: Extra null check for paranoid safety
+            Button* button = *it;  
+            
             if (button == nullptr) continue;
             
             if (button->clicked(minecraft, x, y)) {
@@ -119,12 +119,12 @@ void Screen::mouseClicked(int x, int y, int buttonNum) {
 }
 
 void Screen::mouseReleased(int x, int y, int buttonNum) {
-    // 4J - SMOOTH GUI SCALE CHANGE: Ignore input during UI rebuild
+    
     if (isRebuildingUI) return;
     
     if (clickedButton != nullptr && buttonNum == 0) {
-        // 4J - FIX: Extra safety check - verify clickedButton still exists in vector
-        // This prevents crashes when UI is being rebuilt or buttons deleted
+        
+        
         bool buttonExists = false;
         for (const auto& btn : buttons) {
             if (btn == clickedButton) {
@@ -160,7 +160,7 @@ void Screen::setSize(int width, int height) {
 void Screen::init() {}
 
 void Screen::updateEvents() {
-// TODO: update for SDL if we ever get around to that
+
 #if (defined(ENABLE_JAVA_GUIS))
     int fbw, fbh;
     RenderManager.GetFramebufferSize(fbw, fbh);
@@ -193,42 +193,42 @@ void Screen::updateEvents() {
     prevLeftState = leftState;
     prevRightState = rightState;
 #else
-    /* 4J - TODO
-while (Mouse.next()) {
-    mouseEvent();
-}
+    
 
-while (Keyboard.next()) {
-    keyboardEvent();
-}
-    */
+
+
+
+
+
+
+
 #endif
 }
 
 void Screen::mouseEvent() {
-    /* 4J - TODO
-if (Mouse.getEventButtonState()) {
-    int xm = Mouse.getEventX() * width / minecraft.width;
-    int ym = height - Mouse.getEventY() * height / minecraft.height - 1;
-    mouseClicked(xm, ym, Mouse.getEventButton());
-} else {
-    int xm = Mouse.getEventX() * width / minecraft.width;
-    int ym = height - Mouse.getEventY() * height / minecraft.height - 1;
-    mouseReleased(xm, ym, Mouse.getEventButton());
-}
-    */
+    
+
+
+
+
+
+
+
+
+
+
 }
 
 void Screen::keyboardEvent() {
-    /* 4J - TODO
-if (Keyboard.getEventKeyState()) {
-    if (Keyboard.getEventKey() == Keyboard.KEY_F11) {
-        minecraft.toggleFullScreen();
-        return;
-    }
-    keyPressed(Keyboard.getEventCharacter(), Keyboard.getEventKey());
-}
-    */
+    
+
+
+
+
+
+
+
+
 }
 
 void Screen::tick() {}
@@ -281,28 +281,28 @@ void Screen::tabPressed() {}
 void Screen::_performDeferredUIRebuild() {
     if (!needsUIRebuild) return;
     
-    // 4J - SMOOTH GUI SCALE CHANGE: Multi-phase fade and rebuild
-    // Phase 1: Fade out (2 frames) - uiFadeAlpha: 1.0 → 0.0
-    // Phase 2: Rebuild (this frame) - set isRebuildingUI = true
-    // Phase 3: Fade in (3 frames) - uiFadeAlpha: 0.0 → 1.0
+    
+    
+    
+    
     
     int phase = rebuildFrameCounter;
     
     if (phase < FADE_OUT_FRAMES) {
-        // FADE OUT PHASE: Gradually hide UI
+        
         uiFadeAlpha = 1.0f - (phase / (float)FADE_OUT_FRAMES);
         rebuildFrameCounter++;
-        return;  // Wait until next frame
+        return;  
     }
     
     if (phase == FADE_OUT_FRAMES) {
-        // REBUILD PHASE: Now that UI is invisible, do the heavy lifting
+        
         isRebuildingUI = true;
         
-        // Clear clickedButton to prevent use-after-free
+        
         clickedButton = nullptr;
         
-        // Delete old buttons SAFELY
+        
         for (Button* btn : buttons) {
             if (btn != nullptr) {
                 delete btn;
@@ -310,7 +310,7 @@ void Screen::_performDeferredUIRebuild() {
         }
         buttons.clear();
         
-        // Update dimensions if provided
+        
         if (pendingRebuildWidth > 0 && pendingRebuildHeight > 0) {
             this->width = pendingRebuildWidth;
             this->height = pendingRebuildHeight;
@@ -318,25 +318,25 @@ void Screen::_performDeferredUIRebuild() {
             pendingRebuildHeight = 0;
         }
         
-        // Rebuild UI from scratch
+        
         this->init();
         
-        // Setup for fade-in phase
+        
         uiFadeAlpha = 0.0f;
         isRebuildingUI = false;
         rebuildFrameCounter++;
-        return;  // Wait until next frame for fade-in
+        return;  
     }
     
-    // FADE IN PHASE: Gradually show rebuilt UI
+    
     int fadeInPhase = phase - FADE_OUT_FRAMES - 1;
     if (fadeInPhase < FADE_IN_FRAMES) {
         uiFadeAlpha = fadeInPhase / (float)FADE_IN_FRAMES;
         rebuildFrameCounter++;
-        return;  // Wait until next frame
+        return;  
     }
     
-    // COMPLETE: Animation finished
+    
     uiFadeAlpha = 1.0f;
     needsUIRebuild = false;
     rebuildFrameCounter = 0;

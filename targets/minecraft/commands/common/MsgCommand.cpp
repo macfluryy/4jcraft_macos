@@ -55,9 +55,9 @@ void MsgCommand::execute(std::shared_ptr<CommandSender> source,
             senderName = sourcePlayer->getName();
         }
 
-        // Send to the target
+        
         target->sendMessage(L"§d[" + senderName + L" -> me] §r" + message);
-        // Echo back to the sender so they have a record
+        
         source->sendMessage(L"§d[me -> " + targetName + L"] §r" + message);
 
         target->m_lastReplyTo = senderName;

@@ -34,9 +34,9 @@ void VillagerGolemRenderer::render(std::shared_ptr<Entity> mob, double x,
 
 void VillagerGolemRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
                                            float bob, float bodyRot, float a) {
-    // 4J - original version used generics and thus had an input parameter of
-    // type Blaze rather than shared_ptr<Entity>  we have here - do some casting
-    // around instead
+    
+    
+    
     std::shared_ptr<VillagerGolem> mob =
         std::dynamic_pointer_cast<VillagerGolem>(_mob);
     MobRenderer::setupRotations(mob, bob, bodyRot, a);
@@ -56,9 +56,9 @@ ResourceLocation* VillagerGolemRenderer::getTextureLocation(
 
 void VillagerGolemRenderer::additionalRendering(
     std::shared_ptr<LivingEntity> _mob, float a) {
-    // 4J - original version used generics and thus had an input parameter of
-    // type Blaze rather than shared_ptr<Entity>  we have here - do some casting
-    // around instead
+    
+    
+    
     std::shared_ptr<VillagerGolem> mob =
         std::dynamic_pointer_cast<VillagerGolem>(_mob);
     MobRenderer::additionalRendering(mob, a);
@@ -67,7 +67,7 @@ void VillagerGolemRenderer::additionalRendering(
     glEnable(GL_RESCALE_NORMAL);
     glPushMatrix();
 
-    // dont ask me how I got the flower into his hand.
+    
     glRotatef(5 + 180 * golemModel->arm0->xRot / std::numbers::pi, 1, 0, 0);
     glTranslatef(-11 / 16.0f, 20 / 16.0f, -15 / 16.0f);
     glRotatef(90, 1, 0, 0);
@@ -83,7 +83,7 @@ void VillagerGolemRenderer::additionalRendering(
     }
 
     glColor4f(1, 1, 1, 1);
-    bindTexture(&TextureAtlas::LOCATION_BLOCKS);  // TODO: By Icon
+    bindTexture(&TextureAtlas::LOCATION_BLOCKS);  
     tileRenderer->renderTile(Tile::rose, 0, 1);
     glPopMatrix();
     glDisable(GL_RESCALE_NORMAL);

@@ -26,7 +26,7 @@ class UIScene_SkinSelectMenu : public UIScene {
 private:
     static const wchar_t* wchDefaultNamesA[std::to_underlying(EDefaultSkins::Count)];
 
-    // 4J Stu - How many to show on each side of the main control
+    
     static const int sidePreviewControls = 4;
 
     enum ESkinSelectNavigation {
@@ -71,8 +71,8 @@ private:
 
     UI_MAP_ELEMENT(m_controlTimer, "Timer")
 
-    // 4J Stu - These aren't really used a AS3 controls, but adding here means
-    // that they get ticked by the scene
+    
+    
     UI_MAP_ELEMENT(m_controlIggyCharacters, "IggyCharacters")
     UI_BEGIN_MAP_CHILD_ELEMENTS(m_controlIggyCharacters)
     UI_MAP_ELEMENT(m_characters[eCharacter_Current], "iggy_Character0")
@@ -127,11 +127,11 @@ public:
     virtual void handleAnimationEnd();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

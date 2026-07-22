@@ -22,7 +22,7 @@ std::vector<int> ZoomLayer::getArea(int xo, int yo, int w, int h) {
     std::vector<int> p = parent->getArea(px, py, pw, ph);
 
     std::vector<int> tmp(pw * ph * 4);
-    // 4jcraft added casts to unsigned
+    
     int ww = ((unsigned int)pw << 1);
     for (int y = 0; y < ph - 1; y++) {
         int ry = (unsigned int)y << 1;

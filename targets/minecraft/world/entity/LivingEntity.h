@@ -34,11 +34,11 @@ class LivingEntity : public Entity {
     friend class MobSpawner;
 
 protected:
-    // 4J - added for common ctor code
+    
     void _init();
 
 public:
-    // 4J-PB - added to replace (e instanceof Type), avoiding dynamic casts
+    
     eINSTANCEOF GetType() { return eTYPE_LIVINGENTITY; }
     static Entity* create(Level* level) { return nullptr; }
 
@@ -174,7 +174,7 @@ public:
     virtual bool hasEffect(MobEffect* effect);
     virtual MobEffectInstance* getEffect(MobEffect* effect);
     virtual void addEffect(MobEffectInstance* newEffect);
-    virtual void addEffectNoUpdate(MobEffectInstance* newEffect);  // 4J added
+    virtual void addEffectNoUpdate(MobEffectInstance* newEffect);  
     virtual bool canBeAffected(MobEffectInstance* newEffect);
     virtual bool isInvertedHealAndHarm();
     virtual void removeEffectNoUpdate(int effectId);
@@ -280,7 +280,7 @@ protected:
 public:
     virtual void travel(float xa, float ya);
 
-    virtual int getLightColor(float a);  // 4J - added
+    virtual int getLightColor(float a);  
 
 protected:
     virtual bool useNewAi();
@@ -302,8 +302,8 @@ protected:
     virtual void newServerAiStep();
     virtual void pushEntities();
     virtual void doPush(std::shared_ptr<Entity> e);
-    // Reusable per-entity buffer for pushEntities() (runs every tick). Safe to
-    // reuse: nothing reachable from push() touches another entity's scratch.
+    
+    
     std::vector<std::shared_ptr<Entity> > m_pushEntitiesScratch;
 
 public:
@@ -341,6 +341,9 @@ public:
 
     virtual float getAbsorptionAmount();
     virtual void setAbsorptionAmount(float absorptionAmount);
+    
+    
+    virtual bool isCustomNameVisible() { return false; }
     virtual Team* getTeam();
     virtual bool isAlliedTo(std::shared_ptr<LivingEntity> other);
     virtual bool isAlliedTo(Team* other);

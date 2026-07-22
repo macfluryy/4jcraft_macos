@@ -31,11 +31,11 @@ class ModelPart;
 
 #define SKIN_SELECT_PACK_DEFAULT 0
 #define SKIN_SELECT_PACK_FAVORITES 1
-// #define SKIN_SELECT_PACK_PLAYER_CUSTOM 1
+
 #define SKIN_SELECT_MAX_DEFAULTS 2
 
 const wchar_t* UIScene_SkinSelectMenu::wchDefaultNamesA[] = {
-    L"USE LOCALISED VERSION",  // Server selected
+    L"USE LOCALISED VERSION",  
     L"Steve",
     L"Tennis Steve",
     L"Tuxedo Steve",
@@ -49,7 +49,7 @@ const wchar_t* UIScene_SkinSelectMenu::wchDefaultNamesA[] = {
 UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
                                                UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_labelSelected.init(app.GetString(IDS_SELECTED));
@@ -103,10 +103,10 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
     m_centreLabel = L"";
     m_rightLabel = L"";
 
-    // block input if we're waiting for DLC to install. The end of dlc mounting
-    // custom message will fill the save list
+    
+    
     if (app.StartInstallDLCProcess(m_iPad)) {
-        // DLC mounting in progress, so disable input
+        
         m_bIgnoreInput = true;
 
         m_controlTimer.setVisible(true);
@@ -119,8 +119,8 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
         m_controlTimer.setVisible(false);
 
         if (app.m_dlcManager.getPackCount(DLCManager::e_DLCType_Skin) > 0) {
-            // Change to display the favorites if there are any. The current
-            // skin will be in there (probably) - need to check for it
+            
+            
             m_currentPack =
                 app.m_dlcManager.getPackContainingSkin(m_currentSkinPath);
             bool bFound;
@@ -132,9 +132,9 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
             }
         }
 
-        // If we have any favourites, set this to the favourites
-        // first validate the favorite skins - we might have uninstalled the DLC
-        // needed for them
+        
+        
+        
         app.ValidateFavoriteSkins(m_iPad);
 
         if (app.GetPlayerFavoriteSkinsCount(m_iPad) > 0) {
@@ -144,7 +144,7 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
         handlePackIndexChanged();
     }
 
-    // Display the tooltips
+    
 }
 
 void UIScene_SkinSelectMenu::updateTooltips() {
@@ -173,9 +173,9 @@ void UIScene_SkinSelectMenu::tick() {
         handleSkinIndexChanged();
     }
 
-    // check for new DLC installed
+    
 
-    // check for the patch error dialog
+    
 }
 
 void UIScene_SkinSelectMenu::handleAnimationEnd() {
@@ -190,7 +190,7 @@ void UIScene_SkinSelectMenu::handleAnimationEnd() {
             UIControl_PlayerSkinPreview::e_SkinPreviewFacing_Right, false);
 
         m_bSkinIndexChanged = true;
-        // handleSkinIndexChanged();
+        
 
         m_bAnimatingMove = false;
     }
@@ -200,9 +200,9 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
                                          bool pressed, bool released,
                                          bool& handled) {
     if (m_bIgnoreInput) return;
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
 
     switch (key) {
         case ACTION_MENU_CANCEL:
@@ -222,7 +222,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
             if (pressed) {
                 if (m_packIndex == SKIN_SELECT_PACK_FAVORITES) {
                     if (app.GetPlayerFavoriteSkinsCount(iPad) == 0) {
-                        // ignore this, since there are no skins being displayed
+                        
                         break;
                     }
                 }
@@ -251,7 +251,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
                         ui.PlayUISFX(eSFX_Scroll);
 
                         m_skinIndex = getPreviousSkinIndex(m_skinIndex);
-                        // handleSkinIndexChanged();
+                        
 
                         m_bSlidingSkins = true;
                         m_bAnimatingMove = true;
@@ -265,7 +265,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
                                 e_SkinPreviewFacing_Forward,
                             true);
 
-                        // 4J Stu - Swapped nav buttons
+                        
                         sendInputToMovie(ACTION_MENU_RIGHT, repeat, pressed,
                                          released);
                     }
@@ -288,7 +288,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
                                            released);
                         ui.PlayUISFX(eSFX_Scroll);
                         m_skinIndex = getNextSkinIndex(m_skinIndex);
-                        // handleSkinIndexChanged();
+                        
 
                         m_bSlidingSkins = true;
                         m_bAnimatingMove = true;
@@ -302,7 +302,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
                                 e_SkinPreviewFacing_Forward,
                             true);
 
-                        // 4J Stu - Swapped nav buttons
+                        
                         sendInputToMovie(ACTION_MENU_LEFT, repeat, pressed,
                                          released);
                     }
@@ -350,7 +350,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
         case ACTION_MENU_OTHER_STICK_UP:
             if (pressed) {
                 if (m_currentNavigation == eSkinNavigation_Skin) {
-                    // m_previewControl->m_incXRot = true;
+                    
                     m_characters[eCharacter_Current].CyclePreviousAnimation();
                 } else {
                     ui.PlayUISFX(eSFX_Scroll);
@@ -360,7 +360,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
         case ACTION_MENU_OTHER_STICK_DOWN:
             if (pressed) {
                 if (m_currentNavigation == eSkinNavigation_Skin) {
-                    // m_previewControl->m_decXRot = true;
+                    
                     m_characters[eCharacter_Current].CycleNextAnimation();
                 } else {
                     ui.PlayUISFX(eSFX_Scroll);
@@ -373,9 +373,9 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
 void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
     ui.AnimateKeyPress(iPad, ACTION_MENU_OK, false, true, false);
 
-    // if the profile data has been changed, then force a profile write
-    // It seems we're allowed to break the 5 minute rule if it's the result of a
-    // user action
+    
+    
+    
     switch (m_packIndex) {
         case SKIN_SELECT_PACK_DEFAULT:
             app.SetPlayerSkin(iPad, m_skinIndex);
@@ -387,7 +387,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
             break;
         case SKIN_SELECT_PACK_FAVORITES:
             if (app.GetPlayerFavoriteSkinsCount(iPad) > 0) {
-                // get the pack number from the skin id
+                
                 wchar_t chars[256];
                 swprintf(chars, 256, L"dlcskin%08d.png",
                          app.GetPlayerFavoriteSkin(iPad, m_skinIndex));
@@ -414,31 +414,31 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
 
                 DLCSkinFile* skinFile = m_currentPack->getSkinFile(m_skinIndex);
 
-                // Is this a free skin?
+                
 
                 if (!skinFile->getParameterAsBool(
                         DLCManager::e_DLCParamType_Free)) {
-                    // do we have a license?
-                    // if(true)
+                    
+                    
                     if (!m_currentPack->hasPurchasedFile(
                             DLCManager::e_DLCType_Skin, skinFile->getPath())) {
-                        // no
+                        
                         unsigned int uiIDA[1];
                         uiIDA[0] = IDS_OK;
 
-                        // We need to upsell the full version
+                        
                         if (ProfileManager.IsGuest(iPad)) {
-                            // can't buy
+                            
                             ui.RequestAlertMessage(IDS_PRO_GUESTPROFILE_TITLE,
                                                    IDS_PRO_GUESTPROFILE_TEXT,
                                                    uiIDA, 1, iPad);
                         } else {
-                            // upsell
+                            
                             bool bContentRestricted = false;
                             if (bContentRestricted) {
 #if !defined(_WIN64)
-                                // check this for other platforms you can't see
-                                // the store
+                                
+                                
                                 unsigned int uiIDA[1];
                                 uiIDA[0] = IDS_CONFIRM_OK;
                                 ui.RequestAlertMessage(IDS_ONLINE_SERVICE_TITLE,
@@ -446,7 +446,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
                                                        uiIDA, 1, iPad);
 #endif
                             } else {
-                                // 4J-PB - need to check for an empty store
+                                
                                 {
                                     m_bIgnoreInput = true;
                                     renableInputAfterOperation = false;
@@ -471,7 +471,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
                         m_currentSkinPath = app.GetPlayerSkinName(iPad);
                         m_originalSkinId = app.GetPlayerSkinId(iPad);
 
-                        // push this onto the favorite list
+                        
                         AddFavoriteSkin(m_iPad, GET_DLC_SKIN_ID_FROM_BITMASK(
                                                     m_originalSkinId));
                     }
@@ -484,7 +484,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
                     m_currentSkinPath = app.GetPlayerSkinName(iPad);
                     m_originalSkinId = app.GetPlayerSkinId(iPad);
 
-                    // push this onto the favorite list
+                    
                     AddFavoriteSkin(
                         iPad, GET_DLC_SKIN_ID_FROM_BITMASK(m_originalSkinId));
                 }
@@ -500,7 +500,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
 }
 
 void UIScene_SkinSelectMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
-    // 4jcraft: fuck wchar_t
+    
     int characterId = -1;
     if (region->name != nullptr &&
         std::char_traits<char16_t>::length(region->name) > 9 &&
@@ -518,22 +518,22 @@ void UIScene_SkinSelectMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
     if (characterId == -1) {
         app.DebugPrintf("Invalid character to render found\n");
     } else {
-        // Setup GDraw, normal game render states and matrices
+        
         CustomDrawData* customDrawRegion = ui.setupCustomDraw(this, region);
         delete customDrawRegion;
 
-        // app.DebugPrintf("Scissor x0= %d, y0= %d, x1= %d, y1= %d\n",
-        // region->scissor_x0, region->scissor_y0, region->scissor_x1,
-        // region->scissor_y1); app.DebugPrintf("Stencil mask= %d, stencil ref=
-        // %d, stencil write= %d\n", region->stencil_func_mask,
-        // region->stencil_func_ref, region->stencil_write_mask);
+        
+        
+        
+        
+        
         if (region->stencil_func_ref != 0)
             RenderManager.StateSetStencil(GL_EQUAL, region->stencil_func_ref,
                                           region->stencil_func_mask,
                                           region->stencil_write_mask);
         m_characters[characterId].render(region);
 
-        // Finish GDraw and anything else that needs to be finalised
+        
         ui.endCustomDraw(region);
     }
 }
@@ -609,7 +609,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged() {
             case SKIN_SELECT_PACK_FAVORITES:
 
                 if (app.GetPlayerFavoriteSkinsCount(m_iPad) > 0) {
-                    // get the pack number from the skin id
+                    
                     wchar_t chars[256];
                     swprintf(chars, 256, L"dlcskin%08d.png",
                              app.GetPlayerFavoriteSkin(m_iPad, m_skinIndex));
@@ -645,10 +645,10 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged() {
                         setCharacterLocked(false);
                     }
                 } else {
-                    // disable the display
+                    
                     m_characters[eCharacter_Current].setVisible(false);
 
-                    // change the tooltips
+                    
                     m_bNoSkinsToShow = true;
                 }
                 break;
@@ -659,8 +659,8 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged() {
     m_labelSkinOrigin.setLabel(skinOrigin);
 
     if (m_vAdditionalSkinBoxes && m_vAdditionalSkinBoxes->size() != 0) {
-        // add the boxes to the humanoid model, but only if we've not done this
-        // already
+        
+        
 
         std::vector<ModelPart*>* pAdditionalModelParts =
             app.GetAdditionalModelParts(skinFile->getSkinID());
@@ -689,7 +689,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged() {
     std::vector<SKIN_BOX*>* othervAdditionalSkinBoxes = nullptr;
     wchar_t chars[256];
 
-    // turn off all displays
+    
     for (unsigned int i = eCharacter_Current + 1; i < eCharacter_COUNT; ++i) {
         m_characters[i].setVisible(false);
     }
@@ -697,12 +697,12 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged() {
     unsigned int uiCurrentFavoriteC = app.GetPlayerFavoriteSkinsCount(m_iPad);
 
     if (m_packIndex == SKIN_SELECT_PACK_FAVORITES) {
-        // might not be enough to cycle through
+        
         if (uiCurrentFavoriteC < ((sidePreviewControls * 2) + 1)) {
             if (uiCurrentFavoriteC == 0) {
                 sidePreviewControlsL = sidePreviewControlsR = 0;
             }
-            // might be an odd number
+            
             else if ((uiCurrentFavoriteC - 1) % 2 == 1) {
                 sidePreviewControlsL = 1 + (uiCurrentFavoriteC - 1) / 2;
                 sidePreviewControlsR = (uiCurrentFavoriteC - 1) / 2;
@@ -740,7 +740,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged() {
                         break;
                     case SKIN_SELECT_PACK_FAVORITES:
                         if (uiCurrentFavoriteC > 0) {
-                            // get the pack number from the skin id
+                            
                             swprintf(
                                 chars, 256, L"dlcskin%08d.png",
                                 app.GetPlayerFavoriteSkin(m_iPad, nextIndex));
@@ -772,7 +772,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged() {
                         skinFile->getSkinID(), othervAdditionalSkinBoxes);
                 }
             }
-            // 4J-PB - anim override needs set before SetTexture
+            
             if (skinFile != nullptr) {
                 app.SetAnimOverrideBitmask(skinFile->getSkinID(),
                                            skinFile->getAnimOverrideBitmask());
@@ -808,7 +808,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged() {
                         break;
                     case SKIN_SELECT_PACK_FAVORITES:
                         if (uiCurrentFavoriteC > 0) {
-                            // get the pack number from the skin id
+                            
                             swprintf(chars, 256, L"dlcskin%08d.png",
                                      app.GetPlayerFavoriteSkin(m_iPad,
                                                                previousIndex));
@@ -841,7 +841,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged() {
                         skinFile->getSkinID(), othervAdditionalSkinBoxes);
                 }
             }
-            // 4J-PB - anim override needs set before SetTexture
+            
             if (skinFile) {
                 app.SetAnimOverrideBitmask(skinFile->getSkinID(),
                                            skinFile->getAnimOverrideBitmask());
@@ -894,7 +894,7 @@ TEXTURE_NAME UIScene_SkinSelectMenu::getTextureId(int skinIndex) {
 int UIScene_SkinSelectMenu::getNextSkinIndex(int sourceIndex) {
     int nextSkin = sourceIndex;
 
-    // special case for favourites
+    
     switch (m_packIndex) {
         case SKIN_SELECT_PACK_FAVORITES:
             ++nextSkin;
@@ -975,7 +975,7 @@ void UIScene_SkinSelectMenu::handlePackIndexChanged() {
                 if (app.GetPlayerFavoriteSkinsCount(m_iPad) > 0) {
                     bool found;
                     wchar_t chars[256];
-                    // get the pack number from the skin id
+                    
                     swprintf(
                         chars, 256, L"dlcskin%08d.png",
                         app.GetPlayerFavoriteSkin(
@@ -1168,9 +1168,9 @@ void UIScene_SkinSelectMenu::setRightLabel(const std::wstring& label) {
 
 void UIScene_SkinSelectMenu::HandleDLCInstalled() {
     app.DebugPrintf(4, "UIScene_SkinSelectMenu::HandleDLCInstalled\n");
-    // mounted DLC may have changed
+    
     if (app.StartInstallDLCProcess(m_iPad) == false) {
-        // not doing a mount, so re-enable input
+        
         app.DebugPrintf(4,
                         "UIScene_SkinSelectMenu::HandleDLCInstalled - not "
                         "doing a mount, so re-enable input\n");
@@ -1182,7 +1182,7 @@ void UIScene_SkinSelectMenu::HandleDLCInstalled() {
         m_controlSkinNamePlate.setVisible(false);
     }
 
-    // this will send a CustomMessage_DLCMountingComplete when done
+    
 }
 
 void UIScene_SkinSelectMenu::HandleDLCMountingComplete() {
@@ -1205,9 +1205,9 @@ void UIScene_SkinSelectMenu::HandleDLCMountingComplete() {
         }
     }
 
-    // If we have any favourites, set this to the favourites
-    // first validate the favorite skins - we might have uninstalled the DLC
-    // needed for them
+    
+    
+    
     app.ValidateFavoriteSkins(m_iPad);
 
     if (app.GetPlayerFavoriteSkinsCount(m_iPad) > 0) {
@@ -1226,7 +1226,7 @@ void UIScene_SkinSelectMenu::HandleDLCMountingComplete() {
 }
 
 void UIScene_SkinSelectMenu::showNotOnlineDialog(int iPad) {
-    // need to be signed in to live. get them to sign in to online
+    
 }
 
 int UIScene_SkinSelectMenu::UnlockSkinReturned(
@@ -1236,7 +1236,7 @@ int UIScene_SkinSelectMenu::UnlockSkinReturned(
     if ((result == C4JStorage::EMessage_ResultAccept) &&
         ProfileManager.IsSignedIn(iPad)) {
         if (ProfileManager.IsSignedInLive(iPad)) {
-        } else  // Is signed in, but not live.
+        } else  
         {
             pScene->showNotOnlineDialog(iPad);
             pScene->m_bIgnoreInput = false;
@@ -1254,7 +1254,7 @@ int UIScene_SkinSelectMenu::RenableInput(void* lpVoid, int, int) {
 }
 
 void UIScene_SkinSelectMenu::AddFavoriteSkin(int iPad, int iSkinID) {
-    // Is this favorite skin already in the array?
+    
     unsigned int uiCurrentFavoriteSkinsCount =
         app.GetPlayerFavoriteSkinsCount(iPad);
 
@@ -1281,7 +1281,7 @@ void UIScene_SkinSelectMenu::AddFavoriteSkin(int iPad, int iSkinID) {
 }
 
 void UIScene_SkinSelectMenu::handleReload() {
-    // Reinitialise a few values to prevent problems on reload
+    
     m_bIgnoreInput = false;
 
     m_currentNavigation = eSkinNavigation_Skin;

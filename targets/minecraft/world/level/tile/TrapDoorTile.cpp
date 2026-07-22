@@ -44,7 +44,7 @@ std::optional<AABB> TrapDoorTile::getAABB(Level* level, int x, int y, int z) {
 void TrapDoorTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     setShape(level->getData(x, y, z));
 }
@@ -71,21 +71,21 @@ void TrapDoorTile::setShape(int data) {
 
 void TrapDoorTile::attack(Level* level, int x, int y, int z,
                           std::shared_ptr<Player> player) {
-    // use(level, x, y, z, player, 0, 0, 0, 0);
+    
 }
 
-// 4J-PB - Adding a TestUse for tooltip display
+
 bool TrapDoorTile::TestUse() { return true; }
 
 bool TrapDoorTile::use(Level* level, int x, int y, int z,
                        std::shared_ptr<Player> player, int clickedFace,
                        float clickX, float clickY, float clickZ,
-                       bool soundOnly /*=false*/)  // 4J added soundOnly param
+                       bool soundOnly )  
 {
     if (material == Material::metal) return true;
 
     if (soundOnly) {
-        // 4J - added - just do enough to play the sound
+        
         level->levelEvent(player, LevelEvent::SOUND_OPEN_DOOR, x, y, z, 0);
         return false;
     }

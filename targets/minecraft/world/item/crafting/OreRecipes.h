@@ -9,7 +9,7 @@ class Recipes;
 
 class OreRecipies {
 public:
-    // 4J - added for common ctor code
+    
     void _init();
     OreRecipies() { _init(); }
 

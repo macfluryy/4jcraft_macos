@@ -14,7 +14,7 @@ public:
     static inline constexpr int HURT = 2;
     static inline constexpr int WAKE_UP = 3;
     static inline constexpr int RESPAWN = 4;
-    static inline constexpr int EAT = 5;  // 1.8.2
+    static inline constexpr int EAT = 5;  
     static inline constexpr int CRITICAL_HIT = 6;
     static inline constexpr int MAGIC_CRITICAL_HIT = 7;
 

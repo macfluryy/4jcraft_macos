@@ -34,7 +34,7 @@ public:
     static inline constexpr int LEASH_KNOT = 77;
     static inline constexpr int FISH_HOOK = 90;
 
-    // 4J Added TU9
+    
     static inline constexpr int DRAGON_FIRE_BALL = 200;
 
     int id;
@@ -42,7 +42,7 @@ public:
     int xa, ya, za;
     int type;
     int data;
-    uint8_t yRot, xRot;  // 4J added
+    uint8_t yRot, xRot;  
 
 private:
     void _init(std::shared_ptr<Entity> e, int type, int data, int xp, int yp,

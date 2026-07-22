@@ -24,9 +24,9 @@ ResourceLocation* LavaSlimeRenderer::getTextureLocation(
 }
 
 void LavaSlimeRenderer::scale(std::shared_ptr<LivingEntity> _slime, float a) {
-    // 4J - original version used generics and thus had an input parameter of
-    // type LavaSlime rather than shared_ptr<Mob>  we have here - do some
-    // casting around instead
+    
+    
+    
     std::shared_ptr<LavaSlime> slime =
         std::dynamic_pointer_cast<LavaSlime>(_slime);
     int size = slime->getSize();

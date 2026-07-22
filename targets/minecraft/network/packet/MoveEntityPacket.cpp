@@ -30,16 +30,16 @@ MoveEntityPacket::MoveEntityPacket(int id) {
     xRot = 0;
 }
 
-void MoveEntityPacket::read(DataInputStream* dis)  // throws IOException
+void MoveEntityPacket::read(DataInputStream* dis)  
 {
     id = dis->readShort();
 }
 
-void MoveEntityPacket::write(DataOutputStream* dos)  // throws IOException
+void MoveEntityPacket::write(DataOutputStream* dos)  
 {
     if ((id < 0) || (id >= 2048)) {
-        // We shouln't be tracking an entity that doesn't have a short type of
-        // id
+        
+        
         __debugbreak();
     }
     dos->writeShort((short)id);
@@ -72,7 +72,7 @@ MoveEntityPacket::PosRot::PosRot(int id, char xa, char ya, char za, char yRot,
     hasRot = true;
 }
 
-void MoveEntityPacket::PosRot::read(DataInputStream* dis)  // throws IOException
+void MoveEntityPacket::PosRot::read(DataInputStream* dis)  
 {
     MoveEntityPacket::read(dis);
     xa = (int)dis->readByte();
@@ -83,7 +83,7 @@ void MoveEntityPacket::PosRot::read(DataInputStream* dis)  // throws IOException
 }
 
 void MoveEntityPacket::PosRot::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     MoveEntityPacket::write(dos);
     dos->writeByte((uint8_t)xa);
@@ -104,7 +104,7 @@ MoveEntityPacket::Pos::Pos(int id, char xa, char ya, char za)
     this->za = za;
 }
 
-void MoveEntityPacket::Pos::read(DataInputStream* dis)  // throws IOException
+void MoveEntityPacket::Pos::read(DataInputStream* dis)  
 {
     MoveEntityPacket::read(dis);
     xa = (int)dis->readByte();
@@ -112,7 +112,7 @@ void MoveEntityPacket::Pos::read(DataInputStream* dis)  // throws IOException
     za = (int)dis->readByte();
 }
 
-void MoveEntityPacket::Pos::write(DataOutputStream* dos)  // throws IOException
+void MoveEntityPacket::Pos::write(DataOutputStream* dos)  
 {
     MoveEntityPacket::write(dos);
     dos->writeByte((uint8_t)xa);
@@ -131,14 +131,14 @@ MoveEntityPacket::Rot::Rot(int id, char yRot, char xRot)
     hasRot = true;
 }
 
-void MoveEntityPacket::Rot::read(DataInputStream* dis)  // throws IOException
+void MoveEntityPacket::Rot::read(DataInputStream* dis)  
 {
     MoveEntityPacket::read(dis);
     yRot = (int)dis->readByte();
     xRot = (int)dis->readByte();
 }
 
-void MoveEntityPacket::Rot::write(DataOutputStream* dos)  // throws IOException
+void MoveEntityPacket::Rot::write(DataOutputStream* dos)  
 {
     MoveEntityPacket::write(dos);
     dos->writeByte((uint8_t)yRot);

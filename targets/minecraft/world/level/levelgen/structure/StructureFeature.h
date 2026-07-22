@@ -13,11 +13,11 @@ class Level;
 class Random;
 class TilePos;
 
-// #define ENABLE_STRUCTURE_SAVING
+
 
 class StructureFeature : public LargeFeature {
 public:
-    // 4J added - Maps to values in the game rules xml
+    
     enum EFeatureTypes {
         eFeature_Mineshaft,
         eFeature_NetherBridge,
@@ -63,28 +63,28 @@ private:
     virtual void restoreSavedData(Level* level);
     virtual void saveFeature(int chunkX, int chunkZ, StructureStart* feature);
 
-    /**
-     * Returns true if the given chunk coordinates should hold a structure
-     * source.
-     *
-     * @param x
-     *            chunk x
-     * @param z
-     *            chunk z
-     * @return
-     */
+    
+
+
+
+
+
+
+
+
+
 protected:
     virtual bool isFeatureChunk(int x, int z, bool bIsSuperflat = false) = 0;
 
-    /**
-     * Creates a new instance of a structure source at the given chunk
-     * coordinates.
-     *
-     * @param x
-     *            chunk x
-     * @param z
-     *            chunk z
-     * @return
-     */
+    
+
+
+
+
+
+
+
+
+
     virtual StructureStart* createStructureStart(int x, int z) = 0;
 };

@@ -21,9 +21,9 @@ HugeMushroomTile::HugeMushroomTile(int id, Material* material, int type)
 }
 
 Icon* HugeMushroomTile::getTexture(int face, int data) {
-    // 123
-    // 456 10
-    // 789
+    
+    
+    
     if (data == 10 && face > 1) return iconStem;
     if (data >= 1 && data <= 9 && face == 1) return icons[type];
     if (data >= 1 && data <= 3 && face == 2) return icons[type];
@@ -32,7 +32,7 @@ Icon* HugeMushroomTile::getTexture(int face, int data) {
     if ((data == 1 || data == 4 || data == 7) && face == 4) return icons[type];
     if ((data == 3 || data == 6 || data == 9) && face == 5) return icons[type];
 
-    // two special cases requested by rhodox (painterly pack)
+    
     if (data == 14) {
         return icons[type];
     }

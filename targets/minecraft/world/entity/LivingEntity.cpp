@@ -135,10 +135,10 @@ void LivingEntity::_init() {
 LivingEntity::LivingEntity(Level* level) : Entity(level) {
     _init();
 
-    // 4J Stu - This will not call the correct derived function, so moving to
-    // each derived class
-    // setHealth(0);
-    // registerAttributes();
+    
+    
+    
+    
 
     blocksBuilding = true;
 
@@ -181,7 +181,7 @@ void LivingEntity::registerAttributes() {
 
 void LivingEntity::checkFallDamage(double ya, bool onGround) {
     if (!isInWater()) {
-        // double-check if we've reached water in this move tick
+        
         updateInWaterState();
     }
 
@@ -264,9 +264,9 @@ void LivingEntity::baseTick() {
     if (lastHurtByPlayerTime > 0)
         lastHurtByPlayerTime--;
     else {
-        // Note - this used to just set to nullptr, but that has to create a new
-        // std::shared_ptr and free an old one, when generally this won't be
-        // doing anything at all. This is the lightweight but ugly alternative
+        
+        
+        
         if (lastHurtByPlayer) {
             lastHurtByPlayer.reset();
         }
@@ -275,12 +275,12 @@ void LivingEntity::baseTick() {
         lastHurtMob = nullptr;
     }
 
-    // If lastHurtByMob is dead, remove it
+    
     if (lastHurtByMob != nullptr && !lastHurtByMob->isAlive()) {
         setLastHurtByMob(nullptr);
     }
 
-    // Update effects
+    
     tickEffects();
 
     animStepO = animStep;
@@ -296,8 +296,8 @@ bool LivingEntity::isBaby() { return false; }
 void LivingEntity::tickDeath() {
     deathTime++;
     if (deathTime == 20) {
-        // 4J Stu - Added level->isClientSide check from 1.2 to fix XP orbs
-        // being created client side
+        
+        
         if (!level->isClientSide &&
             (lastHurtByPlayerTime > 0 || isAlwaysExperienceDropper())) {
             if (!isBaby() &&
@@ -331,7 +331,7 @@ int LivingEntity::decreaseAirSupply(int currentSupply) {
         std::dynamic_pointer_cast<LivingEntity>(shared_from_this()));
     if (oxygenBonus > 0) {
         if (random->nextInt(oxygenBonus + 1) > 0) {
-            // the oxygen bonus prevents us from drowning
+            
             return currentSupply;
         }
     }
@@ -447,7 +447,7 @@ void LivingEntity::readAdditionalSaveData(CompoundTag* tag) {
         } else if (healthTag->getId() == Tag::TAG_Float) {
             setHealth(((FloatTag*)healthTag)->data);
         } else if (healthTag->getId() == Tag::TAG_Short) {
-            // pre-1.6 health
+            
             setHealth((float)((ShortTag*)healthTag)->data);
         }
     }
@@ -473,8 +473,8 @@ void LivingEntity::tickEffects() {
         } else if (effect->getDuration() %
                        (SharedConstants::TICKS_PER_SECOND * 30) ==
                    0) {
-            // update effects every 30 seconds to synchronize client-side
-            // timer
+            
+            
             onEffectUpdated(effect, false);
         }
         if (!removed) {
@@ -516,15 +516,15 @@ void LivingEntity::tickEffects() {
         if (!isInvisible()) {
             doParticle = random->nextBoolean();
         } else {
-            // much fewer particles when invisible
+            
             doParticle = random->nextInt(15) == 0;
         }
 
         if (ambient) doParticle &= random->nextInt(5) == 0;
 
         if (doParticle) {
-            //                int colorValue =
-            //                entityData.getInteger(DATA_EFFECT_COLOR_ID);
+            
+            
             if (colorValue > 0) {
                 double red = (double)((colorValue >> 16) & 0xff) / 255.0;
                 double green = (double)((colorValue >> 8) & 0xff) / 255.0;
@@ -543,15 +543,15 @@ void LivingEntity::tickEffects() {
 }
 
 void LivingEntity::removeAllEffects() {
-    // Iterator<Integer> effectIdIterator =
-    // activeEffects.keySet().iterator(); while
-    // (effectIdIterator.hasNext())
+    
+    
+    
     for (auto it = activeEffects.begin(); it != activeEffects.end();) {
-        // Integer effectId = effectIdIterator.next();
-        MobEffectInstance* effect = it->second;  // activeEffects.get(effectId);
+        
+        MobEffectInstance* effect = it->second;  
 
         if (!level->isClientSide) {
-            // effectIdIterator.remove();
+            
             it = activeEffects.erase(it);
             onEffectRemoved(effect);
             delete effect;
@@ -596,7 +596,7 @@ void LivingEntity::addEffect(MobEffectInstance* newEffect) {
     }
 
     if (activeEffects.find(newEffect->getId()) != activeEffects.end()) {
-        // replace effect and update
+        
         MobEffectInstance* effectInst =
             activeEffects.find(newEffect->getId())->second;
         effectInst->update(newEffect);
@@ -609,14 +609,14 @@ void LivingEntity::addEffect(MobEffectInstance* newEffect) {
     }
 }
 
-// 4J Added
+
 void LivingEntity::addEffectNoUpdate(MobEffectInstance* newEffect) {
     if (!canBeAffected(newEffect)) {
         return;
     }
 
     if (activeEffects.find(newEffect->getId()) != activeEffects.end()) {
-        // replace effect and update
+        
         MobEffectInstance* effectInst =
             activeEffects.find(newEffect->getId())->second;
         effectInst->update(newEffect);
@@ -708,14 +708,14 @@ void LivingEntity::setHealth(float health) {
 bool LivingEntity::hurt(DamageSource* source, float dmg) {
     if (isInvulnerable()) return false;
 
-    // 4J Stu - Reworked this function a bit to show hurt damage on the client
-    // before the server responds. Fix for #8823 - Gameplay: Confirmation that a
-    // monster or animal has taken damage from an attack is highly delayed 4J
-    // Stu - Change to the fix to only show damage when attacked, rather than
-    // collision damage Fix for #10299 - When in corners, passive mobs may show
-    // that they are taking damage. 4J Stu - Change to the fix for TU6, as
-    // source is never nullptr due to changes in 1.8.2 to what source actually
-    // is
+    
+    
+    
+    
+    
+    
+    
+    
     if (level->isClientSide &&
         dynamic_cast<EntityDamageSource*>(source) == nullptr)
         return false;
@@ -723,11 +723,11 @@ bool LivingEntity::hurt(DamageSource* source, float dmg) {
     if (getHealth() <= 0) return false;
 
     if (source->isFire() && hasEffect(MobEffect::fireResistance)) {
-        // 4J-JEV, for new achievement Stayin'Frosty, TODO merge with Java
-        // version.
+        
+        
         if (this->instanceof(eTYPE_PLAYER) &&
             (source ==
-             DamageSource::lava))  // Only award when in lava (not any fire).
+             DamageSource::lava))  
         {
             std::shared_ptr<Player> plr =
                 std::dynamic_pointer_cast<Player>(shared_from_this());
@@ -802,7 +802,7 @@ bool LivingEntity::hurt(DamageSource* source, float dmg) {
             knockback(sourceEntity, dmg, xd, zd);
         } else {
             hurtDir = (float)(int)((Math::random() * 2) *
-                                   180);  // 4J This cast is the same as Java
+                                   180);  
         }
     }
 
@@ -872,7 +872,7 @@ void LivingEntity::die(DamageSource* source) {
             }
         }
 
-        // 4J-JEV, hook for Durango mobKill event.
+        
         if (player != nullptr) {
             player->awardStat(
                 GenericStats::killMob(),
@@ -914,12 +914,12 @@ int LivingEntity::getHurtSound() { return eSoundType_DAMAGE_HURT; }
 
 int LivingEntity::getDeathSound() { return eSoundType_DAMAGE_HURT; }
 
-/**
- * Drop extra rare loot. Only occurs roughly 5% of the time, rareRootLevel
- * is set to 1 (otherwise 0) 1% of the time.
- *
- * @param rareLootLevel
- */
+
+
+
+
+
+
 void LivingEntity::dropRareDeathLoot(int rareLootLevel) {}
 
 void LivingEntity::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
@@ -930,7 +930,7 @@ bool LivingEntity::onLadder() {
     int yt = Mth::floor(bb.y0);
     int zt = Mth::floor(z);
 
-    // 4J-PB - TU9 - add climbable vines
+    
     int iTile = level->getTile(xt, yt, zt);
     return (iTile == Tile::ladder_Id) || (iTile == Tile::vine_Id);
 }
@@ -946,7 +946,7 @@ void LivingEntity::causeFallDamage(float distance) {
 
     int dmg = (int)ceil(distance - 3 - padding);
     if (dmg > 0) {
-        // 4J - new sounds here brought forward from 1.2.3
+        
         if (dmg > 4) {
             playSound(eSoundType_DAMAGE_FALL_BIG, 1, 1);
         } else {
@@ -970,11 +970,11 @@ void LivingEntity::animateHurt() {
     hurtDir = 0;
 }
 
-/**
- * Fetches the mob's armor value, from 0 (no armor) to 20 (full armor)
- *
- * @return
- */
+
+
+
+
+
 int LivingEntity::getArmorValue() {
     int val = 0;
     std::vector<std::shared_ptr<ItemInstance>> items = getEquipmentSlots();
@@ -1004,7 +1004,7 @@ float LivingEntity::getDamageAfterArmorAbsorb(DamageSource* damageSource,
 
 float LivingEntity::getDamageAfterMagicAbsorb(DamageSource* damageSource,
                                               float damage) {
-    // [EB]: Stupid hack :(
+    
     if (this->instanceof(eTYPE_ZOMBIE)) {
         damage = damage;
     }
@@ -1107,7 +1107,7 @@ void LivingEntity::handleEntityEvent(uint8_t id) {
         hurtTime = hurtDuration = 10;
         hurtDir = 0;
 
-        // 4J-PB -added because villagers have no sounds
+        
         int iHurtSound = getHurtSound();
         if (iHurtSound != -1) {
             playSound(
@@ -1116,7 +1116,7 @@ void LivingEntity::handleEntityEvent(uint8_t id) {
         }
         hurt(DamageSource::genericSource, 0);
     } else if (id == EntityEvent::DEATH) {
-        // 4J-PB -added because villagers have no sounds
+        
         int iDeathSound = getDeathSound();
         if (iDeathSound != -1) {
             playSound(
@@ -1348,11 +1348,11 @@ void LivingEntity::travel(float xa, float ya) {
     walkAnimPos += walkAnimSpeed;
 }
 
-// 4J - added for more accurate lighting of mobs. Takes a weighted average of
-// all tiles touched by the bounding volume of the entity - the method in the
-// Entity class (which used to be used for mobs too) simply gets a single tile's
-// lighting value causing sudden changes of lighting values when entities go in
-// and out of lit areas, for example when bobbing in the water.
+
+
+
+
+
 int LivingEntity::getLightColor(float a) {
     float accum[2] = {0, 0};
     float totVol = (bb.x1 - bb.x0) * (bb.y1 - bb.y0) * (bb.z1 - bb.z0);
@@ -1525,12 +1525,12 @@ void LivingEntity::aiStep() {
         setPos(xt, yt, zt);
         setRot(yRot, xRot);
 
-        // 4J - this collision is carried out to try and stop the lerping push
-        // the mob through the floor, in which case gravity can then carry on
-        // moving the mob because the collision just won't work anymore. BB for
-        // collision used to be calculated as: bb.shrink(1 / 32.0, 0, 1 / 32.0)
-        // now using a reduced BB to try and get rid of some issues where mobs
-        // pop up the sides of walls, undersides of trees etc.
+        
+        
+        
+        
+        
+        
         AABB shrinkbb = bb.shrink(0.1, 0, 0.1);
         shrinkbb.y1 = shrinkbb.y0 + 0.1;
         std::vector<AABB>* collisions =
@@ -1546,8 +1546,8 @@ void LivingEntity::aiStep() {
             setPos(xt, yt, zt);
         }
     } else if (!isEffectiveAi()) {
-        // slow down predicted speed, to prevent mobs from sliding through
-        // walls etc
+        
+        
         xd *= .98;
         yd *= .98;
         zd *= .98;
@@ -1605,7 +1605,7 @@ void LivingEntity::pushEntities() {
     level->getEntities(shared_from_this(), &grown, entities);
     auto itEnd = entities.end();
     for (auto it = entities.begin(); it != itEnd; it++) {
-        std::shared_ptr<Entity> e = *it;  // entities.at(i);
+        std::shared_ptr<Entity> e = *it;  
         if (e and !e->removed and e->isPushable()) push(e);
     }
 }

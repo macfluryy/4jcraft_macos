@@ -3,7 +3,7 @@
 #else
 #include <iomanip>
 #include <sstream>
-#endif  // _WIN32
+#endif  
 #include <openssl/evp.h>
 #include <openssl/types.h>
 
@@ -13,23 +13,23 @@ Hasher::Hasher(std::wstring& salt) { this->salt = salt; }
 
 std::wstring Hasher::getHash(std::wstring& name) {
 #if defined(_WIN32)
-    // 4J Stu - Removed try/catch
-    // try {
+    
+    
     std::wstring s = std::wstring(salt).append(name);
-    // MessageDigest m;
-    // m = MessageDigest.getInstance("MD5");
-    // m.update(s.getBytes(), 0, s.length());
-    // return new BigInteger(1, m.digest()).toString(16);
+    
+    
+    
+    
 
-    // TODO 4J Stu - Will this hash us with the same distribution as the MD5?
+    
     return toString(hash_value(s));
-    //}
-    // catch (NoSuchAlgorithmException e)
-    //{
-    //	throw new RuntimeException(e);
-    //}
+    
+    
+    
+    
+    
 #else
-    // adapted from a SSL example
+    
     std::wstring combined = salt + name;
     std::string combined_str(combined.begin(), combined.end());
     unsigned char result[EVP_MAX_MD_SIZE];

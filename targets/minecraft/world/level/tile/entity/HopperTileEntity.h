@@ -17,7 +17,7 @@ class HopperTileEntity : public TileEntity, public Hopper {
 public:
     eINSTANCEOF GetType() { return eTYPE_HOPPERTILEENTITY; }
     static TileEntity* create() { return new HopperTileEntity(); }
-    // 4J Added
+    
     virtual std::shared_ptr<TileEntity> clone();
 
 public:

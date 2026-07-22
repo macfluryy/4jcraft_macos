@@ -69,7 +69,7 @@ void CompoundGameRuleDefinition::populateGameRule(
         value.gr = newRule;
         value.isPointer = true;
 
-        // Somehow add the newRule to the current rule
+        
         rule->setParameter(L"rule" + toWString<int>(i), value);
         ++i;
     }

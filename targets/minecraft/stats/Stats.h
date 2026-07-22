@@ -53,15 +53,15 @@ public:
     static Stat* killsGhast;
     static Stat* killsNetherZombiePigman;
 
-    // 4J : WESTY : Added for new achievements.
+    
     static Stat* befriendsWolf;
     static Stat* totalBlocksMined;
     static Stat*
-        timePlayed;  // Game time, recored as ticks, with TICKS_PER_DAY ticks
-                     // per day! Stored as large stat so it doesn't max out
-                     // before reaching 100 days ( 2,400,000 ticks ).
+        timePlayed;  
+                     
+                     
 
-    // static std::vector<Stat*> mobsKilled;
+    
     static std::vector<Stat*> blocksMined;
     static std::vector<Stat*> itemsCollected;
     static std::vector<Stat*> itemsCrafted;
@@ -70,11 +70,11 @@ public:
     static std::vector<Stat*> blocksPlaced;
 #endif
 
-    // Added TU9
-    static Stat* killsEnderdragon;  // The number of times this player has dealt
-                                    // the killing blow to the Enderdragon
-    static Stat* completeTheEnd;    // The number of times this player has been
-                                    // present when the Enderdragon has died
+    
+    static Stat* killsEnderdragon;  
+                                    
+    static Stat* completeTheEnd;    
+                                    
 
 #if (defined _EXTENDED_ACHIEVEMENTS) && (!0)
     static std::vector<Stat*> biomesVisisted;
@@ -95,8 +95,8 @@ public:
     static void buildItemStats();
     static void buildCraftableStats();
 
-    // 4J Stu - Added this function to allow us to add news stats from TU9
-    // onwards
+    
+    
     static void buildAdditionalStats();
 
     static Stat* get(int key);

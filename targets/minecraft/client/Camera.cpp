@@ -23,10 +23,10 @@ float Camera::xPlayerOffs = 0.0f;
 float Camera::yPlayerOffs = 0.0f;
 float Camera::zPlayerOffs = 0.0f;
 
-// IntBuffer *Camera::viewport		= MemoryTracker::createIntBuffer(16);
+
 FloatBuffer* Camera::modelview = MemoryTracker::createFloatBuffer(16);
 FloatBuffer* Camera::projection = MemoryTracker::createFloatBuffer(16);
-// FloatBuffer *Camera::position	= MemoryTracker::createFloatBuffer(3);
+
 
 float Camera::xa = 0.0f;
 float Camera::ya = 0.0f;
@@ -38,23 +38,23 @@ void Camera::prepare(std::shared_ptr<Player> player, bool mirror) {
     glGetFloat(GL_MODELVIEW_MATRIX, modelview);
     glGetFloat(GL_PROJECTION_MATRIX, projection);
 
-    /* Original java code for reference
-glGetInteger(GL_VIEWPORT, viewport);
+    
 
-float x = (viewport.get(0) + viewport.get(2)) / 2;
-float y = (viewport.get(1) + viewport.get(3)) / 2;
-gluUnProject(x, y, 0, modelview, projection, viewport, position);
 
-xPlayerOffs = position->get(0);
-yPlayerOffs = position->get(1);
-zPlayerOffs = position->get(2);
-    */
 
-    // Xbox conversion here... note that we don't bother getting the viewport as
-    // this is just working out how to get a (0,0,0) point in clip space to pass
-    // into the inverted combined model/view/projection matrix, so we just need
-    // to get this matrix and get its translation as an equivalent.
-    // 4jcraft: swapped from dxmath to glm
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
     glm::mat4 _modelview, _proj, _final, _invert;
     glm::vec4 trans;
 

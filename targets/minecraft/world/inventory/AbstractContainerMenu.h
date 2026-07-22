@@ -10,7 +10,7 @@
 
 namespace net_minecraft_world_inventory {
 class ContainerListener;
-}  // namespace net_minecraft_world_inventory
+}  
 
 using net_minecraft_world_inventory::ContainerListener;
 
@@ -38,8 +38,8 @@ public:
     static const int QUICKCRAFT_HEADER_CONTINUE = 1;
     static const int QUICKCRAFT_HEADER_END = 2;
 
-    // 4J Stu - Added these to fix problem with items picked up while in the
-    // creative menu replacing slots in the creative menu
+    
+    
     static const int CONTAINER_ID_CARRIED = -1;
     static const int CONTAINER_ID_INVENTORY = 0;
     static const int CONTAINER_ID_CREATIVE = -2;
@@ -56,14 +56,14 @@ private:
     std::unordered_set<Slot*> quickcraftSlots;
 
 private:
-    bool m_bNeedsRendered;  // 4J added
+    bool m_bNeedsRendered;  
 
 protected:
     std::vector<ContainerListener*> containerListeners;
 
-    // 4J Stu - The java does not have ctor here (being an abstract) but we need
-    // one to initialise the member variables
-    // TODO Make sure all derived classes also call this
+    
+    
+    
     AbstractContainerMenu();
 
     Slot* addSlot(Slot* slot);
@@ -84,7 +84,7 @@ public:
     virtual std::shared_ptr<ItemInstance> clicked(
         int slotIndex, int buttonNum, int clickType,
         std::shared_ptr<Player> player,
-        bool looped = false);  // 4J added looped param
+        bool looped = false);  
     virtual bool mayCombine(Slot* slot, std::shared_ptr<ItemInstance> item);
     virtual bool canTakeItemForPickAll(std::shared_ptr<ItemInstance> carried,
                                        Slot* target);
@@ -96,8 +96,8 @@ protected:
 public:
     virtual void removed(std::shared_ptr<Player> player);
     virtual void
-    slotsChanged();  // 4J used to take a std::shared_ptr<Container> container
-                     // but wasn't using it, so removed to simplify things
+    slotsChanged();  
+                     
     bool isPauseScreen();
     void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
     void setAll(std::vector<std::shared_ptr<ItemInstance>>* items);
@@ -113,11 +113,11 @@ public:
     void setSynched(std::shared_ptr<Player> player, bool synched);
     virtual bool stillValid(std::shared_ptr<Player> player) = 0;
 
-    // 4J Stu Added for UI
+    
     unsigned int getSize() { return (unsigned int)slots.size(); }
 
 protected:
-    // 4J Stu - Changes to return bool brought forward from 1.2
+    
     bool moveItemStackTo(std::shared_ptr<ItemInstance> itemStack, int startSlot,
                          int endSlot, bool backwards);
 
@@ -143,7 +143,7 @@ public:
     static int getRedstoneSignalFromContainer(
         std::shared_ptr<Container> container);
 
-    // 4J Added
+    
     virtual bool isValidIngredient(std::shared_ptr<ItemInstance> item,
                                    int slotId);
 };

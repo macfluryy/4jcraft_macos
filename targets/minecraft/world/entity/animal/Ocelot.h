@@ -85,10 +85,10 @@ public:
     virtual std::wstring getAName();
     virtual MobGroupData* finalizeMobSpawn(
         MobGroupData* groupData,
-        int extraData = 0);  // 4J Added extraData param
+        int extraData = 0);  
 
-    // 4J-JEV: Added for tooltips, is cat annoying player by sitting on chest or
-    // furnace.
+    
+    
 private:
     void setSittingOnTile(bool val);
 

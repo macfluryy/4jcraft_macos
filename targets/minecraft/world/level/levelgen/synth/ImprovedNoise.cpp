@@ -46,31 +46,31 @@ double ImprovedNoise::noise(double _x, double _y, double _z) {
     if (y < yf) yf--;
     if (z < zf) zf--;
 
-    int X = xf & 255,  // FIND UNIT CUBE THAT
-        Y = yf & 255,  // CONTAINS POINT.
+    int X = xf & 255,  
+        Y = yf & 255,  
         Z = zf & 255;
 
-    x -= xf;  // FIND RELATIVE X,Y,Z
-    y -= yf;  // OF POINT IN CUBE.
+    x -= xf;  
+    y -= yf;  
     z -= zf;
 
-    double u = x * x * x * (x * (x * 6 - 15) + 10),  // COMPUTE FADE CURVES
-        v = y * y * y * (y * (y * 6 - 15) + 10),     // FOR EACH OF X,Y,Z.
+    double u = x * x * x * (x * (x * 6 - 15) + 10),  
+        v = y * y * y * (y * (y * 6 - 15) + 10),     
         w = z * z * z * (z * (z * 6 - 15) + 10);
 
-    int A = p[X] + Y, AA = p[A] + Z, AB = p[A + 1] + Z,  // HASH COORDINATES OF
+    int A = p[X] + Y, AA = p[A] + Z, AB = p[A + 1] + Z,  
         B = p[X + 1] + Y, BA = p[B] + Z,
-        BB = p[B + 1] + Z;  // THE 8 CUBE CORNERS,
+        BB = p[B + 1] + Z;  
 
     return lerp(w,
                 lerp(v,
-                     lerp(u, grad(p[AA], x, y, z),         // AND ADD
-                          grad(p[BA], x - 1, y, z)),       // BLENDED
-                     lerp(u, grad(p[AB], x, y - 1, z),     // RESULTS
-                          grad(p[BB], x - 1, y - 1, z))),  // FROM  8
+                     lerp(u, grad(p[AA], x, y, z),         
+                          grad(p[BA], x - 1, y, z)),       
+                     lerp(u, grad(p[AB], x, y - 1, z),     
+                          grad(p[BB], x - 1, y - 1, z))),  
                 lerp(v,
-                     lerp(u, grad(p[AA + 1], x, y, z - 1),    // CORNERS
-                          grad(p[BA + 1], x - 1, y, z - 1)),  // OF CUBE
+                     lerp(u, grad(p[AA + 1], x, y, z - 1),    
+                          grad(p[BA + 1], x - 1, y, z - 1)),  
                      lerp(u, grad(p[AB + 1], x, y - 1, z - 1),
                           grad(p[BB + 1], x - 1, y - 1, z - 1))));
 }
@@ -80,9 +80,9 @@ double ImprovedNoise::lerp(double t, double a, double b) {
 }
 
 double ImprovedNoise::grad2(int hash, double x, double z) {
-    int h = hash & 15;  // CONVERT LO 4 BITS OF HASH CODE
+    int h = hash & 15;  
 
-    double u = (1 - ((h & 8) >> 3)) * x,  // INTO 12 GRADIENT DIRECTIONS.
+    double u = (1 - ((h & 8) >> 3)) * x,  
         v = h < 4                ? 0
             : h == 12 || h == 14 ? x
                                  : z;
@@ -91,9 +91,9 @@ double ImprovedNoise::grad2(int hash, double x, double z) {
 }
 
 double ImprovedNoise::grad(int hash, double x, double y, double z) {
-    int h = hash & 15;  // CONVERT LO 4 BITS OF HASH CODE
+    int h = hash & 15;  
 
-    double u = h < 8 ? x : y,  // INTO 12 GRADIENT DIRECTIONS.
+    double u = h < 8 ? x : y,  
         v = h < 4                ? y
             : h == 12 || h == 14 ? x
                                  : z;

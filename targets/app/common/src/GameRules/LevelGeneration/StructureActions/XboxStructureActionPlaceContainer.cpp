@@ -26,9 +26,9 @@ XboxStructureActionPlaceContainer::~XboxStructureActionPlaceContainer() {
     }
 }
 
-// 4J-JEV: Super class handles attr-facing fine.
-// void XboxStructureActionPlaceContainer::writeAttributes(DataOutputStream
-// *dos, uint32_t numAttrs)
+
+
+
 
 void XboxStructureActionPlaceContainer::getChildren(
     std::vector<GameRuleDefinition*>* children) {
@@ -76,7 +76,7 @@ bool XboxStructureActionPlaceContainer::placeContainerInLevel(
 
     if (chunkBB->isInside(worldX, worldY, worldZ)) {
         if (level->getTileEntity(worldX, worldY, worldZ) != nullptr) {
-            // Remove the current tile entity
+            
             level->removeTileEntity(worldX, worldY, worldZ);
             level->setTileAndData(worldX, worldY, worldZ, 0, 0,
                                   Tile::UPDATE_ALL);
@@ -95,7 +95,7 @@ bool XboxStructureActionPlaceContainer::placeContainerInLevel(
         if (container != nullptr) {
             level->setData(worldX, worldY, worldZ, m_data,
                            Tile::UPDATE_CLIENTS);
-            // Add items
+            
             int slotId = 0;
             for (auto it = m_items.begin();
                  it != m_items.end() &&

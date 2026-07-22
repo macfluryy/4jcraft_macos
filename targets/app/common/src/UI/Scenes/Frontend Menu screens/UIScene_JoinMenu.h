@@ -80,11 +80,11 @@ public:
     virtual EUIScene getSceneType() { return eUIScene_LoadMenu; }
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
     virtual void handleFocusChange(F64 controlId, F64 childId);

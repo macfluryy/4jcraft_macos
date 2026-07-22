@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <vector>
 
-// class ServerPlayer;
+
 #include "ServerPlayer.h"
 #include "minecraft/world/entity/player/Player.h"
 
@@ -69,7 +69,7 @@ private:
 
     eVisibility isVisible(EntityTracker* tracker,
                           std::shared_ptr<ServerPlayer> sp,
-                          bool forRider = false);  // 4J Added forRider
+                          bool forRider = false);  
 
 public:
     void updatePlayer(EntityTracker* tracker, std::shared_ptr<ServerPlayer> sp);

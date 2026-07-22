@@ -17,23 +17,23 @@ class Mob;
 class Player;
 class Stat;
 
-// #include "minecraft/world/damageSource/DamageSource.h"
 
-// #include "app/common/src/Console_Awards_enum.h"
 
-/**
-        4J-JEV:
-                Java version exposed the static instance of each stat.
 
-                This was inconvient for me as I needed to structure the
-   stats/achievements differently on Durango.
 
-                Using getters like this means we can use different Stats easilly
-   on different platforms and still have a convenient identifier to use to award
-   them.
-*/
+
+
+
+
+
+
+
+
+
+
+
 class GenericStats {
-private:  // Static instance.
+private:  
     static GenericStats* instance;
 
 public:
@@ -42,11 +42,11 @@ public:
     }
     static GenericStats* getInstance() { return instance; }
 
-    // For retrieving a stat from an id.
+    
     virtual Stat* get_stat(int i) = 0;
     static Stat* stat(int i) { return instance->get_stat(i); }
 
-    // STATS - STATIC //
+    
 
     static Stat* walkOneM() { return instance->get_walkOneM(); }
     static Stat* swimOneM() { return instance->get_swimOneM(); }
@@ -112,8 +112,8 @@ public:
     }
     static Stat* itemsSmelted(int itemId) {
         return instance->get_itemsSmelted(itemId);
-    }  // 4J-JEV: Diffentiation needed, when only one type of event should be
-       // sent (eg iron smelting).
+    }  
+       
     static Stat* itemsUsed(int itemId) {
         return instance->get_itemsUsed(itemId);
     }
@@ -131,7 +131,7 @@ public:
         return instance->get_enteredBiome(biomeId);
     }
 
-    // ACHIEVEMENTS - STATIC //
+    
 
     static Stat* achievement(eAward achievementId) {
         return instance->get_achievement(achievementId);
@@ -176,28 +176,28 @@ public:
     static Stat* mine100Blocks();
     static Stat* kill10Creepers();
 
-    static Stat* adventuringTime();  // Requires new Stat
+    static Stat* adventuringTime();  
     static Stat* repopulation();
-    static Stat* diamondsToYou();   // +Durango
-    static Stat* porkChop();        // Req Stat?
-    static Stat* passingTheTime();  // Req Stat
+    static Stat* diamondsToYou();   
+    static Stat* porkChop();        
+    static Stat* passingTheTime();  
     static Stat* archer();
-    static Stat* theHaggler();  // Req Stat
-    static Stat* potPlanter();  // Req Stat
-    static Stat* itsASign();    // Req Stat
+    static Stat* theHaggler();  
+    static Stat* potPlanter();  
+    static Stat* itsASign();    
     static Stat* ironBelly();
     static Stat* haveAShearfulDay();
-    static Stat* rainbowCollection();      // Requires new Stat
-    static Stat* stayinFrosty();           // +Durango
-    static Stat* chestfulOfCobblestone();  // +Durango
-    static Stat* renewableEnergy();        // +Durango
-    static Stat* musicToMyEars();          // +Durango
+    static Stat* rainbowCollection();      
+    static Stat* stayinFrosty();           
+    static Stat* chestfulOfCobblestone();  
+    static Stat* renewableEnergy();        
+    static Stat* musicToMyEars();          
     static Stat* bodyGuard();
-    static Stat* ironMan();       // +Durango
-    static Stat* zombieDoctor();  // +Durango
+    static Stat* ironMan();       
+    static Stat* zombieDoctor();  
     static Stat* lionTamer();
 
-    // STAT PARAMS - STATIC //
+    
 
     static std::vector<uint8_t> param_walk(int distance);
     static std::vector<uint8_t> param_swim(int distance);
@@ -234,17 +234,17 @@ public:
     static std::vector<uint8_t> param_changedDimension(int from, int to);
     static std::vector<uint8_t> param_enteredBiome(int biomeId);
 
-    // static std::vector<uint8_t> param_achievement(eAward id);
+    
 
-    // static std::vector<uint8_t> param_ach_onARail();
-    // static std::vector<uint8_t> param_overkill(int damage); //TODO
-    // static std::vector<uint8_t> param_openInventory(int menuId);
-    // static std::vector<uint8_t> param_chestfulOfCobblestone();
-    // static std::vector<uint8_t> param_musicToMyEars(int recordId);
+    
+    
+    
+    
+    
 
     static std::vector<uint8_t> param_noArgs();
 
-    // STATIC + VIRTUAL - ACHIEVEMENT - PARAMS //
+    
 
     static std::vector<uint8_t> param_openInventory();
     static std::vector<uint8_t> param_mineWood();
@@ -307,11 +307,11 @@ public:
     static std::vector<uint8_t> param_lionTamer();
 
 protected:
-    // ACHIEVEMENTS - VIRTUAL //
+    
 
     virtual Stat* get_achievement(eAward achievementId);
 
-    // STATS - VIRTUAL //
+    
 
     virtual Stat* get_walkOneM();
     virtual Stat* get_swimOneM();
@@ -359,7 +359,7 @@ protected:
     virtual Stat* get_changedDimension(int from, int to);
     virtual Stat* get_enteredBiome(int biomeId);
 
-    // STAT PARAMS - VIRTUAL //
+    
 
     virtual std::vector<uint8_t> getParam_walkOneM(int distance);
     virtual std::vector<uint8_t> getParam_swimOneM(int distance);
@@ -413,4 +413,3 @@ protected:
     virtual std::vector<uint8_t> getParam_noArgs();
 };
 
-// Req Stats

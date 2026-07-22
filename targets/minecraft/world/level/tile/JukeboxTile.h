@@ -34,7 +34,7 @@ public:
         virtual std::shared_ptr<ItemInstance> getRecord();
         virtual void setRecord(std::shared_ptr<ItemInstance> record);
 
-        // 4J Added
+        
         std::shared_ptr<TileEntity> clone();
     };
 
@@ -51,7 +51,7 @@ public:
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
-                     bool soundOnly = false);  // 4J added soundOnly param
+                     bool soundOnly = false);  
     void setRecord(Level* level, int x, int y, int z,
                    std::shared_ptr<ItemInstance> record);
     void dropRecording(Level* level, int x, int y, int z);

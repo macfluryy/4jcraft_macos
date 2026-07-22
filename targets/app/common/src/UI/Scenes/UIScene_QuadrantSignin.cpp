@@ -18,7 +18,7 @@
 UIScene_QuadrantSignin::UIScene_QuadrantSignin(int iPad, void* _initData,
                                                UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_signInInfo = *((SignInInfo*)_initData);
@@ -44,14 +44,14 @@ void UIScene_QuadrantSignin::updateTooltips() {
     ui.SetTooltips(m_iPad, IDS_TOOLTIPS_CONTINUE, IDS_TOOLTIPS_CANCEL);
 }
 
-// Returns true if this scene has focus for the pad passed in
+
 bool UIScene_QuadrantSignin::hasFocus(int iPad) {
-    // Allow input from any controller
+    
     return bHasFocus;
 }
 
 bool UIScene_QuadrantSignin::hidesLowerScenes() {
-    // This is a Modal dialog, so don't need to hide the scene behind
+    
     return false;
 }
 
@@ -138,15 +138,15 @@ int UIScene_QuadrantSignin::SignInReturned(void* pParam, bool bContinue,
 void UIScene_QuadrantSignin::updateState() {
     for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
         if (ProfileManager.IsSignedIn(i) && InputManager.IsPadConnected(i)) {
-            // app.DebugPrintf("Index %d is signed in, display name - '%s'\n",
-            // i, ProfileManager.GetDisplayName(i).data());
+            
+            
 
             {
                 setControllerState(i, eControllerStatus_PlayerDetails);
             }
 
             m_labelDisplayName[i].setLabel(ProfileManager.GetDisplayName(i));
-            // m_buttonControllers[i].setLabel(app.GetString(IDS_TOOLTIPS_CONTINUE),i);
+            
 
             if (!m_iconRequested[i]) {
                 app.DebugPrintf(app.USER_SR, "Requesting avatar for %d\n", i);
@@ -160,13 +160,13 @@ void UIScene_QuadrantSignin::updateState() {
                 }
             }
         } else if (InputManager.IsPadConnected(i)) {
-            // app.DebugPrintf("Index %d is not signed in\n", i);
+            
 
             setControllerState(i, eControllerStatus_PressToJoin);
             m_labelDisplayName[i].setLabel(L"");
             m_iconRequested[i] = false;
         } else {
-            // app.DebugPrintf("Index %d is not connected\n", i);
+            
 
             setControllerState(i, eControllerStatus_ConnectController);
             m_iconRequested[i] = false;
@@ -199,7 +199,7 @@ int UIScene_QuadrantSignin::AvatarReturned(void* lpParam,
     UIScene_QuadrantSignin* pClass = (UIScene_QuadrantSignin*)lpParam;
     app.DebugPrintf(app.USER_SR, "AvatarReturned callback\n");
     if (pbThumbnail != nullptr) {
-        // 4J-JEV - Added to ensure each new texture gets a unique name.
+        
         static unsigned int quadrantImageCount = 0;
 
         wchar_t iconName[32];

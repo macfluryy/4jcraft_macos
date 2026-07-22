@@ -1,10 +1,10 @@
 #pragma once
-// Pos implements Comparable<Pos>
-// We don't REALLY need it as it's main use it to make things easy
-// to handle in the java array/list classes, but adding to help
-// maintain as much original code as possible
 
-// class Pos //implements Comparable<Pos>
+
+
+
+
+
 class Pos {
 public:
     int x;
@@ -17,8 +17,8 @@ public:
 
     Pos(Pos* position);
 
-    //@Override
-    // public bool equals(Object other)
+    
+    
     bool equals(void* other);
 
     int hashCode();

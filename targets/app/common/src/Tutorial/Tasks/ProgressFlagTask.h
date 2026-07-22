@@ -1,5 +1,5 @@
 #pragma once
-// using namespace std;
+
 #include "app/common/src/Tutorial/Tasks/TutorialTask.h"
 #include "app/common/src/Tutorial/Tutorial.h"
 #include "TutorialTask.h"
@@ -14,7 +14,7 @@ public:
     };
 
 private:
-    char* flags;  // Not a member of this object
+    char* flags;  
     char m_mask;
     EProgressFlagType m_type;
 

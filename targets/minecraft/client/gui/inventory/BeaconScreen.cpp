@@ -28,8 +28,8 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
 
-// 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
-// container classes (and iggy too)
+
+
 #ifdef ENABLE_JAVA_GUIS
 ResourceLocation GUI_BEACON_LOCATION = ResourceLocation(TN_GUI_BEACON);
 #endif
@@ -171,7 +171,7 @@ void BeaconScreen::renderBg(float a) {
     int yo = (height - imageHeight) / 2;
     blit(xo, yo, 0, 0, imageWidth, imageHeight);
 
-    // Render payment item icons
+    
     itemRenderer->renderGuiItem(
         font, minecraft->textures,
         std::make_shared<ItemInstance>(Item::emerald_Id, 1, 0), xo + 42,
@@ -211,7 +211,7 @@ void BeaconScreen::buttonClicked(Button* button) {
     if (button->id == -2) {
         minecraft->player->closeContainer();
     } else if (button->id == -1) {
-        // 4jcraft: copied from IUIScene_BeaconMenu
+        
         ByteArrayOutputStream baos;
         DataOutputStream dos(&baos);
         dos.writeInt(beacon->getPrimaryPower());

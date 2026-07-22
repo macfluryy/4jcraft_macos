@@ -116,20 +116,20 @@ public:
     virtual void updateSafeZone();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
     virtual EUIScene getSceneType() { return eUIScene_HUD; }
 
-    // Returns true if this scene handles input
+    
     virtual bool stealsFocus() { return false; }
 
-    // Returns true if this scene has focus for the pad passed in
+    
     virtual bool hasFocus(int iPad) { return false; }
 
-    // Returns true if lower scenes in this scenes layer, or in any layer below
-    // this scenes layers should be hidden
+    
+    
     virtual bool hidesLowerScenes() { return false; }
 
     virtual void customDraw(IggyCustomDrawCallbackRegion* region);
@@ -184,7 +184,7 @@ public:
 
     void handleGameTick();
 
-    // RENDERING
+    
     virtual void render(S32 width, S32 height,
                         C4JRender::eViewportType viewport);
 

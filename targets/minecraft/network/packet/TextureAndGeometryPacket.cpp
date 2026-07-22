@@ -19,16 +19,16 @@ TextureAndGeometryPacket::TextureAndGeometryPacket() {
 }
 
 TextureAndGeometryPacket::~TextureAndGeometryPacket() {
-    // can't free these - they're used elsewhere
-    // 	if(this->BoxDataA!=nullptr)
-    // 	{
-    // 		delete [] this->BoxDataA;
-    // 	}
-    //
-    // 	if(this->pbData!=nullptr)
-    // 	{
-    // 		delete [] this->pbData;
-    // 	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 TextureAndGeometryPacket::TextureAndGeometryPacket(
@@ -114,7 +114,7 @@ void TextureAndGeometryPacket::handle(PacketListener* listener) {
     listener->handleTextureAndGeometry(shared_from_this());
 }
 
-void TextureAndGeometryPacket::read(DataInputStream* dis)  // throws IOException
+void TextureAndGeometryPacket::read(DataInputStream* dis)  
 {
     textureName = dis->readUTF();
     dwSkinID = static_cast<std::uint32_t>(dis->readInt());
@@ -149,7 +149,7 @@ void TextureAndGeometryPacket::read(DataInputStream* dis)  // throws IOException
 }
 
 void TextureAndGeometryPacket::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     dos->writeUTF(textureName);
     dos->writeInt(static_cast<int>(dwSkinID));

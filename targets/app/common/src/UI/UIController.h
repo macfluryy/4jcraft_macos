@@ -1,6 +1,6 @@
 #pragma once
 #include <stddef.h>
-// using namespace std;
+
 #include <cstdint>
 #include <format>
 #include <mutex>
@@ -41,13 +41,13 @@ class C4JThread;
 class Tutorial;
 class UIScene;
 
-// Base class for all shared functions between UIControllers
+
 class UIController : public IUIController {
 public:
     static int64_t iggyAllocCount;
 
-    // MGH - added to prevent crash loading Iggy movies while the skins were
-    // being reloaded
+    
+    
     static std::mutex ms_reloadSkinCS;
     static bool ms_bReloadSkinCSInitialised;
 
@@ -59,9 +59,9 @@ private:
     std::mutex m_navigationLock;
 
     static constexpr int UI_REPEAT_KEY_DELAY_MS =
-        300;  // How long from press until the first repeat
+        300;  
     static constexpr int UI_REPEAT_KEY_REPEAT_RATE_MS =
-        100;  // How long in between repeats
+        100;  
     time_util::time_point m_actionRepeatTimer[XUSER_MAX_COUNT][ACTION_MAX_MENU + 1];
 
     float m_fScreenWidth;
@@ -81,12 +81,12 @@ private:
 
     };
 
-    // 4J-JEV: It's important that currentFont == targetFont, unless
-    // updateCurrentLanguage is going to be called.
+    
+    
     EFont m_eCurrentFont, m_eTargetFont;
 
-    // 4J-JEV: Behaves like navigateToHome when not ingame. When in-game, it
-    // closes all player scenes instead.
+    
+    
     bool m_bCleanupOnReload;
 
     EFont getFontForLanguage(int language);
@@ -101,9 +101,9 @@ public:
     void updateCurrentFont();
 
 private:
-    // 4J-PB - ui element type for PSVita touch control
-    // 4J Stu - These should be in the order that they reference each other
-    // (i.e. they can only reference one with a lower value in the enum)
+    
+    
+    
     enum ELibraries {
         eLibrary_Platform,
         eLibrary_GraphicsDefault,
@@ -118,8 +118,8 @@ private:
         eLibrary_Default,
 
 #if defined(_WINDOWS64)
-    // 4J Stu - Load the 720/480 skins so that we have something to fallback on
-    // during development
+    
+    
 #if !defined(_FINAL_BUILD)
         eLibraryFallback_Platform,
         eLibraryFallback_GraphicsDefault,
@@ -149,10 +149,10 @@ private:
     bool m_iggyPerfmonEnabled;
 
     bool
-        m_bMenuDisplayed[XUSER_MAX_COUNT];  // track each players menu displayed
-    bool m_bMenuToBeClosed[XUSER_MAX_COUNT];  // actioned at the end of the game
-                                              // loop
-    int m_iCountDown[XUSER_MAX_COUNT];        // ticks to block input
+        m_bMenuDisplayed[XUSER_MAX_COUNT];  
+    bool m_bMenuToBeClosed[XUSER_MAX_COUNT];  
+                                              
+    int m_iCountDown[XUSER_MAX_COUNT];        
 
     bool m_bCloseAllScenes[eUIGroup_COUNT];
 
@@ -180,20 +180,20 @@ private:
     std::vector<QueuedMessageBoxData*> m_queuedMessageBoxData;
 
     unsigned int m_winUserIndex;
-    // bool m_bSysUIShowing;
+    
     bool m_bSystemUIShowing;
     C4JThread* m_reloadSkinThread;
     bool m_navigateToHomeOnReload;
     int m_accumulatedTicks;
-    uint64_t m_lastUiSfx;  // Tracks time (ms) of last UI sound effect
+    uint64_t m_lastUiSfx;  
 
     D3D11_RECT m_customRenderingClearRect;
 
     std::unordered_map<size_t, UIScene*>
-        m_registeredCallbackScenes;  // A collection of scenes and unique id's
-                                     // that are used in async callbacks so we
-                                     // can safely handle when they get
-                                     // destroyed
+        m_registeredCallbackScenes;  
+                                     
+                                     
+                                     
     std::mutex m_registeredCallbackScenesCS;
     ;
 
@@ -214,7 +214,7 @@ public:
     }
 
 protected:
-    // Should be called from the platforms init function
+    
     void preInit(S32 width, S32 height);
     void postInit();
 
@@ -225,7 +225,7 @@ public:
     bool UsingBitmapFont();
 
 public:
-    // TICKING
+    
     virtual void tick();
 
 private:
@@ -246,7 +246,7 @@ private:
 public:
     std::vector<uint8_t> getMovieData(const std::wstring& filename);
 
-    // INPUT
+    
 private:
     void tickInput();
     void handleInput();
@@ -258,7 +258,7 @@ protected:
                              IggyExternalFunctionCallUTF16* call);
 
 public:
-    // RENDERING
+    
     float getScreenWidth() { return m_fScreenWidth; }
     float getScreenHeight() { return m_fScreenHeight; }
     void setScreenSize(S32 w, S32 h) {
@@ -286,7 +286,7 @@ public:
     virtual void endCustomDraw(IggyCustomDrawCallbackRegion* region) = 0;
 
 protected:
-    // Should be called from the platforms render function
+    
     void renderScenes();
 
 public:
@@ -326,7 +326,7 @@ public:
                                        bool deleteData);
 
 public:
-    // NAVIGATION
+    
     bool NavigateToScene(int iPad, EUIScene scene, void* initData = nullptr,
                          EUILayer layer = eUILayer_Scene,
                          EUIGroup group = eUIGroup_PAD);
@@ -363,7 +363,7 @@ public:
                          bool bReleased);
     void OverrideSFX(int iPad, int iAction, bool bVal);
 
-    // TOOLTIPS
+    
     virtual void SetTooltipText(unsigned int iPad, unsigned int tooltip,
                                 int iTextID);
     virtual void SetEnableTooltips(unsigned int iPad, bool bVal);

@@ -1,13 +1,13 @@
 #pragma once
-// using namespace std;
+
 
 #include "TutorialTask.h"
 
 class Stat;
 class Tutorial;
 
-// 4J Stu - Tutorial tasks that can use the current stat trackin code. This is
-// things like blocks mined/items crafted.
+
+
 class StatTask : public TutorialTask {
 private:
     Stat* stat;

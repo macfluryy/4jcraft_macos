@@ -44,7 +44,7 @@ bool TileItem::useOn(std::shared_ptr<ItemInstance> instance,
                      std::shared_ptr<Player> player, Level* level, int x, int y,
                      int z, int face, float clickX, float clickY, float clickZ,
                      bool bTestUseOnOnly) {
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
     int currentTile = level->getTile(x, y, z);
     if (currentTile == Tile::topSnow_Id &&
         (level->getData(x, y, z) & TopSnowTile::HEIGHT_MASK) < 1) {
@@ -69,18 +69,18 @@ bool TileItem::useOn(std::shared_ptr<ItemInstance> instance,
         return false;
 
     int undertile =
-        level->getTile(x, y - 1, z);  // For 'BodyGuard' achievement.
+        level->getTile(x, y - 1, z);  
 
     if (level->mayPlace(tileId, x, y, z, false, face, player, instance)) {
         if (!bTestUseOnOnly) {
             Tile* tile = Tile::tiles[tileId];
-            // 4J - Adding this from 1.6
+            
             int itemValue = getLevelDataForAuxValue(instance->getAuxValue());
             int dataValue = Tile::tiles[tileId]->getPlacedOnFaceDataValue(
                 level, x, y, z, face, clickX, clickY, clickZ, itemValue);
             if (level->setTileAndData(x, y, z, tileId, dataValue,
                                       Tile::UPDATE_ALL)) {
-                // 4J-JEV: Snow/Iron Golems do not have owners apparently.
+                
                 int newTileId = level->getTile(x, y, z);
                 if ((tileId == Tile::pumpkin_Id ||
                      tileId == Tile::litPumpkin_Id) &&
@@ -105,15 +105,15 @@ bool TileItem::useOn(std::shared_ptr<ItemInstance> instance,
                     }
                 }
 
-                // 4J-JEV: Hook for durango 'BlockPlaced' event.
+                
                 player->awardStat(GenericStats::blocksPlaced(tileId),
                                   GenericStats::param_blocksPlaced(
                                       tileId, instance->getAuxValue(), 1));
 
-                // 4J - Original comment
-                // ok this may look stupid, but neighbor updates can cause the
-                // placed block to become something else before these methods
-                // are called
+                
+                
+                
+                
                 if (level->getTile(x, y, z) == tileId) {
                     Tile::tiles[tileId]->setPlacedBy(level, x, y, z, player,
                                                      instance);
@@ -121,40 +121,40 @@ bool TileItem::useOn(std::shared_ptr<ItemInstance> instance,
                                                            dataValue);
                 }
 
-                // 4J-PB - Java 1.4 change - getStepSound replaced with
-                // getPlaceSound
-                // level->playSound(x + 0.5f, y + 0.5f, z + 0.5f,
-                // tile->soundType->getStepSound(),
-                // (tile->soundType->getVolume() + 1) / 2,
-                // tile->soundType->getPitch() * 0.8f);
+                
+                
+                
+                
+                
+                
 #ifdef _DEBUG
                 int iPlaceSound = tile->soundType->getPlaceSound();
                 int iStepSound = tile->soundType->getStepSound();
 
-                // 				char szPlaceSoundName[256];
-                // 				char szStepSoundName[256];
-                // 				Minecraft *pMinecraft =
-                // Minecraft::GetInstance();
-                //
-                // 				if(iPlaceSound==-1)
-                // 				{
-                // 					strcpy(szPlaceSoundName,"nullptr");
-                // 				}
-                // 				else
-                // 				{
-                // 					pMinecraft->soundEngine->GetSoundName(szPlaceSoundName,iPlaceSound);
-                // 				}
-                // 				if(iStepSound==-1)
-                // 				{
-                // 					strcpy(szStepSoundName,"nullptr");
-                // 				}
-                // 				else
-                // 				{
-                // 					pMinecraft->soundEngine->GetSoundName(szStepSoundName,iStepSound);
-                // 				}
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 
-                // app.DebugPrintf("Place Sound - %s, Step Sound -
-                // %s\n",szPlaceSoundName,szStepSoundName);
+                
+                
                 app.DebugPrintf("Place Sound - %d, Step Sound - %d\n",
                                 iPlaceSound, iStepSound);
 #endif
@@ -163,8 +163,8 @@ bool TileItem::useOn(std::shared_ptr<ItemInstance> instance,
                                  (tile->soundType->getVolume() + 1) / 2,
                                  tile->soundType->getPitch() * 0.8f);
 #ifndef _FINAL_BUILD
-                // 4J-PB - If we have the debug option on, don't reduce the
-                // number of this item
+                
+                
                 if (!(app.DebugSettingsOn() &&
                       app.GetGameSettingsDebugMask() &
                           (1L << eDebugSetting_CraftAnything)))
@@ -199,7 +199,7 @@ bool TileItem::mayPlace(Level* level, int x, int y, int z, int face,
     return level->mayPlace(getTileId(), x, y, z, false, face, nullptr, item);
 }
 
-// 4J Added to colourise some tile types in the hint popups
+
 int TileItem::getColor(int itemAuxValue, int spriteLayer) {
     return Tile::tiles[tileId]->getColor();
 }
@@ -209,7 +209,7 @@ unsigned int TileItem::getDescriptionId(
     return Tile::tiles[tileId]->getDescriptionId();
 }
 
-unsigned int TileItem::getDescriptionId(int iData /*= -1*/) {
+unsigned int TileItem::getDescriptionId(int iData ) {
     return Tile::tiles[tileId]->getDescriptionId(iData);
 }
 

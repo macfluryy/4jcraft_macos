@@ -25,7 +25,7 @@ class UILayer;
 UIScene_EnchantingMenu::UIScene_EnchantingMenu(int iPad, void* _initData,
                                                UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_enchantButton[0].init(0);
@@ -261,13 +261,13 @@ void UIScene_EnchantingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
 
     if (std::char_traits<char16_t>::compare(region->name, u"EnchantmentBook",
                                             15) == 0) {
-        // Setup GDraw, normal game render states and matrices
+        
         CustomDrawData* customDrawRegion = ui.setupCustomDraw(this, region);
         delete customDrawRegion;
 
         m_enchantBook.render(region);
 
-        // Finish GDraw and anything else that needs to be finalised
+        
         ui.endCustomDraw(region);
     } else {
         int slotId = -1;
@@ -285,21 +285,21 @@ void UIScene_EnchantingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
         }
 
         if (slotId >= 0) {
-            // 4jcraft: sanity check because this code is utter trash garbage
+            
             assert(slotId != 0 &&
                    "4J shitcode - attempted to access m_enchantButton with "
                    "slot_Button0. this shouldn't happen; if you're reading "
                    "this then go bug someone on GitHub or something");
 
-            // Setup GDraw, normal game render states and matrices
+            
             CustomDrawData* customDrawRegion = ui.setupCustomDraw(this, region);
             delete customDrawRegion;
 
-            // 4jcraft: NOTE: if slotId == 0 this is UB, but it never is in
-            // practice, plus added the assertion above as a sanity check
+            
+            
             m_enchantButton[slotId - 1].render(region);
 
-            // Finish GDraw and anything else that needs to be finalised
+            
             ui.endCustomDraw(region);
         } else {
             UIScene_AbstractContainerMenu::customDraw(region);

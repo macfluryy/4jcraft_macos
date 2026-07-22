@@ -23,7 +23,7 @@ AbstractTexturePack::AbstractTexturePack(std::uint32_t id, File* file,
                                          const std::wstring& name,
                                          TexturePack* fallback)
     : id(id), name(name) {
-    // 4J init
+    
     textureId = -1;
     m_colourTable = nullptr;
 
@@ -36,9 +36,9 @@ AbstractTexturePack::AbstractTexturePack(std::uint32_t id, File* file,
     m_comparisonData = nullptr;
     m_comparisonSize = 0;
 
-    // 4J Stu - These calls need to be in the most derived version of the class
-    // loadIcon();
-    // loadDescription();
+    
+    
+    
 }
 
 std::wstring AbstractTexturePack::trim(std::wstring line) {
@@ -53,13 +53,13 @@ void AbstractTexturePack::loadIcon() {}
 void AbstractTexturePack::loadComparison() {}
 
 void AbstractTexturePack::loadDescription() {
-    // 4J Unused currently
+    
 }
 
 void AbstractTexturePack::loadName() {}
 
 InputStream* AbstractTexturePack::getResource(
-    const std::wstring& name, bool allowFallback)  // throws IOException
+    const std::wstring& name, bool allowFallback)  
 {
     app.DebugPrintf("texture - %ls\n", name.c_str());
     InputStream* is = getResourceImplementation(name);
@@ -70,12 +70,12 @@ InputStream* AbstractTexturePack::getResource(
     return is;
 }
 
-// 4J Currently removed due to override in TexturePack class
-// InputStream *AbstractTexturePack::getResource(const std::wstring &name)
-// //throws IOException
-//{
-//	return getResource(name, true);
-//}
+
+
+
+
+
+
 
 void AbstractTexturePack::unload(Textures* textures) {
     if (iconImage != nullptr && textureId != -1) {
@@ -91,8 +91,8 @@ void AbstractTexturePack::load(Textures* textures) {
         glBindTexture(GL_TEXTURE_2D, textureId);
         textures->clearLastBoundId();
     } else {
-        // 4J Stu - Don't do this
-        // textures->bindTexture(L"/gui/unknown_pack.png");
+        
+        
     }
 }
 
@@ -133,8 +133,8 @@ std::wstring AbstractTexturePack::getAnimationString(
         getResource(L"\\" + path + animationDefinitionFile, requiresFallback);
 
     if (fileStream) {
-        // Minecraft::getInstance()->getLogger().info("Found animation info for:
-        // " + animationDefinitionFile);
+        
+        
 #if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf("Found animation info for: %ls\n",
                         animationDefinitionFile.c_str());
@@ -158,8 +158,8 @@ std::wstring AbstractTexturePack::getAnimationString(
 }
 
 BufferedImage* AbstractTexturePack::getImageResource(
-    const std::wstring& File, bool filenameHasExtension /*= false*/,
-    bool bTitleUpdateTexture /*=false*/, const std::wstring& drive /*=L""*/) {
+    const std::wstring& File, bool filenameHasExtension ,
+    bool bTitleUpdateTexture , const std::wstring& drive ) {
     std::string pchTexture = wstringtofilename(File);
     std::string pchDrive = wstringtofilename(drive);
     app.DebugPrintf("AbstractTexturePack::getImageResource - %s, drive is %s\n",
@@ -177,7 +177,7 @@ void AbstractTexturePack::loadColourTable() {
 }
 
 void AbstractTexturePack::loadDefaultColourTable() {
-    // Load the file
+    
     File coloursFile(
         AbstractTexturePack::getPath(true).append(L"res/colours.col"));
 
@@ -209,15 +209,15 @@ void AbstractTexturePack::loadDefaultHTMLColourTable() {
 void AbstractTexturePack::loadUI() { loadColourTable(); }
 
 void AbstractTexturePack::unloadUI() {
-    // Do nothing
+    
 }
 
 std::wstring AbstractTexturePack::getXuiRootPath() {
     const uintptr_t c_ModuleHandle = (uintptr_t)GetModuleHandle(nullptr);
 
-    // Load new skin
+    
     constexpr int LOCATOR_SIZE =
-        256;  // Use this to allocate space to hold a ResourceLocator string
+        256;  
     wchar_t szResourceLocator[LOCATOR_SIZE];
 
     swprintf(szResourceLocator, LOCATOR_SIZE, L"section://%X,%ls#%ls",

@@ -27,7 +27,7 @@ SignUpdatePacket::SignUpdatePacket(int x, int y, int z, bool bVerified,
     for (int i = 0; i < MAX_SIGN_LINES; i++) this->lines[i] = lines[i];
 }
 
-void SignUpdatePacket::read(DataInputStream* dis)  // throws IOException
+void SignUpdatePacket::read(DataInputStream* dis)  
 {
     x = dis->readInt();
     y = dis->readShort();
@@ -39,7 +39,7 @@ void SignUpdatePacket::read(DataInputStream* dis)  // throws IOException
         lines[i] = readUtf(dis, SignTileEntity::MAX_LINE_LENGTH);
 }
 
-void SignUpdatePacket::write(DataOutputStream* dos)  // throws IOException
+void SignUpdatePacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(x);
     dos->writeShort(y);

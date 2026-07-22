@@ -1,5 +1,7 @@
 #include "TimeCommand.h"
 
+#include "minecraft/commands/CommandSender.h"
+
 #include <string>
 #include <vector>
 
@@ -21,7 +23,7 @@ int TimeCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
 
 void TimeCommand::execute(std::shared_ptr<CommandSender> source,
                           std::vector<uint8_t>& commandData) {
-    // 4J - FIX: Properly deserialize time command data
+    
     if (commandData.empty()) {
         source->sendMessage(L"§cUsage: /time set [sunrise | day | noon | sunset | night | midnight | N ]");
         return;
@@ -52,7 +54,7 @@ void TimeCommand::execute(std::shared_ptr<CommandSender> source,
         else timeDesc = L"Tick " + std::to_wstring(timeValue);
         
         source->sendMessage(L"§aTime set to: " + timeDesc + L" (" + std::to_wstring(timeValue) + L")");
-        //logAdminAction(source, ChatPacket::e_ChatCustom, L"commands.time.set");
+        
         
     } catch (const std::exception& e) {
         source->sendMessage(L"§cError executing time command");

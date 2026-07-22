@@ -5,8 +5,8 @@
 #include "Packet.h"
 #include "minecraft/network/packet/Packet.h"
 
-// 4J Added packet to update clients on the time for the host to finish doing
-// something
+
+
 
 class UpdateProgressPacket
     : public Packet,

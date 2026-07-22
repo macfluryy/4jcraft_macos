@@ -28,7 +28,7 @@ bool TakeItemHint::onTake(std::shared_ptr<ItemInstance> item) {
             }
         }
         if (itemFound) {
-            // Display hint
+            
             Tutorial::PopupMessageDetails* message =
                 new Tutorial::PopupMessageDetails();
             message->m_messageId = item->getUseDescriptionId();

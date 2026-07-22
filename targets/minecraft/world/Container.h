@@ -11,7 +11,7 @@ public:
     virtual ~Container() {}
     static const int LARGE_MAX_STACK_SIZE = 64;
 
-    // 4J-JEV: Added to distinguish between ender, bonus, small and large chests
+    
     virtual int getContainerType() { return -1; }
 
     virtual unsigned int getContainerSize() = 0;
@@ -23,7 +23,7 @@ public:
                          std::shared_ptr<ItemInstance> item) = 0;
     virtual std::wstring getName() = 0;
     virtual std::wstring
-    getCustomName() = 0;  // 4J Stu added for sending over the network
+    getCustomName() = 0;  
     virtual bool hasCustomName() = 0;
     virtual int getMaxStackSize() = 0;
     virtual void setChanged() = 0;

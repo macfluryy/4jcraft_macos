@@ -8,7 +8,7 @@
 class Tutorial;
 
 StatTask::StatTask(Tutorial* tutorial, int descriptionId,
-                   bool enablePreCompletion, Stat* stat, int variance /*= 1*/)
+                   bool enablePreCompletion, Stat* stat, int variance )
     : TutorialTask(tutorial, descriptionId, enablePreCompletion, nullptr) {
     this->stat = stat;
 

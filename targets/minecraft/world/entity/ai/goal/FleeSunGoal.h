@@ -10,7 +10,7 @@ class PathfinderMob;
 
 class FleeSunGoal : public Goal {
 private:
-    PathfinderMob* mob;  // Owner of this goal
+    PathfinderMob* mob;  
     double wantedX, wantedY, wantedZ;
     double speedModifier;
     Level* level;
@@ -26,7 +26,7 @@ private:
     std::optional<Vec3> getHidePos();
 
 public:
-    // 4J Added override to update ai elements when loading entity from
-    // schematics
+    
+    
     virtual void setLevel(Level* level) { this->level = level; }
 };

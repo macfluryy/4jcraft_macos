@@ -14,17 +14,17 @@ BookModel::BookModel() {
 
     seam = (new ModelPart(this))->texOffs(12, 0)->addBox(-1, -5, 0, 2, 10, 0);
 
-    // 4J - added faceMasks here to remove sides of these page boxes which end
-    // up being nearly coplanar to the cover of the book and flickering when
-    // rendering at a distance
+    
+    
+    
     leftPages = (new ModelPart(this))
                     ->texOffs(0, 10)
                     ->addBoxWithMask(0, -4, -1 + 0.01f, 5, 8, 1,
-                                     47);  // 4J - faceMask is binary 101111
+                                     47);  
     rightPages = (new ModelPart(this))
                      ->texOffs(12, 10)
                      ->addBoxWithMask(0, -4, -0.01f, 5, 8, 1,
-                                      31);  // 4J - faceMask is binary 011111
+                                      31);  
 
     flipPage1 =
         (new ModelPart(this))->texOffs(24, 10)->addBox(0, -4, 0, 5, 8, 0);
@@ -36,8 +36,8 @@ BookModel::BookModel() {
 
     seam->yRot = std::numbers::pi / 2;
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     leftLid->compile(1.0f / 16.0f);
     rightLid->compile(1.0f / 16.0f);
     seam->compile(1.0f / 16.0f);

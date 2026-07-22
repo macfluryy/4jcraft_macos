@@ -13,7 +13,7 @@ class Icon;
 
 PistonExtensionTile::PistonExtensionTile(int id)
     : Tile(id, Material::piston, false) {
-    // 4J added initialiser
+    
     overrideTopTexture = nullptr;
 
     setSoundType(SOUND_STONE);
@@ -81,11 +81,11 @@ Icon* PistonExtensionTile::getTexture(int face, int data) {
         return PistonBaseTile::getTexture(PistonBaseTile::PLATFORM_TEX);
     }
     return PistonBaseTile::getTexture(
-        PistonBaseTile::EDGE_TEX);  // edge and arms
+        PistonBaseTile::EDGE_TEX);  
 }
 
 void PistonExtensionTile::registerIcons(IconRegister* iconRegister) {
-    // None
+    
 }
 
 int PistonExtensionTile::getRenderShape() { return SHAPE_PISTON_EXTENSION; }
@@ -170,7 +170,7 @@ void PistonExtensionTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
 void PistonExtensionTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     int data = (forceData == -1) ? level->getData(x, y, z) : forceData;
 

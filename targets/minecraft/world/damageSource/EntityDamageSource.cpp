@@ -1,6 +1,6 @@
 
-// EntityDamageSource::EntityDamageSource(const wstring &msgId,
-// shared_ptr<Entity> entity) : DamageSource(msgId)
+
+
 #include "minecraft/world/damageSource/EntityDamageSource.h"
 
 #include <memory>
@@ -25,12 +25,12 @@ EntityDamageSource::EntityDamageSource(
 
 std::shared_ptr<Entity> EntityDamageSource::getEntity() { return entity; }
 
-// wstring EntityDamageSource::getLocalizedDeathMessage(shared_ptr<Player>
-// player)
-//{
-//	return L"death." + msgId + player->name + entity->getAName();
-//	//return I18n.get("death." + msgId, player.name, entity.getAName());
-// }
+
+
+
+
+
+
 
 std::shared_ptr<ChatPacket> EntityDamageSource::getDeathMessagePacket(
     std::shared_ptr<LivingEntity> player) {
@@ -64,7 +64,7 @@ bool EntityDamageSource::scalesWithDifficulty() {
            !entity->instanceof(eTYPE_PLAYER);
 }
 
-// 4J: Copy function
+
 DamageSource* EntityDamageSource::copy() {
     return new EntityDamageSource(*this);
 }

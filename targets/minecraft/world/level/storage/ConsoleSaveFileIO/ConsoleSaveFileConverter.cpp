@@ -35,11 +35,11 @@ void ConsoleSaveFileConverter::ProcessSimpleFile(ConsoleSaveFile* sourceSave,
 
     std::uint8_t* data = new std::uint8_t[sourceFileEntry->getFileSize()];
 
-    // Read from source
+    
     sourceSave->readFile(sourceFileEntry, data, sourceFileEntry->getFileSize(),
                          &numberOfBytesRead);
 
-    // Write back to target
+    
     targetSave->writeFile(targetFileEntry, data, numberOfBytesRead,
                           &numberOfBytesWritten);
 
@@ -82,14 +82,14 @@ void ConsoleSaveFileConverter::ProcessStandardRegionFile(
 void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
                                            ConsoleSaveFile* targetSave,
                                            ProgressListener* progress) {
-    // Process level.dat
+    
     ConsoleSavePath ldatPath(std::wstring(L"level.dat"));
     FileEntry* sourceLdatFe = sourceSave->createFile(ldatPath);
     FileEntry* targetLdatFe = targetSave->createFile(ldatPath);
     printf("Processing level.dat\n");
     ProcessSimpleFile(sourceSave, sourceLdatFe, targetSave, targetLdatFe);
 
-    // Process game rules
+    
     {
         ConsoleSavePath gameRulesPath(GAME_RULE_SAVENAME);
         if (sourceSave->doesFileExist(gameRulesPath)) {
@@ -100,7 +100,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
         }
     }
 
-    // MGH added - find any player data files and copy them across
+    
     std::vector<FileEntry*>* playerFiles =
         sourceSave->getFilesWithPrefix(DirectoryLevelStorage::getPlayerDir());
 
@@ -149,7 +149,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
         progress->progressStage(IDS_SAVETRANSFER_STAGE_CONVERTING);
     }
 
-    // Overworld
+    
     {
         printf("Processing the overworld\n");
         int halfXZSize = xzSize / 2;
@@ -162,7 +162,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
 
         for (int x = -halfXZSize; x < halfXZSize; ++x) {
             for (int z = -halfXZSize; z < halfXZSize; ++z) {
-                // printf("Processing overworld chunk %d,%d\n",x,z);
+                
                 DataInputStream* dis =
                     sourceCache._getChunkDataInputStream(sourceSave, L"", x, z);
 
@@ -193,7 +193,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
         }
     }
 
-    // Nether
+    
     {
         printf("Processing the nether\n");
         int hellSize = xzSize / hellScale;
@@ -207,7 +207,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
 
         for (int x = -halfXZSize; x < halfXZSize; ++x) {
             for (int z = -halfXZSize; z < halfXZSize; ++z) {
-                // printf("Processing nether chunk %d,%d\n",x,z);
+                
                 DataInputStream* dis = sourceCache._getChunkDataInputStream(
                     sourceSave, L"DIM-1", x, z);
 
@@ -238,7 +238,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
         }
     }
 
-    // End
+    
     {
         printf("Processing the end\n");
         int halfXZSize = END_LEVEL_MAX_WIDTH / 2;
@@ -251,7 +251,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
 
         for (int x = -halfXZSize; x < halfXZSize; ++x) {
             for (int z = -halfXZSize; z < halfXZSize; ++z) {
-                // printf("Processing end chunk %d,%d\n",x,z);
+                
                 DataInputStream* dis = sourceCache._getChunkDataInputStream(
                     sourceSave, L"DIM1/", x, z);
 
@@ -283,9 +283,9 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
     }
 
 #else
-    // 4J Stu - Old version that just changes the compression of chunks, not
-    // usable for XboxOne style split saves or compressed tile formats Process
-    // region files
+    
+    
+    
     std::vector<FileEntry*>* allFilesInSave =
         sourceSave->getFilesWithPrefix(std::wstring(L""));
     for (auto it = allFilesInSave->begin(); it < allFilesInSave->end(); ++it) {

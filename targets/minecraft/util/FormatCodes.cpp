@@ -39,7 +39,7 @@ void fc_appendColorOpen(std::wstring& out, uint32_t rgb) {
     out += buf;
 }
 
-}  // namespace
+}  
 
 std::wstring formatCodesToHtml(const std::wstring& escapedText,
                                uint32_t baseColorRgb,
@@ -51,7 +51,7 @@ std::wstring formatCodesToHtml(const std::wstring& escapedText,
     fc_appendColorOpen(out, baseColorRgb);
 
     auto switchColor = [&](uint32_t rgb) {
-        // A colour code resets active formatting, like the vanilla font.
+        
         if (italic) {
             out += L"</i>";
             italic = false;
@@ -66,14 +66,14 @@ std::wstring formatCodesToHtml(const std::wstring& escapedText,
             out.push_back(c);
             continue;
         }
-        if (i + 1 >= escapedText.size()) break;  // dangling §: dropped
+        if (i + 1 >= escapedText.size()) break;  
         const wchar_t code = escapedText[i + 1];
         const int hex = fc_hexVal(code);
         if (hex >= 0) {
             switchColor(palette[hex]);
             ++i;
         } else if (code == L'x' || code == L'X') {
-            // Modern RGB sequence: six "§<hexdigit>" pairs follow.
+            
             int digits[6];
             int got = 0;
             size_t j = i + 2;
@@ -89,9 +89,9 @@ std::wstring formatCodesToHtml(const std::wstring& escapedText,
                     (static_cast<uint32_t>(digits[2] * 16 + digits[3]) << 8) |
                     static_cast<uint32_t>(digits[4] * 16 + digits[5]);
                 switchColor(palette[fc_nearestPaletteIndex(rgb, palette)]);
-                i = j - 1;  // consume the whole sequence
+                i = j - 1;  
             } else {
-                ++i;  // malformed: drop the §x, reprocess the pairs normally
+                ++i;  
             }
         } else if (code == L'r' || code == L'R') {
             switchColor(baseColorRgb);
@@ -103,8 +103,8 @@ std::wstring formatCodesToHtml(const std::wstring& escapedText,
             }
             ++i;
         } else {
-            // §l bold (no HtmlString support), §k/§m/§n and anything unknown:
-            // silently stripped, never rendered.
+            
+            
             ++i;
         }
     }

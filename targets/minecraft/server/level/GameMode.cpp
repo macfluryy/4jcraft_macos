@@ -12,7 +12,7 @@
 
 
 GameMode::GameMode(Minecraft* minecraft) {
-    instaBuild = false;  // 4J - added
+    instaBuild = false;  
     this->minecraft = minecraft;
 }
 
@@ -23,18 +23,18 @@ bool GameMode::destroyBlock(int x, int y, int z, int face) {
     Tile* oldTile = Tile::tiles[level->getTile(x, y, z)];
     if (oldTile == nullptr) return false;
 
-    //  4J - Let the rendering side of thing know we are about to destroy the
-    //  tile, so we can synchronise collision with async render data upates.
+    
+    
     minecraft->levelRenderer->destroyedTileManager->destroyingTileAt(level, x,
                                                                      y, z);
     level->levelEvent(
         LevelEvent::PARTICLES_DESTROY_BLOCK, x, y, z,
         oldTile->id + (level->getData(x, y, z) << Tile::TILE_NUM_SHIFT));
     int data = level->getData(x, y, z);
-    // 4J - before we remove the tile, recalc the heightmap - setTile depends on
-    // this being valid to be able to do a quick update of skylighting when the
-    // block is removed, and there are cases with falling tiles where this can
-    // get out of sync
+    
+    
+    
+    
     level->getChunkAt(x, z)->recalcHeightmapOnly();
     bool changed = level->setTile(x, y, z, 0);
 
@@ -55,46 +55,46 @@ void GameMode::tick() {}
 
 void GameMode::adjustPlayer(std::shared_ptr<Player> player) {}
 
-// bool GameMode::useItemOn(shared_ptr<Player> player, Level *level,
-// shared_ptr<ItemInstance> item, int x, int y, int z, int face, bool
-// bTestUseOnOnly)
-//{
-//	// 4J-PB - Adding a test only version to allow tooltips to be displayed
-//	int t = level->getTile(x, y, z);
-//	if (t > 0)
-//	{
-//		if(bTestUseOnOnly)
-//		{
-//			switch(t)
-//			{
-//			case Tile::recordPlayer_Id:
-//			case Tile::bed_Id: // special case for a bed
-//				if (Tile::tiles[t]->TestUse(level, x, y, z,
-// player ))
-//				{
-//					return true;
-//				}
-//				else
-//				{
-//					// bed is too far away, or something
-//					return false;
-//				}
-//			break;
-//			default:
-//				if (Tile::tiles[t]->TestUse()) return true;
-//				break;
-//			}
-//		}
-//		else
-//		{
-//			if (Tile::tiles[t]->use(level, x, y, z, player )) return
-// true;
-//		}
-//	}
-//
-//     if (item == nullptr) return false;
-//     return item->useOn(player, level, x, y, z, face, bTestUseOnOnly);
-// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 std::shared_ptr<Player> GameMode::createPlayer(Level* level) {
     return std::make_shared<LocalPlayer>(minecraft, level, minecraft->user,
@@ -150,7 +150,7 @@ bool GameMode::handleCraftItem(int recipe, std::shared_ptr<Player> player) {
     return true;
 }
 
-// 4J-PB
+
 void GameMode::handleDebugOptions(unsigned int uiVal,
                                   std::shared_ptr<Player> player) {
     player->SetDebugOptions(uiVal);

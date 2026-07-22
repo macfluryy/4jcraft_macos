@@ -29,15 +29,15 @@ MinecartRenderer::MinecartRenderer() {
 
 void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
                               double z, float rot, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Minecart> cart = std::dynamic_pointer_cast<Minecart>(_cart);
 
     glPushMatrix();
 
     bindTexture(cart);
 
-    // 4jcraft added a bunch of casts to prever overflow
+    
     int64_t seed = (int64_t)((uint64_t)cart->entityId * 493286711ULL);
     seed = (int64_t)(((uint64_t)seed * (uint64_t)seed * 4392167121ULL) +
                      ((uint64_t)seed * 98761ULL));
@@ -111,40 +111,40 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
     model->render(cart, 0, 0, -0.1f, 0, 0, 1 / 16.0f, true);
     glPopMatrix();
 
-    /*
-    if (cart->type != Minecart::RIDEABLE)
-    {
-    glPushMatrix();
-    bindTexture(TN_TERRAIN);	// 4J was L"/terrain.png"
-    float ss = 12 / 16.0f;
-    glScalef(ss, ss, ss);
+    
 
-    // 4J - changes here brought forward from 1.2.3
-    if (cart->type == Minecart::CHEST)
-    {
-    glTranslatef(0 / 16.0f, 8 / 16.0f, 0 / 16.0f);
-    TileRenderer *tr = new TileRenderer();
-    tr->renderTile(Tile::chest, 0, cart->getBrightness(a));
-    delete tr;
-    }
-    else if (cart->type == Minecart::FURNACE)
-    {
-    glTranslatef(0, 6 / 16.0f, 0);
-    TileRenderer *tr = new TileRenderer();
-    tr->renderTile(Tile::furnace, 0, cart->getBrightness(a));
-    delete tr;
-    }
-    glPopMatrix();
-    glColor4f(1, 1, 1, 1);
-    }
 
-    bindTexture(TN_ITEM_CART);		// 4J - was L"/item/cart.png"
-    glScalef(-1, -1, 1);
-    // model.render(0, 0, cart->getLootContent() * 7.1f - 0.1f, 0, 0, 1 /
-    // 16.0f);
-    model->render(cart, 0, 0, -0.1f, 0, 0, 1 / 16.0f, true);
-    glPopMatrix();
-    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 ResourceLocation* MinecartRenderer::getTextureLocation(

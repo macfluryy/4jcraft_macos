@@ -14,7 +14,7 @@ private:
 public:
     static std::optional<Vec3> getPos(std::shared_ptr<PathfinderMob> mob,
                                       int xzDist, int yDist,
-                                      int quadrant = -1);  // 4J added quadrant
+                                      int quadrant = -1);  
     static std::optional<Vec3> getPosTowards(std::shared_ptr<PathfinderMob> mob,
                                              int xzDist, int yDist,
                                              Vec3* towardsPos);
@@ -25,5 +25,5 @@ public:
 private:
     static std::optional<Vec3> generateRandomPos(
         std::shared_ptr<PathfinderMob> mob, int xzDist, int yDist, Vec3* dir,
-        int quadrant = -1);  // 4J added quadrant
+        int quadrant = -1);  
 };

@@ -23,15 +23,15 @@ private:
     static RegionFileCache s_defaultCache;
 
 public:
-    // Made public and non-static so we can have a cache for input and output
-    // files
+    
+    
     RegionFileCache() {}
     ~RegionFileCache();
 
     RegionFile* _getRegionFile(ConsoleSaveFile* saveFile,
                                const std::wstring& prefix, int chunkX,
-                               int chunkZ);  // 4J - TODO was synchronized
-    void _clear();                           // 4J - TODO was synchronized
+                               int chunkZ);  
+    void _clear();                           
     int _getSizeDelta(ConsoleSaveFile* saveFile, const std::wstring& prefix,
                       int chunkX, int chunkZ);
     DataInputStream* _getChunkDataInputStream(ConsoleSaveFile* saveFile,
@@ -41,7 +41,7 @@ public:
                                                 const std::wstring& prefix,
                                                 int chunkX, int chunkZ);
 
-    // Keep static version for general game usage
+    
     static RegionFile* getRegionFile(ConsoleSaveFile* saveFile,
                                      const std::wstring& prefix, int chunkX,
                                      int chunkZ) {

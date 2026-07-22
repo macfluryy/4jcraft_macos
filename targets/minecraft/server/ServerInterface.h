@@ -21,7 +21,7 @@ class ServerInterface {
     virtual void disablePlugin() = 0;
     virtual std::wstring runCommand(const std::wstring& command) = 0;
     virtual bool isDebugging() = 0;
-    // Logging
+    
     virtual void info(const std::wstring& string) = 0;
     virtual void warn(const std::wstring& string) = 0;
     virtual void error(const std::wstring& string) = 0;

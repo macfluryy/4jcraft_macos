@@ -1,9 +1,9 @@
 #pragma once
-// 4J-PB - remove the inherits via dominance warnings
 
-// using namespace std;
-//  A scene map directly to an Iggy movie (or more accurately a collection of
-//  different sized movies)
+
+
+
+
 
 #include <stddef.h>
 
@@ -29,7 +29,7 @@ class ItemInstance;
 class UIControl_Base;
 class UIControl;
 
-// 4J Stu - Setup some defines for quickly mapping elements in the scene
+
 
 #define UI_BEGIN_MAP_ELEMENTS_AND_NAMES(parentClass) \
     virtual bool mapElementsAndNames() {             \
@@ -166,11 +166,11 @@ protected:
     virtual void handleTimerComplete(int id) {}
 
 public:
-    // FOCUS
-    // Returns true if this scene handles input
+    
+    
     virtual bool stealsFocus() { return true; }
 
-    // Returns true if this scene has focus for the pad passed in
+    
     virtual bool hasFocus(int iPad) { return bHasFocus && iPad == m_iPad; }
 
     void gainFocus();
@@ -181,22 +181,22 @@ public:
     virtual void handleGainFocus(bool navBack);
     virtual void handleLoseFocus() {}
 
-    // Returns true if lower scenes in this scenes layer, or in any layer below
-    // this scenes layers should be hidden
+    
+    
     virtual bool hidesLowerScenes() { return m_hasTickedOnce; }
 
-    // Returns true if this scene should block input to lower scenes (works like
-    // hidesLowerScenes but doesn't interfere with rendering)
+    
+    
     virtual bool blocksInput() { return false; }
 
-    // returns main panel if controls are not living in the root
+    
     virtual UIControl* GetMainPanel();
 
     void removeControl(UIControl_Base* control, bool centreScene);
     void slideLeft();
     void slideRight();
 
-    // RENDERING
+    
     virtual void render(S32 width, S32 height,
                         C4JRender::eViewportType viewpBort);
 
@@ -207,9 +207,9 @@ public:
     bool isVisible() { return m_bVisible; }
 
 protected:
-    // void customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int
-    // iPad, int iID, int iCount, int iAuxVal, float fAlpha, bool isFoil, bool
-    // bDecorations);
+    
+    
+    
     void customDrawSlotControl(IggyCustomDrawCallbackRegion* region, int iPad,
                                std::shared_ptr<ItemInstance> item, float fAlpha,
                                bool isFoil, bool bDecorations);
@@ -234,7 +234,7 @@ private:
                                 bool usingCommandBuffer);
 
 public:
-    // INPUT
+    
     bool canHandleInput() { return m_bCanHandleInput; }
     virtual bool allowRepeat(int key);
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
@@ -269,9 +269,9 @@ public:
     int getControlFocus();
     int getControlChildFocus();
 
-    // NAVIGATION
+    
 protected:
-    // void navigateForward(int iPad, EUIScene scene, void *initData = nullptr);
+    
     void navigateBack();
 
 public:

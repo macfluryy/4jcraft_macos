@@ -111,7 +111,7 @@ bool PigZombie::hurt(DamageSource* source, float dmg) {
         level->getEntities(shared_from_this(), &grown, nearby);
         auto itEnd = nearby.end();
         for (auto it = nearby.begin(); it != itEnd; it++) {
-            std::shared_ptr<Entity> e = *it;  // nearby.at(i);
+            std::shared_ptr<Entity> e = *it;  
             if (e->instanceof(eTYPE_PIGZOMBIE)) {
                 std::shared_ptr<PigZombie> pigZombie =
                     std::dynamic_pointer_cast<PigZombie>(e);
@@ -160,7 +160,7 @@ void PigZombie::populateDefaultEquipmentSlots() {
 }
 
 MobGroupData* PigZombie::finalizeMobSpawn(
-    MobGroupData* groupData, int extraData /*= 0*/)  // 4J Added extraData param
+    MobGroupData* groupData, int extraData )  
 {
     Zombie::finalizeMobSpawn(groupData);
     setVillager(false);

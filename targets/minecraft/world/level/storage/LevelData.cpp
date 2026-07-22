@@ -77,24 +77,24 @@ LevelData::LevelData(CompoundTag* tag) {
         allowCommands = gameType == GameType::CREATIVE;
     }
 
-    // 4J: Game rules are now stored with app game host options
-    /*if (tag->contains(L"GameRules"))
-    {
-            gameRules.loadFromTag(tag->getCompound(L"GameRules"));
-    }*/
+    
+    
+
+
+
 
     newSeaLevel = tag->getBoolean(
-        L"newSeaLevel");  // 4J added - only use new sea level for newly created
-                          // maps. This read defaults to false. (sea level
-                          // changes in 1.8.2)
+        L"newSeaLevel");  
+                          
+                          
     hasBeenInCreative = tag->getBoolean(
-        L"hasBeenInCreative");  // 4J added so we can not award achievements to
-                                // levels modified in creative
+        L"hasBeenInCreative");  
+                                
 
-    // 4J macOS - restore persisted host game-rule bitmask. Older saves
-    // won't have this key; getInt returns 0 then and we leave the
-    // host-picked settings untouched (MinecraftServer::loadLevel guards
-    // on != 0).
+    
+    
+    
+    
     if (tag->contains(L"GameHostSettings")) {
         m_gameHostSettings =
             (unsigned int)tag->getInt(L"GameHostSettings");
@@ -102,11 +102,11 @@ LevelData::LevelData(CompoundTag* tag) {
         m_gameHostSettings = 0;
     }
 
-    // 4J added - for stronghold position
+    
     bStronghold = tag->getBoolean(L"hasStronghold");
 
     if (bStronghold == false) {
-        // we need to generate the position
+        
         xStronghold = yStronghold = zStronghold = 0;
     } else {
         xStronghold = tag->getInt(L"StrongholdX");
@@ -114,18 +114,18 @@ LevelData::LevelData(CompoundTag* tag) {
         zStronghold = tag->getInt(L"StrongholdZ");
     }
 
-    // 4J added - for stronghold end portal position
+    
     bStrongholdEndPortal = tag->getBoolean(L"hasStrongholdEndPortal");
 
     if (bStrongholdEndPortal == false) {
-        // we need to generate the position
+        
         xStrongholdEndPortal = zStrongholdEndPortal = 0;
     } else {
         xStrongholdEndPortal = tag->getInt(L"StrongholdEndPortalX");
         zStrongholdEndPortal = tag->getInt(L"StrongholdEndPortalZ");
     }
 
-    // 4J Added
+    
     m_xzSize = tag->getInt(L"XZSize");
     m_hellScale = tag->getInt(L"HellScale");
 
@@ -174,7 +174,7 @@ LevelData::LevelData(CompoundTag* tag) {
     }
 
 #ifdef _LARGE_WORLDS
-    // set the host option, in case it wasn't setup already
+    
     EGameHostOptionWorldSize hostOptionworldSize = e_worldSize_Unknown;
     switch (m_xzSize) {
         case LEVEL_WIDTH_CLASSIC:
@@ -196,17 +196,17 @@ LevelData::LevelData(CompoundTag* tag) {
     app.SetGameHostOption(eGameHostOption_WorldSize, hostOptionworldSize);
 #endif
 
-    /* 4J - we don't store this anymore
-    if (tag->contains(L"Player"))
-    {
-    loadedPlayerTag = tag->getCompound(L"Player");
-    dimension = loadedPlayerTag->getInt(L"Dimension");
-    }
-    else
-    {
-    this->loadedPlayerTag = nullptr;
-    }
-    */
+    
+
+
+
+
+
+
+
+
+
+
     dimension = 0;
 }
 
@@ -222,16 +222,16 @@ LevelData::LevelData(LevelSettings* levelSettings,
     generatorOptions = levelSettings->getLevelTypeOptions();
     allowCommands = levelSettings->getAllowCommands();
 
-    // 4J Stu - Default initers
+    
     xSpawn = 0;
     ySpawn = 0;
     zSpawn = 0;
-    dayTime = -1;  // 4J-JEV: Edited: To know when this is uninitialized.
+    dayTime = -1;  
     gameTime = -1;
     lastPlayed = 0;
     sizeOnDisk = 0;
-    //    this->loadedPlayerTag = nullptr;	// 4J - we don't store this
-    //    anymore
+    
+    
     dimension = 0;
     version = 0;
     rainTime = 0;
@@ -241,12 +241,12 @@ LevelData::LevelData(LevelSettings* levelSettings,
     initialized = false;
     newSeaLevel =
         levelSettings
-            ->useNewSeaLevel();  // 4J added - only use new sea level for newly
-                                 // created maps (sea level changes in 1.8.2)
+            ->useNewSeaLevel();  
+                                 
     hasBeenInCreative =
-        levelSettings->getGameType() == GameType::CREATIVE;  // 4J added
+        levelSettings->getGameType() == GameType::CREATIVE;  
 
-    // 4J-PB for the stronghold position
+    
     bStronghold = false;
     xStronghold = 0;
     yStronghold = 0;
@@ -293,8 +293,8 @@ LevelData::LevelData(LevelData* copy) {
     dayTime = copy->dayTime;
     lastPlayed = copy->lastPlayed;
     sizeOnDisk = copy->sizeOnDisk;
-    //    this->loadedPlayerTag = copy->loadedPlayerTag;		// 4J -
-    //    we don't store this anymore
+    
+    
     dimension = copy->dimension;
     levelName = copy->levelName;
     version = copy->version;
@@ -307,10 +307,10 @@ LevelData::LevelData(LevelData* copy) {
     initialized = copy->initialized;
     newSeaLevel = copy->newSeaLevel;
     hasBeenInCreative = copy->hasBeenInCreative;
-    m_gameHostSettings = copy->m_gameHostSettings;  // 4J macOS
+    m_gameHostSettings = copy->m_gameHostSettings;  
     gameRules = copy->gameRules;
 
-    // 4J-PB for the stronghold position
+    
     bStronghold = copy->bStronghold;
     xStronghold = copy->xStronghold;
     yStronghold = copy->yStronghold;
@@ -340,7 +340,7 @@ CompoundTag* LevelData::createTag() {
 
 CompoundTag* LevelData::createTag(
     std::vector<std::shared_ptr<Player> >* players) {
-    // 4J - removed all code for storing tags for players
+    
     return createTag();
 }
 
@@ -368,19 +368,19 @@ void LevelData::setTagData(CompoundTag* tag) {
     tag->putBoolean(L"hardcore", hardcore);
     tag->putBoolean(L"allowCommands", allowCommands);
     tag->putBoolean(L"initialized", initialized);
-    // 4J: Game rules are now stored with app game host options
-    // tag->putCompound(L"GameRules", gameRules.createTag());
+    
+    
     tag->putBoolean(L"newSeaLevel", newSeaLevel);
     tag->putBoolean(L"hasBeenInCreative", hasBeenInCreative);
-    // 4J macOS - persist the host game-rule bitmask so PVP / TNT / fire
-    // spread / keep-inventory / daylight-cycle etc survive a relaunch.
+    
+    
     tag->putInt(L"GameHostSettings", (int)m_gameHostSettings);
-    // store the stronghold position
+    
     tag->putBoolean(L"hasStronghold", bStronghold);
     tag->putInt(L"StrongholdX", xStronghold);
     tag->putInt(L"StrongholdY", yStronghold);
     tag->putInt(L"StrongholdZ", zStronghold);
-    // store the stronghold end portal position
+    
     tag->putBoolean(L"hasStrongholdEndPortal", bStrongholdEndPortal);
     tag->putInt(L"StrongholdEndPortalX", xStrongholdEndPortal);
     tag->putInt(L"StrongholdEndPortalZ", zStrongholdEndPortal);
@@ -417,14 +417,14 @@ int64_t LevelData::getDayTime() { return dayTime; }
 int64_t LevelData::getSizeOnDisk() { return sizeOnDisk; }
 
 CompoundTag* LevelData::getLoadedPlayerTag() {
-    return nullptr;  // 4J - we don't store this anymore
+    return nullptr;  
 }
 
-// 4J Removed TU9 as it's never accurate due to the dimension never being set
-// int LevelData::getDimension()
-//{
-//    return dimension;
-//}
+
+
+
+
+
 
 void LevelData::setSeed(int64_t seed) { this->seed = seed; }
 
@@ -471,15 +471,15 @@ void LevelData::setSizeOnDisk(int64_t sizeOnDisk) {
 }
 
 void LevelData::setLoadedPlayerTag(CompoundTag* loadedPlayerTag) {
-    // 4J - we don't store this anymore
-    //    this->loadedPlayerTag = loadedPlayerTag;
+    
+    
 }
 
-// 4J Remove TU9 as it's never used
-// void LevelData::setDimension(int dimension)
-//{
-//    this->dimension = dimension;
-//}
+
+
+
+
+
 
 void LevelData::setSpawn(int xSpawn, int ySpawn, int zSpawn) {
     this->xSpawn = xSpawn;
@@ -528,7 +528,7 @@ bool LevelData::getSpawnBonusChest() { return spawnBonusChest; }
 void LevelData::setGameType(GameType* gameType) {
     this->gameType = gameType;
 
-    // 4J Added
+    
     hasBeenInCreative =
         hasBeenInCreative || (gameType == GameType::CREATIVE) ||
         (app.GetGameHostOption(eGameHostOption_CheatsEnabled) > 0);
@@ -583,7 +583,7 @@ int LevelData::getXZHellSizeOld() {
 
     while (hellXZSizeOld > HELL_LEVEL_MAX_WIDTH &&
            m_hellScaleOld < HELL_LEVEL_MAX_SCALE) {
-        assert(0);  // should never get in here?
+        assert(0);  
         ++m_hellScaleOld;
         hellXZSizeOld = m_xzSize / m_hellScale;
     }

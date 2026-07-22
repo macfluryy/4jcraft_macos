@@ -35,7 +35,7 @@ public:
     void unregisterTexture(const std::wstring& name, Texture* texture);
     Stitcher* createStitcher(const std::wstring& name);
     std::vector<Texture*>* createTextures(
-        const std::wstring& filename, bool mipmap);  // 4J added mipmap param
+        const std::wstring& filename, bool mipmap);  
 
 private:
     std::wstring getTextureNameFromPath(const std::wstring& filename);
@@ -47,5 +47,5 @@ public:
                            int magFilter, bool mipmap, BufferedImage* image);
     Texture* createTexture(const std::wstring& name, int mode, int width,
                            int height, int format,
-                           bool mipmap);  // 4J Added mipmap param
+                           bool mipmap);  
 };

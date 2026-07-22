@@ -13,16 +13,16 @@ bool ReedsFeature::place(Level* level, Random* random, int x, int y, int z) {
         int y2 = y;
         int z2 = z + random->nextInt(4) - random->nextInt(4);
 
-        // 4J Stu Added to stop reed features generating areas previously place
-        // by game rule generation
+        
+        
         if (app.getLevelGenerationOptions() != nullptr) {
             LevelGenerationOptions* levelGenOptions =
                 app.getLevelGenerationOptions();
             bool intersects =
                 levelGenOptions->checkIntersects(x2, y2, z2, x2, y2, z2);
             if (intersects) {
-                // app.DebugPrintf("Skipping reeds feature generation as it
-                // overlaps a game rule structure\n");
+                
+                
                 continue;
             }
         }

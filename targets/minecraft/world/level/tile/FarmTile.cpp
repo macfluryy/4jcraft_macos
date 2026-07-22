@@ -25,7 +25,7 @@ FarmTile::FarmTile(int id) : Tile(id, Material::dirt, false) {
     setLightBlock(255);
 }
 
-// 4J Added override
+
 void FarmTile::updateDefaultShape() { setShape(0, 0, 0, 1, 15 / 16.0f, 1); }
 
 std::optional<AABB> FarmTile::getAABB(Level* level, int x, int y, int z) {
@@ -64,9 +64,9 @@ void FarmTile::tick(Level* level, int x, int y, int z, Random* random) {
 
 void FarmTile::fallOn(Level* level, int x, int y, int z,
                       std::shared_ptr<Entity> entity, float fallDistance) {
-    // 4J Stu - Fix for #86148 - Code: Gameplay: Jumping on Farmland does not
-    // always result in turning to Dirt Block We should not be setting tiles on
-    // the client based on random values!
+    
+    
+    
     if (!level->isClientSide &&
         level->random->nextFloat() < (fallDistance - .5f)) {
         if (entity->instanceof(eTYPE_PLAYER)) {

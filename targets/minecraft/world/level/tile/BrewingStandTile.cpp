@@ -56,7 +56,7 @@ void BrewingStandTile::updateDefaultShape() {
 bool BrewingStandTile::use(
     Level* level, int x, int y, int z, std::shared_ptr<Player> player,
     int clickedFace, float clickX, float clickY, float clickZ,
-    bool soundOnly /*=false*/)  // 4J added soundOnly param
+    bool soundOnly )  
 {
     if (soundOnly) return false;
 

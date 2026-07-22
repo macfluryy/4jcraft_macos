@@ -33,8 +33,8 @@ class CompoundTag;
 class PlayerList {
 private:
     static const int SEND_PLAYER_INFO_INTERVAL =
-        20 * 10;  // 4J - brought forward from 1.2.3
-    //    public static Logger logger = Logger.getLogger("Minecraft");
+        20 * 10;  
+    
 public:
     std::vector<std::shared_ptr<ServerPlayer> > players;
 
@@ -42,26 +42,26 @@ private:
     MinecraftServer* server;
     unsigned int maxPlayers;
 
-    // 4J Added
+    
     std::vector<PlayerUID> m_bannedXuids;
     std::deque<std::uint8_t> m_smallIdsToKick;
     std::mutex m_kickPlayersCS;
     std::deque<std::uint8_t> m_smallIdsToClose;
     std::mutex m_closePlayersCS;
-    /* 4J - removed
-            Set<String> bans = new HashSet<String>();
-        Set<String> ipBans = new HashSet<String>();
-        Set<String> ops = new HashSet<String>();
-        Set<String> whitelist = new HashSet<String>();
-        File banFile, ipBanFile, opFile, whiteListFile;
-            */
+    
+
+
+
+
+
+
     PlayerIO* playerIo;
     bool doWhiteList;
 
 public:
-    // 4J macOS - exposed for the graceful shutdown save path
-    // (MinecraftServer::forceShutdownSave needs to flush cached
-    // map / player data on Cmd+Q and SIGTERM).
+    
+    
+    
     PlayerIO* getPlayerIO() { return playerIo; }
 
 private:
@@ -72,20 +72,20 @@ private:
 
     int sendAllPlayerInfoIn;
 
-    // 4J Added to maintain which players in which dimensions can receive all
-    // packet types
+    
+    
     std::vector<std::shared_ptr<ServerPlayer> > receiveAllPlayers[3];
 
-    // 4J macOS - multiplayer persistence hardening. Track wall-clock
-    // milliseconds of the last full disk flush so we don't flush the
-    // entire level on every disconnect (would stall the host on every
-    // join/leave). Rate-limited to once per 60s; player .dat files are
-    // always flushed via saveAllCachedData() which is cheap.
+    
+    
+    
+    
+    
     int64_t m_lastFullDiskFlushMs;
-    // Multiplayer autosave override: when remote players are connected
-    // we shorten the autosave interval since the host's local autosave
-    // (5+ minutes default) is too coarse for shared worlds. This counter
-    // ticks down at 20Hz; when it hits zero we run a flush and reset.
+    
+    
+    
+    
     int m_mpAutosaveCountdown;
 
 private:
@@ -122,7 +122,7 @@ protected:
 
 public:
     void validatePlayerSpawnPosition(
-        std::shared_ptr<ServerPlayer> player);  // 4J Added
+        std::shared_ptr<ServerPlayer> player);  
     void add(std::shared_ptr<ServerPlayer> player);
     void move(std::shared_ptr<ServerPlayer> player);
     void remove(std::shared_ptr<ServerPlayer> player);
@@ -138,8 +138,8 @@ public:
                                    int lastDimension, ServerLevel* oldLevel,
                                    ServerLevel* newLevel);
     void tick();
-    bool isTrackingTile(int x, int y, int z, int dimension);         // 4J added
-    void prioritiseTileChanges(int x, int y, int z, int dimension);  // 4J added
+    bool isTrackingTile(int x, int y, int z, int dimension);         
+    void prioritiseTileChanges(int x, int y, int z, int dimension);  
     void broadcastAll(std::shared_ptr<Packet> packet);
     void broadcastAll(std::shared_ptr<Packet> packet, int dimension);
 
@@ -148,7 +148,7 @@ public:
 public:
     bool isWhiteListed(const std::wstring& name);
     bool isOp(const std::wstring& name);
-    bool isOp(std::shared_ptr<ServerPlayer> player);  // 4J Added
+    bool isOp(std::shared_ptr<ServerPlayer> player);  
     std::shared_ptr<ServerPlayer> getPlayer(const std::wstring& name);
     std::shared_ptr<ServerPlayer> getPlayer(PlayerUID uid);
     std::shared_ptr<ServerPlayer> getNearestPlayer(Pos* position, int range);
@@ -170,19 +170,19 @@ public:
                    std::shared_ptr<Packet> packet);
     void broadcast(std::shared_ptr<Player> except, double x, double y, double z,
                    double range, int dimension, std::shared_ptr<Packet> packet);
-    // 4J Added ProgressListener *progressListener param and bDeleteGuestMaps
-    // param
+    
+    
     void saveAll(ProgressListener* progressListener,
                  bool bDeleteGuestMaps = false);
     void whiteList(const std::wstring& playerName);
     void blackList(const std::wstring& playerName);
-    //    Set<String> getWhiteList();		/ 4J removed
+    
     void reloadWhitelist();
     void sendLevelInfo(std::shared_ptr<ServerPlayer> player,
                        ServerLevel* level);
     void sendAllPlayerInfo(std::shared_ptr<ServerPlayer> player);
     int getPlayerCount();
-    int getPlayerCount(ServerLevel* level);  // 4J Added
+    int getPlayerCount(ServerLevel* level);  
     int getMaxPlayers();
     MinecraftServer* getServer();
     int getViewDistance();
@@ -196,13 +196,13 @@ private:
 public:
     void setAllowCheatsForAllPlayers(bool allowCommands);
 
-    // 4J Added
+    
     void kickPlayerByShortId(std::uint8_t networkSmallId);
     void closePlayerConnectionBySmallId(std::uint8_t networkSmallId);
     bool isXuidBanned(PlayerUID xuid);
-    // 4J Added - explicit ban management for /ban + /pardon
+    
     bool banXuid(PlayerUID xuid);
     bool pardonXuid(PlayerUID xuid);
-    // AP added for Vita so the range can be increased once the level starts
+    
     void setViewDistance(int newViewDistance);
 };

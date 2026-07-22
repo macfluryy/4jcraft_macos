@@ -38,7 +38,7 @@
 #include "minecraft/world/level/storage/LevelSummary.h"
 
 SelectWorldScreen::SelectWorldScreen(Screen* lastScreen) {
-    // 4J - added initialisers
+    
     title = L"Select world";
     done = false;
     selectedWorld = 0;
@@ -69,7 +69,7 @@ void SelectWorldScreen::init() {
 void SelectWorldScreen::loadLevelList() {
     LevelStorageSource* levelSource = minecraft->getLevelSource();
     levelList = levelSource->getLevelList();
-    //	Collections.sort(levelList);	// 4J - TODO - get sort functor etc.
+    
     selectedWorld = -1;
 }
 
@@ -106,13 +106,13 @@ void SelectWorldScreen::postInit() {
                                  language->getElement(L"selectWorld.create")));
     buttons.push_back(new Button(BUTTON_CANCEL_ID, width / 2 + 4, height - 28,
                                  150, 20, language->getElement(L"gui.cancel")));
-    /*buttons.push_back(new Button(BUTTON_MULTIPLAYER_ID,
-                                 width / 2 - 100, 4, 200, 20,
-                                 L"Multiplayer (Direct Connect)"));
-    fprintf(stderr,
-            "[TCP] SelectWorldScreen::postInit - added Multiplayer button "
-            "(width=%d height=%d)\n",
-            width, height);*/
+    
+
+
+
+
+
+
 
     selectButton->active = false;
     deleteButton->active = false;
@@ -153,11 +153,11 @@ void SelectWorldScreen::buttonClicked(Button* button) {
             "SelectWorldScreen::buttonClicked 'Cancel' "
             "minecraft->setScreen(lastScreen)\n");
         minecraft->setScreen(lastScreen);
-    /*} else if (button->id == BUTTON_MULTIPLAYER_ID) {
-        fprintf(stderr,
-                "[TCP] SelectWorldScreen::Multiplayer -> "
-                "JoinMultiplayerScreen\n");
-        minecraft->setScreen(new JoinMultiplayerScreen(this));*/
+    
+
+
+
+
     } else {
         worldSelectionList->buttonClicked(button);
     }
@@ -188,18 +188,18 @@ void SelectWorldScreen::worldSelected(int id) {
         worldFolderName = L"World" + toWString<int>(id);
     }
 
-    minecraft->setScreen(new Screen());  // blank screen while world loads
+    minecraft->setScreen(new Screen());  
 
-    // Point the StorageManager at the save slot named after this world so any
-    // autosave writes land in the matching .mcs file under ~/Library/
-    // Application Support/4jcraft/Saves/.
+    
+    
+    
     StorageManager.ResetSaveData();
     StorageManager.SetSaveTitle((wchar_t*)worldFolderName.c_str());
 
     NetworkGameInitData* param = new NetworkGameInitData();
     param->seed = 0;
-    param->findSeed = true;        // regenerate if no seed info available
-    param->saveData = nullptr;     // no raw save blob to hand off
+    param->findSeed = true;        
+    param->saveData = nullptr;     
     param->texturePackId = 0;
     param->settings = 0;
 
@@ -285,7 +285,7 @@ void SelectWorldScreen::confirmResult(bool result, int id) {
 }
 
 void SelectWorldScreen::render(int xm, int ym, float a) {
-    // fill(0, 0, width, height, 0x40000000);
+    
     renderDirtBackground(0);
     worldSelectionList->render(xm, ym, a);
 
@@ -293,21 +293,21 @@ void SelectWorldScreen::render(int xm, int ym, float a) {
 
     Screen::render(xm, ym, a);
 
-    // 4J - debug code - remove
+    
     if (0) {
         static int count = 0;
         static bool forceCreateLevel = false;
         if (count++ >= 100) {
             if (!forceCreateLevel && levelList->size() > 0) {
-                // 4J Stu - For some obscures reason the "delete" button is
-                // called "renameButton" and vice versa. if( levelList->size() >
-                // 2 && deleteButton->active )
-                //{
-                //	this->selectedWorld = 2;
-                //	count = 0;
-                //	buttonClicked(deleteButton);
-                //}
-                // else
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 if (levelList->size() > 1 && renameButton->active) {
                     this->selectedWorld = 1;
                     count = 0;
@@ -315,7 +315,7 @@ void SelectWorldScreen::render(int xm, int ym, float a) {
                 } else if (selectButton->active == true) {
                     this->selectedWorld = 0;
                     buttonClicked(selectButton);
-                    // this->worldSelected( 0 );
+                    
                 } else {
                     selectButton->active = true;
                     deleteButton->active = true;
@@ -366,8 +366,8 @@ int SelectWorldScreen::WorldSelectionList::getMaxPosition() {
 }
 
 void SelectWorldScreen::WorldSelectionList::renderBackground() {
-    parent->renderBackground();  // 4J - was
-                                 // SelectWorldScreen.this.renderBackground();
+    parent->renderBackground();  
+                                 
 }
 
 void SelectWorldScreen::WorldSelectionList::renderItem(int i, int x, int y,

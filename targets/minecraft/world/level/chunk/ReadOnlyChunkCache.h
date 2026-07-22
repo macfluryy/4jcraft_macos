@@ -34,7 +34,7 @@ public:
     virtual LevelChunk* getChunk(int x, int z);
 
 private:
-    LevelChunk* load(int x, int z);  // 4J - TODO - was synchronized
+    LevelChunk* load(int x, int z);  
 
 public:
     virtual void postProcess(ChunkSource* parent, int x, int z);

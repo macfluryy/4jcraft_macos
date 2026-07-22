@@ -5,7 +5,7 @@
 
 #include "Node.h"
 
-// 4J Jev, add common ctor code.
+
 void BinaryHeap::_init() {
     heap = std::vector<Node*>(1024);
     sizeVar = 0;
@@ -16,10 +16,10 @@ BinaryHeap::BinaryHeap() { _init(); }
 BinaryHeap::~BinaryHeap() {}
 
 Node* BinaryHeap::insert(Node* node) {
-    /* if (node->heapIdx >=0) throw new IllegalStateException("OW KNOWS!"); 4J
-     * Jev, removed try/catch */
+    
 
-    // Expand if necessary.
+
+    
     if (sizeVar == heap.size()) {
         std::vector<Node*> newHeap = std::vector<Node*>(sizeVar << 1);
 
@@ -28,7 +28,7 @@ Node* BinaryHeap::insert(Node* node) {
         heap = newHeap;
     }
 
-    // Insert at end and bubble up.
+    
     heap[sizeVar] = node;
     node->heapIdx = sizeVar;
     upHeap(sizeVar++);
@@ -50,7 +50,7 @@ Node* BinaryHeap::pop() {
 }
 
 void BinaryHeap::remove(Node* node) {
-    // This is what node.heapIdx is for.
+    
     heap[node->heapIdx] = heap[--sizeVar];
     heap[sizeVar] = nullptr;
     if (sizeVar > node->heapIdx) {
@@ -60,7 +60,7 @@ void BinaryHeap::remove(Node* node) {
             downHeap(node->heapIdx);
         }
     }
-    // Just as a precaution: should make stuff blow up if the node is abused.
+    
     node->heapIdx = -1;
 }
 
@@ -103,15 +103,15 @@ void BinaryHeap::downHeap(int idx) {
 
         if (leftIdx >= sizeVar) break;
 
-        // We definitely have a left child.
+        
         Node* leftNode = heap[leftIdx];
         float leftCost = leftNode->f;
-        // We may have a right child.
+        
         Node* rightNode;
         float rightCost;
 
         if (rightIdx >= sizeVar) {
-            // Only need to compare with left.
+            
             rightNode = nullptr;
             rightCost = std::numeric_limits<float>::infinity();
         } else {
@@ -119,8 +119,8 @@ void BinaryHeap::downHeap(int idx) {
             rightCost = rightNode->f;
         }
 
-        // Find the smallest of the three costs: the corresponding node
-        // should be the parent.
+        
+        
         if (leftCost < rightCost) {
             if (leftCost < cost) {
                 heap[idx] = leftNode;

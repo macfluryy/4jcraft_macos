@@ -22,7 +22,7 @@ LavaParticle::LavaParticle(Level* level, double x, double y, double z)
     setMiscTex(49);
 }
 
-// 4J - brought forward from 1.8.2
+
 int LavaParticle::getLightColor(float a) {
     float l = (age + a) / lifetime;
     if (l < 0) l = 0;

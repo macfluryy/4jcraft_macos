@@ -8,7 +8,7 @@ class UILayer;
 UIComponent_DebugUIConsole::UIComponent_DebugUIConsole(int iPad, void* initData,
                                                        UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_bTextChanged = false;

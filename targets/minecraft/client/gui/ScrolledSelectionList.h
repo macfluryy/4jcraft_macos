@@ -72,7 +72,7 @@ private:
 public:
     void buttonClicked(Button* button);
     void render(int xm, int ym, float a);
-    // 4J macOS - return true if the click hit (and selected) an item.
+    
     bool mouseClicked(int x, int y, int button);
 
 private:

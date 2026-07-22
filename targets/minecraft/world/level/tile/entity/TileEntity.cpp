@@ -71,12 +71,12 @@ void TileEntity::staticCtor() {
 
 void TileEntity::setId(tileEntityCreateFn createFn, eINSTANCEOF clas,
                        std::wstring id) {
-    // 4J Stu - Java has classIdMap.containsKey(id) which would never work as id
-    // is not of the type of the key in classIdMap I have changed to use
-    // idClassMap instead so that we can still search from the string key
-    // TODO 4J Stu - Exceptions
+    
+    
+    
+    
     if (idCreateMap.find(id) != idCreateMap.end()) {
-    }  // throw new IllegalArgumentException("Duplicate id: " + id);
+    }  
     idCreateMap.insert(idToCreateMapType::value_type(id, createFn));
     classIdMap.insert(classToIdMapType::value_type(clas, id));
 }
@@ -105,9 +105,9 @@ void TileEntity::load(CompoundTag* tag) {
 void TileEntity::save(CompoundTag* tag) {
     auto it = classIdMap.find(this->GetType());
     if (it == classIdMap.end()) {
-        // TODO 4J Stu - Some sort of exception handling
-        // throw new RuntimeException(this->getClass() + " is missing a mapping!
-        // This is a bug!");
+        
+        
+        
         return;
     }
     tag->putString(L"id", ((*it).second));
@@ -121,17 +121,17 @@ void TileEntity::tick() {}
 std::shared_ptr<TileEntity> TileEntity::loadStatic(CompoundTag* tag) {
     std::shared_ptr<TileEntity> entity = nullptr;
 
-    // try
-    //{
+    
+    
     auto it = idCreateMap.find(tag->getString(L"id"));
     if (it != idCreateMap.end())
         entity = std::shared_ptr<TileEntity>(it->second());
-    //}
-    // catch (Exception e)
-    //{
-    // TODO 4J Stu - Exception handling?
-    //	e->printStackTrace();
-    //}
+    
+    
+    
+    
+    
+    
     if (entity != nullptr) {
         entity->load(tag);
     } else {
@@ -216,7 +216,7 @@ bool TileEntity::finalizeRenderRemoveStage() {
     return renderRemoveStage == e_RenderRemoveStageRemove;
 }
 
-// 4J Added
+
 void TileEntity::clone(std::shared_ptr<TileEntity> tileEntity) {
     tileEntity->level = this->level;
     tileEntity->x = this->x;

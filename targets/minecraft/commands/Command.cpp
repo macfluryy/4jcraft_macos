@@ -12,8 +12,8 @@ AdminLogCommand* Command::logger;
 int Command::getPermissionLevel() { return LEVEL_OWNERS; }
 
 bool Command::canExecute(std::shared_ptr<CommandSender> source) {
-    //return source->hasPermission(getId());
-    return true; // Bypass permission check to allow all commands locally
+    
+    return true; 
 }
 
 void Command::logAdminAction(std::shared_ptr<CommandSender> source,
@@ -39,11 +39,11 @@ void Command::setLogger(AdminLogCommand* logger) { Command::logger = logger; }
 bool Command::requireOp(std::shared_ptr<CommandSender> source) {
     auto serverPlayer = std::dynamic_pointer_cast<ServerPlayer>(source);
     if (serverPlayer == nullptr) {
-        // Console / non-player command source is implicitly authorized
+        
         return true;
     }
     auto* server = MinecraftServer::getInstance();
-    if (server == nullptr) return true;  // No server, no enforcement
+    if (server == nullptr) return true;  
     if (server->getPlayers()->isOp(serverPlayer)) return true;
 
     serverPlayer->sendMessage(

@@ -51,7 +51,7 @@ bool XboxStructureActionPlaceSpawner::placeSpawnerInLevel(
 
     if (chunkBB->isInside(worldX, worldY, worldZ)) {
         if (level->getTileEntity(worldX, worldY, worldZ) != nullptr) {
-            // Remove the current tile entity
+            
             level->removeTileEntity(worldX, worldY, worldZ);
             level->setTileAndData(worldX, worldY, worldZ, 0, 0,
                                   Tile::UPDATE_ALL);

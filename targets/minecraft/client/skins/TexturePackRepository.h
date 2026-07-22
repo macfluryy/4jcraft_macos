@@ -35,7 +35,7 @@ private:
     TexturePack* selected;
     TexturePack* lastSelected;
     bool usingWeb;
-    static const int MAX_WEB_FILESIZE = 10 * 1000 * 1000;  // 10 Megabytes
+    static const int MAX_WEB_FILESIZE = 10 * 1000 * 1000;  
 
 public:
     TexturePackRepository(File workingDirectory, Minecraft* minecraft);
@@ -69,13 +69,13 @@ public:
     bool canUseWebSkin();
     bool isUsingDefaultSkin() {
         return selected == DEFAULT_TEXTURE_PACK;
-    }  // 4J Added
-    TexturePack* getDefault() { return DEFAULT_TEXTURE_PACK; }  // 4J Added
+    }  
+    TexturePack* getDefault() { return DEFAULT_TEXTURE_PACK; }  
 
     std::vector<std::pair<std::uint32_t, std::wstring> >*
     getTexturePackIdNames();
-    bool selectTexturePackById(std::uint32_t id);       // 4J Added
-    TexturePack* getTexturePackById(std::uint32_t id);  // 4J Added
+    bool selectTexturePackById(std::uint32_t id);       
+    TexturePack* getTexturePackById(std::uint32_t id);  
 
     TexturePack* addTexturePackFromDLC(DLCPack* dlcPack, std::uint32_t id);
     void clearInvalidTexturePacks();

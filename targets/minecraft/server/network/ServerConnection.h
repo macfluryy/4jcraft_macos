@@ -12,11 +12,11 @@ class Socket;
 class ServerSettingsChangedPacket;
 
 class ServerConnection {
-    //    public static Logger logger = Logger.getLogger("Minecraft");
+    
 
 private:
-    //	ServerSocket serverSocket;
-    //    private Thread listenThread;
+    
+    
 public:
     volatile bool running;
 
@@ -24,14 +24,14 @@ private:
     int connectionCounter;
 
 private:
-    std::mutex pending_cs;  // 4J added
+    std::mutex pending_cs;  
     std::vector<std::shared_ptr<PendingConnection> > pending;
-    std::mutex players_cs;  // 4J - protects 'players' against concurrent
-                            // add from accept thread vs server tick.
+    std::mutex players_cs;  
+                            
     std::vector<std::shared_ptr<PlayerConnection> > players;
 
-    // 4J - When the server requests a texture, it should add it to here while
-    // we are waiting for it
+    
+    
     std::vector<std::wstring> m_pendingTextureRequests;
 
 public:
@@ -40,12 +40,12 @@ public:
 public:
     ServerConnection(
         MinecraftServer*
-            server);  // 4J - removed params InetAddress address, int port);
+            server);  
     ~ServerConnection();
-    void NewIncomingSocket(Socket* socket);  // 4J - added
+    void NewIncomingSocket(Socket* socket);  
 
     void removeSpamProtection(Socket* socket) {
-    }  // 4J Stu - Not implemented as not required
+    }  
     void addPlayerConnection(std::shared_ptr<PlayerConnection> uc);
 
 private:
@@ -55,7 +55,7 @@ public:
     void stop();
     void tick();
 
-    // 4J Added
+    
     bool addPendingTextureRequest(const std::wstring& textureName);
     void handleTextureReceived(const std::wstring& textureName);
     void handleTextureAndGeometryReceived(const std::wstring& textureName);

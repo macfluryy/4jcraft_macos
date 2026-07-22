@@ -7,7 +7,7 @@ class CreeperModel : public Model {
 public:
     ModelPart *head, *hair, *body, *leg0, *leg1, *leg2, *leg3;
 
-    void _init(float g);  // 4J added
+    void _init(float g);  
     CreeperModel();
     CreeperModel(float g);
     virtual void render(std::shared_ptr<Entity> entity, float time, float r,

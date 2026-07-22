@@ -34,32 +34,32 @@ ResourceLocation EnderDragonRenderer::DRAGON_LOCATION =
 EnderDragonRenderer::EnderDragonRenderer()
     : MobRenderer(new DragonModel(0), 0.5f) {
     dragonModel = (DragonModel*)model;
-    setArmor(model);  // TODO: Make second constructor that assigns this.
+    setArmor(model);  
 }
 
 void EnderDragonRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
                                          float bob, float bodyRot, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<EnderDragon> mob =
         std::dynamic_pointer_cast<EnderDragon>(_mob);
 
-    // 4J - reorganised a bit so we can free allocations
+    
     double lpComponents[3];
     std::vector<double> lp =
         std::vector<double>(lpComponents, lpComponents + 3);
     mob->getLatencyPos(lp, 7, a);
     float yr = lp[0];
-    // mob->getLatencyPos(lp, 5, a);
-    // float rot2 = lp[1];
-    // mob->getLatencyPos(lp, 10,a);
-    // rot2 -= lp[1];
+    
+    
+    
+    
     float rot2 = mob->getTilt(a);
 
     glRotatef(-yr, 0, 1, 0);
 
     glRotatef(rot2, 1, 0, 0);
-    // glRotatef(rot2 * 10, 1, 0, 0);
+    
 
     glTranslatef(0, 0, 1);
     if (mob->deathTime > 0) {
@@ -74,8 +74,8 @@ void EnderDragonRenderer::renderModel(std::shared_ptr<LivingEntity> _mob,
                                       float wp, float ws, float bob,
                                       float headRotMinusBodyRot, float headRotx,
                                       float scale) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<EnderDragon> mob =
         std::dynamic_pointer_cast<EnderDragon>(_mob);
 
@@ -85,8 +85,8 @@ void EnderDragonRenderer::renderModel(std::shared_ptr<LivingEntity> _mob,
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER, tt);
         bindTexture(
-            &DRAGON_EXPLODING_LOCATION);  // 4J was
-                                          // "/mob/enderdragon/shuffle.png"
+            &DRAGON_EXPLODING_LOCATION);  
+                                          
         model->render(mob, wp, ws, bob, headRotMinusBodyRot, headRotx, scale,
                       true);
         glAlphaFunc(GL_GREATER, 0.1f);
@@ -113,8 +113,8 @@ void EnderDragonRenderer::renderModel(std::shared_ptr<LivingEntity> _mob,
 
 void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
                                  double y, double z, float rot, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<EnderDragon> mob =
         std::dynamic_pointer_cast<EnderDragon>(_mob);
     BossMobGuiInfo::setBossHealth(mob, false);
@@ -134,8 +134,8 @@ void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
         float sdd = sqrt(xd * xd + zd * zd);
         float dd = sqrt(xd * xd + yd * yd + zd * zd);
 
-        // this fixes a problem when the dragon is hit and the beam goes black
-        // because the diffuse colour isn't being reset in MobRenderer::render
+        
+        
         glColor4f(1, 1, 1, 1);
 
         glPushMatrix();
@@ -145,11 +145,11 @@ void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
         glRotatef((float)(-atan2(sdd, yd)) * 180.0f / std::numbers::pi - 90.0f,
                   1, 0, 0);
 
-        // 4J-PB - Rotating the healing beam too
+        
         static float fRot = 0.0f;
         glRotatef(fRot, 0, 0, 1);
-        fRot += 0.5f;  // 4J - rate of rotation changed from 5.0 to 0.5 for
-                       // photosensitivity reasons
+        fRot += 0.5f;  
+                       
         if (fRot >= 360.0f) {
             fRot = 0.0f;
         }
@@ -162,13 +162,13 @@ void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
         glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
 
         bindTexture(
-            &CRYSTAL_BEAM_LOCATION);  // 4J was "/mob/enderdragon/beam.png"
+            &CRYSTAL_BEAM_LOCATION);  
 
         glShadeModel(GL_SMOOTH);
 
         float v0 = 0 - (mob->tickCount + a) *
-                           0.005f;  // 4J - rate of movement changed from 0.01
-                                    // to 0.005 for photosensitivity reasons
+                           0.005f;  
+                                    
         float v1 = sqrt(xd * xd + yd * yd + zd * zd) / 32.0f -
                    (mob->tickCount + a) * 0.005f;
 
@@ -180,9 +180,9 @@ void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
             float s = sin(i % steps * std::numbers::pi * 2 / steps) * 0.75f;
             float c = cos(i % steps * std::numbers::pi * 2 / steps) * 0.75f;
             float u = i % steps * 1.0f / steps;
-            // t->color(0x000000);
+            
             t->vertexUV(s * 0.2f, c * 0.2f, 0, u, v1);
-            // t->color(0xffffff);
+            
             t->vertexUV(s, c, dd, u, v0);
         }
 
@@ -203,8 +203,8 @@ ResourceLocation* EnderDragonRenderer::getTextureLocation(
 
 void EnderDragonRenderer::additionalRendering(
     std::shared_ptr<LivingEntity> _mob, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<EnderDragon> mob =
         std::dynamic_pointer_cast<EnderDragon>(_mob);
     MobRenderer::additionalRendering(mob, a);
@@ -261,8 +261,8 @@ void EnderDragonRenderer::additionalRendering(
 
 int EnderDragonRenderer::prepareArmor(std::shared_ptr<LivingEntity> _mob,
                                       int layer, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<EnderDragon> mob =
         std::dynamic_pointer_cast<EnderDragon>(_mob);
 
@@ -272,13 +272,13 @@ int EnderDragonRenderer::prepareArmor(std::shared_ptr<LivingEntity> _mob,
     if (layer != 0) return -1;
 
     bindTexture(
-        &DRAGON_EYES_LOCATION);  // 4J was "/mob/enderdragon/ender_eyes.png"
+        &DRAGON_EYES_LOCATION);  
     float br = 1;
     glEnable(GL_BLEND);
-    // 4J Stu - We probably don't need to do this on 360 either (as we force it
-    // back on the renderer) However we do want it off for other platforms that
-    // don't force it on in the render lib CBuff handling Several texture packs
-    // have fully transparent bits that break if this is off
+    
+    
+    
+    
     glBlendFunc(GL_ONE, GL_ONE);
     glDisable(GL_LIGHTING);
     glDepthFunc(GL_EQUAL);

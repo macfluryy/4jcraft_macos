@@ -25,8 +25,8 @@ void MinecartHopper::_init() {
     enabled = true;
     cooldownTime = -1;
 
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 }
 

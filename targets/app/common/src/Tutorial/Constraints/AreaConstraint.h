@@ -9,8 +9,8 @@ class AreaConstraint : public TutorialConstraint {
 private:
     AABB movementArea;
     AABB messageArea;
-    bool contains;  // If true we must stay in this area, if false must stay out
-                    // of this area
+    bool contains;  
+                    
     bool m_restrictsMovement;
 
 public:

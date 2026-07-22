@@ -33,7 +33,7 @@ bool TrapMenu::stillValid(std::shared_ptr<Player> player) {
     return trap->stillValid(player);
 }
 
-// 4J Stu - Brought forward from 1.2
+
 std::shared_ptr<ItemInstance> TrapMenu::quickMoveStack(
     std::shared_ptr<Player> player, int slotIndex) {
     std::shared_ptr<ItemInstance> clicked = nullptr;
@@ -58,7 +58,7 @@ std::shared_ptr<ItemInstance> TrapMenu::quickMoveStack(
             slot->setChanged();
         }
         if (stack->count == clicked->count) {
-            // nothing moved
+            
             return nullptr;
         } else {
             slot->onTake(player, stack);

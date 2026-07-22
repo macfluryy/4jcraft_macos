@@ -49,7 +49,7 @@ void MineShaftPieces::staticCtor() {
         new WeighedTreasure(Item::seeds_melon_Id, 0, 2, 4, 10);
     smallTreasureItems[10] =
         new WeighedTreasure(Item::seeds_pumpkin_Id, 0, 2, 4, 10);
-    // very rare for shafts ...
+    
     smallTreasureItems[11] = new WeighedTreasure(Item::saddle_Id, 0, 1, 1, 3);
     smallTreasureItems[12] =
         new WeighedTreasure(Item::horseArmorMetal_Id, 0, 1, 1, 1);
@@ -117,7 +117,7 @@ StructurePiece* MineShaftPieces::generateAndAddPiece(
 }
 
 MineShaftPieces::MineShaftRoom::MineShaftRoom() {
-    // for reflection
+    
 }
 
 MineShaftPieces::MineShaftRoom::MineShaftRoom(int genDepth, Random* random,
@@ -147,7 +147,7 @@ void MineShaftPieces::MineShaftRoom::addChildren(
         heightSpace = 1;
     }
 
-    // northern exits
+    
     pos = 0;
     while (pos < boundingBox->getXSpan()) {
         pos += random->nextInt(boundingBox->getXSpan());
@@ -166,7 +166,7 @@ void MineShaftPieces::MineShaftRoom::addChildren(
         }
         pos += DEFAULT_SHAFT_WIDTH + 1;
     }
-    // southern exits
+    
     pos = 0;
     while (pos < boundingBox->getXSpan()) {
         pos += random->nextInt(boundingBox->getXSpan());
@@ -185,7 +185,7 @@ void MineShaftPieces::MineShaftRoom::addChildren(
         }
         pos += DEFAULT_SHAFT_WIDTH + 1;
     }
-    // western exits
+    
     pos = 0;
     while (pos < boundingBox->getZSpan()) {
         pos += random->nextInt(boundingBox->getZSpan());
@@ -204,7 +204,7 @@ void MineShaftPieces::MineShaftRoom::addChildren(
         }
         pos += DEFAULT_SHAFT_WIDTH + 1;
     }
-    // eastern exits
+    
     pos = 0;
     while (pos < boundingBox->getZSpan()) {
         pos += random->nextInt(boundingBox->getZSpan());
@@ -231,12 +231,12 @@ bool MineShaftPieces::MineShaftRoom::postProcess(Level* level, Random* random,
         return false;
     }
 
-    // floor
+    
     generateBox(level, chunkBB, boundingBox->x0, boundingBox->y0,
                 boundingBox->z0, boundingBox->x1, boundingBox->y0,
                 boundingBox->z1, Tile::dirt_Id, 0, true);
 
-    // room air
+    
     generateBox(level, chunkBB, boundingBox->x0, boundingBox->y0 + 1,
                 boundingBox->z0, boundingBox->x1,
                 std::min(boundingBox->y0 + 3, boundingBox->y1), boundingBox->z1,
@@ -275,7 +275,7 @@ void MineShaftPieces::MineShaftRoom::readAdditonalSaveData(CompoundTag* tag) {
 }
 
 MineShaftPieces::MineShaftCorridor::MineShaftCorridor() {
-    // for reflection
+    
 }
 
 void MineShaftPieces::MineShaftCorridor::addAdditonalSaveData(
@@ -304,8 +304,8 @@ MineShaftPieces::MineShaftCorridor::MineShaftCorridor(int genDepth,
     hasRails = random->nextInt(3) == 0;
     hasPlacedSpider = false;
     spiderCorridor = !hasRails && random->nextInt(23) == 0;
-    // debug
-    // spiderCorridor = !hasRails ;//&& random->nextInt(23) == 0;
+    
+    
 
     if (orientation == Direction::NORTH || orientation == Direction::SOUTH) {
         numSections = corridorBox->getZSpan() / DEFAULT_SHAFT_LENGTH;
@@ -354,7 +354,7 @@ BoundingBox* MineShaftPieces::MineShaftCorridor::findCorridorSize(
         return box;
     }
     delete box;
-    // unable to place corridor here
+    
     return nullptr;
 }
 
@@ -440,7 +440,7 @@ void MineShaftPieces::MineShaftCorridor::addChildren(
             break;
     }
 
-    // generate cross sections using higher depth
+    
     if (depth < MAX_DEPTH) {
         if (orientation == Direction::NORTH ||
             orientation == Direction::SOUTH) {
@@ -517,7 +517,7 @@ bool MineShaftPieces::MineShaftCorridor::postProcess(Level* level,
     const int y1 = DEFAULT_SHAFT_HEIGHT - 1;
     const int length = (numSections * DEFAULT_SHAFT_LENGTH) - 1;
 
-    // corridor air
+    
     generateBox(level, chunkBB, x0, 0, y0, x1, y1 - 1, length, 0, 0, false);
     generateMaybeBox(level, chunkBB, random, .8f, x0, y1, y0, x1, y1, length, 0,
                      0, false);
@@ -527,11 +527,11 @@ bool MineShaftPieces::MineShaftCorridor::postProcess(Level* level,
                          length, Tile::web_Id, 0, false);
     }
 
-    // place a support in every section
+    
     for (int section = 0; section < numSections; section++) {
         int z = 2 + section * DEFAULT_SHAFT_LENGTH;
 
-        // 4J-PB - Bringing forward the changes in 1.2.3
+        
         generateBox(level, chunkBB, x0, y0, z, x0, y1 - 1, z, Tile::fence_Id, 0,
                     false);
         generateBox(level, chunkBB, x1, y0, z, x1, y1 - 1, z, Tile::fence_Id, 0,
@@ -601,7 +601,7 @@ bool MineShaftPieces::MineShaftCorridor::postProcess(Level* level,
         }
     }
 
-    // prevent air floating
+    
     for (int x = x0; x <= x1; x++) {
         for (int z = 0; z <= length; z++) {
             int block = getBlock(level, x, -1, z, chunkBB);
@@ -627,7 +627,7 @@ bool MineShaftPieces::MineShaftCorridor::postProcess(Level* level,
 }
 
 MineShaftPieces::MineShaftCrossing::MineShaftCrossing() {
-    // for reflection
+    
 }
 
 void MineShaftPieces::MineShaftCrossing::addAdditonalSaveData(
@@ -659,7 +659,7 @@ BoundingBox* MineShaftPieces::MineShaftCrossing::findCrossing(
         footX, footY, footZ, footX, footY + (DEFAULT_SHAFT_HEIGHT - 1), footZ);
 
     if (random->nextInt(4) == 0) {
-        box->y1 += DEFAULT_SHAFT_HEIGHT + 1;  // two-floored
+        box->y1 += DEFAULT_SHAFT_HEIGHT + 1;  
     }
 
     switch (direction) {
@@ -697,9 +697,9 @@ void MineShaftPieces::MineShaftCrossing::addChildren(
     StructurePiece* startPiece, std::list<StructurePiece*>* pieces,
     Random* random) {
     int depth = getGenDepth();
-    // crossings are coming from a direction and will generate children
-    // in the
-    // remaining three directions
+    
+    
+    
     switch (direction) {
         case Direction::NORTH:
             generateAndAddPiece(startPiece, pieces, random, boundingBox->x0 + 1,
@@ -774,7 +774,7 @@ bool MineShaftPieces::MineShaftCrossing::postProcess(Level* level,
         return false;
     }
 
-    // corridor air
+    
     if (isTwoFloored) {
         generateBox(level, chunkBB, boundingBox->x0 + 1, boundingBox->y0,
                     boundingBox->z0, boundingBox->x1 - 1,
@@ -805,7 +805,7 @@ bool MineShaftPieces::MineShaftCrossing::postProcess(Level* level,
                     boundingBox->z1 - 1, 0, 0, false);
     }
 
-    // support pillars
+    
     generateBox(level, chunkBB, boundingBox->x0 + 1, boundingBox->y0,
                 boundingBox->z0 + 1, boundingBox->x0 + 1, boundingBox->y1,
                 boundingBox->z0 + 1, Tile::wood_Id, 0, false);
@@ -819,9 +819,9 @@ bool MineShaftPieces::MineShaftCrossing::postProcess(Level* level,
                 boundingBox->z1 - 1, boundingBox->x1 - 1, boundingBox->y1,
                 boundingBox->z1 - 1, Tile::wood_Id, 0, false);
 
-    // prevent air floating
-    // note: use world coordinates because the corridor hasn't defined
-    // orientation
+    
+    
+    
     for (int x = boundingBox->x0; x <= boundingBox->x1; x++) {
         for (int z = boundingBox->z0; z <= boundingBox->z1; z++) {
             int block = getBlock(level, x, boundingBox->y0 - 1, z, chunkBB);
@@ -836,7 +836,7 @@ bool MineShaftPieces::MineShaftCrossing::postProcess(Level* level,
 }
 
 MineShaftPieces::MineShaftStairs::MineShaftStairs() {
-    // for reflection
+    
 }
 
 MineShaftPieces::MineShaftStairs::MineShaftStairs(int genDepth, Random* random,
@@ -855,7 +855,7 @@ void MineShaftPieces::MineShaftStairs::readAdditonalSaveData(CompoundTag* tag) {
 BoundingBox* MineShaftPieces::MineShaftStairs::findStairs(
     std::list<StructurePiece*>* pieces, Random* random, int footX, int footY,
     int footZ, int direction) {
-    // stairs are two steps in, 5x5 steps down, two steps out
+    
 
     BoundingBox* box =
         new BoundingBox(footX, footY - 5, footZ, footX,
@@ -892,9 +892,9 @@ void MineShaftPieces::MineShaftStairs::addChildren(
     StructurePiece* startPiece, std::list<StructurePiece*>* pieces,
     Random* random) {
     int depth = getGenDepth();
-    // crossings are coming from a direction and will generate children
-    // in the
-    // remaining three directions
+    
+    
+    
     switch (orientation) {
         case Direction::NORTH:
             generateAndAddPiece(startPiece, pieces, random, boundingBox->x0,
@@ -925,13 +925,13 @@ bool MineShaftPieces::MineShaftStairs::postProcess(Level* level, Random* random,
         return false;
     }
 
-    // upper floor
+    
     generateBox(level, chunkBB, 0, 5, 0, (DEFAULT_SHAFT_WIDTH - 1),
                 5 + (DEFAULT_SHAFT_HEIGHT - 1), 1, 0, 0, false);
-    // lower floor
+    
     generateBox(level, chunkBB, 0, 0, 7, (DEFAULT_SHAFT_WIDTH - 1),
                 (DEFAULT_SHAFT_HEIGHT - 1), 8, 0, 0, false);
-    // stairs
+    
     for (int i = 0; i < 5; i++) {
         generateBox(level, chunkBB, 0, 5 - i - ((i < 4) ? 1 : 0), 2 + i,
                     (DEFAULT_SHAFT_WIDTH - 1),

@@ -61,14 +61,14 @@ MultiPlayerLevel::MultiPlayerLevel(ClientConnection* connection,
             Dimension::getNew(dimension), levelSettings, false) {
     minecraft = Minecraft::GetInstance();
 
-    // 4J - this this used to be called in parent ctor via a virtual fn
+    
     chunkSource = createChunkSource();
-    // 4J - optimisation - keep direct reference of underlying cache here
+    
     chunkSourceCache = chunkSource->getCache();
     chunkSourceXZSize = chunkSource->m_XZSize;
 
-    // This also used to be called in parent ctor, but can't be called until
-    // chunkSource is created. Call now if required.
+    
+    
     if (!levelData->isInitialized()) {
         initializeLevel(levelSettings);
         levelData->setInitialized(true);
@@ -78,13 +78,13 @@ MultiPlayerLevel::MultiPlayerLevel(ClientConnection* connection,
         this->connections.push_back(connection);
     }
     this->difficulty = difficulty;
-    // Fix for #62566 - TU7: Content: Gameplay: Compass needle stops pointing
-    // towards the original spawn point, once the player has entered the Nether.
-    // 4J Stu - We should never be setting a specific spawn position for a
-    // multiplayer, this should only be set by receiving a packet from the
-    // server (which happens when a player logs in)
-    // setSpawnPos(new Pos(8, 64, 8));
-    // The base ctor already has made some storage, so need to delete that
+    
+    
+    
+    
+    
+    
+    
     if (this->savedDataStorage) delete savedDataStorage;
     if (connection != nullptr) {
         savedDataStorage = connection->savedDataStorage;
@@ -94,14 +94,14 @@ MultiPlayerLevel::MultiPlayerLevel(ClientConnection* connection,
     compressCheckX = 0;
     compressCheckZ = 0;
 
-    // 4J Added, as there are some times when we don't want to add tile updates
-    // to the updatesToReset vector
+    
+    
     m_bEnableResetChanges = true;
 }
 
 MultiPlayerLevel::~MultiPlayerLevel() {
-    // Don't let the base class delete this, it comes from the connection for
-    // multiplayerlevels, and we'll delete there
+    
+    
     this->savedDataStorage = nullptr;
 }
 
@@ -120,7 +120,7 @@ void MultiPlayerLevel::shareChunkAt(int x, int z) {
 void MultiPlayerLevel::tick() {
     setGameTime(getGameTime() + 1);
     if (getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT)) {
-        // 4J: Debug setting added to keep it at day time
+        
 #if !defined(_FINAL_BUILD)
         bool freezeTime =
             app.DebugSettingsOn() &&
@@ -132,16 +132,16 @@ void MultiPlayerLevel::tick() {
             setDayTime(getDayTime() + 1);
         }
     }
-    /* 4J - change brought forward from 1.8.2
-    int newDark = this->getSkyDarken(1);
-    if (newDark != skyDarken)
-    {
-    skyDarken = newDark;
-    for (unsigned int i = 0; i < listeners.size(); i++)
-    {
-    listeners[i]->skyColorChanged();
-    }
-    }*/
+    
+
+
+
+
+
+
+
+
+
 
     {
         std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
@@ -153,8 +153,8 @@ void MultiPlayerLevel::tick() {
         }
     }
 
-    // 4J HEG - Copy the connections vector to prevent crash when moving to
-    // Nether
+    
+    
     std::vector<ClientConnection*> connectionsTemp = connections;
     for (auto connection = connectionsTemp.begin();
          connection < connectionsTemp.end(); ++connection) {
@@ -170,16 +170,16 @@ void MultiPlayerLevel::tick() {
                                   Tile::UPDATE_ALL);
             Level::sendTileUpdated(r.x, r.y, r.z);
 
-            // updatesToReset.erase(updatesToReset.begin()+i);
+            
             eraseElements = true;
             lastIndexToRemove = 0;
 
             i--;
         }
     }
-    // 4J Stu - As elements in the updatesToReset vector are inserted with a
-    // fixed initial lifetime, the elements at the front should always be the
-    // oldest Therefore we can always remove from the first element
+    
+    
+    
     if (eraseElements) {
         updatesToReset.erase(updatesToReset.begin(),
                              updatesToReset.begin() + lastIndexToRemove);
@@ -188,11 +188,11 @@ void MultiPlayerLevel::tick() {
     chunkCache->tick();
     tickTiles();
 
-    // 4J - added this section. Each tick we'll check a different block, and
-    // force it to share data if it has been more than 2 minutes since we last
-    // wanted to unshare it. This shouldn't really ever happen, and is added
-    // here as a safe guard against accumulated memory leaks should a lot of
-    // chunks become unshared over time.
+    
+    
+    
+    
+    
 
     int ls = dimension->getXZSize();
     if (g_NetworkManager.IsHost()) {
@@ -215,13 +215,13 @@ void MultiPlayerLevel::tick() {
         }
     }
 
-    // 4J added - also similar thing tosee if we can compress the lighting in
-    // any of these chunks. This is slightly different as it does try to make
-    // sure that at least one chunk has something done to it.
+    
+    
+    
 
-    // At most loop round at least one row the chunks, so we should be able to
-    // at least find a non-empty chunk to do something with in 2.7 seconds of
-    // ticks, and process the whole thing in about 2.4 minutes.
+    
+    
+    
     for (int i = 0; i < ls; i++) {
         compressCheckX++;
         if (compressCheckX >= ls) {
@@ -345,8 +345,8 @@ void MultiPlayerLevel::tick() {
                     total8 += i8;
                     printf("%d ", thisSize);
                     thisSize = (thisSize + 0xfff) &
-                               0xfffff000;  // round to 4096k blocks for actual
-                                            // memory consumption
+                               0xfffff000;  
+                                            
                     total += thisSize;
                 }
             }
@@ -371,7 +371,7 @@ void MultiPlayerLevel::tick() {
     updateTick++;
 #endif
 
-    // super.tick();
+    
 }
 
 void MultiPlayerLevel::clearResetRegion(int x0, int y0, int z0, int x1, int y1,
@@ -393,19 +393,19 @@ ChunkSource* MultiPlayerLevel::createChunkSource() {
 }
 
 void MultiPlayerLevel::validateSpawn() {
-    // Fix for #62566 - TU7: Content: Gameplay: Compass needle stops pointing
-    // towards the original spawn point, once the player has entered the Nether.
-    // 4J Stu - We should never be setting a specific spawn position for a
-    // multiplayer, this should only be set by receiving a packet from the
-    // server (which happens when a player logs in)
-    // setSpawnPos(new Pos(8, 64, 8));
+    
+    
+    
+    
+    
+    
 }
 
 void MultiPlayerLevel::tickTiles() {
-    chunksToPoll.clear();  // 4J - added or else we don't reset this set at all
-                           // in a multiplayer level... think current java now
-                           // resets in buildAndPrepareChunksToPoll rather than
-                           // the calling functions
+    chunksToPoll.clear();  
+                           
+                           
+                           
 
     Level::tickTiles();
 
@@ -445,9 +445,9 @@ bool MultiPlayerLevel::addEntity(std::shared_ptr<Entity> e) {
 }
 
 void MultiPlayerLevel::removeEntity(std::shared_ptr<Entity> e) {
-    // 4J Stu - Add this remove from the reEntries collection to stop us
-    // continually removing and re-adding things, in particular the
-    // MultiPlayerLocalPlayer when they die
+    
+    
+    
     auto it = reEntries.find(e);
     if (it != reEntries.end()) {
         reEntries.erase(it);
@@ -510,9 +510,9 @@ std::shared_ptr<Entity> MultiPlayerLevel::removeEntity(int id) {
     return e;
 }
 
-// 4J Added to remove the entities from the forced list
-// This gets called when a chunk is unloaded, but we only do half an unload to
-// remove entities slightly differently
+
+
+
 void MultiPlayerLevel::removeEntities(
     std::vector<std::shared_ptr<Entity> >* list) {
     for (auto it = list->begin(); it < list->end(); ++it) {
@@ -530,69 +530,69 @@ void MultiPlayerLevel::removeEntities(
 
 bool MultiPlayerLevel::setData(
     int x, int y, int z, int data, int updateFlags,
-    bool forceUpdate /*=false*/)  // 4J added forceUpdate)
+    bool forceUpdate )  
 {
-    // First check if this isn't going to do anything, because if it isn't then
-    // the next stage (of unsharing data) is really quite expensive so far
-    // better to early out here
+    
+    
+    
     int d = getData(x, y, z);
 
     if (d == data) {
-        // If we early-out, its important that we still do a checkLight here
-        // (which would otherwise have happened as part of
-        // Level::setTileAndDataNoUpdate) This is because since we are
-        // potentially sharing tile/data but not lighting data, it is possible
-        // that the server might tell a client of a lighting update that doesn't
-        // need actioned on the client just because the chunk's data was being
-        // shared with the server when it was set. However, the lighting data
-        // will potentially now be out of sync on the client.
+        
+        
+        
+        
+        
+        
+        
+        
         checkLight(x, y, z);
         return false;
     }
-    // 4J - added - if this is the host, then stop sharing block data with the
-    // server at this point
+    
+    
     unshareChunkAt(x, z);
 
     if (Level::setData(x, y, z, data, updateFlags, forceUpdate)) {
-        // if(m_bEnableResetChanges) updatesToReset.push_back(ResetInfo(x, y, z,
-        // t, d));
+        
+        
         return true;
     }
-    // Didn't actually need to stop sharing
+    
     shareChunkAt(x, z);
     return false;
 }
 
 bool MultiPlayerLevel::setTileAndData(int x, int y, int z, int tile, int data,
                                       int updateFlags) {
-    // First check if this isn't going to do anything, because if it isn't then
-    // the next stage (of unsharing data) is really quite expensive so far
-    // better to early out here
+    
+    
+    
     int t = getTile(x, y, z);
     int d = getData(x, y, z);
 
     if ((t == tile) && (d == data)) {
-        // If we early-out, its important that we still do a checkLight here
-        // (which would otherwise have happened as part of
-        // Level::setTileAndDataNoUpdate) This is because since we are
-        // potentially sharing tile/data but not lighting data, it is possible
-        // that the server might tell a client of a lighting update that doesn't
-        // need actioned on the client just because the chunk's data was being
-        // shared with the server when it was set. However, the lighting data
-        // will potentially now be out of sync on the client.
+        
+        
+        
+        
+        
+        
+        
+        
         checkLight(x, y, z);
         return false;
     }
-    // 4J - added - if this is the host, then stop sharing block data with the
-    // server at this point
+    
+    
     unshareChunkAt(x, z);
 
     if (Level::setTileAndData(x, y, z, tile, data, updateFlags)) {
-        // if(m_bEnableResetChanges) updatesToReset.push_back(ResetInfo(x, y, z,
-        // t, d));
+        
+        
         return true;
     }
-    // Didn't actually need to stop sharing
+    
     shareChunkAt(x, z);
     return false;
 }
@@ -601,11 +601,11 @@ bool MultiPlayerLevel::doSetTileAndData(int x, int y, int z, int tile,
                                         int data) {
     clearResetRegion(x, y, z, x, y, z);
 
-    // 4J - Don't bother setting this to dirty if it isn't going to visually
-    // change - we get a lot of water changing from static to dynamic for
-    // instance. Note that this is only called from a client connection, and so
-    // the thing being notified of any update through tileUpdated is the
-    // renderer
+    
+    
+    
+    
+    
     int prevTile = getTile(x, y, z);
     bool visuallyImportant =
         (!(((prevTile == Tile::water_Id) && (tile == Tile::calmWater_Id)) ||
@@ -613,15 +613,15 @@ bool MultiPlayerLevel::doSetTileAndData(int x, int y, int z, int tile,
            ((prevTile == Tile::lava_Id) && (tile == Tile::calmLava_Id)) ||
            ((prevTile == Tile::calmLava_Id) && (tile == Tile::calmLava_Id)) ||
            ((prevTile == Tile::calmLava_Id) && (tile == Tile::lava_Id))));
-    // If we're the host, need to tell the renderer for updates even if they
-    // don't change things as the host might have been sharing data and so set
-    // it already, but the renderer won't know to update
+    
+    
+    
     if ((Level::setTileAndData(x, y, z, tile, data, Tile::UPDATE_ALL) ||
          g_NetworkManager.IsHost())) {
         if (g_NetworkManager.IsHost() && visuallyImportant) {
-            // 4J Stu - This got removed from the tileUpdated function in TU14.
-            // Adding it back here as we need it to handle the cases where the
-            // chunk data is shared so the normal paths never call this
+            
+            
+            
             sendTileUpdated(x, y, z);
 
             tileUpdated(x, y, z, tile);
@@ -631,7 +631,7 @@ bool MultiPlayerLevel::doSetTileAndData(int x, int y, int z, int tile,
     return false;
 }
 
-void MultiPlayerLevel::disconnect(bool sendDisconnect /*= true*/) {
+void MultiPlayerLevel::disconnect(bool sendDisconnect ) {
     if (sendDisconnect) {
         for (auto it = connections.begin(); it < connections.end(); ++it) {
             (*it)->sendAndDisconnect(std::shared_ptr<DisconnectPacket>(
@@ -646,8 +646,8 @@ void MultiPlayerLevel::disconnect(bool sendDisconnect /*= true*/) {
 
 Tickable* MultiPlayerLevel::makeSoundUpdater(
     std::shared_ptr<Minecart> minecart) {
-    return nullptr;  // new MinecartSoundUpdater(minecraft->soundEngine,
-                     // minecart, minecraft->player);
+    return nullptr;  
+                     
 }
 
 void MultiPlayerLevel::tickWeather() {
@@ -673,10 +673,10 @@ void MultiPlayerLevel::tickWeather() {
 }
 
 void MultiPlayerLevel::animateTick(int xt, int yt, int zt) {
-    // Get 8x8x8 chunk (ie not like the renderer or game chunks... maybe we need
-    // another word here...) that the player is in We then want to add a 3x3
-    // region of chunks into a set that we'll be ticking over. Set is stored as
-    // unsigned ints which encode this chunk position
+    
+    
+    
+    
     int cx = xt >> 3;
     int cy = yt >> 3;
     int cz = zt >> 3;
@@ -686,9 +686,9 @@ void MultiPlayerLevel::animateTick(int xt, int yt, int zt) {
             for (int zz = -1; zz <= 1; zz++) {
                 if ((cy + yy) < 0) continue;
                 if ((cy + yy) > 15) continue;
-                // Note - LEVEL_MAX_WIDTH is in game (16) tile chunks, and so
-                // our level goes from -LEVEL_MAX_WIDTH to LEVEL_MAX_WIDTH of
-                // our half-sized chunks
+                
+                
+                
                 if ((cx + xx) >= LEVEL_MAX_WIDTH) continue;
                 if ((cx + xx) < -LEVEL_MAX_WIDTH) continue;
                 if ((cz + zz) >= LEVEL_MAX_WIDTH) continue;
@@ -699,24 +699,24 @@ void MultiPlayerLevel::animateTick(int xt, int yt, int zt) {
             }
 }
 
-// 4J - the game used to tick 1000 tiles in a random region +/- 16 units round
-// the player. We've got a 3x3 region of 8x8x8 chunks round each player. So the
-// original game was ticking 1000 things in a 32x32x32 region ie had about a 1
-// in 32 chance of updating any one tile per tick. We're not dealing with quite
-// such a big region round each player (24x24x24) but potentially we've got 4
-// players. Ultimately, we could end up ticking anywhere between 432 and 1728
-// tiles depending on how many players we've got, which seems like a good
-// tradeoff from the original.
+
+
+
+
+
+
+
+
 void MultiPlayerLevel::animateTickDoWork() {
     const int ticksPerChunk =
-        16;  // This ought to give us roughly the same 1000/32768 chance of a
-             // tile being animated as the original
+        16;  
+             
 
-    // Horrible hack to communicate with the level renderer, which is just
-    // attached as a listener to this level. This let's the particle rendering
-    // know to use this level (rather than try to work it out from the current
-    // player), and to not bother distance clipping particles which would again
-    // be based on the current player.
+    
+    
+    
+    
+    
     Minecraft::GetInstance()->animateTickLevel = this;
 
     Random* animateRandom = new Random();
@@ -725,8 +725,8 @@ void MultiPlayerLevel::animateTickDoWork() {
         for (auto it = chunksToAnimate.begin(); it != chunksToAnimate.end();
              it++) {
             int packed = *it;
-            // 4jcraft changed the extraction logic to be safe
-            // constantly shifting a signed integer
+            
+            
             int cx = (int8_t)(packed >> 16) * 8;
             int cy = (int8_t)(packed >> 8) * 8;
             int cz = (int8_t)packed * 8;
@@ -736,8 +736,8 @@ void MultiPlayerLevel::animateTickDoWork() {
             int z = cz + random->nextInt(8);
             int t = getTile(x, y, z);
             if (random->nextInt(8) > y && t == 0 &&
-                dimension->hasBedrockFog())  // 4J - test for bedrock fog
-                                             // brought forward from 1.2.3
+                dimension->hasBedrockFog())  
+                                             
             {
                 addParticle(eParticleType_depthsuspend, x + random->nextFloat(),
                             y + random->nextFloat(), z + random->nextFloat(), 0,
@@ -762,12 +762,12 @@ void MultiPlayerLevel::playSound(std::shared_ptr<Entity> entity, int iSound,
 
 void MultiPlayerLevel::playLocalSound(double x, double y, double z, int iSound,
                                       float volume, float pitch,
-                                      bool distanceDelay /*= false */,
+                                      bool distanceDelay ,
                                       float fClipSoundDist) {
-    // float dd = 16;
+    
     if (volume > 1) fClipSoundDist *= volume;
 
-    // 4J - find min distance to any players rather than just the current one
+    
     float minDistSq = FLT_MAX;
     for (int i = 0; i < XUSER_MAX_COUNT; i++) {
         if (minecraft->localplayers[i]) {
@@ -780,8 +780,8 @@ void MultiPlayerLevel::playLocalSound(double x, double y, double z, int iSound,
 
     if (minDistSq < fClipSoundDist * fClipSoundDist) {
         if (distanceDelay && minDistSq > 10 * 10) {
-            // exhaggerate sound speed effect by making speed of sound ~=
-            // 40 m/s instead of 300 m/s
+            
+            
             double delayInSeconds = sqrt(minDistSq) / 40.0;
             minecraft->soundEngine->schedule(
                 iSound, (float)x, (float)y, (float)z, volume, pitch,
@@ -809,22 +809,22 @@ void MultiPlayerLevel::setScoreboard(Scoreboard* scoreboard) {
 }
 
 void MultiPlayerLevel::setDayTime(int64_t newTime) {
-    // 4J: We send daylight cycle rule with host options so don't need this
-    /*if (newTime < 0)
-    {
-            newTime = -newTime;
-            getGameRules()->set(GameRules::RULE_DAYLIGHT, L"false");
-    }
-    else
-    {
-            getGameRules()->set(GameRules::RULE_DAYLIGHT, L"true");
-    }*/
+    
+    
+
+
+
+
+
+
+
+
 
     Level::setDayTime(newTime);
 }
 
 void MultiPlayerLevel::removeAllPendingEntityRemovals() {
-    // entities.removeAll(entitiesToRemove);
+    
 
     {
         std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
@@ -855,20 +855,20 @@ void MultiPlayerLevel::removeAllPendingEntityRemovals() {
         }
     }
 
-    // 4J Stu - Is there a reason do this in a separate loop? Thats what the
-    // Java does...
+    
+    
     endIt = entitiesToRemove.end();
     for (auto it = entitiesToRemove.begin(); it != endIt; it++) {
         entityRemoved(*it);
     }
     entitiesToRemove.clear();
 
-    // for (int i = 0; i < entities.size(); i++)
+    
     {
         std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
         std::vector<std::shared_ptr<Entity> >::iterator it = entities.begin();
         while (it != entities.end()) {
-            std::shared_ptr<Entity> e = *it;  // entities.at(i);
+            std::shared_ptr<Entity> e = *it;  
 
             if (e->riding != nullptr) {
                 if (e->riding->removed || e->riding->rider.lock() != e) {
@@ -886,7 +886,7 @@ void MultiPlayerLevel::removeAllPendingEntityRemovals() {
                 if (e->inChunk && hasChunk(xc, zc)) {
                     getChunk(xc, zc)->removeEntity(e);
                 }
-                // entities.remove(i--);
+                
 
                 it = entities.erase(it);
                 entityRemoved(e);
@@ -920,8 +920,8 @@ void MultiPlayerLevel::dataReceivedForChunk(int x, int z) {
     chunkCache->dataReceived(x, z);
 }
 
-// 4J added - removes all tile entities in the given region from both level &
-// levelchunks
+
+
 void MultiPlayerLevel::removeUnusedTileEntitiesInRegion(int x0, int y0, int z0,
                                                         int x1, int y1,
                                                         int z1) {
@@ -935,16 +935,16 @@ void MultiPlayerLevel::removeUnusedTileEntitiesInRegion(int x0, int y0, int z0,
                 te->y < y1 && te->z < z1) {
                 LevelChunk* lc = getChunk(te->x >> 4, te->z >> 4);
                 if (lc != nullptr) {
-                    // Only remove tile entities where this is no longer a tile
-                    // entity
+                    
+                    
                     int tileId = lc->getTile(te->x & 15, te->y, te->z & 15);
                     if (Tile::tiles[tileId] == nullptr ||
                         !Tile::tiles[tileId]->isEntityTile()) {
                         tileEntityList[i] = tileEntityList.back();
                         tileEntityList.pop_back();
 
-                        // 4J Stu - Chests can create new tile entities when
-                        // being removed, so disable this
+                        
+                        
                         m_bDisableAddNewTileEntities = true;
                         lc->removeTileEntity(te->x & 15, te->y, te->z & 15);
                         m_bDisableAddNewTileEntities = false;

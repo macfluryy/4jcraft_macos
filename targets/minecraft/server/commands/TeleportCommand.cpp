@@ -39,7 +39,7 @@ void TeleportCommand::execute(std::shared_ptr<CommandSender> source,
         auto sourcePlayer = std::dynamic_pointer_cast<ServerPlayer>(source);
 
         if (mode == TP_MODE_TO_PLAYER) {
-            // /tp <targetName> - source moves to target
+            
             std::wstring targetName = dis.readUTF();
             if (sourcePlayer == nullptr) {
                 source->sendMessage(L"§cOnly players can use this form of /tp");
@@ -62,7 +62,7 @@ void TeleportCommand::execute(std::shared_ptr<CommandSender> source,
             source->sendMessage(L"§aTeleported to " + targetName);
 
         } else if (mode == TP_MODE_TO_COORDS) {
-            // /tp <x> <y> <z>
+            
             double x = dis.readDouble();
             double y = dis.readDouble();
             double z = dis.readDouble();
@@ -78,7 +78,7 @@ void TeleportCommand::execute(std::shared_ptr<CommandSender> source,
                                 std::to_wstring((int)z));
 
         } else if (mode == TP_MODE_PLAYER_TO_PLAYER) {
-            // /tp <subject> <target>
+            
             std::wstring subjectName = dis.readUTF();
             std::wstring targetName = dis.readUTF();
             auto subject = players->getPlayer(subjectName);
@@ -104,7 +104,7 @@ void TeleportCommand::execute(std::shared_ptr<CommandSender> source,
                                 targetName);
 
         } else if (mode == TP_MODE_PLAYER_TO_COORDS) {
-            // /tp <subject> <x> <y> <z>
+            
             std::wstring subjectName = dis.readUTF();
             double x = dis.readDouble();
             double y = dis.readDouble();

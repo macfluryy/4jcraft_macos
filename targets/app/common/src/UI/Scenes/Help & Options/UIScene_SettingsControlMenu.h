@@ -14,7 +14,7 @@ private:
     enum EControls { eControl_SensitivityInGame, eControl_SensitivityInMenu };
 
     UIControl_Slider m_sliderSensitivityInGame,
-        m_sliderSensitivityInMenu;  // Sliders
+        m_sliderSensitivityInMenu;  
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
     UI_MAP_ELEMENT(m_sliderSensitivityInGame, "SensitivityInGame")
     UI_MAP_ELEMENT(m_sliderSensitivityInMenu, "SensitivityInMenu")
@@ -29,11 +29,11 @@ public:
     virtual void updateComponents();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

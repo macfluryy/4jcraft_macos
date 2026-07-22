@@ -52,7 +52,7 @@ void TreeTile::onRemove(Level* level, int x, int y, int z, int id, int data) {
     }
 }
 
-unsigned int TreeTile::getDescriptionId(int iData /*= -1*/) {
+unsigned int TreeTile::getDescriptionId(int iData ) {
     int type = iData & MASK_TYPE;
     if (type < 0) type = 0;
     return TreeTile::TREE_NAMES[type];
@@ -65,7 +65,7 @@ Icon* TreeTile::getTopTexture(int type) { return icons_top[type]; }
 int TreeTile::getWoodType(int data) { return data & MASK_TYPE; }
 
 std::shared_ptr<ItemInstance> TreeTile::getSilkTouchItemInstance(int data) {
-    // fix to avoid getting silktouched sideways logs
+    
     return std::shared_ptr<ItemInstance>(
         new ItemInstance(id, 1, getWoodType(data)));
 }

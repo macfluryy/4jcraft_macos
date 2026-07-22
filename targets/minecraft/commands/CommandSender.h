@@ -5,7 +5,7 @@
 
 class CommandSender {
 public:
-    // virtual int getUID() = 0;
+    
     virtual void sendMessage(
         const std::wstring& message,
         ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom,

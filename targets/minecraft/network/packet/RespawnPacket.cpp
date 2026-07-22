@@ -44,7 +44,7 @@ void RespawnPacket::handle(PacketListener* listener) {
     listener->handleRespawn(shared_from_this());
 }
 
-void RespawnPacket::read(DataInputStream* dis)  // throws IOException
+void RespawnPacket::read(DataInputStream* dis)  
 {
     dimension = dis->readByte();
     playerGameType = GameType::byId(dis->readByte());
@@ -65,7 +65,7 @@ void RespawnPacket::read(DataInputStream* dis)  // throws IOException
     app.DebugPrintf("RespawnPacket::read - Difficulty = %d\n", difficulty);
 }
 
-void RespawnPacket::write(DataOutputStream* dos)  // throws IOException
+void RespawnPacket::write(DataOutputStream* dos)  
 {
     dos->writeByte(dimension);
     dos->writeByte(playerGameType->getId());

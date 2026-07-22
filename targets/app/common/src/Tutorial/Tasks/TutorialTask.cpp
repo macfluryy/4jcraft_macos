@@ -52,17 +52,17 @@ void TutorialTask::taskCompleted() {
 }
 
 void TutorialTask::enableConstraints(bool enable,
-                                     bool delayRemove /*= false*/) {
+                                     bool delayRemove ) {
     if (!enable && (areConstraintsEnabled || !delayRemove)) {
-        // Remove
+        
         for (auto it = constraints.begin(); it != constraints.end(); ++it) {
             TutorialConstraint* constraint = *it;
-            // app.DebugPrintf(">>>>>>>> %i\n", constraints.size());
+            
             tutorial->RemoveConstraint(constraint, delayRemove);
         }
         areConstraintsEnabled = false;
     } else if (!areConstraintsEnabled && enable) {
-        // Add
+        
         for (auto it = constraints.begin(); it != constraints.end(); ++it) {
             TutorialConstraint* constraint = *it;
             tutorial->AddConstraint(constraint);
@@ -71,6 +71,6 @@ void TutorialTask::enableConstraints(bool enable,
     }
 }
 
-void TutorialTask::setAsCurrentTask(bool active /*= true*/) {
+void TutorialTask::setAsCurrentTask(bool active ) {
     bHasBeenActivated = active;
 }

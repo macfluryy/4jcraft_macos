@@ -35,22 +35,22 @@ public:
     static Entity* create(Level* level) { return new EnderDragon(level); }
 
 private:
-    // 4J Added for new behaviours
+    
     static const int DATA_ID_SYNCHED_ACTION = 17;
 
     static const int positionsLength =
-        64;  // 4J Stu - Defined this so that we can keep the positions array as
-             // a basic type array
+        64;  
+             
 public:
     double xTarget, yTarget, zTarget;
 
     double positions[positionsLength][3];
     int posPointer;
 
-    // MultiEntityMobPart[] subEntities;
+    
     std::vector<std::shared_ptr<Entity> > subEntities;
     std::shared_ptr<MultiEntityMobPart> head;
-    std::shared_ptr<MultiEntityMobPart> neck;  // 4J Added
+    std::shared_ptr<MultiEntityMobPart> neck;  
     std::shared_ptr<MultiEntityMobPart> body;
     std::shared_ptr<MultiEntityMobPart> tail1;
     std::shared_ptr<MultiEntityMobPart> tail2;
@@ -63,7 +63,7 @@ public:
     bool newTarget;
     bool inWall;
 
-    // 4J Stu - Added for new dragon behaviour
+    
 private:
     int m_fireballCharge;
     float m_holdingPatternAngle;
@@ -111,8 +111,8 @@ private:
     static const int SITTING_SCANNING_IDLE_TICKS;
     static const int SITTING_FLAME_ATTACKS_COUNT;
 
-    // The percentage of max health that the dragon will take while in the
-    // "Sitting" states before flying away
+    
+    
     static const float SITTING_ALLOWED_DAMAGE_PERCENTAGE;
 
     static const int PODIUM_X_POS = 0;
@@ -180,7 +180,7 @@ protected:
     float getSoundVolume();
 
 private:
-    // 4J added for new dragon behaviour
+    
     bool setSynchedAction(EEnderdragonAction action, bool force = false);
     EEnderdragonAction getSynchedAction();
     int findClosestNode(double tX, double tY, double tZ);

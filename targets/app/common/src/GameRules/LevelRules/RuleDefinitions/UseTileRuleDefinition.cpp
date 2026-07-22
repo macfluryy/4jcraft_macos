@@ -72,7 +72,7 @@ bool UseTileRuleDefinition::onUseTile(GameRule* rule, int tileId, int x, int y,
                     m_tileId, m_useCoords ? "true" : "false", m_coordinates.x,
                     m_coordinates.y, m_coordinates.z);
 
-                // Send a packet or some other announcement here
+                
             }
         }
     }

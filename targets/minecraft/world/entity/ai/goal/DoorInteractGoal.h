@@ -7,7 +7,7 @@ class Mob;
 
 class DoorInteractGoal : public Goal {
 protected:
-    Mob* mob;  // Owner of this goal
+    Mob* mob;  
     int doorX, doorY, doorZ;
     DoorTile* doorTile;
 

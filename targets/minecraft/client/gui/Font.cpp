@@ -18,27 +18,27 @@
 Font::Font(Options* options, const std::wstring& name, Textures* textures,
            bool enforceUnicode, ResourceLocation* textureLocation, int cols,
            int rows, int charWidth, int charHeight,
-           unsigned short charMap[] /* = nullptr */)
+           unsigned short charMap[] )
     : textures(textures) {
-    int charC = cols * rows;  // Number of characters in the font
+    int charC = cols * rows;  
 
     charWidths = new int[charC];
 
-    // 4J - added initialisers
+    
     memset(charWidths, 0, charC);
 
     enforceUnicodeSheet = false;
     bidirectional = false;
     xPos = yPos = 0.0f;
 
-    // Set up member variables
+    
     m_cols = cols;
     m_rows = rows;
     m_charWidth = charWidth;
     m_charHeight = charHeight;
     m_textureLocation = textureLocation;
 
-    // Build character map
+    
     if (charMap != nullptr) {
         for (int i = 0; i < charC; i++) {
             m_charMap.insert(std::make_pair(charMap[i], i));
@@ -47,17 +47,17 @@ Font::Font(Options* options, const std::wstring& name, Textures* textures,
 
     random = new Random();
 
-    // Load the image
+    
     BufferedImage* img =
         textures->readImage(textureLocation->getTexture(), name);
 
-    /* - 4J - TODO
-    try {
-    img = ImageIO.read(Textures.class.getResourceAsStream(name));
-} catch (IOException e) {
-    throw new RuntimeException(e);
-}
-    */
+    
+
+
+
+
+
+
 
     int w = img->getWidth();
     int h = img->getHeight();
@@ -75,7 +75,7 @@ Font::Font(Options* options, const std::wstring& name, Textures* textures,
             for (int y = 0; y < 8 && emptyColumn; y++) {
                 int yPixel = (yt * 8 + y) * w;
                 bool emptyPixel = (rawPixels[xPixel + yPixel] >> 24) ==
-                                  0;  // Check the alpha value
+                                  0;  
                 if (!emptyPixel) emptyColumn = false;
             }
             if (!emptyColumn) {
@@ -89,7 +89,7 @@ Font::Font(Options* options, const std::wstring& name, Textures* textures,
 
     delete img;
 
-    // calculate colors
+    
     for (int colorN = 0; colorN < 32; ++colorN) {
         int var10 = (colorN >> 3 & 1) * 85;
         int red = (colorN >> 2 & 1) * 170 + var10;
@@ -119,8 +119,8 @@ Font::Font(Options* options, const std::wstring& name, Textures* textures,
     }
 }
 
-// 4J Stu - This dtor clashes with one in xui! We never delete these anyway so
-// take it out for now. Can go back when we have got rid of XUI
+
+
 Font::~Font() { delete[] charWidths; }
 
 void Font::renderCharacter(wchar_t c) {
@@ -134,7 +134,7 @@ void Font::renderCharacter(wchar_t c) {
     float fontHeight = m_rows * m_charHeight;
 
     Tesselator* t = Tesselator::getInstance();
-    // 4J Stu - Changed to a quad so that we can use within a command buffer
+    
     t->begin();
     t->tex(xOff / fontWidth, (yOff + 7.99f) / fontHeight);
     t->vertex(xPos, yPos + height, 0.0f);
@@ -169,25 +169,25 @@ void Font::draw(const std::wstring& str, int x, int y, int color) {
 }
 
 std::wstring Font::reorderBidi(const std::wstring& str) {
-    // 4J Not implemented
+    
     return str;
 }
 
 void Font::draw(const std::wstring& str, bool dropShadow) {
-    // Bind the texture
+    
     textures->bindTexture(m_textureLocation);
 
     bool noise = false;
     std::wstring cleanStr = sanitize(str);
 
     for (int i = 0; i < (int)cleanStr.length(); ++i) {
-        // Map character
+        
         wchar_t c = cleanStr.at(i);
 
         if (c == 167 && i + 1 < cleanStr.length()) {
-            // 4J - following block was:
-            // int colorN =
-            // L"0123456789abcdefk".indexOf(str.toLowerCase().charAt(i + 1));
+            
+            
+            
             wchar_t ca = cleanStr[i + 1];
             int colorN = 16;
             if ((ca >= L'0') && (ca <= L'9'))
@@ -214,7 +214,7 @@ void Font::draw(const std::wstring& str, bool dropShadow) {
             continue;
         }
 
-        // "noise" for crazy splash screen message
+        
         if (noise) {
             int newc;
             do {
@@ -231,12 +231,12 @@ void Font::draw(const std::wstring& str, bool dropShadow) {
 void Font::draw(const std::wstring& str, int x, int y, int color,
                 bool dropShadow) {
     if (!str.empty()) {
-        if ((color & 0xFC000000) == 0) color |= 0xFF000000;  // force alpha
-        // if not set
+        if ((color & 0xFC000000) == 0) color |= 0xFF000000;  
+        
 
-        if (dropShadow)  // divide RGB by 4, preserve alpha
-                         // 4jcraft changed -1 << 24 to the value of 1 (0xFF FF
-                         // FF FF)
+        if (dropShadow)  
+                         
+                         
             color = (color & 0xfcfcfc) >> 2 | (color & (0xFFFFFFFF << 24));
 
         glColor4f((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F,
@@ -251,14 +251,14 @@ void Font::draw(const std::wstring& str, int x, int y, int color,
 int Font::width(const std::wstring& str) {
     std::wstring cleanStr = sanitize(str);
 
-    if (cleanStr == L"") return 0;  // 4J - was nullptr comparison
+    if (cleanStr == L"") return 0;  
     int len = 0;
 
     for (int i = 0; i < cleanStr.length(); ++i) {
         wchar_t c = cleanStr.at(i);
 
         if (c == 167) {
-            // Ignore the character used to define coloured text
+            
             ++i;
         } else {
             len += charWidths[c];
@@ -275,8 +275,8 @@ std::wstring Font::sanitize(const std::wstring& str) {
         if (CharacterExists(sb[i])) {
             sb[i] = MapCharacter(sb[i]);
         } else {
-            // If this character isn't supported, just show the first character
-            // (empty square box character)
+            
+            
             sb[i] = 0;
         }
     }
@@ -285,7 +285,7 @@ std::wstring Font::sanitize(const std::wstring& str) {
 
 int Font::MapCharacter(wchar_t c) {
     if (!m_charMap.empty()) {
-        // Don't map space character
+        
         return c == ' ' ? c : m_charMap[c];
     } else {
         return c;
@@ -302,10 +302,10 @@ bool Font::CharacterExists(wchar_t c) {
 
 void Font::drawWordWrap(const std::wstring& string, int x, int y, int w,
                         int col, int h) {
-    // if (bidirectional)
-    //{
-    //	string = reorderBidi(string);
-    // }
+    
+    
+    
+    
     drawWordWrapInternal(string, x, y, w, col, h);
 }
 
@@ -316,10 +316,10 @@ void Font::drawWordWrapInternal(const std::wstring& string, int x, int y, int w,
 
 void Font::drawWordWrap(const std::wstring& string, int x, int y, int w,
                         int col, bool darken, int h) {
-    // if (bidirectional)
-    //{
-    //	string = reorderBidi(string);
-    // }
+    
+    
+    
+    
     drawWordWrapInternal(string, x, y, w, col, darken, h);
 }
 
@@ -329,8 +329,8 @@ void Font::drawWordWrapInternal(const std::wstring& string, int x, int y, int w,
     if (lines.size() > 1) {
         auto itEnd = lines.end();
         for (auto it = lines.begin(); it != itEnd; it++) {
-            // 4J Stu - Don't draw text that will be partially cutoff/overlap
-            // something it shouldn't
+            
+            
             if ((y + this->wordWrapHeight(*it, w)) > h) break;
             drawWordWrapInternal(*it, x, y, w, col, h);
             y += this->wordWrapHeight(*it, w);
@@ -355,12 +355,12 @@ void Font::drawWordWrapInternal(const std::wstring& string, int x, int y, int w,
             }
             line = line.substr(l);
 
-            // 4J Stu - Don't draw text that will be partially cutoff/overlap
-            // something it shouldn't
+            
+            
             if ((y + 8) > h) break;
         }
-        // 4J Stu - Don't draw text that will be partially cutoff/overlap
-        // something it shouldn't
+        
+        
         if (trimString(line).length() > 0 && !((y + 8) > h)) {
             draw(line, x, y, col);
             y += 8;
@@ -417,7 +417,7 @@ bool Font::AllCharactersValid(const std::wstring& str) {
         wchar_t c = str.at(i);
 
         if (c == 167 && i + 1 < str.length()) {
-            // skip special color setting
+            
             i += 1;
             continue;
         }
@@ -431,133 +431,133 @@ bool Font::AllCharactersValid(const std::wstring& str) {
     return true;
 }
 
-// Not in use
-/*// 4J - this code is lifted from #if 0 section above, so that we can directly
-create what would have gone in each of our 256 + 32 command buffers void
-Font::renderFakeCB(IntBuffer *ib)
-{
-    Tesselator *t = Tesselator::getInstance();
 
-        int i;
 
-        for(unsigned int j = 0; j < ib->limit(); j++)
-        {
-                int cb = ib->get(j);
 
-                if( cb < 256 )
-                {
-                        i = cb;
-                        t->begin();
-                        int ix = i % 16 * 8;
-                        int iy = i / 16 * 8;
-                        // float s = 7.99f;
-                        float s = 7.99f;
 
-                        float uo = (0.0f) / 128.0f;
-                        float vo = (0.0f) / 128.0f;
 
-                        t->vertexUV((float)(0), (float)( 0 + s), (float)( 0),
-(float)( ix / 128.0f + uo), (float)( (iy + s) / 128.0f + vo));
-                        t->vertexUV((float)(0 + s), (float)( 0 + s), (float)(
-0), (float)( (ix + s) / 128.0f + uo), (float)( (iy + s) / 128.0f + vo));
-                        t->vertexUV((float)(0 + s), (float)( 0), (float)( 0),
-(float)( (ix + s) / 128.0f + uo), (float)( iy / 128.0f + vo));
-                        t->vertexUV((float)(0), (float)( 0), (float)( 0),
-(float)( ix / 128.0f + uo), (float)( iy / 128.0f + vo));
-                        // target.colorBlit(texture, x + xo, y, color, ix, iy,
-                // charWidths[chars[i]], 8);
-                        t->end();
 
-                        glTranslatef((float)charWidths[i], 0, 0);
-                }
-                else
-                {
-                        i = cb - 256;
 
-                        int br = ((i >> 3) & 1) * 0x55;
-                        int r = ((i >> 2) & 1) * 0xaa + br;
-                        int g = ((i >> 1) & 1) * 0xaa + br;
-                        int b = ((i >> 0) & 1) * 0xaa + br;
-                        if (i == 6)
-                        {
-                                r += 0x55;
-                        }
-                        bool darken = i >= 16;
 
-                        // color = r << 16 | g << 8 | b;
-                        if (darken)
-                        {
-                                r /= 4;
-                                g /= 4;
-                                b /= 4;
-                        }
-                        glColor3f(r / 255.0f, g / 255.0f, b / 255.0f);
-                }
-        }
-}
 
-void Font::loadUnicodePage(int page)
-{
-        wchar_t fileName[25];
-        //String fileName = String.format("/1_2_2/font/glyph_%02X.png", page);
-        swprintf(fileName,25,L"/1_2_2/font/glyph_%02X.png",page);
-        BufferedImage *image = new BufferedImage(fileName);
-        //try
-        //{
-        //	image =
-ImageIO.read(Textures.class.getResourceAsStream(fileName.toWString()));
-        //}
-        //catch (IOException e)
-        //{
-        //	throw new RuntimeException(e);
-        //}
 
-        unicodeTexID[page] = textures->getTexture(image);
-        lastBoundTexture = unicodeTexID[page];
-}
 
-void Font::renderUnicodeCharacter(wchar_t c)
-{
-        if (unicodeWidth[c] == 0)
-        {
-                // System.out.println("no-width char " + c);
-                return;
-        }
 
-        int page = c / 256;
 
-        if (unicodeTexID[page] == 0) loadUnicodePage(page);
 
-        if (lastBoundTexture != unicodeTexID[page])
-        {
-                glBindTexture(GL_TEXTURE_2D, unicodeTexID[page]);
-                lastBoundTexture = unicodeTexID[page];
-        }
 
-        // first column with non-trans pixels
-        int firstLeft = unicodeWidth[c] >> 4;
-        // last column with non-trans pixels
-        int firstRight = unicodeWidth[c] & 0xF;
 
-        float left = firstLeft;
-        float right = firstRight + 1;
 
-        float xOff = c % 16 * 16 + left;
-        float yOff = (c & 0xFF) / 16 * 16;
-        float width = right - left - .02f;
 
-    Tesselator *t = Tesselator::getInstance();
-        t->begin(GL_TRIANGLE_STRIP);
-        t->tex(xOff / 256.0F, yOff / 256.0F);
-        t->vertex(xPos, yPos, 0.0f);
-        t->tex(xOff / 256.0F, (yOff + 15.98f) / 256.0F);
-        t->vertex(xPos, yPos + 7.99f, 0.0f);
-        t->tex((xOff + width) / 256.0F, yOff / 256.0F);
-        t->vertex(xPos + width / 2, yPos, 0.0f);
-        t->tex((xOff + width) / 256.0F, (yOff + 15.98f) / 256.0F);
-        t->vertex(xPos + width / 2, yPos + 7.99f, 0.0f);
-        t->end();
 
-        xPos += (right - left) / 2 + 1;
-}
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

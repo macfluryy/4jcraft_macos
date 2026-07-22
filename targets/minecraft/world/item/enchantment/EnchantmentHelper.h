@@ -52,13 +52,13 @@ private:
 
     static GetDamageProtectionIteration getDamageProtectionIteration;
 
-    /**
-     * Fetches the protection value for enchanted items.
-     *
-     * @param inventory
-     * @param source
-     * @return
-     */
+    
+
+
+
+
+
+
 public:
     static int getDamageProtection(
         std::vector<std::shared_ptr<ItemInstance>> armor, DamageSource* source);
@@ -74,12 +74,12 @@ private:
 
     static GetDamageBonusIteration getDamageBonusIteration;
 
-    /**
-     *
-     * @param inventory
-     * @param target
-     * @return
-     */
+    
+
+
+
+
+
 public:
     static float getDamageBonus(std::shared_ptr<LivingEntity> source,
                                 std::shared_ptr<LivingEntity> target);
@@ -97,17 +97,17 @@ public:
     static std::shared_ptr<ItemInstance> getRandomItemWith(
         Enchantment* enchantment, std::shared_ptr<LivingEntity> source);
 
-    /**
-     *
-     * @param random
-     * @param slot
-     *            The table slot, 0-2
-     * @param bookcases
-     *            How many book cases that are found around the table.
-     * @param itemInstance
-     *            Which item that is being enchanted.
-     * @return The enchantment cost, 0 means unchantable, 50 is max.
-     */
+    
+
+
+
+
+
+
+
+
+
+
     static int getEnchantmentCost(Random* random, int slot, int bookcases,
                                   std::shared_ptr<ItemInstance> itemInstance);
 
@@ -115,13 +115,13 @@ public:
         Random* random, std::shared_ptr<ItemInstance> itemInstance,
         int enchantmentCost);
 
-    /**
-     *
-     * @param random
-     * @param itemInstance
-     * @param enchantmentCost
-     * @return
-     */
+    
+
+
+
+
+
+
     static std::vector<EnchantmentInstance*>* selectEnchantment(
         Random* random, std::shared_ptr<ItemInstance> itemInstance,
         int enchantmentCost);

@@ -25,7 +25,7 @@
 #include "nbt/DoubleTag.h"
 #include "nbt/ListTag.h"
 
-// 4J - added common ctor code.
+
 void Fireball::_init() {
     xTile = -1;
     yTile = -1;
@@ -42,8 +42,8 @@ void Fireball::_init() {
 }
 
 Fireball::Fireball(Level* level) : Entity(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     _init();
@@ -62,8 +62,8 @@ bool Fireball::shouldRenderAtSqrDistance(double distance) {
 Fireball::Fireball(Level* level, double x, double y, double z, double xa,
                    double ya, double za)
     : Entity(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     _init();
@@ -75,9 +75,9 @@ Fireball::Fireball(Level* level, double x, double y, double z, double xa,
 
     double dd = sqrt(xa * xa + ya * ya + za * za);
 
-    // Fix for #69150 - [CRASH] TU8: Code: Gameplay: Nether portal mechanics can
-    // become permanently broken, causing a hard lock upon usage. IF xa, ya and
-    // za are 0 then dd is 0 and the xa/dd etc return NAN
+    
+    
+    
     if (dd == 0.0) {
         xPower = 0.0;
         yPower = 0.0;
@@ -92,8 +92,8 @@ Fireball::Fireball(Level* level, double x, double y, double z, double xa,
 Fireball::Fireball(Level* level, std::shared_ptr<LivingEntity> mob, double xa,
                    double ya, double za)
     : Entity(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     _init();
@@ -113,9 +113,9 @@ Fireball::Fireball(Level* level, std::shared_ptr<LivingEntity> mob, double xa,
     za += random->nextGaussian() * 0.4;
     double dd = sqrt(xa * xa + ya * ya + za * za);
 
-    // Fix for #69150 - [CRASH] TU8: Code: Gameplay: Nether portal mechanics can
-    // become permanently broken, causing a hard lock upon usage. IF xa, ya and
-    // za are 0 then dd is 0 and the xa/dd etc return NAN
+    
+    
+    
     if (dd == 0.0) {
         xPower = 0.0;
         yPower = 0.0;
@@ -128,8 +128,8 @@ Fireball::Fireball(Level* level, std::shared_ptr<LivingEntity> mob, double xa,
 }
 
 void Fireball::tick() {
-    // 4J-PB - Moved forward from 1.2.3
-    // if (!level->isClientSide && (owner == nullptr || owner->removed))
+    
+    
     if (!level->isClientSide) {
         if ((owner != nullptr && owner->removed) ||
             !level->hasChunkAt((int)x, (int)y, (int)z)) {
@@ -139,8 +139,8 @@ void Fireball::tick() {
             remove();
             return;
         } else {
-            // 4J-PB - TU9 bug fix - fireballs can hit the edge of the world,
-            // and stay there
+            
+            
             int minXZ = -(level->dimension->getXZSize() * 16) / 2;
             int maxXZ = (level->dimension->getXZSize() * 16) / 2 - 1;
 
@@ -154,7 +154,7 @@ void Fireball::tick() {
 
     Entity::tick();
 
-    // app.DebugPrintf("Fireball x %d, y %d, z%d\n",(int)x,(int)y,(int)z);
+    
 
     if (shouldBurn()) setOnFire(1);
 
@@ -196,10 +196,10 @@ void Fireball::tick() {
     double nearest = 0;
     auto itEnd = objects.end();
     for (auto it = objects.begin(); it != itEnd; it++) {
-        std::shared_ptr<Entity> e = *it;  // objects.at(i);
+        std::shared_ptr<Entity> e = *it;  
         if (!e->isPickable() || (e->is(owner)))
-            continue;  // 4J Stu - Never collide with the owner (Enderdragon) //
-                       // && flightTime < 25)) continue;
+            continue;  
+                       
 
         float rr = 0.3f;
         AABB bb = e->bb.grow(rr, rr, rr);
@@ -257,8 +257,8 @@ void Fireball::tick() {
     yd *= inertia;
     zd *= inertia;
 
-    // 4J-PB - bug fix for the fireballs in a saved game - they are saved with
-    // no/very small velocity, so end up hanging around in the air
+    
+    
     if (!level->isClientSide) {
         if ((abs(xd) < 0.002) && (abs(yd) < 0.002) && (abs(zd) < 0.002)) {
             xd = 0.0;
@@ -292,8 +292,8 @@ void Fireball::readAdditionalSaveData(CompoundTag* tag) {
     lastTile = tag->getByte(L"inTile") & 0xff;
     inGround = tag->getByte(L"inGround") == 1;
 
-    // Load the stored direction and apply it to the fireball
-    //   if it has no stored direction, remove it.
+    
+    
     if (tag->contains(L"direction")) {
         ListTag<DoubleTag>* listTag =
             (ListTag<DoubleTag>*)tag->getList(L"direction");

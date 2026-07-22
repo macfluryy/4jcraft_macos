@@ -1,19 +1,19 @@
-/*package net.minecraft.world.item.crafting;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.item.CoalItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemInstance;
-import net.minecraft.world.level.tile.StoneSlabTile;
-import net.minecraft.world.level.tile.Tile;
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #include <format>
 #include <memory>
@@ -102,7 +102,7 @@ public:
     static Recipes* getInstance() { return instance; }
 
 private:
-    void _init();  // 4J add
+    void _init();  
     Recipes();
 
 public:
@@ -111,10 +111,10 @@ public:
 
     std::shared_ptr<ItemInstance> getItemFor(
         std::shared_ptr<CraftingContainer> craftSlots, Level* level,
-        Recipy* recipesClass = nullptr);  // 4J Added recipesClass param
+        Recipy* recipesClass = nullptr);  
     std::vector<Recipy*>* getRecipies();
 
-    // 4J-PB - Added all below for new Xbox 'crafting'
+    
     std::shared_ptr<ItemInstance> getItemForRecipe(Recipy* r);
     Recipy::INGREDIENTS_REQUIRED* getRecipeIngredientsArray();
 

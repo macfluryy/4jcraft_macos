@@ -2,7 +2,7 @@
 
 #include "minecraft/world/phys/AABB.h"
 
-// float** m_Frustum;
+
 
 FrustumData::FrustumData() {
     this->m_Frustum = new float*[6];

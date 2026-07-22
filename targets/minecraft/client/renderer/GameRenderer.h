@@ -46,11 +46,11 @@ private:
     int _tick;
     std::shared_ptr<Entity> hovered;
 
-    // smooth camera movement
+    
     SmoothFloat smoothTurnX;
     SmoothFloat smoothTurnY;
 
-    // third-person distance etc
+    
     SmoothFloat smoothDistance;
     SmoothFloat smoothRotation;
     SmoothFloat smoothTilt;
@@ -63,22 +63,22 @@ private:
     float thirdTiltO;
     float accumulatedSmoothXO, accumulatedSmoothYO;
     float tickSmoothXO, tickSmoothYO, lastTickA;
-    Vec3 cameraPos;  // 4J added
+    Vec3 cameraPos;  
 
-    // fov modification
+    
     float fovOffset;
     float fovOffsetO;
 
-    // roll modification
+    
     float cameraRoll;
     float cameraRollO;
 
-    // 4J - changes brought forward from 1.8.2
-    static const int NUM_LIGHT_TEXTURES = 4;  // * 3;
-    int lightTexture[NUM_LIGHT_TEXTURES];  // 4J - changed so that we have one
-                                           // lightTexture per level, to support
-                                           // split screen
-    int getLightTexture(int iPad, Level* level);  // 4J added
+    
+    static const int NUM_LIGHT_TEXTURES = 4;  
+    int lightTexture[NUM_LIGHT_TEXTURES];  
+                                           
+                                           
+    int getLightTexture(int iPad, Level* level);  
     std::vector<int> lightPixels[NUM_LIGHT_TEXTURES];
 
     float fov[4];
@@ -118,7 +118,7 @@ public:
 
 private:
     void getFovAndAspect(float& fov, float& aspect, float a,
-                         bool applyEffects);  // 4J added
+                         bool applyEffects);  
 public:
     void setupCamera(float a, int eye);
 
@@ -126,7 +126,7 @@ private:
     void renderItemInHand(float a, int eye);
     int64_t lastActiveTime;
     int64_t lastNsTime;
-    // 4J - changes brought forward from 1.8.2
+    
     bool _updateLightTexture;
 
 public:
@@ -138,7 +138,7 @@ public:
     void turnOnLightLayer(
         double alpha,
         bool scaleLight =
-            false);  // 4jcraft: added scaleLight for entity lighting
+            false);  
 
 private:
     void tickLightTexture();
@@ -146,7 +146,7 @@ private:
     float getNightVisionScale(std::shared_ptr<Player> player, float a);
 
 public:
-    void render(float a, bool bFirst);  // 4J added bFirst
+    void render(float a, bool bFirst);  
     void renderLevel(float a);
     void renderLevel(float a, int64_t until);
 
@@ -157,7 +157,7 @@ private:
     void tickRain();
 
 private:
-    // 4J - brought forward from 1.8.2
+    
     float* rainXa;
     float* rainZa;
 
@@ -168,7 +168,7 @@ protected:
 
 public:
     void setupGuiScreen(
-        int forceScale = -1);  // 4J - added forceScale parameter
+        int forceScale = -1);  
 
     FloatBuffer* lb;
     float fr;

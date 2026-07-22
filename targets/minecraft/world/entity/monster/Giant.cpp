@@ -6,8 +6,8 @@
 #include "minecraft/world/level/Level.h"
 
 Giant::Giant(Level* level) : Monster(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
 

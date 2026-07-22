@@ -7,7 +7,7 @@ public:
 
 public:
     TilePos(int x, int y, int z);
-    TilePos(Vec3* p);  // 4J - brought forward from 1.2.3
+    TilePos(Vec3* p);  
 
     static int hash_fnct(const TilePos& k);
     static bool eq_test(const TilePos& x, const TilePos& y);

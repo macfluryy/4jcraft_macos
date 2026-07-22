@@ -10,8 +10,8 @@ class MelonTile : public Tile {
 private:
     Icon* iconTop;
 
-    // 4J Stu - I don't know why this is protected in Java
-    // protected:
+    
+    
 public:
     MelonTile(int id);
 

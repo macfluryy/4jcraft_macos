@@ -15,9 +15,9 @@ const unsigned int WoodSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {
     IDS_TILE_STONESLAB_JUNGLE,
 };
 
-// 	public static final String[] WOOD_NAMES = {
-// 		"oak", "spruce", "birch", "jungle"
-// 	};
+
+
+
 
 WoodSlabTile::WoodSlabTile(int id, bool fullSize)
     : HalfSlabTile(id, fullSize, Material::wood) {}
@@ -39,12 +39,12 @@ int WoodSlabTile::getAuxName(int auxValue) {
     if (auxValue < 0 || auxValue >= SLAB_NAMES_LENGTH) {
         auxValue = 0;
     }
-    return SLAB_NAMES[auxValue];  // super.getDescriptionId() + "." +
-                                  // SLAB_NAMES[auxValue];
+    return SLAB_NAMES[auxValue];  
+                                  
 }
 
 void WoodSlabTile::registerIcons(IconRegister* iconRegister) {
-    // None
+    
 }
 
 unsigned int WoodSlabTile::getDescriptionId(int iData) {

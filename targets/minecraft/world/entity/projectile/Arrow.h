@@ -16,7 +16,7 @@ public:
     static Entity* create(Level* level) { return new Arrow(level); }
 
 private:
-    // base damage, multiplied with velocity
+    
     static const double ARROW_BASE_DAMAGE;
 
 public:
@@ -50,7 +50,7 @@ private:
     int life;
     int flightTime;
 
-    // 4J - added common ctor code.
+    
     void _init();
 
 public:

@@ -13,7 +13,7 @@
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"
 
 SignItem::SignItem(int id) : Item(id) {
-    // 4J-PB - Changed for TU9
+    
     maxStackSize = 16;
 }
 
@@ -21,7 +21,7 @@ bool SignItem::useOn(std::shared_ptr<ItemInstance> instance,
                      std::shared_ptr<Player> player, Level* level, int x, int y,
                      int z, int face, float clickX, float clickY, float clickZ,
                      bool bTestUseOnOnly) {
-    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    
     if (face == 0) return false;
     if (!level->getMaterial(x, y, z)->isSolid()) return false;
 
@@ -55,7 +55,7 @@ bool SignItem::useOn(std::shared_ptr<ItemInstance> instance,
                 level->getTileEntity(x, y, z));
         if (ste != nullptr) player->openTextEdit(ste);
 
-        // 4J-JEV: Hook for durango 'BlockPlaced' event.
+        
         player->awardStat(GenericStats::blocksPlaced(
                               (face == 1) ? Tile::sign_Id : Tile::wallSign_Id),
                           GenericStats::param_blocksPlaced(

@@ -104,7 +104,7 @@ bool CollectItemRuleDefinition::onCollectItem(
 
 std::wstring CollectItemRuleDefinition::generateXml(
     std::shared_ptr<ItemInstance> item) {
-    // 4J Stu - This should be kept in sync with the GameRulesDefinition.xsd
+    
     std::wstring xml = L"";
     if (item != nullptr) {
         xml = L"<CollectItemRule itemId=\"" + toWString<int>(item->id) +

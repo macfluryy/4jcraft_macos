@@ -24,7 +24,7 @@ TileEventPacket::TileEventPacket(int x, int y, int z, int tile, int b0,
     this->tile = tile;
 }
 
-void TileEventPacket::read(DataInputStream* dis)  // throws IOException
+void TileEventPacket::read(DataInputStream* dis)  
 {
     x = dis->readInt();
     y = dis->readShort();
@@ -34,7 +34,7 @@ void TileEventPacket::read(DataInputStream* dis)  // throws IOException
     tile = dis->readShort() & Tile::TILE_NUM_MASK;
 }
 
-void TileEventPacket::write(DataOutputStream* dos)  // throws IOException
+void TileEventPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(x);
     dos->writeShort(y);

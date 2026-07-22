@@ -24,11 +24,11 @@ private:
 public:
     class Block {
     public:
-        // MGH - changed this to just cache biome indices, as we have direct
-        // access to the data if we know the index.
-        // 		std::vector<float> temps;
-        // 		std::vector<float> downfall;
-        // 		std::vector<Biome*> biomes;
+        
+        
+        
+        
+        
         std::vector<uint8_t> biomeIndices;
         int x, z;
         int64_t lastUse;
@@ -42,8 +42,8 @@ public:
 
 private:
     std::unordered_map<int64_t, Block*, LongKeyHash, LongKeyEq>
-        cached;               // 4J - was LongHashMap
-    std::vector<Block*> all;  // was ArrayList<Block>
+        cached;               
+    std::vector<Block*> all;  
 
 public:
     BiomeCache(BiomeSource* source);

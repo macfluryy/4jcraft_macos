@@ -15,7 +15,7 @@ public:
         e_Crafting_SelectItem,
     };
 
-    // Select group
+    
     XuiCraftingTask(Tutorial* tutorial, int descriptionId,
                     Recipy::_eGroupType groupToSelect,
                     bool enablePreCompletion = false,
@@ -28,7 +28,7 @@ public:
           m_group(groupToSelect),
           m_type(e_Crafting_SelectGroup) {}
 
-    // Select Item
+    
     XuiCraftingTask(Tutorial* tutorial, int descriptionId, int itemId,
                     bool enablePreCompletion = false,
                     std::vector<TutorialConstraint*>* inConstraints = nullptr,

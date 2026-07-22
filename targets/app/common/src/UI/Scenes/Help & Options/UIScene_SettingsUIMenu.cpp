@@ -18,7 +18,7 @@
 UIScene_SettingsUIMenu::UIScene_SettingsUIMenu(int iPad, void* initData,
                                                UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_bNotInGame = (Minecraft::GetInstance()->level == nullptr);
@@ -65,12 +65,12 @@ UIScene_SettingsUIMenu::UIScene_SettingsUIMenu(int iPad, void* initData,
     bool bInGame = (Minecraft::GetInstance()->level != nullptr);
     bool bPrimaryPlayer = ProfileManager.GetPrimaryPad() == m_iPad;
 
-    // if we're not in the game, we need to use basescene 0
+    
     if (bInGame) {
-        // If the game has started, then you need to be the host to change the
-        // in-game gamertags
+        
+        
         if (!bPrimaryPlayer) {
-            // hide things we don't want the splitscreen player changing
+            
             removeControl(&m_checkboxSplitscreen, true);
             removeControl(&m_checkboxShowSplitscreenGamertags, true);
         }
@@ -120,7 +120,7 @@ void UIScene_SettingsUIMenu::handleInput(int iPad, int key, bool repeat,
     switch (key) {
         case ACTION_MENU_CANCEL:
             if (pressed) {
-                // check the checkboxes
+                
                 app.SetGameSettings(m_iPad, eGameSetting_DisplayHUD,
                                     m_checkboxDisplayHUD.IsChecked() ? 1 : 0);
                 app.SetGameSettings(m_iPad, eGameSetting_DisplayHand,
@@ -135,18 +135,18 @@ void UIScene_SettingsUIMenu::handleInput(int iPad, int key, bool repeat,
                     m_iPad, eGameSetting_AnimatedCharacter,
                     m_checkboxDisplayAnimatedCharacter.IsChecked() ? 1 : 0);
 
-                // if the splitscreen vertical/horizontal has changed, need to
-                // update the scenes
+                
+                
                 if (app.GetGameSettings(m_iPad,
                                         eGameSetting_SplitScreenVertical) !=
                     (m_checkboxSplitscreen.IsChecked() ? 1 : 0)) {
-                    // changed
+                    
                     app.SetGameSettings(
                         m_iPad, eGameSetting_SplitScreenVertical,
                         m_checkboxSplitscreen.IsChecked() ? 1 : 0);
 
-                    // close the xui scenes, so we don't have the navigate
-                    // backed to menu at the wrong place
+                    
+                    
                     if (app.GetLocalPlayerCount() == 2) {
                         ui.CloseAllPlayersScenes();
                     } else {
@@ -181,10 +181,10 @@ void UIScene_SettingsUIMenu::handleSliderMove(F64 sliderId, F64 currentValue) {
                      app.GetString(IDS_SLIDER_UISIZE), value);
             m_sliderUISize.setLabel(TempString);
 
-            // is this different from the current value?
+            
             if (value != app.GetGameSettings(m_iPad, eGameSetting_UISize) + 1) {
                 app.SetGameSettings(m_iPad, eGameSetting_UISize, value - 1);
-                // Apply the changes to the selected text position
+                
                 ui.UpdateSelectedItemPos(m_iPad);
             }
 
@@ -199,10 +199,10 @@ void UIScene_SettingsUIMenu::handleSliderMove(F64 sliderId, F64 currentValue) {
             if (value !=
                 app.GetGameSettings(m_iPad, eGameSetting_UISizeSplitscreen) +
                     1) {
-                // slider is 1 to 3
+                
                 app.SetGameSettings(m_iPad, eGameSetting_UISizeSplitscreen,
                                     value - 1);
-                // Apply the changes to the selected text position
+                
                 ui.UpdateSelectedItemPos(m_iPad);
             }
 

@@ -10,28 +10,28 @@
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/mac/Iggy/include/rrCore.h"
 
-// using namespace std;
+
 class UIScene;
 class UIGroup;
 
-// A layer include a collection of scenes and other components
+
 class UILayer {
 private:
     std::vector<UIScene*>
-        m_sceneStack;  // Operates as a stack mainly, but we may wish to iterate
-                       // over all elements
+        m_sceneStack;  
+                       
     std::vector<UIScene*>
-        m_components;  // Other componenents in this scene that to do not
-                       // conform the the user nav stack, and cannot take focus
-    std::vector<UIScene*> m_scenesToDelete;  // A list of scenes to delete
+        m_components;  
+                       
+    std::vector<UIScene*> m_scenesToDelete;  
     std::vector<UIScene*>
-        m_scenesToDestroy;  // A list of scenes where we want to dump the swf
+        m_scenesToDestroy;  
 
     std::unordered_map<EUIScene, std::pair<int, bool>> m_componentRefCount;
 
 public:
-    bool m_hasFocus;  // True if the layer "has focus", should be the only layer
-                      // in the group
+    bool m_hasFocus;  
+                      
     bool m_bMenuDisplayed;
     bool m_bPauseMenuDisplayed;
     bool m_bContainerMenuDisplayed;
@@ -50,7 +50,7 @@ public:
     void DestroyAll();
     void ReloadAll(bool force = false);
 
-    // NAVIGATION
+    
     bool NavigateToScene(int iPad, EUIScene scene, void* initData);
     bool NavigateBack(int iPad, EUIScene eScene);
     void removeScene(UIScene* scene);
@@ -65,19 +65,19 @@ public:
 
     bool hidesLowerScenes();
 
-    // A component is an element on a layer that displays BELOW other scenes in
-    // this layer, but does not engage in any navigation E.g. you can keep a
-    // component active while performing navigation with other scenes on this
-    // layer
+    
+    
+    
+    
     void showComponent(int iPad, EUIScene scene, bool show);
     bool isComponentVisible(EUIScene scene);
     UIScene* addComponent(int iPad, EUIScene scene, void* initData = nullptr);
     void removeComponent(EUIScene scene);
 
-    // INPUT
+    
     void handleInput(int iPad, int key, bool repeat, bool pressed,
                      bool released, bool& handled);
-    // FOCUS
+    
 
     bool updateFocusState(bool allowedFocus = false);
 

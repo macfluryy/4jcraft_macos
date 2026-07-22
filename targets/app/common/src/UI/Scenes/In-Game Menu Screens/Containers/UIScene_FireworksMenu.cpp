@@ -21,7 +21,7 @@ class UILayer;
 UIScene_FireworksMenu::UIScene_FireworksMenu(int iPad, void* _initData,
                                              UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     FireworksScreenInput* initData = (FireworksScreenInput*)_initData;
@@ -226,8 +226,8 @@ UIControl* UIScene_FireworksMenu::getSection(ESceneSection eSection) {
     return control;
 }
 
-// bShow == true removes the 2x2 crafting grid and bShow == false removes the
-// 3x3 crafting grid
+
+
 void UIScene_FireworksMenu::ShowLargeCraftingGrid(bool bShow) {
     app.DebugPrintf("ShowLargeCraftingGrid to %d\n", bShow);
 

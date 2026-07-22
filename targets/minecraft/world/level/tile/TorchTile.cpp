@@ -25,7 +25,7 @@ AABB TorchTile::getTileAABB(Level* level, int x, int y, int z) {
 void TorchTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     setShape(level->getData(x, y, z));
 }

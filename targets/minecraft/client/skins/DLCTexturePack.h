@@ -14,13 +14,13 @@ class TexturePack;
 
 class DLCTexturePack : public AbstractTexturePack {
 private:
-    DLCPack* m_dlcInfoPack;  // Description, icon etc
-    DLCPack* m_dlcDataPack;  // Actual textures
+    DLCPack* m_dlcInfoPack;  
+    DLCPack* m_dlcDataPack;  
     StringTable* m_stringTable;
     bool bUILoaded;
     bool m_bLoadingData, m_bHasLoadedData;
     bool m_bUsingDefaultColourTable;
-    // bool m_bHasAudio;
+    
     ArchiveFile* m_archiveFile;
 
 public:
@@ -41,22 +41,22 @@ public:
         return m_stringTable->getString(L"IDS_WORLD_NAME");
     }
 
-    // Added for sound banks with MashUp packs
+    
 protected:
-    //@Override
+    
     void loadIcon();
     void loadComparison();
     void loadName();
     void loadDescription();
     InputStream* getResourceImplementation(
-        const std::wstring& name);  // throws IOException
+        const std::wstring& name);  
 
 public:
-    //@Override
+    
     bool hasFile(const std::wstring& name);
     bool isTerrainUpdateCompatible();
 
-    // 4J Added
+    
     virtual std::wstring getPath(bool bTitleUpdateTexture = false,
                                  const char* pchBDPatchFilename = nullptr);
     virtual std::wstring getAnimationString(const std::wstring& textureName,

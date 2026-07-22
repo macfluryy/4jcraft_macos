@@ -57,8 +57,8 @@ static void* get_gl_proc(const char* name) {
 }
 
 #define GDRAW_GL_EXTENSION_LIST                                                \
-    /*  identifier                      import procname */                     \
-    /* GL_ARB_vertex_buffer_object */                                          \
+                         \
+                                              \
     GLE(GenBuffers, "GenBuffersARB", GENBUFFERSARB)                            \
     GLE(DeleteBuffers, "DeleteBuffersARB", DELETEBUFFERSARB)                   \
     GLE(BindBuffer, "BindBufferARB", BINDBUFFERARB)                            \
@@ -70,7 +70,7 @@ static void* get_gl_proc(const char* name) {
         ENABLEVERTEXATTRIBARRAYARB)                                            \
     GLE(DisableVertexAttribArray, "DisableVertexAttribArrayARB",               \
         DISABLEVERTEXATTRIBARRAYARB)                                           \
-    /* GL_ARB_shader_objects */                                                \
+                                                    \
     GLE(CreateShader, "CreateShaderObjectARB", CREATESHADEROBJECTARB)          \
     GLE(DeleteShader, "DeleteObjectARB", DELETEOBJECTARB)                      \
     GLE(ShaderSource, "ShaderSourceARB", SHADERSOURCEARB)                      \
@@ -88,11 +88,11 @@ static void* get_gl_proc(const char* name) {
     GLE(Uniform1i, "Uniform1iARB", UNIFORM1IARB)                               \
     GLE(Uniform4f, "Uniform4fARB", UNIFORM4FARB)                               \
     GLE(Uniform4fv, "Uniform4fvARB", UNIFORM4FVARB)                            \
-    /* GL_ARB_vertex_shader */                                                 \
+                                                     \
     GLE(BindAttribLocation, "BindAttribLocationARB", BINDATTRIBLOCATIONARB)    \
-    /* Missing from WGL but needed by shared code */                           \
+                               \
     GLE(Uniform1f, "Uniform1fARB", UNIFORM1FARB)                               \
-    /* GL_EXT_framebuffer_object */                                            \
+                                                \
     GLE(GenRenderbuffers, "GenRenderbuffersEXT", GENRENDERBUFFERSEXT)          \
     GLE(DeleteRenderbuffers, "DeleteRenderbuffersEXT", DELETERENDERBUFFERSEXT) \
     GLE(BindRenderbuffer, "BindRenderbufferEXT", BINDRENDERBUFFEREXT)          \
@@ -107,20 +107,20 @@ static void* get_gl_proc(const char* name) {
     GLE(FramebufferTexture2D, "FramebufferTexture2DEXT",                       \
         FRAMEBUFFERTEXTURE2DEXT)                                               \
     GLE(GenerateMipmap, "GenerateMipmapEXT", GENERATEMIPMAPEXT)                \
-    /* GL_EXT_framebuffer_blit */                                              \
+                                                  \
     GLE(BlitFramebuffer, "BlitFramebufferEXT", BLITFRAMEBUFFEREXT)             \
-    /* GL_EXT_framebuffer_multisample */                                       \
+                                           \
     GLE(RenderbufferStorageMultisample, "RenderbufferStorageMultisampleEXT",   \
         RENDERBUFFERSTORAGEMULTISAMPLEEXT)                                     \
-    /* <end> */
+    
 
-// Shared .inl
+
 #define gdraw_GLx_(id) gdraw_GL_##id
 #define GDRAW_GLx_(id) GDRAW_GL_##id
 #define GDRAW_SHADERS "gdraw_gl_shaders.inl"
 
-// GLhandleARB is void* but shader functions use GLuint values.
-// homework stolen from gdraw_gl_shared.inl.
+
+
 #define GDrawGLProgram GLuint
 typedef GLuint GLhandle;
 typedef gdraw_gl_resourcetype gdraw_resourcetype;
@@ -161,7 +161,7 @@ static gdraw_shadersource_fn gdraw_real_shadersource = NULL;
 static gdraw_compileshader_fn gdraw_real_compileshader = NULL;
 static gdraw_linkprogram_fn gdraw_real_linkprogram = NULL;
 
-// some core reject p0
+
 
 typedef void(APIENTRYP gdraw_useprogram_fn)(GLuint);
 static gdraw_useprogram_fn gdraw_real_useprogram = NULL;
@@ -184,7 +184,7 @@ static gdraw_texsubimage2d_fn gdraw_real_texsubimage2d = NULL;
     } while (0)
 
 static void load_extensions(void) {
-// gl_shared requires ts shit ugh
+
 #define GLE(id, import, procname) \
     gl##id = (PFNGL##procname##PROC)get_gl_proc("gl" import);
     GDRAW_GL_EXTENSION_LIST
@@ -246,7 +246,7 @@ static void load_extensions(void) {
     TRY(glRenderbufferStorageMultisample, "glRenderbufferStorageMultisampleEXT",
         "glRenderbufferStorageMultisample");
 
-    // Save raw pointers before we #define over the names below
+    
     gdraw_real_vtxattrib =
         (gdraw_vtxattrib_fn)get_gl_proc("glVertexAttribPointer");
     gdraw_real_createshader =
@@ -277,7 +277,7 @@ static void load_extensions(void) {
 
 #undef TRY
 
-// rebind vbo
+
 
 static void clear_renderstate_platform_specific(void) {
     if (gdraw_glBindVertexArray && gdraw_vao)
@@ -296,7 +296,7 @@ static void error_msg_platform_specific(const char* msg) {
 
 #define GDRAW_MULTISAMPLING
 
-// i wish i could improve this function
+
 #ifdef RR_BREAK
 #undef RR_BREAK
 #endif
@@ -305,7 +305,7 @@ static void error_msg_platform_specific(const char* msg) {
         fprintf(stderr, "[GDraw] GL error at %s:%d\n", __FILE__, __LINE__); \
     } while (0)
 
-// the magic number that tropical told me
+
 #define GDRAW_MAX_SHADERS 64
 static struct {
     GLuint handle;
@@ -361,7 +361,7 @@ static void gdraw_LinkProgramAndLog(GLuint program) {
 #undef glCreateShader
 #define glCreateShader gdraw_CreateShaderTracked
 
-// This is the part that turns the old ugly shaders to 330
+
 static char* gdraw_strreplace(char* src, const char* find, const char* rep) {
     char* result;
     char* pos;
@@ -428,7 +428,7 @@ static void gdraw_ShaderSourceUpgraded(GLuint shader, GLsizei count,
 
     int is_vert = (gdraw_get_shader_type(shader) == GL_VERTEX_SHADER);
 
-    // Strip any existing #version directive as i'll add our own
+    
     {
         char* vp = strstr(src, "#version");
         if (vp) {
@@ -440,16 +440,16 @@ static void gdraw_ShaderSourceUpgraded(GLuint shader, GLsizei count,
         }
     }
 
-    // Texture built-ins
+    
     src = gdraw_strreplace(src, "texture2DRect", "texture");
     src = gdraw_strreplace(src, "texture2D", "texture");
 
-    // Attribute -> in
+    
     src = gdraw_strreplace(src, "attribute ", "in ");
     src = gdraw_strreplace(src, "attribute\t", "in\t");
     src = gdraw_strreplace(src, "attribute\n", "in\n");
 
-    // Varying -> out (vert) / in (frag)
+    
     if (is_vert) {
         src = gdraw_strreplace(src, "varying ", "out ");
         src = gdraw_strreplace(src, "varying\t", "out\t");
@@ -483,16 +483,16 @@ static void gdraw_ShaderSourceUpgraded(GLuint shader, GLsizei count,
 #undef glShaderSource
 #define glShaderSource gdraw_ShaderSourceUpgraded
 
-// Remap all the deprecated internal formats to their modern equivalents
-// (idk why but just the word "swizzle" is cracking me up)
+
+
 static void gdraw_apply_swizzle(GLenum internal_fmt) {
-    if (internal_fmt == 0x1906 /* GL_ALPHA */ || internal_fmt == GL_RED) {
+    if (internal_fmt == 0x1906  || internal_fmt == GL_RED) {
         GLint sw[4] = {GL_ZERO, GL_ZERO, GL_ZERO, GL_RED};
         glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, sw);
-    } else if (internal_fmt == 0x1909 /* GL_LUMINANCE */) {
+    } else if (internal_fmt == 0x1909 ) {
         GLint sw[4] = {GL_RED, GL_RED, GL_RED, GL_ONE};
         glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, sw);
-    } else if (internal_fmt == 0x190A /* GL_LUMINANCE_ALPHA */) {
+    } else if (internal_fmt == 0x190A ) {
         GLint sw[4] = {GL_RED, GL_RED, GL_RED, GL_GREEN};
         glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, sw);
     }
@@ -501,21 +501,21 @@ static void gdraw_apply_swizzle(GLenum internal_fmt) {
 static GLenum gdraw_remap_fmt(GLenum fmt) {
     switch (fmt) {
         case 0x1906:
-            return GL_RED;  // GL_ALPHA
+            return GL_RED;  
         case 0x1909:
-            return GL_RED;  // GL_LUMINANCE
+            return GL_RED;  
         case 0x190A:
-            return GL_RG;  // GL_LUMINANCE_ALPHA
+            return GL_RG;  
         case 0x8033:
-            return GL_RG;  // GL_LUMINANCE4_ALPHA4
+            return GL_RG;  
         case 0x8045:
-            return GL_R8;  // GL_LUMINANCE8
+            return GL_R8;  
         case 0x8048:
-            return GL_RG8;  // GL_LUMINANCE8_ALPHA8
+            return GL_RG8;  
         case 0x804F:
-            return GL_R8;  // GL_INTENSITY4
+            return GL_R8;  
         case 0x8050:
-            return GL_R8;  // GL_INTENSITY8
+            return GL_R8;  
         default:
             return fmt;
     }
@@ -524,7 +524,7 @@ static GLenum gdraw_remap_fmt(GLenum fmt) {
 static void gdraw_TexImage2D(GLenum target, GLint level, GLint ifmt, GLsizei w,
                              GLsizei h, GLint border, GLenum fmt, GLenum type,
                              const void* data) {
-    // ES strictly requires explicitly sized formats & stuff
+    
     if (ifmt == GL_RGBA && data == NULL) ifmt = GL_RGBA8;
 
     GLenum new_ifmt = gdraw_remap_fmt((GLenum)ifmt);
@@ -547,7 +547,7 @@ static void gdraw_TexSubImage2D(GLenum target, GLint level, GLint xoff,
 #undef glTexSubImage2D
 #define glTexSubImage2D gdraw_TexSubImage2D
 
-// vbo emu
+
 static void gdraw_ClientVertexAttribPointer(GLuint index, GLint size,
                                             GLenum type, GLboolean normalized,
                                             GLsizei stride,
@@ -563,7 +563,7 @@ static void gdraw_ClientVertexAttribPointer(GLuint index, GLint size,
     glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &current_vbo);
 
     if (current_vbo != 0 && current_vbo != (GLint)gdraw_screenvbo) {
-        // no touchies
+        
         gdraw_real_vtxattrib(index, size, type, normalized, stride, pointer);
         return;
     }
@@ -602,7 +602,7 @@ static void gdraw_ClientVertexAttribPointer(GLuint index, GLint size,
 #undef glVertexAttribPointer
 #define glVertexAttribPointer gdraw_ClientVertexAttribPointer
 
-// fake ibo
+
 static void hooked_glDrawElements(GLenum mode, GLsizei count, GLenum type,
                                   const void* indices) {
     GLint current_ibo = 0;
@@ -626,7 +626,7 @@ static void hooked_glDrawElements(GLenum mode, GLsizei count, GLenum type,
 
 #define glDrawElements hooked_glDrawElements
 
-// dummy shader for glUseProgram(0) safety
+
 static void gdraw_UseProgramSafe(GLuint program) {
     if (!program) {
         if (!gdraw_null_program && gdraw_real_useprogram) {
@@ -671,10 +671,10 @@ static void gdraw_FramebufferRenderbufferSafe(GLenum target, GLenum attachment,
                                     renderbuffer);
     } else if (attachment == GL_STENCIL_ATTACHMENT) {
         if (renderbuffer == last_depth_rb && renderbuffer != 0) {
-            // If identical, bind as packed depth-stencil to satisfy strict GLES
-            // ^ how greedy -n-
+            
+            
             (glFramebufferRenderbuffer)(
-                target, 0x821A /* GL_DEPTH_STENCIL_ATTACHMENT */,
+                target, 0x821A ,
                 renderbuffertarget, renderbuffer);
         } else {
             (glFramebufferRenderbuffer)(target, attachment, renderbuffertarget,
@@ -723,7 +723,7 @@ static void RADLINK hooked_DrawIndexedTriangles(GDrawRenderState* r,
     } else {
         gdraw_expected_vbo_size = 0;
     }
-    gdraw_screenvbo_base = NULL;  // Force VBO re-upload for each primitive
+    gdraw_screenvbo_base = NULL;  
     real_DrawIndexedTriangles(r, prim, buf, stats);
 }
 
@@ -731,14 +731,14 @@ static gdraw_filter_quad* real_FilterQuad = NULL;
 
 static void RADLINK hooked_FilterQuad(GDrawRenderState* r, S32 x0, S32 y0,
                                       S32 x1, S32 y1, GDrawStats* stats) {
-    gdraw_expected_vbo_size = 4 * 20;  // 4 vertices, max stride
+    gdraw_expected_vbo_size = 4 * 20;  
     gdraw_screenvbo_base = NULL;
     real_FilterQuad(r, x0, y0, x1, y1, stats);
 }
 
 static gdraw_rendering_begin* real_RenderingBegin = NULL;
 
-// stupid hack
+
 static void RADLINK hooked_RenderingBegin(void) {
     if (real_RenderingBegin) real_RenderingBegin();
     glDisable(GL_DEPTH_TEST);
@@ -746,7 +746,7 @@ static void RADLINK hooked_RenderingBegin(void) {
     OPENGL_CHECK_SITE("hooked_RenderingBegin:post_state");
 }
 
-// Creating the context
+
 GDrawFunctions* gdraw_GL_CreateContext(S32 w, S32 h, S32 msaa_samples) {
     static const TextureFormatDesc tex_formats[] = {
         {IFT_FORMAT_rgba_8888, 1, 1, 4, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE},
@@ -790,7 +790,7 @@ GDrawFunctions* gdraw_GL_CreateContext(S32 w, S32 h, S32 msaa_samples) {
     GDrawFunctions* funcs = create_context(w, h);
     if (!funcs) return NULL;
 
-    // hook the vtable entries for VBO reset and render state
+    
     real_DrawIndexedTriangles = funcs->DrawIndexedTriangles;
     funcs->DrawIndexedTriangles = hooked_DrawIndexedTriangles;
 
@@ -823,10 +823,10 @@ GDrawFunctions* gdraw_GL_CreateContext(S32 w, S32 h, S32 msaa_samples) {
     return funcs;
 }
 
-// Custom draw callbacks
+
 void gdraw_GL_BeginCustomDraw_4J(IggyCustomDrawCallbackRegion* region,
                                  F32* matrix) {
-    // rebind vbo
+    
     if (gdraw_glBindVertexArray && gdraw_vao)
         gdraw_glBindVertexArray(gdraw_vao);
     clear_renderstate();

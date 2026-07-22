@@ -61,7 +61,7 @@ void LivingEntityRenderer::render(std::shared_ptr<Entity> _mob, double x,
     model->young = mob->isBaby();
     if (armor != nullptr) armor->young = model->young;
 
-    /*try*/
+    
     {
         float bodyRot = rotlerp(mob->yBodyRotO, mob->yBodyRot, a);
         float headRot = rotlerp(mob->yHeadRotO, mob->yHeadRot, a);
@@ -118,14 +118,6 @@ void LivingEntityRenderer::render(std::shared_ptr<Entity> _mob, double x,
                     armor->render(mob, wp, ws, bob, headRot - bodyRot, headRotx,
                                   fScale, true);
                 }
-                // 4J - added condition here for rendering player as part of the
-                // gui. Avoiding rendering the glint here as it involves using
-                // its own blending, and for gui rendering we are globally
-                // blending to be able to offer user configurable gui opacity.
-                // Note that I really don't know why GL_BLEND is turned off at
-                // the end of the first armour layer anyway, or why alpha
-                // testing is turned on... but we definitely don't want to be
-                // turning blending off during the gui render.
                 if (!entityRenderDispatcher->isGuiRender) {
                     if ((armorType & 0xf) == 0xf) {
                         float time = mob->tickCount + a;
@@ -184,10 +176,10 @@ void LivingEntityRenderer::render(std::shared_ptr<Entity> _mob, double x,
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glDepthFunc(GL_EQUAL);
 
-            // 4J - changed these renders to not use the compiled version of
-            // their models, because otherwise the render states set about (in
-            // particular the depth & alpha test) don't work with our command
-            // buffer versions
+            
+            
+            
+            
             if (mob->hurtTime > 0 || mob->deathTime > 0) {
                 glColor4f(br, 0, 0, 0.4f);
                 model->render(mob, wp, ws, bob, headRot - bodyRot, headRotx,
@@ -225,10 +217,10 @@ void LivingEntityRenderer::render(std::shared_ptr<Entity> _mob, double x,
         }
         glDisable(GL_RESCALE_NORMAL);
     }
-    /* catch (Exception e)
-    {
-    e.printStackTrace();
-    }*/
+    
+
+
+
 
     glActiveTexture(GL_TEXTURE1);
     glEnable(GL_TEXTURE_2D);
@@ -376,6 +368,17 @@ void LivingEntityRenderer::scale(std::shared_ptr<LivingEntity> mob, float a) {}
 
 void LivingEntityRenderer::renderName(std::shared_ptr<LivingEntity> mob,
                                       double x, double y, double z) {
+    if (mob != nullptr && mob->instanceof(eTYPE_PLAYER)) {
+        std::wstring dn = mob->getDisplayName();
+        fprintf(stderr,
+                "[JNAME] show=%d msg='%ls' len=%zu hud=%d gamertags=%d "
+                "dist2=%.1f sneak=%d\n",
+                shouldShowName(mob) ? 1 : 0, dn.c_str(), dn.size(),
+                app.GetGameSettings(eGameSetting_DisplayHUD),
+                app.GetGameHostOption(eGameHostOption_Gamertags),
+                mob->distanceToSqr(entityRenderDispatcher->cameraEntity),
+                mob->isSneaking() ? 1 : 0);
+    }
     if (shouldShowName(mob) || Minecraft::renderDebug()) {
         float size = 1.60f;
         float s = 1 / 60.0f * size;
@@ -389,12 +392,12 @@ void LivingEntityRenderer::renderName(std::shared_ptr<LivingEntity> mob,
             if (!msg.empty()) {
                 if (mob->isSneaking()) {
                     if (app.GetGameSettings(eGameSetting_DisplayHUD) == 0) {
-                        // 4J-PB - turn off gamertag render
+                        
                         return;
                     }
 
                     if (app.GetGameHostOption(eGameHostOption_Gamertags) == 0) {
-                        // turn off gamertags if the host has set them off
+                        
                         return;
                     }
 
@@ -441,10 +444,16 @@ void LivingEntityRenderer::renderName(std::shared_ptr<LivingEntity> mob,
 }
 
 bool LivingEntityRenderer::shouldShowName(std::shared_ptr<LivingEntity> mob) {
-    return Minecraft::renderNames() &&
-           mob != entityRenderDispatcher->cameraEntity &&
-           !mob->isInvisibleTo(Minecraft::GetInstance()->player) &&
-           mob->rider.lock() == nullptr;
+    if (!Minecraft::renderNames()) return false;
+    if (mob == entityRenderDispatcher->cameraEntity) return false;
+    if (mob->rider.lock() != nullptr) return false;
+    
+    
+    
+    if (mob->isInvisibleTo(Minecraft::GetInstance()->player) &&
+        !mob->isCustomNameVisible())
+        return false;
+    return true;
 }
 
 void LivingEntityRenderer::renderNameTags(std::shared_ptr<LivingEntity> mob,
@@ -458,18 +467,18 @@ void LivingEntityRenderer::renderNameTags(std::shared_ptr<LivingEntity> mob,
     }
 }
 
-// 4J Added parameter for color here so that we can colour players names
+
 void LivingEntityRenderer::renderNameTag(std::shared_ptr<LivingEntity> mob,
                                          const std::wstring& name, double x,
                                          double y, double z, int maxDist,
-                                         int color /*= 0xff000000*/) {
+                                         int color ) {
     if (app.GetGameSettings(eGameSetting_DisplayHUD) == 0) {
-        // 4J-PB - turn off gamertag render
+        
         return;
     }
 
     if (app.GetGameHostOption(eGameHostOption_Gamertags) == 0) {
-        // turn off gamertags if the host has set them off
+        
         return;
     }
 
@@ -494,8 +503,8 @@ void LivingEntityRenderer::renderNameTag(std::shared_ptr<LivingEntity> mob,
     glScalef(-s, -s, s);
     glDisable(GL_LIGHTING);
 
-    // 4J Stu - If it's beyond readable distance, then just render a coloured
-    // box
+    
+    
     int readableDist = PLAYER_NAME_READABLE_FULLSCREEN;
     if (!RenderManager.IsHiDef()) {
         readableDist = PLAYER_NAME_READABLE_DISTANCE_SD;

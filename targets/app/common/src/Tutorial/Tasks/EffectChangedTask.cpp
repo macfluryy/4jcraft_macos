@@ -18,7 +18,7 @@ EffectChangedTask::EffectChangedTask(Tutorial* tutorial, int descriptionId,
 bool EffectChangedTask::isCompleted() { return bIsCompleted; }
 
 void EffectChangedTask::onEffectChanged(MobEffect* effect,
-                                        bool bRemoved /*=false*/) {
+                                        bool bRemoved ) {
     if (effect == m_effect) {
         if (m_apply == !bRemoved) {
             bIsCompleted = true;

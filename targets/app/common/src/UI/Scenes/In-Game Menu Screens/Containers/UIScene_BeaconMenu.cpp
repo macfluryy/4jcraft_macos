@@ -25,7 +25,7 @@ class UILayer;
 UIScene_BeaconMenu::UIScene_BeaconMenu(int iPad, void* _initData,
                                        UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_labelPrimary.init(IDS_CONTAINER_BEACON_PRIMARY_POWER);
@@ -61,7 +61,7 @@ UIScene_BeaconMenu::UIScene_BeaconMenu(int iPad, void* _initData,
 
     m_slotListActivatorIcons.addSlots(m_menu->getSize(), 4);
 
-    // app.SetRichPresenceContext(m_iPad,CONTEXT_GAME_STATE_BEACON);
+    
 
     delete initData;
 }

@@ -1,5 +1,5 @@
 #pragma once
-// using namespace std;
+
 
 #include <stdint.h>
 
@@ -14,7 +14,7 @@ class DataInputStream;
 class DataOutputStream;
 class ItemInstance;
 
-// A game rule maintains the state for one particular definition
+
 class GameRule {
 public:
     typedef struct _ValueType {
@@ -41,8 +41,8 @@ private:
 
 public:
     typedef std::unordered_map<std::wstring, ValueType> stringValueMapType;
-    stringValueMapType m_parameters;  // These are the members of this rule that
-                                      // maintain it's state
+    stringValueMapType m_parameters;  
+                                      
 
 public:
     GameRule(GameRuleDefinition* definition, Connection* connection = nullptr);
@@ -54,14 +54,14 @@ public:
     void setParameter(const std::wstring& parameterName, ValueType value);
     GameRuleDefinition* getGameRuleDefinition();
 
-    // All the hooks go here
+    
     void onUseTile(int tileId, int x, int y, int z);
     void onCollectItem(std::shared_ptr<ItemInstance> item);
 
-    // 4J-JEV: For saving.
-    // CompoundTag *toTags(std::unordered_map<GameRuleDefinition *, int> *map);
-    // static GameRule *fromTags(Connection *c, CompoundTag *cTag,
-    // std::vector<GameRuleDefinition *> *grds);
+    
+    
+    
+    
 
     void write(DataOutputStream* dos);
     void read(DataInputStream* dos);

@@ -11,11 +11,11 @@ TexturePacket::TexturePacket() {
 }
 
 TexturePacket::~TexturePacket() {
-    // can't free this - it's used elsewhere
-    // 	if(this->pbData!=nullptr)
-    // 	{
-    // 		delete [] this->pbData;
-    // 	}
+    
+    
+    
+    
+    
 }
 
 TexturePacket::TexturePacket(const std::wstring& textureName,
@@ -29,7 +29,7 @@ void TexturePacket::handle(PacketListener* listener) {
     listener->handleTexture(shared_from_this());
 }
 
-void TexturePacket::read(DataInputStream* dis)  // throws IOException
+void TexturePacket::read(DataInputStream* dis)  
 {
     textureName = dis->readUTF();
     dataBytes = (std::uint32_t)dis->readShort();
@@ -43,7 +43,7 @@ void TexturePacket::read(DataInputStream* dis)  // throws IOException
     }
 }
 
-void TexturePacket::write(DataOutputStream* dos)  // throws IOException
+void TexturePacket::write(DataOutputStream* dos)  
 {
     dos->writeUTF(textureName);
     dos->writeShort((short)dataBytes);

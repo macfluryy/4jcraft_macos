@@ -56,7 +56,7 @@ public:
     virtual void stopOpen();
     virtual bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item);
 
-    // 4J Added
+    
     virtual std::shared_ptr<TileEntity> clone();
     void AddItemBack(std::shared_ptr<ItemInstance> item, unsigned int slot);
 };

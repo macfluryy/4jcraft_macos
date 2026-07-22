@@ -20,8 +20,8 @@ BasePressurePlateTile::BasePressurePlateTile(int id, const std::wstring& tex,
     texture = tex;
     setTicking(true);
 
-    // 4J Stu - Move this to derived classes
-    // updateShape(getDataForSignal(Redstone::SIGNAL_MAX));
+    
+    
 }
 
 void BasePressurePlateTile::updateShape(

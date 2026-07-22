@@ -19,9 +19,9 @@ class UILayer;
 UIScene_DLCMainMenu::UIScene_DLCMainMenu(int iPad, void* initData,
                                          UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
-    // Alert the app the we want to be informed of ethernet connections
+    
     app.SetLiveLinkRequired(true);
 
     m_labelOffers.init(IDS_DOWNLOADABLE_CONTENT_OFFERS);
@@ -33,8 +33,8 @@ UIScene_DLCMainMenu::UIScene_DLCMainMenu(int iPad, void* initData,
 }
 
 UIScene_DLCMainMenu::~UIScene_DLCMainMenu() {
-    // Alert the app the we no longer want to be informed of ethernet
-    // connections
+    
+    
     app.SetLiveLinkRequired(false);
 }
 
@@ -47,9 +47,9 @@ void UIScene_DLCMainMenu::updateTooltips() {
 void UIScene_DLCMainMenu::handleInput(int iPad, int key, bool repeat,
                                       bool pressed, bool released,
                                       bool& handled) {
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {
@@ -80,10 +80,10 @@ void UIScene_DLCMainMenu::handlePress(F64 controlId, F64 childId) {
             param->iPad = m_iPad;
 
             param->iType = iIndex;
-            // promote the DLC content request type
+            
 
-            // Xbox One will have requested the marketplace content - there is
-            // only that type
+            
+            
             app.AddDLCRequest((eDLCMarketplaceType)iIndex, true);
             killTimer(PLAYER_ONLINE_TIMER_ID);
             ui.NavigateToScene(m_iPad, eUIScene_DLCOffersMenu, param);
@@ -109,7 +109,7 @@ void UIScene_DLCMainMenu::handleGainFocus(bool navBack) {
     updateTooltips();
 
     if (navBack) {
-        // add the timer back in
+        
     }
 }
 

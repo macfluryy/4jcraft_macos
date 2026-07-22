@@ -23,11 +23,11 @@ float WeaponItem::getTierDamage() { return tier->getAttackDamageBonus(); }
 float WeaponItem::getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance,
                                   Tile* tile) {
     if (tile->id == Tile::web_Id) {
-        // swords can quickly cut web
+        
         return 15;
     }
-    // this change modifies which tiles the swords can destroy in creative
-    // mode (>1 == yes)
+    
+    
     Material* material = tile->material;
     if (material == Material::plant ||
         material == Material::replaceable_plant ||
@@ -48,7 +48,7 @@ bool WeaponItem::hurtEnemy(std::shared_ptr<ItemInstance> itemInstance,
 bool WeaponItem::mineBlock(std::shared_ptr<ItemInstance> itemInstance,
                            Level* level, int tile, int x, int y, int z,
                            std::shared_ptr<LivingEntity> owner) {
-    // Don't damage weapons if the tile can be destroyed in one hit.
+    
     if (Tile::tiles[tile]->getDestroySpeed(level, x, y, z) != 0.0)
         itemInstance->hurtAndBreak(2, owner);
     return true;
@@ -62,7 +62,7 @@ UseAnim WeaponItem::getUseAnimation(
 }
 
 int WeaponItem::getUseDuration(std::shared_ptr<ItemInstance> itemInstance) {
-    return 20 * 60 * 60;  // Block for a maximum of one hour!
+    return 20 * 60 * 60;  
 }
 
 std::shared_ptr<ItemInstance> WeaponItem::use(

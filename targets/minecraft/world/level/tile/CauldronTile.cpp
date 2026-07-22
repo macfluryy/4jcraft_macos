@@ -82,7 +82,7 @@ bool CauldronTile::isCubeShaped() { return false; }
 bool CauldronTile::use(Level* level, int x, int y, int z,
                        std::shared_ptr<Player> player, int clickedFace,
                        float clickX, float clickY, float clickZ,
-                       bool soundOnly /*=false*/)  // 4J added soundOnly param
+                       bool soundOnly )  
 {
     if (soundOnly) return false;
 
@@ -120,13 +120,13 @@ bool CauldronTile::use(Level* level, int x, int y, int z,
                 level->addEntity(std::shared_ptr<ItemEntity>(
                     new ItemEntity(level, x + 0.5, y + 1.5, z + 0.5, potion)));
             }
-            // 4J Stu - Brought forward change to update inventory when filling
-            // bottles with water
+            
+            
             else if (player->instanceof(eTYPE_SERVERPLAYER)) {
                 std::dynamic_pointer_cast<ServerPlayer>(player)
                     ->refreshContainer(player->inventoryMenu);
             }
-            // 4J-PB - don't lose the water in creative mode
+            
             if (player->abilities.instabuild == false) {
                 item->count--;
                 if (item->count <= 0) {

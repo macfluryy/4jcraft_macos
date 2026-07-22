@@ -1,7 +1,7 @@
 #pragma once
 #include "IUIScene_AbstractContainerMenu.h"
 
-// The 0-indexed slot in the inventory list that lines up with the result slot
+
 #define FURNACE_SCENE_RESULT_SLOT_UP_OFFSET 6
 #define FURNACE_SCENE_RESULT_SLOT_DOWN_OFFSET -7
 #define FURNACE_SCENE_FUEL_SLOT_UP_OFFSET 0

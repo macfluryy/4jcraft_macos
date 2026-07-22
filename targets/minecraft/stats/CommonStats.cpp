@@ -99,9 +99,9 @@ Stat* CommonStats::get_blocksMined(int blockId) {
 }
 
 Stat* CommonStats::get_itemsCollected(int itemId, int itemAux) {
-    // 4J-JEV: We don't need itemsCollected(emerald) so I'm using it to
-    // stor itemsBought(emerald) so I don't have to make yet another massive
-    // std::vector<Stat*>& for Items Bought.
+    
+    
+    
 #if defined(_EXTENDED_ACHIEVEMENTS)
     if (itemId == Tile::wool_Id) return Stats::rainbowCollection[itemAux];
 #endif
@@ -122,7 +122,7 @@ Stat* CommonStats::get_itemsSmelted(int itemId) {
 
 Stat* CommonStats::get_itemsUsed(int itemId) {
 #if defined(_EXTENDED_ACHIEVEMENTS)
-    // 4J-JEV: I've done the same thing here, we can't place these items anyway.
+    
     if (itemId == Item::porkChop_cooked_Id) return Stats::blocksPlaced[itemId];
 #endif
 
@@ -130,9 +130,9 @@ Stat* CommonStats::get_itemsUsed(int itemId) {
 }
 
 Stat* CommonStats::get_itemsBought(int itemId) {
-    // 4J-JEV: We don't need itemsCollected(emerald) so I'm using it to
-    // stor itemsBought(emerald) so I don't have to make yet another massive
-    // std::vector<Stat*>& for Items Bought.
+    
+    
+    
 
     if (itemId == Item::emerald_Id)
         return Stats::itemsCollected[itemId];
@@ -212,7 +212,7 @@ Stat* CommonStats::get_achievement(eAward achievementId) {
         case eAward_diamonds:
             return (Stat*)Achievements::diamonds;
         case eAward_portal:
-            return (Stat*)nullptr;  // TODO
+            return (Stat*)nullptr;  
         case eAward_ghast:
             return (Stat*)Achievements::ghast;
         case eAward_blazeRod:
@@ -228,9 +228,9 @@ Stat* CommonStats::get_achievement(eAward achievementId) {
 
 #if defined(_EXTENDED_ACHIEVEMENTS)
         case eAward_overkill:
-            return (Stat*)Achievements::overkill;  // Restored old ach.
+            return (Stat*)Achievements::overkill;  
         case eAward_bookcase:
-            return (Stat*)Achievements::bookcase;  // Restored old ach.
+            return (Stat*)Achievements::bookcase;  
 
         case eAward_adventuringTime:
             return (Stat*)Achievements::adventuringTime;
@@ -238,9 +238,9 @@ Stat* CommonStats::get_achievement(eAward achievementId) {
             return (Stat*)Achievements::repopulation;
         case eAward_diamondsToYou:
             return (Stat*)Achievements::diamondsToYou;
-        // case eAward_passingTheTime:			return (Stat *)
-        // Achievements::passingTheTime; case eAward_archer:
-        // return (Stat *) Achievements::archer;
+        
+        
+        
         case eAward_theHaggler:
             return (Stat*)Achievements::theHaggler;
         case eAward_potPlanter:

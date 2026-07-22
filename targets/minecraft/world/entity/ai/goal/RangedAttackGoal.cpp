@@ -13,11 +13,11 @@
 void RangedAttackGoal::_init(RangedAttackMob* rangedMob, Mob* mob,
                              double speedModifier, int attackIntervalMin,
                              int attackIntervalMax, float attackRadius) {
-    // if (!(mob instanceof LivingEntity))
-    //{
-    // throw new IllegalArgumentException("ArrowAttackGoal requires Mob
-    // implements RangedAttackMob");
-    // }
+    
+    
+    
+    
+    
     rangedAttackMob = rangedMob;
     this->mob = mob;
     this->speedModifier = speedModifier;
@@ -65,8 +65,8 @@ void RangedAttackGoal::stop() {
 }
 
 void RangedAttackGoal::tick() {
-    // 4J: It's possible the target has gone since canUse selected it, don't do
-    // tick if target is null
+    
+    
     if (target.lock() == nullptr) return;
 
     double targetDistSqr = mob->distanceToSqr(

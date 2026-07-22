@@ -6,11 +6,11 @@ class Random;
 
 class WaterlilyTile : public Bush {
 private:
-    // static const int col = 0x208030;
+    
 
 public:
     WaterlilyTile(int id);
-    virtual void updateDefaultShape();  // 4J Added override
+    virtual void updateDefaultShape();  
 
     virtual int getRenderShape();
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
@@ -21,7 +21,7 @@ public:
     virtual int getColor(int auxData);
     virtual int getColor(LevelSource* level, int x, int y, int z);
     virtual int getColor(LevelSource* level, int x, int y, int z,
-                         int data);  // 4J added
+                         int data);  
 protected:
     virtual bool mayPlaceOn(int tile);
     virtual bool canSurvive(Level* level, int x, int y, int z);

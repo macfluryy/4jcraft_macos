@@ -27,7 +27,7 @@ TextureAndGeometryChangePacket::TextureAndGeometryChangePacket(
 }
 
 void TextureAndGeometryChangePacket::read(
-    DataInputStream* dis)  // throws IOException
+    DataInputStream* dis)  
 {
     id = dis->readInt();
     dwSkinID = static_cast<std::uint32_t>(dis->readInt());
@@ -35,7 +35,7 @@ void TextureAndGeometryChangePacket::read(
 }
 
 void TextureAndGeometryChangePacket::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     dos->writeInt(id);
     dos->writeInt(static_cast<int>(dwSkinID));

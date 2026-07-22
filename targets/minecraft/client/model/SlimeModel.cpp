@@ -20,8 +20,8 @@ SlimeModel::SlimeModel(int vOffs) {
         mouth = new ModelPart(this, 32, 8);
         mouth->addBox(0, 16 + 5, -3.5f, 1, 1, 1);
 
-        // 4J added - compile now to avoid random performance hit first time
-        // cubes are rendered
+        
+        
         eye0->compile(1.0f / 16.0f);
         eye1->compile(1.0f / 16.0f);
         mouth->compile(1.0f / 16.0f);

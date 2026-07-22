@@ -34,7 +34,7 @@ public:
     std::wstring format(int value);
 
 private:
-    // static NumberFormat *numberFormat;
+    
 
 public:
     class DefaultFormat : public StatFormatter {
@@ -59,7 +59,7 @@ public:
     std::wstring toString();
 
 public:
-    // 4J-JEV, for Durango stats
+    
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
                                  std::vector<uint8_t>& param) {
         app.DebugPrintf("'Stat.h', Unhandled AwardStat blob.\n");

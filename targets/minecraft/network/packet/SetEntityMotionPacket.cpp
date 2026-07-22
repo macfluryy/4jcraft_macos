@@ -18,8 +18,8 @@ void SetEntityMotionPacket::_init(int id, double xd, double yd, double zd) {
     xa = (int)(xd * 8000.0);
     ya = (int)(yd * 8000.0);
     za = (int)(zd * 8000.0);
-    // 4J - if we could transmit this as bytes (in 1/16 accuracy) then flag to
-    // do so
+    
+    
     if ((xa >= (-128 * 16)) && (ya >= (-128 * 16)) && (za >= (-128 * 16)) &&
         (xa < (128 * 16)) && (ya < (128 * 16)) && (za < (128 * 16))) {
         useBytes = true;
@@ -39,7 +39,7 @@ SetEntityMotionPacket::SetEntityMotionPacket(int id, double xd, double yd,
     _init(id, xd, yd, zd);
 }
 
-void SetEntityMotionPacket::read(DataInputStream* dis)  // throws IOException
+void SetEntityMotionPacket::read(DataInputStream* dis)  
 {
     short idAndFlag = dis->readShort();
     id = idAndFlag & 0x07ff;
@@ -62,7 +62,7 @@ void SetEntityMotionPacket::read(DataInputStream* dis)  // throws IOException
     }
 }
 
-void SetEntityMotionPacket::write(DataOutputStream* dos)  // throws IOException
+void SetEntityMotionPacket::write(DataOutputStream* dos)  
 {
     if (useBytes) {
         dos->writeShort(id | 0x800);

@@ -10,13 +10,13 @@ private:
 public:
     static FrustumData* getFrustum();
 
-    ///////////////////////////////// NORMALIZE PLANE
-    ///\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-    /////
-    /////	This normalizes a plane (A side) from a given frustum.
-    /////
-    ///////////////////////////////// NORMALIZE PLANE
-    ///\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+    
+    
+    
+    
+    
+    
+    
 
 private:
     void normalizePlane(float** frustum, int side);

@@ -23,14 +23,14 @@ void ContainerSetDataPacket::handle(PacketListener* listener) {
     listener->handleContainerSetData(shared_from_this());
 }
 
-void ContainerSetDataPacket::read(DataInputStream* dis)  // throws IOException
+void ContainerSetDataPacket::read(DataInputStream* dis)  
 {
     containerId = (int)dis->readByte();
     id = dis->readShort();
     value = dis->readShort();
 }
 
-void ContainerSetDataPacket::write(DataOutputStream* dos)  // throws IOException
+void ContainerSetDataPacket::write(DataOutputStream* dos)  
 {
     dos->writeByte((uint8_t)containerId);
     dos->writeShort(id);

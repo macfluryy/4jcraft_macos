@@ -27,7 +27,7 @@ EntityActionAtPositionPacket::EntityActionAtPositionPacket(
 }
 
 void EntityActionAtPositionPacket::read(
-    DataInputStream* dis)  // throws IOException
+    DataInputStream* dis)  
 {
     id = dis->readInt();
     action = (int)dis->readByte();
@@ -37,7 +37,7 @@ void EntityActionAtPositionPacket::read(
 }
 
 void EntityActionAtPositionPacket::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     dos->writeInt(id);
     dos->writeByte((uint8_t)action);

@@ -14,22 +14,22 @@ void DragonBreathParticle::init(Level* level, double x, double y, double z,
     xd *= 0.1f;
     yd *= 0.1f;
     zd *= 0.1f;
-    xd = xa;  //+= xa;
-    yd = ya;  //+= ya;
-    zd = za;  //+= za;
+    xd = xa;  
+    yd = ya;  
+    zd = za;  
 
     unsigned int cMin = Minecraft::GetInstance()->getColourTable()->getColor(
-        eMinecraftColour_Particle_DragonBreathMin);  // 0xb700d2
+        eMinecraftColour_Particle_DragonBreathMin);  
     unsigned int cMax = Minecraft::GetInstance()->getColourTable()->getColor(
-        eMinecraftColour_Particle_DragonBreathMax);  // 0xdf00f9
+        eMinecraftColour_Particle_DragonBreathMax);  
     double rMin = ((cMin >> 16) & 0xFF) / 255.0f,
            gMin = ((cMin >> 8) & 0xFF) / 255.0, bMin = (cMin & 0xFF) / 255.0;
     double rMax = ((cMax >> 16) & 0xFF) / 255.0f,
            gMax = ((cMax >> 8) & 0xFF) / 255.0, bMax = (cMax & 0xFF) / 255.0;
 
-    rCol = (rMax - rMin) * Math::random() + rMin;  // 184/255 -- 224/255
-    gCol = (gMax - gMin) * Math::random() + gMin;  // 0,0
-    bCol = (bMax - bMin) * Math::random() + bMin;  // 210/255 -- 250/255
+    rCol = (rMax - rMin) * Math::random() + rMin;  
+    gCol = (gMax - gMin) * Math::random() + gMin;  
+    bCol = (bMax - bMin) * Math::random() + bMin;  
 
     size *= 0.75f;
     size *= scale;
@@ -80,7 +80,7 @@ void DragonBreathParticle::tick() {
         m_bHasHitGround = true;
     }
 
-    if (m_bHasHitGround) yd += 0.002;  // 0.004;
+    if (m_bHasHitGround) yd += 0.002;  
 
     move(xd, yd, zd);
     if (y == yo) {
@@ -92,11 +92,11 @@ void DragonBreathParticle::tick() {
 
     if (m_bHasHitGround) yd *= 0.96f;
 
-    //   if (onGround)
-    //{
-    //       xd *= 0.7f;
-    //       zd *= 0.7f;
-    //   }
+    
+    
+    
+    
+    
 }
 
 int DragonBreathParticle::getParticleTexture() {

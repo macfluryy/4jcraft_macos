@@ -66,7 +66,7 @@ bool MerchantRecipe::isSame(MerchantRecipe* other) {
 }
 
 bool MerchantRecipe::isSameSameButBetter(MerchantRecipe* other) {
-    // same deal, but cheaper
+    
     return isSame(other) &&
            (buyA->count < other->buyA->count ||
             (buyB != nullptr && buyB->count < other->buyB->count));

@@ -23,7 +23,7 @@ private:
     int life;
     int lifetime;
 
-    // constructor needed for level loader
+    
 public:
     FireworksRocketEntity(Level* level);
 

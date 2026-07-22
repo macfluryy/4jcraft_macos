@@ -28,7 +28,7 @@ PlayerActionPacket::PlayerActionPacket(int action, int x, int y, int z,
     this->face = face;
 }
 
-void PlayerActionPacket::read(DataInputStream* dis)  // throws IOException
+void PlayerActionPacket::read(DataInputStream* dis)  
 {
     action = dis->readUnsignedByte();
     x = dis->readInt();
@@ -37,7 +37,7 @@ void PlayerActionPacket::read(DataInputStream* dis)  // throws IOException
     face = dis->readUnsignedByte();
 }
 
-void PlayerActionPacket::write(DataOutputStream* dos)  // throws IOException
+void PlayerActionPacket::write(DataOutputStream* dos)  
 {
     dos->write(action);
     dos->writeInt(x);

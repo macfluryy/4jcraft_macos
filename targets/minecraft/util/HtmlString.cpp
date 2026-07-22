@@ -30,8 +30,8 @@ std::wstring HtmlString::ToString() {
     eMinecraftColour color =
         this->color == eMinecraftColour_NOT_SET ? eHTMLColor_7 : this->color;
 
-    // Legacy palette for embedded § codes, resolved once from the existing
-    // HTML colour table (eHTMLColor_0..f are contiguous).
+    
+    
     static uint32_t s_palette[16];
     static bool s_paletteInit = false;
     if (!s_paletteInit) {
@@ -42,8 +42,8 @@ std::wstring HtmlString::ToString() {
         s_paletteInit = true;
     }
 
-    // Translate embedded § formatting (server-sent item names/lore) into the
-    // HTML the UI actually renders; literal codes never reach the label.
+    
+    
     ss << formatCodesToHtml(
         text, static_cast<uint32_t>(app.GetHTMLColor(color)), s_palette);
 
@@ -62,7 +62,7 @@ std::wstring HtmlString::Compose(std::vector<HtmlString>* strings) {
     for (int i = 0; i < strings->size(); i++) {
         ss << strings->at(i).ToString();
 
-        // Add a break if there's another line
+        
         if (i + 1 < strings->size()) {
             ss << L"<br>";
         }

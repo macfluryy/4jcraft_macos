@@ -9,4 +9,4 @@ extern std::vector<wchar_t> typedChars;
 extern bool keysCurrent[512];
 extern bool keysPrev[512];
 
-}  // namespace JavaKeyInput
+}  

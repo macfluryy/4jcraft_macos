@@ -24,7 +24,7 @@ public:
     MinecartFurnace(Level* level);
     MinecartFurnace(Level* level, double x, double y, double z);
 
-    // 4J added
+    
     virtual int getContainerType();
 
     int getType();

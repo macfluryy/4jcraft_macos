@@ -8,7 +8,7 @@
 class MoveEntityPacketSmall
     : public Packet,
       public std::enable_shared_from_this<MoveEntityPacketSmall> {
-    // 4J JEV, static inner/sub classes
+    
 public:
     class PosRot;
     class Pos;

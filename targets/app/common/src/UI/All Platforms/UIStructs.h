@@ -1,6 +1,6 @@
 #pragma once
 
-// #pragma message("UIStructs.h")
+
 
 #include <cstdint>
 #include <cstring>
@@ -27,7 +27,7 @@ class AbstractContainerMenu;
 class Level;
 class FriendSessionInfo;
 
-// 4J Stu - Structs shared by Iggy and Xui scenes.
+
 typedef struct _UIVec2D {
     float x;
     float y;
@@ -39,7 +39,7 @@ typedef struct _UIVec2D {
     }
 } UIVec2D;
 
-// Brewing
+
 typedef struct _BrewingScreenInput {
     std::shared_ptr<Inventory> inventory;
     std::shared_ptr<BrewingStandTileEntity> brewingStand;
@@ -47,7 +47,7 @@ typedef struct _BrewingScreenInput {
     bool bSplitscreen;
 } BrewingScreenInput;
 
-// Chest
+
 typedef struct _ContainerScreenInput {
     std::shared_ptr<Container> inventory;
     std::shared_ptr<Container> container;
@@ -55,7 +55,7 @@ typedef struct _ContainerScreenInput {
     bool bSplitscreen;
 } ContainerScreenInput;
 
-// Dispenser
+
 typedef struct _TrapScreenInput {
     std::shared_ptr<Container> inventory;
     std::shared_ptr<DispenserTileEntity> trap;
@@ -63,16 +63,16 @@ typedef struct _TrapScreenInput {
     bool bSplitscreen;
 } TrapScreenInput;
 
-// Inventory and creative inventory
+
 typedef struct _InventoryScreenInput {
     std::shared_ptr<LocalPlayer> player;
-    bool bNavigateBack;  // If we came here from the crafting screen, go back to
-                         // it, rather than closing the xui menus
+    bool bNavigateBack;  
+                         
     int iPad;
     bool bSplitscreen;
 } InventoryScreenInput;
 
-// Enchanting
+
 typedef struct _EnchantingScreenInput {
     std::shared_ptr<Inventory> inventory;
     Level* level;
@@ -84,7 +84,7 @@ typedef struct _EnchantingScreenInput {
     std::wstring name;
 } EnchantingScreenInput;
 
-// Furnace
+
 typedef struct _FurnaceScreenInput {
     std::shared_ptr<Inventory> inventory;
     std::shared_ptr<FurnaceTileEntity> furnace;
@@ -92,10 +92,10 @@ typedef struct _FurnaceScreenInput {
     bool bSplitscreen;
 } FurnaceScreenInput;
 
-// Crafting
+
 typedef struct _CraftingPanelScreenInput {
     std::shared_ptr<LocalPlayer> player;
-    int iContainerType;  // RECIPE_TYPE_2x2 or RECIPE_TYPE_3x3
+    int iContainerType;  
     bool bSplitscreen;
     int iPad;
     int x;
@@ -103,7 +103,7 @@ typedef struct _CraftingPanelScreenInput {
     int z;
 } CraftingPanelScreenInput;
 
-// Fireworks
+
 typedef struct _FireworksScreenInput {
     std::shared_ptr<LocalPlayer> player;
     bool bSplitscreen;
@@ -113,7 +113,7 @@ typedef struct _FireworksScreenInput {
     int z;
 } FireworksScreenInput;
 
-// Trading
+
 typedef struct _TradingScreenInput {
     std::shared_ptr<Inventory> inventory;
     std::shared_ptr<Merchant> trader;
@@ -122,7 +122,7 @@ typedef struct _TradingScreenInput {
     bool bSplitscreen;
 } TradingScreenInput;
 
-// Anvil
+
 typedef struct _AnvilScreenInput {
     std::shared_ptr<Inventory> inventory;
     Level* level;
@@ -133,7 +133,7 @@ typedef struct _AnvilScreenInput {
     bool bSplitscreen;
 } AnvilScreenInput;
 
-// Hopper
+
 typedef struct _HopperScreenInput {
     std::shared_ptr<Inventory> inventory;
     std::shared_ptr<Container> hopper;
@@ -141,7 +141,7 @@ typedef struct _HopperScreenInput {
     bool bSplitscreen;
 } HopperScreenInput;
 
-// Horse
+
 typedef struct _HorseScreenInput {
     std::shared_ptr<Inventory> inventory;
     std::shared_ptr<Container> container;
@@ -150,7 +150,7 @@ typedef struct _HorseScreenInput {
     bool bSplitscreen;
 } HorseScreenInput;
 
-// Beacon
+
 typedef struct _BeaconScreenInput {
     std::shared_ptr<Inventory> inventory;
     std::shared_ptr<BeaconTileEntity> beacon;
@@ -158,13 +158,13 @@ typedef struct _BeaconScreenInput {
     bool bSplitscreen;
 } BeaconScreenInput;
 
-// Sign
+
 typedef struct _SignEntryScreenInput {
     std::shared_ptr<SignTileEntity> sign;
     int iPad;
 } SignEntryScreenInput;
 
-// Connecting progress
+
 typedef struct _ConnectionProgressParams {
     int iPad;
     int stringId;
@@ -185,7 +185,7 @@ typedef struct _ConnectionProgressParams {
     }
 } ConnectionProgressParams;
 
-// Fullscreen progress
+
 typedef struct _UIFullscreenProgressCompletionData {
     bool bRequiresUserAction;
     bool bShowBackground;
@@ -204,14 +204,14 @@ typedef struct _UIFullscreenProgressCompletionData {
     }
 } UIFullscreenProgressCompletionData;
 
-// Create world
+
 typedef struct _CreateWorldMenuInitData {
     bool bOnline;
     bool bIsPrivate;
     int iPad;
 } CreateWorldMenuInitData;
 
-// Join/Load saves list
+
 typedef struct _SaveListDetails {
     int saveId;
     std::uint8_t* pbThumbnailData;
@@ -229,7 +229,7 @@ typedef struct _SaveListDetails {
 
 } SaveListDetails;
 
-// Load world
+
 typedef struct _LoadMenuInitData {
     int iPad;
     int iSaveGameInfoIndex;
@@ -237,13 +237,13 @@ typedef struct _LoadMenuInitData {
     SaveListDetails* saveDetails;
 } LoadMenuInitData;
 
-// Join Games
+
 typedef struct _JoinMenuInitData {
     FriendSessionInfo* selectedSession;
     int iPad;
 } JoinMenuInitData;
 
-// More Options
+
 typedef struct _LaunchMoreOptionsMenuInitData {
     bool bOnlineGame;
     bool bInviteOnly;
@@ -349,7 +349,7 @@ typedef struct _LoadingInputParams {
     }
 } LoadingInputParams;
 
-// Tutorial
+
 class UIScene;
 class Tutorial;
 typedef struct _TutorialPopupInfo {
@@ -357,10 +357,10 @@ typedef struct _TutorialPopupInfo {
     const wchar_t* desc;
     const wchar_t* title;
     int icon;
-    int iAuxVal /* = 0 */;
-    bool isFoil /* = false */;
-    bool allowFade /* = true */;
-    bool isReminder /*= false*/;
+    int iAuxVal ;
+    bool isFoil ;
+    bool allowFade ;
+    bool isReminder ;
     Tutorial* tutorial;
 
     _TutorialPopupInfo() {
@@ -377,22 +377,22 @@ typedef struct _TutorialPopupInfo {
 
 } TutorialPopupInfo;
 
-// Quadrant sign in
+
 typedef struct _SignInInfo {
     std::function<int(bool, int)> Func;
     bool requireOnline;
 } SignInInfo;
 
-// Credits
+
 typedef struct {
-    const wchar_t* m_Text;  // Should contain string, optionally with %s to add
-                            // in translated string ... e.g. "Andy West - %s"
-    int m_iStringID[2];  // May be NO_TRANSLATED_STRING if we do not require to
-                         // add any translated string.
+    const wchar_t* m_Text;  
+                            
+    int m_iStringID[2];  
+                         
     ECreditTextTypes m_eType;
 } SCreditTextItemDef;
 
-// Message box
+
 typedef struct _MessageBoxInfo {
     uint32_t uiTitle;
     uint32_t uiText;
@@ -401,8 +401,8 @@ typedef struct _MessageBoxInfo {
     uint32_t dwPad;
     int (*Func)(void*, int, const C4JStorage::EMessageResult);
     void* lpParam;
-    // C4JStringTable *pStringTable; // 4J Stu - We don't need this for our
-    // internal message boxes
+    
+    
     wchar_t* pwchFormatString;
     unsigned int dwFocusButton;
 } MessageBoxInfo;
@@ -431,7 +431,7 @@ typedef struct _TeleportMenuInitData {
 
 typedef struct _CustomDrawData {
     float x0, y0, x1,
-        y1;  // the bounding box of the original DisplayObject, in object space
+        y1;  
     float mat[16];
 } CustomDrawData;
 

@@ -34,7 +34,7 @@ bool PlayGoal::canUse() {
     std::vector<std::shared_ptr<Entity> >* children =
         mob->level->getEntitiesOfClass(typeid(Villager), &mob_bb);
     double closestDistSqr = std::numeric_limits<double>::max();
-    // for (Entity c : children)
+    
     for (auto it = children->begin(); it != children->end(); ++it) {
         std::shared_ptr<Entity> c = *it;
         if (c.get() == mob) continue;

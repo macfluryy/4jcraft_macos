@@ -5,7 +5,7 @@
 
 #include "platform/PlatformTypes.h"
 
-// XUI forward declarations
+
 typedef struct _XUIOBJ* HXUIOBJ;
 typedef struct _XUICLASS* HXUICLASS;
 typedef struct _XUIBRUSH* HXUIBRUSH;
@@ -13,7 +13,7 @@ typedef struct _XUIDC* HXUIDC;
 
 bool IsEqualXUID(PlayerUID a, PlayerUID b);
 
-// Gamepad virtual key constants
+
 #define VK_PAD_A 0x5800
 #define VK_PAD_B 0x5801
 #define VK_PAD_X 0x5802
@@ -50,12 +50,12 @@ bool IsEqualXUID(PlayerUID a, PlayerUID b);
 #define VK_PAD_RTHUMB_DOWNRIGHT 0x5836
 #define VK_PAD_RTHUMB_DOWNLEFT 0x5837
 
-// D3D stubs
+
 inline constexpr int D3DBLEND_CONSTANTALPHA = 0;
 inline constexpr int D3DBLEND_INVCONSTANTALPHA = 0;
 inline constexpr int D3DPT_QUADLIST = 0;
 
-// XUI string table
+
 class CXuiStringTable {
 public:
     const wchar_t* Lookup(const wchar_t* szId);
@@ -64,7 +64,7 @@ public:
     int32_t Load(const wchar_t* szId);
 };
 
-// User sign-in
+
 struct XUSER_SIGNIN_INFO {
     PlayerUID xuid;
     uint32_t dwGuestNumber;
@@ -77,7 +77,7 @@ using PXUSER_SIGNIN_INFO = XUSER_SIGNIN_INFO*;
 uint32_t XUserGetSigninInfo(uint32_t dwUserIndex, uint32_t dwFlags,
                             PXUSER_SIGNIN_INFO pSigninInfo);
 
-// Locale/language constants
+
 inline constexpr int XC_LANGUAGE_ENGLISH = 0x01;
 inline constexpr int XC_LANGUAGE_JAPANESE = 0x02;
 inline constexpr int XC_LANGUAGE_GERMAN = 0x03;

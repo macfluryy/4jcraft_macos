@@ -37,7 +37,7 @@
 
 #define GAME_CREATE_ONLINE_TIMER_ID 0
 #define GAME_CREATE_ONLINE_TIMER_TIME 100
-// 4J-PB - Only Xbox will not have trial DLC patched into the game
+
 
 int UIScene_LoadMenu::m_iDifficultyTitleSettingA[4] = {
     IDS_DIFFICULTY_TITLE_PEACEFUL, IDS_DIFFICULTY_TITLE_EASY,
@@ -66,12 +66,12 @@ int UIScene_LoadMenu::loadSaveDataThumbnailReturned(
 UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void* initData,
                                    UILayer* parentLayer)
     : IUIScene_StartGame(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     LoadMenuInitData* params = (LoadMenuInitData*)initData;
 
-    // m_labelGameName.init(app.GetString(IDS_WORLD_NAME));
+    
     m_labelSeed.init(L"");
     m_labelCreatedMode.init(app.GetString(IDS_CREATED_IN_SURVIVAL));
 
@@ -125,13 +125,13 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void* initData,
 
     m_bMultiplayerAllowed = ProfileManager.IsSignedInLive(m_iPad) &&
                             ProfileManager.AllowedToPlayMultiplayer(m_iPad);
-    // 4J-PB - read the settings for the online flag. We'll only save this
-    // setting if the user changed it.
+    
+    
     bool bGameSetting_Online =
         (app.GetGameSettings(m_iPad, eGameSetting_Online) != 0);
     m_MoreOptionsParams.bOnlineSettingChangedBySystem = false;
 
-    // Set the text for friends of friends, and default to on
+    
     if (m_bMultiplayerAllowed) {
         m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
         if (bGameSetting_Online) {
@@ -148,17 +148,17 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void* initData,
         m_MoreOptionsParams.bInviteOnly = false;
         m_MoreOptionsParams.bAllowFriendsOfFriends = false;
         if (bGameSetting_Online) {
-            // The profile settings say Online, but either the player is
-            // offline, or they are not allowed to play online
+            
+            
             m_MoreOptionsParams.bOnlineSettingChangedBySystem = true;
         }
     }
 
-    // Set up online game checkbox
+    
     bool bOnlineGame = m_MoreOptionsParams.bOnlineGame;
     m_checkboxOnline.SetEnable(true);
 
-    // 4J-PB - to stop an offline game being able to select the online flag
+    
     if (ProfileManager.IsSignedInLive(m_iPad) == false) {
         m_checkboxOnline.SetEnable(false);
     }
@@ -171,7 +171,7 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void* initData,
     m_checkboxOnline.init(app.GetString(IDS_ONLINE_GAME), eControl_OnlineGame,
                           bOnlineGame);
 
-    // Level gen
+    
     if (m_levelGen) {
         m_labelGameName.init(m_levelGen->getDisplayName());
         if (m_levelGen->requiresTexturePack()) {
@@ -180,7 +180,7 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void* initData,
 
             m_texturePackList.setEnabled(false);
 
-            // retrieve the save icon from the texture pack, if there is one
+            
             TexturePack* tp =
                 Minecraft::GetInstance()->skins->getTexturePackById(
                     m_MoreOptionsParams.dwTexturePack);
@@ -194,8 +194,8 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void* initData,
                 m_bitmapIcon.setTextureName(textureName);
             }
         }
-        // Set this level as created in creative mode, so that people can't use
-        // the themed worlds as an easy way to get achievements
+        
+        
         m_bHasBeenInCreative = m_levelGen->getLevelHasBeenInCreative();
         if (m_bHasBeenInCreative) {
             m_labelCreatedMode.setLabel(app.GetString(IDS_CREATED_IN_CREATIVE));
@@ -207,10 +207,10 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void* initData,
 
     m_iTexturePacksNotInstalled = 0;
 
-    // block input if we're waiting for DLC to install, and wipe the saves list.
-    // The end of dlc mounting custom message will fill the list again
+    
+    
     if (app.StartInstallDLCProcess(m_iPad) == true) {
-        // not doing a mount, so enable input
+        
         m_bIgnoreInput = true;
     } else {
         m_bIgnoreInput = false;
@@ -235,7 +235,7 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void* initData,
         UpdateTexturePackDescription(m_currentTexturePackIndex);
         m_texturePackList.selectSlot(m_currentTexturePackIndex);
 
-        // 4J-PB - Only Xbox will not have trial DLC patched into the game
+        
     }
 
     if (params) delete params;
@@ -268,9 +268,9 @@ void UIScene_LoadMenu::tick() {
     }
 
     if (m_bThumbnailGetFailed) {
-        // On Durango, this can happen if a save is still not been synchronised
-        // (user cancelled, or some error). Return back to give them a choice to
-        // pick another save.
+        
+        
+        
         ui.NavigateBack(m_iPad, false, eUIScene_LoadOrJoinMenu);
         return;
     }
@@ -280,7 +280,7 @@ void UIScene_LoadMenu::tick() {
 
         m_bitmapIcon.setTextureName(m_thumbnailName.c_str());
 
-        // retrieve the seed value from the image metadata
+        
         bool bHostOptionsRead = false;
         unsigned int uiHostOptions = 0;
 
@@ -290,15 +290,15 @@ void UIScene_LoadMenu::tick() {
             m_pbThumbnailData, m_uiThumbnailSize, (unsigned char*)&szSeed,
             uiHostOptions, bHostOptionsRead, m_MoreOptionsParams.dwTexturePack);
 
-        // #ifdef _DEBUG
-        // 			// dump out the thumbnail
-        // 			void* hThumbnail =
-        // CreateFile("GAME:\\thumbnail.png", GENERIC_WRITE, 0, nullptr,
-        // OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, nullptr);
-        // uint32_t dwBytes;
-        // 			WriteFile(hThumbnail,pbImageData,dwImageBytes,&dwBytes,nullptr);
-        // 			XCloseHandle(hThumbnail);
-        // #endif
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         if (szSeed[0] != 0) {
             wchar_t TempString[256];
@@ -309,8 +309,8 @@ void UIScene_LoadMenu::tick() {
             m_labelSeed.setLabel(L"");
         }
 
-        // Setup all the text and checkboxes to match what the game was saved
-        // with on
+        
+        
         if (bHostOptionsRead) {
             m_MoreOptionsParams.bPVP =
                 app.GetGameHostOption(uiHostOptions, eGameHostOption_PvP) > 0;
@@ -351,19 +351,19 @@ void UIScene_LoadMenu::tick() {
 
             bool cheatsOn = m_MoreOptionsParams.bHostPrivileges;
             if (!cheatsOn) {
-                // Set defaults
+                
                 m_MoreOptionsParams.bMobGriefing = true;
                 m_MoreOptionsParams.bKeepInventory = false;
                 m_MoreOptionsParams.bDoMobSpawning = true;
                 m_MoreOptionsParams.bDoDaylightCycle = true;
             }
 
-            // turn off creative mode on the save
-            // #ifdef _DEBUG
-            //  			uiHostOptions&=~GAME_HOST_OPTION_BITMASK_BEENINCREATIVE;
-            //  			app.SetGameHostOption(eGameHostOption_HasBeenInCreative,
-            //  0);
-            // #endif
+            
+            
+            
+            
+            
+            
 
             if (app.GetGameHostOption(uiHostOptions,
                                       eGameHostOption_WasntSaveOwner) > 0) {
@@ -384,21 +384,21 @@ void UIScene_LoadMenu::tick() {
 
             switch (app.GetGameHostOption(uiHostOptions,
                                           eGameHostOption_GameType)) {
-                case 1:  // Creative
+                case 1:  
                     m_buttonGamemode.setLabel(
                         app.GetString(IDS_GAMEMODE_CREATIVE));
                     m_bGameModeCreative = true;
                     m_iGameModeId = GameType::CREATIVE->getId();
                     break;
 #if defined(_ADVENTURE_MODE_ENABLED)
-                case 2:  // Adventure
+                case 2:  
                     m_buttonGamemode.setLabel(
                         app.GetString(IDS_GAMEMODE_ADVENTURE));
                     m_bGameModeCreative = false;
                     m_iGameModeId = GameType::ADVENTURE->getId();
                     break;
 #endif
-                case 0:  // Survival
+                case 0:  
                 default:
                     m_buttonGamemode.setLabel(
                         app.GetString(IDS_GAMEMODE_SURVIVAL));
@@ -424,7 +424,7 @@ void UIScene_LoadMenu::tick() {
 
         m_texturePackList.selectSlot(m_currentTexturePackIndex);
 
-        // m_labelGameName.setLabel(m_XContentData.szDisplayName);
+        
 
         ui.NavigateBack(m_iPad, false, getSceneType());
     }
@@ -470,7 +470,7 @@ void UIScene_LoadMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
             break;
         case ACTION_MENU_OK:
 
-            // 4J-JEV: Inform user why their game must be offline.
+            
 
         case ACTION_MENU_UP:
         case ACTION_MENU_DOWN:
@@ -498,26 +498,26 @@ void UIScene_LoadMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
 void UIScene_LoadMenu::handlePress(F64 controlId, F64 childId) {
     if (m_bIgnoreInput) return;
 
-    // CD - Added for audio
+    
     ui.PlayUISFX(eSFX_Press);
 
     switch ((int)controlId) {
         case eControl_GameMode:
             switch (m_iGameModeId) {
-                case 0:  // Survival
+                case 0:  
                     m_buttonGamemode.setLabel(
                         app.GetString(IDS_GAMEMODE_CREATIVE));
                     m_iGameModeId = GameType::CREATIVE->getId();
                     m_bGameModeCreative = true;
                     break;
-                case 1:  // Creative
+                case 1:  
 #if defined(_ADVENTURE_MODE_ENABLED)
                     m_buttonGamemode.setLabel(
                         app.GetString(IDS_GAMEMODE_ADVENTURE));
                     m_iGameModeId = GameType::ADVENTURE->getId();
                     m_bGameModeCreative = false;
                     break;
-                case 2:  // Adventure
+                case 2:  
 #endif
                     m_buttonGamemode.setLabel(
                         app.GetString(IDS_GAMEMODE_SURVIVAL));
@@ -543,23 +543,23 @@ void UIScene_LoadMenu::handlePress(F64 controlId, F64 childId) {
 
 void UIScene_LoadMenu::StartSharedLaunchFlow() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    // Check if we need to upsell the texture pack
+    
     if (m_MoreOptionsParams.dwTexturePack != 0) {
-        // texture pack hasn't been set yet, so check what it will be
+        
         TexturePack* pTexturePack = pMinecraft->skins->getTexturePackById(
             m_MoreOptionsParams.dwTexturePack);
 
         if (pTexturePack == nullptr) {
 #if TO_BE_IMPLEMENTED
-            // They've selected a texture pack they don't have yet
-            // upsell
+            
+            
             CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
-            // get the current index of the list, and then get the data
+            
             ListItem = m_pTexturePacksList->GetData(m_currentTexturePackIndex);
 
-            // upsell the texture pack
-            // tell sentient about the upsell of the full version of the skin
-            // pack
+            
+            
+            
             uint64_t ullOfferID_Full;
             app.GetDLCFullOfferIDForPackID(m_MoreOptionsParams.dwTexturePack,
                                            &ullOfferID_Full);
@@ -568,10 +568,10 @@ void UIScene_LoadMenu::StartSharedLaunchFlow() {
             unsigned int uiIDA[2];
 
             uiIDA[0] = IDS_TEXTUREPACK_FULLVERSION;
-            // uiIDA[1]=IDS_TEXTURE_PACK_TRIALVERSION;
+            
             uiIDA[1] = IDS_CONFIRM_CANCEL;
 
-            // Give the player a warning about the texture pack missing
+            
             ui.RequestAlertMessage(IDS_DLC_TEXTUREPACK_NOT_PRESENT_TITLE,
                                    IDS_DLC_TEXTUREPACK_NOT_PRESENT, uiIDA, 2,
                                    ProfileManager.GetPrimaryPad(),
@@ -581,13 +581,13 @@ void UIScene_LoadMenu::StartSharedLaunchFlow() {
     }
     m_bIgnoreInput = true;
 
-    // if the profile data has been changed, then force a profile write (we save
-    // the online/invite/friends of friends settings) It seems we're allowed to
-    // break the 5 minute rule if it's the result of a user action check the
-    // checkboxes
+    
+    
+    
+    
 
-    // Only save the online setting if the user changed it - we may change it
-    // because we're offline, but don't want that saved
+    
+    
     if (!m_MoreOptionsParams.bOnlineSettingChangedBySystem) {
         app.SetGameSettings(m_iPad, eGameSetting_Online,
                             m_MoreOptionsParams.bOnlineGame ? 1 : 0);
@@ -599,39 +599,39 @@ void UIScene_LoadMenu::StartSharedLaunchFlow() {
 
     app.CheckGameSettingsChanged(true, m_iPad);
 
-    // Check that we have the rights to use a texture pack we have selected.
+    
     if (m_MoreOptionsParams.dwTexturePack != 0) {
-        // texture pack hasn't been set yet, so check what it will be
+        
         TexturePack* pTexturePack = pMinecraft->skins->getTexturePackById(
             m_MoreOptionsParams.dwTexturePack);
         DLCTexturePack* pDLCTexPack = (DLCTexturePack*)pTexturePack;
         m_pDLCPack = pDLCTexPack->getDLCInfoParentPack();
 
-        // do we have a license?
+        
         if (m_pDLCPack &&
             !m_pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Texture, L"")) {
-            // no
+            
 
-            // We need to allow people to use a trial texture pack if they are
-            // offline - we only need them online if they want to buy it.
+            
+            
 
-            /*
-            unsigned int uiIDA[1];
-            uiIDA[0]=IDS_OK;
+            
 
-            if(!ProfileManager.IsSignedInLive(m_iPad))
+
+
+
+
+
+
+
+
+
+
             {
-                    // need to be signed in to live
-                    ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE,
-            IDS_PRO_NOTONLINE_TEXT, uiIDA, 1); m_bIgnoreInput = false;
-                    return;
-            }
-            else */
-            {
-                // upsell
+                
 
 #if defined(_WINDOWS64)
-                // trial pack warning
+                
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
                 ui.RequestAlertMessage(IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE,
@@ -647,13 +647,13 @@ void UIScene_LoadMenu::StartSharedLaunchFlow() {
     app.SetGameHostOption(eGameHostOption_WasntSaveOwner, (!m_bIsSaveOwner));
 
 #if TO_BE_IMPLEMENTED
-    // Reset the background downloading, in case we changed it by attempting to
-    // download a texture pack
+    
+    
     XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_AUTO);
 #endif
 
-    // Check if they have the Reset Nether flag set, and confirm they want to do
-    // this
+    
+    
     if (m_MoreOptionsParams.bResetNether) {
         unsigned int uiIDA[2];
         uiIDA[0] = IDS_DONT_RESET_NETHER;
@@ -725,14 +725,14 @@ void UIScene_LoadMenu::handleTimerComplete(int id) {
                 m_bMultiplayerAllowed = bMultiplayerAllowed;
             }
         } break;
-            // 4J-PB - Only Xbox will not have trial DLC patched into the game
+            
     }
 }
 
 void UIScene_LoadMenu::LaunchGame(void) {
-    // stop the timer running that causes a check for new texture packs in TMS
-    // but not installed, since this will run all through the load game, and
-    // will crash if it tries to create an hbrush
+    
+    
+    
 
     if ((m_bGameModeCreative == true || m_bHasBeenInCreative) ||
         m_MoreOptionsParams.bHostPrivileges == true) {
@@ -740,30 +740,30 @@ void UIScene_LoadMenu::LaunchGame(void) {
         uiIDA[0] = IDS_CONFIRM_OK;
         uiIDA[1] = IDS_CONFIRM_CANCEL;
         if (m_bGameModeCreative == true || m_bHasBeenInCreative) {
-            // 4J-PB - Need different text for Survival mode with a level that
-            // has been saved in Creative
+            
+            
             if (!m_bGameModeCreative) {
                 ui.RequestAlertMessage(
                     IDS_TITLE_START_GAME, IDS_CONFIRM_START_SAVEDINCREATIVE,
                     uiIDA, 2, m_iPad, &UIScene_LoadMenu::ConfirmLoadReturned,
                     this);
-            } else  // it's creative mode
+            } else  
             {
-                // has it previously been saved in creative?
+                
                 if (m_bHasBeenInCreative) {
-                    // 4J-PB - We don't really need to tell the user this will
-                    // have achievements disabled, since they already saved it
-                    // in creative and they got the warning then inform them
-                    // that leaderboard writes and achievements will be disabled
-                    // ui.RequestMessageBox(IDS_TITLE_START_GAME,
-                    // IDS_CONFIRM_START_SAVEDINCREATIVE_CONTINUE, uiIDA, 1,
-                    // m_iPad,&CScene_LoadGameSettings::ConfirmLoadReturned,this,app.GetStringTable());
+                    
+                    
+                    
+                    
+                    
+                    
+                    
 
                     if (m_levelGen != nullptr) {
                         m_bIsCorrupt = false;
                         LoadDataComplete(this);
                     } else {
-                        // set the save to load
+                        
                         PSAVE_DETAILS pSaveDetails =
                             StorageManager.ReturnSavesInfo();
                         app.DebugPrintf(
@@ -783,7 +783,7 @@ void UIScene_LoadMenu::LaunchGame(void) {
 #if TO_BE_IMPLEMENTED
                         if (eLoadStatus ==
                             C4JStorage::ELoadGame_DeviceRemoved) {
-                            // disable saving
+                            
                             StorageManager.SetSaveDisabled(true);
                             StorageManager.SetSaveDeviceSelected(m_iPad, false);
                             unsigned int uiIDA[1];
@@ -798,8 +798,8 @@ void UIScene_LoadMenu::LaunchGame(void) {
 #endif
                     }
                 } else {
-                    // ask if they're sure they want to turn this into a
-                    // creative map
+                    
+                    
                     ui.RequestAlertMessage(
                         IDS_TITLE_START_GAME, IDS_CONFIRM_START_CREATIVE, uiIDA,
                         2, m_iPad, &UIScene_LoadMenu::ConfirmLoadReturned,
@@ -816,7 +816,7 @@ void UIScene_LoadMenu::LaunchGame(void) {
             m_bIsCorrupt = false;
             LoadDataComplete(this);
         } else {
-            // set the save to load
+            
             PSAVE_DETAILS pSaveDetails = StorageManager.ReturnSavesInfo();
             app.DebugPrintf("Loading save %s [%s]\n",
                             pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex]
@@ -832,7 +832,7 @@ void UIScene_LoadMenu::LaunchGame(void) {
 
 #if TO_BE_IMPLEMENTED
             if (eLoadStatus == C4JStorage::ELoadGame_DeviceRemoved) {
-                // disable saving
+                
                 StorageManager.SetSaveDisabled(true);
                 StorageManager.SetSaveDeviceSelected(m_iPad, false);
                 unsigned int uiIDA[1];
@@ -846,23 +846,23 @@ void UIScene_LoadMenu::LaunchGame(void) {
 #endif
         }
     }
-    // return 0;
+    
 }
 
 int UIScene_LoadMenu::CheckResetNetherReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_LoadMenu* pClass = (UIScene_LoadMenu*)pParam;
 
-    // results switched for this dialog
+    
     if (result == C4JStorage::EMessage_ResultDecline) {
-        // continue and reset the nether
+        
         pClass->LaunchGame();
     } else if (result == C4JStorage::EMessage_ResultAccept) {
-        // turn off the reset nether and continue
+        
         pClass->m_MoreOptionsParams.bResetNether = false;
         pClass->LaunchGame();
     } else {
-        // else they chose cancel
+        
         pClass->m_bIgnoreInput = false;
     }
     return 0;
@@ -877,7 +877,7 @@ int UIScene_LoadMenu::ConfirmLoadReturned(void* pParam, int iPad,
             pClass->m_bIsCorrupt = false;
             pClass->LoadDataComplete(pClass);
         } else {
-            // set the save to load
+            
             PSAVE_DETAILS pSaveDetails = StorageManager.ReturnSavesInfo();
             app.DebugPrintf(
                 "Loading save %s [%s]\n",
@@ -894,7 +894,7 @@ int UIScene_LoadMenu::ConfirmLoadReturned(void* pParam, int iPad,
 
 #if TO_BE_IMPLEMENTED
             if (eLoadStatus == C4JStorage::ELoadGame_DeviceRemoved) {
-                // disable saving
+                
                 StorageManager.SetSaveDisabled(true);
                 StorageManager.SetSaveDeviceSelected(m_iPad, false);
                 unsigned int uiIDA[1];
@@ -927,7 +927,7 @@ int UIScene_LoadMenu::LoadDataComplete(void* pParam) {
             if (ProfileManager.IsSignedIn(i) &&
                 ((i == iPrimaryPad) || isLocalMultiplayerAvailable)) {
                 if (isSignedInLive && !ProfileManager.IsSignedInLive(i)) {
-                    // Record the first non signed in live pad
+                    
                     iPadNotSignedInLive = i;
                 }
 
@@ -936,8 +936,8 @@ int UIScene_LoadMenu::LoadDataComplete(void* pParam) {
             }
         }
 
-        // If this is an online game but not all players are signed in to Live,
-        // stop!
+        
+        
         if (isOnlineGame && !isSignedInLive) {
             pClass->m_bIgnoreInput = false;
             unsigned int uiIDA[1];
@@ -948,8 +948,8 @@ int UIScene_LoadMenu::LoadDataComplete(void* pParam) {
             return 0;
         }
 
-        // Check if user-created content is allowed, as we cannot play
-        // multiplayer if it's not
+        
+        
         bool noUGC = false;
         bool pccAllowed = true;
         bool pccFriendsAllowed = true;
@@ -976,14 +976,14 @@ int UIScene_LoadMenu::LoadDataComplete(void* pParam) {
                 int localUsersMask = CGameNetworkManager::GetLocalPlayerMask(
                     ProfileManager.GetPrimaryPad());
 
-                // No guest problems so we don't need to force a sign-in of
-                // players here
+                
+                
                 StartGameFromSave(pClass, localUsersMask);
             }
         } else {
-            // 4J-PB not sure why we aren't checking the content restriction for
-            // the main player here when multiple controllers are connected -
-            // adding now
+            
+            
+            
             if (isOnlineGame && noUGC) {
                 pClass->setVisible(true);
                 ui.RequestUGCMessageBox();
@@ -997,10 +997,10 @@ int UIScene_LoadMenu::LoadDataComplete(void* pParam) {
             }
         }
     } else {
-        // the save is corrupt!
+        
         pClass->m_bIgnoreInput = false;
 
-        // give the option to delete the save
+        
         unsigned int uiIDA[2];
         uiIDA[0] = IDS_CONFIRM_CANCEL;
         uiIDA[1] = IDS_CONFIRM_OK;
@@ -1019,7 +1019,7 @@ int UIScene_LoadMenu::loadSaveDataReturned(bool bIsCorrupt, bool bIsOwner) {
     if (bIsOwner) {
         LoadDataComplete(this);
     } else {
-        // messagebox
+        
         m_bIgnoreInput = false;
     }
 
@@ -1036,7 +1036,7 @@ int UIScene_LoadMenu::DeleteSaveDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_LoadMenu* pClass = (UIScene_LoadMenu*)pParam;
 
-    // results switched for this dialog
+    
     if (result == C4JStorage::EMessage_ResultDecline) {
         PSAVE_DETAILS pSaveDetails = StorageManager.ReturnSavesInfo();
         StorageManager.DeleteSaveData(
@@ -1057,8 +1057,8 @@ int UIScene_LoadMenu::deleteSaveDataReturned(bool bSuccess) {
     return 0;
 }
 
-// 4J Stu - Shared functionality that is the same whether we needed a quadrant
-// sign-in or not
+
+
 void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass,
                                          int localUsersMask) {
     if (pClass->m_levelGen == nullptr) {
@@ -1067,7 +1067,7 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass,
             StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
     } else {
         StorageManager.ResetSaveData();
-        // Make our next save default to the name of the level
+        
         StorageManager.SetSaveTitle(
             pClass->m_levelGen->getDefaultSaveName().c_str());
     }
@@ -1092,7 +1092,7 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass,
     Minecraft* pMinecraft = Minecraft::GetInstance();
     pMinecraft->skins->selectTexturePackById(
         pClass->m_MoreOptionsParams.dwTexturePack);
-    // pMinecraft->skins->updateUI();
+    
 
     app.SetGameHostOption(eGameHostOption_Difficulty,
                           Minecraft::GetInstance()->options->difficulty);
@@ -1140,16 +1140,16 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass,
 #if defined(_LARGE_WORLDS)
     app.SetGameHostOption(eGameHostOption_WorldSize,
                           pClass->m_MoreOptionsParams.worldSize +
-                              1);  // 0 is GAME_HOST_OPTION_WORLDSIZE_UNKNOWN
+                              1);  
 #endif
-    // 	app.SetGameNewWorldSize(64, true );
-    //	app.SetGameNewWorldSize(0, false );
+    
+    
 
-    // flag if the user wants to reset the Nether to force a Fortress with
-    // netherwart etc.
+    
+    
     app.SetResetNether(
         (pClass->m_MoreOptionsParams.bResetNether == true) ? true : false);
-    // clear out the app's terrain features list
+    
     app.ClearTerrainFeaturePosition();
 
     app.SetGameHostOption(eGameHostOption_GameType, pClass->m_iGameModeId);
@@ -1165,7 +1165,7 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass,
     loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
     loadingParams->lpParam = param;
 
-    // Reset the autosave time
+    
     app.SetAutosaveTimerTime();
 
     UIFullscreenProgressCompletionData* completionData =
@@ -1181,8 +1181,8 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass,
 }
 
 void UIScene_LoadMenu::checkStateAndStartGame() {
-    // Check if they have the Reset Nether flag set, and confirm they want to do
-    // this
+    
+    
     if (m_MoreOptionsParams.bResetNether) {
         unsigned int uiIDA[2];
         uiIDA[0] = IDS_DONT_RESET_NETHER;
@@ -1201,7 +1201,7 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void* pParam, bool bContinue,
     UIScene_LoadMenu* pClass = (UIScene_LoadMenu*)pParam;
 
     if (bContinue == true) {
-        // It's possible that the player has not signed in - they can back out
+        
         if (ProfileManager.IsSignedIn(pClass->m_iPad)) {
             int primaryPad = ProfileManager.GetPrimaryPad();
             bool noPrivileges = false;
@@ -1216,7 +1216,7 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void* pParam, bool bContinue,
                 if (ProfileManager.IsSignedIn(i) &&
                     ((i == primaryPad) || isLocalMultiplayerAvailable)) {
                     if (isSignedInLive && !ProfileManager.IsSignedInLive(i)) {
-                        // Record the first non signed in live pad
+                        
                         iPadNotSignedInLive = i;
                     }
 
@@ -1229,8 +1229,8 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void* pParam, bool bContinue,
                 }
             }
 
-            // If this is an online game but not all players are signed in to
-            // Live, stop!
+            
+            
             if (isOnlineGame && !isSignedInLive) {
                 pClass->m_bIgnoreInput = false;
                 unsigned int uiIDA[1];
@@ -1241,8 +1241,8 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void* pParam, bool bContinue,
                 return 0;
             }
 
-            // Check if user-created content is allowed, as we cannot play
-            // multiplayer if it's not
+            
+            
             bool noUGC = false;
             bool pccAllowed = true;
             bool pccFriendsAllowed = true;
@@ -1273,8 +1273,8 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void* pParam, bool bContinue,
                         ProfileManager.GetPrimaryPad());
                 }
             } else {
-                // This is NOT called from a storage manager thread, and is in
-                // fact called from the main thread in the Profile library tick.
+                
+                
                 StartGameFromSave(pClass, localUsersMask);
             }
         }

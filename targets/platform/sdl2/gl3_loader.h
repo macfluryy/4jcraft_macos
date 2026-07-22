@@ -1,8 +1,8 @@
 #pragma once
 
-// macOS: use Apple's OpenGL 3.3 Core framework directly.
-// Suppress deprecation warnings — we know OpenGL is deprecated on macOS 10.14+
-// but this is intentional for legacy compatibility.
+
+
+
 #ifndef GL_SILENCE_DEPRECATION
 #define GL_SILENCE_DEPRECATION
 #endif
@@ -12,7 +12,7 @@
 
 #include <cstdio>
 
-// ── Constants that OpenGL 3.3 Core dropped from the legacy API ──────────────
+
 #ifndef GL_ARRAY_BUFFER
 #define GL_ARRAY_BUFFER 0x8892
 #endif
@@ -28,14 +28,14 @@
 #ifndef GL_FRAGMENT_SHADER
 #define GL_FRAGMENT_SHADER 0x8B30
 #endif
-// GL_QUADS is not available in Core Profile; quads are converted to triangles
-// in DrawVertices(), so this constant is only used as a sentinel tag.
+
+
 #ifndef GL_QUADS
 #define GL_QUADS 0x0007
 #endif
 
-// ── Runtime sanity check ─────────────────────────────────────────────────────
-// Call once after the OpenGL context is made current.
+
+
 static inline bool gl3_load() {
     const char* ver = (const char*)glGetString(GL_VERSION);
     if (!ver) {

@@ -10,26 +10,26 @@
 
 class PreLoginPacket : public Packet,
                        public std::enable_shared_from_this<PreLoginPacket> {
-    // the login key is username client->server and sessionid server->client
+    
 public:
     static const int m_iSaveNameLen = 14;
-    // 4J Added more info to this packet so that we can check if anyone has a
-    // UGC privilege that won't let us
-    //  join, and so that we can inform the server if we have that privilege
-    //  set. Anyone with UGC turned off completely can't play the game online at
-    //  all, so we only need to specify players with friends only set
+    
+    
+    
+    
+    
     PlayerUID* m_playerXuids;
     std::uint8_t m_dwPlayerCount;
     std::uint8_t m_friendsOnlyBits;
     std::uint32_t m_ugcPlayersVersion;
-    char m_szUniqueSaveName[m_iSaveNameLen];  // added for checking if the level
-                                              // is in the ban list
+    char m_szUniqueSaveName[m_iSaveNameLen];  
+                                              
     std::uint32_t
-        m_serverSettings;  // A bitfield of server settings constructed with the
-                           // MAKE_SERVER_SETTINGS macro
+        m_serverSettings;  
+                           
     std::uint8_t
-        m_hostIndex;  // Rather than sending the xuid of the host again, send an
-                      // index into the m_playerXuids array
+        m_hostIndex;  
+                      
     std::uint32_t m_texturePackId;
     std::int16_t m_netcodeVersion;
 

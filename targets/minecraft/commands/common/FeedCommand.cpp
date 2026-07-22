@@ -28,7 +28,7 @@ void FeedCommand::execute(std::shared_ptr<CommandSender> source,
             DataInputStream dis(&bais);
             targetName = dis.readUTF();
         } catch (...) {
-            // ignore - default to self
+            
         }
     }
 

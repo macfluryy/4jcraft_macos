@@ -10,8 +10,8 @@ class Player;
 ClientSideMerchant::ClientSideMerchant(std::shared_ptr<Player> source,
                                        const std::wstring& name) {
     this->source = source;
-    // 4J Stu - Need to do this after creating as a shared_ptr
-    container = nullptr;  // new MerchantContainer(source, this);
+    
+    container = nullptr;  
     currentOffers = nullptr;
     m_name = name;
 }

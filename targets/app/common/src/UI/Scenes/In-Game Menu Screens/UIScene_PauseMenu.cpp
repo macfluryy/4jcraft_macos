@@ -31,7 +31,7 @@ class TexturePack;
 UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
                                      UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
     m_bIgnoreInput = false;
     m_eAction = eAction_None;
@@ -53,17 +53,17 @@ UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
 
     doHorizontalResizeCheck();
 
-    // get rid of the quadrant display if it's on
+    
     ui.HidePressStart();
 
 #if TO_BE_IMPLEMENTED
     XuiSetTimer(m_hObj, IGNORE_KEYPRESS_TIMERID, IGNORE_KEYPRESS_TIME);
 #endif
 
-    // TODO: proper fix for pausing
-    // 4jcraft: replace IsLocalGame() with GetPlayerCount() == 1 due to
-    // IsLocalGame() issues on Iggy
-    if (/*g_NetworkManager.IsLocalGame() &&*/ g_NetworkManager
+    
+    
+    
+    if ( g_NetworkManager
             .GetPlayerCount() == 1) {
         app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
                                eXuiServerAction_PauseServer, (void*)true);
@@ -74,7 +74,7 @@ UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[iPad];
 
-        // This just allows it to be shown
+        
         gameMode->getTutorial()->showTutorialPopup(false);
     }
     m_bErrorDialogRunning = false;
@@ -87,7 +87,7 @@ UIScene_PauseMenu::~UIScene_PauseMenu() {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[m_iPad];
 
-        // This just allows it to be shown
+        
         gameMode->getTutorial()->showTutorialPopup(true);
     }
 
@@ -107,10 +107,10 @@ std::wstring UIScene_PauseMenu::getMoviePath() {
 void UIScene_PauseMenu::tick() { UIScene::tick(); }
 
 void UIScene_PauseMenu::updateTooltips() {
-    // bool bUserisClientSide = ProfileManager.IsSignedInLive(m_iPad);
-    // bool bIsisPrimaryHost =
-    //     g_NetworkManager.IsHost() && (ProfileManager.GetPrimaryPad() ==
-    //     m_iPad);
+    
+    
+    
+    
 
     int iY = -1;
     int iRB = -1;
@@ -140,36 +140,36 @@ void UIScene_PauseMenu::handleReload() {
 }
 
 void UIScene_PauseMenu::updateControlsVisibility() {
-    // are we the primary player?
-    // 4J-PB - fix for 7844 & 7845 -
-    // TCR # 128:  XLA Pause Menu:   When in a multiplayer game as a client the
-    // Pause Menu does not have a Leaderboards option. TCR # 128:  XLA Pause
-    // Menu:   When in a multiplayer game as a client the Pause Menu does not
-    // have an Achievements option.
+    
+    
+    
+    
+    
+    
     if (ProfileManager.GetPrimaryPad() ==
-        m_iPad)  // && g_NetworkManager.IsHost())
+        m_iPad)  
     {
-        // are we in splitscreen?
-        // how many local players do we have?
+        
+        
         if (app.GetLocalPlayerCount() > 1) {
-            // Hide the BUTTON_PAUSE_LEADERBOARDS and BUTTON_PAUSE_ACHIEVEMENTS
+            
             removeControl(&m_buttons[BUTTON_PAUSE_LEADERBOARDS], false);
             removeControl(&m_buttons[BUTTON_PAUSE_ACHIEVEMENTS], false);
         }
 
         if (!g_NetworkManager.IsHost()) {
-            // Hide the BUTTON_PAUSE_SAVEGAME
+            
             removeControl(&m_buttons[BUTTON_PAUSE_SAVEGAME], false);
         }
     } else {
-        // Hide the BUTTON_PAUSE_LEADERBOARDS, BUTTON_PAUSE_ACHIEVEMENTS and
-        // BUTTON_PAUSE_SAVEGAME
+        
+        
         removeControl(&m_buttons[BUTTON_PAUSE_LEADERBOARDS], false);
         removeControl(&m_buttons[BUTTON_PAUSE_ACHIEVEMENTS], false);
         removeControl(&m_buttons[BUTTON_PAUSE_SAVEGAME], false);
     }
 
-    // is saving disabled?
+    
     if (StorageManager.GetSaveDisabled()) {
     }
 }
@@ -181,19 +181,19 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
         return;
     }
 
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
     ui.AnimateKeyPress(iPad, key, repeat, pressed, released);
 
     switch (key) {
         case ACTION_MENU_CANCEL:
             if (pressed) {
-                // TODO: proper fix for pausing
-                // 4jcraft: replace IsLocalGame() with GetPlayerCount() == 1 due
-                // to IsLocalGame() issues on Iggy
+                
+                
+                
                 if (iPad == ProfileManager.GetPrimaryPad() &&
-                    /*g_NetworkManager.IsLocalGame()*/ g_NetworkManager
+                     g_NetworkManager
                             .GetPlayerCount() == 1) {
                     app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
                                            eXuiServerAction_PauseServer,
@@ -214,14 +214,14 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
 
 #if TO_BE_IMPLEMENTED
         case VK_PAD_X:
-            // Change device
+            
             if (bIsisPrimaryHost) {
-                // we need a function to deal with the return from this - if it
-                // changes, we need to update the pause menu and tooltips Fix
-                // for #12531 - TCR 001: BAS Game Stability: When a player
-                // selects to change a storage device, and repeatedly backs out
-                // of the SD screen, disconnects from LIVE, and then selects a
-                // SD, the title crashes.
+                
+                
+                
+                
+                
+                
                 m_bIgnoreInput = true;
 
                 StorageManager.SetSaveDevice(
@@ -234,8 +234,8 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
         case ACTION_MENU_Y: {
 #if TO_BE_IMPLEMENTED
             if (bUserisClientSide) {
-                // 4J Stu - Added check in 1.8.2 bug fix (TU6) to stop repeat
-                // key presses
+                
+                
                 bool bCanScreenshot = true;
                 for (int j = 0; j < XUSER_MAX_COUNT; ++j) {
                     if (app.GetXuiAction(j) ==
@@ -258,11 +258,11 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
 
     switch ((int)controlId) {
         case BUTTON_PAUSE_RESUMEGAME:
-            // TODO: proper fix for pausing
-            // 4jcraft: replace IsLocalGame() with GetPlayerCount() == 1 due to
-            // IsLocalGame() issues on Iggy
+            
+            
+            
             if (m_iPad == ProfileManager.GetPrimaryPad() &&
-                /*g_NetworkManager.IsLocalGame()*/ g_NetworkManager
+                 g_NetworkManager
                         .GetPlayerCount() == 1) {
                 app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
                                        eXuiServerAction_PauseServer,
@@ -274,8 +274,8 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
             unsigned int uiIDA[1];
             uiIDA[0] = IDS_OK;
 
-            // 4J Gordon: Being used for the leaderboards proper now
-            //  guests can't look at leaderboards
+            
+            
             if (ProfileManager.IsGuest(m_iPad)) {
                 ui.RequestAlertMessage(IDS_PRO_GUESTPROFILE_TITLE,
                                        IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1,
@@ -289,8 +289,8 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                 bool bContentRestricted = false;
                 if (bContentRestricted) {
 #if !defined(_WINDOWS64)
-                    // we check this for other platforms
-                    // you can't see leaderboards
+                    
+                    
                     unsigned int uiIDA[1];
                     uiIDA[0] = IDS_CONFIRM_OK;
                     ui.RequestAlertMessage(IDS_ONLINE_SERVICE_TITLE,
@@ -303,7 +303,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
             }
         } break;
         case BUTTON_PAUSE_ACHIEVEMENTS:
-            // guests can't look at achievements
+            
             if (ProfileManager.IsGuest(m_iPad)) {
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_OK;
@@ -311,7 +311,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                        IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1,
                                        ProfileManager.GetPrimaryPad());
             } else {
-                // XShowAchievementsUI(m_iPad);
+                
             }
             break;
 
@@ -325,7 +325,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
             Minecraft* pMinecraft = Minecraft::GetInstance();
             unsigned int uiIDA[3];
 
-            // is it the primary player exiting?
+            
             if (m_iPad == ProfileManager.GetPrimaryPad()) {
                 int playTime = -1;
                 if (pMinecraft->localplayers[m_iPad] != nullptr) {
@@ -378,7 +378,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                    ->getSessionTimer();
                 }
 
-                // just exit the player
+                
                 app.SetAction(m_iPad, eAppAction_ExitPlayer);
             }
         } break;
@@ -386,23 +386,23 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
 }
 
 void UIScene_PauseMenu::PerformActionSaveGame() {
-    // 4J-PB - Is the player trying to save but they are using a trial
-    // texturepack ?
+    
+    
     if (!Minecraft::GetInstance()->skins->isUsingDefaultSkin()) {
         TexturePack* tPack = Minecraft::GetInstance()->skins->getSelected();
         DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
 
         m_pDLCPack =
-            pDLCTexPack->getDLCInfoParentPack();  // tPack->getDLCPack();
+            pDLCTexPack->getDLCInfoParentPack();  
 
         if (!m_pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Texture, L"")) {
-            // upsell
+            
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_CONFIRM_OK;
             uiIDA[1] = IDS_CONFIRM_CANCEL;
 
-            // Give the player a warning about the trial version of the texture
-            // pack
+            
+            
             {
                 ui.RequestAlertMessage(
                     IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE,
@@ -417,14 +417,14 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
         }
     }
 
-    // does the save exist?
+    
     bool bSaveExists;
     C4JStorage::ESaveGameState result =
         StorageManager.DoesSaveExist(&bSaveExists);
 
     {
-        // we need to ask if they are sure they want to overwrite the
-        // existing game
+        
+        
         if (bSaveExists) {
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_CONFIRM_CANCEL;
@@ -434,7 +434,7 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
                                    &IUIScene_PauseMenu::SaveGameDialogReturned,
                                    (void*)GetCallbackUniqueId());
         } else {
-            // flag a app action of save game
+            
             app.SetAction(m_iPad, eAppAction_SaveGame);
         }
     }
@@ -445,26 +445,26 @@ void UIScene_PauseMenu::ShowScene(bool show) {
 }
 
 void UIScene_PauseMenu::HandleDLCInstalled() {
-    // mounted DLC may have changed
+    
     if (app.StartInstallDLCProcess(m_iPad) == false) {
-        // not doing a mount, so re-enable input
-        // m_bIgnoreInput=false;
+        
+        
         app.DebugPrintf(
             "UIScene_PauseMenu::HandleDLCInstalled - m_bIgnoreInput false\n");
     } else {
-        // 4J-PB - Somehow, on th edisc build, we get in here, but don't call
-        // HandleDLCMountingComplete, so input locks up
-        // m_bIgnoreInput=true;
+        
+        
+        
         app.DebugPrintf(
             "UIScene_PauseMenu::HandleDLCInstalled - m_bIgnoreInput true\n");
     }
-    // this will send a CustomMessage_DLCMountingComplete when done
+    
 }
 
 void UIScene_PauseMenu::HandleDLCMountingComplete() {
-    // check if we should display the save option
+    
 
-    // m_bIgnoreInput=false;
+    
     app.DebugPrintf(
         "UIScene_PauseMenu::HandleDLCMountingComplete - m_bIgnoreInput false "
         "\n");

@@ -195,7 +195,7 @@ snapshotAndResetWorkerBuckets() noexcept {
     return snapshot;
 }
 
-}  // namespace
+}  
 
 bool FrameProfiler::IsEnabled() noexcept {
     static const bool enabled = computeEnabled();

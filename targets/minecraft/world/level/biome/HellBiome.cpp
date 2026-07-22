@@ -8,8 +8,8 @@
 HellBiome::HellBiome(int id) : Biome(id) {
     enemies.clear();
     friendlies.clear();
-    friendlies_chicken.clear();  // 4J added
-    friendlies_wolf.clear();     // 4J added
+    friendlies_chicken.clear();  
+    friendlies_wolf.clear();     
     waterFriendlies.clear();
     ambientFriendlies.clear();
 

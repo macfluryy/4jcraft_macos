@@ -14,24 +14,24 @@ SetTimePacket::SetTimePacket(int64_t gameTime, int64_t dayTime,
     this->gameTime = gameTime;
     this->dayTime = dayTime;
 
-    // 4J: We send daylight cycle rule with host options so don't need this
-    /*if (!tickDayTime)
-    {
-            this->dayTime = -this->dayTime;
-            if (this->dayTime == 0)
-            {
-                    this->dayTime = -1;
-            }
-    }*/
+    
+    
+
+
+
+
+
+
+
 }
 
-void SetTimePacket::read(DataInputStream* dis)  // throws IOException
+void SetTimePacket::read(DataInputStream* dis)  
 {
     gameTime = dis->readLong();
     dayTime = dis->readLong();
 }
 
-void SetTimePacket::write(DataOutputStream* dos)  // throws IOException
+void SetTimePacket::write(DataOutputStream* dos)  
 {
     dos->writeLong(gameTime);
     dos->writeLong(dayTime);

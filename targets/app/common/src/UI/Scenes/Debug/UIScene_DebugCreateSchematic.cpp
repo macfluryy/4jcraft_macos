@@ -28,7 +28,7 @@ UIScene_DebugCreateSchematic::UIScene_DebugCreateSchematic(int iPad,
                                                            void* initData,
                                                            UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_labelTitle.init(L"Name");
@@ -86,7 +86,7 @@ void UIScene_DebugCreateSchematic::handleInput(int iPad, int key, bool repeat,
 void UIScene_DebugCreateSchematic::handlePress(F64 controlId, F64 childId) {
     switch ((int)controlId) {
         case eControl_Create: {
-            // We want the start to be even
+            
             if (m_data->startX > 0 && m_data->startX % 2 != 0)
                 m_data->startX -= 1;
             else if (m_data->startX < 0 && m_data->startX % 2 != 0)
@@ -100,7 +100,7 @@ void UIScene_DebugCreateSchematic::handlePress(F64 controlId, F64 childId) {
             else if (m_data->startZ < 0 && m_data->startZ % 2 != 0)
                 m_data->startZ -= 1;
 
-            // We want the end to be odd to have a total size that is even
+            
             if (m_data->endX > 0 && m_data->endX % 2 == 0)
                 m_data->endX += 1;
             else if (m_data->endX < 0 && m_data->endX % 2 == 0)

@@ -4,9 +4,9 @@
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/UIScene_CraftingMenu.h"
 
 bool XuiCraftingTask::isCompleted() {
-    // This doesn't seem to work
-    // IUIScene_CraftingMenu *craftScene =
-    // reinterpret_cast<IUIScene_CraftingMenu *>(tutorial->getScene());
+    
+    
+    
     UIScene_CraftingMenu* craftScene =
         reinterpret_cast<UIScene_CraftingMenu*>(tutorial->getScene());
 

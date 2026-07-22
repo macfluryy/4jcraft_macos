@@ -7,9 +7,9 @@ class ModelPart;
 class WolfModel : public Model {
 public:
     ModelPart *head, *body, *leg0, *leg1, *leg2, *leg3;
-    //     Cube *ear1;
-    //     Cube *ear2;
-    //     Cube *mouth;
+    
+    
+    
     ModelPart* tail;
     ModelPart* upperBody;
 

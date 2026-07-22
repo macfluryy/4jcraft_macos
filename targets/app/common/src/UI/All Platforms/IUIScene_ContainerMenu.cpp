@@ -12,7 +12,7 @@ IUIScene_ContainerMenu::GetSectionAndSlotInDirection(ESceneSection eSection,
                                                      int* piTargetY) {
     ESceneSection newSection = eSection;
 
-    // Find the new section if there is one
+    
     switch (eSection) {
         case eSectionContainerChest:
             if (eTapDirection == eTapStateDown) {

@@ -18,8 +18,8 @@
 #include "minecraft/world/phys/AABB.h"
 
 MushroomCow::MushroomCow(Level* level) : Cow(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     setHealth(getMaxHealth());
 
@@ -44,7 +44,7 @@ bool MushroomCow::mobInteract(std::shared_ptr<Player> player) {
             return true;
         }
     }
-    // 4J: Do not allow shearing if we can't create more cows
+    
     if (item != nullptr && item->id == Item::shears_Id && getAge() >= 0 &&
         level->canCreateMore(eTYPE_COW, Level::eSpawnType_Breed)) {
         remove();
@@ -70,9 +70,9 @@ bool MushroomCow::mobInteract(std::shared_ptr<Player> player) {
     return Cow::mobInteract(player);
 }
 
-// 4J - added so that mushroom cows have more of a chance of spawning, they can
-// now spawn on mycelium as well as grass - seems a bit odd that they don't
-// already really
+
+
+
 bool MushroomCow::canSpawn() {
     int xt = Mth::floor(x);
     int yt = Mth::floor(bb.y0);
@@ -85,7 +85,7 @@ bool MushroomCow::canSpawn() {
 
 std::shared_ptr<AgableMob> MushroomCow::getBreedOffspring(
     std::shared_ptr<AgableMob> target) {
-    // 4J - added limit to number of animals that can be bred
+    
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
         return std::make_shared<MushroomCow>(level);
     } else {

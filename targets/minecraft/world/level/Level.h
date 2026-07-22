@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-// #include <mutex>
+
 #include <format>
 #include <memory>
 #include <mutex>
@@ -32,9 +32,9 @@ class TickNextTickData;
 class Tile;
 class TilePos;
 
-// 4J Stu - This value should be big enough that we don't get any crashes causes
-// by memory overwrites, however it does seem way too large for what is actually
-// needed. Needs further investigation
+
+
+
 #define LEVEL_CHUNKS_TO_UPDATE_MAX (19 * 19 * 8)
 
 class Vec3;
@@ -76,22 +76,22 @@ public:
 
     static constexpr int MAX_TICK_TILES_PER_TICK = 1000;
 
-    // 4J Added
+    
     static constexpr int MAX_GRASS_TICKS = 100;
     static constexpr int MAX_LAVA_TICKS = 100;
 
 public:
-    static constexpr int MAX_XBOX_BOATS = 40;  // Max number of boats
+    static constexpr int MAX_XBOX_BOATS = 40;  
     static constexpr int MAX_CONSOLE_MINECARTS = 40;
     static constexpr int MAX_DISPENSABLE_FIREBALLS = 200;
     static constexpr int MAX_DISPENSABLE_PROJECTILES = 300;
 
     static constexpr int MAX_LEVEL_SIZE = 30000000;
-    static constexpr int maxMovementHeight = 512;  // 4J added
+    static constexpr int maxMovementHeight = 512;  
 
-    static constexpr int minBuildHeight = 0;  // 4J - brought forward from 1.2.3
+    static constexpr int minBuildHeight = 0;  
     static constexpr int maxBuildHeight =
-        256;  // 4J - brought forward from 1.2.3
+        256;  
     static constexpr int genDepthBits = 7;
     static constexpr int genDepthBitsPlusFour = genDepthBits + 4;
     static constexpr int genDepth = 1 << genDepthBits;
@@ -102,12 +102,12 @@ public:
     static constexpr int HALF_CHUNK_TILE_COUNT = CHUNK_TILE_COUNT / 2;
     static constexpr int COMPRESSED_CHUNK_SECTION_HEIGHT = 128;
     static constexpr int COMPRESSED_CHUNK_SECTION_TILES =
-        COMPRESSED_CHUNK_SECTION_HEIGHT * 16 * 16;  // 4J Stu - Fixed size
+        COMPRESSED_CHUNK_SECTION_HEIGHT * 16 * 16;  
 
     int seaLevel;
 
-    // 4J - added, making instaTick flag use TLS so we can set it in the chunk
-    // rebuilding thread without upsetting the main game thread
+    
+    
     static thread_local bool m_tlsInstaTick;
     static thread_local lightCache_t* m_tlsLightCache;
     static void enableLightingCache();
@@ -115,13 +115,13 @@ public:
     static bool getCacheTestEnabled();
     static bool getInstaTick();
     static void setInstaTick(bool enable);
-    //	bool instaTick;		// 4J - removed
+    
 
     static constexpr int MAX_BRIGHTNESS = 15;
-    static constexpr int TICKS_PER_DAY = 20 * 60 * 20;  // ORG:20*60*20
+    static constexpr int TICKS_PER_DAY = 20 * 60 * 20;  
 
 public:
-    std::recursive_mutex m_entitiesCS;  // 4J added
+    std::recursive_mutex m_entitiesCS;  
 
     std::vector<std::shared_ptr<Entity> > entities;
 
@@ -129,9 +129,9 @@ protected:
     std::vector<std::shared_ptr<Entity> > entitiesToRemove;
 
 public:
-    bool hasEntitiesToRemove();               // 4J added
-    bool m_bDisableAddNewTileEntities;        // 4J Added
-    std::recursive_mutex m_tileEntityListCS;  // 4J added
+    bool hasEntitiesToRemove();               
+    bool m_bDisableAddNewTileEntities;        
+    std::recursive_mutex m_tileEntityListCS;  
     std::vector<std::shared_ptr<TileEntity> > tileEntityList;
 
 private:
@@ -171,12 +171,12 @@ protected:
     std::vector<LevelListener*> listeners;
 
 public:
-    ChunkSource* chunkSource;  // 4J - changed to public
+    ChunkSource* chunkSource;  
 protected:
-    // This is the only std::shared_ptr ref to levelStorage - we need to keep
-    // this as long as at least one Level references it, to be able to cope with
-    // moving from dimension to dimension where the Level(Level *level,
-    // Dimension *dimension) ctor is used
+    
+    
+    
+    
     std::shared_ptr<LevelStorage> levelStorage;
 
     LevelData* levelData;
@@ -188,18 +188,18 @@ public:
     VillageSiege* villageSiege;
 
 private:
-    // 4J - Calendar is now static
-    // Calendar *calendar;
+    
+    
 
 protected:
     Scoreboard* scoreboard;
 
 public:
-    Biome* getBiome(int x, int z);  // 4J - brought forward from 1.2.3
+    Biome* getBiome(int x, int z);  
     virtual BiomeSource* getBiomeSource();
 
 private:
-    // 4J Stu - Added these ctors to handle init of member variables
+    
     void _init();
     void _init(std::shared_ptr<LevelStorage> levelStorage,
                const std::wstring& levelName, LevelSettings* levelSettings,
@@ -223,7 +223,7 @@ protected:
     virtual void initializeLevel(LevelSettings* settings);
 
 public:
-    virtual bool AllPlayersAreSleeping() { return false; }  // 4J Added
+    virtual bool AllPlayersAreSleeping() { return false; }  
 
     virtual void validateSpawn();
     int getTopTile(int x, int z);
@@ -234,19 +234,19 @@ public:
     bool isEmptyTile(int x, int y, int z);
     virtual bool isEntityTile(int x, int y, int z);
     int getTileRenderShape(int x, int y, int z);
-    int getTileRenderShape(int t);  // 4J Added to slightly optimise and avoid
-                                    // getTile call if we already know the tile
+    int getTileRenderShape(int t);  
+                                    
     bool hasChunkAt(int x, int y, int z);
     bool hasChunksAt(int x, int y, int z, int r);
     bool hasChunksAt(int x0, int y0, int z0, int x1, int y1, int z1);
-    bool reallyHasChunkAt(int x, int y, int z);          // 4J added
-    bool reallyHasChunksAt(int x, int y, int z, int r);  // 4J added
+    bool reallyHasChunkAt(int x, int y, int z);          
+    bool reallyHasChunksAt(int x, int y, int z, int r);  
     bool reallyHasChunksAt(int x0, int y0, int z0, int x1, int y1,
-                           int z1);  // 4J added
+                           int z1);  
 
 public:
     bool hasChunk(int x, int z);
-    bool reallyHasChunk(int x, int z);  // 4J added
+    bool reallyHasChunk(int x, int z);  
 
 public:
     LevelChunk* getChunkAt(int x, int z);
@@ -256,7 +256,7 @@ public:
     Material* getMaterial(int x, int y, int z);
     virtual int getData(int x, int y, int z);
     virtual bool setData(int x, int y, int z, int data, int updateFlags,
-                         bool forceUpdate = false);  // 4J added forceUpdate
+                         bool forceUpdate = false);  
     virtual bool removeTile(int x, int y, int z);
     virtual bool destroyTile(int x, int y, int z, bool dropResources);
     virtual bool setTileAndUpdate(int x, int y, int z, int tile);
@@ -282,15 +282,15 @@ public:
     void updateLightIfOtherThan(LightLayer::variety layer, int x, int y, int z,
                                 int expected);
     int getBrightnessPropagate(LightLayer::variety layer, int x, int y, int z,
-                               int tileId);  // 4J added tileId
+                               int tileId);  
     void getNeighbourBrightnesses(int* brightnesses, LightLayer::variety layer,
-                                  int x, int y, int z);  // 4J added
+                                  int x, int y, int z);  
     int getBrightness(LightLayer::variety layer, int x, int y, int z);
     void setBrightness(
         LightLayer::variety layer, int x, int y, int z, int brightness,
-        bool noUpdateOnClient = false);  // 4J added noUpdateOnClient
+        bool noUpdateOnClient = false);  
     void setBrightnessNoUpdateOnClient(LightLayer::variety layer, int x, int y,
-                                       int z, int brightness);  // 4J added
+                                       int z, int brightness);  
 
     inline void setBrightnessCached(lightCache_t* cache, uint64_t* cacheUse,
                                     LightLayer::variety layer, int x, int y,
@@ -329,7 +329,7 @@ public:
     void setTileBrightnessChanged(int x, int y, int z);
     virtual int getLightColor(
         int x, int y, int z, int emitt,
-        int tileId = -1);  // 4J - brought forward from 1.8.2
+        int tileId = -1);  
     virtual float getBrightness(int x, int y, int z, int emitt);
     virtual float getBrightness(int x, int y, int z);
     bool isDay();
@@ -352,17 +352,17 @@ public:
     void playStreamingMusic(const std::wstring& name, int x, int y, int z);
     void playMusic(double x, double y, double z, const std::wstring& string,
                    float volume);
-    // 4J removed - void addParticle(const std::wstring& id, double x, double y,
-    // double z, double xd, double yd, double zd);
+    
+    
     void addParticle(ePARTICLE_TYPE id, double x, double y, double z, double xd,
-                     double yd, double zd);  // 4J added
+                     double yd, double zd);  
     virtual bool addGlobalEntity(std::shared_ptr<Entity> e);
     virtual bool addEntity(std::shared_ptr<Entity> e);
 
 protected:
     virtual void entityAdded(std::shared_ptr<Entity> e);
     virtual void entityRemoved(std::shared_ptr<Entity> e);
-    virtual void playerRemoved(std::shared_ptr<Entity> e);  // 4J added
+    virtual void playerRemoved(std::shared_ptr<Entity> e);  
 
 public:
     virtual void removeEntity(std::shared_ptr<Entity> e);
@@ -377,12 +377,12 @@ public:
     std::vector<AABB>* getCubes(
         std::shared_ptr<Entity> source, AABB* box, bool noEntities = false,
         bool blockAtEdge =
-            false);  // 4J: Added noEntities & blockAtEdge parameters
+            false);  
     std::vector<AABB>* getTileCubes(
         AABB* box, bool blockAtEdge =
-                       false);  // 4J: Added noEntities & blockAtEdge parameters
-    int getOldSkyDarken(float a);  // 4J - change brought forward from 1.8.2
-    float getSkyDarken(float a);   // 4J - change brought forward from 1.8.2
+                       false);  
+    int getOldSkyDarken(float a);  
+    float getSkyDarken(float a);   
     Vec3 getSkyColor(std::shared_ptr<Entity> source, float a);
     float getTimeOfDay(float a);
     int getMoonPhase();
@@ -392,8 +392,8 @@ public:
     Vec3 getFogColor(float a);
     int getTopRainBlock(int x, int z);
     int getTopSolidBlock(int x, int z);
-    bool biomeHasRain(int x, int z);  // 4J added
-    bool biomeHasSnow(int x, int z);  // 4J added
+    bool biomeHasRain(int x, int z);  
+    bool biomeHasSnow(int x, int z);  
     int getLightDepth(int x, int z);
     float getStarBrightness(float a);
     virtual void addToTickNextTick(int x, int y, int z, int tileId,
@@ -411,14 +411,14 @@ public:
     bool isUnobstructed(AABB* aabb, std::shared_ptr<Entity> ignore);
     bool containsAnyBlocks(AABB* box);
     bool containsAnyLiquid(AABB* box);
-    bool containsAnyLiquid_NoLoad(AABB* box);  // 4J added
+    bool containsAnyLiquid_NoLoad(AABB* box);  
     bool containsFireTile(AABB* box);
     bool checkAndHandleWater(AABB* box, Material* material,
                              std::shared_ptr<Entity> e);
     bool containsMaterial(AABB* box, Material* material);
     bool containsLiquid(AABB* box, Material* material);
-    // 4J Stu - destroyBlocks param brought forward as part of fix for tnt
-    // cannons
+    
+    
     std::shared_ptr<Explosion> explode(std::shared_ptr<Entity> source, double x,
                                        double y, double z, float r,
                                        bool destroyBlocks);
@@ -442,7 +442,7 @@ public:
                                           bool valueIfNotLoaded);
     bool isFullAABBTile(int x, int y, int z);
     virtual bool isTopSolidBlocking(int x, int y,
-                                    int z);  // 4J - brought forward from 1.3.2
+                                    int z);  
     bool isTopSolidBlocking(Tile* tile, int data);
 
 protected:
@@ -450,7 +450,7 @@ protected:
     bool spawnFriendlies;
 
 public:
-    // int xxo, yyo, zzo;
+    
 
     void updateSkyBrightness();
     void setSpawnSettings(bool spawnEnemies, bool spawnFriendlies);
@@ -483,7 +483,7 @@ protected:
     virtual void tickClientSideTiles(int xo, int zo, LevelChunk* lc);
     virtual void tickTiles();
 
-    // 4J - snow & ice checks brought forward from 1.2.3
+    
 public:
     bool shouldFreezeIgnoreNeighbors(int x, int y, int z);
     bool shouldFreeze(int x, int y, int z);
@@ -491,7 +491,7 @@ public:
     bool shouldSnow(int x, int y, int z);
     void checkLight(int x, int y, int z, bool force = false,
                     bool rootOnlyEmissive =
-                        false);  // 4J added force, rootOnlySource parameters
+                        false);  
 private:
     int* toCheckLevel;
     int getExpectedLight(lightCache_t* cache, int x, int y, int z,
@@ -501,7 +501,7 @@ public:
     void checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                     bool force = false,
                     bool rootOnlyEmissive =
-                        false);  // 4J added force, rootOnlySource parameters
+                        false);  
 
 public:
     virtual bool tickPendingTicks(bool force);
@@ -511,10 +511,10 @@ public:
 public:
     bool isClientSide;
 
-    // Fills the caller-owned `out` (cleared first) with the entities whose
-    // bounding boxes intersect bb. Caller ownership makes nested queries safe:
-    // an inner getEntities can never invalidate an outer caller's iteration
-    // (the old shared scratch buffer caused exactly that).
+    
+    
+    
+    
     void getEntities(std::shared_ptr<Entity> except, AABB* bb,
                      std::vector<std::shared_ptr<Entity> >& out);
     void getEntities(std::shared_ptr<Entity> except, AABB* bb,
@@ -531,14 +531,14 @@ public:
     virtual std::shared_ptr<Entity> getEntity(int entityId) = 0;
     std::vector<std::shared_ptr<Entity> > getAllEntities();
     void tileEntityChanged(int x, int y, int z, std::shared_ptr<TileEntity> te);
-    //	unsigned int countInstanceOf(BaseObject::Class *clas);
+    
     unsigned int countInstanceOf(
         eINSTANCEOF clas, bool singleType,
         unsigned int* protectedCount = nullptr,
-        unsigned int* couldWanderCount = nullptr);  // 4J added
+        unsigned int* couldWanderCount = nullptr);  
     unsigned int countInstanceOfInRange(eINSTANCEOF clas, bool singleType,
                                         int range, int x, int y,
-                                        int z);  // 4J Added
+                                        int z);  
     void addEntities(std::vector<std::shared_ptr<Entity> >* list);
     virtual void removeEntities(std::vector<std::shared_ptr<Entity> >* list);
     bool mayPlace(int tileId, int x, int y, int z, bool ignoreEntities,
@@ -557,7 +557,7 @@ public:
     int getSignal(int x, int y, int z, int dir);
     bool hasNeighborSignal(int x, int y, int z);
     int getBestNeighborSignal(int x, int y, int z);
-    // 4J Added maxYDist param
+    
     std::shared_ptr<Player> getNearestPlayer(std::shared_ptr<Entity> source,
                                              double maxDist,
                                              double maxYDist = -1);
@@ -574,7 +574,7 @@ public:
 
     std::shared_ptr<Player> getPlayerByName(const std::wstring& name);
     std::shared_ptr<Player> getPlayerByUUID(
-        const std::wstring& name);  // 4J Added
+        const std::wstring& name);  
     std::vector<uint8_t> getBlocksAndData(int x, int y, int z, int xs, int ys,
                                           int zs, bool includeLighting = true);
     void setBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
@@ -600,9 +600,9 @@ public:
     LevelData* getLevelData();
     GameRules* getGameRules();
     virtual void updateSleepingPlayerList();
-    bool useNewSeaLevel();         // 4J added
-    bool getHasBeenInCreative();   // 4J Added
-    bool isGenerateMapFeatures();  // 4J Added
+    bool useNewSeaLevel();         
+    bool getHasBeenInCreative();   
+    bool isGenerateMapFeatures();  
     int getSaveVersion();
     int getOriginalSaveVersion();
     float getThunderLevel(float a);
@@ -629,7 +629,7 @@ public:
     virtual bool isAllEmpty();
     double getHorizonHeight();
     void destroyTileProgress(int id, int x, int y, int z, int progress);
-    //  Calendar *getCalendar(); // 4J - Calendar is now static
+    
     virtual void createFireworks(double x, double y, double z, double xd,
                                  double yd, double zd, CompoundTag* infoTag);
     virtual Scoreboard* getScoreboard();
@@ -640,39 +640,39 @@ public:
     TilePos* findNearestMapFeature(const std::wstring& featureName, int x,
                                    int y, int z);
 
-    // 4J Added
+    
     int getAuxValueForMap(PlayerUID xuid, int dimension, int centreXC,
                           int centreZC, int scale);
 
-    // 4J - optimisation - keep direct reference of underlying cache here
+    
     LevelChunk** chunkSourceCache;
     int chunkSourceXZSize;
 
-    // 4J - added for implementation of finite limit to number of item entities,
-    // tnt and falling block entities
+    
+    
 public:
     virtual bool newPrimedTntAllowed() { return true; }
     virtual bool newFallingTileAllowed() { return true; }
 
-    // 4J - added for new lighting from 1.8.2
+    
     std::recursive_mutex m_checkLightCS;
 
 private:
-    int m_iHighestY;  // 4J-PB - for the end portal in The End
+    int m_iHighestY;  
 public:
     int GetHighestY() { return m_iHighestY; }
     void SetHighestY(int iVal) { m_iHighestY = iVal; }
 
-    bool isChunkFinalised(int x, int z);          // 4J added
-    bool isChunkPostPostProcessed(int x, int z);  // 4J added
+    bool isChunkFinalised(int x, int z);          
+    bool isChunkPostPostProcessed(int x, int z);  
 
 private:
     int m_unsavedChunkCount;
 
 public:
     int getUnsavedChunkCount();
-    void incrementUnsavedChunkCount();  // 4J Added
-    void decrementUnsavedChunkCount();  // 4J Added
+    void incrementUnsavedChunkCount();  
+    void decrementUnsavedChunkCount();  
 
     enum ESPAWN_TYPE {
         eSpawnType_Egg,

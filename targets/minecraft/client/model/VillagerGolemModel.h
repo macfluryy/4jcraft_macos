@@ -8,15 +8,15 @@ class VillagerGolemModel : public Model {
 public:
     ModelPart *head, *body, *arm0, *arm1, *leg0, *leg1;
 
-    // VillagerGolemModel()
-    //{
-    //	this(0);
-    // }
+    
+    
+    
+    
 
-    // VillagerGolemModel(float g)
-    //{
-    //	this(g, -7);
-    // }
+    
+    
+    
+    
 
     VillagerGolemModel(float g = 0.0f, float yOffset = -7.0f);
 

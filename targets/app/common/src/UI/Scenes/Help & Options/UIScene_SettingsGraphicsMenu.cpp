@@ -19,7 +19,7 @@ UIScene_SettingsGraphicsMenu::UIScene_SettingsGraphicsMenu(int iPad,
                                                            void* initData,
                                                            UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_bNotInGame = (Minecraft::GetInstance()->level == nullptr);
@@ -52,21 +52,21 @@ UIScene_SettingsGraphicsMenu::UIScene_SettingsGraphicsMenu(int iPad,
 
     bool bInGame = (Minecraft::GetInstance()->level != nullptr);
     bool bIsPrimaryPad = (ProfileManager.GetPrimaryPad() == m_iPad);
-    // if we're not in the game, we need to use basescene 0
+    
     if (bInGame) {
-        // If the game has started, then you need to be the host to change the
-        // in-game gamertags
+        
+        
         if (bIsPrimaryPad) {
-            // we are the primary player on this machine, but not the game host
-            // are we the game host? If not, we need to remove the bedrockfog
-            // setting
+            
+            
+            
             if (!g_NetworkManager.IsHost()) {
-                // hide the in-game bedrock fog setting
+                
                 removeControl(&m_checkboxBedrockFog, true);
             }
         } else {
-            // We shouldn't have the bedrock fog option, or the m_CustomSkinAnim
-            // option
+            
+            
             removeControl(&m_checkboxBedrockFog, true);
             removeControl(&m_checkboxCustomSkinAnim, true);
         }
@@ -115,7 +115,7 @@ void UIScene_SettingsGraphicsMenu::handleInput(int iPad, int key, bool repeat,
     switch (key) {
         case ACTION_MENU_CANCEL:
             if (pressed) {
-                // check the checkboxes
+                
                 app.SetGameSettings(m_iPad, eGameSetting_Clouds,
                                     m_checkboxClouds.IsChecked() ? 1 : 0);
                 app.SetGameSettings(m_iPad, eGameSetting_BedrockFog,

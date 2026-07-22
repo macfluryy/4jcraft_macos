@@ -32,7 +32,7 @@ public:
 
 private:
     Random* random;
-    Random* pprandom;  // 4J added
+    Random* pprandom;  
 
     PerlinNoise* lperlinNoise1;
     PerlinNoise* lperlinNoise2;
@@ -65,7 +65,7 @@ private:
 public:
     LevelChunk* create(int x, int z);
     LevelChunk* getChunk(int xOffs, int zOffs);
-    virtual void lightChunk(LevelChunk* lc);  // 4J added
+    virtual void lightChunk(LevelChunk* lc);  
 
 private:
     std::vector<double> getHeights(std::vector<double>& buffer, int x, int y,

@@ -19,7 +19,7 @@ class UILayer;
 class UIScene_ControlsMenu : public UIScene {
 private:
     enum EControl {
-        // Buttons must be first three controls here
+        
         eControl_Button0,
         eControl_Button1,
         eControl_Button2,
@@ -127,11 +127,11 @@ public:
     virtual void tick();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

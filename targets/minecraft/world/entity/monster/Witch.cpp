@@ -47,8 +47,8 @@ const int Witch::DEATH_LOOT[Witch::DEATH_LOOT_COUNT] = {
 };
 
 Witch::Witch(Level* level) : Monster(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -75,15 +75,15 @@ void Witch::defineSynchedData() {
 }
 
 int Witch::getAmbientSound() {
-    return eSoundType_MOB_WITCH_IDLE;  //"mob.witch.idle";
+    return eSoundType_MOB_WITCH_IDLE;  
 }
 
 int Witch::getHurtSound() {
-    return eSoundType_MOB_WITCH_HURT;  //"mob.witch.hurt";
+    return eSoundType_MOB_WITCH_HURT;  
 }
 
 int Witch::getDeathSound() {
-    return eSoundType_MOB_WITCH_DEATH;  //"mob.witch.death";
+    return eSoundType_MOB_WITCH_DEATH;  
 }
 
 void Witch::setUsingItem(bool isUsing) {

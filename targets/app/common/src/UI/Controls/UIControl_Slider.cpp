@@ -25,7 +25,7 @@ bool UIControl_Slider::setupControl(UIScene* scene, IggyValuePath* parent,
     UIControl::setControlType(UIControl::eSlider);
     bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-    // Slider specific initialisers
+    
     m_funcSetRelativeSliderPos = registerFastName(L"SetRelativeSliderPos");
     m_funcGetRealWidth = registerFastName(L"GetRealWidth");
 

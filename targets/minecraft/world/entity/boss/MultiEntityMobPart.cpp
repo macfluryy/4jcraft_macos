@@ -7,8 +7,8 @@ MultiEntityMobPart::MultiEntityMobPart(
     std::shared_ptr<MultiEntityMob> parentMob, const std::wstring& id, float w,
     float h)
     : Entity(parentMob->getLevel()), parentMob(parentMob), id(id) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     setSize(w, h);

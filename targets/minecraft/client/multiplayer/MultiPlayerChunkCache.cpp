@@ -21,8 +21,8 @@
 #include "minecraft/world/level/tile/Tile.h"
 
 MultiPlayerChunkCache::MultiPlayerChunkCache(Level* level) {
-    XZSIZE = level->dimension->getXZSize();  // 4J Added
-    XZOFFSET = XZSIZE / 2;                   // 4J Added
+    XZSIZE = level->dimension->getXZSize();  
+    XZOFFSET = XZSIZE / 2;                   
     m_XZSize = XZSIZE;
     hasData = new bool[XZSIZE * XZSIZE];
     memset(hasData, 0, sizeof(bool) * XZSIZE * XZSIZE);
@@ -30,12 +30,12 @@ MultiPlayerChunkCache::MultiPlayerChunkCache(Level* level) {
     std::vector<uint8_t> emptyBlocks(16 * 16 * Level::maxBuildHeight);
     emptyChunk = new EmptyLevelChunk(level, emptyBlocks, 0, 0);
 
-    // For normal world dimension, create a chunk that can be used to create the
-    // illusion of infinite water at the edge of the world
+    
+    
     if (level->dimension->id == 0) {
         std::vector<uint8_t> bytes = std::vector<uint8_t>(16 * 16 * 128);
 
-        // Superflat.... make grass, not water...
+        
         if (level->getLevelData()->getGenerator() == LevelType::lvl_flat) {
             for (int x = 0; x < 16; x++)
                 for (int y = 0; y < 128; y++)
@@ -110,17 +110,17 @@ MultiPlayerChunkCache::~MultiPlayerChunkCache() {
 }
 
 bool MultiPlayerChunkCache::hasChunk(int x, int z) {
-    // This cache always claims to have chunks, although it might actually just
-    // return empty data if it doesn't have anything
+    
+    
     return true;
 }
 
-// 4J  added - find out if we actually really do have a chunk in our cache
+
 bool MultiPlayerChunkCache::reallyHasChunk(int x, int z) {
     int ix = x + XZOFFSET;
     int iz = z + XZOFFSET;
-    // Check we're in range of the stored level - if we aren't, then consider
-    // that we do have that chunk as we'll be able to use the water chunk there
+    
+    
     if ((ix < 0) || (ix >= XZSIZE)) return true;
     if ((iz < 0) || (iz >= XZSIZE)) return true;
     int idx = ix * XZSIZE + iz;
@@ -133,19 +133,19 @@ bool MultiPlayerChunkCache::reallyHasChunk(int x, int z) {
 }
 
 void MultiPlayerChunkCache::drop(int x, int z) {
-    // 4J Stu - We do want to drop any entities in the chunks, especially for
-    // the case when a player is dead as they will not get the RemoveEntity
-    // packet if an entity is removed.
+    
+    
+    
     LevelChunk* chunk = getChunk(x, z);
     if (!chunk->isEmpty()) {
-        // Added parameter here specifies that we don't want to delete tile
-        // entities, as they won't get recreated unless they've got update
-        // packets The tile entities are in general only created on the client
-        // by virtue of the chunk rebuild
+        
+        
+        
+        
         chunk->unload(false);
 
-        // 4J - We just want to clear out the entities in the chunk, but
-        // everything else should be valid
+        
+        
         chunk->loaded = true;
     }
 }
@@ -153,7 +153,7 @@ void MultiPlayerChunkCache::drop(int x, int z) {
 LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
     int ix = x + XZOFFSET;
     int iz = z + XZOFFSET;
-    // Check we're in range of the stored level
+    
     if ((ix < 0) || (ix >= XZSIZE))
         return (waterChunk ? waterChunk : emptyChunk);
     if ((iz < 0) || (iz >= XZSIZE))
@@ -166,17 +166,17 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
         {
             std::unique_lock<std::mutex> lock(m_csLoadCreate);
 
-            // LevelChunk *chunk;
+            
             if (g_NetworkManager
-                    .IsHost())  // force here to disable sharing of data
+                    .IsHost())  
             {
-                // 4J-JEV: We are about to use shared data, abort if the server
-                // is stopped and the data is deleted.
+                
+                
                 if (MinecraftServer::getInstance()->serverHalted())
                     return nullptr;
 
-                // If we're the host, then don't create the chunk, share data
-                // from the server's copy
+                
+                
 #ifdef _LARGE_WORLDS
                 LevelChunk* serverChunk =
                     MinecraftServer::getInstance()
@@ -188,23 +188,23 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
                                               ->cache->getChunk(x, z);
 #endif
                 chunk = new LevelChunk(level, x, z, serverChunk);
-                // Let renderer know that this chunk has been created - it might
-                // have made render data from the EmptyChunk if it got to a
-                // chunk before the server sent it
+                
+                
+                
                 level->setTilesDirty(x * 16, 0, z * 16, x * 16 + 15, 127,
                                      z * 16 + 15);
                 hasData[idx] = true;
             } else {
-                // Passing an empty array into the LevelChunk ctor, which it now
-                // detects and sets up the chunk as compressed & empty
+                
+                
                 std::vector<uint8_t> bytes;
 
                 chunk = new LevelChunk(level, bytes, x, z);
 
-                // 4J - changed to use new methods for lighting
+                
                 chunk->setSkyLightDataAllBright();
-                //			Arrays::fill(chunk->skyLight->data,
-                //(byte) 255);
+                
+                
             }
 
             chunk->loaded = true;
@@ -218,24 +218,24 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
         if (InterlockedCompareExchangeRelease(
                 (int32_t*)&cache[idx], (int32_t)chunk, (int32_t)lastChunk) ==
             (int32_t)lastChunk)
-#endif  // 0
+#endif  
         {
-            // If we're sharing with the server, we'll need to calculate our
-            // heightmap now, which isn't shared. If we aren't sharing with the
-            // server, then this will be calculated when the chunk data arrives.
+            
+            
+            
             if (g_NetworkManager.IsHost()) {
                 chunk->recalcHeightmapOnly();
             }
 
-            // Successfully updated the cache
+            
             {
                 std::lock_guard<std::mutex> lock(m_csLoadCreate);
                 loadedChunkList.push_back(chunk);
             }
         } else {
-            // Something else must have updated the cache. Return that chunk and
-            // discard this one. This really shouldn't be happening in
-            // multiplayer
+            
+            
+            
             delete chunk;
             return cache[idx];
         }
@@ -250,7 +250,7 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
 LevelChunk* MultiPlayerChunkCache::getChunk(int x, int z) {
     int ix = x + XZOFFSET;
     int iz = z + XZOFFSET;
-    // Check we're in range of the stored level
+    
     if ((ix < 0) || (ix >= XZSIZE))
         return (waterChunk ? waterChunk : emptyChunk);
     if ((iz < 0) || (iz >= XZSIZE))
@@ -301,7 +301,7 @@ std::wstring MultiPlayerChunkCache::gatherStats() {
 void MultiPlayerChunkCache::dataReceived(int x, int z) {
     int ix = x + XZOFFSET;
     int iz = z + XZOFFSET;
-    // Check we're in range of the stored level
+    
     if ((ix < 0) || (ix >= XZSIZE)) return;
     if ((iz < 0) || (iz >= XZSIZE)) return;
     int idx = ix * XZSIZE + iz;

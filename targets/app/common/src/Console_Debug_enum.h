@@ -3,7 +3,7 @@
 enum eDebugSetting {
     eDebugSetting_LoadSavesFromDisk,
     eDebugSetting_WriteSavesToDisk,
-    eDebugSetting_FreezePlayers,  // eDebugSetting_InterfaceOff,
+    eDebugSetting_FreezePlayers,  
     eDebugSetting_Safearea,
     eDebugSetting_MobsDontAttack,
     eDebugSetting_FreezeTime,
@@ -11,18 +11,18 @@ enum eDebugSetting {
     eDebugSetting_CraftAnything,
     eDebugSetting_UseDpadForDebug,
     eDebugSetting_MobsDontTick,
-    eDebugSetting_ArtTools,  // eDebugSetting_InstantDestroy,
+    eDebugSetting_ArtTools,  
     eDebugSetting_ShowUIConsole,
     eDebugSetting_DistributableSave,
     eDebugSetting_DebugLeaderboards,
-    eDebugSetting_EnableHeightWaterOverride,  // eDebugSetting_TipsAlwaysOn,
+    eDebugSetting_EnableHeightWaterOverride,  
     eDebugSetting_SuperflatNether,
-    // eDebugSetting_LightDarkBackground,
+    
     eDebugSetting_RegularLightning,
-    eDebugSetting_EnableBiomeOverride,  // eDebugSetting_GoToNether,
-    // eDebugSetting_GoToEnd,
+    eDebugSetting_EnableBiomeOverride,  
+    
     eDebugSetting_GoToOverworld,
-    eDebugSetting_UnlockAllDLC,  // eDebugSetting_ToggleFont,
+    eDebugSetting_UnlockAllDLC,  
     eDebugSetting_ShowUIMarketingGuide,
     eDebugSetting_Max,
 };

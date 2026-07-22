@@ -14,8 +14,8 @@ public:
     static const int IMAGE_WIDTH = 128;
     static const int IMAGE_HEIGHT = 128;
 
-public:  // 4J Stu - Was protected in Java, but then we can't access it where we
-         // need it
+public:  
+         
     MapItem(int id);
 
     static std::shared_ptr<MapItemSavedData> getSavedData(short idNum,

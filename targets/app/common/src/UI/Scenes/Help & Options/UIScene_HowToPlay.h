@@ -59,9 +59,9 @@ public:
     };
 
     struct SHowToPlayPageDef {
-        int m_iTextStringID;     // -1 if not used.
-        int m_iLabelStartIndex;  // index of the labels if there are any for the
-                                 // page
+        int m_iTextStringID;     
+        int m_iLabelStartIndex;  
+                                 
         int m_iLabelCount;
     };
 
@@ -139,13 +139,13 @@ public:
     virtual void updateTooltips();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
     virtual void handleReload();
 
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

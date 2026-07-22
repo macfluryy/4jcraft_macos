@@ -29,7 +29,7 @@ public:
 
 private:
     Random* random;
-    Random* pprandom;  // 4J - added
+    Random* pprandom;  
 
     PerlinNoise* lperlinNoise1;
     PerlinNoise* lperlinNoise2;
@@ -44,18 +44,18 @@ private:
     PerlinNoise* floatingIslandScale;
     PerlinNoise* floatingIslandNoise;
 
-    // 4J macOS - Phase 2 continental noise. Very low frequency (~660
-    // block period) Perlin sample used in amplified mode to bias the
-    // density field toward connected land masses. Without it the noise
-    // sampler produces lots of small isolated pillars; with it, terrain
-    // reads as "connected mountain range" instead of "scattered cliffs".
+    
+    
+    
+    
+    
     PerlinNoise* continentNoise;
 
-    // 4J macOS - Phase 3 mountain mask. Mid-frequency Perlin used as a
-    // ridge-fold mask to push neighbouring chunks of biomeScale up
-    // along the same line, producing TerraForged-style mountain chains
-    // instead of isolated peaks. Only sampled in amplified mode and
-    // only used where biomeDepth > 0 (so oceans aren't affected).
+    
+    
+    
+    
+    
     PerlinNoise* mountainMaskNoise;
 
 public:
@@ -106,7 +106,7 @@ private:
 
 public:
     virtual LevelChunk* getChunk(int xOffs, int zOffs);
-    virtual void lightChunk(LevelChunk* lc);  // 4J added
+    virtual void lightChunk(LevelChunk* lc);  
 
 private:
     std::vector<double> getHeights(std::vector<double>& buffer, int x, int y,

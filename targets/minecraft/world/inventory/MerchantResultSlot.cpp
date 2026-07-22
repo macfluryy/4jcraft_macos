@@ -58,7 +58,7 @@ void MerchantResultSlot::onTake(std::shared_ptr<Player> player,
         std::shared_ptr<ItemInstance> item2 =
             slots->getItem(MerchantMenu::PAYMENT2_SLOT);
 
-        // remove payment items, but remember slots may have switched
+        
         if (removePaymentItemsIfMatching(activeRecipe, item1, item2) ||
             removePaymentItemsIfMatching(activeRecipe, item2, item1)) {
             merchant->notifyTrade(activeRecipe);

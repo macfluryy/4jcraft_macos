@@ -32,15 +32,15 @@ class Level;
 class Player;
 class Pos;
 
-// 4J macOS - Was 250 ms which throttles a single chunk packet per remote
-// client every quarter-second. That meant a freshly-joined remote
-// direct-connect player only loaded ~4 chunks/sec, and at viewDistance
-// 16 it would take ~5 minutes for the full visible area to populate -
-// hence the user-visible bug "host sees the world, the client only
-// streams in chunks as you walk towards them". 25 ms is the floor we
-// can use without hammering local TCP loopback in split-screen-on-LAN
-// scenarios; the per-tick gating (countDelayedPackets, send-queue size)
-// still backs us off when the network is genuinely saturated.
+
+
+
+
+
+
+
+
+
 #define MINECRAFT_SERVER_SLOW_QUEUE_DELAY 25
 
 typedef struct _LoadSaveDataThreadParam {
@@ -76,24 +76,24 @@ typedef struct _NetworkGameInitData {
     }
 } NetworkGameInitData;
 
-// 4J Stu - 1.0.1 updates the server to implement the ServerInterface class, but
-// I don't think we will use any of the functions that defines so not
-// implementing here
+
+
+
 class MinecraftServer : public ConsoleInputSource {
 public:
     static const std::wstring VERSION;
     static const int TICK_STATS_SPAN = SharedConstants::TICKS_PER_SECOND * 5;
 
-    //    static Logger logger = Logger.getLogger("Minecraft");
+    
     static std::unordered_map<std::wstring, int> ironTimers;
 
 private:
     static const int DEFAULT_MINECRAFT_PORT = 25565;
     static const int MS_PER_TICK = 1000 / SharedConstants::TICKS_PER_SECOND;
 
-    // 4J Stu - Added 1.0.1, Not needed
-    // std::wstring localIp;
-    // int port;
+    
+    
+    
 public:
     ServerConnection* connection;
     Settings* settings;
@@ -102,9 +102,9 @@ public:
 private:
     PlayerList* players;
 
-    // 4J Stu - Added 1.0.1, Not needed
-    // long[] tickTimes = new long[TICK_STATS_SPAN];
-    // long[][] levelTickTimes;
+    
+    
+    
 private:
     ConsoleCommands* commands;
     bool running;
@@ -114,7 +114,7 @@ public:
     bool stopped;
     int tickCount;
 
-    // 4J Added - tick timing for /tps
+    
     static const int TPS_SAMPLE_COUNT = 100;
     int64_t m_tickTimesNs[TPS_SAMPLE_COUNT] = {0};
     int m_tickTimesIndex = 0;
@@ -125,11 +125,11 @@ public:
     int progress;
 
 private:
-    //	std::vector<Tickable *> tickables = new ArrayList<Tickable>();	// 4J -
-    // removed
+    
+    
     CommandDispatcher* commandDispatcher;
     std::vector<ConsoleInput*>
-        consoleInput;  // 4J - was synchronizedList - TODO - investigate
+        consoleInput;  
 public:
     bool onlineMode;
     bool animals;
@@ -142,17 +142,17 @@ public:
     bool forceGameType;
 
 private:
-    // 4J Added
-    // int m_lastSentDifficulty;
+    
+    
 
 public:
-    // 4J Stu - This value should be incremented every time the list of players
-    // with friends-only UGC settings changes It is sent with PreLoginPacket and
-    // compared when it comes back in the LoginPacket
+    
+    
+    
     std::uint32_t m_ugcPlayersVersion;
 
-    // This value is used to store the texture pack id for the currently loaded
-    // world
+    
+    
     std::uint32_t m_texturePackId;
 
 public:
@@ -160,7 +160,7 @@ public:
     ~MinecraftServer();
 
 private:
-    // 4J Added - LoadSaveDataThreadParam
+    
     bool initServer(int64_t seed, NetworkGameInitData* initData,
                     std::uint32_t initSettings, bool findSeed);
     void postProcessTerminate(ProgressRenderer* mcprogress);
@@ -222,7 +222,7 @@ public:
     void handleConsoleInput(const std::wstring& msg,
                             ConsoleInputSource* source);
     void handleConsoleInputs();
-    //    void addTickable(Tickable tickable);	// 4J removed
+    
     static void main(int64_t seed, void* lpParameter);
     static void HaltServer(bool bPrimaryPlayerSignedOut = false);
 
@@ -231,8 +231,8 @@ public:
     void warn(const std::wstring& string);
     std::wstring getConsoleName();
     ServerLevel* getLevel(int dimension);
-    void setLevel(int dimension, ServerLevel* level);         // 4J added
-    static MinecraftServer* getInstance() { return server; }  // 4J added
+    void setLevel(int dimension, ServerLevel* level);         
+    static MinecraftServer* getInstance() { return server; }  
     static bool serverHalted() { return s_bServerHalted; }
     static bool saveOnExitAnswered() { return s_bSaveOnExitAnswered; }
     static void resetFlags() {
@@ -240,9 +240,9 @@ public:
         s_bSaveOnExitAnswered = false;
     }
 
-    bool flagEntitiesToBeRemoved(unsigned int* flags);  // 4J added
+    bool flagEntitiesToBeRemoved(unsigned int* flags);  
 private:
-    // 4J Added
+    
     static MinecraftServer* server;
 
     static bool setTimeOfDayAtEndOfTick;
@@ -251,17 +251,17 @@ private:
     static int64_t setTime;
 
     static bool
-        m_bPrimaryPlayerSignedOut;  // 4J-PB added to tell the stopserver not to
-                                    // save the game - another player may have
-                                    // signed in in their place, so
-                                    // ProfileManager.IsSignedIn isn't enough
-    static bool s_bServerHalted;  // 4J Stu Added so that we can halt the server
-                                  // even before it's been created properly
-    static bool s_bSaveOnExitAnswered;  // 4J Stu Added so that we only ask this
-                                        // question once when we exit
+        m_bPrimaryPlayerSignedOut;  
+                                    
+                                    
+                                    
+    static bool s_bServerHalted;  
+                                  
+    static bool s_bSaveOnExitAnswered;  
+                                        
 
-    // 4J - added so that we can have a separate thread for post processing
-    // chunks on level creation
+    
+    
     static int runPostUpdate(void* lpParam);
     C4JThread* m_postUpdateThread;
     bool m_postUpdateTerminate;
@@ -297,11 +297,11 @@ public:
     C4JThread::Event* m_serverPausedEvent;
 
 private:
-    // 4J Added
+    
     bool m_isServerPaused;
 
-    // 4J Added - A static that stores the QNet index of the player that is next
-    // allowed to send a packet in the slow queue
+    
+    
 #if defined(_ACK_CHUNK_SEND_THROTTLING)
     static bool s_hasSentEnoughPackets;
     static int64_t s_tickStartTime;
@@ -316,7 +316,7 @@ private:
     bool IsServerPaused() { return m_isServerPaused; }
 
 private:
-    // 4J Added
+    
     bool m_saveOnExit;
     bool m_suspending;
 
@@ -335,16 +335,16 @@ public:
         s_bSaveOnExitAnswered = true;
     }
 
-    // 4J macOS - graceful shutdown save. Performs an immediate
-    // synchronous flush of all connected players + the overworld level
-    // to disk. Called from atexit / SIGTERM handlers when the player
-    // closes the game without going through the in-game Save & Exit
-    // UI (Cmd+Q, force-quit, kill from Activity Monitor, etc).
-    // Safe to call multiple times - internally guarded by the caller.
+    
+    
+    
+    
+    
+    
     void forceShutdownSave();
     void Suspend();
     bool IsSuspending();
 
-    // 4J Stu - A load of functions were all added in 1.0.1 in the
-    // ServerInterface, but I don't think we need any of them
+    
+    
 };

@@ -13,7 +13,7 @@ public:
         : Tag(name) {
         this->data = data;
         m_ownData = ownData;
-    }  // 4J - added ownData param
+    }  
     ~ByteArrayTag() {}
 
     void write(DataOutput* dos) {

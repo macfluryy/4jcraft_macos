@@ -37,7 +37,7 @@ bool TakeFlowerGoal::canUse() {
         return false;
     }
 
-    // for (Entity e : golems)
+    
     for (auto it = golems->begin(); it != golems->end(); ++it) {
         std::shared_ptr<VillagerGolem> vg =
             std::dynamic_pointer_cast<VillagerGolem>(*it);

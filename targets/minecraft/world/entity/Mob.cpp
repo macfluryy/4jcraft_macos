@@ -83,8 +83,8 @@ void Mob::_init() {
 Mob::Mob(Level* level) : LivingEntity(level) {
     _init();
 
-    // 4J Stu - We call this again in the derived classes, but need to do it
-    // here for some internal members
+    
+    
     registerAttributes();
 
     lookControl = new LookControl(this);
@@ -138,7 +138,7 @@ bool Mob::canAttackType(eINSTANCEOF targetType) {
     return !(targetType == eTYPE_CREEPER || targetType == eTYPE_GHAST);
 }
 
-// Called by eatTileGoal
+
 void Mob::ate() {}
 
 void Mob::defineSynchedData() {
@@ -250,15 +250,15 @@ void Mob::addAdditonalSaveData(CompoundTag* entityTag) {
     entityTag->putString(L"CustomName", getCustomName());
     entityTag->putBoolean(L"CustomNameVisible", isCustomNameVisible());
 
-    // leash info
+    
     entityTag->putBoolean(L"Leashed", _isLeashed);
     if (leashHolder != nullptr) {
         CompoundTag* leashTag = new CompoundTag(L"Leash");
         if (leashHolder->instanceof(eTYPE_LIVINGENTITY)) {
-            // a walking, talking, leash holder
+            
             leashTag->putString(L"UUID", leashHolder->getUUID());
         } else if (leashHolder->instanceof(eTYPE_HANGING_ENTITY)) {
-            // a fixed holder (that doesn't save itself)
+            
             std::shared_ptr<HangingEntity> hangInThere =
                 std::dynamic_pointer_cast<HangingEntity>(leashHolder);
             leashTag->putInt(L"X", hangInThere->xTile);
@@ -439,10 +439,10 @@ void Mob::newServerAiStep() {
 
     jumpControl->tick();
 
-    // Consider this for extra strolling if it is protected against despawning.
-    // We aren't interested in ones that aren't protected as the whole point of
-    // this extra wandering is to potentially transition from protected to not
-    // protected.
+    
+    
+    
+    
     considerForExtraWandering(isDespawnProtected());
 }
 
@@ -525,7 +525,7 @@ float Mob::rotlerp(float a, float b, float max) {
 }
 
 bool Mob::canSpawn() {
-    // 4J - altered to use special containsAnyLiquid variant
+    
     return level->isUnobstructed(&bb) &&
            level->getCubes(shared_from_this(), &bb)->empty() &&
            !level->containsAnyLiquid_NoLoad(&bb);
@@ -682,22 +682,22 @@ void Mob::populateDefaultEquipmentEnchantments() {
     }
 }
 
-/**
- * Added this method so mobs can handle their own spawn settings instead of
- * hacking MobSpawner.java
- *
- * @param groupData
- *            TODO
- * @return TODO
- */
+
+
+
+
+
+
+
+
 MobGroupData* Mob::finalizeMobSpawn(
-    MobGroupData* groupData, int extraData /*= 0*/)  // 4J Added extraData param
+    MobGroupData* groupData, int extraData )  
 {
-    // 4J Stu - Take this out, it's not great and nobody will notice. Also not
-    // great for performance.
-    // getAttribute(SharedMonsterAttributes::FOLLOW_RANGE)->addModifier(new
-    // AttributeModifier(random->nextGaussian() * 0.05,
-    // AttributeModifier::OPERATION_MULTIPLY_BASE));
+    
+    
+    
+    
+    
 
     return groupData;
 }
@@ -754,18 +754,18 @@ bool Mob::interact(std::shared_ptr<Player> player) {
 
     std::shared_ptr<ItemInstance> itemstack = player->inventory->getSelected();
     if (itemstack != nullptr) {
-        // it's inconvenient to have the leash code here, but it's because
-        // the mob.interact(player) method has priority over
-        // item.interact(mob)
+        
+        
+        
         if (itemstack->id == Item::lead_Id) {
             if (canBeLeashed()) {
                 std::shared_ptr<TamableAnimal> tamableAnimal = nullptr;
                 if (shared_from_this()->instanceof(eTYPE_TAMABLE_ANIMAL) &&
                     (tamableAnimal = std::dynamic_pointer_cast<TamableAnimal>(
                          shared_from_this()))
-                        ->isTame())  // 4J-JEV: excuse the assignment operator
-                                     // in here, don't want to dyn-cast if it's
-                                     // avoidable.
+                        ->isTame())  
+                                     
+                                     
                 {
                     if (player->getUUID().compare(
                             tamableAnimal->getOwnerUUID()) == 0) {
@@ -845,7 +845,7 @@ void Mob::setLeashedTo(std::shared_ptr<Entity> holder, bool synch) {
 }
 
 void Mob::restoreLeashFromSave() {
-    // after being added to the world, attempt to recreate leash bond
+    
     if (_isLeashed && leashInfoTag != nullptr) {
         if (leashInfoTag->contains(L"UUID")) {
             std::wstring leashUuid = leashInfoTag->getString(L"UUID");
@@ -884,9 +884,9 @@ void Mob::restoreLeashFromSave() {
     leashInfoTag = nullptr;
 }
 
-// 4J added so we can not render mobs before their chunks are loaded - to
-// resolve bug 10327 :Gameplay: NPCs can spawn over chunks that have not yet
-// been streamed and display jitter.
+
+
+
 bool Mob::shouldRender(Vec3* c) {
     if (!level->reallyHasChunksAt(Mth::floor(bb.x0), Mth::floor(bb.y0),
                                   Mth::floor(bb.z0), Mth::floor(bb.x1),

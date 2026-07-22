@@ -17,7 +17,7 @@ public:
     eINSTANCEOF GetType() { return eTYPE_COMMANDBLOCKTILEENTITY; }
     static TileEntity* create() { return new CommandBlockEntity(); }
 
-    // 4J Added
+    
     virtual std::shared_ptr<TileEntity> clone();
 
 private:
@@ -38,8 +38,8 @@ public:
         ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom,
         int customData = -1, const std::wstring& additionalMessage = L"");
     virtual bool hasPermission(EGameCommand command);
-    // void sendMessage(ChatMessageComponent *message);
-    // bool hasPermission(int permissionLevel, const std::wstring &commandName);
+    
+    
     void save(CompoundTag* tag);
     void load(CompoundTag* tag);
     Pos* getCommandSenderWorldPosition();

@@ -13,8 +13,8 @@ class UIComponent_PressStartToPlay;
 class UILayer;
 class UIScene;
 
-// A group contains a collection of layers for a specific context (e.g. each
-// player has 1 group)
+
+
 class UIGroup {
 private:
     UILayer* m_layers[eUILayer_COUNT];
@@ -35,7 +35,7 @@ private:
     bool m_bIgnoreAutosaveMenuDisplayed;
     bool m_bIgnorePlayerJoinMenuDisplayed;
 
-    // Countdown in ticks to update focus state
+    
     int m_updateFocusStateCountdown;
 
     int m_commandBufferList;
@@ -58,7 +58,7 @@ public:
     bool hidesLowerScenes();
     void getRenderDimensions(S32& width, S32& height);
 
-    // NAVIGATION
+    
     bool NavigateToScene(int iPad, EUIScene scene, void* initData,
                          EUILayer layer);
     bool NavigateBack(int iPad, EUIScene eScene,
@@ -82,17 +82,17 @@ public:
         return m_bIgnorePlayerJoinMenuDisplayed;
     }
 
-    // INPUT
+    
     void handleInput(int iPad, int key, bool repeat, bool pressed,
                      bool released, bool& handled);
 
-    // FOCUS
+    
     bool getFocusState();
 
-    // A component is an element on a layer that displays BELOW other scenes in
-    // this layer, but does not engage in any navigation E.g. you can keep a
-    // component active while performing navigation with other scenes on this
-    // layer
+    
+    
+    
+    
     void showComponent(int iPad, EUIScene scene, EUILayer layer, bool show);
     UIScene* addComponent(int iPad, EUIScene scene, EUILayer layer);
     void removeComponent(EUIScene scene, EUILayer layer);

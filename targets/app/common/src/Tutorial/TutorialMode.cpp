@@ -61,15 +61,15 @@ void TutorialMode::tick() {
 
     if (!tutorial->m_allTutorialsComplete) tutorial->tick();
 
-    /*
-    if( tutorial.m_allTutorialsComplete && (tutorial.lastMessageTime +
-    m_iTutorialDisplayMessageTime) < time_util::tick_count32() )
-    {
-            // Exit tutorial
-            minecraft->gameMode = new SurvivalMode( this );
-            delete this;
-    }
-    */
+    
+
+
+
+
+
+
+
+
 }
 
 bool TutorialMode::useItemOn(std::shared_ptr<Player> player, Level* level,

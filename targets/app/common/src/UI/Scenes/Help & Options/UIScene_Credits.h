@@ -36,8 +36,8 @@ private:
 
     static SCreditTextItemDef gs_aCreditDefs[MAX_CREDIT_STRINGS];
 
-    int m_iCurrDefIndex;  // Index of last created text def.
-    int m_iNumTextDefs;   // Total number of text defs in the credits.
+    int m_iCurrDefIndex;  
+    int m_iNumTextDefs;   
 
     bool m_bAddNextLabel;
 
@@ -59,11 +59,11 @@ public:
     virtual void tick();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

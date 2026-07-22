@@ -25,8 +25,8 @@ UpdateAttributesPacket::UpdateAttributesPacket(
 }
 
 UpdateAttributesPacket::~UpdateAttributesPacket() {
-    // Delete modifiers - these are always copies, either on construction or on
-    // read
+    
+    
     for (auto it = attributes.begin(); it != attributes.end(); ++it) {
         delete (*it);
     }
@@ -48,13 +48,13 @@ void UpdateAttributesPacket::read(DataInputStream* dis) {
             double amount = dis->readDouble();
             uint8_t operation = dis->readByte();
             modifiers.insert(new AttributeModifier(
-                id, /*L"Unknown synced attribute modifier",*/ amount,
+                id,  amount,
                 operation));
         }
 
         attributes.insert(new AttributeSnapshot(id, base, &modifiers));
 
-        // modifiers is copied in AttributeSnapshot ctor so delete contents
+        
         for (auto it = modifiers.begin(); it != modifiers.end(); ++it) {
             delete *it;
         }

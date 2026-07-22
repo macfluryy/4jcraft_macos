@@ -23,7 +23,7 @@ private:
     bool m_teleportToPlayer;
     int m_playersCount;
     std::uint8_t
-        m_players[MINECRAFT_NET_MAX_PLAYERS];  // An array of QNet small-id's
+        m_players[MINECRAFT_NET_MAX_PLAYERS];  
     char m_playersVoiceState[MINECRAFT_NET_MAX_PLAYERS];
     short m_playersColourState[MINECRAFT_NET_MAX_PLAYERS];
     std::wstring m_playerNames[MINECRAFT_NET_MAX_PLAYERS];
@@ -45,11 +45,11 @@ public:
     virtual void tick();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

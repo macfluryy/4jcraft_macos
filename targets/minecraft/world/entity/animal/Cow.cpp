@@ -26,8 +26,8 @@
 #include "minecraft/world/level/Level.h"
 
 Cow::Cow(Level* level) : Animal(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -69,12 +69,12 @@ float Cow::getSoundVolume() { return 0.4f; }
 int Cow::getDeathLoot() { return Item::leather->id; }
 
 void Cow::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
-    // drop some leather
+    
     int count = random->nextInt(3) + random->nextInt(1 + playerBonusLevel);
     for (int i = 0; i < count; i++) {
         spawnAtLocation(Item::leather_Id, 1);
     }
-    // and some meat
+    
     count = random->nextInt(3) + 1 + random->nextInt(1 + playerBonusLevel);
     for (int i = 0; i < count; i++) {
         if (isOnFire()) {
@@ -110,7 +110,7 @@ bool Cow::mobInteract(std::shared_ptr<Player> player) {
 
 std::shared_ptr<AgableMob> Cow::getBreedOffspring(
     std::shared_ptr<AgableMob> target) {
-    // 4J - added limit to number of animals that can be bred
+    
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
         return std::make_shared<Cow>(level);
     } else {

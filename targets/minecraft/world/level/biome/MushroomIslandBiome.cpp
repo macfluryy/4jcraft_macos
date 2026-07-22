@@ -21,10 +21,10 @@ MushroomIslandBiome::MushroomIslandBiome(int id) : Biome(id) {
 
     enemies.clear();
     friendlies.clear();
-    friendlies_chicken.clear();  // 4J added
-    friendlies_wolf.clear();     // 4J added
+    friendlies_chicken.clear();  
+    friendlies_wolf.clear();     
     waterFriendlies.clear();
 
     friendlies_mushroomcow.push_back(new MobSpawnerData(
-        eTYPE_MUSHROOMCOW, 8, 4, 8));  // 4J moved to own category
+        eTYPE_MUSHROOMCOW, 8, 4, 8));  
 }

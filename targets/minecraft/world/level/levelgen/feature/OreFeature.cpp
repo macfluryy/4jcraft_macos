@@ -40,8 +40,8 @@ bool OreFeature::place(Level* level, Random* random, int x, int y, int z) {
     if (app.getLevelGenerationOptions() != nullptr) {
         levelGenOptions = app.getLevelGenerationOptions();
 
-        // 4J Stu - Optimise schematic intersection checks by first checking the
-        // max possible bounding box of this place call
+        
+        
         int minX = x0 - 1;
         int minY = y0 - 1;
         int minZ = z0 - 1;
@@ -69,10 +69,10 @@ bool OreFeature::place(Level* level, Random* random, int x, int y, int z) {
 
         double ss = random->nextDouble() * count / 16;
         double r = (Mth::sin(d * std::numbers::pi / count) + 1) * ss + 1;
-        double hr = r;  //(Mth::sin(d * std::numbers::pi / count) + 1) * ss + 1;
+        double hr = r;  
 
         double halfR = r / 2;
-        double halfHR = halfR;  // hr/2;
+        double halfHR = halfR;  
 
         int xt0 = Mth::floor(xx - halfR);
         int yt0 = Mth::floor(yy - halfHR);
@@ -82,22 +82,22 @@ bool OreFeature::place(Level* level, Random* random, int x, int y, int z) {
         int yt1 = Mth::floor(yy + halfHR);
         int zt1 = Mth::floor(zz + halfR);
 
-        // 4J Stu Added to stop ore features generating areas previously place
-        // by game rule generation
+        
+        
         if (collisionsExpected && levelGenOptions != nullptr) {
             bool intersects =
                 levelGenOptions->checkIntersects(xt0, yt0, zt0, xt1, yt1, zt1);
             if (intersects) {
-                // app.DebugPrintf("Skipping ore feature generation as it
-                // overlaps a game rule structure\n");
+                
+                
                 continue;
             }
         }
 
-        // A large % of ore placement is entirely into the air. Attempt to
-        // identify some of these early, by check the corners of the area we are
-        // placing in to see if we are going to (very probably) be entirely
-        // above the height stored in the heightmap
+        
+        
+        
+        
 
         if (doEarlyRejectTest) {
             bool earlyReject = true;

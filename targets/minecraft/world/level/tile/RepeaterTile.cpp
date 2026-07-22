@@ -69,7 +69,7 @@ void RepeaterTile::animateTick(Level* level, int xt, int yt, int zt,
     double zo = 0;
 
     if (random->nextInt(2) == 0) {
-        // spawn on receiver
+        
         switch (dir) {
             case Direction::SOUTH:
                 zo = -5.0f / 16.0f;
@@ -85,7 +85,7 @@ void RepeaterTile::animateTick(Level* level, int xt, int yt, int zt,
                 break;
         }
     } else {
-        // spawn on transmitter
+        
         int delay = (data & DELAY_MASK) >> DELAY_SHIFT;
         switch (dir) {
             case Direction::SOUTH:

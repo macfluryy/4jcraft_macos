@@ -26,40 +26,40 @@
 #include "nbt/CompoundTag.h"
 #include "nbt/IntArrayTag.h"
 
-/**
- *
- * A structure piece is a construction or room, located somewhere in the world
- * with a given orientatino (out of Direction.java). Structure pieces have a
- * bounding box that says where the piece is located and its bounds, and the
- * orientation is used to translate local coordinates into world coordinates.
- * <p>
- * The default orientation is Direction.UNDEFINED, in which case no translation
- * will occur. If the orientation is Direction::NORTH, coordinate (0, 0, 0) will
- * be at (boundingBox.x0, boundingBox.y0, boundingBox.z1). In other words, (1,
- * 1, 1) will be translated to (boundingBox.x0 + 1, boundingBox.y0 + 1,
- * boundingBox.z1 - 1).
- * <p>
- * When using Direction::SOUTH, the x coordinate will be the same, and the z
- * coordinate will be flipped. In other words, the bounding box is NOT rotated!
- * It is only flipped along the z axis. Also note that the bounding box is in
- * world coordinates, so the local drawing must never reach outside of this.
- * <p>
- * When using east and west coordinates, the local z coordinate will be swapped
- * with the local x coordinate. For example, (0, 0, 0) is (boundingBox.z1,
- * boundingBox.y0, boundingBox.z0), and (1, 1, 1) becomes (boundingBox.x1 - 1,
- * boundingBox.y0 + 1, boundingBox.z0 + 1) when using Direction::WEST.
- * <p>
- * When-ever a structure piece is placing blocks, it is VERY IMPORTANT to always
- * make sure that all getTile and setTile calls are within the chunk's bounding
- * box. Failing to check this will cause the level generator to create new
- * chunks, leading to infinite loops and other errors.
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 StructurePiece::StructurePiece() {
     boundingBox = nullptr;
     orientation = 0;
     genDepth = 0;
-    // for reflection
+    
 }
 
 StructurePiece::StructurePiece(int genDepth) {
@@ -122,7 +122,7 @@ StructurePiece* StructurePiece::findCollisionPiece(
     return nullptr;
 }
 
-// 4J-PB - Added from 1.2.3
+
 TilePos* StructurePiece::getLocatorPosition() {
     return new TilePos(boundingBox->getXCenter(), boundingBox->getYCenter(),
                        boundingBox->getZCenter());
@@ -136,7 +136,7 @@ bool StructurePiece::edgesLiquid(Level* level, BoundingBox* chunkBB) {
     int y1 = Math::_min(boundingBox->y1 + 1, chunkBB->y1);
     int z1 = Math::_min(boundingBox->z1 + 1, chunkBB->z1);
 
-    // roof and floor
+    
     for (int x = x0; x <= x1; x++) {
         for (int z = z0; z <= z1; z++) {
             int tile = level->getTile(x, y0, z);
@@ -149,7 +149,7 @@ bool StructurePiece::edgesLiquid(Level* level, BoundingBox* chunkBB) {
             }
         }
     }
-    // north and south
+    
     for (int x = x0; x <= x1; x++) {
         for (int y = y0; y <= y1; y++) {
             int tile = level->getTile(x, y, z0);
@@ -162,7 +162,7 @@ bool StructurePiece::edgesLiquid(Level* level, BoundingBox* chunkBB) {
             }
         }
     }
-    // east and west
+    
     for (int z = z0; z <= z1; z++) {
         for (int y = y0; y <= y1; y++) {
             int tile = level->getTile(x0, y, z);
@@ -231,16 +231,16 @@ int StructurePiece::getOrientationData(int tile, int data) {
                 return 0;
             }
         } else if (orientation == Direction::WEST) {
-            // 0 = 1
-            // 1 = 2
-            // 2 = 3
-            // 3 = 0
+            
+            
+            
+            
             return (data + 1) & 3;
         } else if (orientation == Direction::EAST) {
-            // 0 = 3
-            // 1 = 0
-            // 2 = 1
-            // 3 = 2
+            
+            
+            
+            
             return (data + 3) & 3;
         }
     } else if (tile == Tile::stairs_stone_Id || tile == Tile::stairs_wood_Id ||
@@ -434,26 +434,26 @@ void StructurePiece::placeBlock(Level* level, int block, int data, int x, int y,
         return;
     }
 
-    // 4J Stu - We shouldn't be removing bedrock when generating things (eg in
-    // SuperFlat)
+    
+    
     if (worldY == 0) return;
 
     level->setTileAndData(worldX, worldY, worldZ, block, data,
                           Tile::UPDATE_CLIENTS);
 }
 
-/**
- * The purpose of this method is to wrap the getTile call on Level, in order
- * to prevent the level from generating chunks that shouldn't be loaded yet.
- * Returns 0 if the call is out of bounds.
- *
- * @param level
- * @param x
- * @param y
- * @param z
- * @param chunkPosition
- * @return
- */
+
+
+
+
+
+
+
+
+
+
+
+
 int StructurePiece::getBlock(Level* level, int x, int y, int z,
                              BoundingBox* chunkBB) {
     int worldX = getWorldX(x, z);

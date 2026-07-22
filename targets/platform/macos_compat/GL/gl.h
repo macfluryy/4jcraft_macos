@@ -7,12 +7,12 @@
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
 
-/* Wrap modes */
+
 #ifndef GL_CLAMP
 #define GL_CLAMP                       0x2900
 #endif
 
-/* Pixel formats */
+
 #ifndef GL_BGR
 #define GL_BGR                         0x80E0
 #endif
@@ -32,7 +32,7 @@
 #define GL_INTENSITY                   0x8049
 #endif
 
-/* Sized internal formats */
+
 #ifndef GL_RGBA8
 #define GL_RGBA8                       0x8058
 #endif
@@ -64,7 +64,7 @@
 #define GL_INTENSITY4                  0x804F
 #endif
 
-/* S3TC / DXT compressed formats */
+
 #ifndef GL_COMPRESSED_RGBA_S3TC_DXT1_EXT
 #define GL_COMPRESSED_RGBA_S3TC_DXT1_EXT  0x83F1
 #endif
@@ -78,12 +78,12 @@
 #define GL_COMPRESSED_RGB_S3TC_DXT1_EXT   0x83F0
 #endif
 
-/* Legacy blending / logic ops */
+
 #ifndef GL_LOGIC_OP
 #define GL_LOGIC_OP                    0x0BF1
 #endif
 
-/* Legacy polygon/line hints */
+
 #ifndef GL_POLYGON_SMOOTH
 #define GL_POLYGON_SMOOTH              0x0B41
 #endif
@@ -92,7 +92,7 @@
 #endif
 #ifndef PFNGLGENBUFFERSARBPROC
 
-/* Buffer objects (GL_ARB_vertex_buffer_object) */
+
 typedef PFNGLGENBUFFERSPROC                        PFNGLGENBUFFERSARBPROC;
 typedef PFNGLDELETEBUFFERSPROC                     PFNGLDELETEBUFFERSARBPROC;
 typedef PFNGLBINDBUFFERPROC                        PFNGLBINDBUFFERARBPROC;
@@ -100,14 +100,14 @@ typedef PFNGLBUFFERDATAPROC                        PFNGLBUFFERDATAARBPROC;
 typedef PFNGLMAPBUFFERPROC                         PFNGLMAPBUFFERARBPROC;
 typedef PFNGLUNMAPBUFFERPROC                       PFNGLUNMAPBUFFERARBPROC;
 
-/* Vertex attribs (GL_ARB_vertex_shader) */
+
 typedef PFNGLVERTEXATTRIBPOINTERPROC               PFNGLVERTEXATTRIBPOINTERARBPROC;
 typedef PFNGLENABLEVERTEXATTRIBARRAYPROC            PFNGLENABLEVERTEXATTRIBARRAYARBPROC;
 typedef PFNGLDISABLEVERTEXATTRIBARRAYPROC           PFNGLDISABLEVERTEXATTRIBARRAYARBPROC;
 typedef PFNGLBINDATTRIBLOCATIONPROC                PFNGLBINDATTRIBLOCATIONARBPROC;
 typedef PFNGLGETATTRIBLOCATIONPROC                 PFNGLGETATTRIBLOCATIONARBPROC;
 
-/* Shader objects (GL_ARB_shader_objects) */
+
 typedef PFNGLCREATESHADERPROC                      PFNGLCREATESHADEROBJECTARBPROC;
 typedef PFNGLSHADERSOURCEPROC                      PFNGLSHADERSOURCEARBPROC;
 typedef PFNGLCOMPILESHADERPROC                     PFNGLCOMPILESHADERARBPROC;
@@ -122,7 +122,7 @@ typedef PFNGLGETPROGRAMIVPROC                      PFNGLGETPROGRAMIVARBPROC;
 typedef PFNGLGETPROGRAMINFOLOGPROC                 PFNGLGETPROGRAMINFOLOGARBPROC;
 typedef PFNGLGETUNIFORMLOCATIONPROC                PFNGLGETUNIFORMLOCATIONARBPROC;
 
-/* Uniforms */
+
 typedef PFNGLUNIFORM1IPROC                         PFNGLUNIFORM1IARBPROC;
 typedef PFNGLUNIFORM1FPROC                         PFNGLUNIFORM1FARBPROC;
 typedef PFNGLUNIFORM2FPROC                         PFNGLUNIFORM2FARBPROC;
@@ -131,12 +131,12 @@ typedef PFNGLUNIFORM4FPROC                         PFNGLUNIFORM4FARBPROC;
 typedef PFNGLUNIFORM4FVPROC                        PFNGLUNIFORM4FVARBPROC;
 typedef PFNGLUNIFORMMATRIX4FVPROC                  PFNGLUNIFORMMATRIX4FVARBPROC;
 
-/* Vertex arrays */
+
 typedef PFNGLGENVERTEXARRAYSPROC                   PFNGLGENVERTEXARRAYSARBPROC;
 typedef PFNGLBINDVERTEXARRAYPROC                   PFNGLBINDVERTEXARRAYARBPROC;
 typedef PFNGLDELETEVERTEXARRAYSPROC                PFNGLDELETEVERTEXARRAYSARBPROC;
 
-/* Framebuffer objects (GL_EXT_framebuffer_object) */
+
 typedef PFNGLGENFRAMEBUFFERSPROC                   PFNGLGENFRAMEBUFFERSEXTPROC;
 typedef PFNGLBINDFRAMEBUFFERPROC                   PFNGLBINDFRAMEBUFFEREXTPROC;
 typedef PFNGLDELETEFRAMEBUFFERSPROC                PFNGLDELETEFRAMEBUFFERSEXTPROC;
@@ -144,23 +144,23 @@ typedef PFNGLCHECKFRAMEBUFFERSTATUSPROC            PFNGLCHECKFRAMEBUFFERSTATUSEX
 typedef PFNGLFRAMEBUFFERTEXTURE2DPROC              PFNGLFRAMEBUFFERTEXTURE2DEXTPROC;
 typedef PFNGLFRAMEBUFFERRENDERBUFFERPROC           PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC;
 
-/* Renderbuffer objects */
+
 typedef PFNGLGENRENDERBUFFERSPROC                  PFNGLGENRENDERBUFFERSEXTPROC;
 typedef PFNGLBINDRENDERBUFFERPROC                  PFNGLBINDRENDERBUFFEREXTPROC;
 typedef PFNGLDELETERENDERBUFFERSPROC               PFNGLDELETERENDERBUFFERSEXTPROC;
 typedef PFNGLRENDERBUFFERSTORAGEPROC               PFNGLRENDERBUFFERSTORAGEEXTPROC;
 typedef PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC    PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC;
 
-/* Blit / mipmap */
+
 typedef PFNGLBLITFRAMEBUFFERPROC                   PFNGLBLITFRAMEBUFFEREXTPROC;
 typedef PFNGLGENERATEMIPMAPPROC                    PFNGLGENERATEMIPMAPEXTPROC;
 
-/* Multi-texture (GL_ARB_multitexture) */
+
 typedef PFNGLACTIVETEXTUREPROC                     PFNGLACTIVETEXTUREARBPROC;
-/* glMultiTexCoord2f removed from Core Profile - provide pointer type only */
+
 typedef void (*PFNGLMULTITEXCOORD2FARBPROC)(GLenum target, GLfloat s, GLfloat t);
 
-/* Occlusion queries (GL_ARB_occlusion_query) */
+
 typedef PFNGLGENQUERIESPROC                        PFNGLGENQUERIESARBPROC;
 typedef PFNGLDELETEQUERIESPROC                     PFNGLDELETEQUERIESARBPROC;
 typedef PFNGLBEGINQUERYPROC                        PFNGLBEGINQUERYARBPROC;
@@ -168,13 +168,13 @@ typedef PFNGLENDQUERYPROC                          PFNGLENDQUERYARBPROC;
 typedef PFNGLGETQUERYOBJECTUIVPROC                 PFNGLGETQUERYOBJECTUIVARBPROC;
 typedef PFNGLGETQUERYOBJECTIVPROC                  PFNGLGETQUERYOBJECTIVARBPROC;
 
-/* GetStringi - needed for extension enumeration in Core Profile */
+
 typedef const GLubyte* (APIENTRYP PFNGLGETSTRINGIPROC_)(GLenum name, GLuint index);
 
-#endif /* PFNGLGENBUFFERSARBPROC */
+#endif 
 #ifdef GDRAW_ASSERTS
 
-/* Buffer objects */
+
 #define glGenBuffers                      _sys_glGenBuffers
 #define glDeleteBuffers                   _sys_glDeleteBuffers
 #define glBindBuffer                      _sys_glBindBuffer
@@ -182,14 +182,14 @@ typedef const GLubyte* (APIENTRYP PFNGLGETSTRINGIPROC_)(GLenum name, GLuint inde
 #define glMapBuffer                       _sys_glMapBuffer
 #define glUnmapBuffer                     _sys_glUnmapBuffer
 
-/* Vertex attribs */
+
 #define glVertexAttribPointer             _sys_glVertexAttribPointer
 #define glEnableVertexAttribArray         _sys_glEnableVertexAttribArray
 #define glDisableVertexAttribArray        _sys_glDisableVertexAttribArray
 #define glBindAttribLocation              _sys_glBindAttribLocation
 #define glGetAttribLocation               _sys_glGetAttribLocation
 
-/* Shaders */
+
 #define glCreateShader                    _sys_glCreateShader
 #define glDeleteShader                    _sys_glDeleteShader
 #define glShaderSource                    _sys_glShaderSource
@@ -197,7 +197,7 @@ typedef const GLubyte* (APIENTRYP PFNGLGETSTRINGIPROC_)(GLenum name, GLuint inde
 #define glGetShaderiv                     _sys_glGetShaderiv
 #define glGetShaderInfoLog                _sys_glGetShaderInfoLog
 
-/* Programs */
+
 #define glCreateProgram                   _sys_glCreateProgram
 #define glDeleteProgram                   _sys_glDeleteProgram
 #define glAttachShader                    _sys_glAttachShader
@@ -207,7 +207,7 @@ typedef const GLubyte* (APIENTRYP PFNGLGETSTRINGIPROC_)(GLenum name, GLuint inde
 #define glGetProgramInfoLog               _sys_glGetProgramInfoLog
 #define glGetUniformLocation              _sys_glGetUniformLocation
 
-/* Uniforms */
+
 #define glUniform1i                       _sys_glUniform1i
 #define glUniform1f                       _sys_glUniform1f
 #define glUniform2f                       _sys_glUniform2f
@@ -216,12 +216,12 @@ typedef const GLubyte* (APIENTRYP PFNGLGETSTRINGIPROC_)(GLenum name, GLuint inde
 #define glUniform4fv                      _sys_glUniform4fv
 #define glUniformMatrix4fv                _sys_glUniformMatrix4fv
 
-/* Vertex arrays */
+
 #define glGenVertexArrays                 _sys_glGenVertexArrays
 #define glBindVertexArray                 _sys_glBindVertexArray
 #define glDeleteVertexArrays              _sys_glDeleteVertexArrays
 
-/* Framebuffers */
+
 #define glGenFramebuffers                 _sys_glGenFramebuffers
 #define glDeleteFramebuffers              _sys_glDeleteFramebuffers
 #define glBindFramebuffer                 _sys_glBindFramebuffer
@@ -229,19 +229,19 @@ typedef const GLubyte* (APIENTRYP PFNGLGETSTRINGIPROC_)(GLenum name, GLuint inde
 #define glFramebufferTexture2D            _sys_glFramebufferTexture2D
 #define glFramebufferRenderbuffer         _sys_glFramebufferRenderbuffer
 
-/* Renderbuffers */
+
 #define glGenRenderbuffers                _sys_glGenRenderbuffers
 #define glDeleteRenderbuffers             _sys_glDeleteRenderbuffers
 #define glBindRenderbuffer                _sys_glBindRenderbuffer
 #define glRenderbufferStorage             _sys_glRenderbufferStorage
 #define glRenderbufferStorageMultisample  _sys_glRenderbufferStorageMultisample
 
-/* Blit / mipmap */
+
 #define glGenerateMipmap                  _sys_glGenerateMipmap
 #define glBlitFramebuffer                 _sys_glBlitFramebuffer
 #define glDrawElements                    _sys_glDrawElements
 
-/* Queries */
+
 #define glGenQueries                      _sys_glGenQueries
 #define glDeleteQueries                   _sys_glDeleteQueries
 #define glBeginQuery                      _sys_glBeginQuery
@@ -249,4 +249,4 @@ typedef const GLubyte* (APIENTRYP PFNGLGETSTRINGIPROC_)(GLenum name, GLuint inde
 #define glGetQueryObjectuiv               _sys_glGetQueryObjectuiv
 #define glGetQueryObjectiv                _sys_glGetQueryObjectiv
 
-#endif /* GDRAW_ASSERTS */
+#endif 

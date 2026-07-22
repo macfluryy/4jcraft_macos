@@ -3,13 +3,13 @@
 #include "platform/PlatformTypes.h"
 #include "LeaderboardManager.h"
 
-// 4J-JEV: Simple interface for handling ReadStat failures.
+
 class LeaderboardInterface {
 private:
     IPlatformLeaderboard* m_manager;
     bool m_pending;
 
-    // Arguments.
+    
     IPlatformLeaderboard::EFilterMode m_filter;
     LeaderboardReadListener* m_callback;
     int m_difficulty;

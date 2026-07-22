@@ -35,7 +35,7 @@ IUIScene_AnvilMenu::GetSectionAndSlotInDirection(ESceneSection eSection,
     ESceneSection newSection = eSection;
     int xOffset = 0;
 
-    // Find the new section if there is one
+    
     switch (eSection) {
         case eSectionAnvilItem1:
             if (eTapDirection == eTapStateUp) {
@@ -179,7 +179,7 @@ void IUIScene_AnvilMenu::handleTick() {
             m_costString = app.GetString(IDS_REPAIR_EXPENSIVE);
             canAfford = false;
         } else if (!m_repairMenu->getSlot(AnvilMenu::RESULT_SLOT)->hasItem()) {
-            // Do nothing
+            
         } else {
             const wchar_t* costString = app.GetString(IDS_REPAIR_COST);
             wchar_t temp[256];
@@ -212,7 +212,7 @@ void IUIScene_AnvilMenu::updateItemName() {
 
     m_repairMenu->setItemName(m_itemName);
 
-    // Convert to std::vector<uint8_t>
+    
     ByteArrayOutputStream baos;
     DataOutputStream dos(&baos);
     dos.writeUTF(m_itemName);

@@ -34,7 +34,7 @@ float* TheEndDimension::getSunriseColor(float td, float a) { return nullptr; }
 
 Vec3 TheEndDimension::getFogColor(float td, float a) const {
     int fogColor = Minecraft::GetInstance()->getColourTable()->getColor(
-        eMinecraftColour_End_Fog_Colour);  // 0xa080a0;
+        eMinecraftColour_End_Fog_Colour);  
     float br = cosf(td * std::numbers::pi * 2) * 2 + 0.5f;
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;

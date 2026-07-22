@@ -51,10 +51,10 @@ bool EnderEyeItem::useOn(std::shared_ptr<ItemInstance> instance,
             level->addParticle(eParticleType_smoke, xp, yp, zp, xa, ya, za);
         }
 
-        // scan if the circle is complete
+        
         int direction = targetData & 3;
 
-        // find borders
+        
         int min = 0;
         int max = 0;
         bool firstFound = false;
@@ -79,9 +79,9 @@ bool EnderEyeItem::useOn(std::shared_ptr<ItemInstance> instance,
             }
         }
 
-        // got a full frame?
+        
         if (valid && max == min + 2) {
-            // check if other edge is valid
+            
             for (int offset = min; offset <= max; offset++) {
                 int testX = x + Direction::STEP_X[rightHandDirection] * offset;
                 int testZ = z + Direction::STEP_Z[rightHandDirection] * offset;
@@ -96,7 +96,7 @@ bool EnderEyeItem::useOn(std::shared_ptr<ItemInstance> instance,
                     break;
                 }
             }
-            // check if edges on the sides are valid
+            
             for (int side = (min - 1); side <= (max + 1); side += 4) {
                 for (int offset = 1; offset <= 3; offset++) {
                     int testX =
@@ -116,7 +116,7 @@ bool EnderEyeItem::useOn(std::shared_ptr<ItemInstance> instance,
                 }
             }
             if (valid) {
-                // fill portal
+                
                 for (int px = min; px <= max; px++) {
                     for (int pz = 1; pz <= 3; pz++) {
                         int targetX =
@@ -152,41 +152,41 @@ bool EnderEyeItem::TestUse(std::shared_ptr<ItemInstance> itemInstance,
         delete hr;
     }
 
-    // if (!level->isClientSide)
+    
     {
         if ((level->dimension->id == LevelData::DIMENSION_OVERWORLD) &&
             level->getLevelData()->getHasStronghold()) {
             return true;
         } else {
-            // 			int x,z;
-            // 			if(app.GetTerrainFeaturePosition(eTerrainFeature_Stronghold,&x,&z))
-            // 			{
-            // 				level->getLevelData()->setXStronghold(x);
-            // 				level->getLevelData()->setZStronghold(z);
-            // 				level->getLevelData()->setHasStronghold();
-            //
-            // 				app.DebugPrintf("=== FOUND stronghold in
-            // terrain features list\n");
-            //
-            // 				app.SetXuiServerAction(PlatformInput.GetPrimaryPad(),eXuiServerAction_StrongholdPosition);
-            // 			}
-            // 			else
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             {
-                // can't find the stronghold position in the terrain feature
-                // list. Do we have to run a post-process?
+                
+                
                 app.DebugPrintf(
                     "=== Can't find stronghold in terrain features list\n");
             }
         }
-        // 		TilePos *nearestMapFeature =
-        // level->findNearestMapFeature(LargeFeature::STRONGHOLD, (int)
-        // player->x, (int) player->y, (int) player->z); 		if
-        // (nearestMapFeature
-        // != nullptr)
-        // 		{
-        // 			delete nearestMapFeature;
-        // 			return true;
-        // 		}
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
     return false;
 }

@@ -31,7 +31,7 @@ void MobSpawnerTile::spawnResources(Level* level, int x, int y, int z, int data,
                                     float odds, int playerBonusLevel) {
     Tile::spawnResources(level, x, y, z, data, odds, playerBonusLevel);
 
-    // also spawn experience if the block is broken
+    
     {
         int magicCount =
             15 + level->random->nextInt(15) + level->random->nextInt(15);

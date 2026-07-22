@@ -130,7 +130,7 @@ bool ButtonTile::checkCanSurvive(Level* level, int x, int y, int z) {
 void ButtonTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     int data = level->getData(x, y, z);
     updateShape(data);
@@ -159,19 +159,19 @@ void ButtonTile::updateShape(int data) {
 
 void ButtonTile::attack(Level* level, int x, int y, int z,
                         std::shared_ptr<Player> player) {
-    // use(level, x, y, z, player, 0, 0, 0, 0);
+    
 }
 
-// 4J-PB - Adding a TestUse for tooltip display
+
 bool ButtonTile::TestUse() { return true; }
 
 bool ButtonTile::use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
-                     bool soundOnly /*=false*/)  // 4J added soundOnly param
+                     bool soundOnly )  
 {
     if (soundOnly) {
-        // 4J - added - just do enough to play the sound
+        
         level->playSound(x + 0.5, y + 0.5, z + 0.5, eSoundType_RANDOM_CLICK,
                          0.3f, 0.6f);
         return false;
@@ -325,5 +325,5 @@ bool ButtonTile::shouldTileTick(Level* level, int x, int y, int z) {
 }
 
 void ButtonTile::registerIcons(IconRegister* iconRegister) {
-    // None
+    
 }

@@ -12,7 +12,7 @@ Vec3 RandomPos::tempDir = Vec3(0, 0, 0);
 
 std::optional<Vec3> RandomPos::getPos(
     std::shared_ptr<PathfinderMob> mob, int xzDist, int yDist,
-    int quadrant /*=-1*/)  // 4J - added quadrant
+    int quadrant )  
 {
     return generateRandomPos(mob, xzDist, yDist, nullptr, quadrant);
 }
@@ -37,14 +37,14 @@ std::optional<Vec3> RandomPos::getPosAvoid(std::shared_ptr<PathfinderMob> mob,
 
 std::optional<Vec3> RandomPos::generateRandomPos(
     std::shared_ptr<PathfinderMob> mob, int xzDist, int yDist, Vec3* dir,
-    int quadrant /*=-1*/)  // 4J - added quadrant
+    int quadrant )  
 {
     Random* random = mob->getRandom();
     bool hasBest = false;
     int xBest = 0, yBest = 0, zBest = 0;
     float best = -99999;
 
-    // 4J Stu - restrict is a reserved keyword
+    
     bool bRestrict;
     if (mob->hasRestriction()) {
         double restDist =
@@ -58,9 +58,9 @@ std::optional<Vec3> RandomPos::generateRandomPos(
 
     for (int i = 0; i < 10; i++) {
         int xt, yt, zt;
-        // 4J - added quadrant here so that we can choose to select positions
-        // only within the one quadrant. Passing a parameter of -1 will lead to
-        // normal java behaviour
+        
+        
+        
         if (quadrant == -1) {
             xt = random->nextInt(2 * xzDist) - xzDist;
             zt = random->nextInt(2 * xzDist) - xzDist;

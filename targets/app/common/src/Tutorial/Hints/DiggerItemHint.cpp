@@ -36,7 +36,7 @@ int DiggerItemHint::startDestroyBlock(std::shared_ptr<ItemInstance> item,
         if (itemFound) {
             float speed = item->getDestroySpeed(tile);
             if (speed == 1) {
-                // Display hint
+                
                 return m_descriptionId;
             }
         }
@@ -55,8 +55,8 @@ int DiggerItemHint::attack(std::shared_ptr<ItemInstance> item,
             }
         }
         if (itemFound) {
-            // It's also possible that we could hit TileEntities (eg falling
-            // sand) so don't want to give this hint then
+            
+            
             if (entity->instanceof(eTYPE_MOB)) {
                 return IDS_TUTORIAL_HINT_ATTACK_WITH_TOOL;
             } else {

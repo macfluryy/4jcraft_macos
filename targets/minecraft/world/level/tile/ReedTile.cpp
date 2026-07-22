@@ -13,7 +13,7 @@ ReedTile::ReedTile(int id) : Tile(id, Material::plant, false) {
     this->setTicking(true);
 }
 
-// 4J Added override
+
 void ReedTile::updateDefaultShape() {
     float ss = 6 / 16.0f;
     this->setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, 1, 0.5f + ss);
@@ -47,7 +47,7 @@ bool ReedTile::mayPlace(Level* level, int x, int y, int z) {
     if (level->getMaterial(x + 1, y - 1, z) == Material::water) return true;
     if (level->getMaterial(x, y - 1, z - 1) == Material::water) return true;
     if (level->getMaterial(x, y - 1, z + 1) == Material::water) return true;
-    // printf("no water\n");
+    
     return false;
 }
 

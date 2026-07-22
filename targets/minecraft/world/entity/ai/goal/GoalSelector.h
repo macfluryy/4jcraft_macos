@@ -9,7 +9,7 @@ class GoalSelector {
 private:
     class InternalGoal {
     public:
-        // 4J Added canDelete param
+        
         InternalGoal(int prio, Goal* goal, bool canDeletePointer);
 
         Goal* goal;
@@ -27,7 +27,7 @@ public:
     GoalSelector();
     ~GoalSelector();
 
-    // 4J Added canDelete param
+    
     void addGoal(int prio, Goal* goal, bool canDeletePointer = true);
     void removeGoal(Goal* toRemove);
     void tick();
@@ -41,7 +41,7 @@ private:
 public:
     void setNewGoalRate(int newGoalRate);
 
-    // 4J Added override to update ai elements when loading entity from
-    // schematics
+    
+    
     void setLevel(Level* level);
 };

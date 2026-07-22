@@ -19,8 +19,8 @@ PanicGoal::PanicGoal(PathfinderMob* mob, double speedModifier) {
 bool PanicGoal::canUse() {
     if (mob->getLastHurtByMob() == nullptr && !mob->isOnFire()) return false;
 
-    // 4jcraft: stop entities from being eternally scared (referenced from
-    // smartcmd/MinecraftConsoles #519)
+    
+    
     const int hurtTimeout = mob->getLastHurtByMobTimestamp();
     static thread_local Random random;
     const int panicDuration = random.nextInt(41) + 60;

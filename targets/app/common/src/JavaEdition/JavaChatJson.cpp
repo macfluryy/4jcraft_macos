@@ -1,4 +1,6 @@
 #include "app/common/src/JavaEdition/JavaChatJson.h"
+#include "app/common/src/JavaEdition/JavaProxyDebug.h"
+
 
 #include <cstdint>
 #include <vector>
@@ -118,7 +120,7 @@ void cj_logFormattingCodes(const std::wstring& out) {
                 hex.push_back(static_cast<char>(h));
                 j += 2;
             }
-            fprintf(stderr,
+            JPROXY_LOGF(
                     "[JHEX] raw='\xc2\xa7x' +%zu hex pairs (#%s) parsed=RGB-HEX "
                     "lce=nearest-legacy-color\n",
                     hex.size(), hex.c_str());
@@ -128,12 +130,12 @@ void cj_logFormattingCodes(const std::wstring& out) {
         const char codeA =
             (code >= 0x20 && code <= 0x7E) ? static_cast<char>(code) : '?';
         if (isHexDigit) {
-            fprintf(stderr,
+            JPROXY_LOGF(
                     "[JHEX] raw='\xc2\xa7%c' parsed=legacy-color "
                     "lce='\xc2\xa7%c' fontEffect=color-set\n",
                     codeA, codeA);
         } else {
-            fprintf(stderr,
+            JPROXY_LOGF(
                     "[JHEX] raw='\xc2\xa7%c' (U+%04X) parsed=format/reset "
                     "lce=%s\n",
                     codeA, static_cast<unsigned>(code) & 0xFFFFu,
@@ -273,7 +275,7 @@ private:
                     for (wchar_t wc : cname)
                         nameA.push_back(
                             (wc >= 0x20 && wc <= 0x7E) ? (char)wc : '?');
-                    fprintf(stderr,
+                    JPROXY_LOGF(
                             "[JHEX] color-key raw='%s' mapped=%s%c\n",
                             nameA.c_str(),
                             cc ? "\xc2\xa7" : "(none - dropped",
@@ -530,7 +532,7 @@ std::wstring flattenChatComponent(const std::string& json) {
     cj_logFormattingCodes(out);
     std::wstring legacy = cj_normalizeToLegacy(out);
     if (legacy.size() != out.size()) {
-        fprintf(stderr, "[JHEX] normalized len %zu -> %zu\n", out.size(),
+        JPROXY_LOGF( "[JHEX] normalized len %zu -> %zu\n", out.size(),
                 legacy.size());
     }
     return legacy;

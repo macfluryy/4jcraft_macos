@@ -13,7 +13,7 @@ public:
     int food;
     float saturation;
 
-    uint8_t damageSource;  // 4J Added
+    uint8_t damageSource;  
 
     SetHealthPacket();
     SetHealthPacket(float health, int food, float saturation,

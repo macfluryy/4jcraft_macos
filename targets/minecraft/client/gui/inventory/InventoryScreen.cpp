@@ -21,7 +21,7 @@
 
 InventoryScreen::InventoryScreen(std::shared_ptr<Player> player)
     : AbstractContainerScreen(player->inventoryMenu) {
-    xMouse = yMouse = 0.0f;  // 4J added
+    xMouse = yMouse = 0.0f;  
 
     this->passEvents = true;
     player->awardStat(GenericStats::openInventory(),

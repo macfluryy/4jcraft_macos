@@ -14,7 +14,7 @@ LookAtEntityHint::LookAtEntityHint(eTutorial_Hint id, Tutorial* tutorial,
 
 bool LookAtEntityHint::onLookAtEntity(eINSTANCEOF type) {
     if (m_type == type) {
-        // Display hint
+        
         Tutorial::PopupMessageDetails* message =
             new Tutorial::PopupMessageDetails();
         message->m_messageId = m_descriptionId;

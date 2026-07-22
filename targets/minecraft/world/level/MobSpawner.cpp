@@ -27,10 +27,10 @@ class MobGroupData;
 const int MobSpawner::MIN_SPAWN_DISTANCE = 24;
 
 TilePos MobSpawner::getRandomPosWithin(Level* level, int cx, int cz) {
-    // 4J Stu - Added 1.2.3 but we don't need it as it was only used to access
-    // sections Leaving here though to help explain why chunk coords are not
-    // passed in rather than full coords
-    // LevelChunk *chunk = level->getChunk(cx, cz);
+    
+    
+    
+    
     int x = cx * 16 + level->random->nextInt(16);
     int y = level->random->nextInt(level->getHeight());
     int z = cz * 16 + level->random->nextInt(16);
@@ -48,11 +48,11 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
     }
     chunksToPoll.clear();
 
-    // 4J - rewritten to add chunks interleaved by player, and to add them from
-    // the centre outwards. We're going to be potentially adding less creatures
-    // than the original so that our count stays consistent with number of
-    // players added, so we want to make sure as best we can that the ones we do
-    // add are near the active players
+    
+    
+    
+    
+    
     int playerCount = (int)level->players.size();
     int* xx = new int[playerCount];
     int* zz = new int[playerCount];
@@ -69,9 +69,9 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
             for (int i = 0; i < playerCount; i++) {
                 bool edgeChunk = (r == 8);
 
-                // If this chunk isn't at the edge of the region for this
-                // player, then always store with a flag of false so that if it
-                // was at the edge of another player, then this will remove that
+                
+                
+                
                 if (!edgeChunk) {
                     chunksToPoll.insert(std::pair<ChunkPos, bool>(
                         ChunkPos((xx[i] - r) + l, (zz[i] - r)), false));
@@ -115,16 +115,16 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
             continue;
         }
 
-        // 4J - early out for non-main dimensions, if spawning anything friendly
+        
         if (mobCategory->isFriendly()) {
             if (level->dimension->id != 0) {
                 continue;
             }
         }
 
-        // 4J - this is now quite different to the java version. We just have
-        // global max counts for the level whereas the original has a max per
-        // chunk that scales with the number of chunks to be polled.
+        
+        
+        
         int categoryCount = level->countInstanceOf(
             mobCategory->getEnumBaseClass(), mobCategory->isSingleType());
         if (categoryCount >= mobCategory->getMaxInstancesPerLevel()) {
@@ -134,15 +134,15 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
         auto itEndCTP = chunksToPoll.end();
         for (auto it = chunksToPoll.begin(); it != itEndCTP; it++) {
             if (it->second) {
-                // don't add mobs to edge chunks, to prevent adding mobs
-                // "outside" of the active playground
+                
+                
                 continue;
             }
             ChunkPos* cp = (ChunkPos*)(&it->first);
 
-            // 4J - don't let this actually create/load a chunk that isn't here
-            // already - we'll let the normal updateDirtyChunks etc. processes
-            // do that, so it can happen on another thread
+            
+            
+            
             if (!level->hasChunk(cp->x, cp->z)) continue;
 
             TilePos start = getRandomPosWithin(level, cp->x, cp->z);
@@ -171,12 +171,12 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                     y += level->random->nextInt(1) - level->random->nextInt(1);
                     z +=
                         level->random->nextInt(ss) - level->random->nextInt(ss);
-                    // int y = heightMap[x + z * w] + 1;
+                    
 
-                    // 4J - don't let this actually create/load a chunk that
-                    // isn't here already - we'll let the normal
-                    // updateDirtyChunks etc. processes do that, so it can
-                    // happen on another thread
+                    
+                    
+                    
+                    
                     if (!level->hasChunkAt(x, y, z)) continue;
 
                     if (isSpawnPositionOk(mobCategory, level, x, y, z)) {
@@ -205,51 +205,51 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                         }
 
                         std::shared_ptr<Mob> mob;
-                        // 4J - removed try/catch
-                        //						   try
-                        //						   {
-                        // mob =
-                        // type.mobClass.getConstructor(Level.class).newInstance(level);
+                        
+                        
+                        
+                        
+                        
                         mob = std::dynamic_pointer_cast<Mob>(
                             EntityIO::newByEnumType(currentMobType->mobClass,
                                                     level));
-                        //						   }
-                        //						   catch
-                        //(exception e)
-                        //						   {
-                        //							   //
-                        // TODO 4J We can't print a stack trace, and the
-                        // newInstance function doesn't throw an exception just
-                        // now anyway
-                        //							   //e.printStackTrace();
-                        //							   return
-                        // count;
-                        //						   }
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
 
-                        // 4J - If it is an animal or a monster, don't let any
-                        // one type of mob represent more than 50% of the total
-                        // amount of these things. This was added initially to
-                        // stop flat lands being totally populated with slimes
-                        // but seems like a generally good rule.
+                        
+                        
+                        
+                        
+                        
                         eINSTANCEOF mobType = mob->GetType();
 
                         if ((mobType & eTYPE_ANIMALS_SPAWN_LIMIT_CHECK) ||
                             (mobType & eTYPE_MONSTER)) {
-                            // even more special rule for ghasts, because
-                            // filling up the nether with 25 of them is a bit
-                            // unpleasant. In the java version they are only
-                            // limited by the fact that the world fills up with
-                            // pig zombies (the only other type of enemy mob in
-                            // the nether) before them - they aren't actually
-                            // even counted properly themselves
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                             if (mobType == eTYPE_GHAST) {
                                 if (level->countInstanceOf(mobType, true) >= 4)
                                     continue;
                             } else if (mobType == eTYPE_ENDERMAN &&
                                        level->dimension->id == 1) {
-                                // Special rule for the end, as we only have
-                                // Endermen (plus the dragon). Increase the
-                                // spawnable counts based on level difficulty
+                                
+                                
+                                
                                 int maxEndermen =
                                     mobCategory->getMaxInstancesPerLevel();
 
@@ -277,28 +277,28 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                                     level->random->nextFloat() * 360, 0);
 
                         if (mob->canSpawn()) {
-                            // 4J - check if we are going to despawn straight
-                            // away too, and don't add if we will - otherwise
-                            // we'll be sending network packets for adding &
-                            // removal that we don't need
+                            
+                            
+                            
+                            
                             mob->checkDespawn();
                             if (!mob->removed) {
                                 clusterSize++;
                                 categoryCount++;
-                                mob->setDespawnProtected();  // 4J added -
-                                                             // default to
-                                                             // protected
-                                                             // against
-                                                             // despawning
+                                mob->setDespawnProtected();  
+                                                             
+                                                             
+                                                             
+                                                             
                                 level->addEntity(mob);
                                 groupData = mob->finalizeMobSpawn(groupData);
-                                // 4J - change here so that we can't ever make
-                                // more than the desired amount of entities in
-                                // each priority. In the original java version
-                                // depending on the random spawn positions being
-                                // considered the only limit as to the number of
-                                // entities created per category is the number
-                                // of chunks to poll.
+                                
+                                
+                                
+                                
+                                
+                                
+                                
                                 if (categoryCount >=
                                     mobCategory->getMaxInstancesPerLevel())
                                     goto categoryLoop;
@@ -324,13 +324,13 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
 
 bool MobSpawner::isSpawnPositionOk(MobCategory* category, Level* level, int x,
                                    int y, int z) {
-    // 4J - don't let this actually create/load a chunk that isn't here already
-    // - we'll let the normal updateDirtyChunks etc. processes do that, so it
-    // can happen on another thread
+    
+    
+    
     if (!level->hasChunkAt(x, y, z)) return false;
 
     if (category->getSpawnPositionMaterial() == Material::water) {
-        // 4J - changed to spawn water things only in deep water
+        
         int yo = 0;
         int liquidCount = 0;
 
@@ -339,8 +339,8 @@ bool MobSpawner::isSpawnPositionOk(MobCategory* category, Level* level, int x,
             yo++;
         }
 
-        // 4J - Sometimes deep water could be just a waterfall, so check that
-        // it's wide as well
+        
+        
         bool inEnoughWater = false;
         if (liquidCount == 5) {
             if (level->getMaterial(x + 5, y, z)->isLiquid() &&
@@ -365,5 +365,5 @@ bool MobSpawner::isSpawnPositionOk(MobCategory* category, Level* level, int x,
 void MobSpawner::postProcessSpawnMobs(Level* level, Biome* biome, int xo,
                                       int zo, int cellWidth, int cellHeight,
                                       Random* random) {
-    // 4J - not for our version. Creates a few too many mobs.
+    
 }

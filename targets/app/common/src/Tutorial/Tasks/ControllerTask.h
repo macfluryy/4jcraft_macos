@@ -1,5 +1,5 @@
 #pragma once
-// using namespace std;
+
 
 #include <unordered_map>
 
@@ -7,7 +7,7 @@
 
 class Tutorial;
 
-// 4J Stu - Tasks that involve using the controller
+
 class ControllerTask : public TutorialTask {
 private:
     std::unordered_map<int, bool> completedMappings;
@@ -18,7 +18,7 @@ private:
     int m_iCompletionMaskACount;
     bool CompletionMaskIsValid();
 
-    // Mouse tracking for tutorial look-around task
+    
     float m_lastYaw;
     float m_lastPitch;
     bool m_initialized = false;

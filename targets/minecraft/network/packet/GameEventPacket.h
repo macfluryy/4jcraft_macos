@@ -10,17 +10,17 @@ public:
     static const int NO_RESPAWN_BED_AVAILABLE;
     static const int START_RAINING;
     static const int STOP_RAINING;
-    static const int CHANGE_GAME_MODE;  // 1.8.2
-    static const int WIN_GAME;          // 1.0.01
-    static const int DEMO_EVENT;        // 1.3.2
+    static const int CHANGE_GAME_MODE;  
+    static const int WIN_GAME;          
+    static const int DEMO_EVENT;        
     static const int SUCCESSFUL_BOW_HIT = 6;
 
-    static const int DEMO_PARAM_INTRO;   // 1.3.2
-    static const int DEMO_PARAM_HINT_1;  // 1.3.2
-    static const int DEMO_PARAM_HINT_2;  // 1.3.2
-    static const int DEMO_PARAM_HINT_3;  // 1.3.2
+    static const int DEMO_PARAM_INTRO;   
+    static const int DEMO_PARAM_HINT_1;  
+    static const int DEMO_PARAM_HINT_2;  
+    static const int DEMO_PARAM_HINT_3;  
 
-    // 4J Added
+    
     static const int START_SAVING;
     static const int STOP_SAVING;
 

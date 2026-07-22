@@ -11,7 +11,7 @@
 #include "minecraft/client/renderer/texture/custom/CompassTexture.h"
 
 StitchedTexture* StitchedTexture::create(const std::wstring& name) {
-    // TODO: Generalize?
+    
     if (name.compare(L"clock") == 0) {
         return new ClockTexture();
     } else if (name.compare(L"compass") == 0) {
@@ -24,7 +24,7 @@ StitchedTexture* StitchedTexture::create(const std::wstring& name) {
 StitchedTexture::StitchedTexture(const std::wstring& name,
                                  const std::wstring& filename)
     : name(name) {
-    // 4J Initialisers
+    
     source = nullptr;
     rotated = false;
     x = 0;
@@ -82,15 +82,15 @@ void StitchedTexture::init(Texture* source, std::vector<Texture*>* frames,
                            int x, int y, int width, int height, bool rotated) {
     this->source = source;
     this->frames = frames;
-    frame = -1;  // Force an update of animated textures
+    frame = -1;  
     this->x = x;
     this->y = y;
     this->width = width;
     this->height = height;
     this->rotated = rotated;
 
-    float marginX = 0.0f;  // 0.01f / source->getWidth();
-    float marginY = 0.0f;  // 0.01f / source->getHeight();
+    float marginX = 0.0f;  
+    float marginY = 0.0f;  
 
     this->u0 = x / (float)source->getWidth() + marginX;
     this->u1 = (x + width) / (float)source->getWidth() - marginX;
@@ -128,29 +128,29 @@ int StitchedTexture::getHeight() const { return height; }
 
 static const float UVAdjust = (1.0f / 16.0f) / 256.0f;
 
-float StitchedTexture::getU0(bool adjust /*=false*/) const {
+float StitchedTexture::getU0(bool adjust ) const {
     return adjust ? (u0 + UVAdjust) : u0;
 }
 
-float StitchedTexture::getU1(bool adjust /*=false*/) const {
+float StitchedTexture::getU1(bool adjust ) const {
     return adjust ? (u1 - UVAdjust) : u1;
 }
 
-float StitchedTexture::getU(double offset, bool adjust /*=false*/) const {
+float StitchedTexture::getU(double offset, bool adjust ) const {
     float diff = getU1(adjust) - getU0(adjust);
     return getU0(adjust) +
            (diff * ((float)offset / SharedConstants::WORLD_RESOLUTION));
 }
 
-float StitchedTexture::getV0(bool adjust /*=false*/) const {
+float StitchedTexture::getV0(bool adjust ) const {
     return adjust ? (v0 + UVAdjust) : v0;
 }
 
-float StitchedTexture::getV1(bool adjust /*=false*/) const {
+float StitchedTexture::getV1(bool adjust ) const {
     return adjust ? (v1 - UVAdjust) : v1;
 }
 
-float StitchedTexture::getV(double offset, bool adjust /*=false*/) const {
+float StitchedTexture::getV(double offset, bool adjust ) const {
     float diff = getV1(adjust) - getV0(adjust);
     return getV0(adjust) +
            (diff * ((float)offset / SharedConstants::WORLD_RESOLUTION));
@@ -195,16 +195,16 @@ Texture* StitchedTexture::getFrame(int i) { return frames->at(0); }
 
 int StitchedTexture::getFrames() { return frames ? frames->size() : 0; }
 
-/**
- * Loads animation frames from a file with the syntax, <code>
- * 0,1,2,3,
- * 4*10,5*10,
- * 4*10,3,2,1,
- * 0
- * </code> or similar
- *
- * @param bufferedReader
- */
+
+
+
+
+
+
+
+
+
+
 void StitchedTexture::loadAnimationFrames(BufferedReader* bufferedReader) {
     if (frameOverride != nullptr) {
         delete frameOverride;
@@ -215,13 +215,13 @@ void StitchedTexture::loadAnimationFrames(BufferedReader* bufferedReader) {
 
     intPairVector* results = new intPairVector();
 
-    // try {
+    
     std::wstring line = bufferedReader->readLine();
     while (!line.empty()) {
         line = trimString(line);
         if (line.length() > 0) {
             std::vector<std::wstring> tokens = stringSplit(line, L',');
-            // for (String token : tokens)
+            
             for (auto it = tokens.begin(); it != tokens.end(); ++it) {
                 std::wstring token = *it;
                 int multiPos = token.find_first_of('*');
@@ -237,10 +237,10 @@ void StitchedTexture::loadAnimationFrames(BufferedReader* bufferedReader) {
         }
         line = bufferedReader->readLine();
     }
-    //} catch (Exception e) {
-    //	System.err.println("Failed to read animation info for " + name + ": " +
-    // e.getMessage());
-    //}
+    
+    
+    
+    
 
     if (!results->empty() &&
         results->size() < (SharedConstants::TICKS_PER_SECOND * 30)) {
@@ -261,7 +261,7 @@ void StitchedTexture::loadAnimationFrames(const std::wstring& string) {
     intPairVector* results = new intPairVector();
 
     std::vector<std::wstring> tokens = stringSplit(trimString(string), L',');
-    // for (String token : tokens)
+    
     for (auto it = tokens.begin(); it != tokens.end(); ++it) {
         std::wstring token = trimString(*it);
         int multiPos = token.find_first_of('*');

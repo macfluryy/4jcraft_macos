@@ -25,8 +25,8 @@ private:
     static const int TAB_GAME_OPTIONS = 1;
 
     enum EControls {
-        // Add all checkboxes at the start as they also index into a checkboxes
-        // array
+        
+        
         eLaunchCheckbox_Online,
         eLaunchCheckbox_InviteOnly,
         eLaunchCheckbox_AllowFoF,
@@ -150,13 +150,13 @@ public:
     virtual EUIScene getSceneType() { return eUIScene_LaunchMoreOptionsMenu; }
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
     virtual void tick();
     virtual void handleDestroy();
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
     virtual void handleFocusChange(F64 controlId, F64 childId);
@@ -168,9 +168,9 @@ protected:
     void handleCheckboxToggled(F64 controlId, bool selected);
 
 private:
-    bool m_bUpdateCheats;  // If true, update cheats on next tick
+    bool m_bUpdateCheats;  
     void UpdateCheats();
 
-    bool m_bUpdateOnline;  // If true, update online settings on next tick
+    bool m_bUpdateOnline;  
     void UpdateOnline();
 };

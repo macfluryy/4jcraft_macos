@@ -35,7 +35,7 @@
 
 class C_4JProfile : public IPlatformProfile {
 public:
-    // --- Methods with real logic (implemented in .cpp) ---
+    
 
     void Initialise(std::uint32_t dwTitleID, std::uint32_t dwOfferID,
                     unsigned short usProfileVersion,
@@ -68,7 +68,7 @@ public:
     bool CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly,
                                      PlayerUID* pXuids, unsigned int xuidCount);
 
-    // --- Dead stubs (inline no-ops, kept for call-site compat) ---
+    
 
     void Tick() {}
     unsigned int RequestSignInUI(bool, bool, bool, bool, bool,
@@ -119,21 +119,21 @@ public:
     void SetCurrentGameActivity(int, int, bool = false) {}
     void SetDebugFullOverride(bool) {}
 
-    // GetPrimaryPad/SetPrimaryPad moved to InputManager
+    
     int GetPrimaryPad();
     void SetPrimaryPad(int iPad);
 };
 
-// Singleton
+
 extern C_4JProfile ProfileManager;
 
-// 4J macOS - see Profile.cpp. Call once at the start of a direct-connect
-// session before FakeLocalPlayerJoined() so the joining client doesn't share
-// an XUID with the host running on the same machine.
+
+
+
 void OverrideXuidBaseForDirectConnect();
 
-// 4J macOS - persist the user-chosen nickname across all four player
-// pad slots' gamertag / display-name caches. Called by Options::load
-// (so the saved name applies as soon as we start) and by the dedicated
-// Username editor screen (so changes take effect immediately).
+
+
+
+
 void SetUserGamertag(int iPad, const std::wstring& nick);

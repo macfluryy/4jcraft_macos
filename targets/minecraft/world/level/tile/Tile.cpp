@@ -175,9 +175,9 @@ int Tile::lightBlock[TILE_NUM_COUNT];
 bool Tile::transculent[TILE_NUM_COUNT];
 int Tile::lightEmission[TILE_NUM_COUNT];
 unsigned char
-    Tile::_sendTileData[TILE_NUM_COUNT];  // 4J changed - was bool, now bitfield
-                                          // to indicate which bits are
-                                          // important to be sent
+    Tile::_sendTileData[TILE_NUM_COUNT];  
+                                          
+                                          
 bool Tile::mipmapEnable[TILE_NUM_COUNT];
 bool Tile::propagate[TILE_NUM_COUNT];
 
@@ -310,7 +310,7 @@ Tile* Tile::dragonEgg = nullptr;
 Tile* Tile::redstoneLight = nullptr;
 Tile* Tile::redstoneLight_lit = nullptr;
 
-// TU9
+
 Tile* Tile::stairs_sandstone = nullptr;
 Tile* Tile::woodStairsDark = nullptr;
 Tile* Tile::woodStairsBirch = nullptr;
@@ -522,8 +522,8 @@ void Tile::staticCtor() {
                           ->setDescriptionId(IDS_TILE_LOG)
                           ->sendTileData()
                           ->setUseDescriptionId(IDS_DESC_LOG);
-    // 4J - for leaves, have specified that only the data bits that encode the
-    // type of leaf are important to be sent
+    
+    
     Tile::leaves = (LeafTile*)(new LeafTile(18))
                        ->setDestroyTime(0.2f)
                        ->setLightBlock(1)
@@ -1710,7 +1710,7 @@ void Tile::staticCtor() {
                           ->setDescriptionId(IDS_TILE_COAL)
                           ->setUseDescriptionId(IDS_DESC_COAL_BLOCK);
 
-    // Special cases for certain items since they can have different icons
+    
     Item::items[wool_Id] = (new WoolTileItem(Tile::wool_Id - 256))
                                ->setIconName(L"cloth")
                                ->setDescriptionId(IDS_TILE_CLOTH)
@@ -1745,7 +1745,7 @@ void Tile::staticCtor() {
                                 (int*)WoodTile::WOOD_NAMES, 4, IDS_TILE_PLANKS))
                                ->setIconName(L"wood")
                                ->setDescriptionId(IDS_TILE_OAKWOOD_PLANKS)
-                               ->setUseDescriptionId(IDS_DESC_LOG);  //  <- TODO
+                               ->setUseDescriptionId(IDS_DESC_LOG);  
     Item::items[monsterStoneEgg_Id] =
         (new MultiTextureTileItem(
              Tile::monsterStoneEgg_Id - 256, monsterStoneEgg,
@@ -1753,8 +1753,8 @@ void Tile::staticCtor() {
             ->setIconName(L"monsterStoneEgg")
             ->setDescriptionId(IDS_TILE_STONE_SILVERFISH)
             ->setUseDescriptionId(
-                IDS_DESC_STONE_SILVERFISH);  // 4J - Brought forward from
-                                             // post-1.2 to fix stacking problem
+                IDS_DESC_STONE_SILVERFISH);  
+                                             
     Item::items[stoneBrick_Id] =
         (new MultiTextureTileItem(
              Tile::stoneBrick_Id - 256, stoneBrick,
@@ -1865,18 +1865,18 @@ void Tile::staticCtor() {
 
     Stats::buildItemStats();
 
-    // */
+    
 }
 
-// 4J - added for common ctor code
+
 void Tile::_init(int id, Material* material, bool isSolidRender) {
     destroySpeed = 0.0f;
     explosionResistance = 0.0f;
     isInventoryItem = true;
     collectStatistics = true;
 
-    // 4J Stu - Removed these in favour of TLS versions
-    // xx0 = yy0 = zz0 = xx1 = yy1 = zz1 = 0;
+    
+    
 
     soundType = Tile::SOUND_NORMAL;
     gravity = 1.0f;
@@ -1884,24 +1884,24 @@ void Tile::_init(int id, Material* material, bool isSolidRender) {
     _isTicking = false;
     _isEntityTile = false;
 
-    /*	4J - TODO
-    if (Tile.tiles[id] != null)
-    {
-    throw new IllegalArgumentException("Slot " + id + " is already occupied by "
-    + Tile.tiles[id] + " when adding " + this);
-    }
-    */
+    
+
+
+
+
+
+
     this->material = material;
     Tile::tiles[id] = this;
     this->id = id;
     updateDefaultShape();
-    // 4J - note these used to call isSolidRender(), but that always calls
-    // Tile::isSolidRender in C++ so have added as a parameter that can be
-    // varied from derived ctors
+    
+    
+    
     solid[id] = isSolidRender;
     lightBlock[id] = isSolidRender ? 255 : 0;
     transculent[id] = !material->blocksLight();
-    mipmapEnable[id] = true;  // 4J added
+    mipmapEnable[id] = true;  
     iconName = L"";
 }
 
@@ -1912,18 +1912,18 @@ Tile::Tile(int id, Material* material, bool isSolidRender) {
     icon = nullptr;
 }
 
-Tile* Tile::sendTileData(unsigned char importantMask /*=15*/) {
+Tile* Tile::sendTileData(unsigned char importantMask ) {
     Tile::_sendTileData[id] =
-        importantMask;  // 4J - changed was bool, now bitfield to indicate which
-                        // bits are important to be sent. Default behaviour with
-                        // this method is all 4 bits
+        importantMask;  
+                        
+                        
     return this;
 }
 
 void Tile::init() {}
 
-// 4J-PB - adding so we can class different items together for the new crafting
-// menu so pickaxe_stone would get tagged with pickaxe and stone
+
+
 Tile* Tile::setBaseItemTypeAndMaterial(int iType, int iMaterial) {
     this->m_iBaseItemType = iType;
     this->m_iMaterial = iMaterial;
@@ -2010,28 +2010,28 @@ void Tile::setShape(float x0, float y0, float z0, float x1, float y1,
     tls->zz1 = z1;
     tls->tileId = this->id;
 
-    // this->xx0 = x0;
-    // this->yy0 = y0;
-    // this->zz0 = z0;
-    // this->xx1 = x1;
-    // this->yy1 = y1;
-    // this->zz1 = z1;
+    
+    
+    
+    
+    
+    
 }
 
 float Tile::getBrightness(LevelSource* level, int x, int y, int z) {
-    // Lighting fix brought forward from ~1.5 here - used to use the
-    // lightEmission level for this tile rather than getting the for the passed
-    // in x/y/z coords
+    
+    
+    
     return level->getBrightness(x, y, z,
                                 lightEmission[level->getTile(x, y, z)]);
 }
 
-// 4J - brought forward from 1.8.2
+
 int Tile::getLightColor(LevelSource* level, int x, int y, int z,
-                        int tileId /*=-1*/) {
-    // Lighting fix brought forward from ~1.5 here - used to use the
-    // lightEmission level for this tile rather than getting the for the passed
-    // in x/y/z coords
+                        int tileId ) {
+    
+    
+    
     if (tileId == -1) {
         return level->getLightColor(x, y, z,
                                     lightEmission[level->getTile(x, y, z)], -1);
@@ -2052,7 +2052,7 @@ bool Tile::isFaceVisible(Level* level, int x, int y, int z, int f) {
 
 bool Tile::shouldRenderFace(LevelSource* level, int x, int y, int z, int face) {
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     if (face == 0 && tls->yy0 > 0) return true;
     if (face == 1 && tls->yy1 < 1) return true;
@@ -2063,13 +2063,13 @@ bool Tile::shouldRenderFace(LevelSource* level, int x, int y, int z, int face) {
     return (!level->isSolidRenderTile(x, y, z));
 }
 
-// AP - added this function so we can generate the faceFlags for a block in a
-// single fast function
+
+
 int Tile::getFaceFlags(LevelSource* level, int x, int y, int z) {
     int faceFlags = 0;
 
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
 
     if (tls->yy0 > 0 || (!level->isSolidRenderTile(x, y - 1, z)))
@@ -2093,18 +2093,18 @@ bool Tile::isSolidFace(LevelSource* level, int x, int y, int z, int face) {
 }
 
 Icon* Tile::getTexture(LevelSource* level, int x, int y, int z, int face) {
-    // 4J - addition here to make rendering big blocks of leaves more efficient.
-    // Normally leaves never consider themselves as solid, so blocks of leaves
-    // will have all sides of each block completely visible. Changing to
-    // consider as solid if this block is surrounded by other leaves (or solid
-    // things). This is paired with another change in
-    // Level::isSolidRenderTile/Region::isSolidRenderTile which makes things
-    // solid code-wise (ie for determining visible sides of neighbouring
-    // blocks). This change just makes the texture a solid one (tex + 1) which
-    // we already have in the texture map for doing non-fancy graphics. Note:
-    // this tile-specific code is here rather than making some new virtual
-    // method in the tiles, for the sake of efficiency - I don't imagine we'll
-    // be doing much more of this sort of thing
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     int tileId = level->getTile(x, y, z);
     int tileData = level->getData(x, y, z);
@@ -2142,7 +2142,7 @@ Icon* Tile::getTexture(int face) { return getTexture(face, 0); }
 
 AABB Tile::getTileAABB(Level* level, int x, int y, int z) {
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return AABB(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
                 y + tls->yy1, z + tls->zz1);
@@ -2156,7 +2156,7 @@ void Tile::addAABBs(Level* level, int x, int y, int z, AABB* box,
 
 std::optional<AABB> Tile::getAABB(Level* level, int x, int y, int z) {
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return AABB{x + tls->xx0, y + tls->yy0, z + tls->zz0,
                 x + tls->xx1, y + tls->yy1, z + tls->zz1};
@@ -2236,7 +2236,7 @@ void Tile::popResource(Level* level, int x, int y, int z,
     level->addEntity(item);
 }
 
-// Brought forward for TU7
+
 void Tile::popExperience(Level* level, int x, int y, int z, int amount) {
     if (!level->isClientSide) {
         while (amount > 0) {
@@ -2274,8 +2274,8 @@ HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a_,
 
     std::optional<Vec3> closest = std::nullopt;
 
-    // 4jcraft NOTE: containsX does a nullopt check and will short circuit so
-    // dereffing in distanceToSqr is fine.
+    
+    
 
     if (containsX(xh0) && (!closest.has_value() ||
                            a.distanceToSqr(*xh0) < a.distanceToSqr(*closest)))
@@ -2319,7 +2319,7 @@ bool Tile::containsX(const std::optional<Vec3>& v) {
     if (!v.has_value()) return false;
 
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return v->y >= tls->yy0 && v->y <= tls->yy1 && v->z >= tls->zz0 &&
            v->z <= tls->zz1;
@@ -2329,7 +2329,7 @@ bool Tile::containsY(const std::optional<Vec3>& v) {
     if (!v.has_value()) return false;
 
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return v->x >= tls->xx0 && v->x <= tls->xx1 && v->z >= tls->zz0 &&
            v->z <= tls->zz1;
@@ -2339,7 +2339,7 @@ bool Tile::containsZ(const std::optional<Vec3>& v) {
     if (!v.has_value()) return false;
 
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return v->x >= tls->xx0 && v->x <= tls->xx1 && v->y >= tls->yy0 &&
            v->y <= tls->yy1;
@@ -2364,7 +2364,7 @@ bool Tile::mayPlace(Level* level, int x, int y, int z) {
     return t == 0 || Tile::tiles[t]->material->isReplaceable();
 }
 
-// 4J-PB - Adding a TestUse for tooltip display
+
 bool Tile::TestUse() { return false; }
 
 bool Tile::TestUse(Level* level, int x, int y, int z,
@@ -2375,7 +2375,7 @@ bool Tile::TestUse(Level* level, int x, int y, int z,
 bool Tile::use(Level* level, int x, int y, int z,
                std::shared_ptr<Player> player, int clickedFace, float clickX,
                float clickY, float clickZ,
-               bool soundOnly /*=false*/)  // 4J added soundOnly param
+               bool soundOnly )  
 {
     return false;
 }
@@ -2400,51 +2400,51 @@ void Tile::handleEntityInside(Level* level, int x, int y, int z,
 void Tile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
 }
 
 double Tile::getShapeX0() {
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->xx0;
 }
 
 double Tile::getShapeX1() {
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->xx1;
 }
 
 double Tile::getShapeY0() {
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->yy0;
 }
 
 double Tile::getShapeY1() {
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->yy1;
 }
 
 double Tile::getShapeZ0() {
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->zz0;
 }
 
 double Tile::getShapeZ1() {
     ThreadStorage* tls = m_tlsShape;
-    // 4J Stu - Added this so that the TLS shape is correct for this tile
+    
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->zz1;
 }
@@ -2476,7 +2476,7 @@ void Tile::updateDefaultShape() { setShape(0, 0, 0, 1, 1, 1); }
 
 void Tile::playerDestroy(Level* level, std::shared_ptr<Player> player, int x,
                          int y, int z, int data) {
-    // 4J Stu - Special case - only record a crop destroy if is fully grown
+    
     if (id == Tile::wheat_Id) {
         if (Tile::wheat->getResource(data, nullptr, 0) > 0)
             player->awardStat(GenericStats::blocksMined(id),
@@ -2495,7 +2495,7 @@ void Tile::playerDestroy(Level* level, std::shared_ptr<Player> player, int x,
     }
     player->awardStat(
         GenericStats::totalBlocksMined(),
-        GenericStats::param_noArgs());  // 4J : WESTY : Added for other award.
+        GenericStats::param_noArgs());  
     player->causeFoodExhaustion(FoodConstants::EXHAUSTION_MINE);
 
     if (id == Tile::treeTrunk_Id)
@@ -2542,10 +2542,10 @@ Tile* Tile::setDescriptionId(unsigned int id) {
 }
 
 std::wstring Tile::getName() {
-    return L"";  // I18n::get(getDescriptionId() + L".name");
+    return L"";  
 }
 
-unsigned int Tile::getDescriptionId(int iData /*= -1*/) {
+unsigned int Tile::getDescriptionId(int iData ) {
     return descriptionId;
 }
 
@@ -2569,7 +2569,7 @@ Tile* Tile::setNotCollectStatistics() {
 
 int Tile::getPistonPushReaction() { return material->getPushReaction(); }
 
-// 4J - brought forward from 1.8.2
+
 float Tile::getShadeBrightness(LevelSource* level, int x, int y, int z) {
     return level->isSolidBlockingTile(x, y, z) ? 0.2f : 1.0f;
 }
@@ -2676,7 +2676,7 @@ Tile::SoundType::SoundType(eMATERIALSOUND_TYPE eMaterialSound, float volume,
                 this->iBreakSound = -1;
                 break;
         }
-        // this->breakSound = L"step." + this->name;
+        
     }
 
     if (iPlaceSound > -1) {
@@ -2720,28 +2720,28 @@ Tile::SoundType::SoundType(eMATERIALSOUND_TYPE eMaterialSound, float volume,
             break;
     }
 
-    // this->stepSound = L"step." + this->name;
+    
     this->volume = volume;
     this->pitch = pitch;
 }
 
 float Tile::SoundType::getVolume() const { return volume; }
 float Tile::SoundType::getPitch() const { return pitch; }
-// wstring getBreakSound() const { return breakSound; }
-// wstring getStepSound()	const { return stepSound; }
+
+
 int Tile::SoundType::getBreakSound() const { return iBreakSound; }
 int Tile::SoundType::getStepSound() const { return iStepSound; }
 int Tile::SoundType::getPlaceSound() const { return iPlaceSound; }
 
-/*
-4J: These are necessary on the PS3.
-(and 4 and Vita).
-*/
+
+
+
+
 #if (0 || 0 || 0 || defined(__linux__) || defined(__APPLE__))
 const int Tile::stone_Id;
 const int Tile::grass_Id;
 const int Tile::dirt_Id;
-//				4
+
 const int Tile::wood_Id;
 const int Tile::sapling_Id;
 const int Tile::unbreakable_Id;
@@ -2762,7 +2762,7 @@ const int Tile::lapisOre_Id;
 const int Tile::lapisBlock_Id;
 const int Tile::dispenser_Id;
 const int Tile::sandStone_Id;
-//				25
+
 const int Tile::bed_Id;
 const int Tile::goldenRail_Id;
 const int Tile::detectorRail_Id;

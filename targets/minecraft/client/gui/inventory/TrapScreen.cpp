@@ -27,5 +27,5 @@ void TrapScreen::renderLabels() {
 }
 
 void TrapScreen::renderBg(float a) {
-    // 4J Unused
+    
 }

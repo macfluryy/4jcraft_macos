@@ -13,7 +13,7 @@ class SetEntityMotionPacket
 public:
     int id;
     int xa, ya, za;
-    bool useBytes;  // 4J added
+    bool useBytes;  
 
 private:
     void _init(int id, double xd, double yd, double zd);

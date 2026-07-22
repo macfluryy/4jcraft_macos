@@ -21,7 +21,7 @@ std::FILE* OpenBinaryFileForReadWrite(const File& file) {
 #endif
     return stream;
 }
-}  // namespace
+}  
 
 const int ZoneFile::slotsLength =
     ZonedChunkStorage::CHUNKS_PER_ZONE * ZonedChunkStorage::CHUNKS_PER_ZONE;
@@ -33,24 +33,24 @@ ZoneFile::ZoneFile(int64_t key, File file, File entityFile)
     this->key = key;
     this->file = file;
 
-    // 4J - try/catch removed
-    //    try {
+    
+    
     this->entityFile = new NbtSlotFile(entityFile);
-    //    } catch (Exception e) {
-    //        System.out.println("Broken entity file: " + entityFile + " (" +
-    //        e.toString() + "), replacing.."); entityFile.delete();
-    //        entityFile.createNewFile();
-    //        this.entityFile = new NbtSlotFile(entityFile);
-    //    }
+    
+    
+    
+    
+    
+    
 
     channel = OpenBinaryFileForReadWrite(file);
-    // 4J - try/catch removed
-    //    try {
+    
+    
     readHeader();
-    //    } catch (Exception e) {
-    //        e.printStackTrace();
-    //        throw new IOException("Broken zone file: " + file + ": " + e);
-    //    }
+    
+    
+    
+    
 }
 
 void ZoneFile::readHeader() {
@@ -59,11 +59,11 @@ void ZoneFile::readHeader() {
     bb->flip();
     if (bb->remaining() < 5) return;
     int magic = bb->getInt();
-    //    if (magic != MAGIC_NUMBER) throw new IOException("Bad magic number: "
-    //    + magic);		// 4J - TODO
+    
+    
     short version = bb->getShort();
-    //    if (version != 0) throw new IOException("Bad version number: " +
-    //    version);	// 4J - TODO
+    
+    
 
     slotCount = bb->getShort();
     bb->getShortArray(slots);

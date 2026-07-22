@@ -21,16 +21,16 @@ public:
     virtual LevelData* getDataTagFor(ConsoleSaveFile* saveFile,
                                      const std::wstring& levelId) = 0;
 
-    /**
-     * Tests if a levelId can be used to store a level. For example, a levelId
-     * can't be called COM1 on Windows systems, because that is a reserved file
-     * handle.
-     * <p>
-     * Also, a new levelId may not overwrite an existing one.
-     *
-     * @param levelId
-     * @return
-     */
+    
+
+
+
+
+
+
+
+
+
     virtual bool isNewLevelIdAcceptable(const std::wstring& levelId) = 0;
     virtual void deleteLevel(const std::wstring& levelId) = 0;
     virtual void renameLevel(const std::wstring& levelId,

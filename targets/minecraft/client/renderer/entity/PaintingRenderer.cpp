@@ -19,8 +19,8 @@ PaintingRenderer::PaintingRenderer() { random = new Random(); }
 
 void PaintingRenderer::render(std::shared_ptr<Entity> _painting, double x,
                               double y, double z, float rot, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
+    
+    
     std::shared_ptr<Painting> painting =
         std::dynamic_pointer_cast<Painting>(_painting);
 
@@ -30,7 +30,7 @@ void PaintingRenderer::render(std::shared_ptr<Entity> _painting, double x,
     glTranslatef((float)x, (float)y, (float)z);
     glRotatef(rot, 0, 1, 0);
     glEnable(GL_RESCALE_NORMAL);
-    bindTexture(painting);  // 4J was L"/art/kz.png"
+    bindTexture(painting);  
 
     Painting::Motive* motive = painting->motive;
 
@@ -48,19 +48,19 @@ void PaintingRenderer::renderPainting(std::shared_ptr<Painting> painting, int w,
 
     float edgeWidth = 0.5f;
 
-    // Back
+    
     float bu0 = (12 * 16) / 256.0f;
     float bu1 = (12 * 16 + 16) / 256.0f;
     float bv0 = (0) / 256.0f;
     float bv1 = (0 + 16) / 256.0f;
 
-    // Border
+    
     float uu0 = (12 * 16) / 256.0f;
     float uu1 = (12 * 16 + 16) / 256.0f;
     float uv0 = (0.5f) / 256.0f;
     float uv1 = (0.5f) / 256.0f;
 
-    // Border
+    
     float su0 = (12 * 16 + 0.5f) / 256.0f;
     float su1 = (12 * 16 + 0.5f) / 256.0f;
     float sv0 = (0) / 256.0f;
@@ -75,7 +75,7 @@ void PaintingRenderer::renderPainting(std::shared_ptr<Painting> painting, int w,
 
             setBrightness(painting, (x0 + x1) / 2, (y0 + y1) / 2);
 
-            // Painting
+            
             float fu0 = (uo + w - (xs) * 16) / 256.0f;
             float fu1 = (uo + w - (xs + 1) * 16) / 256.0f;
             float fv0 = (vo + h - (ys) * 16) / 256.0f;

@@ -21,8 +21,8 @@ const int Stats::BLOCKS_MINED_OFFSET = 0x1000000;
 const int Stats::ITEMS_COLLECTED_OFFSET = 0x1010000;
 const int Stats::ITEMS_CRAFTED_OFFSET = 0x1020000;
 const int Stats::ADDITIONAL_STATS_OFFSET =
-    0x5010000;  // Needs to be higher than Achievements::ACHIEVEMENT_OFFSET =
-                // 0x500000;
+    0x5010000;  
+                
 
 std::unordered_map<int, Stat*>* Stats::statsById =
     new std::unordered_map<int, Stat*>;
@@ -57,7 +57,7 @@ Stat* Stats::killsSlime = nullptr;
 Stat* Stats::killsGhast = nullptr;
 Stat* Stats::killsNetherZombiePigman = nullptr;
 
-// 4J : WESTY : Added for new achievements.
+
 Stat* Stats::befriendsWolf = nullptr;
 Stat* Stats::totalBlocksMined = nullptr;
 Stat* Stats::timePlayed = nullptr;
@@ -73,11 +73,11 @@ std::vector<Stat*> Stats::biomesVisisted;
 #endif
 
 Stat* Stats::killsEnderdragon =
-    nullptr;  // The number of times this player has dealt the killing blow to
-              // the Enderdragon
+    nullptr;  
+              
 Stat* Stats::completeTheEnd =
-    nullptr;  // The number of times this player has been
-              // present when the Enderdragon has died
+    nullptr;  
+              
 
 void Stats::staticCtor() {
     Stats::walkOneM = (new GeneralStat(2000, L"stat.walkOneM",
@@ -136,28 +136,28 @@ void Stats::staticCtor() {
         (new GeneralStat(2018, L"stat.killsNetherZombiePigman"))
             ->postConstruct();
 
-    // 4J : WESTY : Added for new achievements.
+    
     Stats::befriendsWolf =
         (new GeneralStat(2019, L"stat.befriendsWolf"))->postConstruct();
     Stats::totalBlocksMined =
         (new GeneralStat(2020, L"stat.totalBlocksMined"))->postConstruct();
 
-    // 4J-PB - don't want the time played going to the server
+    
     Stats::timePlayed = (new GeneralStat(2021, L"stat.timePlayed"))
                             ->setAwardLocallyOnly()
                             ->postConstruct();
 
-    // WARNING: NO NEW STATS CAN BE ADDED HERE
-    // These stats are directly followed by the achievemnts in the profile data,
-    // so cannot be changed without migrating the profile data
+    
+    
+    
 
     buildBlockStats();
 
     Achievements::init();
     Achievements::staticCtor();
 
-    // 4J Stu - Added this function to allow us to add news stats from TU9
-    // onwards
+    
+    
     buildAdditionalStats();
 }
 
@@ -165,9 +165,9 @@ void Stats::init() {}
 
 bool Stats::blockStatsLoaded = false;
 
-// WARNING: NO NEW STATS CAN BE ADDED HERE
-// These stats are directly followed by the achievemnts in the profile data, so
-// cannot be changed without migrating the profile data
+
+
+
 void Stats::buildBlockStats() {
     blocksMined = std::vector<Stat*>(32000);
 
@@ -276,9 +276,9 @@ void Stats::buildBlockStats() {
     blocksMined[Tile::treeTrunk->id] = newStat;
     newStat->postConstruct();
 
-    // WARNING: NO NEW STATS CAN BE ADDED HERE
-    // These stats are directly followed by the achievemnts in the profile data,
-    // so cannot be changed without migrating the profile data
+    
+    
+    
 
     blockStatsLoaded = true;
     buildCraftableStats();
@@ -293,19 +293,19 @@ void Stats::buildItemStats() {
 
 bool Stats::craftableStatsLoaded = false;
 
-// WARNING: NO NEW STATS CAN BE ADDED HERE
-// These stats are directly followed by the achievemnts in the profile data, so
-// cannot be changed without migrating the profile data
+
+
+
 void Stats::buildCraftableStats() {
     if (!blockStatsLoaded || !itemStatsLoaded || craftableStatsLoaded) {
-        // still waiting for the JVM to load stuff
-        // Or stats already loaded
+        
+        
         return;
     }
 
     craftableStatsLoaded = true;
 
-    // Collected stats
+    
 
     itemsCollected = std::vector<Stat*>(32000);
 
@@ -315,9 +315,9 @@ void Stats::buildCraftableStats() {
     itemsCollected[Item::egg->id] = newStat;
     newStat->postConstruct();
 
-    // 4J Stu - The following stats were added as it was too easy to cheat the
-    // leaderboards by dropping and picking up these items They are now changed
-    // to mining the block which involves a tiny bit more effort
+    
+    
+    
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 18, L"mineBlock.wheat",
                            Tile::wheat_Id);
     blocksMinedStats->push_back(newStat);
@@ -343,7 +343,7 @@ void Stats::buildCraftableStats() {
     itemsCollected[Tile::litPumpkin->id] = newStat;
     newStat->postConstruct();
 
-    // Crafted stats
+    
 
     itemsCrafted = std::vector<Stat*>(32000);
 
@@ -371,7 +371,7 @@ void Stats::buildCraftableStats() {
     itemsCrafted[Item::shovel_wood->id] = newStat;
     newStat->postConstruct();
 
-    // 4J : WESTY : Added for new achievements.
+    
     newStat = new ItemStat(ITEMS_CRAFTED_OFFSET + 4, L"craftItem.woodenPickAxe",
                            Item::pickAxe_wood->id);
     itemsCraftedStats->push_back(newStat);
@@ -542,29 +542,29 @@ void Stats::buildCraftableStats() {
     itemsCrafted[Item::map->id] = newStat;
     newStat->postConstruct();
 
-    // WARNING: NO NEW STATS CAN BE ADDED HERE
-    // These stats are directly followed by the achievemnts in the profile data,
-    // so cannot be changed without migrating the profile data
+    
+    
+    
 
-    // This sets up a static list of stat/leaderboard pairings, used to tell
-    // which leaderboards need an update
+    
+    
     StatsCounter::setupStatBoards();
 }
 
-// 4J Stu - Added this function to allow us to add news stats from TU9 onwards
+
 void Stats::buildAdditionalStats() {
     int offset = ADDITIONAL_STATS_OFFSET;
 
-    // The order of these stats should not be changed, as the map directly to
-    // bits in the profile data
+    
+    
 
-    // The number of times this player has dealt the killing blow to the
-    // Enderdragon
+    
+    
     Stats::killsEnderdragon =
         (new GeneralStat(offset++, L"stat.killsEnderdragon"))->postConstruct();
 
-    // The number of times this player has been present when the Enderdragon has
-    // died
+    
+    
     Stats::completeTheEnd =
         (new GeneralStat(offset++, L"stat.completeTheEnd"))->postConstruct();
 
@@ -587,19 +587,19 @@ void Stats::buildAdditionalStats() {
         blocksMined[itemStat->getItemId()] = itemStat;
         itemStat->postConstruct();
 
-        // 4J-JEV: We don't need itemsCollected(emerald) so I'm using it to
-        // stor itemsBought(emerald) so I don't have to make yet another massive
-        // std::vector<Stat*>& for Items Bought.
+        
+        
+        
         itemStat =
             new ItemStat(offset++, L"itemsBought.emerald", Item::emerald_Id);
         itemsCollectedStats->push_back(itemStat);
         itemsCollected[itemStat->getItemId()] = itemStat;
         itemStat->postConstruct();
 
-        // 4J-JEV:	WHY ON EARTH DO THESE ARRAYS HAVE TO BE SO PAINFULLY
-        // LARGE WHEN THEY ARE GOING TO BE MOSTLY EMPTY!!!
-        //			Either way, I'm making this one smaller because
-        // we don't need those record items (and we only need 2).
+        
+        
+        
+        
         blocksPlaced = std::vector<Stat*>(1000);
 
         itemStat = new ItemStat(offset++, L"blockPlaced.flowerPot",

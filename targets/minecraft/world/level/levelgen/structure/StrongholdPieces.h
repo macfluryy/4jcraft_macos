@@ -17,12 +17,12 @@ private:
     static const int SMALL_DOOR_HEIGHT = 3;
 
     static const int MAX_DEPTH = 50;
-    // the dungeon starts at 64 and traverses downwards to this point
+    
     static const int LOWEST_Y_POSITION = 10;
     static const bool CHECK_AIR;
 
-    // 4J - added to replace use of Class<? extends StrongholdPiece> within this
-    // class
+    
+    
     enum EPieceClass {
         EPieceClass_NULL,
         EPieceClass_Straight,
@@ -44,7 +44,7 @@ public:
 private:
     class PieceWeight {
     public:
-        EPieceClass pieceClass;  // 4J - was Class<? extends StrongholdPiece>
+        EPieceClass pieceClass;  
         const int weight;
         int placeCount;
         int maxPlaceCount;
@@ -54,8 +54,8 @@ private:
         bool isValid();
     };
 
-    // 4J - added, java uses a local specialisation of these classes when
-    // instancing to achieve the same thing
+    
+    
     class PieceWeight_Library : public PieceWeight {
     public:
         PieceWeight_Library(EPieceClass pieceClass, int weight,
@@ -101,10 +101,10 @@ private:
         Random* random, int footX, int footY, int footZ, int direction,
         int depth);
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 private:
     class StrongholdPiece : public StructurePiece {
     protected:
@@ -141,13 +141,13 @@ private:
             Random* random, int yOff, int zOff);
 
         static bool isOkBox(BoundingBox* box,
-                            StartPiece* startRoom);  // 4J added startRoom param
+                            StartPiece* startRoom);  
     };
 
-    /**
-     * Corridor pieces that connects unconnected ends.
-     *
-     */
+    
+
+
+
 public:
     class FillerCorridor : public StrongholdPiece {
     public:
@@ -176,10 +176,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class StairsDown : public StrongholdPiece {
     public:
@@ -227,22 +227,22 @@ public:
         bool isLibraryAdded;
         PieceWeight* previousPiece;
         PortalRoom* portalRoomPiece;
-        Level* m_level;  // 4J added
+        Level* m_level;  
 
-        // this queue is used so that the addChildren calls are
-        // called in a random order
+        
+        
         std::vector<StructurePiece*> pendingChildren;
 
         StartPiece();
         StartPiece(int genDepth, Random* random, int west, int north,
-                   Level* level);  // 4J Added level param
+                   Level* level);  
         virtual TilePos* getLocatorPosition();
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class Straight : public StrongholdPiece {
     public:
@@ -277,10 +277,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 
     class ChestCorridor : public StrongholdPiece {
     public:
@@ -319,10 +319,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class StraightStairsDown : public StrongholdPiece {
     public:
@@ -350,10 +350,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class LeftTurn : public StrongholdPiece {
     public:
@@ -379,10 +379,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class RightTurn : public LeftTurn {
     public:
@@ -400,10 +400,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class RoomCrossing : public StrongholdPiece {
     public:
@@ -413,7 +413,7 @@ public:
         }
 
     private:
-        static const int SMALL_TREASURE_ITEMS_COUNT = 7;  // 4J added
+        static const int SMALL_TREASURE_ITEMS_COUNT = 7;  
         static WeighedTreasure* smallTreasureItems[SMALL_TREASURE_ITEMS_COUNT];
 
     protected:
@@ -445,10 +445,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class PrisonHall : public StrongholdPiece {
     public:
@@ -474,10 +474,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class Library : public StrongholdPiece {
     public:
@@ -485,7 +485,7 @@ public:
         virtual EStructurePiece GetType() { return eStructurePiece_Library; }
 
     private:
-        static const int LIBRARY_TREASURE_ITEMS_COUNT = 4;  // 4J added
+        static const int LIBRARY_TREASURE_ITEMS_COUNT = 4;  
         static WeighedTreasure*
             libraryTreasureItems[LIBRARY_TREASURE_ITEMS_COUNT];
 
@@ -515,10 +515,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class FiveCrossing : public StrongholdPiece {
     public:
@@ -556,10 +556,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 
     class PortalRoom : public StrongholdPiece {
     public:

@@ -85,8 +85,8 @@ void WallTile::updateShape(LevelSource* level, int x, int y, int z,
 }
 
 std::optional<AABB> WallTile::getAABB(Level* level, int x, int y, int z) {
-    // 4J-JEV: Changed to avoid race conditions associated with calling update
-    // shape.
+    
+    
 
     bool n = connectsTo(level, x, y, z - 1);
     bool s = connectsTo(level, x, y, z + 1);
@@ -112,21 +112,21 @@ std::optional<AABB> WallTile::getAABB(Level* level, int x, int y, int z) {
         east = 1;
     }
 
-    /*	4J-JEV:
-            Stopping the width changing here, it's causing cows/mobs/passers-by
-       to 'jump' up when they are pressed against the wall and then the wall
-       section is upgraded to a wall post expanding the bounding box. It's only
-       a 1/16 of a block difference, it shouldn't matter if we leave it a little
-       larger.
-    */
+    
+
+
+
+
+
+
     if (n && s && !w && !e) {
         up = WALL_HEIGHT;
-        // west = .5f - WALL_WIDTH;
-        // east = .5f + WALL_WIDTH;
+        
+        
     } else if (!n && !s && w && e) {
         up = WALL_HEIGHT;
-        // north = .5f - WALL_WIDTH;
-        // south = .5f + WALL_WIDTH;
+        
+        
     }
 
     return AABB(x + west, y, z + north, x + east, y + 1.5f, z + south);
@@ -158,5 +158,5 @@ bool WallTile::shouldRenderFace(LevelSource* level, int x, int y, int z,
 }
 
 void WallTile::registerIcons(IconRegister* iconRegister) {
-    // None
+    
 }

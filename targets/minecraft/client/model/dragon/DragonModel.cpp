@@ -15,7 +15,7 @@
 #include "minecraft/world/entity/boss/enderdragon/EnderDragon.h"
 
 DragonModel::DragonModel(float g) : Model() {
-    // 4J-PB
+    
     texWidth = 256;
     texHeight = 256;
 
@@ -100,9 +100,9 @@ DragonModel::DragonModel(float g) : Model() {
     rearFoot->addBox(L"main", -9, 0, -20, 18, 6, 24);
     rearLegTip->addChild(rearFoot);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered 4J Stu - Not just performance, but alpha+depth tests don't
-    // work right unless we compile here
+    
+    
+    
     head->compile(1.0f / 16.0f);
     jaw->compile(1.0f / 16.0f);
     neck->compile(1.0f / 16.0f);
@@ -174,12 +174,12 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
         rr = (float)cosf(i * 0.45f + roff) * 0.15f;
         neck->yRot = rotWrap(dragon->getHeadPartYRotDiff(i, start, p)) *
                      std::numbers::pi / 180.0f *
-                     rotScale;  // 4J replaced "p[0] - start[0] with
-                                // call to getHeadPartYRotDiff
+                     rotScale;  
+                                
         neck->xRot = rr + (float)(dragon->getHeadPartYOffset(i, start, p)) *
                               std::numbers::pi / 180.0f * rotScale *
-                              5.0f;  // 4J replaced "p[1] - start[1]" with call
-                                     // to getHeadPartYOffset
+                              5.0f;  
+                                     
         neck->zRot =
             -rotWrap(p[0] - rot) * std::numbers::pi / 180.0f * rotScale;
 
@@ -199,9 +199,9 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
     head->yRot =
         rotWrap(dragon->getHeadPartYRotDiff(6, start, p)) * std::numbers::pi /
         180.0f *
-        1;  // 4J replaced "p[0] - start[0] with call to getHeadPartYRotDiff
+        1;  
     head->xRot = (float)(dragon->getHeadPartYOffset(6, start, p)) *
-                 std::numbers::pi / 180.0f * rotScale * 5.0f;  // 4J Added
+                 std::numbers::pi / 180.0f * rotScale * 5.0f;  
     head->zRot = -rotWrap(p[0] - rot) * std::numbers::pi / 180 * 1;
     head->render(scale, usecompiled);
     glPushMatrix();

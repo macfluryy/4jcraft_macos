@@ -38,7 +38,7 @@
 class User;
 class ItemEntity;
 
-// 4J added for testing
+
 #if defined(STRESS_TEST_MOVE)
 volatile bool stressTestEnabled = true;
 #endif
@@ -47,7 +47,7 @@ MultiplayerLocalPlayer::MultiplayerLocalPlayer(Minecraft* minecraft,
                                                Level* level, User* user,
                                                ClientConnection* connection)
     : LocalPlayer(minecraft, level, user, level->dimension->id) {
-    // 4J - added initialisers
+    
     flashOnSetHealth = false;
     xLast = yLast1 = yLast2 = zLast = 0;
     yRotLast = xRotLast = 0;
@@ -67,22 +67,22 @@ bool MultiplayerLocalPlayer::hurt(DamageSource* source, float dmg) {
 void MultiplayerLocalPlayer::heal(float heal) {}
 
 void MultiplayerLocalPlayer::tick() {
-    // 4J Added
-    // 4J-PB - changing this to a game host option ot hide gamertags
-    // bool bIsisPrimaryHost=g_NetworkManager.IsHost() &&
-    // (InputManager.GetPrimaryPad()==m_iPad);
+    
+    
+    
+    
 
-    /*if((app.GetGameSettings(m_iPad,eGameSetting_PlayerVisibleInMap)!=0) !=
-    m_bShownOnMaps)
-    {
-            m_bShownOnMaps =
-    (app.GetGameSettings(m_iPad,eGameSetting_PlayerVisibleInMap)!=0); if
-    (m_bShownOnMaps) connection->send( std::shared_ptr<PlayerCommandPacket>( new
-    PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::SHOW_ON_MAPS) )
-    ); else connection->send( std::shared_ptr<PlayerCommandPacket>( new
-    PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::HIDE_ON_MAPS) )
-    );
-    }*/
+    
+
+
+
+
+
+
+
+
+
+
 
     if (!level->hasChunkAt(std::floor(x), 0, std::floor(z))) return;
 
@@ -90,16 +90,16 @@ void MultiplayerLocalPlayer::tick() {
 
     LocalPlayer::tick();
 
-    // 4J added for testing
+    
 #if defined(STRESS_TEST_MOVE)
     if (stressTestEnabled) {
         StressTestMove(&tempX, &tempY, &tempZ);
     }
 #endif
 
-    // if( !minecraft->localgameModes[m_iPad]->isTutorial() ||
-    // minecraft->localgameModes[m_iPad]->getTutorial()->canMoveToPosition(tempX,
-    // tempY, tempZ, x, y, z) )
+    
+    
+    
     if (minecraft->localgameModes[m_iPad]->getTutorial()->canMoveToPosition(
             tempX, tempY, tempZ, x, y, z)) {
         if (isRiding()) {
@@ -111,8 +111,8 @@ void MultiplayerLocalPlayer::tick() {
             sendPosition();
         }
     } else {
-        // app.Debugprintf("Cannot move to position (%f, %f, %f), falling back
-        // to (%f, %f, %f)\n", x, y, z, tempX, y, tempZ);
+        
+        
         this->setPos(tempX, y, tempZ);
     }
 }
@@ -210,9 +210,9 @@ void MultiplayerLocalPlayer::reallyDrop(
     std::shared_ptr<ItemEntity> itemEntity) {}
 
 void MultiplayerLocalPlayer::chat(const std::wstring& message) {
-    // 4J macOS - guard against a torn-down connection (e.g. chat submitted
-    // during a disconnect). Without this a stale ChatScreen submit would
-    // null-deref.
+    
+    
+    
     if (connection == nullptr) return;
     connection->send(std::make_shared<ChatPacket>(message));
 }
@@ -233,7 +233,7 @@ void MultiplayerLocalPlayer::actuallyHurt(DamageSource* source, float dmg) {
     setHealth(getHealth() - dmg);
 }
 
-// 4J Added override to capture event for tutorial messages
+
 void MultiplayerLocalPlayer::completeUsingItem() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (useItem != nullptr && pMinecraft->localgameModes[m_iPad] != nullptr) {
@@ -285,7 +285,7 @@ void MultiplayerLocalPlayer::closeContainer() {
     clientSideCloseContainer();
 }
 
-// close the container without sending a packet to the server
+
 void MultiplayerLocalPlayer::clientSideCloseContainer() {
     inventory->setCarried(nullptr);
     LocalPlayer::closeContainer();
@@ -343,7 +343,7 @@ void MultiplayerLocalPlayer::ride(std::shared_ptr<Entity> e) {
     LocalPlayer::ride(e);
     bool isRiding = riding != nullptr;
 
-    // 4J Added
+    
     if (wasRiding && !isRiding) {
         setSneaking(false);
         input->sneaking = false;
@@ -370,7 +370,7 @@ void MultiplayerLocalPlayer::StopSleeping() {
         shared_from_this(), PlayerCommandPacket::STOP_SLEEPING));
 }
 
-// 4J Added
+
 void MultiplayerLocalPlayer::setAndBroadcastCustomSkin(std::uint32_t skinId) {
     std::uint32_t oldSkinIndex = getCustomSkin();
     LocalPlayer::setCustomSkin(skinId);
@@ -397,14 +397,14 @@ void MultiplayerLocalPlayer::setAndBroadcastCustomCape(std::uint32_t capeId) {
             app.GetPlayerCapeName(GetXboxPad())));
 }
 
-// 4J added for testing. This moves the player in a repeated sequence of 2
-// modes: Mode 0 - teleports to random location in the world, and waits for the
-// number of chunks that are fully loaded/created to have setting for 2 seconds
-// before changing to mode 1 Mode 1 - picks a random direction to move in for
-// 200 ticks (~10 seconds), repeating for a total of 2000 ticks, before cycling
-// back to mode 0 Whilst carrying out this movement pattern, this calls
-// checkAllPresentChunks which checks the integrity of all currently
-// loaded/created chunks round the player.
+
+
+
+
+
+
+
+
 #if defined(STRESS_TEST_MOVE)
 void MultiplayerLocalPlayer::StressTestMove(double* tempX, double* tempY,
                                             double* tempZ) {
@@ -420,13 +420,13 @@ void MultiplayerLocalPlayer::StressTestMove(double* tempX, double* tempY,
     int count = Minecraft::GetInstance()->levelRenderer->checkAllPresentChunks(
         &faultFound);
 
-    /*
-            if( faultFound )
-            {
-                    app.DebugPrintf("Fault found\n");
-                    stressTestEnabled = false;
-            }
-            */
+    
+
+
+
+
+
+
     if (count != lastCount) {
         lastChangeTime = currentTime;
         lastCount = count;

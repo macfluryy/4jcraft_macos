@@ -14,8 +14,8 @@ public:
     DLCLocalisationFile(const std::wstring& path);
     DLCLocalisationFile(
         std::uint8_t* pbData,
-        std::uint32_t dataBytes);  // when we load in a texture pack details
-                                   // file from TMS++
+        std::uint32_t dataBytes);  
+                                   
 
     virtual void addData(std::uint8_t* pbData, std::uint32_t dataBytes);
 

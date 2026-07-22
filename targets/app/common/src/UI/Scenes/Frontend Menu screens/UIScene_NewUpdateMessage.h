@@ -31,7 +31,7 @@ public:
 
     virtual EUIScene getSceneType() { return eUIScene_EULA; }
 
-    // Returns true if this scene has focus for the pad passed in
+    
     virtual bool hasFocus(int iPad) { return bHasFocus; }
     virtual void updateTooltips();
 
@@ -39,7 +39,7 @@ protected:
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

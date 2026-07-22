@@ -33,7 +33,7 @@ UpdateGameRuleProgressPacket::UpdateGameRuleProgressPacket(
 }
 
 void UpdateGameRuleProgressPacket::read(
-    DataInputStream* dis)  // throws IOException
+    DataInputStream* dis)  
 {
     m_definitionType = (ConsoleGameRules::EGameRuleType)dis->readInt();
     m_messageId = readUtf(dis, 64);
@@ -51,7 +51,7 @@ void UpdateGameRuleProgressPacket::read(
 }
 
 void UpdateGameRuleProgressPacket::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     dos->writeInt(m_definitionType);
     writeUtf(m_messageId, dos);

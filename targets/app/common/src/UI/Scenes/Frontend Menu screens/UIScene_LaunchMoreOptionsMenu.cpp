@@ -38,7 +38,7 @@ int m_iWorldSizeTitleA[4] = {
 UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
     int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_params = (LaunchMoreOptionsMenuInitData*)initData;
@@ -56,8 +56,8 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
     if (m_params->currentWorldSize == e_worldSize_Classic ||
         m_params->currentWorldSize == e_worldSize_Small ||
         m_params->currentWorldSize == e_worldSize_Medium) {
-        // don't show the increase world size stuff if we're already large, or
-        // the size is unknown.
+        
+        
         value[1].boolval = true;
     }
 
@@ -82,14 +82,14 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
     bInviteOnly = m_params->bInviteOnly;
     bAllowFriendsOfFriends = m_params->bAllowFriendsOfFriends;
 
-    // 4J-PB - to stop an offline game being able to select the online flag
+    
     if (ProfileManager.IsSignedInLive(m_params->iPad) == false) {
         m_checkboxes[eLaunchCheckbox_Online].SetEnable(false);
     }
 
     if (m_params->bOnlineSettingChangedBySystem && !m_bMultiplayerAllowed) {
-        // 4J-JEV: Disable and uncheck these boxes if they can't play
-        // multiplayer.
+        
+        
         m_checkboxes[eLaunchCheckbox_Online].SetEnable(false);
         m_checkboxes[eLaunchCheckbox_InviteOnly].SetEnable(false);
         m_checkboxes[eLaunchCheckbox_AllowFoF].SetEnable(false);
@@ -100,9 +100,9 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
         m_checkboxes[eLaunchCheckbox_AllowFoF].SetEnable(false);
     }
 
-    // Init cheats
+    
     m_bUpdateCheats = false;
-    // Update cheat checkboxes
+    
     UpdateCheats();
 
     m_checkboxes[eLaunchCheckbox_Online].init(
@@ -190,16 +190,16 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
     }
 #endif
 
-    // Only the Xbox 360 needs a reset nether
-    // 4J-PB - PS3 needs it now
-    // #ifndef 0
-    // 	if(!m_params->bGenerateOptions) removeControl(
-    // &m_checkboxes[eLaunchCheckbox_ResetNether], false ); #endif
+    
+    
+    
+    
+    
 
     m_tabIndex =
         m_params->bGenerateOptions ? TAB_WORLD_OPTIONS : TAB_GAME_OPTIONS;
 
-    // set the default text
+    
 #if defined(_LARGE_WORLDS)
     std::wstring wsText = L"";
     if (m_params->bGenerateOptions) {
@@ -231,15 +231,15 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
 void UIScene_LaunchMoreOptionsMenu::updateTooltips() {
     int changeTabTooltip = -1;
 
-    // Set tooltip for change tab (only two tabs)
+    
     if (m_tabIndex == TAB_GAME_OPTIONS) {
         changeTabTooltip = IDS_WORLD_OPTIONS;
     } else {
         changeTabTooltip = IDS_GAME_OPTIONS;
     }
 
-    // If there's a change tab tooltip, left bumper symbol should show but not
-    // the text (-2)
+    
+    
     int lb = changeTabTooltip == -1 ? -1 : -2;
 
     ui.SetTooltips(DEFAULT_XUI_MENU_USER, IDS_TOOLTIPS_SELECT,
@@ -248,11 +248,11 @@ void UIScene_LaunchMoreOptionsMenu::updateTooltips() {
 
 void UIScene_LaunchMoreOptionsMenu::updateComponents() {
     m_parentLayer->showComponent(m_iPad, eUIComponent_Panorama, true);
-    // #ifdef _LARGE_WORLDS
-    //	m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,true);
-    // #else
+    
+    
+    
     m_parentLayer->showComponent(m_iPad, eUIComponent_Logo, false);
-    // #endif
+    
 }
 
 std::wstring UIScene_LaunchMoreOptionsMenu::getMoviePath() {
@@ -279,12 +279,12 @@ void UIScene_LaunchMoreOptionsMenu::tick() {
         m_bMultiplayerAllowed = bMultiplayerAllowed;
     }
 
-    // Check cheats
+    
     if (m_bUpdateCheats) {
         UpdateCheats();
         m_bUpdateCheats = false;
     }
-    // check online
+    
     if (m_bUpdateOnline) {
         UpdateOnline();
         m_bUpdateOnline = false;
@@ -292,7 +292,7 @@ void UIScene_LaunchMoreOptionsMenu::tick() {
 }
 
 void UIScene_LaunchMoreOptionsMenu::handleDestroy() {
-    // so shut down the keyboard if it is displayed
+    
 }
 
 void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
@@ -300,9 +300,9 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
                                                 bool& handled) {
     if (m_bIgnoreInput) return;
 
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {
@@ -313,7 +313,7 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-            // 4J-JEV: Inform user why their game must be offline.
+            
 
         case ACTION_MENU_UP:
         case ACTION_MENU_DOWN:
@@ -329,7 +329,7 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
         case ACTION_MENU_LEFT_SCROLL:
         case ACTION_MENU_RIGHT_SCROLL:
             if (pressed) {
-                // Toggle tab index
+                
                 m_tabIndex = m_tabIndex == 0 ? 1 : 0;
                 updateTooltips();
                 IggyDataValue result;
@@ -343,7 +343,7 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
 
 void UIScene_LaunchMoreOptionsMenu::handleCheckboxToggled(F64 controlId,
                                                           bool selected) {
-    // CD - Added for audio
+    
     ui.PlayUISFX(eSFX_Press);
 
     switch ((EControls)((int)controlId)) {
@@ -467,10 +467,10 @@ void UIScene_LaunchMoreOptionsMenu::handleFocusChange(F64 controlId,
             stringId = IDS_GAMEOPTION_MOB_SPAWNING;
             break;
         case eLaunchCheckbox_MobLoot:
-            stringId = IDS_GAMEOPTION_MOB_LOOT;  // PLACEHOLDER
+            stringId = IDS_GAMEOPTION_MOB_LOOT;  
             break;
         case eLaunchCheckbox_MobGriefing:
-            stringId = IDS_GAMEOPTION_MOB_GRIEFING;  // PLACEHOLDER
+            stringId = IDS_GAMEOPTION_MOB_GRIEFING;  
             break;
         case eLaunchCheckbox_TileDrops:
             stringId = IDS_GAMEOPTION_TILE_DROPS;
@@ -517,30 +517,30 @@ void UIScene_LaunchMoreOptionsMenu::handleFocusChange(F64 controlId,
 }
 
 void UIScene_LaunchMoreOptionsMenu::handleTimerComplete(int id) {
-    /*switch(id)  //4J-JEV: Moved this over to the tick.
-    {
-    case GAME_CREATE_ONLINE_TIMER_ID:
-            {
-                    bool bMultiplayerAllowed
-                            =	ProfileManager.IsSignedInLive(m_params->iPad)
-                            &&
-    ProfileManager.AllowedToPlayMultiplayer(m_params->iPad);
+    
 
-                    if (bMultiplayerAllowed != m_bMultiplayerAllowed)
-                    {
-                            m_checkboxes[
-    eLaunchCheckbox_Online].SetEnable(bMultiplayerAllowed);
-                            m_checkboxes[eLaunchCheckbox_InviteOnly].SetEnable(bMultiplayerAllowed);
-                            m_checkboxes[
-    eLaunchCheckbox_AllowFoF].SetEnable(bMultiplayerAllowed);
 
-                            m_checkboxes[eLaunchCheckbox_Online].setChecked(bMultiplayerAllowed);
 
-                            m_bMultiplayerAllowed = bMultiplayerAllowed;
-                    }
-            }
-            break;
-    };*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void UIScene_LaunchMoreOptionsMenu::handlePress(F64 controlId, F64 childId) {
@@ -553,7 +553,7 @@ void UIScene_LaunchMoreOptionsMenu::handlePress(F64 controlId, F64 childId) {
                 app.GetString(IDS_CREATE_NEW_WORLD_SEED), m_editSeed.getLabel(),
                 0, 60,
                 [this](bool bRes) -> int {
-                    // 4J HEG - No reason to set value if keyboard was cancelled
+                    
                     if (bRes) {
                         std::wstring str =
                             convStringToWstring(InputManager.GetText());
@@ -604,7 +604,7 @@ void UIScene_LaunchMoreOptionsMenu::UpdateCheats() {
     m_checkboxes[eLaunchCheckbox_DayLightCycle].SetEnable(cheatsOn);
 
     if (!cheatsOn) {
-        // Set defaults
+        
         m_params->bMobGriefing = true;
         m_params->bKeepInventory = false;
         m_params->bDoMobSpawning = true;

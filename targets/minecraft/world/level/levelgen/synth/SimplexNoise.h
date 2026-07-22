@@ -25,17 +25,17 @@ public:
     void init(Random* random);
     ~SimplexNoise();
 
-    // This method is a *lot* faster than using (int)Math.floor(x)
+    
 private:
     static int fastfloor(double x);
     static double dot(int* g, double x, double y);
     static double dot(int* g, double x, double y, double z);
 
-    // 2D simplex noise
+    
 public:
     double getValue(double xin, double yin);
 
-    // 3D simplex noise
+    
     double getValue(double xin, double yin, double zin);
 
     void add(std::vector<double>& buffer, double _x, double _y, int xSize,

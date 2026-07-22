@@ -9,7 +9,7 @@ class Level;
 class Tutorial;
 class TutorialConstraint;
 
-// 4J-JEV: Tasks that involve riding an entity.
+
 class RideEntityTask : public TutorialTask {
 protected:
     const int m_eType;

@@ -6,7 +6,7 @@ class Villager;
 
 class TradeWithPlayerGoal : public Goal {
 private:
-    Villager* mob;  // This is the owner of the goal
+    Villager* mob;  
 
 public:
     TradeWithPlayerGoal(Villager* mob);

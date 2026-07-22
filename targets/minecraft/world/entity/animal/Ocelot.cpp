@@ -59,8 +59,8 @@ const double Ocelot::SPRINT_SPEED_MOD = 1.33;
 const int Ocelot::DATA_TYPE_ID = 18;
 
 Ocelot::Ocelot(Level* level) : TamableAnimal(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -129,7 +129,7 @@ void Ocelot::registerAttributes() {
 }
 
 void Ocelot::causeFallDamage(float distance) {
-    // do nothing
+    
 }
 
 void Ocelot::addAdditonalSaveData(CompoundTag* tag) {
@@ -194,7 +194,7 @@ bool Ocelot::mobInteract(std::shared_ptr<Player> player) {
         if (temptGoal->isRunning() && item != nullptr &&
             item->id == Item::fish_raw_Id &&
             player->distanceToSqr(shared_from_this()) < 3 * 3) {
-            // 4J-PB - don't lose the fish in creative mode
+            
             if (!player->abilities.instabuild) item->count--;
             if (item->count <= 0) {
                 player->inventory->setItem(player->inventory->selected,
@@ -205,7 +205,7 @@ bool Ocelot::mobInteract(std::shared_ptr<Player> player) {
                 if (random->nextInt(3) == 0) {
                     setTame(true);
 
-                    // 4J-JEV, hook for durango event.
+                    
                     player->awardStat(
                         GenericStats::tamedEntity(eTYPE_OCELOT),
                         GenericStats::param_tamedEntity(eTYPE_OCELOT));
@@ -230,7 +230,7 @@ bool Ocelot::mobInteract(std::shared_ptr<Player> player) {
 
 std::shared_ptr<AgableMob> Ocelot::getBreedOffspring(
     std::shared_ptr<AgableMob> target) {
-    // 4J - added limit to number of animals that can be bred
+    
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
         std::shared_ptr<Ocelot> offspring = std::make_shared<Ocelot>(level);
         if (isTame()) {
@@ -266,7 +266,7 @@ void Ocelot::setCatType(int type) {
 }
 
 bool Ocelot::canSpawn() {
-    // artificially make ozelots more rare
+    
     if (level->random->nextInt(3) == 0) {
         return false;
     }
@@ -301,7 +301,7 @@ std::wstring Ocelot::getAName() {
 }
 
 MobGroupData* Ocelot::finalizeMobSpawn(
-    MobGroupData* groupData, int extraData /*= 0*/)  // 4J Added extraData param
+    MobGroupData* groupData, int extraData )  
 {
     groupData = TamableAnimal::finalizeMobSpawn(groupData);
 

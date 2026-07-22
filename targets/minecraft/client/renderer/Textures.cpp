@@ -31,12 +31,12 @@
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/item/ItemInstance.h"
 
-// Linux/PC port: disable mipmapping globally so textures are always sampled
-// from the full-resolution level 0 with GL_NEAREST, giving pixel-crisp
-// Minecraft blocks at all distances. Mipmapping causes glGenerateMipmap() to
-// fire (which resets the min-filter to GL_NEAREST_MIPMAP_LINEAR on many
-// Mesa/Nvidia drivers) and the per-level crispBlend loop is both wasteful and
-// still causes visible blurring.
+
+
+
+
+
+
 bool Textures::MIPMAP = false;
 C4JRender::eTextureFormat Textures::TEXTURE_FORMAT =
     C4JRender::TEXTURE_FORMAT_RxGyBzAw;
@@ -91,7 +91,7 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"terrain/sun",
     L"armor/power",
 
-    // 1.8.2
+    
     L"mob/cavespider",
     L"mob/enderman",
     L"mob/silverfish",
@@ -101,10 +101,10 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"item/chest",
     L"item/largechest",
 
-    // 1.3.2
+    
     L"item/enderchest",
 
-    // 1.0.1
+    
     L"mob/redcow",
     L"mob/snowman",
     L"mob/enderdragon/ender",
@@ -126,7 +126,7 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"misc/particlefield",
     L"terrain/moon_phases",
 
-    // 1.2.3
+    
     L"mob/ozelot",
     L"mob/cat_black",
     L"mob/cat_red",
@@ -134,11 +134,11 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"mob/villager_golem",
     L"mob/skeleton_wither",
 
-    // TU 14
+    
     L"mob/wolf_collar",
     L"mob/zombie_villager",
 
-    // 1.6.4
+    
     L"item/lead_knot",
 
     L"misc/beacon_beam",
@@ -174,7 +174,7 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"item/trapped",
     L"item/trapped_double",
 
-// 4jcraft: java UI specific
+
 #ifdef ENABLE_JAVA_GUIS
     L"%blur%/misc/vignette",
     L"/achievement/bg",
@@ -204,8 +204,8 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"title/bg/panorama4",
     L"title/bg/panorama5",
 #endif
-// L"item/christmas",
-// L"item/christmas_double",
+
+
 
 #if defined(_LARGE_WORLDS)
     L"misc/additionalmapicons",
@@ -214,127 +214,127 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"font/Default",
     L"font/alternate",
 
-    // skin packs
-    /*	L"/SP1",
-            L"/SP2",
-            L"/SP3",
-            L"/SPF",
+    
+    
 
-            // themes
-            L"/ThSt",
-            L"/ThIr",
-            L"/ThGo",
-            L"/ThDi",
 
-            // gamerpics
-            L"/GPAn",
-            L"/GPCo",
-            L"/GPEn",
-            L"/GPFo",
-            L"/GPTo",
-            L"/GPBA",
-            L"/GPFa",
-            L"/GPME",
-            L"/GPMF",
-            L"/GPMM",
-            L"/GPSE",
 
-            // avatar items
 
-            L"/AH_0006",
-            L"/AH_0003",
-            L"/AH_0007",
-            L"/AH_0005",
-            L"/AH_0004",
-            L"/AH_0001",
-            L"/AH_0002",
-            L"/AT_0001",
-            L"/AT_0002",
-            L"/AT_0003",
-            L"/AT_0004",
-            L"/AT_0005",
-            L"/AT_0006",
-            L"/AT_0007",
-            L"/AT_0008",
-            L"/AT_0009",
-            L"/AT_0010",
-            L"/AT_0011",
-            L"/AT_0012",
-            L"/AP_0001",
-            L"/AP_0002",
-            L"/AP_0003",
-            L"/AP_0004",
-            L"/AP_0005",
-            L"/AP_0006",
-            L"/AP_0007",
-            L"/AP_0009",
-            L"/AP_0010",
-            L"/AP_0011",
-            L"/AP_0012",
-            L"/AP_0013",
-            L"/AP_0014",
-            L"/AP_0015",
-            L"/AP_0016",
-            L"/AP_0017",
-            L"/AP_0018",
-            L"/AA_0001",
-            L"/AT_0013",
-            L"/AT_0014",
-            L"/AT_0015",
-            L"/AT_0016",
-            L"/AT_0017",
-            L"/AT_0018",
-            L"/AP_0019",
-            L"/AP_0020",
-            L"/AP_0021",
-            L"/AP_0022",
-            L"/AP_0023",
-            L"/AH_0008",
-            L"/AH_0009",*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     L"gui/items",
     L"terrain",
 };
 
 Textures::Textures(TexturePackRepository* skins, Options* options) {
-    //    pixels = MemoryTracker::createIntBuffer(2048 * 2048);	// 4J removed -
-    //    now just creating this buffer when we need it
+    
+    
     missingNo = new BufferedImage(16, 16, BufferedImage::TYPE_INT_ARGB);
 
     this->skins = skins;
     this->options = options;
 
-    /* 4J - TODO, maybe...
-    Graphics g = missingNo.getGraphics();
-    g.setColor(Color.WHITE);
-    g.fillRect(0, 0, 64, 64);
-    g.setColor(Color.BLACK);
-    int y = 10;
-    int i = 0;
-    while (y < 64) {
-            String text = (i++ % 2 == 0) ? "missing" : "texture";
-            g.drawString(text, 1, y);
-            y += g.getFont().getSize();
-            if (i % 2 == 0) y += 5;
-    }
+    
 
-g.dispose();
-    */
 
-    // 4J Stu - Changed these to our PreStitchedTextureMap from TextureMap
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     terrain = new PreStitchedTextureMap(Icon::TYPE_TERRAIN, L"terrain",
                                         L"textures/blocks/", missingNo, true);
     items = new PreStitchedTextureMap(Icon::TYPE_ITEM, L"items",
                                       L"textures/items/", missingNo, true);
 
-    // 4J - added - preload a set of commonly used textures that can then be
-    // referenced directly be an enumerated type rather by string
+    
+    
     loadIndexedTextures();
 }
 
 void Textures::loadIndexedTextures() {
-    // 4J - added - preload a set of commonly used textures that can then be
-    // referenced directly be an enumerated type rather by string
+    
+    
     for (int i = 0; i < TN_COUNT - 2; i++) {
         preLoadedIdx[i] =
             loadTexture((TEXTURE_NAME)i, std::wstring(preLoaded[i]) + L".png");
@@ -347,35 +347,35 @@ std::vector<int> Textures::loadTexturePixels(TEXTURE_NAME texId,
 
     {
         std::vector<int> id = pixelsMap[resourceName];
-        // 4J - if resourceName isn't in the map, it should add an element and
-        // as that will use the default constructor, its vector will be empty
+        
+        
         if (!id.empty()) return id;
     }
 
-    // 4J - removed try/catch
-    //    try {
+    
+    
     std::vector<int> res;
-    // wstring in = skin->getResource(resourceName);
-    if (false)  // 4J - removed - was ( in == nullptr)
+    
+    if (false)  
     {
         res = loadTexturePixels(missingNo);
     } else {
-        BufferedImage* bufImage = readImage(texId, resourceName);  // in);
+        BufferedImage* bufImage = readImage(texId, resourceName);  
         res = loadTexturePixels(bufImage);
         delete bufImage;
     }
 
     pixelsMap[resourceName] = res;
     return res;
-    /*
-    }
-            catch (IOException e) {
-            e.printStackTrace();
-            int[] res = loadTexturePixels(missingNo);
-            pixelsMap.put(resourceName, res);
-            return res;
-        }
-            */
+    
+
+
+
+
+
+
+
+
 }
 
 std::vector<int> Textures::loadTexturePixels(BufferedImage* img) {
@@ -409,11 +409,11 @@ int Textures::loadTexture(int idx) {
     }
 }
 
-// 4J added - textures default to standard 32-bit RGBA format, but where we can,
-// use an 8-bit format. There's 3 different varieties of these currently in the
-// renderer that map the single 8-bit channel to RGBA differently.
+
+
+
 void Textures::setTextureFormat(const std::wstring& resourceName) {
-    // 4J Stu - These texture formats are not currently in the render header
+    
     {
         TEXTURE_FORMAT = C4JRender::TEXTURE_FORMAT_RxGyBzAw;
     }
@@ -423,7 +423,7 @@ void Textures::bindTexture(const std::wstring& resourceName) {
     bind(loadTexture(TN_COUNT, resourceName));
 }
 
-// 4J Added
+
 void Textures::bindTexture(ResourceLocation* resource) {
     if (resource->isPreloaded()) {
         bind(loadTexture(resource->getTexture()));
@@ -432,13 +432,13 @@ void Textures::bindTexture(ResourceLocation* resource) {
     }
 }
 
-// 4jcraft: brought over from smartcmd/MinecraftConsoles in TU19 merge
+
 void Textures::bindTextureLayers(ResourceLocation* resource) {
     assert(resource->isPreloaded());
 
-    // Hack: 4JLibs on Windows does not currently reproduce Minecraft's layered
-    // horse texture path reliably. Merge the layers on the CPU and bind the
-    // cached result as a normal single texture instead.
+    
+    
+    
     std::wstring cacheKey = L"%layered%";
     int layers = resource->getTextureCount();
     for (int i = 0; i < layers; i++) {
@@ -451,8 +451,8 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
     if (inMap) {
         id = idMap[cacheKey];
     } else {
-        // Cache by layer signature so the merge cost is only paid once per
-        // horse texture combination.
+        
+        
         std::vector<int> mergedPixels;
         int mergedWidth = 0;
         int mergedHeight = 0;
@@ -537,17 +537,17 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
 }
 
 void Textures::bind(int id) {
-    // 4jcraft: Classic GUI code still performs some raw glBindTexture calls, so
-    // this path must always rebind rather than trusting lastBoundId to be in
-    // sync.
-    // TODO(4jcraft): Long term, route all texture binds through one
-    // synchronized path or invalidate lastBoundId at every raw glBindTexture
-    // call so this can safely use cached binds again without breaking font/UI
-    // rendering. if (id != lastBoundId)
+    
+    
+    
+    
+    
+    
+    
     {
         if (id < 0) return;
         glBindTexture(GL_TEXTURE_2D, id);
-        // lastBoundId = id;
+        
     }
 }
 
@@ -573,23 +573,23 @@ void Textures::clearLastBoundId() { lastBoundId = -1; }
 
 int Textures::loadTexture(TEXTURE_NAME texId,
                           const std::wstring& resourceName) {
-    // 	char buf[256];
-    // 	wcstombs(buf, resourceName.c_str(), 256);
-    // 	printf("Textures::loadTexture name - %s\n",buf);
+    
+    
+    
 
-    // if (resourceName.compare(L"/terrain.png") == 0)
-    //{
-    //	terrain->getStitchedTexture()->bind(0);
-    //	return terrain->getStitchedTexture()->getGlId();
-    // }
-    // if (resourceName.compare(L"/gui/items.png") == 0)
-    //{
-    //	items->getStitchedTexture()->bind(0);
-    //	return items->getStitchedTexture()->getGlId();
-    // }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
-    // If the texture is not present in the idMap, load it, otherwise return its
-    // id
+    
+    
 
     {
         bool inMap = (idMap.find(resourceName) != idMap.end());
@@ -599,7 +599,7 @@ int Textures::loadTexture(TEXTURE_NAME texId,
 
     std::wstring pathName = resourceName;
 
-    // 4J - added special cases to avoid mipmapping on clouds & shadows
+    
     if ((resourceName == L"environment/clouds.png") ||
         (resourceName == L"%clamp%misc/shadow.png") ||
         (resourceName == L"%blur%misc/pumpkinblur.png") ||
@@ -611,45 +611,45 @@ int Textures::loadTexture(TEXTURE_NAME texId,
     }
     setTextureFormat(resourceName);
 
-    // 4J - removed try/catch
-    //    try {
+    
+    
     int id = MemoryTracker::genTextures();
 
     std::wstring prefix = L"%blur%";
     bool blur = resourceName.substr(0, prefix.size()).compare(prefix) ==
-                0;  // resourceName.startsWith("%blur%");
+                0;  
     if (blur) pathName = resourceName.substr(6);
 
     prefix = L"%clamp%";
     bool clamp = resourceName.substr(0, prefix.size()).compare(prefix) ==
-                 0;  // resourceName.startsWith("%clamp%");
+                 0;  
     if (clamp) pathName = resourceName.substr(7);
 
-    // wstring in = skins->getSelected()->getResource(pathName);
-    if (false)  // 4J - removed was ( in == nullptr)
+    
+    if (false)  
     {
         loadTexture(missingNo, id, blur, clamp);
     } else {
-        // 4J Stu - Get resource above just returns the name for texture packs
-        BufferedImage* bufImage = readImage(texId, pathName);  // in);
+        
+        BufferedImage* bufImage = readImage(texId, pathName);  
         loadTexture(bufImage, id, blur, clamp);
         delete bufImage;
     }
 
     idMap[resourceName] = id;
-    MIPMAP = true;  // 4J added
+    MIPMAP = true;  
     TEXTURE_FORMAT = C4JRender::TEXTURE_FORMAT_RxGyBzAw;
     return id;
-    /*
-} catch (IOException e) {
-e.printStackTrace();
-MemoryTracker.genTextures(ib);
-int id = ib.get(0);
-loadTexture(missingNo, id);
-idMap.put(resourceName, id);
-return id;
-}
-*/
+    
+
+
+
+
+
+
+
+
+
 }
 
 int Textures::getTexture(BufferedImage* img, C4JRender::eTextureFormat format,
@@ -665,28 +665,28 @@ int Textures::getTexture(BufferedImage* img, C4JRender::eTextureFormat format,
 }
 
 void Textures::loadTexture(BufferedImage* img, int id) {
-    //	printf("Textures::loadTexture BufferedImage %d\n",id);
+    
 
     loadTexture(img, id, false, false);
 }
 
 void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
-    //	printf("Textures::loadTexture BufferedImage with blur and clamp
-    //%d\n",id);
+    
+    
     int iMipLevels = 1;
     glBindTexture(GL_TEXTURE_2D, id);
 
     if (MIPMAP) {
-        // Linux/PC port: force GL_NEAREST to avoid mip-level distance blurring
-        // and keep Minecraft textures pixel-crisp at all distances.
+        
+        
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        /*
-         * glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_LOD, 0);
-         * glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LOD, 4);
-         * glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-         * glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
-         */
+        
+
+
+
+
+
     } else {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -726,44 +726,44 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
         newPixels[i * 4 + 2] = (uint8_t)b;
         newPixels[i * 4 + 3] = (uint8_t)a;
     }
-    // 4J - now creating a buffer of the size we require dynamically
+    
     ByteBuffer* pixels = MemoryTracker::createByteBuffer(w * h * 4);
     pixels->clear();
     pixels->put(newPixels);
     pixels->position(0)->limit(newPixels.size());
 
     if (MIPMAP) {
-        // 4J-PB - In the new XDK, the CreateTexture will fail if the number of
-        // mipmaps is higher than the width & height passed in will allow!
+        
+        
         int iWidthMips = 1;
         int iHeightMips = 1;
         while ((8 << iWidthMips) < w) iWidthMips++;
         while ((8 << iHeightMips) < h) iHeightMips++;
 
         iMipLevels = (iWidthMips < iHeightMips) ? iWidthMips : iHeightMips;
-        // RenderManager.TextureSetTextureLevels(5);	// 4J added
+        
         if (iMipLevels > 5) iMipLevels = 5;
-        RenderManager.TextureSetTextureLevels(iMipLevels);  // 4J added
+        RenderManager.TextureSetTextureLevels(iMipLevels);  
     }
     RenderManager.TextureData(w, h, pixels->getBuffer(), 0, TEXTURE_FORMAT);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL12.GL_BGRA,
-    // GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixels);
+    
+    
 
     if (MIPMAP) {
         for (int level = 1; level < iMipLevels; level++) {
             int ow = w >> (level - 1);
-            // int oh = h >> (level - 1);
+            
 
             int ww = w >> level;
             int hh = h >> level;
 
-            // 4J - added tempData so we aren't overwriting source data
+            
             unsigned int* tempData = new unsigned int[ww * hh];
-            // 4J - added - have we loaded mipmap data for this level? Use that
-            // rather than generating if possible
+            
+            
             if (img->getData(level)) {
                 memcpy(tempData, img->getData(level), ww * hh * 4);
-                // Swap ARGB to RGBA
+                
                 for (int i = 0; i < ww * hh; i++) {
                     tempData[i] = (tempData[i] >> 24) | (tempData[i] << 8);
                 }
@@ -778,9 +778,9 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
                             ((x * 2 + 1) + (y * 2 + 1) * ow) * 4);
                         int c3 = pixels->getInt(
                             ((x * 2 + 0) + (y * 2 + 1) * ow) * 4);
-                        // 4J - convert our RGBA texels to ARGB that crispBlend
-                        // is expecting 4jcraft, added uint cast to pervent
-                        // shift of neg int
+                        
+                        
+                        
                         c0 =
                             ((c0 >> 8) & 0x00ffffff) | ((unsigned int)c0 << 24);
                         c1 =
@@ -792,7 +792,7 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
                         int col =
                             Texture::crispBlend(Texture::crispBlend(c0, c1),
                                                 Texture::crispBlend(c2, c3));
-                        // 4J - and back from ARGB -> RGBA
+                        
                         col = ((unsigned int)col << 8) | ((col >> 24) & 0xff);
                         tempData[x + y * ww] = col;
                     }
@@ -807,11 +807,11 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
         }
     }
 
-    /*
-     * if (MIPMAP) { GLU.gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, w, h,
-     * GL_RGBA, GL_UNSIGNED_BYTE, pixels); } else { }
-     */
-    delete pixels;  // 4J - now creating this dynamically
+    
+
+
+
+    delete pixels;  
 }
 
 std::vector<int> Textures::anaglyph(std::vector<int>& rawPixels) {
@@ -836,7 +836,7 @@ void Textures::replaceTexture(std::vector<int>& rawPixels, int w, int h,
                               int id) {
     bind(id);
 
-    // Removed in Java
+    
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -872,28 +872,28 @@ void Textures::replaceTexture(std::vector<int>& rawPixels, int w, int h,
         newPixels[i * 4 + 3] = (uint8_t)a;
     }
     ByteBuffer* pixels = MemoryTracker::createByteBuffer(
-        w * h * 4);  // 4J - now creating dynamically
+        w * h * 4);  
     pixels->put(newPixels);
     pixels->position(0)->limit(newPixels.size());
 
-    // New
-    // glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, GL12.GL_BGRA,
-    // GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixels);
+    
+    
+    
     RenderManager.TextureDataUpdate(0, 0, w, h, pixels->getBuffer(), 0);
-    // Old
-    // glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE,
-    // pixels);
+    
+    
+    
     delete pixels;
 }
 
-// 4J - added. This is a more minimal version of replaceTexture that assumes the
-// texture bytes are already in order, and so doesn't do any of the extra
-// copying round that the original java version does
+
+
+
 void Textures::replaceTextureDirect(const std::vector<int>& rawPixels, int w,
                                     int h, int id) {
     glBindTexture(GL_TEXTURE_2D, id);
 
-    // Remove in Java
+    
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -906,14 +906,14 @@ void Textures::replaceTextureDirect(const std::vector<int>& rawPixels, int w,
                                     const_cast<int*>(rawPixels.data()), 0);
 }
 
-// 4J - added. This is a more minimal version of replaceTexture that assumes the
-// texture bytes are already in order, and so doesn't do any of the extra
-// copying round that the original java version does
+
+
+
 void Textures::replaceTextureDirect(const std::vector<short>& rawPixels, int w,
                                     int h, int id) {
     glBindTexture(GL_TEXTURE_2D, id);
 
-    // Remove in Java
+    
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -995,7 +995,7 @@ void Textures::removeHttpTexture(const std::wstring& url) {
     }
 }
 
-// 4J-PB - adding for texture in memory (from global title storage)
+
 int Textures::loadMemTexture(const std::wstring& url,
                              const std::wstring& backup) {
     MemTexture* texture = nullptr;
@@ -1004,13 +1004,13 @@ int Textures::loadMemTexture(const std::wstring& url,
         texture = (*it).second;
     }
     if (texture == nullptr && app.IsFileInMemoryTextures(url)) {
-        // If we haven't loaded it yet, but we have the data for it then add it
+        
         texture = addMemTexture(url, new MobSkinMemTextureProcessor());
     }
     if (texture != nullptr) {
         if (texture->loadedImage != nullptr && !texture->isLoaded) {
-            // 4J - Disable mipmapping in general for skins & capes. Have seen
-            // problems with edge-on polys for some eg mumbo jumbo
+            
+            
             if ((url.substr(0, 7) == L"dlcskin") ||
                 (url.substr(0, 7) == L"dlccape")) {
                 MIPMAP = false;
@@ -1041,14 +1041,14 @@ int Textures::loadMemTexture(const std::wstring& url, int backup) {
         texture = (*it).second;
     }
     if (texture == nullptr && app.IsFileInMemoryTextures(url)) {
-        // If we haven't loaded it yet, but we have the data for it then add it
+        
         texture = addMemTexture(url, new MobSkinMemTextureProcessor());
     }
     if (texture != nullptr) {
         texture->ticksSinceLastUse = 0;
         if (texture->loadedImage != nullptr && !texture->isLoaded) {
-            // 4J - Disable mipmapping in general for skins & capes. Have seen
-            // problems with edge-on polys for some eg mumbo jumbo
+            
+            
             if ((url.substr(0, 7) == L"dlcskin") ||
                 (url.substr(0, 7) == L"dlccape")) {
                 MIPMAP = false;
@@ -1078,7 +1078,7 @@ MemTexture* Textures::addMemTexture(const std::wstring& name,
         texture = (*it).second;
     }
     if (texture == nullptr) {
-        // can we find it in the app mem files?
+        
         std::uint8_t* pbData = nullptr;
         unsigned int dwBytes = 0;
         app.GetMemFileDetails(name, &pbData, &dwBytes);
@@ -1087,8 +1087,8 @@ MemTexture* Textures::addMemTexture(const std::wstring& name,
             texture = new MemTexture(name, pbData, dwBytes, processor);
             memTextures[name] = texture;
         } else {
-            // 4J Stu - Make an entry for this anyway and we can populate it
-            // later
+            
+            
             memTextures[name] = nullptr;
         }
     } else {
@@ -1100,16 +1100,16 @@ MemTexture* Textures::addMemTexture(const std::wstring& name,
     return texture;
 }
 
-// MemTexture *Textures::getMemTexture(const wstring& url, MemTextureProcessor
-// *processor)
-// {
-// 	MemTexture *texture = memTextures[url];
-// 	if (texture != nullptr)
-// 	{
-// 		texture->count++;
-// 	}
-// 	return texture;
-// }
+
+
+
+
+
+
+
+
+
+
 
 void Textures::removeMemTexture(const std::wstring& url) {
     MemTexture* texture = nullptr;
@@ -1117,7 +1117,7 @@ void Textures::removeMemTexture(const std::wstring& url) {
     if (it != memTextures.end()) {
         texture = (*it).second;
 
-        // If it's nullptr then we should just remove the entry
+        
         if (texture == nullptr) memTextures.erase(url);
     }
     if (texture != nullptr) {
@@ -1132,31 +1132,31 @@ void Textures::removeMemTexture(const std::wstring& url) {
 
 void Textures::tick(
     bool updateTextures,
-    bool tickDynamics)  // 4J added updateTextures parameter & tickDynamics
+    bool tickDynamics)  
 {
     if (tickDynamics) {
-        // 4J - added - if we aren't updating the final renderer textures, just
-        // tick each of the dynamic textures instead. This is used so that in
-        // frames were we have multiple ticks due to framerate compensation,
-        // that we don't lock the renderer textures twice needlessly and force
-        // the CPU to sync with the GPU.
+        
+        
+        
+        
+        
         if (!updateTextures) {
             return;
         }
 
-        // 4J - added - tell renderer that we're about to do a block of dynamic
-        // texture updates, so we can unlock the resources after they are done
-        // rather than a series of locks/unlocks
-        // RenderManager.TextureDynamicUpdateStart();
+        
+        
+        
+        
         terrain->cycleAnimationFrames();
         items->cycleAnimationFrames();
-        // RenderManager.TextureDynamicUpdateEnd();	// 4J added - see
-        // comment above
+        
+        
     }
 
-    // 4J - go over all the memory textures once per frame, and free any that
-    // haven't been used for a while. Ones that are being used will have their
-    // ticksSinceLastUse reset in Textures::loadMemTexture.
+    
+    
+    
     for (auto it = memTextures.begin(); it != memTextures.end();) {
         MemTexture* tex = it->second;
 
@@ -1184,18 +1184,18 @@ void Textures::reloadAll() {
     loadIndexedTextures();
 
     pixelsMap.clear();
-    // 4J Stu - These are not used any more
-    // WaterColor::init(loadTexturePixels(L"misc/watercolor.png"));
-    // GrassColor::init(loadTexturePixels(L"misc/grasscolor.png"));
-    // FoliageColor::init(loadTexturePixels(L"misc/foliagecolor.png"));
+    
+    
+    
+    
 
     stitch();
 
     skins->clearInvalidTexturePacks();
 
-    // Recalculate fonts
-    // Minecraft::GetInstance()->font->loadCharacterWidths();
-    // Minecraft::GetInstance()->altFont->loadCharacterWidths();
+    
+    
+    
 }
 
 void Textures::stitch() {
@@ -1214,10 +1214,10 @@ Icon* Textures::getMissingIcon(int type) {
 }
 
 BufferedImage* Textures::readImage(
-    TEXTURE_NAME texId, const std::wstring& name)  // 4J was InputStream *in
+    TEXTURE_NAME texId, const std::wstring& name)  
 {
     BufferedImage* img = nullptr;
-    // is this image one of the Title Update ones?
+    
     bool isTu = IsTUImage(texId, name);
     std::wstring drive = L"";
 
@@ -1226,7 +1226,7 @@ BufferedImage* Textures::readImage(
         drive = skins->getSelected()->getPath(isTu);
         img = skins->getSelected()->getImageResource(
             name, false, isTu,
-            drive);  // new BufferedImage(name,false,isTu,drive);
+            drive);  
     } else {
         {
             drive = skins->getDefault()->getPath(isTu);
@@ -1235,19 +1235,19 @@ BufferedImage* Textures::readImage(
         if (IsOriginalImage(texId, name) || isTu) {
             img = skins->getDefault()->getImageResource(
                 name, false, isTu,
-                drive);  // new BufferedImage(name,false,isTu,drive);
+                drive);  
         } else {
             img = skins->getDefault()->getImageResource(
                 L"1_2_2/" + name, false, isTu,
-                drive);  // new BufferedImage(L"/1_2_2" +
-                         // name,false,isTu,drive);
+                drive);  
+                         
         }
     }
 
     return img;
 }
 
-// Match the preload images from their enum to avoid a ton of string comparisons
+
 TEXTURE_NAME TUImages[] = {
     TN_POWERED_CREEPER, TN_MOB_ENDERMAN_EYES, TN_MISC_EXPLOSION, TN_MOB_ZOMBIE,
     TN_MISC_FOOTSTEP, TN_MOB_RED_COW, TN_MOB_SNOWMAN, TN_MOB_ENDERDRAGON,
@@ -1256,14 +1256,14 @@ TEXTURE_NAME TUImages[] = {
     TN_MOB_ENDERDRAGON_ENDEREYES, TN__BLUR__MISC_GLINT, TN_ITEM_BOOK,
     TN_MISC_PARTICLEFIELD,
 
-    // TU9
+    
     TN_MISC_TUNNEL, TN_MOB_ENDERDRAGON_BEAM, TN_GUI_ITEMS, TN_TERRAIN,
     TN_MISC_MAPICONS,
 
-    // TU12
+    
     TN_MOB_WITHER_SKELETON,
 
-    // TU14
+    
     TN_TILE_ENDER_CHEST, TN_ART_KZ, TN_MOB_WOLF_TAME, TN_MOB_WOLF_COLLAR,
     TN_PARTICLES, TN_MOB_ZOMBIE_VILLAGER,
 
@@ -1286,29 +1286,29 @@ TEXTURE_NAME TUImages[] = {
     TN_MOB_WITHER, TN_MOB_WITHER_ARMOR, TN_MOB_WITHER_INVULNERABLE,
 
     TN_TILE_TRAP_CHEST, TN_TILE_LARGE_TRAP_CHEST,
-// TN_TILE_XMAS_CHEST,
-// TN_TILE_LARGE_XMAS_CHEST,
+
+
 
 #if defined(_LARGE_WORLDS)
     TN_MISC_ADDITIONALMAPICONS,
 #endif
 
-    // TU17
+    
     TN_DEFAULT_FONT,
-    // TN_ALT_FONT, // Not in TU yet
+    
 
-    TN_COUNT  // Why is this here?
+    TN_COUNT  
 };
 
-// This is for any TU textures that aren't part of our enum indexed preload set
+
 const wchar_t* const TUImagePaths[] = {
     L"font/Default", L"font/Mojangles_7", L"font/Mojangles_11",
 
-    // TU12
+    
     L"armor/cloth_1.png", L"armor/cloth_1_b.png", L"armor/cloth_2.png",
     L"armor/cloth_2_b.png",
 
-    //
+    
 
     nullptr};
 

@@ -40,7 +40,7 @@ void JukeboxTile::Entity::save(CompoundTag* tag) {
     }
 }
 
-// 4J Added
+
 std::shared_ptr<TileEntity> JukeboxTile::Entity::clone() {
     std::shared_ptr<JukeboxTile::Entity> result =
         std::make_shared<JukeboxTile::Entity>();
@@ -71,10 +71,10 @@ Icon* JukeboxTile::getTexture(int face, int data) {
     return icon;
 }
 
-// 4J-PB - Adding a TestUse for tooltip display
+
 bool JukeboxTile::TestUse(Level* level, int x, int y, int z,
                           std::shared_ptr<Player> player) {
-    // if the jukebox is empty, return true
+    
     if (level->getData(x, y, z) == 0) return false;
     return true;
 }
@@ -82,7 +82,7 @@ bool JukeboxTile::TestUse(Level* level, int x, int y, int z,
 bool JukeboxTile::use(Level* level, int x, int y, int z,
                       std::shared_ptr<Player> player, int clickedFace,
                       float clickX, float clickY, float clickZ,
-                      bool soundOnly /*=false*/)  // 4J added soundOnly param
+                      bool soundOnly )  
 {
     if (soundOnly) return false;
     if (level->getData(x, y, z) == 0) return false;
@@ -115,8 +115,8 @@ void JukeboxTile::dropRecording(Level* level, int x, int y, int z) {
     if (oldRecord == nullptr) return;
 
     level->levelEvent(LevelEvent::SOUND_PLAY_RECORDING, x, y, z, 0);
-    // 4J-PB- the level event will play the music
-    // level->playStreamingMusic(L"", x, y, z);
+    
+    
     rte->setRecord(nullptr);
     rte->setChanged();
     level->setData(x, y, z, 0, Tile::UPDATE_CLIENTS);

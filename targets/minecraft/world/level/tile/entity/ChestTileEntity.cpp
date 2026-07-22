@@ -49,12 +49,12 @@ void ChestTileEntity::_init(bool isBonusChest) {
     name = L"";
 }
 
-ChestTileEntity::ChestTileEntity(bool isBonusChest /* = false*/)
+ChestTileEntity::ChestTileEntity(bool isBonusChest )
     : TileEntity() {
     _init(isBonusChest);
 }
 
-ChestTileEntity::ChestTileEntity(int type, bool isBonusChest /* = false*/)
+ChestTileEntity::ChestTileEntity(int type, bool isBonusChest )
     : TileEntity() {
     _init(isBonusChest);
 
@@ -76,14 +76,14 @@ std::shared_ptr<ItemInstance> ChestTileEntity::removeItem(unsigned int slot,
             std::shared_ptr<ItemInstance> item = (*items)[slot];
             (*items)[slot] = nullptr;
             setChanged();
-            // 4J Stu - Fix for duplication glitch
+            
             if (item->count <= 0) return nullptr;
             return item;
         } else {
             std::shared_ptr<ItemInstance> i = (*items)[slot]->remove(count);
             if ((*items)[slot]->count == 0) (*items)[slot] = nullptr;
             setChanged();
-            // 4J Stu - Fix for duplication glitch
+            
             if (i->count <= 0) return nullptr;
             return i;
         }
@@ -249,8 +249,8 @@ void ChestTileEntity::tick() {
     if (!level->isClientSide && openCount != 0 &&
         (tickInterval + x + y + z) % (SharedConstants::TICKS_PER_SECOND * 10) ==
             0) {
-        //            level.tileEvent(x, y, z, Tile.chest.id,
-        //            ChestTile.EVENT_SET_OPEN_COUNT, openCount);
+        
+        
 
         openCount = 0;
 
@@ -292,8 +292,8 @@ void ChestTileEntity::tick() {
             if (s.lock() != nullptr) zc += 0.5;
             if (e.lock() != nullptr) xc += 0.5;
 
-            // 4J-PB - Seems the chest open volume is much louder than other
-            // sounds from user reports. We'll tone it down a bit
+            
+            
             level->playSound(xc, y + 0.5, zc, eSoundType_RANDOM_CHEST_OPEN,
                              0.2f, level->random->nextFloat() * 0.1f + 0.9f);
         }
@@ -309,17 +309,17 @@ void ChestTileEntity::tick() {
         }
         float lim = 0.5f;
         if (openness < lim && oldOpen >= lim) {
-            // Fix for #64546 - Customer Encountered: TU7: Chests placed by the
-            // Player are closing too fast.
-            // openness = 0;
+            
+            
+            
             if (n.lock() == nullptr && w.lock() == nullptr) {
                 double xc = x + 0.5;
                 double zc = z + 0.5;
                 if (s.lock() != nullptr) zc += 0.5;
                 if (e.lock() != nullptr) xc += 0.5;
 
-                // 4J-PB - Seems the chest open volume is much louder than other
-                // sounds from user reports. We'll tone it down a bit
+                
+                
                 level->playSound(xc, y + 0.5, zc, eSoundType_RANDOM_CHEST_CLOSE,
                                  0.2f,
                                  level->random->nextFloat() * 0.1f + 0.9f);
@@ -385,7 +385,7 @@ int ChestTileEntity::getType() {
     return type;
 }
 
-// 4J Added
+
 std::shared_ptr<TileEntity> ChestTileEntity::clone() {
     std::shared_ptr<ChestTileEntity> result =
         std::make_shared<ChestTileEntity>();

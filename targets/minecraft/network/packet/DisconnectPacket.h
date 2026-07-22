@@ -45,8 +45,8 @@ public:
         eDisconnect_CustomText,
     };
 
-    // 4J Stu - The reason was a string, but we need to send a non-locale
-    // specific reason
+    
+    
     eDisconnectReason reason;
 
     std::wstring m_customText;

@@ -25,14 +25,14 @@ int UIScene_InGameSaveManagementMenu::loadSaveDataThumbnailReturned(
 UIScene_InGameSaveManagementMenu::UIScene_InGameSaveManagementMenu(
     int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_iRequestingThumbnailId = 0;
     m_iSaveInfoC = 0;
     m_bIgnoreInput = false;
     m_iState = e_SavesIdle;
-    // m_bRetrievingSaveInfo=false;
+    
 
     m_buttonListSaves.init(eControl_SavesList);
 
@@ -50,19 +50,19 @@ UIScene_InGameSaveManagementMenu::UIScene_InGameSaveManagementMenu(
     m_saveDetails = nullptr;
     m_iSaveDetailsCount = 0;
 
-    // block input if we're waiting for DLC to install, and wipe the saves list.
-    // The end of dlc mounting custom message will fill the list again
+    
+    
     if (app.StartInstallDLCProcess(m_iPad) == true || app.DLCInstallPending()) {
-        // if we're waiting for DLC to mount, don't fill the save list. The
-        // custom message on end of dlc mounting will do that
+        
+        
         m_bIgnoreInput = true;
     } else {
         Initialise();
     }
 
-    // If we're not ignoring input, then we aren't still waiting for the DLC to
-    // mount, and can now check for corrupt dlc. Otherwise this will happen when
-    // the dlc has finished mounting.
+    
+    
+    
     if (!m_bIgnoreInput) {
         app.m_dlcManager.checkForCorruptDLCAndAlert();
     }
@@ -94,15 +94,15 @@ void UIScene_InGameSaveManagementMenu::updateTooltips() {
         IDS_SAVE_INCOMPLETE_RETRY_SAVING);
 }
 
-//
+
 void UIScene_InGameSaveManagementMenu::Initialise() {
     m_iSaveListIndex = 0;
 
     if (StorageManager.GetSaveDisabled()) {
         GetSaveInfo();
     } else {
-        // 4J-PB - we need to check that there is enough space left to create a
-        // copy of the save (for a rename)
+        
+        
         bool bCanRename = StorageManager.EnoughSpaceForAMinSaveGame();
 
         GetSaveInfo();
@@ -126,7 +126,7 @@ void UIScene_InGameSaveManagementMenu::handleGainFocus(bool navBack) {
     updateTooltips();
 
     if (navBack) {
-        // re-enable button presses
+        
         m_bIgnoreInput = false;
     }
 }
@@ -138,21 +138,21 @@ std::wstring UIScene_InGameSaveManagementMenu::getMoviePath() {
 void UIScene_InGameSaveManagementMenu::tick() {
     UIScene::tick();
 
-    if (m_bExitScene)  // navigate forward or back
+    if (m_bExitScene)  
     {
         if (!m_bRetrievingSaveThumbnails) {
-            // need to wait for any callback retrieving thumbnail to complete
+            
             navigateBack();
         }
     }
-    // Stop loading thumbnails if we navigate forwards
+    
     if (hasFocus(m_iPad)) {
         if (m_bUpdateSaveSize) {
             m_spaceIndicatorSaves.selectSave(m_iSaveListIndex);
             m_bUpdateSaveSize = false;
         }
 
-        // Display the saves if we have them
+        
         if (!m_bSavesDisplayed) {
             m_pSaveDetails = StorageManager.ReturnSavesInfo();
             if (m_pSaveDetails != nullptr) {
@@ -184,7 +184,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
                 }
                 m_controlSavesTimer.setVisible(false);
 
-                // set focus on the first button
+                
             }
         }
 
@@ -193,7 +193,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
             if (m_iRequestingThumbnailId < (m_buttonListSaves.getItemCount())) {
                 m_bRetrievingSaveThumbnails = true;
                 app.DebugPrintf("Requesting the first thumbnail\n");
-                // set the save to load
+                
                 PSAVE_DETAILS pSaveDetails = StorageManager.ReturnSavesInfo();
                 C4JStorage::ESaveGameState eLoadStatus =
                     StorageManager.LoadSaveDataThumbnail(
@@ -203,7 +203,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
                         });
 
                 if (eLoadStatus != C4JStorage::ESaveGame_GetSaveThumbnail) {
-                    // something went wrong
+                    
                     m_bRetrievingSaveThumbnails = false;
                     m_bAllLoaded = true;
                 }
@@ -211,22 +211,22 @@ void UIScene_InGameSaveManagementMenu::tick() {
         } else if (m_bSavesDisplayed && m_bSaveThumbnailReady) {
             m_bSaveThumbnailReady = false;
 
-            // check we're not waiting to exit the scene
+            
             if (!m_bExitScene) {
-                // convert to utf16
+                
                 std::uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
 #if defined(_WINDOWS64)
                 int result = ::MultiByteToWideChar(
-                    CP_UTF8,               // convert from UTF-8
-                    MB_ERR_INVALID_CHARS,  // error on invalid chars
+                    CP_UTF8,               
+                    MB_ERR_INVALID_CHARS,  
                     m_saveDetails[m_iRequestingThumbnailId]
-                        .UTF8SaveFilename,    // source UTF-8 string
-                    MAX_SAVEFILENAME_LENGTH,  // total length of source UTF-8
-                                              // string,
-                    // in char's (= bytes), including end-of-string \0
-                    (wchar_t*)u16Message,    // destination buffer
-                    MAX_SAVEFILENAME_LENGTH  // size of destination buffer, in
-                                             // wchar_t's
+                        .UTF8SaveFilename,    
+                    MAX_SAVEFILENAME_LENGTH,  
+                                              
+                    
+                    (wchar_t*)u16Message,    
+                    MAX_SAVEFILENAME_LENGTH  
+                                             
                 );
 #else
                 uint32_t srcmax, dstmax;
@@ -257,7 +257,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
                 if (m_iRequestingThumbnailId <
                     (m_buttonListSaves.getItemCount())) {
                     app.DebugPrintf("Requesting another thumbnail\n");
-                    // set the save to load
+                    
                     PSAVE_DETAILS pSaveDetails =
                         StorageManager.ReturnSavesInfo();
                     C4JStorage::ESaveGameState eLoadStatus =
@@ -269,7 +269,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
                                                                      bytes);
                             });
                     if (eLoadStatus != C4JStorage::ESaveGame_GetSaveThumbnail) {
-                        // something went wrong
+                        
                         m_bRetrievingSaveThumbnails = false;
                         m_bAllLoaded = true;
                     }
@@ -278,7 +278,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
                     m_bAllLoaded = true;
                 }
             } else {
-                // stop retrieving thumbnails, and exit
+                
                 m_bRetrievingSaveThumbnails = false;
             }
         }
@@ -295,8 +295,8 @@ void UIScene_InGameSaveManagementMenu::tick() {
             m_bSavesDisplayed = false;
             m_iSaveInfoC = 0;
             m_buttonListSaves.clearList();
-            // StorageManager.ClearSavesInfo();
-            // GetSaveInfo();
+            
+            
             m_iState = e_SavesIdle;
             break;
     }
@@ -305,11 +305,11 @@ void UIScene_InGameSaveManagementMenu::tick() {
 void UIScene_InGameSaveManagementMenu::GetSaveInfo() {
     unsigned int uiSaveC = 0;
 
-    // This will return with the number retrieved in uiSaveC
+    
 
-    // clear the saves list
+    
     m_bSavesDisplayed =
-        false;  // we're blocking the exit from this scene until complete
+        false;  
     m_buttonListSaves.clearList();
     m_iSaveInfoC = 0;
     m_controlSavesTimer.setVisible(true);
@@ -329,7 +329,7 @@ void UIScene_InGameSaveManagementMenu::handleInput(int iPad, int key,
                                                    bool& handled) {
     if (m_bIgnoreInput) return;
 
-    // if we're retrieving save info, ignore key presses
+    
     if (!m_bSavesDisplayed) return;
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
@@ -376,9 +376,9 @@ void UIScene_InGameSaveManagementMenu::handlePress(F64 controlId, F64 childId) {
         case eControl_SavesList: {
             m_bIgnoreInput = true;
 
-            // delete the save game
-            // Have to ask the player if they are sure they want to delete this
-            // game
+            
+            
+            
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_CONFIRM_CANCEL;
             uiIDA[1] = IDS_CONFIRM_OK;
@@ -397,7 +397,7 @@ int UIScene_InGameSaveManagementMenu::DeleteSaveDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_InGameSaveManagementMenu* pClass =
         (UIScene_InGameSaveManagementMenu*)pParam;
-    // results switched for this dialog
+    
 
     if (result == C4JStorage::EMessage_ResultDecline) {
         if (app.DebugSettingsOn() && app.GetLoadSavesFromFolderEnabled()) {
@@ -419,7 +419,7 @@ int UIScene_InGameSaveManagementMenu::DeleteSaveDialogReturned(
 
 int UIScene_InGameSaveManagementMenu::deleteSaveDataReturned(bool bRes) {
     if (bRes) {
-        // wipe the list and repopulate it
+        
         m_iState = e_SavesRepopulateAfterDelete;
     } else
         m_bIgnoreInput = false;

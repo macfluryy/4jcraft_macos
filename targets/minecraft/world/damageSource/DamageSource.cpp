@@ -150,20 +150,20 @@ float DamageSource::getFoodExhaustion() { return exhaustion; }
 
 bool DamageSource::isBypassInvul() { return _bypassInvul; }
 
-// DamageSource::DamageSource(const wstring &msgId)
+
 DamageSource::DamageSource(ChatPacket::EChatPacketMessage msgId,
                            ChatPacket::EChatPacketMessage msgWithItemId) {
-    // 4J added initialisors
+    
     _bypassArmor = false;
     _bypassInvul = false;
-    // food exhastion caused by being damaged by this source
+    
     exhaustion = FoodConstants::EXHAUSTION_ATTACK;
     isFireSource = false;
     _isProjectile = false;
     _isMagic = false;
     _isExplosion = false;
 
-    // this->msgId = msgId;
+    
     m_msgId = msgId;
     m_msgWithItemId = msgWithItemId;
 }
@@ -176,7 +176,7 @@ std::shared_ptr<Entity> DamageSource::getEntity() {
 
 DamageSource* DamageSource::bypassArmor() {
     _bypassArmor = true;
-    // these kinds of damages don't cause the player to grow more hungry
+    
     exhaustion = 0;
     return this;
 }
@@ -205,11 +205,11 @@ DamageSource* DamageSource::setMagic() {
     return this;
 }
 
-// wstring DamageSource::getLocalizedDeathMessage(shared_ptr<Player> player)
-//{
-//	return L"death." + msgId + player->name;
-//	//return I18n.get(L"death." + msgId, player.name);
-// }
+
+
+
+
+
 
 std::shared_ptr<ChatPacket> DamageSource::getDeathMessagePacket(
     std::shared_ptr<LivingEntity> player) {
@@ -230,11 +230,11 @@ bool DamageSource::isFire() { return isFireSource; }
 
 ChatPacket::EChatPacketMessage DamageSource::getMsgId() { return m_msgId; }
 
-// 4J: Very limited check for equality (used to detect fall damage, etc)
+
 bool DamageSource::equals(DamageSource* source) {
     return m_msgId == source->m_msgId &&
            m_msgWithItemId == source->m_msgWithItemId;
 }
 
-// 4J: Copy function
+
 DamageSource* DamageSource::copy() { return new DamageSource(*this); }

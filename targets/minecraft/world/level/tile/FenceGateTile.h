@@ -15,8 +15,8 @@ public:
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
-            TileEntity>());  // 4J added forceData, forceEntity param // Brought
-                             // forward from 1.2.3
+            TileEntity>());  
+                             
     virtual bool blocksLight();
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool isCubeShaped();
@@ -30,7 +30,7 @@ public:
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
-                     bool soundOnly = false);  // 4J added soundOnly param
+                     bool soundOnly = false);  
     virtual void neighborChanged(Level* level, int x, int y, int z, int type);
     static bool isOpen(int data);
     void registerIcons(IconRegister* iconRegister);

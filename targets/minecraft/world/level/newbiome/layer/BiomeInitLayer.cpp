@@ -20,13 +20,13 @@ BiomeInitLayer::BiomeInitLayer(int64_t seed, std::shared_ptr<Layer> parent,
         startBiomes[4] = Biome::plains;
         startBiomes[5] = Biome::taiga;
     } else if (levelType == LevelType::lvl_triple) {
-        // 4J macOS - Triple world type: only three biomes are available.
-        // Forest gives the dense flower / oak-tree look from screenshot 1,
-        // ice plains drives the snowy / orange-sand frozen-beach scenery
-        // (the snow-edge layer applies on top of ice plains), and
-        // extreme hills provides the rocky mountain ridges seen in
-        // screenshot 4. No swamp / desert / jungle: every chunk lands
-        // squarely on one of these three.
+        
+        
+        
+        
+        
+        
+        
         startBiomes = std::vector<Biome*>(3);
         startBiomes[0] = Biome::forest;
         startBiomes[1] = Biome::iceFlats;

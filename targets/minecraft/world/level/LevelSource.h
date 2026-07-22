@@ -15,7 +15,7 @@ public:
     virtual std::shared_ptr<TileEntity> getTileEntity(int x, int y, int z) = 0;
     virtual int getLightColor(
         int x, int y, int z, int emitt,
-        int tileId = -1) = 0;  // 4J - brought forward from 1.8.2, added tileId
+        int tileId = -1) = 0;  
     virtual float getBrightness(int x, int y, int z, int emitt) = 0;
     virtual float getBrightness(int x, int y, int z) = 0;
     virtual int getData(int x, int y, int z) = 0;

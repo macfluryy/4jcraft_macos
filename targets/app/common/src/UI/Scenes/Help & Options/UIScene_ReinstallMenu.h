@@ -30,7 +30,7 @@ private:
     UI_MAP_ELEMENT(m_buttons[eControl_Avatar3], "Button6")
     UI_END_MAP_ELEMENTS_AND_NAMES()
 
-    // bool m_bNotInGame;
+    
 public:
     UIScene_ReinstallMenu(int iPad, void* initData, UILayer* parentLayer);
 
@@ -40,11 +40,11 @@ public:
     virtual void updateComponents();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

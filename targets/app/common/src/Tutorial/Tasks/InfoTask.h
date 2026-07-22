@@ -1,5 +1,5 @@
 #pragma once
-// using namespace std;
+
 
 #include <unordered_map>
 
@@ -7,7 +7,7 @@
 
 class Tutorial;
 
-// Information messages
+
 class InfoTask : public TutorialTask {
 private:
     std::unordered_map<int, bool> completedMappings;

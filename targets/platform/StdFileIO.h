@@ -14,7 +14,7 @@
 #include <mach-o/dyld.h>
 #endif
 
-// Standard filesystem implementation for desktop platforms.
+
 class StdFileIO : public IPlatformFileIO {
 public:
     ReadResult readFile(const std::filesystem::path& path, void* buffer,

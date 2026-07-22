@@ -52,8 +52,8 @@ void Dimension::updateLightRamp() {
 
 void Dimension::init() {
 #ifdef _OVERRIDE_HEIGHTMAP
-    // 4J Stu - Added to enable overriding the heightmap from a loaded in data
-    // file
+    
+    
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
@@ -87,8 +87,8 @@ Dimension::~Dimension() {
 
 ChunkSource* Dimension::createRandomLevelSource() const {
 #ifdef _OVERRIDE_HEIGHTMAP
-    // 4J Stu - Added to enable overriding the heightmap from a loaded in data
-    // file
+    
+    
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableHeightWaterOverride)) {
@@ -144,12 +144,12 @@ bool Dimension::isNaturalDimension() { return true; }
 
 float* Dimension::getSunriseColor(float td, float a) {
     unsigned int clr1 = Minecraft::GetInstance()->getColourTable()->getColor(
-        eMinecraftColour_Sky_Dawn_Dark);  // 0xB23333
+        eMinecraftColour_Sky_Dawn_Dark);  
     double r1 = ((clr1 >> 16) & 0xFF) / 255.0f,
            g1 = ((clr1 >> 8) & 0xFF) / 255.0, b1 = (clr1 & 0xFF) / 255.0;
 
     unsigned int clr2 = Minecraft::GetInstance()->getColourTable()->getColor(
-        eMinecraftColour_Sky_Dawn_Bright);  // 0xFFE533
+        eMinecraftColour_Sky_Dawn_Bright);  
     double r2 = ((clr2 >> 16) & 0xFF) / 255.0f,
            g2 = ((clr2 >> 8) & 0xFF) / 255.0, b2 = (clr2 & 0xFF) / 255.0;
 
@@ -160,9 +160,9 @@ float* Dimension::getSunriseColor(float td, float a) {
         float aa = ((tt - mid) / span) * 0.5f + 0.5f;
         float mix = 1 - (((1 - sin(aa * std::numbers::pi))) * 0.99f);
         mix = mix * mix;
-        // sunriseCol[0] = (aa * 0.3f + 0.7f);
-        // sunriseCol[1] = (aa * aa * 0.7f + 0.2f);
-        // sunriseCol[2] = (aa * aa * 0.0f + 0.2f);
+        
+        
+        
         sunriseCol[0] = (aa * (r2 - r1) + r1);
         sunriseCol[1] = (aa * (g2 - g1) + g1);
         sunriseCol[2] = (aa * (b2 - b1) + b1);
@@ -203,16 +203,16 @@ Dimension* Dimension::getNew(int id) {
 
 float Dimension::getCloudHeight() {
     if (levelType == LevelType::lvl_amplified) {
-        // 4J macOS - amplified cloud lift. The old value was
-        // genDepth * 0.74 (= 94.7) which sat *below* the peaks the
-        // amplified pipeline produces, so the cloud plane visually
-        // sliced mountain silhouettes in half and crushed the
-        // cinematic scale built up by Phases 2/3. Vanilla returns
-        // genDepth (= 128). For amplified we lift the plane to
-        // genDepth + 48 so it sits above even the tallest ridge
-        // peaks (~110-115) while staying close enough to act as a
-        // depth cue. Cloud rendering / density / speed / weather
-        // are unchanged - only the vertical offset moves.
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         return (float)Level::genDepth + 48.0f;
     }
     return (float)Level::genDepth;
@@ -230,7 +230,7 @@ int Dimension::getSpawnYPosition() {
 }
 
 bool Dimension::hasBedrockFog() {
-    // 4J-PB - turn off bedrock fog if the host player doesn't want it
+    
     if (app.GetGameHostOption(eGameHostOption_BedrockFog) == 0) {
         return false;
     }

@@ -18,14 +18,14 @@ private:
 protected:
     TrapDoorTile(int id, Material* material);
 
-    /*
-     * public int getTexture(int face, int data) { if (face == 0 || face == 1)
-     * return tex; int dir = getDir(data); if ((dir == 0 || dir == 2) ^ (face <=
-     * 3)) { return tex; } int tt = (dir / 2 + ((face & 1) ^ dir)); tt += ((data
-     * & 4) / 4); int texture = tex - (data & 8) * 2; if ((tt & 1) != 0) {
-     * texture = -texture; } // if (getDir(data)==0 //
-     * tt-=((face+data&3)&1)^((data&4)>>2); return texture; }
-     */
+    
+
+
+
+
+
+
+
 
 public:
     bool blocksLight();
@@ -50,8 +50,8 @@ public:
     void updateShape(LevelSource* level, int x, int y, int z,
                      int forceData = -1,
                      std::shared_ptr<TileEntity> forceEntity =
-                         std::shared_ptr<TileEntity>());  // 4J added forceData,
-                                                          // forceEntity param
+                         std::shared_ptr<TileEntity>());  
+                                                          
 
 public:
     void updateDefaultShape();
@@ -68,7 +68,7 @@ public:
     virtual bool TestUse();
     bool use(Level* level, int x, int y, int z, std::shared_ptr<Player> player,
              int clickedFace, float clickX, float clickY, float clickZ,
-             bool soundOnly = false);  // 4J added soundOnly param
+             bool soundOnly = false);  
 
 public:
     void setOpen(Level* level, int x, int y, int z, bool shouldOpen);

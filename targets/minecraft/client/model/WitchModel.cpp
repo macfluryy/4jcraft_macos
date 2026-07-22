@@ -44,8 +44,8 @@ WitchModel::WitchModel(float g) : VillagerModel(g, 0, 64, 128) {
     hat4->zRot = 6.f * Mth::DEG_TO_RAD;
     hat3->addChild(hat4);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     mole->compile(1.0f / 16.0f);
     hat->compile(1.0f / 16.0f);
     hat2->compile(1.0f / 16.0f);

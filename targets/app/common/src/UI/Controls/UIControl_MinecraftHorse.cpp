@@ -19,8 +19,8 @@
 #include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/EntityHorse.h"
-// #include
-// "../../../minecraft/net.minecraft.world.entity.animal.EntityHorse.h"
+
+
 
 UIControl_MinecraftHorse::UIControl_MinecraftHorse() {
     UIControl::setControlType(UIControl::eMinecraftHorse);
@@ -46,18 +46,18 @@ void UIControl_MinecraftHorse::render(IggyCustomDrawCallbackRegion* region) {
     float xo = width / 2;
     float yo = height;
 
-    // dynamic y offset according to region height
+    
     glTranslatef(xo, yo - (height / 7.5f), 50.0f);
 
-    // UIScene_InventoryMenu *containerMenu = (UIScene_InventoryMenu
-    // *)m_parentScene;
+    
+    
     UIScene_HorseInventoryMenu* containerMenu =
         (UIScene_HorseInventoryMenu*)m_parentScene;
 
     std::shared_ptr<LivingEntity> entityHorse = containerMenu->m_horse;
 
-    // Base scale on height of this control
-    // Potentially we might want separate x & y scales here
+    
+    
     float ss = width / (m_fScreenWidth / m_fScreenHeight) * 0.71f;
 
     glScalef(-ss, ss, ss);
@@ -68,12 +68,12 @@ void UIControl_MinecraftHorse::render(IggyCustomDrawCallbackRegion* region) {
     float oxr = entityHorse->xRot;
     float oyhr = entityHorse->yHeadRot;
 
-    // float xd = ( matrix._41 + ( (bwidth*matrix._11)/2) ) - m_pointerPos.x;
+    
     float xd = (m_x + m_width / 2) - containerMenu->m_pointerPos.x;
 
-    // Need to base Y on head position, not centre of mass
-    // float yd = ( matrix._42 + ( (bheight*matrix._22) / 2) - 40 ) -
-    // m_pointerPos.y;
+    
+    
+    
     float yd = (m_y + m_height / 2 - 40) - containerMenu->m_pointerPos.y;
 
     glRotatef(45 + 90, 0, 1, 0);
@@ -86,18 +86,18 @@ void UIControl_MinecraftHorse::render(IggyCustomDrawCallbackRegion* region) {
     entityHorse->yRot = (float)atan(xd / 40.0f) * 40;
     entityHorse->xRot = -(float)atan(yd / 40.0f) * 20;
     entityHorse->yHeadRot = entityHorse->yRot;
-    // entityHorse->glow = 1;
+    
     glTranslatef(0, entityHorse->heightOffset, 0);
     EntityRenderDispatcher::instance->playerRotY = 180;
 
-    // 4J Stu - Turning on hideGui while we do this stops the name rendering in
-    // split-screen
+    
+    
     bool wasHidingGui = pMinecraft->options->hideGui;
     pMinecraft->options->hideGui = true;
     EntityRenderDispatcher::instance->render(entityHorse, 0, 0, 0, 0, 1, false,
                                              false);
     pMinecraft->options->hideGui = wasHidingGui;
-    // entityHorse->glow = 0;
+    
 
     entityHorse->yBodyRot = oybr;
     entityHorse->yRot = oyr;

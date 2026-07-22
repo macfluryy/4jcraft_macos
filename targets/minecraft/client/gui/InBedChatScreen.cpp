@@ -51,12 +51,12 @@ void InBedChatScreen::buttonClicked(Button* button) {
 }
 
 void InBedChatScreen::sendWakeUp() {
-    /* 4J - TODO
-if (minecraft.player instanceof MultiplayerLocalPlayer)
-    {
-    ClientConnection connection = ((MultiplayerLocalPlayer)
-minecraft.player).connection; connection.send(new
-PlayerCommandPacket(minecraft.player, PlayerCommandPacket.STOP_SLEEPING));
-}
-    */
+    
+
+
+
+
+
+
+
 }

@@ -40,7 +40,7 @@ int ComparatorTile::getRenderShape() { return SHAPE_COMPARATOR; }
 
 Icon* ComparatorTile::getTexture(int face, int data) {
     bool isOn = on || (data & BIT_IS_LIT) != 0;
-    // down is used by the torch tesselator
+    
     if (face == Facing::DOWN) {
         if (isOn) {
             return Tile::redstoneTorch_on->getTexture(face);
@@ -53,7 +53,7 @@ Icon* ComparatorTile::getTexture(int face, int data) {
         }
         return icon;
     }
-    // edge of stone half-step
+    
     return Tile::stoneSlab->getTexture(Facing::UP);
 }
 
@@ -156,7 +156,7 @@ void ComparatorTile::checkTickOnNeighbor(Level* level, int x, int y, int z,
 
         if (outputValue != oldValue ||
             (isOn(data) != shouldTurnOn(level, x, y, z, data))) {
-            // prioritize locking comparators
+            
             if (shouldPrioritize(level, x, y, z, data)) {
                 level->addToTickNextTick(x, y, z, id, getTurnOnDelay(0), -1);
             } else {
@@ -187,7 +187,7 @@ void ComparatorTile::refreshOutputState(Level* level, int x, int y, int z,
 
 void ComparatorTile::tick(Level* level, int x, int y, int z, Random* random) {
     if (on) {
-        // clean-up old tiles with the 'on' id
+        
         int data = level->getData(x, y, z);
         level->setTileAndData(x, y, z, getOffTile()->id, data | BIT_IS_LIT,
                               Tile::UPDATE_NONE);

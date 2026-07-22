@@ -38,8 +38,8 @@ bool LakeFeature::place(Level* level, Random* random, int x, int y, int z) {
         bool intersects = levelGenOptions->checkIntersects(minX, minY, minZ,
                                                            maxX, maxY, maxZ);
         if (intersects) {
-            // app.DebugPrintf("Skipping reeds feature generation as it overlaps
-            // a game rule structure\n");
+            
+            
             return false;
         }
     }
@@ -72,7 +72,7 @@ bool LakeFeature::place(Level* level, Random* random, int x, int y, int z) {
             for (int yy = 0; yy < 8; yy++) {
                 bool check =
                     !grid[((xx) * 16 + (zz)) * 8 + (yy)] &&
-                    ((xx < 15 && grid[((xx + 1) * 16 + (zz)) * 8 + (yy)])  //
+                    ((xx < 15 && grid[((xx + 1) * 16 + (zz)) * 8 + (yy)])  
                      || (xx > 0 && grid[((xx - 1) * 16 + (zz)) * 8 + (yy)]) ||
                      (zz < 15 && grid[((xx) * 16 + (zz + 1)) * 8 + (yy)]) ||
                      (zz > 0 && grid[((xx) * 16 + (zz - 1)) * 8 + (yy)]) ||
@@ -158,7 +158,7 @@ bool LakeFeature::place(Level* level, Random* random, int x, int y, int z) {
         }
     }
 
-    // 4J - brought forward from 1.8.2
+    
     if (Tile::tiles[tile]->material == Material::water) {
         for (int xx = 0; xx < 16; xx++) {
             for (int zz = 0; zz < 16; zz++) {

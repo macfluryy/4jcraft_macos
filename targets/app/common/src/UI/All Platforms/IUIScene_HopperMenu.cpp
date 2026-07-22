@@ -14,7 +14,7 @@ IUIScene_HopperMenu::GetSectionAndSlotInDirection(ESceneSection eSection,
 
     int xOffset = 0;
 
-    // Find the new section if there is one
+    
     switch (eSection) {
         case eSectionHopperContents:
             if (eTapDirection == eTapStateDown) {

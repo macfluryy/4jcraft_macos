@@ -22,7 +22,7 @@ UIScene_ConnectingProgress::UIScene_ConnectingProgress(int iPad,
                                                        void* _initData,
                                                        UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     parentLayer->addComponent(iPad, eUIComponent_Panorama);
@@ -58,8 +58,8 @@ UIScene_ConnectingProgress::~UIScene_ConnectingProgress() {
 }
 
 void UIScene_ConnectingProgress::updateTooltips() {
-    // 4J-PB - removing the option of cancel join, since it didn't work anyway
-    // ui.SetTooltips( m_iPad, -1, m_showTooltips?IDS_TOOLTIPS_CANCEL_JOIN:-1);
+    
+    
     ui.SetTooltips(m_iPad, -1, -1);
 }
 
@@ -107,7 +107,7 @@ void UIScene_ConnectingProgress::handleLoseFocus() {
 }
 
 void UIScene_ConnectingProgress::handleTimerComplete(int id) {
-    // Check if the connection failed
+    
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     if (pMinecraft->m_connectionFailed[m_iPad] ||
@@ -153,7 +153,7 @@ void UIScene_ConnectingProgress::handleTimerComplete(int id) {
             m_buttonConfirm.setVisible(true);
             m_showingButton = true;
 
-            // Set text
+            
             m_labelTitle.setLabel(app.GetString(IDS_CONNECTION_FAILED));
             m_progressBar.setLabel(app.GetString(exitReasonStringId));
             m_progressBar.setVisible(true);
@@ -165,7 +165,7 @@ void UIScene_ConnectingProgress::handleTimerComplete(int id) {
                                    uiIDA, 1, ProfileManager.GetPrimaryPad());
             exitReasonStringId = -1;
 
-            // app.NavigateToHomeMenu();
+            
             app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_ExitWorld,
                           (void*)true);
         }
@@ -175,31 +175,31 @@ void UIScene_ConnectingProgress::handleTimerComplete(int id) {
 void UIScene_ConnectingProgress::handleInput(int iPad, int key, bool repeat,
                                              bool pressed, bool released,
                                              bool& handled) {
-    // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
 
     if (m_showTooltips) {
         ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
         switch (key) {
-                // 4J-PB - Removed the option to cancel join - it didn't work
-                // anyway 		case ACTION_MENU_CANCEL:
-                // 			{
-                // 				if(m_cancelFunc != nullptr)
-                // 				{
-                // 					m_cancelFunc(m_cancelFuncParam);
-                // 				}
-                // 				else
-                // 				{
-                // 					// Cancel the join
-                // 					Minecraft *pMinecraft =
-                // Minecraft::GetInstance();
-                // 					pMinecraft->removeLocalPlayerIdx(m_iPad);
-                // 				}
-                // 				handled = true;
-                // 			}
-                // 			break;
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
             case ACTION_MENU_OK:
                 if (pressed) {
                     sendInputToMovie(key, repeat, pressed, released);
@@ -221,14 +221,14 @@ void UIScene_ConnectingProgress::handlePress(F64 controlId, F64 childId) {
             if (m_showingButton) {
                 if (m_iPad != ProfileManager.GetPrimaryPad() &&
                     g_NetworkManager.IsInSession()) {
-                    // The connection failed if we see the button, so the temp
-                    // player should be removed and the viewports updated again
-                    // This is actually done in the tick as we can't pull down
-                    // the scene we are currently in from here
+                    
+                    
+                    
+                    
                     m_removeLocalPlayer = true;
                 } else {
                     ui.NavigateToHomeMenu();
-                    // app.NavigateBack( ProfileManager.GetPrimaryPad() );
+                    
                 }
             }
             break;

@@ -4,7 +4,7 @@
 
 class Level;
 
-// 4J - added
+
 void HeartParticle::init(Level* level, double x, double y, double z, double xa,
                          double ya, double za, float scale) {
     xd *= 0.01f;

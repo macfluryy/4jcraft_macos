@@ -22,7 +22,7 @@ EnderChestTile::EnderChestTile(int id)
     updateDefaultShape();
 }
 
-// 4J Added override
+
 void EnderChestTile::updateDefaultShape() {
     setShape(1 / 16.0f, 0, 1 / 16.0f, 15 / 16.0f, 14 / 16.0f, 15 / 16.0f);
 }
@@ -107,7 +107,7 @@ void EnderChestTile::animateTick(Level* level, int xt, int yt, int zt,
 }
 
 void EnderChestTile::registerIcons(IconRegister* iconRegister) {
-    // Register obsidian as the chest's icon, because it's used by the
-    // particles when destroying the chest
+    
+    
     icon = iconRegister->registerIcon(L"obsidian");
 }

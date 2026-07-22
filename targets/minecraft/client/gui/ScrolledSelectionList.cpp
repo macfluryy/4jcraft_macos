@@ -18,7 +18,7 @@ ScrolledSelectionList::ScrolledSelectionList(Minecraft* minecraft, int width,
     this->x0 = 0;
     this->x1 = width;
 
-    // 4J Stu - Smoe default initialisers
+    
     upId = 0;
     downId = 0;
 
@@ -32,7 +32,7 @@ ScrolledSelectionList::ScrolledSelectionList(Minecraft* minecraft, int width,
     renderSelection = false;
     _renderHeader = false;
     headerHeight = 0;
-    // End
+    
 }
 
 void ScrolledSelectionList::setRenderSelection(bool renderSelection) {
@@ -63,13 +63,13 @@ int ScrolledSelectionList::getItemAtPosition(int x, int y) {
     int x0 = width / 2 - (92 + 16 + 2);
     int x1 = width / 2 + (92 + 16 + 2);
 
-    // 4J macOS - reject clicks outside the list viewport. Without this,
-    // once the world list grew long enough, the calculated slot for clicks
-    // on the bottom-row buttons (Select / Delete / Rename / Create / Cancel
-    // at y >= height-52) fell inside [0, numberOfItems) and the parent
-    // screen treated the click as a list selection - hijacking the button
-    // press and, when it matched the previous selection within 250 ms,
-    // double-clicking into a random world.
+    
+    
+    
+    
+    
+    
+    
     if (y < y0 || y > y1) return -1;
 
     int clickSlotPos = (y - y0 - headerHeight + (int)yo - 4);
@@ -126,11 +126,11 @@ void ScrolledSelectionList::render(int xm, int ym, float a) {
         int yTop = y0 + 4 + i * itemHeight + headerHeight - (int)yo;
         int h = itemHeight - 4;
 
-        // Skip rows that are fully outside the visible viewport.
+        
         if (yTop + h < y0 || yTop > y1) continue;
 
         if (isSelectedItem(i)) {
-            // White outline + black fill, same look as Java Edition's GuiSlot.
+            
             fill(listLeft - 2, yTop - 2, listRight + 2, yTop + h + 2,
                  0xFFFFFFFF);
             fill(listLeft - 1, yTop - 1, listRight + 1, yTop + h + 1,
@@ -159,5 +159,5 @@ bool ScrolledSelectionList::mouseClicked(int x, int y, int button) {
 
 void ScrolledSelectionList::renderHoleBackground(int y0, int y1, int a0,
                                                  int a1) {
-    // 4J Unused
+    
 }

@@ -21,8 +21,8 @@ public:
     private:
         const int type;
         const int id;
-        // 4J - there used to be one "value" type here of general type Object,
-        // just storing the different (used) varieties here separately for us
+        
+        
         union {
             uint8_t value_byte;
             int value_int;
@@ -34,8 +34,8 @@ public:
         bool dirty;
 
     public:
-        // There was one type here that took a generic Object type, using
-        // overloading here instead
+        
+        
         DataItem(int type, int id, uint8_t value);
         DataItem(int type, int id, int value);
         DataItem(int type, int id, const std::wstring& value);
@@ -70,19 +70,19 @@ public:
     static const int TYPE_INT = 2;
     static const int TYPE_FLOAT = 3;
     static const int TYPE_STRING = 4;
-    // special types (max possible value is 7):
+    
     static const int TYPE_ITEMINSTANCE = 5;
     static const int TYPE_POS = 6;
 
 private:
     bool m_isEmpty;
 
-    // must have enough bits to fit the type
+    
 private:
     static const int TYPE_MASK = 0xe0;
     static const int TYPE_SHIFT = 5;
 
-    // the id value must fit in the remaining bits
+    
     static const int MAX_ID_VALUE = ~TYPE_MASK & 0xff;
 
     std::shared_ptr<DataItem> itemsById[MAX_ID_VALUE + 1];
@@ -91,10 +91,10 @@ private:
 public:
     SynchedEntityData();
 
-    // 4J - this function used to be a template, but there's only 3 varieties of
-    // use I've found so just hard-coding now, as the original had some
-    // automatic Class to type sort of conversion that's a real pain for us to
-    // actually do
+    
+    
+    
+    
     void define(int id, uint8_t value);
     void define(int id, const std::wstring& value);
     void define(int id, int value);
@@ -102,8 +102,8 @@ public:
     void define(int id, float value);
     void defineNULL(int id, void* pVal);
 
-    void checkId(int id);  // 4J - added to contain common code from overloaded
-                           // define functions above
+    void checkId(int id);  
+                           
     uint8_t getByte(int id);
     short getShort(int id);
     int getInteger(int id);
@@ -111,7 +111,7 @@ public:
     std::wstring getString(int id);
     std::shared_ptr<ItemInstance> getItemInstance(int id);
     Pos* getPos(int id);
-    // 4J - using overloads rather than template here
+    
     void set(int id, uint8_t value);
     void set(int id, int value);
     void set(int id, short value);
@@ -121,30 +121,30 @@ public:
     void markDirty(int id);
     bool isDirty();
     static void pack(std::vector<std::shared_ptr<DataItem> >* items,
-                     DataOutputStream* output);  // TODO throws IOException
+                     DataOutputStream* output);  
     std::vector<std::shared_ptr<DataItem> >* packDirty();
-    void packAll(DataOutputStream* output);  // throws IOException
+    void packAll(DataOutputStream* output);  
     std::vector<std::shared_ptr<DataItem> >* getAll();
 
 private:
     static void writeDataItem(
         DataOutputStream* output,
-        std::shared_ptr<DataItem> dataItem);  // throws IOException
+        std::shared_ptr<DataItem> dataItem);  
 
 public:
     static std::vector<std::shared_ptr<DataItem> >* unpack(
-        DataInputStream* input);  // throws IOException
+        DataInputStream* input);  
 
-    /**
-     * Assigns values from a list of data items.
-     *
-     * @param items
-     */
+    
+
+
+
+
 public:
     void assignValues(std::vector<std::shared_ptr<DataItem> >* items);
     bool isEmpty();
     void clearDirty();
 
-    // 4J Added
+    
     int getSizeInBytes();
 };

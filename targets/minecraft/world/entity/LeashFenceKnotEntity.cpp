@@ -34,7 +34,7 @@ void LeashFenceKnotEntity::defineSynchedData() {
 }
 
 void LeashFenceKnotEntity::setDir(int dir) {
-    // override to do nothing, knots don't have directions
+    
 }
 
 int LeashFenceKnotEntity::getWidth() { return 9; }
@@ -48,7 +48,7 @@ bool LeashFenceKnotEntity::shouldRenderAtSqrDistance(double distance) {
 void LeashFenceKnotEntity::dropItem(std::shared_ptr<Entity> causedBy) {}
 
 bool LeashFenceKnotEntity::save(CompoundTag* entityTag) {
-    // knots are not saved, they are recreated by the entities that are tied
+    
     return false;
 }
 
@@ -62,7 +62,7 @@ bool LeashFenceKnotEntity::interact(std::shared_ptr<Player> player) {
     bool attachedMob = false;
     if (item != nullptr && item->id == Item::lead_Id) {
         if (!level->isClientSide) {
-            // look for entities that can be attached to the fence
+            
             double range = 7;
             AABB mob_aabb{x - range, y - range, z - range,
                           x + range, y + range, z + range};
@@ -85,8 +85,8 @@ bool LeashFenceKnotEntity::interact(std::shared_ptr<Player> player) {
         remove();
 
         if (player->abilities.instabuild) {
-            // if the player is in creative mode, attempt to remove all leashed
-            // mobs without dropping additional items
+            
+            
             double range = 7;
             AABB mob_aabb{x - range, y - range, z - range,
                           x + range, y + range, z + range};
@@ -109,7 +109,7 @@ bool LeashFenceKnotEntity::interact(std::shared_ptr<Player> player) {
 }
 
 bool LeashFenceKnotEntity::survives() {
-    // knots are placed on top of fence tiles
+    
     int tile = level->getTile(xTile, yTile, zTile);
     if (Tile::tiles[tile] != nullptr &&
         Tile::tiles[tile]->getRenderShape() == Tile::SHAPE_FENCE) {

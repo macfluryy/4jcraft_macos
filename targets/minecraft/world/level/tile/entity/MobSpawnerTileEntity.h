@@ -43,7 +43,7 @@ public:
     virtual bool triggerEvent(int b0, int b1);
     virtual BaseMobSpawner* getSpawner();
 
-    // 4J Added
+    
     virtual std::shared_ptr<TileEntity> clone();
     void setEntityId(const std::wstring& id);
 };

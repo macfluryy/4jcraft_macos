@@ -19,22 +19,22 @@ DisconnectPacket::DisconnectPacket(const std::wstring& customText) {
     this->m_customText = customText;
 }
 
-// Max chars of a custom disconnect string we accept on the wire. The screen
-// wraps/clamps for display; this just bounds the readUtf so a bogus length
-// can't be honoured.
+
+
+
 static const int kMaxCustomDisconnectText = 256;
 
-void DisconnectPacket::read(DataInputStream* dis)  // throws IOException
+void DisconnectPacket::read(DataInputStream* dis)  
 {
     reason = (eDisconnectReason)dis->readInt();
-    // Only the new sentinel carries a trailing string, so vanilla LCE packets
-    // (any other reason) read exactly as before - byte-for-byte compatible.
+    
+    
     if (reason == eDisconnect_CustomText) {
         m_customText = readUtf(dis, kMaxCustomDisconnectText);
     }
 }
 
-void DisconnectPacket::write(DataOutputStream* dos)  // throws IOException
+void DisconnectPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt((int)reason);
     if (reason == eDisconnect_CustomText) {
@@ -49,7 +49,7 @@ void DisconnectPacket::handle(PacketListener* listener) {
 int DisconnectPacket::getEstimatedSize() {
     int size = sizeof(eDisconnectReason);
     if (reason == eDisconnect_CustomText) {
-        // writeUtf = short length + 2 bytes per char.
+        
         size += 2 + (int)m_customText.length() * 2;
     }
     return size;

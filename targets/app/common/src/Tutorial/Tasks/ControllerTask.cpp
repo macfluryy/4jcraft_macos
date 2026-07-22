@@ -41,12 +41,12 @@ ControllerTask::ControllerTask(Tutorial* tutorial, int descriptionId,
     m_iCompletionMaskACount = iCompletionMaskACount;
     m_uiCompletionMask = 0;
 
-    // If we don't want to be able to complete it early..then assume we want the
-    // constraints active
-    // if( !enablePreCompletion )
-    //	enableConstraints( true );
+    
+    
+    
+    
 
-    m_initialized = false;  // we can set yaw + pitch on the first tick
+    m_initialized = false;  
 }
 
 ControllerTask::~ControllerTask() { delete[] m_iCompletionMaskA; }
@@ -56,7 +56,7 @@ bool ControllerTask::isCompleted() {
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
-    // mouse look check
+    
     if (!m_initialized) {
         m_lastYaw = pMinecraft->player->yRot;
         m_lastPitch = pMinecraft->player->xRot;
@@ -72,7 +72,7 @@ bool ControllerTask::isCompleted() {
             return true;
     }
 
-    // check for controller button input
+    
     bool bAllComplete = true;
     int iCurrent = 0;
 
@@ -107,7 +107,7 @@ bool ControllerTask::isCompleted() {
         }
     }
 
-    // completion mask check
+    
     if (m_iCompletionMaskA && CompletionMaskIsValid())
         bIsCompleted = true;
     else
@@ -123,7 +123,7 @@ bool ControllerTask::CompletionMaskIsValid() {
 
     return false;
 }
-void ControllerTask::setAsCurrentTask(bool active /*= true*/) {
+void ControllerTask::setAsCurrentTask(bool active ) {
     TutorialTask::setAsCurrentTask(active);
     enableConstraints(!active);
 }

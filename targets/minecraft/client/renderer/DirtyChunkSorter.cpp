@@ -4,7 +4,7 @@
 #include "minecraft/world/entity/LivingEntity.h"
 
 DirtyChunkSorter::DirtyChunkSorter(std::shared_ptr<LivingEntity> cameraEntity,
-                                   int playerIndex)  // 4J - added player index
+                                   int playerIndex)  
 {
     this->cameraEntity = cameraEntity;
     this->playerIndex = playerIndex;
@@ -22,5 +22,5 @@ bool DirtyChunkSorter::operator()(const Chunk* c0, const Chunk* c1) const {
     if (d0 < d1) return false;
     if (d0 > d1) return true;
 
-    return c0->id >= c1->id;  // 4J - was c0.id < c1.id ? 1 : -1
+    return c0->id >= c1->id;  
 }

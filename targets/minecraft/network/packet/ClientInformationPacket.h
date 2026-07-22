@@ -11,7 +11,7 @@ class ClientInformationPacket
     : public Packet,
       public std::enable_shared_from_this<ClientInformationPacket> {
 public:
-    int viewDistance;  // in chunks
+    int viewDistance;  
 
     ClientInformationPacket();
     ClientInformationPacket(int viewDistance);

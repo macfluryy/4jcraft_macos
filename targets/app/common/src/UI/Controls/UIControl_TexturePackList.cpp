@@ -19,7 +19,7 @@ bool UIControl_TexturePackList::setupControl(UIScene* scene,
     UIControl::setControlType(UIControl::eTexturePackList);
     bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-    // SlotList specific initialisers
+    
     m_addPackFunc = registerFastName(L"addPack");
     m_clearSlotsFunc = registerFastName(L"removeAllItems");
     m_funcSelectSlot = registerFastName(L"SelectSlot");

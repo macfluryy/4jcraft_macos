@@ -52,12 +52,12 @@ CraftingMenu::CraftingMenu(std::shared_ptr<Inventory> inventory, Level* level,
         addSlot(new Slot(inventory, x, 8 + x * 18, 142));
     }
 
-    slotsChanged();  // 4J - removed craftSlots parameter, see comment below
+    slotsChanged();  
 }
 
-void CraftingMenu::slotsChanged()  // 4J used to take a shared_ptr<Container>
-                                   // but wasn't using it, so removed to
-                                   // simplify things
+void CraftingMenu::slotsChanged()  
+                                   
+                                   
 {
     resultSlots->setItem(0,
                          Recipes::getInstance()->getItemFor(craftSlots, level));
@@ -117,7 +117,7 @@ std::shared_ptr<ItemInstance> CraftingMenu::quickMoveStack(
             slot->setChanged();
         }
         if (stack->count == clicked->count) {
-            // nothing moved
+            
             return nullptr;
         } else {
             slot->onTake(player, stack);

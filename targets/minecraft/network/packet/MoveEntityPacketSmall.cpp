@@ -21,8 +21,8 @@ MoveEntityPacketSmall::MoveEntityPacketSmall() {
 
 MoveEntityPacketSmall::MoveEntityPacketSmall(int id) {
     if ((id < 0) || (id >= 2048)) {
-        // We shouln't be tracking an entity that doesn't have a short type of
-        // id
+        
+        
         __debugbreak();
     }
 
@@ -36,16 +36,16 @@ MoveEntityPacketSmall::MoveEntityPacketSmall(int id) {
     xRot = 0;
 }
 
-void MoveEntityPacketSmall::read(DataInputStream* dis)  // throws IOException
+void MoveEntityPacketSmall::read(DataInputStream* dis)  
 {
     id = dis->readShort();
 }
 
-void MoveEntityPacketSmall::write(DataOutputStream* dos)  // throws IOException
+void MoveEntityPacketSmall::write(DataOutputStream* dos)  
 {
     if ((id < 0) || (id >= 2048)) {
-        // We shouln't be tracking an entity that doesn't have a short type of
-        // id
+        
+        
         __debugbreak();
     }
     dos->writeShort((short)id);
@@ -79,7 +79,7 @@ MoveEntityPacketSmall::PosRot::PosRot(int id, char xa, char ya, char za,
 }
 
 void MoveEntityPacketSmall::PosRot::read(
-    DataInputStream* dis)  // throws IOException
+    DataInputStream* dis)  
 {
     int idAndRot = dis->readShort();
     this->id = idAndRot & 0x07ff;
@@ -91,11 +91,11 @@ void MoveEntityPacketSmall::PosRot::read(
 }
 
 void MoveEntityPacketSmall::PosRot::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     if ((id < 0) || (id >= 2048)) {
-        // We shouln't be tracking an entity that doesn't have a short type of
-        // id
+        
+        
         __debugbreak();
     }
     short idAndRot = id | yRot << 11;
@@ -116,7 +116,7 @@ MoveEntityPacketSmall::Pos::Pos(int id, char xa, char ya, char za)
 }
 
 void MoveEntityPacketSmall::Pos::read(
-    DataInputStream* dis)  // throws IOException
+    DataInputStream* dis)  
 {
     int idAndY = dis->readShort();
     this->id = idAndY & 0x07ff;
@@ -127,11 +127,11 @@ void MoveEntityPacketSmall::Pos::read(
 }
 
 void MoveEntityPacketSmall::Pos::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     if ((id < 0) || (id >= 2048)) {
-        // We shouln't be tracking an entity that doesn't have a short type of
-        // id
+        
+        
         __debugbreak();
     }
     short idAndY = id | ya << 11;
@@ -152,7 +152,7 @@ MoveEntityPacketSmall::Rot::Rot(int id, char yRot, char xRot)
 }
 
 void MoveEntityPacketSmall::Rot::read(
-    DataInputStream* dis)  // throws IOException
+    DataInputStream* dis)  
 {
     int idAndRot = (int)dis->readShort();
     this->id = idAndRot & 0x07ff;
@@ -160,11 +160,11 @@ void MoveEntityPacketSmall::Rot::read(
 }
 
 void MoveEntityPacketSmall::Rot::write(
-    DataOutputStream* dos)  // throws IOException
+    DataOutputStream* dos)  
 {
     if ((id < 0) || (id >= 2048)) {
-        // We shouln't be tracking an entity that doesn't have a short type of
-        // id
+        
+        
         __debugbreak();
     }
     short idAndRot = id | yRot << 11;

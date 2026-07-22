@@ -24,7 +24,7 @@
 UIScene_SignEntryMenu::UIScene_SignEntryMenu(int iPad, void* _initData,
                                              UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     SignEntryScreenInput* initData = (SignEntryScreenInput*)_initData;
@@ -39,11 +39,11 @@ UIScene_SignEntryMenu::UIScene_SignEntryMenu(int iPad, void* _initData,
 
     for (unsigned int i = 0; i < 4; ++i) {
 #if TO_BE_IMPLEMENTED
-        // Have to have the Latin alphabet here, since that's what we have on
-        // the sign in-game but because the JAP/KOR/CHN fonts don't have
-        // extended European characters, let's restrict those languages to not
-        // having the extended character set, since they can't see what they are
-        // typing
+        
+        
+        
+        
+        
         switch (XGetLanguage()) {
             case XC_LANGUAGE_JAPANESE:
             case XC_LANGUAGE_TCHINESE:
@@ -59,7 +59,7 @@ UIScene_SignEntryMenu::UIScene_SignEntryMenu(int iPad, void* _initData,
 
         m_signRows[i].SetText(m_sign->GetMessage(i).c_str());
         m_signRows[i].SetTextLimit(15);
-        // Set the title and desc for the edit keyboard popup
+        
         m_signRows[i].SetTitleAndText(IDS_SIGN_TITLE, IDS_SIGN_TITLE_TEXT);
 #endif
         m_textInputLines[i].init(m_sign->GetMessage(i).c_str(), i);
@@ -90,8 +90,8 @@ void UIScene_SignEntryMenu::tick() {
     if (m_bConfirmed) {
         m_bConfirmed = false;
 
-        // Set the sign text here so we on;y call the verify once it has been
-        // set, not while we're typing in to it
+        
+        
         for (int i = 0; i < 4; i++) {
             std::wstring temp = m_textInputLines[i].getLabel();
             m_sign->SetMessage(i, temp);
@@ -100,7 +100,7 @@ void UIScene_SignEntryMenu::tick() {
         m_sign->setChanged();
 
         Minecraft* pMinecraft = Minecraft::GetInstance();
-        // need to send the new data
+        
         if (pMinecraft->level->isClientSide) {
             std::shared_ptr<MultiplayerLocalPlayer> player =
                 pMinecraft->localplayers[m_iPad];
@@ -126,7 +126,7 @@ void UIScene_SignEntryMenu::handleInput(int iPad, int key, bool repeat,
     switch (key) {
         case ACTION_MENU_CANCEL:
             if (pressed) {
-                // user backed out, so wipe the sign
+                
                 std::wstring temp = L"";
 
                 for (int i = 0; i < 4; i++) {
@@ -162,7 +162,7 @@ void UIScene_SignEntryMenu::handlePress(F64 controlId, F64 childId) {
                 app.GetString(IDS_SIGN_TITLE),
                 m_textInputLines[m_iEditingLine].getLabel(), m_iPad, 15,
                 [this](bool bRes) -> int {
-                    // 4J HEG - No reason to set value if keyboard was cancelled
+                    
                     m_bIgnoreInput = false;
                     if (bRes && m_iEditingLine >= 0 && m_iEditingLine < 4) {
                         std::wstring str =
@@ -178,6 +178,6 @@ void UIScene_SignEntryMenu::handlePress(F64 controlId, F64 childId) {
 }
 
 void UIScene_SignEntryMenu::handleDestroy() {
-    // another player destroyed the anvil, so shut down the keyboard if it is
-    // displayed
+    
+    
 }

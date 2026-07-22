@@ -36,7 +36,7 @@ LoginPacket::LoginPacket() {
     serverViewDistance = 0;
 }
 
-// Client -> Server
+
 LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion,
                          PlayerUID offlineXuid, PlayerUID onlineXuid,
                          bool friendsOnlyUGC, std::uint32_t ugcPlayersVersion,
@@ -69,7 +69,7 @@ LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion,
     serverViewDistance = 0;
 }
 
-// Server -> Client
+
 LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion,
                          LevelType* pLevelType, int64_t seed, int gameType,
                          char dimension, std::uint8_t mapHeight,
@@ -104,7 +104,7 @@ LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion,
     this->serverViewDistance = serverViewDistance;
 }
 
-void LoginPacket::read(DataInputStream* dis)  // throws IOException
+void LoginPacket::read(DataInputStream* dis)  
 {
     clientVersion = dis->readInt();
     userName = readUtf(dis, Player::MAX_NAME_LENGTH);
@@ -138,7 +138,7 @@ void LoginPacket::read(DataInputStream* dis)  // throws IOException
     app.DebugPrintf("LoginPacket::read - Difficulty = %d\n", difficulty);
 }
 
-void LoginPacket::write(DataOutputStream* dos)  // throws IOException
+void LoginPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(clientVersion);
     writeUtf(userName, dos);
@@ -185,5 +185,5 @@ int LoginPacket::getEstimatedSize() {
                  sizeof(char) + sizeof(int) + (2 * sizeof(PlayerUID)) + 1 +
                  sizeof(char) + sizeof(std::uint8_t) + sizeof(bool) +
                  sizeof(bool) + length + sizeof(unsigned int) +
-                 sizeof(int) /* serverViewDistance */);
+                 sizeof(int) );
 }

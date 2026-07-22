@@ -117,7 +117,7 @@ ServerPlayer::ServerPlayer(MinecraftServer* server, Level* level,
                            const std::wstring& name,
                            ServerPlayerGameMode* gameMode)
     : Player(level, name) {
-    // 4J - added initialisers
+    
     connection = nullptr;
     lastMoveX = lastMoveZ = 0;
     spewTimer = 0;
@@ -132,13 +132,13 @@ ServerPlayer::ServerPlayer(MinecraftServer* server, Level* level,
     latency = 0;
     wonGame = false;
     m_enteredEndExitPortal = false;
-    // lastCarried = std::vector<std::shared_ptr<ItemInstance>>(5);
+    
     lastActionTime = 0;
 
     viewDistance = server->getPlayers()->getViewDistance();
 
-    //    gameMode->player = this;		// 4J - removed to avoid use of
-    //    shared_from_this in ctor, now set up externally
+    
+    
     this->gameMode = gameMode;
 
     Pos* spawnPos = level->getSharedSpawnPos();
@@ -153,9 +153,9 @@ ServerPlayer::ServerPlayer(MinecraftServer* server, Level* level,
 
         int radius = std::max(5, server->getSpawnProtectionRadius() - 6);
 
-        // 4J added - do additional checking that we aren't putting the player
-        // in deep water. Give up after 20 or goes just in case the spawnPos is
-        // somehow in a really bad spot and we would just lock here.
+        
+        
+        
         int waterDepth = 0;
         int attemptCount = 0;
         int xx2, yy2, zz2;
@@ -165,7 +165,7 @@ ServerPlayer::ServerPlayer(MinecraftServer* server, Level* level,
 
         bool playerNear = false;
         do {
-            // Also check that we aren't straying outside of the map
+            
             do {
                 xx2 = xx + random->nextInt(radius * 2) - radius;
                 zz2 = zz + random->nextInt(radius * 2) - radius;
@@ -196,31 +196,31 @@ ServerPlayer::ServerPlayer(MinecraftServer* server, Level* level,
     footSize = 0;
 
     heightOffset =
-        0;  // 4J - this height used to be set up after moveTo, but that ends up
-            // with the y value being incorrect as it depends on this offset
+        0;  
+            
     this->moveTo(xx + 0.5, yy, zz + 0.5, 0, 0);
 
-    // 4J Handled later
-    // while (!level->getCubes(this, bb).empty())
-    //{
-    //	setPos(x, y + 1, z);
-    //}
+    
+    
+    
+    
+    
 
-    // m_UUID = name;
+    
 
-    // 4J Added
+    
     lastBrupSendTickCount = 0;
 }
 
 ServerPlayer::~ServerPlayer() {}
 
-// 4J added - add bits to a flag array that is passed in, to represent those
-// entities which have small Ids, and are in our vector of entitiesToRemove. If
-// there aren't any entities to be flagged, this function does nothing. If there
-// *are* entities to be added, uses the removedFound as an input to determine if
-// the flag array has already been initialised at all - if it has been, then
-// just adds flags to it; if it hasn't, then memsets the output flag array and
-// adds to it for this ServerPlayer.
+
+
+
+
+
+
+
 void ServerPlayer::flagEntitiesToBeRemoved(unsigned int* flags,
                                            bool* removedFound) {
     if (entitiesToRemove.empty()) {
@@ -249,16 +249,16 @@ void ServerPlayer::readAdditionalSaveData(CompoundTag* entityTag) {
     Player::readAdditionalSaveData(entityTag);
 
     if (entityTag->contains(L"playerGameType")) {
-        // 4J Stu - We do not want to change the game mode for the player,
-        // instead we let the server override it globally
-        // if (MinecraftServer::getInstance()->getForceGameType())
-        //{
-        //	gameMode->setGameModeForPlayer(MinecraftServer::getInstance()->getDefaultGameType());
-        //}
-        // else
-        //{
-        //	gameMode->setGameModeForPlayer(GameType::byId(entityTag->getInt(L"playerGameType")));
-        //}
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
     GameRulesInstance* grs = gameMode->getGameRules();
@@ -286,10 +286,10 @@ void ServerPlayer::addAdditonalSaveData(CompoundTag* entityTag) {
         baos.close();
     }
 
-    // 4J Stu - We do not want to change the game mode for the player, instead
-    // we let the server override it globally
-    // entityTag->putInt(L"playerGameType",
-    // gameMode->getGameModeForPlayer()->getId());
+    
+    
+    
+    
 }
 
 void ServerPlayer::giveExperienceLevels(int amount) {
@@ -309,7 +309,7 @@ void ServerPlayer::tick() {
     if (invulnerableTime > 0) invulnerableTime--;
     containerMenu->broadcastChanges();
 
-    // 4J-JEV, hook for Durango event 'EnteredNewBiome'.
+    
     Biome* newBiome = level->getBiome(x, z);
     if (newBiome != currentBiome) {
         awardStat(GenericStats::enteredBiome(newBiome->id),
@@ -328,7 +328,7 @@ void ServerPlayer::tick() {
     flushEntitiesToRemove();
 }
 
-// 4J Stu - Split out here so that we can call this from other places
+
 void ServerPlayer::flushEntitiesToRemove() {
     while (!entitiesToRemove.empty()) {
         int sz = entitiesToRemove.size();
@@ -347,11 +347,11 @@ void ServerPlayer::flushEntitiesToRemove() {
     }
 }
 
-// 4J - have split doTick into 3 bits, so that we can call the
-// doChunkSendingTick separately, but still do the equivalent of what calling a
-// full doTick used to do, by calling this method
-void ServerPlayer::doTick(bool sendChunks, bool dontDelayChunks /*=false*/,
-                          bool ignorePortal /*=false*/) {
+
+
+
+void ServerPlayer::doTick(bool sendChunks, bool dontDelayChunks ,
+                          bool ignorePortal ) {
     m_ignorePortal = ignorePortal;
     if (sendChunks) {
         updateFrameTick();
@@ -370,14 +370,14 @@ void ServerPlayer::doTickA() {
     for (unsigned int i = 0; i < inventory->getContainerSize(); i++) {
         std::shared_ptr<ItemInstance> ie = inventory->getItem(i);
         if (ie != nullptr) {
-            // 4J - removed condition. These were getting lower priority than
-            // tile update packets etc. on the slow outbound queue, and so were
-            // extremely slow to send sometimes, particularly at the start of a
-            // game. They don't typically seem to be massive and shouldn't be
-            // send when there isn't actually any updating to do.
+            
+            
+            
+            
+            
             if (Item::items[ie->id]
-                    ->isComplex())  // && connection->countDelayedPackets() <=
-                                    // 2)
+                    ->isComplex())  
+                                    
             {
                 std::shared_ptr<Packet> packet =
                     (dynamic_cast<ComplexItem*>(Item::items[ie->id])
@@ -392,63 +392,63 @@ void ServerPlayer::doTickA() {
     }
 }
 
-// 4J - split off the chunk sending bit of the tick here from ::doTick so we can
-// do this exactly once per player per server tick
+
+
 void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
-    // 4J macOS task 9.1 - chunk-streaming limits enforced below (locked, do
-    // not retune without revisiting Requirement 8):
-    //   Req 8.1: hard per-tick BRUP cap - 64 for local, 16 for remote
-    //            (maxChunksThisTick + the while-loop decrement).
-    //   Req 8.2: slow-queue throttling via
-    //            MinecraftServer::chunkPacketManagement_CanSendTo /
-    //            _DidSendTo (remote bypasses the legacy slow-queue and relies
-    //            on the per-connection back-pressure below instead).
-    //   Req 8.3: early termination - `if (!nearestValid) break;` stops the
-    //            spin when no in-range finalised chunk qualifies (also gated
-    //            by per-player viewDistance, task 4.2).
-    //   Req 8.4: dedup + back-pressure - SystemFlagGet/Set stops re-sending /
-    //            duplicating a chunk to the same machine; countDelayedPackets
-    //            < 32 gates remote sends; the not-OK branch `break`s for the
-    //            rest of the tick.
-    //   Req 8.5: send-queue cap - GetSendQueueSizeMessages(nullptr, true) < 32
-    //            stops queueing new BRUP until the queue drains.
-    //	printf("[%d] %s: sendChunks: %d, empty: %d\n",tickCount,
-    // connection->getNetworkPlayer()->GetUID().getOnlineID(),sendChunks,chunksToSend.empty());
-    // 4J macOS - send up to N chunks per server tick instead of just one.
-    // The single-chunk-per-tick limit dating back to QNet plus the slow
-    // queue index meant remote direct-connect clients only got 4 chunks
-    // per second and the world appeared to "follow you in". With local
-    // TCP we can comfortably ship many more per tick; the existing
-    // canSendTo / queue gating below still throttles us if the network
-    // is genuinely saturated.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     int maxChunksThisTick = connection->isLocal() ? 64 : 16;
     while (maxChunksThisTick-- > 0 && !chunksToSend.empty()) {
         ChunkPos nearest = chunksToSend.front();
         bool nearestValid = false;
 
-        // 4J - reinstated and optimised some code that was commented out in the
-        // original, to make sure that we always send the nearest chunk to the
-        // player. The original uses the bukkit sorting thing to try and avoid
-        // doing this, but the player can quickly wander away from the centre of
-        // the spiral of chunks that that method creates, long before
-        // transmission of them is complete.
-        // 4J macOS task 4.2 - respect this player's effective view distance.
-        // viewDistance is the per-player effective radius (in chunks); the ctor
-        // seeds it from PlayerList::getViewDistance() and setEffectiveViewDistance
-        // keeps it within [MIN_VIEW_DISTANCE, serverCap], so it is always >= 3 and
-        // never needs an extra guard here.
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         int pcx = ((int)x) >> 4;
         int pcz = ((int)z) >> 4;
         double dist = DBL_MAX;
         for (auto it = chunksToSend.begin(); it != chunksToSend.end(); it++) {
             ChunkPos chunk = *it;
             if (level->isChunkFinalised(chunk.x, chunk.z)) {
-                // 4J macOS task 4.2 - skip chunks farther than the player's view
-                // distance. Chebyshev (square) distance in chunk coords matches
-                // the |dx|<=radius && |dz|<=radius subscription model used by
-                // PlayerChunkMap. Out-of-range chunks stay queued (not stranded);
-                // task 5.x unsubscribes them. If nothing qualifies nearestValid
-                // stays false and the !nearestValid break below stops the spin.
+                
+                
+                
+                
+                
+                
                 int dcx = chunk.x - pcx;
                 if (dcx < 0) dcx = -dcx;
                 int dcz = chunk.z - pcz;
@@ -463,16 +463,16 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
             }
         }
 
-        // 4J macOS - if no chunk in the pending list is finalised yet we
-        // would loop forever otherwise. Stop sending for this tick.
+        
+        
         if (!nearestValid) break;
 
-        //        if (nearest != nullptr)		// 4J - removed as we
-        //        don't have references here
+        
+        
         if (nearestValid) {
             bool okToSend = false;
 
-            //                if (dist < 32 * 32) okToSend = true;
+            
             if (connection->isLocal()) {
                 if (!connection->done) okToSend = true;
             } else {
@@ -480,57 +480,57 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
                     MinecraftServer::chunkPacketManagement_CanSendTo(
                         connection->getNetworkPlayer());
 
-                //				app.DebugPrintf(">>> %d\n",
-                // canSendToPlayer); 				if(
-                // connection->getNetworkPlayer() )
-                //				{
-                //					app.DebugPrintf("%d:
-                // canSendToPlayer %d, countDelayedPackets %d
-                // GetSendQueueSizeBytes %d done: %d\n",
-                //						connection->getNetworkPlayer()->GetSmallId(),
-                //						canSendToPlayer,
-                // connection->countDelayedPackets(),
-                //						g_NetworkManager.GetHostPlayer()->GetSendQueueSizeMessages(
-                // nullptr, true ),
-                // connection->done);
-                //				}
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 
                 if (dontDelayChunks ||
                     (canSendToPlayer &&
-                     // 4J macOS - was 4. With TCP direct-connect the
-                     // local socket has plenty of headroom and the old
-                     // limit was the main reason the world streamed in
-                     // very slowly to clients. Bumping to 32 keeps
-                     // back-pressure when the network is actually
-                     // saturated but lets us pipeline many more chunks.
+                     
+                     
+                     
+                     
+                     
+                     
                      (connection->countDelayedPackets() < 32) &&
                      (g_NetworkManager.GetHostPlayer()
                           ->GetSendQueueSizeMessages(nullptr, true) < 32) &&
-                     //(tickCount - lastBrupSendTickCount) >
-                     //(connection->getNetworkPlayer()->GetCurrentRtt()>>4) &&
+                     
+                     
                      !connection->done)) {
                     lastBrupSendTickCount = tickCount;
                     okToSend = true;
                     MinecraftServer::chunkPacketManagement_DidSendTo(
                         connection->getNetworkPlayer());
 
-                    //					static
-                    // unordered_map<wstring,int64_t> mapLastTime;
-                    //					int64_t thisTime =
-                    // System::currentTimeMillis();
-                    //					int64_t lastTime =
-                    // mapLastTime[connection->getNetworkPlayer()->GetUID().toString()];
-                    //					app.DebugPrintf(" - OK
-                    // to send (%d ms since last)\n", thisTime - lastTime);
-                    //					mapLastTime[connection->getNetworkPlayer()->GetUID().toString()]
-                    //= thisTime;
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                 } else {
-                    //					app.DebugPrintf(" - <NOT
-                    // OK>\n");
-                    // 4J macOS - back off for the rest of this tick if the
-                    // queue / slow-queue gating refuses us. Otherwise we
-                    // would just re-pick the same nearest chunk on every
-                    // loop iteration and burn CPU.
+                    
+                    
+                    
+                    
+                    
+                    
                     break;
                 }
             }
@@ -543,30 +543,30 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
 
                 bool chunkDataSent = false;
 
-                // Don't send the chunk to the local machine - the chunks there
-                // are mapped directly to the server chunks. We could
-                // potentially stop this process earlier on by not adding to the
-                // chunksToSend list, but that would stop the tile entities
-                // being broadcast too
+                
+                
+                
+                
+                
                 if (!connection
-                         ->isLocal())  // force here to disable sharing of data
+                         ->isLocal())  
                 {
-                    // Don't send the chunk if we've set a flag to say that
-                    // we've already sent it to this machine. This stops two
-                    // things (1) Sending a chunk to multiple players doing
-                    // split screen on one machine (2) Sending a chunk that
-                    // we've already sent as the player moves around. The
-                    // original version of the game resends these, since it
-                    // maintains
-                    //     a region of active chunks round each player in the
-                    //     "infinite" world, but in our finite world, we don't
-                    //     ever request that chunks be unloaded on the client
-                    //     and so just gradually build up more and more of the
-                    //     finite set of chunks as the player moves
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     if (!g_NetworkManager.SystemFlagGet(
                             connection->getNetworkPlayer(), flagIndex)) {
-                        //						app.DebugPrintf("Creating
-                        // BRUP for %d %d\n",nearest.x, nearest.z);
+                        
+                        
                         int64_t before = System::currentTimeMillis();
                         std::shared_ptr<BlockRegionUpdatePacket> packet =
                             std::shared_ptr<BlockRegionUpdatePacket>(
@@ -574,35 +574,35 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
                                     nearest.x * 16, 0, nearest.z * 16, 16,
                                     Level::maxBuildHeight, 16, level));
                         int64_t after = System::currentTimeMillis();
-                        //						app.DebugPrintf(">>><<<
-                        //%d ms\n",after-before);
+                        
+                        
 
                         if (dontDelayChunks) packet->shouldDelay = false;
 
                         if (packet->shouldDelay == true) {
-                            // Other than the first packet we always want these
-                            // initial chunks to be sent over QNet at a lower
-                            // priority
+                            
+                            
+                            
                             connection->queueSend(packet);
                         } else {
                             connection->send(packet);
                         }
-                        // Set flag to say we have send this block already to
-                        // this system
+                        
+                        
                         g_NetworkManager.SystemFlagSet(
                             connection->getNetworkPlayer(), flagIndex);
 
                         chunkDataSent = true;
                     }
                 } else {
-                    // For local connections, we'll need to copy the lighting
-                    // data over from server to client at this point. This is to
-                    // try and keep lighting as similar as possible to the java
-                    // version, where client & server are individually
-                    // responsible for maintaining their lighting (since 1.2.3).
-                    // This is really an alternative to sending the lighting
-                    // data over the fake local network connection at this
-                    // point.
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
 
                     MultiPlayerLevel* clientLevel =
                         Minecraft::GetInstance()->getLevel(
@@ -618,17 +618,17 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
                             nearest.z * 16 + 14);
                     }
                 }
-                // Don't send TileEntity data until we have sent the block data
-                // 4J macOS task 7.2 - satisfies Req 6.5: when a chunk first
-                // enters the player's view distance, every TileEntity update
-                // packet for that chunk follows its BRUP within the same tick.
-                // Sending is gated on chunkDataSent (the BRUP went out) or a
-                // local connection, and broadcast() below delays each packet so
-                // it arrives after the BRUP (preserves the #9169 "Awaiting
-                // approval" sign fix). Tile entities whose getUpdatePacket()
-                // returns null (chest/furnace/hopper/dispenser/brewing stand)
-                // are intentionally synced via container packets instead and
-                // are skipped by broadcast()'s null-check.
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 if (connection->isLocal() || chunkDataSent) {
                     std::vector<std::shared_ptr<TileEntity> >* tes =
                         level->getTileEntitiesInRegion(
@@ -636,10 +636,10 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
                             nearest.x * 16 + 16, Level::maxBuildHeight,
                             nearest.z * 16 + 16);
                     for (unsigned int i = 0; i < tes->size(); i++) {
-                        // 4J Stu - Added delay param to ensure that these
-                        // arrive after the BRUPs from above Fix for #9169 - ART
-                        // : Sign text is replaced with the words Awaiting
-                        // approval.
+                        
+                        
+                        
+                        
                         broadcast(tes->at(i),
                                   !connection->isLocal() && !dontDelayChunks);
                     }
@@ -652,31 +652,31 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
 
 void ServerPlayer::doTickB() {
 #if !defined(_CONTENT_PACKAGE)
-    // check if there's a debug dimension change requested
-    // if(app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad())&(1L<<eDebugSetting_GoToNether))
-    //{
-    //	if(level->dimension->id == 0 )
-    //	{
-    //		isInsidePortal=true;
-    //		portalTime=1;
-    //	}
-    //	unsigned int
-    // uiVal=app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad());
-    //	app.SetGameSettingsDebugMask(InputManager.GetPrimaryPad(),uiVal&~(1L<<eDebugSetting_GoToNether));
-    //}
-    // 	else if
-    // (app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad())&(1L<<eDebugSetting_GoToEnd))
-    // 	{
-    // 		if(level->dimension->id == 0 )
-    // 		{
-    // 			server->players->toggleDimension(
-    // std::dynamic_pointer_cast<ServerPlayer>( shared_from_this() ), 1 );
-    // 		}
-    // 		unsigned int
-    // uiVal=app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad());
-    // 		app.SetGameSettingsDebugMask(InputManager.GetPrimaryPad(),uiVal&~(1L<<eDebugSetting_GoToEnd));
-    // 	}
-    // else
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     if (app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
         (1L << eDebugSetting_GoToOverworld)) {
         if (level->dimension->id != 0) {
@@ -694,7 +694,7 @@ void ServerPlayer::doTickB() {
     if (getHealth() != lastSentHealth ||
         lastSentFood != foodData.getFoodLevel() ||
         ((foodData.getSaturationLevel() == 0) != lastFoodSaturationZero)) {
-        // 4J Stu - Added m_lastDamageSource for telemetry
+        
         connection->send(std::make_shared<SetHealthPacket>(
             getHealth(), foodData.getFoodLevel(), foodData.getSaturationLevel(),
             m_lastDamageSource));
@@ -762,27 +762,27 @@ void ServerPlayer::die(DamageSource* source) {
     std::shared_ptr<LivingEntity> killer = getKillCredit();
     if (killer != nullptr)
         killer->awardKillScore(shared_from_this(), deathScore);
-    // awardStat(Stats::deaths, 1);
+    
 }
 
 bool ServerPlayer::hurt(DamageSource* dmgSource, float dmg) {
     if (isInvulnerable()) return false;
 
-    // 4J: Not relevant to console servers
-    // Allow falldamage on dedicated pvpservers -- so people cannot cheat their
-    // way out of 'fall traps'
-    // bool allowFallDamage = server->isPvpAllowed() &&
-    // server->isDedicatedServer() && server->isPvpAllowed() &&
-    // (dmgSource->msgId.compare(L"fall") == 0);
+    
+    
+    
+    
+    
+    
     if (!server->isPvpAllowed() && invulnerableTime > 0 &&
         dmgSource != DamageSource::outOfWorld)
         return false;
 
     if (dynamic_cast<EntityDamageSource*>(dmgSource) != nullptr) {
-        // 4J Stu - Fix for #46422 - TU5: Crash: Gameplay: Crash when being hit
-        // by a trap using a dispenser getEntity returns the owner of
-        // projectiles, and this would never be the arrow. The owner is
-        // sometimes nullptr.
+        
+        
+        
+        
         std::shared_ptr<Entity> source = dmgSource->getDirectEntity();
 
         if (source->instanceof(eTYPE_PLAYER) &&
@@ -812,8 +812,8 @@ bool ServerPlayer::canHarmPlayer(std::shared_ptr<Player> target) {
     return Player::canHarmPlayer(target);
 }
 
-// 4J: Added for checking when only player name is provided (possible player
-// isn't on server), e.g. can harm owned animals
+
+
 bool ServerPlayer::canHarmPlayer(std::wstring targetName) {
     bool canHarm = true;
 
@@ -838,15 +838,15 @@ void ServerPlayer::changeDimension(int i) {
         app.DebugPrintf("Start win game\n");
         awardStat(GenericStats::winGame(), GenericStats::param_winGame());
 
-        // All players on the same system as this player should also be removed
-        // from the game while the Win screen is shown
+        
+        
         INetworkPlayer* thisPlayer = connection->getNetworkPlayer();
 
         if (!wonGame) {
             level->removeEntity(shared_from_this());
             wonGame = true;
             m_enteredEndExitPortal =
-                true;  // We only flag this for the player in the portal
+                true;  
             connection->send(std::make_shared<GameEventPacket>(
                 GameEventPacket::WIN_GAME, thisPlayer->GetUserIndex()));
             app.DebugPrintf("Sending packet to %d\n",
@@ -888,8 +888,8 @@ void ServerPlayer::changeDimension(int i) {
 
             i = 1;
         } else {
-            // 4J: Removed on the advice of the mighty King of Achievments (JV)
-            // awardStat(GenericStats::portal(), GenericStats::param_portal());
+            
+            
         }
         server->getPlayers()->toggleDimension(
             std::dynamic_pointer_cast<ServerPlayer>(shared_from_this()), i);
@@ -899,9 +899,9 @@ void ServerPlayer::changeDimension(int i) {
     }
 }
 
-// 4J Added delay param
+
 void ServerPlayer::broadcast(std::shared_ptr<TileEntity> te,
-                             bool delay /*= false*/) {
+                             bool delay ) {
     if (te != nullptr) {
         std::shared_ptr<Packet> p = te->getUpdatePacket();
         if (p != nullptr) {
@@ -952,12 +952,12 @@ void ServerPlayer::ride(std::shared_ptr<Entity> e) {
     connection->send(std::make_shared<SetEntityLinkPacket>(
         SetEntityLinkPacket::RIDING, shared_from_this(), riding));
 
-    // 4J Removed this - The act of riding will be handled on the client and
-    // will change the position of the player. If we also teleport it then we
-    // can end up with a repeating movements, e.g. bouncing up and down after
-    // exiting a boat due to slight differences in position on the client and
-    // server
-    // connection->teleport(x, y, z, yRot, xRot);
+    
+    
+    
+    
+    
+    
 }
 
 void ServerPlayer::checkFallDamage(double ya, bool onGround) {}
@@ -1067,8 +1067,8 @@ bool ServerPlayer::openContainer(std::shared_ptr<Container> container) {
     if (containerMenu == inventoryMenu) {
         nextContainerCounter();
 
-        // 4J-JEV: Added to distinguish between ender, bonus, large and small
-        // chests (for displaying the name of the chest).
+        
+        
         int containerType = container->getContainerType();
         assert(containerType >= 0);
 
@@ -1223,7 +1223,7 @@ bool ServerPlayer::openTrading(std::shared_ptr<Merchant> traderTarget,
             ByteArrayOutputStream rawOutput;
             DataOutputStream output(&rawOutput);
 
-            // just to make sure the offers are matched to the container
+            
             output.writeInt(containerCounter);
             offers->writeToStream(&output);
 
@@ -1264,11 +1264,11 @@ void ServerPlayer::slotChanged(AbstractContainerMenu* container, int slotIndex,
     }
 
     if (ignoreSlotUpdateHack) {
-        // Do not send this packet!
-        //
-        // This is a horrible hack that makes sure that inventory clicks
-        // that the client correctly predicted don't get sent out to the
-        // client again.
+        
+        
+        
+        
+        
         return;
     }
 
@@ -1293,13 +1293,13 @@ void ServerPlayer::refreshContainer(
 
 void ServerPlayer::setContainerData(AbstractContainerMenu* container, int id,
                                     int value) {
-    // 4J - added, so that furnace updates also have this hack
+    
     if (ignoreSlotUpdateHack) {
-        // Do not send this packet!
-        //
-        // This is a horrible hack that makes sure that inventory clicks
-        // that the client correctly predicted don't get sent out to the
-        // client again.
+        
+        
+        
+        
+        
         return;
     }
     connection->send(std::shared_ptr<ContainerSetDataPacket>(
@@ -1314,10 +1314,10 @@ void ServerPlayer::closeContainer() {
 
 void ServerPlayer::broadcastCarriedItem() {
     if (ignoreSlotUpdateHack) {
-        // Do not send this packet!
-        // This is a horrible hack that makes sure that inventory clicks
-        // that the client correctly predicted don't get sent out to the
-        // client again.
+        
+        
+        
+        
         return;
     }
     connection->send(std::shared_ptr<ContainerSetSlotPacket>(
@@ -1364,8 +1364,8 @@ void ServerPlayer::resetSentInfo() { lastSentHealth = -99999999.0f; }
 
 void ServerPlayer::displayClientMessage(int messageId) {
     ChatPacket::EChatPacketMessage messageType = ChatPacket::e_ChatCustom;
-    // Convert the message id to an enum that will not change between game
-    // versions
+    
+    
     switch (messageId) {
         case IDS_TILE_BED_OCCUPIED:
             messageType = ChatPacket::e_ChatBedOccupied;
@@ -1385,7 +1385,7 @@ void ServerPlayer::displayClientMessage(int messageId) {
             break;
         case IDS_TILE_BED_PLAYERSLEEP:
             messageType = ChatPacket::e_ChatBedPlayerSleep;
-            // broadcast to all the other players in the game
+            
             for (unsigned int i = 0; i < server->getPlayers()->players.size();
                  i++) {
                 std::shared_ptr<ServerPlayer> player =
@@ -1617,11 +1617,11 @@ void ServerPlayer::displayClientMessage(int messageId) {
             break;
     }
 
-    // Language *language = Language::getInstance();
-    // wstring languageString =
-    // app.GetString(messageId);//language->getElement(messageId);
-    // connection->send( shared_ptr<ChatPacket>( new ChatPacket(L"",
-    // messageType) ) );
+    
+    
+    
+    
+    
 }
 
 void ServerPlayer::completeUsingItem() {
@@ -1704,8 +1704,8 @@ void ServerPlayer::setGameMode(GameType* mode) {
 
 void ServerPlayer::sendMessage(
     const std::wstring& message,
-    ChatPacket::EChatPacketMessage type /*= e_ChatCustom*/,
-    int customData /*= -1*/, const std::wstring& additionalMessage /*= L""*/) {
+    ChatPacket::EChatPacketMessage type ,
+    int customData , const std::wstring& additionalMessage ) {
     connection->send(std::shared_ptr<ChatPacket>(
         new ChatPacket(message, type, customData, additionalMessage)));
 }
@@ -1714,63 +1714,63 @@ bool ServerPlayer::hasPermission(EGameCommand command) {
     return server->getPlayers()->isOp(
         std::dynamic_pointer_cast<ServerPlayer>(shared_from_this()));
 
-    // 4J: Removed permission level
-    /*if(
-    server->getPlayers()->isOp(std::dynamic_pointer_cast<ServerPlayer>(shared_from_this()))
-    )
-    {
-            return server->getOperatorUserPermissionLevel() >= permissionLevel;
-    }
-    return false;*/
+    
+    
+
+
+
+
+
+
 }
 
-// 4J - Don't use
-// void ServerPlayer::updateOptions(shared_ptr<ClientInformationPacket> packet)
-//{
-//	// 4J - Don't need
-//	//if (language.getLanguageList().containsKey(packet.getLanguage()))
-//	//{
-//	//	language.loadLanguage(packet->getLanguage());
-//	//}
-//
-//	int dist = 16 * 16 >> packet->getViewDistance();
-//	if (dist > PlayerChunkMap::MIN_VIEW_DISTANCE && dist <
-// PlayerChunkMap::MAX_VIEW_DISTANCE)
-//	{
-//		this->viewDistance = dist;
-//	}
-//
-//	chatVisibility = packet->getChatVisibility();
-//	canChatColor = packet->getChatColors();
-//
-//	// 4J - Don't need
-//	//if (server.isSingleplayer() &&
-// server.getSingleplayerName().equals(name))
-//	//{
-//	//	server.setDifficulty(packet.getDifficulty());
-//	//}
-//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int ServerPlayer::getViewDistance() { return viewDistance; }
 
-// 4J macOS - apply a new effective view-distance (in chunks) for this player.
-// Clamp into [MIN_VIEW_DISTANCE, MAX_VIEW_DISTANCE] then cap at the server-wide
-// PlayerList view distance (the upper bound the PlayerChunkMap maintains
-// subscriptions for). On change, (un)subscribe chunks via the chunk map.
-//
-// IMPORTANT: this MUST be invoked from the server tick (main server thread)
-// only. Network packets requesting a view-distance change (task 6.3) only
-// stash the requested value; the tick routes it through here. Calling this
-// from the network thread would race PlayerChunkMap subscription state.
+
+
+
+
+
+
+
+
+
 void ServerPlayer::setEffectiveViewDistance(int chunks) {
     int target = clampViewDistance(chunks);
 
-    // Never above the server-wide limit (already clamped in PlayerList). This
-    // enforces "not above PlayerList::getViewDistance()".
+    
+    
     int serverCap = server->getPlayers()->getViewDistance();
     if (target > serverCap) target = serverCap;
 
-    if (target == viewDistance) return;  // no change
+    if (target == viewDistance) return;  
 
     int old = viewDistance;
     viewDistance = target;
@@ -1780,15 +1780,15 @@ void ServerPlayer::setEffectiveViewDistance(int chunks) {
         target);
 }
 
-// bool ServerPlayer::canChatInColor()
-//{
-//	return canChatColor;
-// }
-//
-// int ServerPlayer::getChatVisibility()
-//{
-//	return chatVisibility;
-// }
+
+
+
+
+
+
+
+
+
 
 Pos* ServerPlayer::getCommandSenderWorldPosition() {
     return new Pos(std::floor(x), std::floor(y + .5), std::floor(z));
@@ -1798,18 +1798,18 @@ void ServerPlayer::resetLastActionTime() {
     this->lastActionTime = MinecraftServer::getCurrentTimeMillis();
 }
 
-// Get an index that can be used to uniquely reference this chunk from either
-// dimension
+
+
 int ServerPlayer::getFlagIndexForChunk(const ChunkPos& pos, int dimension) {
-    // Scale pos x & z up by 16 as getGlobalIndexForChunk is expecting tile
-    // rather than chunk coords
+    
+    
     return LevelRenderer::getGlobalIndexForChunk(pos.x * 16, 0, pos.z * 16,
                                                  dimension) /
            (Level::maxBuildHeight /
-            16);  // dividing here by number of renderer chunks in one column;
+            16);  
 }
 
-// 4J Added, returns a number which is subtracted from the default view distance
+
 int ServerPlayer::getPlayerViewDistanceModifier() {
     int value = 0;
 

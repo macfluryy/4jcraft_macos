@@ -58,7 +58,7 @@ public:
     static const int INV_BASE_COUNT = 2;
     static const int INV_DONKEY_CHEST_COUNT = 15;
 
-    // TODO: USE ENUMS! // Original comment
+    
     static const int ARMOR_NONE = 0;
     static const int ARMOR_IRON = 1;
     static const int ARMOR_GOLD = 2;
@@ -106,7 +106,7 @@ private:
     static std::wstring MARKING_HASHES[MARKINGS];
 
 private:
-    int countEating;  // eating timer
+    int countEating;  
     int mouthCounter;
     int standCounter;
 
@@ -128,7 +128,7 @@ protected:
 private:
     bool allowStandSliding;
 
-    // animation data
+    
     float eatAnim, eatAnimO;
     float standAnim, standAnimO;
     float mouthAnim, mouthAnimO;
@@ -285,7 +285,7 @@ private:
     virtual void openMouth();
 
 public:
-    // 4J-JEV: Made public for tooltip code, doesn't change state anyway.
+    
     virtual bool isReadyForParenting();
 
 public:
@@ -316,7 +316,7 @@ public:
         std::shared_ptr<AgableMob> partner);
     virtual MobGroupData* finalizeMobSpawn(
         MobGroupData* groupData,
-        int extraData = 0);  // 4J Added extraData param
+        int extraData = 0);  
     virtual float getEatAnim(float a);
     virtual float getStandAnim(float a);
     virtual float getMouthAnim(float a);

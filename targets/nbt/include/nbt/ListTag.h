@@ -72,11 +72,11 @@ public:
 
     void add(T* tag) {
         type = tag->getId();
-        // 4J: List tag write/load doesn't preserve tag names so remove them so
-        // we can safely do comparisons There are a few ways I could have fixed
-        // this but this seems the least invasive, most complete fix (covers
-        // other items that also use list tags and require equality checks to
-        // work) considering we can't change the write/load functions.
+        
+        
+        
+        
+        
         tag->setName(L"");
         list.push_back(std::unique_ptr<Tag>(tag));
     }
@@ -103,9 +103,9 @@ public:
                 bool equal = false;
                 if (list.size() == o->list.size()) {
                     equal = true;
-                    // 4J Stu - Pretty inefficient method, but I think we can
-                    // live with it give how often it will happen, and the small
-                    // sizes of the data sets
+                    
+                    
+                    
                     for (auto& tag : list) {
                         bool thisMatches = false;
                         for (auto& otherTag : o->list) {

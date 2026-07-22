@@ -28,7 +28,7 @@ StairTile::StairTile(int id, Tile* base, int basedata)
 void StairTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     if (isClipping) {
         setShape(0.5f * (clipStep % 2), 0.5f * (clipStep / 2 % 2),
@@ -58,7 +58,7 @@ void StairTile::setBaseShape(LevelSource* level, int x, int y, int z) {
 
 bool StairTile::isStairs(int id) {
     StairTile* st = dynamic_cast<StairTile*>(Tile::tiles[id]);
-    return id > 0 && st != nullptr;  // Tile::tiles[id] instanceof StairTile;
+    return id > 0 && st != nullptr;  
 }
 
 bool StairTile::isLockAttached(LevelSource* level, int x, int y, int z,
@@ -169,10 +169,10 @@ bool StairTile::setStepShape(LevelSource* level, int x, int y, int z) {
     return checkInnerPiece;
 }
 
-/*
- * This method adds an extra 1/8 block if the stairs can attach as an
- * "inner corner."
- */
+
+
+
+
 bool StairTile::setInnerPieceShape(LevelSource* level, int x, int y, int z) {
     int data = level->getData(x, y, z);
     int dir = data & 0x3;
@@ -291,7 +291,7 @@ void StairTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
     setShape(0, 0, 0, 1, 1, 1);
 }
 
-/** DELEGATES: **/
+
 
 void StairTile::addLights(Level* level, int x, int y, int z) {
     base->addLights(level, x, y, z);
@@ -310,9 +310,9 @@ void StairTile::destroy(Level* level, int x, int y, int z, int data) {
     base->destroy(level, x, y, z, data);
 }
 
-// 4J - brought forward from 1.8.2
+
 int StairTile::getLightColor(LevelSource* level, int x, int y, int z,
-                             int tileId /*=-1*/) {
+                             int tileId ) {
     return base->getLightColor(level, x, y, z, tileId);
 }
 
@@ -373,17 +373,17 @@ void StairTile::tick(Level* level, int x, int y, int z, Random* random) {
     base->tick(level, x, y, z, random);
 }
 
-// 4J-HEG - Removed this to prevent weird tooltips (place steak on stairs!?)
-//// 4J-PB - Adding a TestUse for tooltip display
-// bool StairTile::TestUse()
-//{
-//	return true;
-// }
+
+
+
+
+
+
 
 bool StairTile::use(Level* level, int x, int y, int z,
                     std::shared_ptr<Player> player, int clickedFace,
                     float clickX, float clickY, float clickZ,
-                    bool soundOnly /*=false*/)  // 4J added soundOnly param
+                    bool soundOnly )  
 {
     if (soundOnly) return false;
     return base->use(level, x, y, z, player, 0, 0, 0, 0);
@@ -462,5 +462,5 @@ HitResult* StairTile::clip(Level* level, int xt, int yt, int zt, Vec3* a,
 }
 
 void StairTile::registerIcons(IconRegister* iconRegister) {
-    // None
+    
 }

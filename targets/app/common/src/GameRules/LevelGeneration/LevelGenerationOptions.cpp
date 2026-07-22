@@ -270,7 +270,7 @@ void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
         GameRuleDefinition::addAttribute(attributeName, attributeValue);
     }
 }
-// 4jcraft: better schematic caching
+
 void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
     AABB chunkBox(chunk->x * 16, 0, chunk->z * 16, chunk->x * 16 + 16,
                   Level::maxBuildHeight, chunk->z * 16 + 16);
@@ -282,7 +282,7 @@ void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
 
     auto cacheIt = m_chunkRuleCache.find(key);
     if (cacheIt == m_chunkRuleCache.end()) {
-        // if no cache hit, show em the goods
+        
         ChunkRuleCacheEntry entry;
         for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
              ++it) {
@@ -350,7 +350,7 @@ void LevelGenerationOptions::processSchematicsLighting(LevelChunk* chunk) {
 
     auto cacheIt = m_chunkRuleCache.find(key);
     if (cacheIt == m_chunkRuleCache.end()) {
-        // lighting shouldn't affect structure rules...
+        
         ChunkRuleCacheEntry entry;
         for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
              ++it) {
@@ -360,8 +360,8 @@ void LevelGenerationOptions::processSchematicsLighting(LevelChunk* chunk) {
                 entry.schematicRules.push_back(rule);
             }
         }
-        // structureRules is initially empty because it will be populated by
-        // processSchematics later onn
+        
+        
 
         cacheIt = m_chunkRuleCache
                       .insert(std::pair<ChunkRuleCacheKey, ChunkRuleCacheEntry>(
@@ -377,10 +377,10 @@ void LevelGenerationOptions::processSchematicsLighting(LevelChunk* chunk) {
 
 bool LevelGenerationOptions::checkIntersects(int x0, int y0, int z0, int x1,
                                              int y1, int z1) {
-    // As an optimisation, we can quickly discard things below a certain y which
-    // makes most ore checks faster due to a) ores generally being below
-    // ground/sea level and b) tutorial world additions generally being above
-    // ground/sea level
+    
+    
+    
+    
     if (!m_bHaveMinY) {
         for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
              ++it) {
@@ -399,8 +399,8 @@ bool LevelGenerationOptions::checkIntersects(int x0, int y0, int z0, int x1,
         m_bHaveMinY = true;
     }
 
-    // 4J Stu - We DO NOT intersect if our upper bound is below the lower bound
-    // for all schematics
+    
+    
     if (y1 < m_minY) return false;
 
     bool intersects = false;
@@ -437,7 +437,7 @@ void LevelGenerationOptions::clearChunkRuleCache() { m_chunkRuleCache.clear(); }
 ConsoleSchematicFile* LevelGenerationOptions::loadSchematicFile(
     const std::wstring& filename, std::uint8_t* pbData,
     unsigned int dataLength) {
-    // If we have already loaded this, just return
+    
     auto it = m_schematics.find(filename);
     if (it != m_schematics.end()) {
 #if !defined(_CONTENT_PACKAGE)
@@ -449,7 +449,7 @@ ConsoleSchematicFile* LevelGenerationOptions::loadSchematicFile(
     }
 
     ConsoleSchematicFile* schematic = nullptr;
-    // 4jcraft: we use a constructor to reduce copies.
+    
     std::vector<uint8_t> data(pbData, pbData + dataLength);
     ByteArrayInputStream bais(std::move(data));
     DataInputStream dis(&bais);
@@ -463,7 +463,7 @@ ConsoleSchematicFile* LevelGenerationOptions::loadSchematicFile(
 ConsoleSchematicFile* LevelGenerationOptions::getSchematicFile(
     const std::wstring& filename) {
     ConsoleSchematicFile* schematic = nullptr;
-    // If we have already loaded this, just return
+    
     auto it = m_schematics.find(filename);
     if (it != m_schematics.end()) {
         schematic = it->second;
@@ -473,19 +473,19 @@ ConsoleSchematicFile* LevelGenerationOptions::getSchematicFile(
 
 void LevelGenerationOptions::releaseSchematicFile(
     const std::wstring& filename) {
-    // 4J Stu - We don't want to delete them when done, but probably want to
-    // keep a set of active schematics for the current world
-    // auto it = m_schematics.find(filename);
-    // if(it != m_schematics.end())
-    //{
-    //	ConsoleSchematicFile *schematic = it->second;
-    //	schematic->decrementRefCount();
-    //	if(schematic->shouldDelete())
-    //	{
-    //		delete schematic;
-    //		m_schematics.erase(it);
-    //	}
-    //}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 void LevelGenerationOptions::loadStringTable(StringTable* table) {
@@ -529,13 +529,13 @@ bool LevelGenerationOptions::isFeatureChunk(
 
 std::unordered_map<std::wstring, ConsoleSchematicFile*>*
 LevelGenerationOptions::getUnfinishedSchematicFiles() {
-    // Clean schematic rules.
+    
     std::unordered_set<std::wstring> usedFiles =
         std::unordered_set<std::wstring>();
     for (auto it = m_schematicRules.begin(); it != m_schematicRules.end(); it++)
         if (!(*it)->isComplete()) usedFiles.insert((*it)->getSchematicName());
 
-    // Clean schematic files.
+    
     std::unordered_map<std::wstring, ConsoleSchematicFile*>* out =
         new std::unordered_map<std::wstring, ConsoleSchematicFile*>();
     for (auto it = usedFiles.begin(); it != usedFiles.end(); it++)
@@ -557,7 +557,7 @@ void LevelGenerationOptions::loadBaseSaveData() {
                     return onPackMounted(pad, err, lic);
                 },
                 "WPACK") != ERROR_IO_PENDING) {
-            // corrupt DLC
+            
             setLoadedData();
             app.DebugPrintf("Failed to mount LGO DLC %d for pad %d\n",
                             mountIndex, ProfileManager.GetPrimaryPad());
@@ -578,7 +578,7 @@ int LevelGenerationOptions::onPackMounted(int iPad, uint32_t dwErr,
     LevelGenerationOptions* lgo = this;
     lgo->m_bLoadingData = false;
     if (dwErr != ERROR_SUCCESS) {
-        // corrupt DLC
+        
         app.DebugPrintf("Failed to mount LGO DLC for pad %d: %d\n", iPad,
                         dwErr);
     } else {
@@ -606,8 +606,8 @@ int LevelGenerationOptions::onPackMounted(int iPad, uint32_t dwErr,
                             app.FatalLoadError();
                         }
 
-                        // 4J-PB - is it possible that we can get here after a
-                        // read fail and it's not an error?
+                        
+                        
                         dlcFile->setGrfData(pbData, dwFileSize,
                                             lgo->m_stringTable);
 
@@ -632,8 +632,8 @@ int LevelGenerationOptions::onPackMounted(int iPad, uint32_t dwErr,
                         app.FatalLoadError();
                     }
 
-                    // 4J-PB - is it possible that we can get here after a read
-                    // fail and it's not an error?
+                    
+                    
                     lgo->setBaseSaveData(pbData, dwFileSize);
                 }
             }
@@ -649,16 +649,16 @@ int LevelGenerationOptions::onPackMounted(int iPad, uint32_t dwErr,
 void LevelGenerationOptions::reset_start() {
     clearChunkRuleCache();
     for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
-         ++it) {  // what in the flip in the fuck
+         ++it) {  
         (*it)->reset();
     }
 }
 
 void LevelGenerationOptions::reset_finish() {
     clearChunkRuleCache();
-    // if (m_spawnPos)				{ delete m_spawnPos; m_spawnPos
-    // = nullptr; } if (m_stringTable)			{ delete m_stringTable;
-    // m_stringTable = nullptr; }
+    
+    
+    
 
     if (isFromDLC()) {
         m_hasLoadedData = false;

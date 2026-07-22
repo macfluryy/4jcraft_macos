@@ -12,8 +12,8 @@ class ProgressRenderer : public ProgressListener {
 public:
     enum eProgressStringType {
         eProgressStringType_ID,
-        eProgressStringType_String,  // 4J-PB added for updating the bytes read
-                                     // on a save transfer
+        eProgressStringType_String,  
+                                     
     };
 
     static std::recursive_mutex s_progress;

@@ -24,8 +24,8 @@
 #include "minecraft/world/phys/AABB.h"
 
 Blaze::Blaze(Level* level) : Monster(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -33,7 +33,7 @@ Blaze::Blaze(Level* level) : Monster(level) {
     fireImmune = true;
     xpReward = XP_REWARD_LARGE;
 
-    // 4J Default inits
+    
     allowedHeightOffset = 0.5f;
     nextHeightOffsetChangeTick = 0;
     attackCounter = 0;
@@ -87,7 +87,7 @@ void Blaze::aiStep() {
                          random->nextFloat() * 0.7f + 0.3f);
     }
 
-    // slow falling, like chicken
+    
     if (!onGround && yd < 0) {
         yd *= 0.6;
     }
@@ -130,10 +130,10 @@ void Blaze::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
 
                 level->levelEvent(nullptr, LevelEvent::SOUND_BLAZE_FIREBALL,
                                   (int)x, (int)y, (int)z, 0);
-                //                    level.playSound(this,
-                //                    "mob.ghast.fireball", getSoundVolume(),
-                //                    (random.nextFloat() - random.nextFloat())
-                //                    * 0.2f + 1.0f);
+                
+                
+                
+                
                 for (int i = 0; i < 1; i++) {
                     std::shared_ptr<SmallFireball> ie =
                         std::make_shared<SmallFireball>(
@@ -141,10 +141,10 @@ void Blaze::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
                             std::dynamic_pointer_cast<Mob>(shared_from_this()),
                             xd + random->nextGaussian() * sqd, yd,
                             zd + random->nextGaussian() * sqd);
-                    //                        Vec3 v = getViewVector(1);
-                    //                        ie.x = x + v.x * 1.5;
+                    
+                    
                     ie->y = y + bbHeight / 2 + 0.5f;
-                    //                        ie.z = z + v.z * 1.5;
+                    
                     level->addEntity(ie);
                 }
             }
@@ -167,8 +167,8 @@ void Blaze::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
         for (int i = 0; i < count; i++) {
             spawnAtLocation(Item::blazeRod_Id, 1);
         }
-        // 4J-PB - added to the XBLA version due to our limited amount of
-        // glowstone in the Nether - drop 0-2 glowstone dust
+        
+        
         count = random->nextInt(3 + playerBonusLevel);
         for (int i = 0; i < count; i++) {
             spawnAtLocation(Item::yellowDust_Id, 1);

@@ -8,7 +8,7 @@ class TamableAnimal;
 
 class NonTameRandomTargetGoal : public NearestAttackableTargetGoal {
 private:
-    TamableAnimal* tamableMob;  // Owner of this goal
+    TamableAnimal* tamableMob;  
 
 public:
     NonTameRandomTargetGoal(TamableAnimal* mob,

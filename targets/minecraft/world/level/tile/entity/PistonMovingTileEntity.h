@@ -28,7 +28,7 @@ public:
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
-                     bool soundOnly = false);  // 4J added soundOnly param;
+                     bool soundOnly = false);  
     virtual int getResource(int data, Random* random, int playerBonusLevel);
     virtual void spawnResources(Level* level, int x, int y, int z, int data,
                                 float odds, int playerBonus);
@@ -39,7 +39,7 @@ public:
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
-            TileEntity>());  // 4J added forceData, forceEntity param
+            TileEntity>());  
 
     std::optional<AABB> getAABB(Level* level, int x, int y, int z, int tile,
                                 float progress, int facing);

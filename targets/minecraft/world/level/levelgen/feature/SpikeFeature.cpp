@@ -10,7 +10,7 @@
 
 SpikeFeature::SpikeFeature(int tile) {
     this->tile = tile;
-    // m_iIndex=0;
+    
 }
 
 bool SpikeFeature::place(Level* level, Random* random, int x, int y, int z) {
@@ -63,7 +63,7 @@ bool SpikeFeature::placeWithIndex(Level* level, Random* random, int x, int y,
 
     int hh = 12 + (iIndex * 3);
 
-    // fill any tiles below the spike
+    
 
     for (int xx = x - iRadius; xx <= x + iRadius; xx++) {
         for (int zz = z - iRadius; zz <= z + iRadius; zz++) {
@@ -75,7 +75,7 @@ bool SpikeFeature::placeWithIndex(Level* level, Random* random, int x, int y,
                 while ((y - iTileBelow > -10) &&
                        level->getTile(xx, y - iTileBelow, zz) != tile) {
                     if (level->isEmptyTile(xx, y - iTileBelow, zz)) {
-                        // empty tile
+                        
                         level->setTileAndData(xx, y - iTileBelow, zz,
                                               Tile::obsidian_Id, 0,
                                               Tile::UPDATE_CLIENTS);
@@ -98,7 +98,7 @@ bool SpikeFeature::placeWithIndex(Level* level, Random* random, int x, int y,
                     int zd = zz - z;
                     int iVal = xd * xd + zd * zd;
                     if (iVal <= iRadius * iRadius + 1) {
-                        // level->setTile(xx, yy, zz, Tile::obsidian_Id);
+                        
                         placeBlock(level, xx, yy, zz, Tile::obsidian_Id, 0);
                     }
                 }
@@ -109,7 +109,7 @@ bool SpikeFeature::placeWithIndex(Level* level, Random* random, int x, int y,
         }
     }
 
-    // cap the last spikes with a fence to stop lucky arrows hitting the crystal
+    
 
     if (iIndex > 5) {
         for (int yy = y; yy < y + hh; yy++) {
@@ -137,7 +137,7 @@ bool SpikeFeature::placeWithIndex(Level* level, Random* random, int x, int y,
             }
         }
 
-        // and cap off the top
+        
         int yy = y + hh + 3;
 
         if (yy < Level::genDepth) {
@@ -155,7 +155,7 @@ bool SpikeFeature::placeWithIndex(Level* level, Random* random, int x, int y,
                          0);
     level->addEntity(enderCrystal);
     placeBlock(level, x, y + hh, z, Tile::unbreakable_Id, 0);
-    // level->setTile(x, y + hh, z, Tile::unbreakable_Id);
+    
 
     return true;
 }

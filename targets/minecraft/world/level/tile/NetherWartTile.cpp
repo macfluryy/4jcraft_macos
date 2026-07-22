@@ -17,7 +17,7 @@ NetherWartTile::NetherWartTile(int id) : Bush(id) {
     updateDefaultShape();
 }
 
-// 4J Added override
+
 void NetherWartTile::updateDefaultShape() {
     float ss = 0.5f;
     setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, 0.25f, 0.5f + ss);
@@ -25,8 +25,8 @@ void NetherWartTile::updateDefaultShape() {
 
 bool NetherWartTile::mayPlaceOn(int tile) { return tile == Tile::soulsand_Id; }
 
-// Brought forward to fix #60073 - TU7: Content: Gameplay: Nether Warts cannot
-// be placed next to each other in the Nether
+
+
 bool NetherWartTile::canSurvive(Level* level, int x, int y, int z) {
     return mayPlaceOn(level->getTile(x, y - 1, z));
 }

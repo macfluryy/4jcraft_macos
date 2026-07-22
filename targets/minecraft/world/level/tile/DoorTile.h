@@ -51,7 +51,7 @@ public:
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
-            TileEntity>());  // 4J added forceData, forceEntity param
+            TileEntity>());  
     int getDir(LevelSource* level, int x, int y, int z);
     bool isOpen(LevelSource* level, int x, int y, int z);
 
@@ -66,7 +66,7 @@ public:
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
-                     bool soundOnly = false);  // 4J added soundOnly param
+                     bool soundOnly = false);  
     void setOpen(Level* level, int x, int y, int z, bool shouldOpen);
     virtual void neighborChanged(Level* level, int x, int y, int z, int type);
     virtual int getResource(int data, Random* random, int playerBonusLevel);

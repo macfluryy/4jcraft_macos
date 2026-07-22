@@ -27,15 +27,15 @@
 #include "minecraft/server/level/ServerPlayer.h"
 
 class Packet;
-// #if 0
-// #include "PS3/Network/NetworkPlayerSony.h"
-// #endif
+
+
+
 
 Random* PendingConnection::random = new Random();
 
 PendingConnection::PendingConnection(MinecraftServer* server, Socket* socket,
                                      const std::wstring& id) {
-    // 4J - added initialisers
+    
     done = false;
     _tick = 0;
     name = L"";
@@ -62,17 +62,17 @@ void PendingConnection::tick() {
 }
 
 void PendingConnection::disconnect(DisconnectPacket::eDisconnectReason reason) {
-    //   try {	// 4J - removed try/catch
-    //        logger.info("Disconnecting " + getName() + ": " + reason);
+    
+    
     fprintf(stderr, "[PENDING] disconnect called with reason=%d at tick=%d\n",
             reason, _tick);
     app.DebugPrintf("Pending connection disconnect: %d\n", reason);
     connection->send(std::make_shared<DisconnectPacket>(reason));
     connection->sendAndQuit();
     done = true;
-    //    } catch (Exception e) {
-    //        e.printStackTrace();
-    //    }
+    
+    
+    
 }
 
 void PendingConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
@@ -86,15 +86,15 @@ void PendingConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
         }
         return;
     }
-    //	printf("Server: handlePreLogin\n");
+    
     name =
-        packet->loginKey;  // 4J Stu - Change from the login packet as we know
-                           // better on client end during the pre-login packet
+        packet->loginKey;  
+                           
     sendPreLoginResponse();
 }
 
 void PendingConnection::sendPreLoginResponse() {
-    // 4J Stu - Calculate the players with UGC privileges set
+    
     PlayerUID* ugcXuids = new PlayerUID[MINECRAFT_NET_MAX_PLAYERS];
     std::uint8_t ugcXuidCount = 0;
     std::uint8_t hostIndex = 0;
@@ -107,13 +107,13 @@ void PendingConnection::sendPreLoginResponse() {
     for (auto it = playerList->players.begin(); it != playerList->players.end();
          ++it) {
         std::shared_ptr<ServerPlayer> player = *it;
-        // If the offline Xuid is invalid but the online one is not then that's
-        // guest which we should ignore If the online Xuid is invalid but the
-        // offline one is not then we are definitely an offline game so dont
-        // care about UGC
+        
+        
+        
+        
 
-        // PADDY - this is failing when a local player with chat restrictions
-        // joins an online game
+        
+        
 
         if (player != nullptr &&
             player->connection->m_offlineXUID != INVALID_XUID &&
@@ -121,8 +121,8 @@ void PendingConnection::sendPreLoginResponse() {
             if (player->connection->m_friendsOnlyUGC) {
                 ugcFriendsOnlyBits |= (1 << ugcXuidCount);
             }
-            // Need to use the online XUID otherwise friend checks will fail on
-            // the client
+            
+            
             ugcXuids[ugcXuidCount] = player->connection->m_onlineXUID;
 
             if (player->connection->getNetworkPlayer() != nullptr &&
@@ -145,7 +145,7 @@ void PendingConnection::sendPreLoginResponse() {
 void PendingConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
     fprintf(stderr, "[LOGIN-SRV] handleLogin called! clientVersion=%d\n",
             packet->clientVersion);
-    // name = packet->userName;
+    
     if (packet->clientVersion != SharedConstants::NETWORK_PROTOCOL_VERSION) {
         app.DebugPrintf("Client version is %d not equal to %d\n",
                         packet->clientVersion,
@@ -158,31 +158,31 @@ void PendingConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
         return;
     }
 
-    // if (true)// 4J removed !server->onlineMode)
+    
     bool sentDisconnect = false;
 
     if (sentDisconnect) {
-        // Do nothing
+        
     } else if (server->getPlayers()->isXuidBanned(packet->m_onlineXuid)) {
         disconnect(DisconnectPacket::eDisconnect_Banned);
     } else {
         handleAcceptedLogin(packet);
     }
-    // else
+    
     {
-        // 4J - removed
+        
     }
 }
 
 void PendingConnection::handleAcceptedLogin(
     std::shared_ptr<LoginPacket> packet) {
     if (packet->m_ugcPlayersVersion != server->m_ugcPlayersVersion) {
-        // Send the pre-login packet again with the new list of players
+        
         sendPreLoginResponse();
         return;
     }
 
-    // Guests use the online xuid, everyone else uses the offline one
+    
     PlayerUID playerXuid = packet->m_offlineXuid;
     if (playerXuid == INVALID_XUID) playerXuid = packet->m_onlineXuid;
 
@@ -191,37 +191,37 @@ void PendingConnection::handleAcceptedLogin(
                                                 packet->m_onlineXuid);
     if (playerEntity != nullptr) {
         server->getPlayers()->placeNewPlayer(connection, playerEntity, packet);
-        connection = nullptr;  // We've moved responsibility for this over to
-                               // the new PlayerConnection, nullptr so we don't
-                               // delete our reference to it here in our dtor
+        connection = nullptr;  
+                               
+                               
     }
     done = true;
 }
 
 void PendingConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
                                      void* reasonObjects) {
-    //    logger.info(getName() + " lost connection");
+    
     done = true;
 }
 
 void PendingConnection::handleGetInfo(std::shared_ptr<GetInfoPacket> packet) {
-    // try {
-    // String message = server->motd + "§" + server->players->getPlayerCount() +
-    // "§" + server->players->getMaxPlayers(); connection->send(new
-    // DisconnectPacket(message));
+    
+    
+    
+    
     connection->send(std::shared_ptr<DisconnectPacket>(
         new DisconnectPacket(DisconnectPacket::eDisconnect_ServerFull)));
     connection->sendAndQuit();
     server->connection->removeSpamProtection(connection->getSocket());
     done = true;
-    //} catch (Exception e) {
-    //	e.printStackTrace();
-    //}
+    
+    
+    
 }
 
 void PendingConnection::handleKeepAlive(
     std::shared_ptr<KeepAlivePacket> packet) {
-    // Ignore
+    
 }
 
 void PendingConnection::onUnhandledPacket(std::shared_ptr<Packet> packet) {
@@ -234,9 +234,9 @@ void PendingConnection::send(std::shared_ptr<Packet> packet) {
 
 std::wstring PendingConnection::getName() {
     return L"Unimplemented";
-    //        if (name != null) return name + " [" +
-    //        connection.getRemoteAddress().toString() + "]"; return
-    //        connection.getRemoteAddress().toString();
+    
+    
+    
 }
 
 bool PendingConnection::isServerPacketListener() { return true; }

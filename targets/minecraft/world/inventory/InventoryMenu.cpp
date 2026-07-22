@@ -50,10 +50,10 @@ void InventoryMenu::_init(std::shared_ptr<Inventory> inventory, bool active) {
     }
 
     for (int i = 0; i < 4; i++) {
-        // 4J Stu I removed an anonymous class that was here whose only purpose
-        // seemed to be a way of using the loop counter i within the functions,
-        // rather than making it a member of the object. I have moved all that
-        // out to the ArmorSlot class
+        
+        
+        
+        
         addSlot(new ArmorSlot(i, inventory,
                               inventory->getContainerSize() - 1 - i, 8,
                               8 + i * 18));
@@ -68,12 +68,12 @@ void InventoryMenu::_init(std::shared_ptr<Inventory> inventory, bool active) {
         addSlot(new Slot(inventory, x, 8 + x * 18, 142));
     }
 
-    slotsChanged();  // 4J removed craftSlots parameter, see comment below
+    slotsChanged();  
 }
 
-void InventoryMenu::slotsChanged()  // 4J used to take a shared_ptr<Container>
-                                    // but wasn't using it, so removed to
-                                    // simplify things
+void InventoryMenu::slotsChanged()  
+                                    
+                                    
 {
     resultSlots->setItem(
         0, Recipes::getInstance()->getItemFor(craftSlots, owner->level));
@@ -108,14 +108,14 @@ std::shared_ptr<ItemInstance> InventoryMenu::quickMoveStack(
         clicked = stack->copy();
 
         if (slotIndex == RESULT_SLOT) {
-            // 4J Stu - Brought forward change from 1.2
+            
             if (!moveItemStackTo(stack, INV_SLOT_START, USE_ROW_SLOT_END,
                                  true)) {
                 return nullptr;
             }
             slot->onQuickCraft(stack, clicked);
         } else if (slotIndex >= INV_SLOT_START && slotIndex < INV_SLOT_END) {
-            // 4J-PB - added for quick equip
+            
             if (ArmorRecipes::GetArmorType(stack->id) ==
                     ArmorRecipes::eArmorType_Helmet &&
                 (!HelmetSlot->hasItem())) {
@@ -145,15 +145,15 @@ std::shared_ptr<ItemInstance> InventoryMenu::quickMoveStack(
                     return nullptr;
                 }
             }
-            // 4J Stu - Brought forward change from 1.2
+            
             else if (!moveItemStackTo(stack, USE_ROW_SLOT_START,
                                       USE_ROW_SLOT_END, false)) {
                 return nullptr;
             }
         } else if (slotIndex >= USE_ROW_SLOT_START &&
                    slotIndex < USE_ROW_SLOT_END) {
-            // ArmorRecipes::_eArmorType
-            // eArmourType=ArmorRecipes::GetArmorType(stack->id);
+            
+            
 
             if (ArmorRecipes::GetArmorType(stack->id) ==
                     ArmorRecipes::eArmorType_Helmet &&
@@ -184,13 +184,13 @@ std::shared_ptr<ItemInstance> InventoryMenu::quickMoveStack(
                     return nullptr;
                 }
             }
-            // 4J Stu - Brought forward change from 1.2
+            
             else if (!moveItemStackTo(stack, INV_SLOT_START, INV_SLOT_END,
                                       false)) {
                 return nullptr;
             }
         } else {
-            // 4J Stu - Brought forward change from 1.2
+            
             if (!moveItemStackTo(stack, INV_SLOT_START, USE_ROW_SLOT_END,
                                  false)) {
                 return nullptr;
@@ -202,7 +202,7 @@ std::shared_ptr<ItemInstance> InventoryMenu::quickMoveStack(
             slot->setChanged();
         }
         if (stack->count == clicked->count) {
-            // nothing moved
+            
             return nullptr;
         } else {
             slot->onTake(player, stack);
@@ -221,10 +221,10 @@ bool InventoryMenu::canTakeItemForPickAll(std::shared_ptr<ItemInstance> carried,
            AbstractContainerMenu::canTakeItemForPickAll(carried, target);
 }
 
-// 4J-JEV: Added for achievement 'Iron Man'.
+
 std::shared_ptr<ItemInstance> InventoryMenu::clicked(
     int slotIndex, int buttonNum, int clickType, std::shared_ptr<Player> player,
-    bool looped)  // 4J Added looped param
+    bool looped)  
 {
     std::shared_ptr<ItemInstance> out = AbstractContainerMenu::clicked(
         slotIndex, buttonNum, clickType, player, looped);

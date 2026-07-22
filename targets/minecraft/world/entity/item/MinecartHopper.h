@@ -52,7 +52,7 @@ public:
     void setCooldown(int time);
     bool isOnCooldown();
 
-    // 4J For Hopper
+    
     virtual std::shared_ptr<ItemInstance> getItem(unsigned int slot) {
         return MinecartContainer::getItem(slot);
     }

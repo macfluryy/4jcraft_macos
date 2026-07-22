@@ -25,13 +25,13 @@ public:
     int x, y, z;
     char yRot, xRot;
     int carriedItem;
-    PlayerUID xuid;                   // 4J Added
-    PlayerUID OnlineXuid;             // 4J Added
-    std::uint8_t m_playerIndex;       // 4J Added
-    std::uint32_t m_skinId;           // 4J Added
-    std::uint32_t m_capeId;           // 4J Added
-    unsigned int m_uiGamePrivileges;  // 4J Added
-    std::uint8_t yHeadRot;            // 4J Added
+    PlayerUID xuid;                   
+    PlayerUID OnlineXuid;             
+    std::uint8_t m_playerIndex;       
+    std::uint32_t m_skinId;           
+    std::uint32_t m_capeId;           
+    unsigned int m_uiGamePrivileges;  
+    std::uint8_t yHeadRot;            
 
     AddPlayerPacket();
     ~AddPlayerPacket();

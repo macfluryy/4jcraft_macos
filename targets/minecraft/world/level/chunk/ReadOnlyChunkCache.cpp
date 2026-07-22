@@ -27,8 +27,8 @@ LevelChunk* ReadOnlyChunkCache::create(int x, int z) { return getChunk(x, z); }
 
 LevelChunk* ReadOnlyChunkCache::getChunk(int x, int z) {
     int slot = (x & LEN_MASK) | ((z & LEN_MASK) * LEN);
-    // 4J - removed try/catch
-    //    try {
+    
+    
     if (!hasChunk(x, z)) {
         LevelChunk* newChunk = load(x, z);
         if (newChunk == nullptr) {
@@ -37,22 +37,22 @@ LevelChunk* ReadOnlyChunkCache::getChunk(int x, int z) {
         chunks[slot] = newChunk;
     }
     return chunks[slot];
-    //    } catch (Exception e) {
-    //        e.printStackTrace();
-    //        return null;
-    //    }
+    
+    
+    
+    
 }
 
 LevelChunk* ReadOnlyChunkCache::load(int x, int z) {
-    // 4J - remove try/catch
-    //    try {
+    
+    
     return storage->load(level, x, z);
-    //    } catch (IOException e) {
-    //        e.printStackTrace();
-    //        return null;
-    //    }
+    
+    
+    
+    
 }
-// 4J - TODO - was synchronized
+
 void ReadOnlyChunkCache::postProcess(ChunkSource* parent, int x, int z) {}
 
 bool ReadOnlyChunkCache::save(bool force, ProgressListener* progressListener) {

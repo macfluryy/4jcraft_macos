@@ -88,7 +88,7 @@ void IUIScene_HUD::updateFrameTick() {
     if (pMinecraft->localgameModes[iPad]->canHurtPlayer()) {
         renderPlayerHealth();
     } else {
-        // SetRidingHorse(false, 0);
+        
         std::shared_ptr<Entity> riding = pMinecraft->localplayers[iPad]->riding;
         if (riding == nullptr) {
             SetRidingHorse(false, false, 0);
@@ -110,14 +110,14 @@ void IUIScene_HUD::updateFrameTick() {
         SetHorseJumpBarProgress(
             pMinecraft->localplayers[iPad]->getJumpRidingScale());
     } else if (pMinecraft->localgameModes[iPad]->hasExperience()) {
-        // Update xp progress
+        
         ShowExpBar(true);
 
         SetExpBarProgress(
             pMinecraft->localplayers[iPad]->experienceProgress,
             pMinecraft->localplayers[iPad]->getXpNeededForNextLevel());
 
-        // Update xp level
+        
         SetExpLevel(pMinecraft->localplayers[iPad]->experienceLevel);
     } else {
         ShowExpBar(false);
@@ -127,9 +127,9 @@ void IUIScene_HUD::updateFrameTick() {
     if (m_uiSelectedItemOpacityCountDown > 0) {
         --m_uiSelectedItemOpacityCountDown;
 
-        // 4J Stu - Timing here is kept the same as on Xbox360, even though we
-        // do it differently now and do the fade out in Flash rather than
-        // directly setting opacity
+        
+        
+        
         if (m_uiSelectedItemOpacityCountDown <
             (SharedConstants::TICKS_PER_SECOND * 1)) {
             HideSelectedLabel();
@@ -142,12 +142,12 @@ void IUIScene_HUD::updateFrameTick() {
     float fVal;
 
     if (ucAlpha < 80) {
-        // if we are in a menu, set the minimum opacity for tooltips to 15%
+        
         if (ui.GetMenuDisplayed(iPad) && (ucAlpha < 15)) {
             ucAlpha = 15;
         }
 
-        // check if we have the timer running for the opacity
+        
         unsigned int uiOpacityTimer = app.GetOpacityTimer(iPad);
         if (uiOpacityTimer != 0) {
             if (uiOpacityTimer < 10) {
@@ -161,7 +161,7 @@ void IUIScene_HUD::updateFrameTick() {
             fVal = 0.01f * (float)ucAlpha;
         }
     } else {
-        // if we are in a menu, set the minimum opacity for tooltips to 15%
+        
         if (ui.GetMenuDisplayed(iPad) && (ucAlpha < 15)) {
             ucAlpha = 15;
         }
@@ -189,7 +189,7 @@ void IUIScene_HUD::renderPlayerHealth() {
     SetRegenerationEffect(
         pMinecraft->localplayers[iPad]->hasEffect(MobEffect::regeneration));
 
-    // Update health
+    
     bool blink = pMinecraft->localplayers[iPad]->invulnerableTime / 3 % 2 == 1;
     if (pMinecraft->localplayers[iPad]->invulnerableTime < 10) blink = false;
     int currentHealth = pMinecraft->localplayers[iPad]->getHealth();
@@ -205,7 +205,7 @@ void IUIScene_HUD::renderPlayerHealth() {
     float totalAbsorption =
         pMinecraft->localplayers[iPad]->getAbsorptionAmount();
 
-    // Update armour
+    
     int armor = pMinecraft->localplayers[iPad]->getArmorValue();
 
     SetHealth(currentHealth, oldHealth, blink, bHasPoison || bHasWither,
@@ -229,8 +229,8 @@ void IUIScene_HUD::renderPlayerHealth() {
         ShowHorseHealth(false);
         m_horseHealth = 0;
 
-        // Update food
-        // bool foodBlink = false;
+        
+        
         FoodData* foodData = pMinecraft->localplayers[iPad]->getFoodData();
         int food = foodData->getFoodLevel();
         int oldFood = foodData->getLastFoodLevel();
@@ -242,7 +242,7 @@ void IUIScene_HUD::renderPlayerHealth() {
         SetFood(food, oldFood, hasHungerEffect);
         SetFoodSaturationLevel(saturationLevel);
 
-        // Update air
+        
         if (pMinecraft->localplayers[iPad]->isUnderLiquid(Material::water)) {
             ShowAir(true);
             int count =

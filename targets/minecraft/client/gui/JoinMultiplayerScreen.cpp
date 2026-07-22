@@ -109,7 +109,7 @@ bool JoinMultiplayerScreen::tryConnect(const std::string& host, int port) {
     std::wstring nick = minecraft->options->lastMpNickname;
     if (nick.empty()) nick = L"Player";
     if (!app.TemporaryDirectConnectStartEx(host.c_str(), port,
-                                           /*spawnOwnThread*/ false,
+                                            false,
                                            nick.c_str())) {
         fprintf(stderr, "[TCP] Direct-connect setup failed.\n");
         return false;

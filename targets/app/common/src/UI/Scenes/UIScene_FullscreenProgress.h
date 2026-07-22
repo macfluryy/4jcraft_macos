@@ -61,13 +61,13 @@ public:
     void tick();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
     virtual long long getDefaultGtcButtons() { return 0; }
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
     void handlePress(F64 controlId, F64 childId);

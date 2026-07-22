@@ -16,8 +16,8 @@ EnderCrystalModel::EnderCrystalModel(float g) {
     base = new ModelPart(this, L"base");
     base->texOffs(0, 16)->addBox(-6, 0, -6, 12, 4, 12);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     glass->compile(1.0f / 16.0f);
     cube->compile(1.0f / 16.0f);
     base->compile(1.0f / 16.0f);

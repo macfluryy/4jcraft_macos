@@ -30,7 +30,7 @@ public:
 
     static int SaveWorldThreadProc(void* lpParameter);
     static int ExitWorldThreadProc(void* lpParameter);
-    static void _ExitWorld(void* lpParameter);  // Call only from a thread
+    static void _ExitWorld(void* lpParameter);  
 
 protected:
     virtual void ShowScene(bool show) = 0;

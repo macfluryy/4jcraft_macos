@@ -22,7 +22,7 @@ public:
     virtual std::shared_ptr<ItemInstance> remove(int c);
     virtual void onTake(std::shared_ptr<Player> player,
                         std::shared_ptr<ItemInstance> carried);
-    virtual bool mayCombine(std::shared_ptr<ItemInstance> item);  // 4J Added
+    virtual bool mayCombine(std::shared_ptr<ItemInstance> item);  
 
 protected:
     virtual void onQuickCraft(std::shared_ptr<ItemInstance> picked, int count);

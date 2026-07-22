@@ -31,15 +31,15 @@ private:
 
 public:
     RedStoneDustTile(int id);
-    virtual void updateDefaultShape();  // 4J Added override
+    virtual void updateDefaultShape();  
     virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool isCubeShaped();
     virtual int getRenderShape();
-    virtual int getColor() const;  // 4J Added
+    virtual int getColor() const;  
     virtual int getColor(LevelSource* level, int x, int y, int z);
     virtual int getColor(LevelSource* level, int x, int y, int z,
-                         int data);  // 4J added
+                         int data);  
     virtual bool mayPlace(Level* level, int x, int y, int z);
 
 private:

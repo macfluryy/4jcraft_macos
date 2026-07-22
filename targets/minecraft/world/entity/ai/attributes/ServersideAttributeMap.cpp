@@ -16,16 +16,16 @@ AttributeInstance* ServersideAttributeMap::getInstance(Attribute* attribute) {
 AttributeInstance* ServersideAttributeMap::getInstance(eATTRIBUTE_ID id) {
     AttributeInstance* result = BaseAttributeMap::getInstance(id);
 
-    // 4J: Removed legacy name
-    // If we didn't find it, search by legacy name
-    /*if (result == nullptr)
-    {
-            auto it = attributesByLegacy.find(name);
-            if(it != attributesByLegacy.end())
-            {
-                    result = it->second;
-            }
-    }*/
+    
+    
+    
+
+
+
+
+
+
+
 
     return result;
 }
@@ -42,15 +42,15 @@ AttributeInstance* ServersideAttributeMap::registerAttribute(
     attributesById.insert(std::pair<eATTRIBUTE_ID, AttributeInstance*>(
         attribute->getId(), instance));
 
-    // 4J: Removed legacy name
-    // If this is a ranged attribute also add to legacy name map
-    /*RangedAttribute *rangedAttribute =
-    dynamic_cast<RangedAttribute*>(attribute); if (rangedAttribute != nullptr &&
-    rangedAttribute->getImportLegacyName() != L"")
-    {
-            attributesByLegacy.insert(std::pair<std::wstring,
-    AttributeInstance*>(rangedAttribute->getImportLegacyName(), instance));
-    }*/
+    
+    
+    
+
+
+
+
+
+
 
     return instance;
 }

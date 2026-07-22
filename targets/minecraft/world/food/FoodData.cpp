@@ -47,9 +47,9 @@ void FoodData::tick(std::shared_ptr<Player> player) {
         }
     }
 
-    // 4J: Added - Allow host to disable using hunger. We don't deplete the
-    // hunger bar due to exhaustion but I think we should deplete it to heal.
-    // Don't heal if natural regen is disabled
+    
+    
+    
     if (player->isAllowedToIgnoreExhaustion() &&
         player->level->getGameRules()->getBoolean(
             GameRules::RULE_NATURAL_REGENERATION)) {

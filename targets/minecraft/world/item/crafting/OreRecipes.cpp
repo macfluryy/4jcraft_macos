@@ -37,17 +37,17 @@ void OreRecipies::addRecipes(Recipes* r) {
     for (int i = 0; i < MAX_ORE_RECIPES; i++) {
         Tile* from = (Tile*)map[i].at(0)->tile;
         ItemInstance* to = (ItemInstance*)map[i].at(1)->iteminstance;
-        r->addShapedRecipy(new ItemInstance(from),  //
+        r->addShapedRecipy(new ItemInstance(from),  
                            L"sssczg",
-                           L"###",  //
-                           L"###",  //
-                           L"###",  //
+                           L"###",  
+                           L"###",  
+                           L"###",  
 
                            L'#', to, L'D');
 
-        r->addShapedRecipy(to,  //
+        r->addShapedRecipy(to,  
                            L"sctg",
-                           L"#",  //
+                           L"#",  
 
                            L'#', from, L'D');
     }

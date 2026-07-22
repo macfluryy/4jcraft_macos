@@ -29,7 +29,7 @@ Sapling::Sapling(int id) : Bush(id) {
     icons = nullptr;
 }
 
-// 4J Added override
+
 void Sapling::updateDefaultShape() {
     float ss = 0.4f;
     this->setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, ss * 2, 0.5f + ss);
@@ -74,7 +74,7 @@ void Sapling::growTree(Level* level, int x, int y, int z, Random* random) {
     } else if (data == TYPE_BIRCH) {
         f = new BirchFeature(true);
     } else if (data == TYPE_JUNGLE) {
-        // check for mega tree
+        
         for (ox = 0; ox >= -1; ox--) {
             for (oz = 0; oz >= -1; oz--) {
                 if (isSapling(level, x + ox, y, z + oz, TYPE_JUNGLE) &&
@@ -131,7 +131,7 @@ void Sapling::growTree(Level* level, int x, int y, int z, Random* random) {
     if (f != nullptr) delete f;
 }
 
-unsigned int Sapling::getDescriptionId(int iData /*= -1*/) {
+unsigned int Sapling::getDescriptionId(int iData ) {
     if (iData < 0) iData = 0;
     return Sapling::SAPLING_NAMES[iData];
 }

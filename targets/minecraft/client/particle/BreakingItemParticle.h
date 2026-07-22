@@ -7,7 +7,7 @@ class Level;
 class Textures;
 
 class BreakingItemParticle : public Particle {
-    // virtual eINSTANCEOF GetType(); // 4J-IB/JEV TODO needs implementation
+    
 
 public:
     virtual eINSTANCEOF GetType() { return eType_BREAKINGITEMPARTICLE; }

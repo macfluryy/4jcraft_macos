@@ -27,8 +27,8 @@
 #include "strings.h"
 
 SpawnEggItem::SpawnEggItem(int id) : Item(id) {
-    setMaxStackSize(16);  // 4J-PB brought forward. It is 64 on PC, but we'll
-                          // never be able to place that many
+    setMaxStackSize(16);  
+                          
     setStackedByData(true);
     overlay = nullptr;
 }
@@ -41,7 +41,7 @@ std::wstring SpawnEggItem::getHoverName(
     if (nameId >= 0) {
         elementName =
             replaceAll(elementName, L"{*CREATURE*}", app.GetString(nameId));
-        // elementName += " " + I18n.get("entity." + encodeId + ".name");
+        
     } else {
         elementName = replaceAll(elementName, L"{*CREATURE*}", L"");
     }
@@ -73,7 +73,7 @@ Icon* SpawnEggItem::getLayerIcon(int auxValue, int spriteLayer) {
     return Item::getLayerIcon(auxValue, spriteLayer);
 }
 
-// 4J-PB - added for dispenser
+
 std::shared_ptr<Entity> SpawnEggItem::canSpawn(int iAuxVal, Level* level,
                                                int* piResult) {
     std::shared_ptr<Entity> newEntity = EntityIO::newById(iAuxVal, level);
@@ -133,16 +133,16 @@ std::shared_ptr<Entity> SpawnEggItem::canSpawn(int iAuxVal, Level* level,
                                              Level::eSpawnType_Egg)) {
                         canSpawn = true;
                     } else {
-                        // different message for each animal
+                        
 
                         *piResult = eSpawnResult_FailTooManyPigsCowsSheepCats;
                     }
                 }
-                // 4J: Use eTYPE_ENEMY instead of monster (slimes and ghasts
-                // aren't monsters)
+                
+                
                 else if (newEntity->instanceof(eTYPE_ENEMY)) {
-                    // 4J-PB - check if the player is trying to spawn an enemy
-                    // in peaceful mode
+                    
+                    
                     if (level->difficulty == Difficulty::PEACEFUL) {
                         *piResult = eSpawnResult_FailCantSpawnInPeaceful;
                     } else if (level->canCreateMore(newEntity->GetType(),
@@ -180,7 +180,7 @@ bool SpawnEggItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
 
 #ifndef _CONTENT_PACKAGE
     if (app.DebugArtToolsOn() && tile == Tile::mobSpawner_Id) {
-        // 4J Stu - Force adding this as a tile update
+        
         level->removeTile(x, y, z);
         level->setTileAndData(x, y, z, Tile::mobSpawner_Id, 0,
                               Tile::UPDATE_ALL);
@@ -203,7 +203,7 @@ bool SpawnEggItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
     if (face == Facing::UP &&
         (Tile::tiles[tile] != nullptr &&
          Tile::tiles[tile]->getRenderShape() == Tile::SHAPE_FENCE)) {
-        // special case
+        
         yOff = .5;
     }
 
@@ -216,8 +216,8 @@ bool SpawnEggItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
     }
 
     if (result != nullptr) {
-        // 4J-JEV: SetCustomName is a method for Mob not LivingEntity; so change
-        // instanceof to check for Mobs.
+        
+        
         if (result->instanceof(eTYPE_MOB) &&
             itemInstance->hasCustomHoverName()) {
             std::dynamic_pointer_cast<Mob>(result)->setCustomName(
@@ -261,8 +261,8 @@ std::shared_ptr<ItemInstance> SpawnEggItem::use(
             std::shared_ptr<Entity> result = spawnMobAt(
                 level, itemInstance->getAuxValue(), xt, yt, zt, &iResult);
             if (result != nullptr) {
-                // 4J-JEV: SetCustomName is a method for Mob not LivingEntity;
-                // so change instanceof to check for Mobs.
+                
+                
                 if (result->instanceof(eTYPE_MOB) &&
                     itemInstance->hasCustomHoverName()) {
                     std::dynamic_pointer_cast<Mob>(result)->setCustomName(
@@ -285,7 +285,7 @@ std::shared_ptr<Entity> SpawnEggItem::spawnMobAt(Level* level, int auxVal,
     int mobId = auxVal;
     int extraData = 0;
 
-    // 4J Stu - Enable spawning specific entity sub-types
+    
     mobId = auxVal & 0xFFF;
     extraData = auxVal >> 12;
 
@@ -299,17 +299,17 @@ std::shared_ptr<Entity> SpawnEggItem::spawnMobAt(Level* level, int auxVal,
     for (int i = 0; i < SPAWN_COUNT; i++) {
         newEntity = canSpawn(mobId, level, piResult);
 
-        // 4J-JEV: DynCasting to Mob not LivingEntity; so change instanceof to
-        // check for Mobs.
+        
+        
         if (newEntity != nullptr && newEntity->instanceof(eTYPE_MOB)) {
             std::shared_ptr<Mob> mob =
                 std::dynamic_pointer_cast<Mob>(newEntity);
             newEntity->moveTo(
                 x, y, z, Mth::wrapDegrees(level->random->nextFloat() * 360), 0);
-            newEntity->setDespawnProtected();  // 4J added, default to being
-                                               // protected against despawning
-                                               // (has to be done after initial
-                                               // position is set)
+            newEntity->setDespawnProtected();  
+                                               
+                                               
+                                               
             mob->yHeadRot = mob->yRot;
             mob->yBodyRot = mob->yRot;
 
@@ -329,8 +329,8 @@ void SpawnEggItem::registerIcons(IconRegister* iconRegister) {
 
 void SpawnEggItem::DisplaySpawnError(std::shared_ptr<Player> player,
                                      int result) {
-    // some negative sound effect?
-    // level->levelEvent(LevelEvent::SOUND_CLICK_FAIL, x, y, z, 0);
+    
+    
     switch (result) {
         case eSpawnResult_FailTooManyPigsCowsSheepCats:
             player->displayClientMessage(IDS_MAX_PIGS_SHEEP_COWS_CATS_SPAWNED);

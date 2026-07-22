@@ -6,13 +6,13 @@
 #include "OutputStream.h"
 
 class ByteArrayOutputStream : public OutputStream {
-    // Note - when actually implementing, std::vector<uint8_t> will need to grow
-    // as data is written
+    
+    
 public:
-    std::vector<uint8_t> buf;  // The buffer where data is stored.
+    std::vector<uint8_t> buf;  
 
 protected:
-    unsigned int count;  // The number of valid bytes in the buffer.
+    unsigned int count;  
 
 public:
     ByteArrayOutputStream();

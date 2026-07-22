@@ -1,7 +1,7 @@
 #pragma once
 #include "IUIScene_AbstractContainerMenu.h"
 
-// The 0-indexed slot in the inventory list that lines up with the result slot
+
 #define BREWING_SCENE_INGREDIENT_SLOT_UP_OFFSET 5
 #define BREWING_SCENE_INGREDIENT_SLOT_DOWN_OFFSET 5
 #define BREWING_SCENE_BOTTLE1_SLOT_UP_OFFSET 3

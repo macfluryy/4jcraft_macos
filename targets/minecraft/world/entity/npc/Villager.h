@@ -27,8 +27,8 @@ public:
     eINSTANCEOF GetType() { return eTYPE_VILLAGER; }
     static Entity* create(Level* level) { return new Villager(level); }
 
-    // public static final String comment = "No, I won't 'fix' these! They're
-    // fine!! - Notch";
+    
+    
 
 public:
     static const int PROFESSION_FARMER = 0;
@@ -128,29 +128,29 @@ public:
     static void staticCtor();
 
 private:
-    /**
-     * Adds a merchant recipe that trades items for a single ruby.
-     *
-     * @param list
-     * @param itemId
-     * @param random
-     * @param likelyHood
-     */
+    
+
+
+
+
+
+
+
     static void addItemForTradeIn(MerchantRecipeList* list, int itemId,
                                   Random* random, float likelyHood);
     static std::shared_ptr<ItemInstance> getItemTradeInValue(int itemId,
                                                              Random* random);
     static int getTradeInValue(int itemId, Random* random);
 
-    /**
-     * Adds a merchant recipe that trades rubies for an item. If the cost is
-     * negative, one ruby will give several of that item.
-     *
-     * @param list
-     * @param itemId
-     * @param random
-     * @param likelyHood
-     */
+    
+
+
+
+
+
+
+
+
     static void addItemForPurchase(MerchantRecipeList* list, int itemId,
                                    Random* random, float likelyHood);
     static int getPurchaseCost(int itemId, Random* random);
@@ -158,7 +158,7 @@ private:
 public:
     virtual MobGroupData* finalizeMobSpawn(
         MobGroupData* groupData,
-        int extraData = 0);  // 4J Added extraData param
+        int extraData = 0);  
     virtual void setRewardPlayersInVillage();
     virtual std::shared_ptr<AgableMob> getBreedOffspring(
         std::shared_ptr<AgableMob> target);

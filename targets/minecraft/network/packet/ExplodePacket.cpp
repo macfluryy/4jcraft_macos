@@ -31,10 +31,10 @@ ExplodePacket::ExplodePacket(
 
     if (toBlow != nullptr) {
         this->toBlow.assign(toBlow->begin(), toBlow->end());
-        // for( auto it = toBlow->begin(); it != toBlow->end(); it++ )
-        //{
-        //	this->toBlow.push_back(*it);
-        // }
+        
+        
+        
+        
     }
 
     if (knockback != nullptr) {
@@ -44,7 +44,7 @@ ExplodePacket::ExplodePacket(
     }
 }
 
-void ExplodePacket::read(DataInputStream* dis)  // throws IOException
+void ExplodePacket::read(DataInputStream* dis)  
 {
     m_bKnockbackOnly = dis->readBoolean();
 
@@ -71,7 +71,7 @@ void ExplodePacket::read(DataInputStream* dis)  // throws IOException
     knockbackZ = dis->readFloat();
 }
 
-void ExplodePacket::write(DataOutputStream* dos)  // throws IOException
+void ExplodePacket::write(DataOutputStream* dos)  
 {
     dos->writeBoolean(m_bKnockbackOnly);
 
@@ -86,8 +86,8 @@ void ExplodePacket::write(DataOutputStream* dos)  // throws IOException
         int yp = (int)y;
         int zp = (int)z;
 
-        //(Myset::const_iterator it = c1.begin();
-        // it != c1.end(); ++it)
+        
+        
 
         for (auto it = toBlow.begin(); it != toBlow.end(); it++) {
             TilePos tp = *it;

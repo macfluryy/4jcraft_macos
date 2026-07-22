@@ -46,7 +46,7 @@ ScatteredFeaturePieces::ScatteredFeaturePiece::ScatteredFeaturePiece() {
     height = 0;
     depth = 0;
     heightPosition = 0;
-    // for reflection
+    
 }
 
 ScatteredFeaturePieces::ScatteredFeaturePiece::ScatteredFeaturePiece(
@@ -135,12 +135,12 @@ WeighedTreasure* ScatteredFeaturePieces::DesertPyramidPiece::treasureItems
         new WeighedTreasure(Item::emerald_Id, 0, 1, 3, 2),
         new WeighedTreasure(Item::bone_Id, 0, 4, 6, 20),
         new WeighedTreasure(Item::rotten_flesh_Id, 0, 3, 7, 16),
-        // very rare for pyramids ...
+        
         new WeighedTreasure(Item::saddle_Id, 0, 1, 1, 3),
         new WeighedTreasure(Item::horseArmorMetal_Id, 0, 1, 1, 1),
         new WeighedTreasure(Item::horseArmorGold_Id, 0, 1, 1, 1),
         new WeighedTreasure(Item::horseArmorDiamond_Id, 0, 1, 1, 1),
-        // ...
+        
 };
 
 ScatteredFeaturePieces::DesertPyramidPiece::DesertPyramidPiece() {
@@ -148,7 +148,7 @@ ScatteredFeaturePieces::DesertPyramidPiece::DesertPyramidPiece() {
     hasPlacedChest[1] = false;
     hasPlacedChest[2] = false;
     hasPlacedChest[3] = false;
-    // for reflection
+    
 }
 
 ScatteredFeaturePieces::DesertPyramidPiece::DesertPyramidPiece(Random* random,
@@ -181,7 +181,7 @@ void ScatteredFeaturePieces::DesertPyramidPiece::readAdditonalSaveData(
 
 bool ScatteredFeaturePieces::DesertPyramidPiece::postProcess(
     Level* level, Random* random, BoundingBox* chunkBB) {
-    // pyramid
+    
     generateBox(level, chunkBB, 0, -4, 0, width - 1, 0, depth - 1,
                 Tile::sandStone_Id, Tile::sandStone_Id, false);
     for (int pos = 1; pos <= 9; pos++) {
@@ -204,7 +204,7 @@ bool ScatteredFeaturePieces::DesertPyramidPiece::postProcess(
     int baseDecoColor = ~DyePowderItem::ORANGE & 0xf;
     int blue = ~DyePowderItem::BLUE & 0xf;
 
-    // towers
+    
     generateBox(level, chunkBB, 0, 0, 0, 4, 9, 4, Tile::sandStone_Id, 0, false);
     generateBox(level, chunkBB, 1, 10, 1, 3, 10, 3, Tile::sandStone_Id,
                 Tile::sandStone_Id, false);
@@ -227,7 +227,7 @@ bool ScatteredFeaturePieces::DesertPyramidPiece::postProcess(
     placeBlock(level, Tile::stairs_sandstone_Id, stairsWest, width - 1, 10, 2,
                chunkBB);
 
-    // entrance
+    
     generateBox(level, chunkBB, 8, 0, 0, 12, 4, 4, Tile::sandStone_Id, 0,
                 false);
     generateBox(level, chunkBB, 9, 1, 0, 11, 3, 4, 0, 0, false);
@@ -246,14 +246,14 @@ bool ScatteredFeaturePieces::DesertPyramidPiece::postProcess(
     placeBlock(level, Tile::sandStone_Id, SandStoneTile::TYPE_SMOOTHSIDE, 11, 1,
                1, chunkBB);
 
-    // tower pathways
+    
     generateBox(level, chunkBB, 4, 1, 1, 8, 3, 3, Tile::sandStone_Id, 0, false);
     generateBox(level, chunkBB, 4, 1, 2, 8, 2, 2, 0, 0, false);
     generateBox(level, chunkBB, 12, 1, 1, 16, 3, 3, Tile::sandStone_Id, 0,
                 false);
     generateBox(level, chunkBB, 12, 1, 2, 16, 2, 2, 0, 0, false);
 
-    // hall floor and pillars
+    
     generateBox(level, chunkBB, 5, 4, 5, width - 6, 4, depth - 6,
                 Tile::sandStone_Id, Tile::sandStone_Id, false);
     generateBox(level, chunkBB, 9, 4, 9, 11, 4, 11, 0, 0, false);
@@ -270,7 +270,7 @@ bool ScatteredFeaturePieces::DesertPyramidPiece::postProcess(
                 SandStoneTile::TYPE_SMOOTHSIDE, Tile::sandStone_Id,
                 SandStoneTile::TYPE_SMOOTHSIDE, false);
 
-    // catwalks
+    
     generateBox(level, chunkBB, 1, 1, 5, 4, 4, 11, Tile::sandStone_Id,
                 Tile::sandStone_Id, false);
     generateBox(level, chunkBB, width - 5, 1, 5, width - 2, 4, 11,
@@ -292,7 +292,7 @@ bool ScatteredFeaturePieces::DesertPyramidPiece::postProcess(
     placeBlock(level, 0, 0, width - 6, 6, 10, chunkBB);
     placeBlock(level, 0, 0, width - 7, 6, 10, chunkBB);
 
-    // tower stairs
+    
     generateBox(level, chunkBB, 2, 4, 4, 2, 6, 4, 0, 0, false);
     generateBox(level, chunkBB, width - 3, 4, 4, width - 3, 6, 4, 0, 0, false);
     placeBlock(level, Tile::stairs_sandstone_Id, stairsNorth, 2, 4, 5, chunkBB);
@@ -315,7 +315,7 @@ bool ScatteredFeaturePieces::DesertPyramidPiece::postProcess(
     placeBlock(level, Tile::stairs_sandstone_Id, stairsEast, width - 3, 1, 2,
                chunkBB);
 
-    // indoor decoration
+    
     generateBox(level, chunkBB, 4, 3, 5, 4, 3, 18, Tile::sandStone_Id,
                 Tile::sandStone_Id, false);
     generateBox(level, chunkBB, width - 5, 3, 5, width - 5, 3, 17,
@@ -346,7 +346,7 @@ bool ScatteredFeaturePieces::DesertPyramidPiece::postProcess(
     placeBlock(level, Tile::wool_Id, baseDecoColor, 10, 0, 13, chunkBB);
     placeBlock(level, Tile::wool_Id, blue, 10, 0, 10, chunkBB);
 
-    // outdoor decoration
+    
     for (int x = 0; x <= width - 1; x += width - 1) {
         placeBlock(level, Tile::sandStone_Id, SandStoneTile::TYPE_SMOOTHSIDE, x,
                    2, 1, chunkBB);
@@ -425,7 +425,7 @@ bool ScatteredFeaturePieces::DesertPyramidPiece::postProcess(
                5, 0, chunkBB);
     placeBlock(level, Tile::wool_Id, baseDecoColor, 11, 5, 0, chunkBB);
 
-    // tombs
+    
     generateBox(level, chunkBB, 8, -14, 8, 12, -11, 12, Tile::sandStone_Id,
                 SandStoneTile::TYPE_SMOOTHSIDE, Tile::sandStone_Id,
                 SandStoneTile::TYPE_SMOOTHSIDE, false);
@@ -465,7 +465,7 @@ bool ScatteredFeaturePieces::DesertPyramidPiece::postProcess(
     placeBlock(level, Tile::sandStone_Id, SandStoneTile::TYPE_SMOOTHSIDE, 10,
                -11, 13, chunkBB);
 
-    // chests!
+    
     for (int i = 0; i < 4; i++) {
         if (!hasPlacedChest[i]) {
             int xo = Direction::STEP_X[i] * 2;
@@ -494,22 +494,22 @@ WeighedTreasure* ScatteredFeaturePieces::JunglePyramidPiece::treasureItems
         new WeighedTreasure(Item::emerald_Id, 0, 1, 3, 2),
         new WeighedTreasure(Item::bone_Id, 0, 4, 6, 20),
         new WeighedTreasure(Item::rotten_flesh_Id, 0, 3, 7, 16),
-        // very rare for pyramids ...
+        
         new WeighedTreasure(Item::saddle_Id, 0, 1, 1, 3),
         new WeighedTreasure(Item::horseArmorMetal_Id, 0, 1, 1, 1),
         new WeighedTreasure(Item::horseArmorGold_Id, 0, 1, 1, 1),
         new WeighedTreasure(Item::horseArmorDiamond_Id, 0, 1, 1, 1),
-        // ...
+        
 };
 
 WeighedTreasure* ScatteredFeaturePieces::JunglePyramidPiece::dispenserItems
     [ScatteredFeaturePieces::JunglePyramidPiece::DISPENSER_ITEMS_COUNT] = {
         new WeighedTreasure(Item::arrow_Id, 0, 2, 7, 30),
-        //            new WeighedTreasure(Item.fireball.id, 0, 1, 1, 10),
+        
 };
 
 ScatteredFeaturePieces::JunglePyramidPiece::JunglePyramidPiece() {
-    // for reflection
+    
 }
 
 ScatteredFeaturePieces::JunglePyramidPiece::JunglePyramidPiece(Random* random,
@@ -551,11 +551,11 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     int stairsEast = getOrientationData(Tile::stairs_stone_Id, 0);
     int stairsWest = getOrientationData(Tile::stairs_stone_Id, 1);
 
-    // floor
+    
     generateBox(level, chunkBB, 0, -4, 0, width - 1, 0, depth - 1, false,
                 random, &stoneSelector);
 
-    // first floor walls
+    
     generateBox(level, chunkBB, 2, 1, 2, 9, 2, 2, false, random,
                 &stoneSelector);
     generateBox(level, chunkBB, 2, 1, 12, 9, 2, 12, false, random,
@@ -565,7 +565,7 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     generateBox(level, chunkBB, 9, 1, 3, 9, 2, 11, false, random,
                 &stoneSelector);
 
-    // second floor walls
+    
     generateBox(level, chunkBB, 1, 3, 1, 10, 6, 1, false, random,
                 &stoneSelector);
     generateBox(level, chunkBB, 1, 3, 13, 10, 6, 13, false, random,
@@ -575,7 +575,7 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     generateBox(level, chunkBB, 10, 3, 2, 10, 6, 12, false, random,
                 &stoneSelector);
 
-    // roof levels
+    
     generateBox(level, chunkBB, 2, 3, 2, 9, 3, 12, false, random,
                 &stoneSelector);
     generateBox(level, chunkBB, 2, 6, 2, 9, 6, 12, false, random,
@@ -585,14 +585,14 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     generateBox(level, chunkBB, 4, 8, 4, 7, 8, 10, false, random,
                 &stoneSelector);
 
-    // clear interior
+    
     generateAirBox(level, chunkBB, 3, 1, 3, 8, 2, 11);
     generateAirBox(level, chunkBB, 4, 3, 6, 7, 3, 9);
     generateAirBox(level, chunkBB, 2, 4, 2, 9, 5, 12);
     generateAirBox(level, chunkBB, 4, 6, 5, 7, 6, 9);
     generateAirBox(level, chunkBB, 5, 7, 6, 6, 7, 8);
 
-    // doors and windows
+    
     generateAirBox(level, chunkBB, 5, 1, 2, 6, 2, 2);
     generateAirBox(level, chunkBB, 5, 2, 12, 6, 2, 12);
     generateAirBox(level, chunkBB, 5, 5, 1, 6, 5, 1);
@@ -602,7 +602,7 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     placeBlock(level, 0, 0, 1, 5, 9, chunkBB);
     placeBlock(level, 0, 0, 10, 5, 9, chunkBB);
 
-    // outside decoration
+    
     for (int z = 0; z <= 14; z += 14) {
         generateBox(level, chunkBB, 2, 4, z, 2, 5, z, false, random,
                     &stoneSelector);
@@ -648,13 +648,13 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     placeBlock(level, Tile::stairs_stone_Id, stairsSouth, 5, 9, 8, chunkBB);
     placeBlock(level, Tile::stairs_stone_Id, stairsSouth, 6, 9, 8, chunkBB);
 
-    // front stairs
+    
     placeBlock(level, Tile::stairs_stone_Id, stairsNorth, 4, 0, 0, chunkBB);
     placeBlock(level, Tile::stairs_stone_Id, stairsNorth, 5, 0, 0, chunkBB);
     placeBlock(level, Tile::stairs_stone_Id, stairsNorth, 6, 0, 0, chunkBB);
     placeBlock(level, Tile::stairs_stone_Id, stairsNorth, 7, 0, 0, chunkBB);
 
-    // indoor stairs up
+    
     placeBlock(level, Tile::stairs_stone_Id, stairsNorth, 4, 1, 8, chunkBB);
     placeBlock(level, Tile::stairs_stone_Id, stairsNorth, 4, 2, 9, chunkBB);
     placeBlock(level, Tile::stairs_stone_Id, stairsNorth, 4, 3, 10, chunkBB);
@@ -668,13 +668,13 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     generateBox(level, chunkBB, 4, 1, 10, 7, 2, 10, false, random,
                 &stoneSelector);
 
-    // indoor hand rail
+    
     generateBox(level, chunkBB, 5, 4, 5, 6, 4, 5, false, random,
                 &stoneSelector);
     placeBlock(level, Tile::stairs_stone_Id, stairsEast, 4, 4, 5, chunkBB);
     placeBlock(level, Tile::stairs_stone_Id, stairsWest, 7, 4, 5, chunkBB);
 
-    // indoor stairs down
+    
     for (int i = 0; i < 4; i++) {
         placeBlock(level, Tile::stairs_stone_Id, stairsSouth, 5, 0 - i, 6 + i,
                    chunkBB);
@@ -683,7 +683,7 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
         generateAirBox(level, chunkBB, 5, 0 - i, 7 + i, 6, 0 - i, 9 + i);
     }
 
-    // underground corridors
+    
     generateAirBox(level, chunkBB, 1, -3, 12, 10, -1, 13);
     generateAirBox(level, chunkBB, 1, -3, 1, 3, -1, 13);
     generateAirBox(level, chunkBB, 1, -3, 1, 9, -1, 5);
@@ -704,7 +704,7 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     generateBox(level, chunkBB, 6, -1, 1, 6, -1, 1, false, random,
                 &stoneSelector);
 
-    // trip wire trap 1
+    
     placeBlock(level, Tile::tripWireSource_Id,
                getOrientationData(Tile::tripWireSource_Id, Direction::EAST) |
                    TripWireSourceTile::MASK_ATTACHED,
@@ -735,7 +735,7 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     }
     placeBlock(level, Tile::vine_Id, 0xf, 3, -2, 2, chunkBB);
 
-    // trip wire trap 2
+    
     placeBlock(level, Tile::tripWireSource_Id,
                getOrientationData(Tile::tripWireSource_Id, Direction::NORTH) |
                    TripWireSourceTile::MASK_ATTACHED,
@@ -788,7 +788,7 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     generateBox(level, chunkBB, 9, -1, 1, 9, -1, 5, false, random,
                 &stoneSelector);
 
-    // hidden room
+    
     generateAirBox(level, chunkBB, 8, -3, 8, 10, -1, 10);
     placeBlock(level, Tile::stoneBrick_Id, SmoothStoneBrickTile::TYPE_DETAIL, 8,
                -2, 11, chunkBB);
@@ -856,7 +856,7 @@ ScatteredFeaturePieces::JunglePyramidPiece::MossStoneSelector
 
 ScatteredFeaturePieces::SwamplandHut::SwamplandHut() {
     spawnedWitch = false;
-    // for reflection
+    
 }
 
 ScatteredFeaturePieces::SwamplandHut::SwamplandHut(Random* random, int west,
@@ -884,7 +884,7 @@ bool ScatteredFeaturePieces::SwamplandHut::postProcess(Level* level,
         return false;
     }
 
-    // floor and ceiling
+    
     generateBox(level, chunkBB, 1, 1, 1, 5, 1, 7, Tile::wood_Id,
                 TreeTile::DARK_TRUNK, Tile::wood_Id, TreeTile::DARK_TRUNK,
                 false);
@@ -895,7 +895,7 @@ bool ScatteredFeaturePieces::SwamplandHut::postProcess(Level* level,
                 TreeTile::DARK_TRUNK, Tile::wood_Id, TreeTile::DARK_TRUNK,
                 false);
 
-    // walls
+    
     generateBox(level, chunkBB, 2, 2, 2, 3, 3, 2, Tile::wood_Id,
                 TreeTile::DARK_TRUNK, Tile::wood_Id, TreeTile::DARK_TRUNK,
                 false);
@@ -909,7 +909,7 @@ bool ScatteredFeaturePieces::SwamplandHut::postProcess(Level* level,
                 TreeTile::DARK_TRUNK, Tile::wood_Id, TreeTile::DARK_TRUNK,
                 false);
 
-    // pillars
+    
     generateBox(level, chunkBB, 1, 0, 2, 1, 3, 2, Tile::treeTrunk_Id,
                 Tile::treeTrunk_Id, false);
     generateBox(level, chunkBB, 5, 0, 2, 5, 3, 2, Tile::treeTrunk_Id,
@@ -919,7 +919,7 @@ bool ScatteredFeaturePieces::SwamplandHut::postProcess(Level* level,
     generateBox(level, chunkBB, 5, 0, 7, 5, 3, 7, Tile::treeTrunk_Id,
                 Tile::treeTrunk_Id, false);
 
-    // windows
+    
     placeBlock(level, Tile::fence_Id, 0, 2, 3, 2, chunkBB);
     placeBlock(level, Tile::fence_Id, 0, 3, 3, 7, chunkBB);
     placeBlock(level, 0, 0, 1, 3, 4, chunkBB);
@@ -928,17 +928,17 @@ bool ScatteredFeaturePieces::SwamplandHut::postProcess(Level* level,
     placeBlock(level, Tile::flowerPot_Id, FlowerPotTile::TYPE_MUSHROOM_RED, 1,
                3, 5, chunkBB);
 
-    // decoration
+    
     placeBlock(level, Tile::workBench_Id, 0, 3, 2, 6, chunkBB);
     placeBlock(level, Tile::cauldron_Id, 0, 4, 2, 6, chunkBB);
 
-    // front railings
+    
     placeBlock(level, Tile::fence_Id, 0, 1, 2, 1, chunkBB);
     placeBlock(level, Tile::fence_Id, 0, 5, 2, 1, chunkBB);
-    // placeBlock(level, Tile.torch.id, 0, 1, 3, 1, chunkBB);
-    // placeBlock(level, Tile.torch.id, 0, 5, 3, 1, chunkBB);
+    
+    
 
-    // ceiling edges
+    
     int south = getOrientationData(Tile::stairs_wood_Id, StairTile::DIR_NORTH);
     int east = getOrientationData(Tile::stairs_wood_Id, StairTile::DIR_WEST);
     int west = getOrientationData(Tile::stairs_wood_Id, StairTile::DIR_EAST);
@@ -953,7 +953,7 @@ bool ScatteredFeaturePieces::SwamplandHut::postProcess(Level* level,
     generateBox(level, chunkBB, 0, 4, 8, 6, 4, 8, Tile::stairs_sprucewood_Id,
                 north, Tile::stairs_sprucewood_Id, north, false);
 
-    // fill pillars down to solid ground
+    
     for (int z = 2; z <= 7; z += 5) {
         for (int x = 1; x <= 5; x += 4) {
             fillColumnDown(level, Tile::treeTrunk_Id, 0, x, -1, z, chunkBB);

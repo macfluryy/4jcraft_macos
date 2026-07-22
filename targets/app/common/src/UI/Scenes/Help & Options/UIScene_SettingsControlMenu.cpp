@@ -16,7 +16,7 @@ UIScene_SettingsControlMenu::UIScene_SettingsControlMenu(int iPad,
                                                          void* initData,
                                                          UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     wchar_t TempString[256];

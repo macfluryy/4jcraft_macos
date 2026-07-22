@@ -10,7 +10,7 @@ class Entity;
 class MinecraftServer;
 class ServerLevel;
 
-// 4J - renamed class to ServerLevelListener to avoid clash with LevelListener
+
 class ServerLevelListener : public LevelListener {
 private:
     MinecraftServer* server;
@@ -18,17 +18,17 @@ private:
 
 public:
     ServerLevelListener(MinecraftServer* server, ServerLevel* level);
-    // 4J removed - virtual void addParticle(const std::wstring& name, double x,
-    // double y, double z, double xa, double ya, double za);
+    
+    
     virtual void addParticle(ePARTICLE_TYPE name, double x, double y, double z,
-                             double xa, double ya, double za);  // 4J added
+                             double xa, double ya, double za);  
     virtual void allChanged();
     virtual void entityAdded(std::shared_ptr<Entity> entity);
     virtual void entityRemoved(std::shared_ptr<Entity> entity);
     virtual void playerRemoved(
         std::shared_ptr<Entity>
-            entity);  // 4J added - for when a player is removed from the
-                      // level's player array, not just the entity storage
+            entity);  
+                      
     virtual void playSound(int iSound, double x, double y, double z,
                            float volume, float pitch, float fClipSoundDist);
     virtual void playSoundExceptPlayer(std::shared_ptr<Player> player,
@@ -36,7 +36,7 @@ public:
                                        float volume, float pitch,
                                        float fSoundClipDist);
     virtual void setTilesDirty(int x0, int y0, int z0, int x1, int y1, int z1,
-                               Level* level);  // 4J - added level param
+                               Level* level);  
     virtual void skyColorChanged();
     virtual void tileChanged(int x, int y, int z);
     virtual void tileLightChanged(int x, int y, int z);

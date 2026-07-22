@@ -13,20 +13,20 @@
 
 void GuiComponent::hLine(int x0, int x1, int y, int col) {
     if (x1 < x0) {
-        std::swap(x0, x1); // 4J macOS - use std::swap
+        std::swap(x0, x1); 
     }
     fill(x0, y, x1 + 1, y + 1, col);
 }
 
 void GuiComponent::vLine(int x, int y0, int y1, int col) {
     if (y1 < y0) {
-        std::swap(y0, y1); // 4J macOS - use std::swap
+        std::swap(y0, y1); 
     }
     fill(x, y0 + 1, x + 1, y1, col);
 }
 
 void GuiComponent::fill(int x0, int y0, int x1, int y1, int col) {
-    // 4J macOS - fix coordinate swapping logic
+    
     if (x0 > x1) {
         std::swap(x0, x1);
     }
@@ -58,7 +58,7 @@ void GuiComponent::fill(int x0, int y0, int x1, int y1, int col) {
 
 void GuiComponent::fillGradient(int x0, int y0, int x1, int y1, int col1,
                                 int col2) {
-    // 4J macOS - fix coordinate handling
+    
     if (x0 > x1) std::swap(x0, x1);
     if (y0 > y1) std::swap(y0, y1);
     
@@ -95,23 +95,23 @@ void GuiComponent::fillGradient(int x0, int y0, int x1, int y1, int col1,
 }
 
 GuiComponent::GuiComponent() : blitOffset(0) { 
-    // 4J macOS - initialize blitOffset
+    
 }
 
 void GuiComponent::drawCenteredString(Font* font, const std::wstring& str,
                                       int x, int y, int color) {
-    if (font == nullptr) return; // 4J macOS - null check
+    if (font == nullptr) return; 
     font->drawShadow(str, x - (font->width(str)) / 2, y, color);
 }
 
 void GuiComponent::drawString(Font* font, const std::wstring& str, int x, int y,
                               int color) {
-    if (font == nullptr) return; // 4J macOS - null check
+    if (font == nullptr) return; 
     font->drawShadow(str, x, y, color);
 }
 
 void GuiComponent::blit(int x, int y, int sx, int sy, int w, int h) {
-    if (w <= 0 || h <= 0) return; // 4J macOS - safety check
+    if (w <= 0 || h <= 0) return; 
     
     float us = 1 / 256.0f;
     float vs = 1 / 256.0f;

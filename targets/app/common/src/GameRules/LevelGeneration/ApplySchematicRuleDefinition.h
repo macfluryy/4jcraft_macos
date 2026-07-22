@@ -54,9 +54,9 @@ public:
 
     std::wstring getSchematicName() { return m_schematicName; }
 
-    /** 4J-JEV:
-     *  This GameRuleDefinition contains limited game state.
-     *	Reset any state to how it should be before a new game.
-     */
+    
+
+
+
     void reset();
 };

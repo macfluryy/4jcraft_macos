@@ -145,10 +145,10 @@ public:
     static void setThreadName(std::uint32_t threadId, const char* threadName);
     static void setCurrentThreadName(const char* threadName);
 
-    // TODO(C++26): When we switch to C++26, replace EventQueue with
-    // std::execution (senders/receivers) for structured concurrency.
-    // TODO(C++26): When we switch to C++26, use std::hazard_pointer / std::rcu
-    // for lock-free data structure reclamation.
+    
+    
+    
+    
 
 private:
     static void entryPoint(C4JThread* pThread);

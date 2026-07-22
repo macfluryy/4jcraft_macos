@@ -7,6 +7,6 @@ public:
     eINSTANCEOF GetType() { return eTYPE_THEENDPORTALTILEENTITY; }
     static TileEntity* create() { return new TheEndPortalTileEntity(); }
 
-    // 4J Added
+    
     std::shared_ptr<TileEntity> clone();
 };

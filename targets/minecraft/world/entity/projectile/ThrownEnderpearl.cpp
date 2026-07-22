@@ -12,23 +12,23 @@
 #include "minecraft/world/phys/HitResult.h"
 
 ThrownEnderpearl::ThrownEnderpearl(Level* level) : Throwable(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 }
 
 ThrownEnderpearl::ThrownEnderpearl(Level* level,
                                    std::shared_ptr<LivingEntity> mob)
     : Throwable(level, mob) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 }
 
 ThrownEnderpearl::ThrownEnderpearl(Level* level, double x, double y, double z)
     : Throwable(level, x, y, z) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 }
 
@@ -46,12 +46,12 @@ void ThrownEnderpearl::onHit(HitResult* res) {
     }
 
     if (!level->isClientSide) {
-        // Fix for #67486 - TCR #001: BAS Game Stability: Customer Encountered:
-        // TU8: Code: Gameplay: The title crashes on Host's console when Client
-        // Player leaves the game before the Ender Pearl thrown by him touches
-        // the ground. If the owner has been removed, then ignore
+        
+        
+        
+        
 
-        // 4J-JEV: Cheap type check first.
+        
         if ((getOwner() != nullptr) &&
             getOwner()->instanceof(eTYPE_SERVERPLAYER)) {
             std::shared_ptr<ServerPlayer> serverPlayer =

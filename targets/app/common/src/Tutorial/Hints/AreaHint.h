@@ -10,13 +10,13 @@ class Tutorial;
 class AreaHint : public TutorialHint {
 private:
     AABB area;
-    bool contains;  // If true we must stay in this area, if false must stay out
-                    // of this area
+    bool contains;  
+                    
 
-    // Only display the hint if the game is in this state
+    
     eTutorial_State m_displayState;
 
-    // Only display the hint if this state is not completed
+    
     eTutorial_State m_completeState;
 
 public:

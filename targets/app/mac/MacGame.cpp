@@ -121,8 +121,8 @@ void MacGame::TemporaryCreateGameStart() {
 }
 
 bool MacGame::TemporaryDirectConnectStart(const char* host, int port) {
-    return TemporaryDirectConnectStartEx(host, port, /*spawnOwnThread*/ true,
-                                         /*nickname*/ nullptr);
+    return TemporaryDirectConnectStartEx(host, port,  true,
+                                          nullptr);
 }
 
 bool MacGame::TemporaryDirectConnectStartEx(const char* host, int port,

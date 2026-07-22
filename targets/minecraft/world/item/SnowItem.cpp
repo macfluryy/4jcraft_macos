@@ -22,7 +22,7 @@ bool SnowItem::useOn(std::shared_ptr<ItemInstance> instance,
 
     int currentTile = level->getTile(x, y, z);
 
-    // Are we adding extra snow to an existing tile?
+    
     if (currentTile == Tile::topSnow_Id) {
         Tile* snowTile = Tile::tiles[getTileId()];
         int currentData = level->getData(x, y, z);
@@ -32,7 +32,7 @@ bool SnowItem::useOn(std::shared_ptr<ItemInstance> instance,
         if (currentHeight <= TopSnowTile::MAX_HEIGHT &&
             level->isUnobstructed(snow_bb.has_value() ? &*snow_bb : nullptr)) {
             if (!bTestUseOnOnly) {
-                // Increase snow tile height
+                
                 if (level->setData(
                         x, y, z,
                         (currentHeight + 1) |

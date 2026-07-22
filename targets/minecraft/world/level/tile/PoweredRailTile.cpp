@@ -145,9 +145,9 @@ void PoweredRailTile::updateState(Level* level, int x, int y, int z, int data,
         changed = true;
     }
 
-    // usually the level only updates neighbors that are in the same
-    // y plane as the current tile, but sloped rails may need to
-    // update tiles above or below it as well
+    
+    
+    
     if (changed) {
         level->updateNeighborsAt(x, y - 1, z, id);
         if (dir == 2 || dir == 3 || dir == 4 || dir == 5) {

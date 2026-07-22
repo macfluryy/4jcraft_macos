@@ -15,8 +15,8 @@ Objective* Scoreboard::addObjective(const std::wstring& name,
                                     ObjectiveCriteria* criteria) {
     Objective* objective = getObjective(name);
     if (objective != nullptr) {
-        // Java throws here; a remote server resending a name is survivable,
-        // so treat it as a lookup instead.
+        
+        
         return objective;
     }
 
@@ -37,11 +37,11 @@ Objective* Scoreboard::addObjective(const std::wstring& name,
 std::vector<Objective*>* Scoreboard::findObjectiveFor(
     ObjectiveCriteria* criteria) {
     return nullptr;
-    // vector<Objective *> *objectives =
-    // objectivesByCriteria.find(criteria)->second;
+    
+    
 
-    // return objectives == nullptr ? new vector<Objective *>() : new
-    // vector<Objective *>(objectives);
+    
+    
 }
 
 Score* Scoreboard::getPlayerScore(const std::wstring& name,
@@ -57,27 +57,27 @@ Score* Scoreboard::getPlayerScore(const std::wstring& name,
 
 std::vector<Score*>* Scoreboard::getPlayerScores(Objective* objective) {
     return nullptr;
-    // vector<Score *> *result = new vector<Score *>();
+    
 
-    // for (Map<Objective, Score> scores : playerScores.values())
-    //{
-    //	Score score = scores.get(objective);
-    //	if (score != null) result.add(score);
-    // }
+    
+    
+    
+    
+    
 
-    // Collections.sort(result, Score.SCORE_COMPARATOR);
+    
 
-    // return result;
+    
 }
 
 std::vector<Objective*>* Scoreboard::getObjectives() {
     return nullptr;
-    // return objectivesByName.values();
+    
 }
 
 std::vector<std::wstring>* Scoreboard::getTrackedPlayers() {
     return nullptr;
-    // return playerScores.keySet();
+    
 }
 
 void Scoreboard::resetPlayerScore(const std::wstring& player) {
@@ -91,15 +91,15 @@ void Scoreboard::resetPlayerScore(const std::wstring& player) {
 
 std::vector<Score*>* Scoreboard::getScores() {
     return nullptr;
-    // Collection<Map<Objective, Score>> values = playerScores.values();
-    // List<Score> result = new ArrayList<Score>();
+    
+    
 
-    // for (Map<Objective, Score> map : values)
-    //{
-    //	result.addAll(map.values());
-    // }
+    
+    
+    
+    
 
-    // return result;
+    
 }
 
 std::vector<Score*>* Scoreboard::getScores(Objective* objective) {
@@ -115,9 +115,9 @@ std::vector<Score*>* Scoreboard::getScores(Objective* objective) {
 std::unordered_map<Objective*, Score*>* Scoreboard::getPlayerScores(
     const std::wstring& player) {
     return nullptr;
-    // Map<Objective, Score> result = playerScores.get(player);
-    // if (result == null) result = new HashMap<Objective, Score>();
-    // return result;
+    
+    
+    
 }
 
 void Scoreboard::removeObjective(Objective* objective) {
@@ -171,8 +171,8 @@ PlayerTeam* Scoreboard::getPlayerTeam(const std::wstring& name) {
 PlayerTeam* Scoreboard::addPlayerTeam(const std::wstring& name) {
     PlayerTeam* team = getPlayerTeam(name);
     if (team != nullptr) {
-        // Java throws; a remote server resending a create is survivable, so
-        // treat it as a lookup instead.
+        
+        
         return team;
     }
 
@@ -218,8 +218,8 @@ bool Scoreboard::removePlayerFromTeam(const std::wstring& player) {
 
 void Scoreboard::removePlayerFromTeam(const std::wstring& player,
                                       PlayerTeam* team) {
-    // Java throws when the player is on a different team; tolerate it and
-    // only detach when the membership actually matches.
+    
+    
     if (team == nullptr || getPlayersTeam(player) != team) return;
 
     teamsByPlayer.erase(player);
@@ -243,7 +243,7 @@ std::vector<PlayerTeam*>* Scoreboard::getPlayerTeams() {
 
 std::shared_ptr<Player> Scoreboard::getPlayer(const std::wstring& name) {
     return nullptr;
-    // return MinecraftServer.getInstance().getPlayers().getPlayer(name);
+    
 }
 
 PlayerTeam* Scoreboard::getPlayersTeam(const std::wstring& name) {
@@ -282,20 +282,20 @@ std::wstring Scoreboard::getDisplaySlotName(int slot) {
 
 int Scoreboard::getDisplaySlotByName(const std::wstring& name) {
     return -1;
-    // if (name.equalsIgnoreCase("list"))
-    //{
-    //	return DISPLAY_SLOT_LIST;
-    // }
-    // else if (name.equalsIgnoreCase("sidebar"))
-    //{
-    //	return DISPLAY_SLOT_SIDEBAR;
-    // }
-    // else if (name.equalsIgnoreCase("belowName"))
-    //{
-    //	return DISPLAY_SLOT_BELOW_NAME;
-    // }
-    // else
-    //{
-    //	return -1;
-    // }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

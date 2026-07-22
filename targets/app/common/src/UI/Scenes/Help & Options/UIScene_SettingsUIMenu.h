@@ -26,8 +26,8 @@ private:
     UIControl_CheckBox m_checkboxDisplayHUD, m_checkboxDisplayHand,
         m_checkboxDisplayDeathMessages, m_checkboxDisplayAnimatedCharacter,
         m_checkboxSplitscreen,
-        m_checkboxShowSplitscreenGamertags;                      // Checkboxes
-    UIControl_Slider m_sliderUISize, m_sliderUISizeSplitscreen;  // Sliders
+        m_checkboxShowSplitscreenGamertags;                      
+    UIControl_Slider m_sliderUISize, m_sliderUISizeSplitscreen;  
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
     UI_MAP_ELEMENT(m_checkboxDisplayHUD, "DisplayHUD")
     UI_MAP_ELEMENT(m_checkboxDisplayHand, "DisplayHand")
@@ -54,11 +54,11 @@ public:
     virtual void updateComponents();
 
 protected:
-    // TODO: This should be pure virtual in this class
+    
     virtual std::wstring getMoviePath();
 
 public:
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 

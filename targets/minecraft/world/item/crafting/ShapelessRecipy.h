@@ -26,7 +26,7 @@ public:
         std::shared_ptr<CraftingContainer> craftSlots);
     virtual int size();
 
-    // 4J-PB - to return the items required to make a recipe
+    
     virtual bool requiresRecipe(int iRecipe);
     virtual void collectRequirements(INGREDIENTS_REQUIRED* pIngReq);
 };

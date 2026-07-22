@@ -1,13 +1,13 @@
-// Regression test: Java 1.8 -> LCE entity metadata translation.
-//
-// Runs the real JavaServerProxy + JavaConnection between a scripted Java
-// protocol-47 server and a scripted LCE client, both on loopback sockets
-// inside this process. No rendering, no GL, no game loop. Deterministic:
-// the LCE stream is consumed with blocking reads and every SetEntityData
-// packet is asserted byte-exact; "no packet" cases are proven with a
-// sentinel update that must be the next SetEntityData on the wire.
-//
-// Exits non-zero on the first failed assertion.
+
+
+
+
+
+
+
+
+
+
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -26,7 +26,7 @@
 #include "app/common/src/JavaEdition/JavaServerProxy.h"
 #include "platform/IPlatformFileIO.h"
 
-// File IO stub: pulled in transitively via libjava's File; never used here.
+
 namespace {
 class StubFileIO : public IPlatformFileIO {
 public:
@@ -69,7 +69,7 @@ void check(bool ok, const char* what) {
     fprintf(stderr, "ok: %s\n", what);
 }
 
-// ---------------- raw socket helpers ----------------
+
 
 void sendAll(int fd, const void* data, size_t n) {
     const uint8_t* p = static_cast<const uint8_t*>(data);
@@ -96,7 +96,7 @@ void setRecvTimeout(int fd, int seconds) {
     setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 }
 
-// ---------------- Java protocol 47 encoding ----------------
+
 
 void putVarInt(std::vector<uint8_t>& out, uint32_t v) {
     while (true) {
@@ -151,10 +151,10 @@ void sendJavaPacket(int fd, int id, const std::vector<uint8_t>& body) {
     sendAll(fd, framed.data(), framed.size());
 }
 
-// One Java metadata entry appended to a body under construction.
+
 struct JMeta {
     uint8_t index;
-    uint8_t type;      // 0 byte, 1 short, 2 int, 3 float, 4 string
+    uint8_t type;      
     int32_t i = 0;
     float f = 0;
     std::string s;
@@ -199,7 +199,7 @@ void javaEntityMeta(int fd, int eid, const std::vector<JMeta>& meta) {
     sendJavaPacket(fd, 0x1C, b);
 }
 
-// ---------------- scripted Java server ----------------
+
 
 int g_javaFd = -1;
 
@@ -217,9 +217,9 @@ void javaReadPacket(int fd, std::vector<uint8_t>& out) {
     if (len) recvAll(fd, out.data(), len);
 }
 
-// Accepts the JavaConnection, performs login + join + first position, then
-// drains serverbound traffic forever. Test steps send clientbound packets on
-// g_javaFd from the main thread once this signals readiness.
+
+
+
 void javaServerThread(int listenFd, std::atomic<bool>* ready) {
     int fd = ::accept(listenFd, nullptr, nullptr);
     if (fd < 0) fail("java accept");
@@ -228,25 +228,25 @@ void javaServerThread(int listenFd, std::atomic<bool>* ready) {
     setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &one, sizeof(one));
 
     std::vector<uint8_t> tmp;
-    javaReadPacket(fd, tmp);  // handshake
-    javaReadPacket(fd, tmp);  // login start
+    javaReadPacket(fd, tmp);  
+    javaReadPacket(fd, tmp);  
 
     std::vector<uint8_t> b;
     putStr(b, "11111111-2222-3333-4444-555555555555");
     putStr(b, "Tester");
-    sendJavaPacket(fd, 0x02, b);  // login success -> play state
+    sendJavaPacket(fd, 0x02, b);  
 
-    b.clear();  // JoinGame
+    b.clear();  
     putBE32(b, 999);
-    b.push_back(0);  // gamemode
-    b.push_back(0);  // dimension
-    b.push_back(1);  // difficulty
-    b.push_back(20); // max players
+    b.push_back(0);  
+    b.push_back(0);  
+    b.push_back(1);  
+    b.push_back(20); 
     putStr(b, "default");
-    b.push_back(0);  // reduced debug info
+    b.push_back(0);  
     sendJavaPacket(fd, 0x01, b);
 
-    b.clear();  // PlayerPositionAndLook -> triggers the LCE spawn handshake
+    b.clear();  
     putF64(b, 0.0);
     putF64(b, 65.0);
     putF64(b, 0.0);
@@ -257,7 +257,7 @@ void javaServerThread(int listenFd, std::atomic<bool>* ready) {
 
     g_javaFd = fd;
     ready->store(true);
-    // Drain serverbound traffic so the proxy never blocks on writes.
+    
     while (true) {
         uint8_t buf[4096];
         ssize_t k = ::recv(fd, buf, sizeof(buf), 0);
@@ -265,7 +265,7 @@ void javaServerThread(int listenFd, std::atomic<bool>* ready) {
     }
 }
 
-// ---------------- scripted LCE client ----------------
+
 
 struct LceMetaItem {
     uint8_t index;
@@ -278,11 +278,13 @@ struct LceMetaItem {
 struct LceEntityData {
     int32_t entityId = 0;
     std::vector<LceMetaItem> items;
-    std::vector<uint8_t> raw;  // full packet bytes including id 40
+    std::vector<uint8_t> raw;  
 };
 
 struct LceReader {
     int fd;
+    int lastMobId = -1;
+    int lastMobType = -1;
 
     uint8_t u8() {
         uint8_t v;
@@ -306,16 +308,16 @@ struct LceReader {
     }
     void skipUtf() { skip(2ull * u16()); }
 
-    // Reads LCE packets until the requested id has been consumed (skipping
-    // every other packet the proxy emits in this scenario) - used to wait for
-    // MovePlayer (13), which marks the end of the spawn handshake. Unknown
-    // id = failure.
+    
+    
+    
+    
     void waitFor(uint8_t wanted) {
         while (consumeOne().first != wanted) {
         }
     }
 
-    // Reads LCE packets until the next SetEntityData (40).
+    
     LceEntityData nextEntityData() {
         while (true) {
             auto [id, data] = consumeOne();
@@ -323,11 +325,18 @@ struct LceReader {
         }
     }
 
+    
+    int nextMobType() {
+        while (consumeOne().first != 24) {
+        }
+        return lastMobType;
+    }
+
     std::pair<uint8_t, LceEntityData> consumeOne() {
         {
             const uint8_t id = u8();
             switch (id) {
-                case 1:  // Login
+                case 1:  
                     skip(4);
                     skipUtf();
                     skipUtf();
@@ -335,25 +344,29 @@ struct LceReader {
                     skip(8 + 8 + 1 + 4 + 1 + 4 + 1 + 4 + 4 + 1 + 1 + 4);
                     skip(2 + 1 + 4);
                     break;
-                case 6:   skip(12); break;   // SpawnPosition
-                case 202: skip(9);  break;   // PlayerAbilities
-                case 13:  skip(41); break;   // MovePlayerPosRot
-                case 4:   skip(16); break;   // SetTime
-                case 51: {                    // BlockRegionUpdate
+                case 6:   skip(12); break;   
+                case 202: skip(9);  break;   
+                case 13:  skip(41); break;   
+                case 4:   skip(16); break;   
+                case 51: {                    
                     skip(1 + 4 + 2 + 4 + 1 + 1 + 1);
                     const uint32_t size = u32() & 0x3FFFFFFF;
                     skip(size);
                     break;
                 }
-                case 20:  // AddPlayer
+                case 20:  
                     skip(4);
                     skipUtf();
                     skip(12 + 3 + 2 + 16 + 1 + 4 + 4 + 4 + 3);
                     break;
-                case 35:  skip(5);  break;   // RotateHead
-                case 24:  skip(27); break;   // AddMob
-                case 34:  skip(18); break;   // TeleportEntity
-                case 40: {                    // SetEntityData
+                case 35:  skip(5);  break;   
+                case 24:                     
+                    lastMobId = u16();
+                    lastMobType = u8();
+                    skip(24);
+                    break;
+                case 34:  skip(18); break;   
+                case 40: {                    
                     LceEntityData out;
                     out.raw.push_back(40);
                     uint8_t b4[4];
@@ -433,7 +446,7 @@ struct LceReader {
     }
 };
 
-// Expected-vs-actual assertion for one SetEntityData packet.
+
 void expectEntityData(LceReader& lce, int expectId,
                       const std::vector<LceMetaItem>& expect,
                       const char* what) {
@@ -448,7 +461,7 @@ void expectEntityData(LceReader& lce, int expectId,
                 got.items.size(), expect.size());
         exit(1);
     }
-    // Byte-exact: rebuild the expected packet and compare with the raw bytes.
+    
     std::vector<uint8_t> raw;
     raw.push_back(40);
     putBE32(raw, static_cast<uint32_t>(expectId));
@@ -474,10 +487,10 @@ void expectEntityData(LceReader& lce, int expectId,
     fprintf(stderr, "ok: %s\n", what);
 }
 
-}  // namespace
+}  
 
 int main() {
-    // Java-side listener the JavaConnection will dial.
+    
     int listenFd = ::socket(AF_INET, SOCK_STREAM, 0);
     int one = 1;
     setsockopt(listenFd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
@@ -497,7 +510,7 @@ int main() {
     std::atomic<bool> javaReady{false};
     std::thread javaThread(javaServerThread, listenFd, &javaReady);
 
-    // LCE client: connect + login handshake per JavaServerProxy::runWorker.
+    
     int lceFd = ::socket(AF_INET, SOCK_STREAM, 0);
     sockaddr_in paddr{};
     paddr.sin_family = AF_INET;
@@ -511,16 +524,16 @@ int main() {
 
     {
         std::vector<uint8_t> pre;
-        pre.push_back(2);           // PreLogin
-        putBE16(pre, 3);            // netcode version
-        putBE16(pre, 0);            // login key length
-        pre.push_back(0);           // friends only
-        putBE32(pre, 0);            // ugc version
-        pre.push_back(0);           // player count
-        pre.insert(pre.end(), 14, 0);  // save name
-        putBE32(pre, 0);            // server settings
-        pre.push_back(0);           // host index
-        putBE32(pre, 0);            // texture pack id
+        pre.push_back(2);           
+        putBE16(pre, 3);            
+        putBE16(pre, 0);            
+        pre.push_back(0);           
+        putBE32(pre, 0);            
+        pre.push_back(0);           
+        pre.insert(pre.end(), 14, 0);  
+        putBE32(pre, 0);            
+        pre.push_back(0);           
+        putBE32(pre, 0);            
         sendAll(lceFd, pre.data(), pre.size());
     }
 
@@ -533,62 +546,62 @@ int main() {
     {
         std::vector<uint8_t> login;
         login.push_back(1);
-        putBE32(login, 78);  // client version
+        putBE32(login, 78);  
         const std::wstring name = L"Tester", type = L"DEFAULT";
         putBE16(login, static_cast<uint16_t>(name.size()));
         for (wchar_t c : name) putBE16(login, static_cast<uint16_t>(c));
         putBE16(login, static_cast<uint16_t>(type.size()));
         for (wchar_t c : type) putBE16(login, static_cast<uint16_t>(c));
-        putBE64(login, 0);   // seed
-        putBE32(login, 0);   // game type
-        login.push_back(0);  // dimension
-        login.push_back(255);  // map height
-        login.push_back(8);    // max players
-        putBE64(login, 0);   // offline xuid
-        putBE64(login, 0);   // online xuid
-        login.push_back(0);  // friends only ugc
-        putBE32(login, 0);   // ugc players version
-        login.push_back(1);  // difficulty
-        putBE32(login, 0);   // multiplayer instance id
-        login.push_back(0);  // player index
-        putBE32(login, 0);   // skin id
-        putBE32(login, 0);   // cape id
-        login.push_back(0);  // is guest
-        login.push_back(0);  // new sea level
-        putBE32(login, 0);   // ui game privileges
-        putBE16(login, 54);  // xz size
-        login.push_back(3);  // hell scale
-        putBE32(login, 10);  // view distance
+        putBE64(login, 0);   
+        putBE32(login, 0);   
+        login.push_back(0);  
+        login.push_back(255);  
+        login.push_back(8);    
+        putBE64(login, 0);   
+        putBE64(login, 0);   
+        login.push_back(0);  
+        putBE32(login, 0);   
+        login.push_back(1);  
+        putBE32(login, 0);   
+        login.push_back(0);  
+        putBE32(login, 0);   
+        putBE32(login, 0);   
+        login.push_back(0);  
+        login.push_back(0);  
+        putBE32(login, 0);   
+        putBE16(login, 54);  
+        login.push_back(3);  
+        putBE32(login, 10);  
         sendAll(lceFd, login.data(), login.size());
     }
 
     while (!javaReady.load()) std::this_thread::yield();
     const int fd = g_javaFd;
 
-    // Wait until the proxy finished the spawn handshake (it ends with the
-    // MovePlayerPosRot packet). Entity packets sent before that point would
-    // race the handshake's event drain.
+    
+    
+    
     lce.waitFor(13);
     check(true, "spawn handshake complete (MovePlayer received)");
 
     const uint8_t uuid[16] = {0, 1, 2,  3,  4,  5,  6,  7,
                               8, 9, 10, 11, 12, 13, 14, 15};
 
-    // Tab list entry so SpawnPlayer resolves a name.
+    
     {
         std::vector<uint8_t> b;
-        putVarInt(b, 0);  // action add
-        putVarInt(b, 1);  // count
+        putVarInt(b, 0);  
+        putVarInt(b, 1);  
         b.insert(b.end(), uuid, uuid + 16);
         putStr(b, "Steve");
-        putVarInt(b, 0);  // properties
-        putVarInt(b, 0);  // gamemode
-        putVarInt(b, 0);  // ping
-        b.push_back(0);   // no display name
+        putVarInt(b, 0);  
+        putVarInt(b, 0);  
+        putVarInt(b, 0);  
+        b.push_back(0);   
         sendJavaPacket(fd, 0x38, b);
     }
 
-    // ---- Players: sneak at spawn, then sprint+invisible, fire, using. ----
+    
     {
         std::vector<uint8_t> b;
         putVarInt(b, 100);
@@ -598,7 +611,7 @@ int main() {
         putBE32(b, 5 * 32);
         b.push_back(0);
         b.push_back(0);
-        putBE16(b, 0);  // current item
+        putBE16(b, 0);  
         putJavaMeta(b, {{0, 0, 0x02}});
         sendJavaPacket(fd, 0x0C, b);
     }
@@ -613,7 +626,7 @@ int main() {
     javaEntityMeta(fd, 100, {{0, 0, 0x10}});
     expectEntityData(lce, 1000, {{0, 0, 0x10}}, "player using item");
 
-    // ---- LivingEntity: health / potion colour / arrows (on a sheep). ----
+    
     javaSpawnMob(fd, 200, 91, {{16, 0, 11}, {12, 0, -1}});
     expectEntityData(lce, 1001, {{16, 0, 11}, {12, 2, -1}},
                      "sheep colour + baby (age byte -> int)");
@@ -626,46 +639,54 @@ int main() {
     javaEntityMeta(fd, 200, {{16, 0, 0x1B}});
     expectEntityData(lce, 1001, {{16, 0, 0x1B}}, "sheep sheared+blue");
 
-    // ---- Ageable adult flip. ----
+    
     javaEntityMeta(fd, 200, {{12, 0, 0}});
     expectEntityData(lce, 1001, {{12, 2, 0}}, "ageable adult");
 
-    // ---- Zombie: baby / villager / converting. ----
+    
     javaSpawnMob(fd, 201, 54, {{12, 0, 1}, {13, 0, 1}, {14, 0, 1}});
     expectEntityData(lce, 1002, {{12, 0, 1}, {13, 0, 1}, {14, 0, 1}},
                      "zombie baby/villager/converting");
 
-    // ---- Wolf: sit+angry+tame flags, collar. ----
+    
     javaSpawnMob(fd, 202, 95, {{16, 0, 0x07}, {20, 0, 5}});
     expectEntityData(lce, 1003, {{16, 0, 0x07}, {20, 0, 5}},
                      "wolf flags + collar");
 
-    // ---- Villager profession. ----
+    
     javaSpawnMob(fd, 203, 120, {{16, 2, 3}});
     expectEntityData(lce, 1004, {{16, 2, 3}}, "villager profession");
 
-    // ---- Slime size. ----
+    
     javaSpawnMob(fd, 204, 55, {{16, 0, 4}});
     expectEntityData(lce, 1005, {{16, 0, 4}}, "slime size");
 
-    // ---- Horse: flags/variant/armor -> cached, entity unspawned, so the
-    // next SetEntityData on the wire must belong to the sentinel below. ----
+    
     javaSpawnMob(fd, 205, 100, {{16, 2, 6}, {19, 0, 1}, {22, 2, 2}});
 
-    // ---- Unsupported: armor stand meta must produce nothing. ----
-    javaSpawnMob(fd, 206, 30, {{10, 0, 1}});
+    
+    
+    
+    javaSpawnMob(fd, 206, 30,
+                 {{0, 0, 0x20}, {2, 4, 0, 0, "Hologram"}, {3, 0, 1},
+                  {10, 0, 0x10}});
+    check(lce.nextMobType() == 94, "armor stand spawns as Squid (94)");
+    const int asLce = lce.lastMobId;
+    expectEntityData(lce, asLce,
+                     {{0, 0, 0x20}, {10, 4, 0, 0, L"Hologram"}, {11, 0, 1}},
+                     "armor stand invisible+name+namevis forwarded");
 
-    // ---- Unsupported index on a supported mob: ignored. ----
+    
     javaEntityMeta(fd, 200, {{15, 0, 1}});
 
-    // ---- Duplicate update suppressed: same flags as before. ----
+    
     javaEntityMeta(fd, 100, {{0, 0, 0x10}});
 
-    // Sentinel: this must be the very next SetEntityData, proving the four
-    // cases above emitted no packets.
+    
+    
     javaEntityMeta(fd, 204, {{16, 0, 7}});
     expectEntityData(lce, 1005, {{16, 0, 7}},
-                     "horse/armorstand/unknown-index/duplicate all suppressed");
+                     "horse/unknown-index/duplicate all suppressed");
 
     fprintf(stderr, "all metadata translation tests passed\n");
     proxy.requestStop();

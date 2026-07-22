@@ -14,9 +14,9 @@ public:
     int slot;
 
 private:
-    // 4J Stu - Brought forward from 1.3 to fix #64688 - Customer Encountered:
-    // TU7: Content: Art: Aura of enchanted item is not displayed for other
-    // players in online game
+    
+    
+    
     std::shared_ptr<ItemInstance> item;
 
 public:
@@ -31,9 +31,9 @@ public:
     virtual bool canBeInvalidated();
     virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
 
-    // 4J Stu - Brought forward from 1.3 to fix #64688 - Customer Encountered:
-    // TU7: Content: Art: Aura of enchanted item is not displayed for other
-    // players in online game
+    
+    
+    
     std::shared_ptr<ItemInstance> getItem();
 
 public:

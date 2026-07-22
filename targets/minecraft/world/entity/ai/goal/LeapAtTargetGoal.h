@@ -9,7 +9,7 @@ class Mob;
 
 class LeapAtTargetGoal : public Goal {
 private:
-    Mob* mob;  // Owner of this goal
+    Mob* mob;  
     std::weak_ptr<LivingEntity> target;
     float yd;
 

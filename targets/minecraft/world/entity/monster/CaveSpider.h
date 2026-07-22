@@ -21,5 +21,5 @@ public:
     virtual bool doHurtTarget(std::shared_ptr<Entity> target);
     MobGroupData* finalizeMobSpawn(
         MobGroupData* groupData,
-        int extraData = 0);  // 4J Added extraData param
+        int extraData = 0);  
 };

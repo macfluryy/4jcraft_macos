@@ -16,7 +16,7 @@ GhastModel::GhastModel() : Model() {
     body->y += (8 + 16) + yoffs;
 
     Random* random = new Random(1660);
-    for (int i = 0; i < TENTACLESLENGTH; i++)  // 4J - 9 was  tentacles.size()
+    for (int i = 0; i < TENTACLESLENGTH; i++)  
     {
         tentacles[i] = new ModelPart(this, 0, 0);
 
@@ -30,8 +30,8 @@ GhastModel::GhastModel() : Model() {
         tentacles[i]->y = (float)(31 + yoffs);
     }
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     body->compile(1.0f / 16.0f);
     for (int i = 0; i < TENTACLESLENGTH; i++) {
         tentacles[i]->compile(1.0f / 16.0f);
@@ -42,7 +42,7 @@ void GhastModel::setupAnim(float time, float r, float bob, float yRot,
                            float xRot, float scale,
                            std::shared_ptr<Entity> entity,
                            unsigned int uiBitmaskOverrideAnim) {
-    for (int i = 0; i < TENTACLESLENGTH; i++)  // 4J - 9 was  tentacles.size()
+    for (int i = 0; i < TENTACLESLENGTH; i++)  
     {
         tentacles[i]->xRot = 0.2f * sinf(bob * 0.3f + i) + 0.4f;
     }
@@ -57,7 +57,7 @@ void GhastModel::render(std::shared_ptr<Entity> entity, float time, float r,
     glTranslatef(0, .6f, 0);
 
     body->render(scale, usecompiled);
-    for (int i = 0; i < TENTACLESLENGTH; i++)  // 4J - 9 was  tentacles.size()
+    for (int i = 0; i < TENTACLESLENGTH; i++)  
     {
         tentacles[i]->render(scale, usecompiled);
     }

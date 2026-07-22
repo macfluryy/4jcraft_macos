@@ -9,8 +9,8 @@ class TilePos;
 
 class ChunkPos {
 public:
-    int x, z;  // 4J - these were const but needed to make an assignment
-               // operator so we could make a vector of ChunkPos
+    int x, z;  
+               
 
     ChunkPos(int x, int z);
 
@@ -18,7 +18,7 @@ public:
     int hashCode();
 
     double distanceToSqr(std::shared_ptr<Entity> e);
-    double distanceToSqr(double px, double pz);  // 4J added
+    double distanceToSqr(double px, double pz);  
 
     int getMiddleBlockX();
     int getMiddleBlockZ();

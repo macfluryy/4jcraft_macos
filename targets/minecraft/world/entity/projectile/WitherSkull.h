@@ -48,5 +48,5 @@ public:
     virtual void setDangerous(bool value);
 
 protected:
-    virtual bool shouldBurn();  // 4J Added.
+    virtual bool shouldBurn();  
 };

@@ -66,7 +66,7 @@ bool ReadPortableBinaryFile(File& file, std::uint8_t*& data,
     size = static_cast<unsigned int>(readResult.fileSize);
     return true;
 }
-}  // namespace
+}  
 
 DLCTexturePack::DLCTexturePack(std::uint32_t id, DLCPack* pack,
                                TexturePack* fallback)
@@ -91,11 +91,11 @@ DLCTexturePack::DLCTexturePack(std::uint32_t id, DLCPack* pack,
         m_stringTable = localisationFile->getStringTable();
     }
 
-    // 4J Stu - These calls need to be in the most derived version of the class
+    
     loadIcon();
     loadName();
     loadDescription();
-    // loadDefaultHTMLColourTable();
+    
 }
 
 void DLCTexturePack::loadIcon() {
@@ -146,7 +146,7 @@ void DLCTexturePack::loadDescription() {
 }
 
 std::wstring DLCTexturePack::getResource(const std::wstring& name) {
-    // 4J Stu - We should never call this function
+    
 #if !defined(__CONTENT_PACKAGE)
     __debugbreak();
 #endif
@@ -154,14 +154,14 @@ std::wstring DLCTexturePack::getResource(const std::wstring& name) {
 }
 
 InputStream* DLCTexturePack::getResourceImplementation(
-    const std::wstring& name)  // throws IOException
+    const std::wstring& name)  
 {
-    // 4J Stu - We should never call this function
+    
 #if !defined(_CONTENT_PACKAGE)
     __debugbreak();
     if (hasFile(name)) return nullptr;
 #endif
-    return nullptr;  // resource;
+    return nullptr;  
 }
 
 bool DLCTexturePack::hasFile(const std::wstring& name) {
@@ -174,7 +174,7 @@ bool DLCTexturePack::hasFile(const std::wstring& name) {
 
 bool DLCTexturePack::isTerrainUpdateCompatible() { return true; }
 
-std::wstring DLCTexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
+std::wstring DLCTexturePack::getPath(bool bTitleUpdateTexture ,
                                      const char* pchBDPatchFilename) {
     return L"";
 }
@@ -193,8 +193,8 @@ std::wstring DLCTexturePack::getAnimationString(const std::wstring& textureName,
 }
 
 BufferedImage* DLCTexturePack::getImageResource(
-    const std::wstring& File, bool filenameHasExtension /*= false*/,
-    bool bTitleUpdateTexture /*=false*/, const std::wstring& drive /*=L""*/) {
+    const std::wstring& File, bool filenameHasExtension ,
+    bool bTitleUpdateTexture , const std::wstring& drive ) {
     if (m_dlcDataPack)
         return new BufferedImage(m_dlcDataPack, L"/" + File,
                                  filenameHasExtension);
@@ -206,7 +206,7 @@ BufferedImage* DLCTexturePack::getImageResource(
 DLCPack* DLCTexturePack::getDLCPack() { return m_dlcDataPack; }
 
 void DLCTexturePack::loadColourTable() {
-    // Load the game colours
+    
     if (m_dlcDataPack != nullptr &&
         m_dlcDataPack->doesPackContainFile(DLCManager::e_DLCType_ColourTable,
                                            L"colours.col")) {
@@ -216,14 +216,14 @@ void DLCTexturePack::loadColourTable() {
         m_colourTable = colourFile->getColourTable();
         m_bUsingDefaultColourTable = false;
     } else {
-        // 4J Stu - We can delete the default colour table, but not the one from
-        // the DLCColourTableFile
+        
+        
         if (!m_bUsingDefaultColourTable) m_colourTable = nullptr;
         loadDefaultColourTable();
         m_bUsingDefaultColourTable = true;
     }
 
-    // Load the text colours
+    
     if (app.hasArchiveFile(L"HTMLColours.col")) {
         std::vector<uint8_t> textColours =
             app.getArchiveFile(L"HTMLColours.col");
@@ -242,7 +242,7 @@ void DLCTexturePack::loadData() {
                     return onPackMounted(pad, err, lic);
                 },
                 "TPACK") != ERROR_IO_PENDING) {
-            // corrupt DLC
+            
             m_bHasLoadedData = true;
             if (app.getLevelGenerationOptions())
                 app.getLevelGenerationOptions()->setLoadedData();
@@ -273,7 +273,7 @@ int DLCTexturePack::onPackMounted(int iPad, std::uint32_t dwErr,
     DLCTexturePack* texturePack = this;
     texturePack->m_bLoadingData = false;
     if (dwErr != ERROR_SUCCESS) {
-        // corrupt DLC
+        
         app.DebugPrintf("Failed to mount DLC for pad %d: %u\n", iPad, dwErr);
     } else {
         app.DebugPrintf(
@@ -282,7 +282,7 @@ int DLCTexturePack::onPackMounted(int iPad, std::uint32_t dwErr,
             new DLCPack(texturePack->m_dlcInfoPack->getName(), dwLicenceMask);
         texturePack->setHasAudio(false);
         unsigned int dwFilesProcessed = 0;
-        // Load the DLC textures
+        
         std::wstring dataFilePath =
             texturePack->m_dlcInfoPack->getFullDataPath();
         if (!dataFilePath.empty()) {
@@ -295,7 +295,7 @@ int DLCTexturePack::onPackMounted(int iPad, std::uint32_t dwErr,
                 texturePack->m_dlcDataPack = nullptr;
             }
 
-            // Load the UI data
+            
             if (texturePack->m_dlcDataPack != nullptr) {
                 File archivePath(
                     getFilePath(texturePack->m_dlcInfoPack->GetPackID(),
@@ -303,10 +303,10 @@ int DLCTexturePack::onPackMounted(int iPad, std::uint32_t dwErr,
                 if (archivePath.exists())
                     texturePack->m_archiveFile = new ArchiveFile(archivePath);
 
-                /**
-                        4J-JEV:
-                                For all the GameRuleHeader files we find
-                */
+                
+
+
+
                 DLCPack* pack = texturePack->m_dlcInfoPack->GetParentPack();
                 LevelGenerationOptions* levelGen =
                     app.getLevelGenerationOptions();
@@ -327,9 +327,9 @@ int DLCTexturePack::onPackMounted(int iPad, std::uint32_t dwErr,
                                 unsigned int fileSize = 0;
                                 if (ReadPortableBinaryFile(grf, pbData,
                                                            fileSize)) {
-                                    // 4J-PB - is it possible that we can get
-                                    // here after a read fail and it's not an
-                                    // error?
+                                    
+                                    
+                                    
                                     dlcFile->setGrfData(
                                         pbData, fileSize,
                                         texturePack->m_stringTable);
@@ -353,8 +353,8 @@ int DLCTexturePack::onPackMounted(int iPad, std::uint32_t dwErr,
                             std::uint8_t* pbData = nullptr;
                             unsigned int fileSize = 0;
                             if (ReadPortableBinaryFile(grf, pbData, fileSize)) {
-                                // 4J-PB - is it possible that we can get here
-                                // after a read fail and it's not an error?
+                                
+                                
                                 levelGen->setBaseSaveData(pbData, fileSize);
                             } else {
                                 app.FatalLoadError();
@@ -363,13 +363,13 @@ int DLCTexturePack::onPackMounted(int iPad, std::uint32_t dwErr,
                     }
                 }
 
-                // any audio data?
-                // DLCPack *pack = texturePack->m_dlcInfoPack->GetParentPack();
+                
+                
                 if (pack->getDLCItemsCount(DLCManager::e_DLCType_Audio) > 0) {
                     DLCAudioFile* dlcFile = (DLCAudioFile*)pack->getFile(
                         DLCManager::e_DLCType_Audio, 0);
                     texturePack->setHasAudio(true);
-                    // init the streaming sound ids for this texture pack
+                    
                     int iOverworldStart, iNetherStart, iEndStart;
                     int iOverworldC, iNetherC, iEndC;
 
@@ -387,14 +387,14 @@ int DLCTexturePack::onPackMounted(int iPad, std::uint32_t dwErr,
                         iOverworldStart, iOverworldStart + iOverworldC,
                         iNetherStart, iNetherStart + iNetherC, iEndStart,
                         iEndStart + iEndC,
-                        iEndStart + iEndC);  // push the CD start to after
+                        iEndStart + iEndC);  
                 }
             }
             texturePack->loadColourTable();
         }
 
-        // 4J-PB - we need to leave the texture pack mounted if it contained
-        // streaming audio
+        
+        
         if (texturePack->hasAudio() == false) {
         }
     }
@@ -423,7 +423,7 @@ void DLCTexturePack::loadUI() {
 }
 
 void DLCTexturePack::unloadUI() {
-    // Unload skin
+    
     if (bUILoaded) {
         setHasAudio(false);
     }
@@ -449,7 +449,7 @@ std::wstring DLCTexturePack::getXuiRootPath() {
         std::uint8_t* pbData = dataFile->getData(dwSize);
 
         constexpr int LOCATOR_SIZE =
-            256;  // Use this to allocate space to hold a ResourceLocator string
+            256;  
         wchar_t szResourceLocator[LOCATOR_SIZE];
         swprintf(szResourceLocator, LOCATOR_SIZE, L"memory://%08X,%04X#",
                  pbData, dwSize);

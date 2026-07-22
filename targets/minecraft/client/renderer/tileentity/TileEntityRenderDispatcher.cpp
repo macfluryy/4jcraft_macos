@@ -32,7 +32,7 @@ void TileEntityRenderDispatcher::staticCtor() {
 }
 
 TileEntityRenderDispatcher::TileEntityRenderDispatcher() {
-    // 4J -a dded
+    
     font = nullptr;
     textures = nullptr;
     level = nullptr;
@@ -64,28 +64,28 @@ TileEntityRenderDispatcher::TileEntityRenderDispatcher() {
 
 TileEntityRenderer* TileEntityRenderDispatcher::getRenderer(eINSTANCEOF e) {
     TileEntityRenderer* r = nullptr;
-    // TileEntityRenderer *r = renderers[e];
-    auto it = renderers.find(e);  // 4J Stu - The .at and [] accessors
-                                  // insert elements if they don't exist
+    
+    auto it = renderers.find(e);  
+                                  
 
     if (it == renderers.end()) {
         return nullptr;
     }
 
-    /* 4J - not doing this hierarchical search anymore. We need to explicitly
-       add renderers for any eINSTANCEOF type that we want to be able to render
-            if (it == renderers.end() && e != TileEntity::_class)
-            {
-                    r = getRenderer(dynamic_cast<TileEntity::Class *>(
-       e->getSuperclass() ));
-                    // 4J - added condition here to only add if a valid renderer
-       found if( r ) renderers.insert( classToTileRendererMap::value_type( e, r
-       ) );
-                    //assert(false);
-            }
-            else if(it != renderers.end() && e != TileEntity::_class)
-                    r = (*it).second;
-                    */
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     return it->second;
 }
@@ -120,9 +120,9 @@ void TileEntityRenderDispatcher::prepare(Level* level, Textures* textures,
 }
 
 void TileEntityRenderDispatcher::render(std::shared_ptr<TileEntity> e, float a,
-                                        bool setColor /*=true*/) {
+                                        bool setColor ) {
     if (e->distanceToSqr(xPlayer, yPlayer, zPlayer) < e->getViewDistance()) {
-        // 4J - changes brought forward from 1.8.2
+        
         if (SharedConstants::TEXTURE_LIGHTING) {
             int col = level->getLightColor(e->x, e->y, e->z, 0);
             int u = col % 65536;
@@ -139,7 +139,7 @@ void TileEntityRenderDispatcher::render(std::shared_ptr<TileEntity> e, float a,
 
 void TileEntityRenderDispatcher::render(std::shared_ptr<TileEntity> entity,
                                         double x, double y, double z, float a,
-                                        bool setColor /*=true*/, float alpha,
+                                        bool setColor , float alpha,
                                         bool useCompiled) {
     TileEntityRenderer* renderer = getRenderer(entity);
     if (renderer != nullptr) {

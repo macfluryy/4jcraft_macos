@@ -22,16 +22,16 @@ class UILayer;
 class UIScene_LeaderboardsMenu : public UIScene,
                                  public LeaderboardReadListener {
 private:
-    // 4J Stu - Because the kills leaderboard doesn't a peaceful entry there are
-    // some special handling to make it skip that. We have re-arranged the order
-    // of the leaderboards so I am making this in case we do it again. 4J Stu -
-    // Made it a member of the class, rather than a #define
+    
+    
+    
+    
     static const int LEADERBOARD_KILLS_POSITION = 3;
 
     static const int NUM_LEADERBOARDS =
-        4;                               // 6;		//Number of leaderboards
-    static const int NUM_ENTRIES = 101;  // Cache up to this many entries
-    static const int READ_SIZE = 15;     // Read this many entries at a time
+        4;                               
+    static const int NUM_ENTRIES = 101;  
+    static const int READ_SIZE = 15;     
 
     struct LeaderboardDescriptor {
         unsigned int m_columnCount;
@@ -53,46 +53,46 @@ private:
     struct LeaderboardEntry {
         PlayerUID m_xuid;
         unsigned int
-            m_row;  // Row identifier for passing to Iggy as a unique identifier
+            m_row;  
         unsigned int m_rank;
         wchar_t m_wcRank[12];
         wchar_t m_gamerTag[XUSER_NAME_SIZE + 1];
-        // int			m_locale;
+        
         unsigned int m_columns[7];
         wchar_t m_wcColumns[7][12];
-        bool m_bPlayer;           // Is the player
-        bool m_bOnline;           // Is online
-        bool m_bFriend;           // Is friend
-        bool m_bRequestedFriend;  // Friend request sent but not answered
-        int m_idsErrorMessage;    // 4J-JEV: Non-zero if this entry has an error
-                                  // message instead of results.
+        bool m_bPlayer;           
+        bool m_bOnline;           
+        bool m_bFriend;           
+        bool m_bRequestedFriend;  
+        int m_idsErrorMessage;    
+                                  
     };
 
     struct Leaderboard {
-        unsigned int m_totalEntryCount;  // Either total number of entries in
-                                         // leaderboard, or total number of
-                                         // results for a friends query
+        unsigned int m_totalEntryCount;  
+                                         
+                                         
         std::vector<LeaderboardEntry> m_entries;
         unsigned int m_numColumns;
     };
 
-    Leaderboard m_leaderboard;  // All leaderboard data for the currently
-                                // selected filter
+    Leaderboard m_leaderboard;  
+                                
 
     unsigned int
-        m_currentLeaderboard;  // The current leaderboard selected for view
+        m_currentLeaderboard;  
     IPlatformLeaderboard::EFilterMode
-        m_currentFilter;               // The current filter selected
-    unsigned int m_currentDifficulty;  // The current difficulty selected
+        m_currentFilter;               
+    unsigned int m_currentDifficulty;  
 
-    unsigned int m_newEntryIndex;  // Index of the first entry being read
+    unsigned int m_newEntryIndex;  
     unsigned int
-        m_newReadSize;  // Number of entries in the current read operation
+        m_newReadSize;  
 
-    unsigned int m_newEntriesCount;  // Number of new entries in this update
+    unsigned int m_newEntriesCount;  
 
-    int m_newTop;  // Index of the element that should be at the top of the list
-    int m_newSel;  // Index of the element that should be selected in the list
+    int m_newTop;  
+    int m_newSel;  
 
     bool m_isProcessingStatsRead;
     bool m_bPopulatedOnce;
@@ -124,7 +124,7 @@ public:
 
     virtual EUIScene getSceneType() { return eUIScene_LeaderboardsMenu; }
 
-    // Returns true if this scene has focus for the pad passed in
+    
     virtual bool hasFocus(int iPad) { return bHasFocus; }
     virtual void handleTimerComplete(int id);
 
@@ -138,36 +138,36 @@ public:
     virtual void tick();
     virtual void handleReload();
 
-    // INPUT
+    
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 
 private:
-    // Start a read request with the current parameters
+    
     void ReadStats(int startIndex);
 
-    // Copy the stats from the raw m_stats structure into the m_leaderboards
-    // structure
+    
+    
     int m_numStats;
     IPlatformLeaderboard::ViewOut m_stats;
     bool RetrieveStats();
 
-    // Copy a leaderboard entry from the stats row
+    
     void CopyLeaderboardEntry(IPlatformLeaderboard::ReadScore* statsRow,
                               int leaderboardEntryIndex,
                               bool isDistanceLeaderboard);
 
-    // Populate the XUI leaderboard with the contents of m_leaderboards
+    
     void PopulateLeaderboard(IPlatformLeaderboard::eStatsReturn ret);
 
-    // Set the header text of the leaderboard
+    
     void SetLeaderboardHeader();
 
-    // Set the title icons
+    
     int SetLeaderboardTitleIcons();
 
-    // Callback function called when stats read completes, userdata contains
-    // pointer to instance of CScene_Leaderboards
+    
+    
     virtual bool OnStatsReadComplete(IPlatformLeaderboard::eStatsReturn ret,
                                      int numResults,
                                      IPlatformLeaderboard::ViewOut results);

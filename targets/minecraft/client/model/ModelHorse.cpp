@@ -17,7 +17,7 @@ ModelHorse::ModelHorse() {
     texWidth = 128;
     texHeight = 128;
 
-    // TODO: All rotation magic numbers in this method
+    
     Body = new ModelPart(this, 0, 34);
     Body->addBox(-5.f, -8.f, -19.f, 10, 10, 24);
     Body->setPos(0.f, 11.f, 9.f);
@@ -194,8 +194,8 @@ ModelHorse::ModelHorse() {
     HeadSaddle->setPos(0.f, 4.f, -10.f);
     setRotation(HeadSaddle, 0.5235988f, 0.f, 0.f);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     Head->compile(1.0f / 16.0f);
     ;
     UMouth->compile(1.0f / 16.0f);
@@ -322,7 +322,7 @@ void ModelHorse::render(std::shared_ptr<Entity> entity, float time, float r,
         }
     }
 
-    // render legs
+    
     if (!adult) {
         glPushMatrix();
         glScalef(sizeFactor, .5f + sizeFactor * .5f, sizeFactor);
@@ -350,7 +350,7 @@ void ModelHorse::render(std::shared_ptr<Entity> entity, float time, float r,
         glScalef(sizeFactor, sizeFactor, sizeFactor);
         glTranslatef(0, 1.35f * (1.0f - sizeFactor), 0);
     }
-    // render body
+    
     Body->render(scale, usecompiled);
     TailA->render(scale, usecompiled);
     TailB->render(scale, usecompiled);
@@ -372,7 +372,7 @@ void ModelHorse::render(std::shared_ptr<Entity> entity, float time, float r,
                          .15f * (1.0f - sizeFactor) * eating);
         }
     }
-    // render head
+    
     if (largeEars) {
         MuleEarL->render(scale, usecompiled);
         MuleEarR->render(scale, usecompiled);
@@ -412,7 +412,7 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
     float headRotx = (mob->xRotO + (mob->xRot - mob->xRotO) * a);
     float headRotMinusBodyRot = headRot - bodyRot;
 
-    // TODO: Magic numbers
+    
     float HeadXRot = (headRotx / 57.29578f);
     if (headRotMinusBodyRot > 20.f) {
         headRotMinusBodyRot = 20.f;
@@ -421,9 +421,9 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
         headRotMinusBodyRot = -20.f;
     }
 
-    /**
-     * f = distance walked f1 = speed 0 - 1 f2 = timer
-     */
+    
+
+
     if (ws > 0.2f) {
         HeadXRot = HeadXRot + (cos(wp * 0.4f) * 0.15f * ws);
     }
@@ -451,14 +451,14 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
     Bag2->z = 10.f;
     Body->xRot = 0.f;
 
-    // TODO: Fix these magical numbers
+    
     Head->xRot = 0.5235988f + (HeadXRot);
-    Head->yRot = (headRotMinusBodyRot / 57.29578f);  // fixes SMP bug
+    Head->yRot = (headRotMinusBodyRot / 57.29578f);  
 
-    // interpolate positions and rotations based on current eating and standing
-    // animations
+    
+    
     {
-        // TODO: Magic numbers
+        
         Head->xRot = standing * ((15 * Mth::DEG_TO_RAD) + (HeadXRot)) +
                      eating * 2.18166f +
                      (1.0f - std::max(standing, eating)) * Head->xRot;
@@ -514,13 +514,13 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
     LMouth->yRot = 0;
     Mane->yRot = Head->yRot;
 
-    // (if chested)
+    
     Bag1->xRot = legXRotAnim / 5.f;
     Bag2->xRot = -legXRotAnim / 5.f;
 
-    /**
-     * knee joints Leg1 and Leg4 use LLegXRot Leg2 and Leg3 use RLegXRot
-     */
+    
+
+
     {
         float r90 = std::numbers::pi * .5f;
         float r270 = std::numbers::pi * 1.5f;
@@ -647,7 +647,7 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
         SaddleMouthLineR->yRot = Head->yRot;
 
         if (rider) {
-            // TODO: Magic number (smells like radians :D)
+            
             SaddleL->xRot = -60 / 57.29578f;
             SaddleL2->xRot = -60 / 57.29578f;
             SaddleR->xRot = -60 / 57.29578f;
@@ -670,7 +670,7 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
         }
     }
 
-    // TODO: Magic number
+    
     float tailMov = -1.3089f + (ws * 1.5f);
     if (tailMov > 0) {
         tailMov = 0;
@@ -690,7 +690,7 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
     TailB->z = TailA->z;
     TailC->z = TailA->z;
 
-    // TODO: Magic number
+    
     TailA->xRot = tailMov;
     TailB->xRot = tailMov;
     TailC->xRot = -0.2618f + tailMov;

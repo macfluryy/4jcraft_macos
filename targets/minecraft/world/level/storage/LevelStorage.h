@@ -37,7 +37,7 @@ public:
     virtual ConsoleSaveFile* getSaveFile() { return nullptr; }
     virtual void flushSaveFile(bool autosave) {}
 
-    // 4J Added
+    
     virtual int getAuxValueForMap(PlayerUID xuid, int dimension, int centreXC,
                                   int centreZC, int scale) {
         return 0;

@@ -5,9 +5,9 @@
 #include "UIStructs.h"
 #include "minecraft/sounds/SoundTypes.h"
 
-// 4J Stu - An interface class that defines all the public functions that we use
-// within the game code. This allows us to build the Xbox 360 version without
-// using the base UIController class used by the other platforms
+
+
+
 class IUIController {
 public:
     virtual void tick() = 0;

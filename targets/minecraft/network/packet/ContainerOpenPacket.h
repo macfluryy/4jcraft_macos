@@ -22,12 +22,12 @@ public:
     static inline constexpr int HOPPER = 9;
     static inline constexpr int DROPPER = 10;
     static inline constexpr int HORSE = 11;
-    static inline constexpr int FIREWORKS = 12;        // 4J Added
-    static inline constexpr int BONUS_CHEST = 13;      // 4J Added
-    static inline constexpr int LARGE_CHEST = 14;      // 4J Added
-    static inline constexpr int ENDER_CHEST = 15;      // 4J Added
-    static inline constexpr int MINECART_CHEST = 16;   // 4J Added
-    static inline constexpr int MINECART_HOPPER = 17;  // 4J Added
+    static inline constexpr int FIREWORKS = 12;        
+    static inline constexpr int BONUS_CHEST = 13;      
+    static inline constexpr int LARGE_CHEST = 14;      
+    static inline constexpr int ENDER_CHEST = 15;      
+    static inline constexpr int MINECART_CHEST = 16;   
+    static inline constexpr int MINECART_HOPPER = 17;  
 
     int containerId;
     int type;

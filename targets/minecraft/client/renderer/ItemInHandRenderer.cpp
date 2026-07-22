@@ -55,7 +55,7 @@ int ItemInHandRenderer::listGlint = -1;
 
 ItemInHandRenderer::ItemInHandRenderer(Minecraft* minecraft,
                                        bool optimisedMinimap) {
-    // 4J - added
+    
     height = 0;
     oHeight = 0;
     selectedItem = nullptr;
@@ -66,11 +66,11 @@ ItemInHandRenderer::ItemInHandRenderer(Minecraft* minecraft,
     minimap = new Minimap(minecraft->font, minecraft->options,
                           minecraft->textures, optimisedMinimap);
 
-    // 4J - replaced mesh that is used to render held items with individual
-    // cubes, so we can make it all join up properly without seams. This has a
-    // lot more quads in it than the original, so is now precompiled with a UV
-    // matrix offset to put it in the final place for the current icon. Compile
-    // it on demand for the first ItemInHandRenderer (list is static)
+    
+    
+    
+    
+    
     if (listItem == -1) {
         listItem = MemoryTracker::genLists(1);
         float dd = 1 / 16.0f;
@@ -126,7 +126,7 @@ ItemInHandRenderer::ItemInHandRenderer(Minecraft* minecraft,
         glEndList();
     }
 
-    // Terrain texture is a different layout from the item texture
+    
     if (listTerrain == -1) {
         listTerrain = MemoryTracker::genLists(1);
         float dd = 1 / 16.0f;
@@ -182,8 +182,8 @@ ItemInHandRenderer::ItemInHandRenderer(Minecraft* minecraft,
         glEndList();
     }
 
-    // Also create special object for glint overlays - this is the same as the
-    // previous one, with a different UV scalings, and depth test set to equal
+    
+    
     if (listGlint == -1) {
         listGlint = MemoryTracker::genLists(1);
         float dd = 1 / 16.0f;
@@ -209,8 +209,8 @@ ItemInHandRenderer::ItemInHandRenderer(Minecraft* minecraft,
 
                 float br = 0.76f;
                 t->color(0.5f * br, 0.25f * br, 0.8f * br,
-                         1.0f);  // MGH - added the color here, as the glColour
-                                 // below wasn't making it through to render
+                         1.0f);  
+                                 
 
                 t->normal(0, 0, 1);
                 t->vertexUV(x0, y0, z0, u0, v0);
@@ -251,10 +251,10 @@ ItemInHandRenderer::ItemInHandRenderer(Minecraft* minecraft,
 
 void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
                                     std::shared_ptr<ItemInstance> item,
-                                    int layer, bool setColor /* = true*/) {
-    // 4J - code borrowed from render method below, although not factoring in
-    // brightness as that should already be being taken into account by texture
-    // lighting. This is for colourising things held in 3rd person view.
+                                    int layer, bool setColor ) {
+    
+    
+    
     if ((setColor) && (item != nullptr)) {
         int col = Item::items[item->id]->getColor(item, 0);
         float red = ((col >> 16) & 0xff) / 255.0f;
@@ -275,7 +275,7 @@ void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
             SharedConstants::TEXTURE_LIGHTING
                 ? 1.0f
                 : mob->getBrightness(
-                      1));  // 4J - change brought forward from 1.8.2
+                      1));  
     } else {
         Icon* icon = mob->getItemInHandIcon(item, layer);
         if (icon == nullptr) {
@@ -289,23 +289,23 @@ void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
 
         Tesselator* t = Tesselator::getInstance();
 
-        // Consider forcing the mipmap LOD level to use, if this is to be
-        // rendered from a larger than standard source texture.
+        
+        
         int iconWidth = icon->getWidth();
-        int LOD = -1;  // Default to not doing anything special with LOD forcing
+        int LOD = -1;  
         if (iconWidth == 32) {
-            LOD = 1;  // Force LOD level 1 to achieve texture reads from 256x256
-                      // map
+            LOD = 1;  
+                      
         } else if (iconWidth == 64) {
-            LOD = 2;  // Force LOD level 2 to achieve texture reads from 256x256
-                      // map
+            LOD = 2;  
+                      
         }
         RenderManager.StateSetForceLOD(LOD);
 
-        // 4J Original comment
-        // Yes, these are backwards.
-        // No, I don't know why.
-        // 4J Stu - Make them the right way round...u coords were swapped
+        
+        
+        
+        
         float u0 = icon->getU0();
         float u1 = icon->getU1();
         float v0 = icon->getV0();
@@ -335,9 +335,9 @@ void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
             glBlendFunc(GL_SRC_COLOR, GL_ONE);
             float br = 0.76f;
             glColor4f(0.5f * br, 0.25f * br, 0.8f * br,
-                      1);  // MGH - for some reason this colour isn't making it
-                           // through to the render, so I've added to the
-                           // tesselator for the glint geom above
+                      1);  
+                           
+                           
             glMatrixMode(GL_TEXTURE);
             glPushMatrix();
             float ss = 1 / 8.0f;
@@ -369,25 +369,25 @@ void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
     glPopMatrix();
 }
 
-// 4J added useList parameter
+
 void ItemInHandRenderer::renderItem3D(Tesselator* t, float u0, float v0,
                                       float u1, float v1, int width, int height,
                                       float depth, bool isGlint,
                                       bool isTerrain) {
     float r = 1.0f;
 
-    // 4J - replaced mesh that is used to render held items with individual
-    // cubes, so we can make it all join up properly without seams. This has a
-    // lot more quads in it than the original, so is now precompiled with a UV
-    // matrix offset to put it in the final place for the current icon
+    
+    
+    
+    
 
     if (isGlint) {
         glCallList(listGlint);
     } else {
-        // 4J - replaced mesh that is used to render held items with individual
-        // cubes, so we can make it all join up properly without seams. This has
-        // a lot more quads in it than the original, so is now precompiled with
-        // a UV matrix offset to put it in the final place for the current icon
+        
+        
+        
+        
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
@@ -396,8 +396,8 @@ void ItemInHandRenderer::renderItem3D(Tesselator* t, float u0, float v0,
         glLoadIdentity();
         glMatrixMode(GL_MODELVIEW);
     }
-    // 4J added since we are setting the colour to other values at the start of
-    // the function now
+    
+    
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
@@ -405,8 +405,8 @@ void ItemInHandRenderer::render(float a) {
     float h = oHeight + (height - oHeight) * a;
     std::shared_ptr<Player> player = minecraft->player;
 
-    // 4J - added so we can adjust the position of the hands for horizontal &
-    // vertical split screens
+    
+    
     float fudgeX = 0.0f;
     float fudgeY = 0.0f;
     float fudgeZ = 0.0f;
@@ -441,8 +441,8 @@ void ItemInHandRenderer::render(float a) {
             localPlayer->xBobO + (localPlayer->xBob - localPlayer->xBobO) * a;
         float yrr =
             localPlayer->yBobO + (localPlayer->yBob - localPlayer->yBobO) * a;
-        // 4J - was using player->xRot and yRot directly here rather than
-        // interpolating between old & current with a
+        
+        
         float yr = player->yRotO + (player->yRot - player->yRotO) * a;
         glRotatef((xr - xrr) * 0.1f, 1, 0, 0);
         glRotatef((yr - yrr) * 0.1f, 0, 1, 0);
@@ -452,7 +452,7 @@ void ItemInHandRenderer::render(float a) {
 
     float br = minecraft->level->getBrightness(
         std::floor(player->x), std::floor(player->y), std::floor(player->z));
-    // 4J - change brought forward from 1.8.2
+    
     if (SharedConstants::TEXTURE_LIGHTING) {
         br = 1;
         int col = minecraft->level->getLightColor(std::floor(player->x),
@@ -487,8 +487,8 @@ void ItemInHandRenderer::render(float a) {
         glPushMatrix();
         float d = 0.8f;
 
-        // 4J - move the map away a bit if we're in horizontal split screen, so
-        // it doesn't clip out of the save zone
+        
+        
         if (splitHoriz) {
             glTranslatef(0.0f, 0.0f, -0.3f);
         }
@@ -516,10 +516,10 @@ void ItemInHandRenderer::render(float a) {
         glEnable(GL_RESCALE_NORMAL);
 
         {
-            // 4J-PB - if we've got a player texture, use that
-            // glBindTexture(GL_TEXTURE_2D,
-            // minecraft->textures->loadHttpTexture(minecraft->player->customTextureUrl,
-            // minecraft->player->getTexture()));
+            
+            
+            
+            
             glBindTexture(GL_TEXTURE_2D,
                           minecraft->textures->loadMemTexture(
                               minecraft->player->customTextureUrl,
@@ -542,7 +542,7 @@ void ItemInHandRenderer::render(float a) {
                 float ss = 1;
                 glScalef(ss, ss, ss);
 
-                // Can't turn off the hand if the player is holding a map
+                
                 std::shared_ptr<ItemInstance> itemInstance =
                     player->inventory->getSelected();
                 if ((itemInstance &&
@@ -576,10 +576,10 @@ void ItemInHandRenderer::render(float a) {
         glScalef(s, s, s);
 
         minecraft->textures->bindTexture(
-            &MAP_BACKGROUND_LOCATION);  // 4J was L"/misc/mapbg.png"
+            &MAP_BACKGROUND_LOCATION);  
         Tesselator* t = Tesselator::getInstance();
 
-        //        glNormal3f(0, 0, -1);	// 4J - changed to use tesselator
+        
         t->begin();
         int vo = 7;
         t->normal(0, 0, -1);
@@ -605,8 +605,8 @@ void ItemInHandRenderer::render(float a) {
         float d = 0.8f;
 
         static const float swingPowFactor =
-            4.0f;  // 4J added, to slow the swing down when nearest the player
-                   // for avoiding luminance flash issues
+            4.0f;  
+                   
         if (player->getUseItemDuration() > 0) {
             UseAnim anim = item->getUseAnimation();
             if ((anim == UseAnim_eat) || (anim == UseAnim_drink)) {
@@ -638,7 +638,7 @@ void ItemInHandRenderer::render(float a) {
         }
 
         glTranslatef(0.7f * d, -0.65f * d - (1 - h) * 0.6f, -0.9f * d);
-        glTranslatef(fudgeX, fudgeY, fudgeZ);  // 4J added
+        glTranslatef(fudgeX, fudgeY, fudgeZ);  
 
         glRotatef(45, 0, 1, 0);
         glEnable(GL_RESCALE_NORMAL);
@@ -694,8 +694,8 @@ void ItemInHandRenderer::render(float a) {
         }
 
         if (item->getItem()->hasMultipleSpriteLayers()) {
-            // special case for potions, refactor this when we get more
-            // items that have two layers
+            
+            
             renderItem(player, item, 0, false);
 
             int col = Item::items[item->id]->getColor(item, 1);
@@ -725,7 +725,7 @@ void ItemInHandRenderer::render(float a) {
         }
 
         glTranslatef(0.8f * d, -0.75f * d - (1 - h) * 0.6f, -0.9f * d);
-        glTranslatef(fudgeX, fudgeY, fudgeZ);  // 4J added
+        glTranslatef(fudgeX, fudgeY, fudgeZ);  
 
         glRotatef(45, 0, 1, 0);
         glEnable(GL_RESCALE_NORMAL);
@@ -737,11 +737,11 @@ void ItemInHandRenderer::render(float a) {
             glRotatef(-swing3 * 20, 0, 0, 1);
         }
 
-        // 4J-PB - if we've got a player texture, use that
+        
 
-        // glBindTexture(GL_TEXTURE_2D,
-        // minecraft->textures->loadHttpTexture(minecraft->player->customTextureUrl,
-        // minecraft->player->getTexture()));
+        
+        
+        
 
         glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadMemTexture(
                                          minecraft->player->customTextureUrl,
@@ -759,7 +759,7 @@ void ItemInHandRenderer::render(float a) {
         PlayerRenderer* playerRenderer = (PlayerRenderer*)er;
         float ss = 1;
         glScalef(ss, ss, ss);
-        // Can't turn off the hand if the player is holding a map
+        
         std::shared_ptr<ItemInstance> itemInstance =
             player->inventory->getSelected();
 
@@ -781,7 +781,7 @@ void ItemInHandRenderer::renderScreenEffect(float a) {
         renderFire(a);
     }
 
-    if (minecraft->player->isInWall())  // Inside a tile
+    if (minecraft->player->isInWall())  
     {
         int x = std::floor(minecraft->player->x);
         int y = std::floor(minecraft->player->y);
@@ -813,7 +813,7 @@ void ItemInHandRenderer::renderScreenEffect(float a) {
 
     if (minecraft->player->isUnderLiquid(Material::water)) {
         minecraft->textures->bindTexture(
-            &UNDERWATER_LOCATION);  // 4J was L"/misc/water.png"
+            &UNDERWATER_LOCATION);  
         renderWater(a);
     }
     glEnable(GL_ALPHA_TEST);
@@ -821,7 +821,7 @@ void ItemInHandRenderer::renderScreenEffect(float a) {
 
 void ItemInHandRenderer::renderTex(float a, Icon* slot) {
     minecraft->textures->bindTexture(
-        &TextureAtlas::LOCATION_BLOCKS);  // TODO: get this data from Icon
+        &TextureAtlas::LOCATION_BLOCKS);  
 
     Tesselator* t = Tesselator::getInstance();
 
@@ -931,7 +931,7 @@ void ItemInHandRenderer::renderFire(float a) {
         glPushMatrix();
         Icon* slot = Tile::fire->getTextureLayer(1);
         minecraft->textures->bindTexture(
-            &TextureAtlas::LOCATION_BLOCKS);  // TODO: Get this from Icon
+            &TextureAtlas::LOCATION_BLOCKS);  
 
         float u0 = slot->getU0(true);
         float u1 = slot->getU1(true);
@@ -966,9 +966,9 @@ void ItemInHandRenderer::renderFire(float a) {
     glDisable(GL_BLEND);
     glEnable(GL_TEXTURE_2D);
 
-    // Re-enable fog so the rest of the frame (water overlay, etc) goes
-    // back to the lava/water/normal fog the renderer set up at the top
-    // of this frame.
+    
+    
+    
     glEnable(GL_FOG);
 }
 

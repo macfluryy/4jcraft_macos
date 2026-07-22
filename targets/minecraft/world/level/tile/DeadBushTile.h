@@ -11,7 +11,7 @@ protected:
     virtual bool mayPlaceOn(int tile);
 
 public:
-    virtual void updateDefaultShape();  // 4J Added override
+    virtual void updateDefaultShape();  
     virtual int getResource(int data, Random* random, int playerBonusLevel);
     virtual void playerDestroy(Level* level, std::shared_ptr<Player> player,
                                int x, int y, int z, int data);

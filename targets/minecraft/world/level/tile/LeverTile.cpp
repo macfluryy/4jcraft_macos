@@ -164,7 +164,7 @@ bool LeverTile::checkCanSurvive(Level* level, int x, int y, int z) {
 void LeverTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,
     std::shared_ptr<TileEntity>
-        forceEntity)  // 4J added forceData, forceEntity param
+        forceEntity)  
 {
     int dir = level->getData(x, y, z) & 7;
     float r = 3 / 16.0f;
@@ -185,16 +185,16 @@ void LeverTile::updateShape(
     }
 }
 
-// 4J-PB - Adding a TestUse for tooltip display
+
 bool LeverTile::TestUse() { return true; }
 
 bool LeverTile::use(Level* level, int x, int y, int z,
                     std::shared_ptr<Player> player, int clickedFace,
                     float clickX, float clickY, float clickZ,
-                    bool soundOnly /*=false*/)  // 4J added soundOnly param
+                    bool soundOnly )  
 {
     if (soundOnly) {
-        // 4J - added - just do enough to play the sound
+        
         int data = level->getData(x, y, z);
         int dir = data & 7;
         int open = 8 - (data & 8);
@@ -203,7 +203,7 @@ bool LeverTile::use(Level* level, int x, int y, int z,
         return false;
     }
     if (level->isClientSide) {
-        // 4J - added stuff to play sound in this case too
+        
         int data = level->getData(x, y, z);
         int dir = data & 7;
         int open = 8 - (data & 8);

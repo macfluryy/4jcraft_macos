@@ -35,10 +35,10 @@ const std::wstring LeafTile::TEXTURES[2][4] = {
      L"leaves_jungle_opaque"},
 };
 
-// 4jcraft, this is the unitinialized vpointer fiassco of isSolidRender()
-// isSolidRender() returns !allowSame if !isServerLevel, else true
-// scince allowSame for TransparentTile right here is set to false
-// setting isSolidRender to true by default totally correct.
+
+
+
+
 LeafTile::LeafTile(int id)
     : TransparentTile(id, Material::leaves, false, true) {
     checkBuffer = nullptr;
@@ -49,11 +49,11 @@ LeafTile::LeafTile(int id)
 LeafTile::~LeafTile() { delete[] checkBuffer; }
 
 int LeafTile::getColor() const {
-    // 4J Stu - Not using this any more
-    // double temp = 0.5;
-    // double rain = 1.0;
+    
+    
+    
 
-    // return FoliageColor::get(temp, rain);
+    
 
     return Minecraft::GetInstance()->getColourTable()->getColor(
         eMinecraftColour_Foliage_Common);
@@ -74,8 +74,8 @@ int LeafTile::getColor(LevelSource* level, int x, int y, int z) {
     return getColor(level, x, y, z, level->getData(x, y, z));
 }
 
-// 4J - changed interface to have data passed in, and put existing interface as
-// wrapper above
+
+
 int LeafTile::getColor(LevelSource* level, int x, int y, int z, int data) {
     if ((data & LEAF_TYPE_MASK) == EVERGREEN_LEAF) {
         return FoliageColor::getEvergreenColor();
@@ -141,9 +141,9 @@ void LeafTile::tick(Level* level, int x, int y, int z, Random* random) {
 
         if (level->hasChunksAt(x - r2, y - r2, z - r2, x + r2, y + r2,
                                z + r2)) {
-            // 4J Stu - Assuming we remain in the same chunk, getTile accesses
-            // an array that varies least by y Changing the ordering here to
-            // loop by y last
+            
+            
+            
             for (int xo = -r; xo <= r; xo++)
                 for (int zo = -r; zo <= r; zo++)
                     for (int yo = -r; yo <= r; yo++) {
@@ -240,7 +240,7 @@ int LeafTile::getResource(int data, Random* random, int playerBonusLevel) {
     return Tile::sapling_Id;
 }
 
-// 4J DCR: Brought forward from 1.2
+
 void LeafTile::spawnResources(Level* level, int x, int y, int z, int data,
                               float odds, int playerBonusLevel) {
     if (!level->isClientSide) {
@@ -284,7 +284,7 @@ void LeafTile::playerDestroy(Level* level, std::shared_ptr<Player> player,
         player->awardStat(GenericStats::blocksMined(id),
                           GenericStats::param_blocksMined(id, data, 1));
 
-        // drop leaf block instead of sapling
+        
         popResource(level, x, y, z,
                     std::make_shared<ItemInstance>(Tile::leaves_Id, 1,
                                                    data & LEAF_TYPE_MASK));
@@ -298,9 +298,9 @@ int LeafTile::getSpawnResourcesAuxValue(int data) {
 }
 
 bool LeafTile::isSolidRender(bool isServerLevel) {
-    // 4J Stu - The server level shouldn't care how the tile is rendered!
-    // Fix for #9407 - Gameplay: Destroying a block of snow on top of trees,
-    // removes any adjacent snow.
+    
+    
+    
     if (isServerLevel) return true;
     return !allowSame;
 }
@@ -338,14 +338,14 @@ bool LeafTile::shouldTileTick(Level* level, int x, int y, int z) {
     return (currentData & UPDATE_LEAF_BIT) != 0;
 }
 
-unsigned int LeafTile::getDescriptionId(int iData /*= -1*/) {
+unsigned int LeafTile::getDescriptionId(int iData ) {
     int leafIndex = iData & LEAF_TYPE_MASK;
     return LeafTile::LEAF_NAMES[leafIndex];
 }
 
 void LeafTile::registerIcons(IconRegister* iconRegister) {
     for (int fancy = 0; fancy < 2; fancy++) {
-        // icons[fancy] = new Icon[TEXTURES[fancy].size()];
+        
 
         for (int i = 0; i < 4; i++) {
             icons[fancy][i] = iconRegister->registerIcon(TEXTURES[fancy][i]);

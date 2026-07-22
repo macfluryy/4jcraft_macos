@@ -17,8 +17,8 @@ class Level;
 class Random;
 class TilePos;
 
-// 4J Stu Added
-// We can get away with a few more attempts on new-gen consoles
+
+
 #ifdef _LARGE_WORLDS
 #define MAX_STRONGHOLD_ATTEMPTS 30
 #else
@@ -39,8 +39,8 @@ private:
 
     bool isSpotSelected;
     static const int strongholdPos_length =
-        1;  // Java game has 3, but xbox game only has 1 because of the world
-            // size;	// 4J added
+        1;  
+            
     ChunkPos* strongholdPos[strongholdPos_length];
     double distance;
     int spread;

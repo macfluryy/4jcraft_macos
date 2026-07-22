@@ -11,15 +11,15 @@ public:
     LeaderboardManager();
     virtual ~LeaderboardManager() {}
 
-    // Singleton
+    
     static IPlatformLeaderboard* Instance() { return m_instance; }
     static void DeleteInstance();
 
-    // IPlatformLeaderboard pure virtuals - subclasses must implement:
-    //   Tick, OpenSession, CloseSession, DeleteSession, WriteStats,
-    //   FlushStats, CancelOperation, isIdle
+    
+    
+    
 
-    // Base implementations for read operations
+    
     bool ReadStats_Friends(LeaderboardReadListener* callback, int difficulty,
                            EStatsType type, PlayerUID myUID,
                            unsigned int startIndex,

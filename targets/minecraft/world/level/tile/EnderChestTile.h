@@ -8,7 +8,7 @@ public:
     static const int EVENT_SET_OPEN_COUNT = ChestTile::EVENT_SET_OPEN_COUNT;
 
     EnderChestTile(int id);
-    virtual void updateDefaultShape();  // 4J Added override
+    virtual void updateDefaultShape();  
 
     bool isSolidRender(bool isServerLevel = false);
     bool isCubeShaped();

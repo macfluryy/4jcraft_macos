@@ -21,7 +21,7 @@ private:
     int zDestroyBlock;
     std::shared_ptr<ItemInstance> destroyingItem;
     float destroyProgress;
-    int destroyTicks;  // 4J was float but doesn't seem to need to be
+    int destroyTicks;  
     int destroyDelay;
     bool isDestroying;
     GameType* localPlayerMode;
@@ -83,12 +83,12 @@ public:
     virtual bool hasFarPickRange();
     virtual bool isServerControlledInventory();
 
-    // 4J Stu - Added so we can send packets for this in the network game
+    
     virtual bool handleCraftItem(int recipe, std::shared_ptr<Player> player);
     virtual void handleDebugOptions(unsigned int uiVal,
                                     std::shared_ptr<Player> player);
 
-    // 4J Stu - Added for tutorial checks
+    
     virtual bool isInputAllowed(int mapping) { return true; }
     virtual bool isTutorial() { return false; }
     virtual Tutorial* getTutorial() { return nullptr; }

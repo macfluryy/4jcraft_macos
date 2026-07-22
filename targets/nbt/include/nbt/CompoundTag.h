@@ -203,23 +203,23 @@ public:
     }
 
     void print(char* prefix, std::ostream out) {
-        /*
-        Tag::print(prefix, out);
-        out << prefix << "{" << endl;
+        
 
-        char *newPrefix = new char[ strlen(prefix) + 4 ];
-        strcpy( newPrefix, prefix);
-        strcat( newPrefix, "   ");
 
-        auto itEnd = tags.end();
-        for( unordered_map<string, Tag *>::iterator it = tags.begin(); it !=
-        itEnd; it++ )
-        {
-        it->second->print(newPrefix, out);
-        }
-        delete[] newPrefix;
-        out << prefix << "}" << endl;
-        */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     bool isEmpty() { return tags.empty(); }

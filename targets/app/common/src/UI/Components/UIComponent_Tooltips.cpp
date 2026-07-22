@@ -24,7 +24,7 @@ UIComponent_Tooltips::UIComponent_Tooltips(int iPad, void* initData,
             m_overrideSFX[i][j] = false;
         }
     }
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 }
 
@@ -54,19 +54,19 @@ F64 UIComponent_Tooltips::getSafeZoneHalfWidth() {
 
     float safeWidth = 0.0f;
 
-    // 85% safezone for tooltips in either SD mode
+    
     if (!RenderManager.IsHiDef()) {
-        // 85% safezone
+        
         safeWidth = m_movieWidth * (0.15f / 2);
     } else {
-        // 90% safezone
+        
         safeWidth = width * (0.1f / 2);
     }
     return safeWidth;
 }
 
 void UIComponent_Tooltips::updateSafeZone() {
-    // Distance from edge
+    
     F64 safeTop = 0.0;
     F64 safeBottom = 0.0;
     F64 safeLeft = 0.0;
@@ -119,18 +119,18 @@ void UIComponent_Tooltips::updateSafeZone() {
 void UIComponent_Tooltips::tick() {
     UIScene::tick();
 
-    // set the opacity of the tooltip items
+    
     unsigned char ucAlpha = app.GetGameSettings(ProfileManager.GetPrimaryPad(),
                                                 eGameSetting_InterfaceOpacity);
     float fVal;
 
     if (ucAlpha < 80) {
-        // if we are in a menu, set the minimum opacity for tooltips to 15%
+        
         if (ui.GetMenuDisplayed(m_iPad) && (ucAlpha < 15)) {
             ucAlpha = 15;
         }
 
-        // check if we have the timer running for the opacity
+        
         unsigned int uiOpacityTimer = app.GetOpacityTimer(m_iPad);
         if (uiOpacityTimer != 0) {
             if (uiOpacityTimer < 10) {
@@ -144,7 +144,7 @@ void UIComponent_Tooltips::tick() {
             fVal = 0.01f * (float)ucAlpha;
         }
     } else {
-        // if we are in a menu, set the minimum opacity for tooltips to 15%
+        
         if (ui.GetMenuDisplayed(m_iPad) && (ucAlpha < 15)) {
             ucAlpha = 15;
         }
@@ -315,7 +315,7 @@ void UIComponent_Tooltips::_SetTooltip(unsigned int iToolTipId, UIString label,
                                             IggyPlayerRootPath(getMovie()),
                                             m_funcSetTooltip, 3, value);
 
-    // app.DebugPrintf("Actual tooltip update!\n");
+    
 }
 
 void UIComponent_Tooltips::_Relayout() {
@@ -339,7 +339,7 @@ void UIComponent_Tooltips::handleInput(int iPad, int key, bool repeat,
                                        bool pressed, bool released,
                                        bool& handled) {
     if ((0 <= iPad) && (iPad <= 3) && m_overrideSFX[iPad][key]) {
-        // don't play a sound for this action
+        
         switch (key) {
             case ACTION_MENU_A:
             case ACTION_MENU_OK:
@@ -362,39 +362,39 @@ void UIComponent_Tooltips::handleInput(int iPad, int key, bool repeat,
         switch (key) {
             case ACTION_MENU_OK:
             case ACTION_MENU_CANCEL:
-                // 4J-PB - We get both A and OK, and B and Cancel, so only play
-                // a sound on one of them.
+                
+                
                 sendInputToMovie(key, repeat, pressed, released);
                 break;
             case ACTION_MENU_A:
             case ACTION_MENU_X:
             case ACTION_MENU_Y:
-                // 4J-PB - play a Press sound
-                // CD - Removed, causes a sound on all presses
-                /*if(pressed)
-                {
-                        ui.PlayUISFX(eSFX_Press);
-                }*/
+                
+                
+                
+
+
+
                 sendInputToMovie(key, repeat, pressed, released);
                 break;
 
             case ACTION_MENU_B:
-                // 4J-PB - play a Press sound
-                // CD - Removed, causes a sound on all presses
-                /*if(pressed)
-                {
-                        ui.PlayUISFX(eSFX_Back);
-                }*/
+                
+                
+                
+
+
+
                 sendInputToMovie(key, repeat, pressed, released);
                 break;
 
             case ACTION_MENU_LEFT_SCROLL:
             case ACTION_MENU_RIGHT_SCROLL:
-                // CD - Removed, causes a sound on all presses
-                /*if(pressed)
-                {
-                        ui.PlayUISFX(eSFX_Scroll);
-                }*/
+                
+                
+
+
+
                 sendInputToMovie(key, repeat, pressed, released);
                 break;
             case ACTION_MENU_PAGEUP:

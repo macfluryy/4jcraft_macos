@@ -72,7 +72,7 @@ bool MobSpawnerTileEntity::triggerEvent(int b0, int b1) {
 
 BaseMobSpawner* MobSpawnerTileEntity::getSpawner() { return spawner; }
 
-// 4J Added
+
 std::shared_ptr<TileEntity> MobSpawnerTileEntity::clone() {
     std::shared_ptr<MobSpawnerTileEntity> result =
         std::make_shared<MobSpawnerTileEntity>();

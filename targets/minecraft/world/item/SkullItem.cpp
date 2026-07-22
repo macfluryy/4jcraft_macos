@@ -23,7 +23,7 @@ std::wstring SkullItem::ICON_NAMES[SKULL_COUNT] = {
     L"skeleton", L"wither", L"zombie", L"char", L"creeper"};
 
 SkullItem::SkullItem(int id) : Item(id) {
-    // setItemCategory(CreativeModeTab.TAB_DECORATIONS);
+    
     setMaxDamage(0);
     setStackedByData(true);
 }
@@ -32,7 +32,7 @@ bool SkullItem::useOn(
     std::shared_ptr<ItemInstance> instance, std::shared_ptr<Player> player,
     Level* level, int x, int y, int z, int face, float clickX, float clickY,
     float clickZ,
-    bool bTestUseOnOnly)  // float clickX, float clickY, float clickZ)
+    bool bTestUseOnOnly)  
 {
     if (face == 0) return false;
     if (!level->getMaterial(x, y, z)->isSolid()) return false;
@@ -44,7 +44,7 @@ bool SkullItem::useOn(
     if (face == 4) x--;
     if (face == 5) x++;
 
-    // if (!player->mayUseItemAt(x, y, z, face, instance)) return false;
+    
     if (!player->mayUseItemAt(x, y, z, face, instance)) return false;
 
     if (!Tile::skull->mayPlace(level, x, y, z)) return false;

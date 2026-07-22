@@ -6,14 +6,14 @@
 class Level;
 class Mob;
 
-// note: Mob should implement handleEntityEvent for client state, also ate to
-// take action upon eating
+
+
 class EatTileGoal : public Goal {
 private:
     static const int EAT_ANIMATION_TICKS =
         SharedConstants::TICKS_PER_SECOND * 2;
 
-    Mob* mob;  // Owner of this goal
+    Mob* mob;  
     Level* level;
     int eatAnimationTick;
 
@@ -27,7 +27,7 @@ public:
     virtual int getEatAnimationTick();
     virtual void tick();
 
-    // 4J Added override to update ai elements when loading entity from
-    // schematics
+    
+    
     virtual void setLevel(Level* level) { this->level = level; }
 };

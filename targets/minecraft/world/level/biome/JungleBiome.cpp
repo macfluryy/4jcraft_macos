@@ -25,16 +25,16 @@ JungleBiome::JungleBiome(int id) : Biome(id) {
 
     enemies.push_back(new MobSpawnerData(eTYPE_OCELOT, 2, 1, 1));
 
-    // make chicken a lot more common in the jungle
+    
     friendlies.push_back(new MobSpawnerData(eTYPE_CHICKEN, 10, 4, 4));
 }
 
 Feature* JungleBiome::getTreeFeature(Random* random) {
     if (random->nextInt(10) == 0) {
         return new BasicTree(
-            false);  // 4J used to return member fancyTree, now returning newly
-                     // created object so that caller can be consistently
-                     // resposible for cleanup
+            false);  
+                     
+                     
     }
     if (random->nextInt(2) == 0) {
         return new GroundBushFeature(TreeTile::JUNGLE_TRUNK,

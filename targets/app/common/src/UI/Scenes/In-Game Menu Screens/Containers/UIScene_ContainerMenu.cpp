@@ -26,7 +26,7 @@ UIScene_ContainerMenu::UIScene_ContainerMenu(int iPad, void* _initData,
     m_bLargeChest =
         (initData->container->getContainerSize() > 3 * 9) ? true : false;
 
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_labelChest.init(initData->container->getName());

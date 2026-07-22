@@ -67,7 +67,7 @@ ResourceLocation* ZombieRenderer::getTextureLocation(
     std::shared_ptr<Entity> entity) {
     std::shared_ptr<Zombie> mob = std::dynamic_pointer_cast<Zombie>(entity);
 
-    // TODO Extract this clusterfck into 3 renderers
+    
     if (entity->instanceof(eTYPE_PIGZOMBIE)) {
         return &ZOMBIE_PIGMAN_LOCATION;
     }
@@ -87,13 +87,13 @@ void ZombieRenderer::additionalRendering(std::shared_ptr<LivingEntity> _mob,
 
 void ZombieRenderer::swapArmor(std::shared_ptr<Zombie> mob) {
     if (mob->isVillager()) {
-        // if (modelVersion != villagerModel->version())
-        //{
-        //	villagerModel = new VillagerZombieModel();
-        //	modelVersion = villagerModel->version();
-        //	villagerArmorParts1 = new VillagerZombieModel(1.0f, 0, true);
-        //	villagerArmorParts2 = new VillagerZombieModel(0.5f, 0, true);
-        // }
+        
+        
+        
+        
+        
+        
+        
         model = villagerModel;
         armorParts1 = villagerArmorParts1;
         armorParts2 = villagerArmorParts2;

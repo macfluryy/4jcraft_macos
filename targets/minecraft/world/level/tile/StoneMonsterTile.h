@@ -13,8 +13,8 @@ public:
 
     static const unsigned int STONE_MONSTER_NAMES[STONE_MONSTER_NAMES_LENGTH];
 
-    // 4J Stu - I don't know why this is protected in Java
-    // protected:
+    
+    
 public:
     StoneMonsterTile(int id);
 

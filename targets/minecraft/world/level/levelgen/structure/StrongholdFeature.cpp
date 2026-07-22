@@ -53,7 +53,7 @@ void StrongholdFeature::_init() {
     distance = 32;
     spread = 3;
 
-    // 4J added initialisers
+    
     for (int i = 0; i < strongholdPos_length; i++) {
         strongholdPos[i] = nullptr;
     }
@@ -70,9 +70,9 @@ StrongholdFeature::StrongholdFeature(
         if (it->first.compare(OPTION_DISTANCE) == 0) {
             distance = Mth::getDouble(it->second, distance, 1);
         } else if (it->first.compare(OPTION_COUNT) == 0) {
-            // 4J-JEV: Removed, we only have the one stronghold.
-            // strongholdPos = new ChunkPos[ Mth::getInt(it->second,
-            // strongholdPos_length, 1) ];
+            
+            
+            
             assert(false);
         } else if (it->first.compare(OPTION_SPREAD) == 0) {
             spread = Mth::getInt(it->second, spread, 1);
@@ -98,8 +98,8 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
         double angle = random.nextDouble() * std::numbers::pi * 2.0;
         int circle = 1;
 
-        // 4J Stu - Changed so that we keep trying more until we have found
-        // somewhere in the world to place a stronghold
+        
+        
         bool hasFoundValidPos = false;
         int findAttempts = 0;
         do {
@@ -107,37 +107,37 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
                 double dist = 0.0;
 #ifdef _LARGE_WORLDS
                 if (level->dimension->getXZSize() < (2.25f * 32.0f)) {
-                    // Xbox360/PS3 distances
+                    
                     dist =
                         (1.25 + random.nextDouble()) * (3 + random.nextInt(4));
                 } else {
-                    // Original Java
+                    
                     dist = (1.25 * circle + random.nextDouble()) *
                            (distance * circle);
                 }
 #else
-                // 4J Stu - Design change: Original spawns at *32 chunks rather
-                // than *10 chunks from (0,0) but that is outside our world
-                // double dist = (1.25 + random->nextDouble()) * 32.0;
-                // The max of the first part is 2.25, and we have 27 chunks in
-                // each direction Therefore 27/2.25 = 12, which should be the
-                // max of the second part The constant part and random part can
-                // be tuned to move the strongholds further from the spawn 4J
-                // Stu - The original (pre-TU9) calculation for selecting a
-                // start point could put the stronghold very close to the edge
-                // of the world, causing some parts to fail to generate. If the
-                // save is a newer save then we bring that generation in
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 if (level->getOriginalSaveVersion() >=
                     SAVE_FILE_VERSION_MOVED_STRONGHOLD) {
-                    // Post TU9
-                    // The stronghold cannot extend more than 7 chunks in any
-                    // direction from the start position Therefore as long as
-                    // the the start x/z are less than 20 it will be fully
-                    // contained
+                    
+                    
+                    
+                    
+                    
                     dist =
                         (1.25 + random.nextDouble()) * (3 + random.nextInt(4));
                 } else {
-                    // Pre TU9
+                    
                     dist = (1.25 + random.nextDouble()) *
                            (5.0 + random.nextInt(7));
                 }
@@ -165,11 +165,11 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
                         "Placed stronghold in valid biome at (%d, %d), (%d, "
                         "%d)\n",
                         selectedX, selectedZ, position->x, position->z);
-                    // 4J added
+                    
                     app.AddTerrainFeaturePosition(eTerrainFeature_Stronghold,
                                                   selectedX, selectedZ);
 
-                    // 4J Added
+                    
                     hasFoundValidPos = true;
                     delete position;
                 }
@@ -180,11 +180,11 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
                 angle += std::numbers::pi * 2.0 / (double)strongholdPos_length;
             }
 
-            // 4J Stu - We want to make sure that we have at least one
-            // stronghold in this world
+            
+            
             ++findAttempts;
 
-            // 4J Stu - Randomise the angles for retries as well
+            
 #ifdef _LARGE_WORLDS
             angle = random.nextDouble() * std::numbers::pi * 2.0 * circle /
                     (double)spread;
@@ -192,10 +192,10 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
         } while (!hasFoundValidPos && findAttempts < MAX_STRONGHOLD_ATTEMPTS);
 
         if (!hasFoundValidPos) {
-            // Even if it's not a valid position we are still creating the last
-            // one we tried, so store it in the save so Eye of Ender works Fix
-            // for #81933 - GAMEPLAY: The Eye of Ender occasionally does not
-            // appear when used to try and locate the End Portal.
+            
+            
+            
+            
             app.AddTerrainFeaturePosition(eTerrainFeature_Stronghold,
                                           strongholdPos[0]->x,
                                           strongholdPos[0]->z);
@@ -235,23 +235,23 @@ std::vector<TilePos>* StrongholdFeature::getGuesstimatedFeaturePositions() {
 StructureStart* StrongholdFeature::createStructureStart(int x, int z) {
     StrongholdStart* start = new StrongholdStart(level, random, x, z);
 
-    // 4J - front() was get(0)
+    
     while (start->getPieces()->empty() ||
            ((StrongholdPieces::StartPiece*)start->getPieces()->front())
                    ->portalRoomPiece == nullptr) {
         delete start;
-        // regenerate stronghold without changing seed
+        
         start = new StrongholdStart(level, random, x, z);
     }
 
     return start;
 
-    // System.out.println("Creating stronghold at (" + x + ", " + z + ")");
-    // return new StrongholdStart(level, random, x, z);
+    
+    
 }
 
 StrongholdFeature::StrongholdStart::StrongholdStart() {
-    // for reflection
+    
 }
 
 StrongholdFeature::StrongholdStart::StrongholdStart(Level* level,

@@ -97,7 +97,7 @@ std::shared_ptr<DoorInfo> MoveThroughVillageGoal::getNextDoorInfo(
     int closestDistSqr = std::numeric_limits<int>::max();
     std::vector<std::shared_ptr<DoorInfo> >* doorInfos =
         village->getDoorInfos();
-    // for (DoorInfo di : doorInfos)
+    
     for (auto it = doorInfos->begin(); it != doorInfos->end(); ++it) {
         std::shared_ptr<DoorInfo> di = *it;
         int distSqr = di->distanceToSqr(Mth::floor(mob->x), Mth::floor(mob->y),
@@ -112,7 +112,7 @@ std::shared_ptr<DoorInfo> MoveThroughVillageGoal::getNextDoorInfo(
 }
 
 bool MoveThroughVillageGoal::hasVisited(std::shared_ptr<DoorInfo> di) {
-    // for (DoorInfo di2 : visited)
+    
     for (auto it = visited.begin(); it != visited.end();) {
         std::shared_ptr<DoorInfo> di2 = (*it).lock();
         if (di2 == nullptr) {

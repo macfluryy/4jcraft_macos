@@ -11,14 +11,14 @@
 
 
 
-// 4J Stu - There are changes to this class for 1.8.2, but since we never use it
-// anyway lets not worry about it
+
+
 
 const int ZonedChunkStorage::BIT_TERRAIN_POPULATED = 0x0000001;
 
-const int ZonedChunkStorage::CHUNKS_PER_ZONE_BITS = 5;  // = 32
+const int ZonedChunkStorage::CHUNKS_PER_ZONE_BITS = 5;  
 const int ZonedChunkStorage::CHUNKS_PER_ZONE =
-    1 << ZonedChunkStorage::CHUNKS_PER_ZONE_BITS;  // ^2
+    1 << ZonedChunkStorage::CHUNKS_PER_ZONE_BITS;  
 
 const int ZonedChunkStorage::CHUNK_WIDTH = 16;
 
@@ -36,7 +36,7 @@ const std::endian ZonedChunkStorage::BYTEORDER = std::endian::big;
 ZonedChunkStorage::ZonedChunkStorage(File dir) {
     tickCount = 0;
 
-    // this->dir = dir;
+    
     this->dir = File(dir, std::wstring(L"data"));
     if (!this->dir.exists()) this->dir.mkdirs();
 }
@@ -56,7 +56,7 @@ ZoneFile* ZonedChunkStorage::getZoneFile(int x, int z, bool create) {
     int xZone = x >> CHUNKS_PER_ZONE_BITS;
     int zZone = z >> CHUNKS_PER_ZONE_BITS;
     int64_t key = xZone + (zZone << 20l);
-    // 4J - was !zoneFiles.containsKey(key)
+    
     if (zoneFiles.find(key) == zoneFiles.end()) {
         wchar_t xRadix36[64];
         wchar_t zRadix36[64];
@@ -161,17 +161,17 @@ void ZonedChunkStorage::tick() {
 
         auto itEndTC = toClose.end();
         for (auto it = toClose.begin(); it != itEndTC; it++) {
-            int64_t key = *it;  // toClose[i];
-            // 4J - removed try/catch
-            //            try {
+            int64_t key = *it;  
+            
+            
             char buf[256];
             sprintf(buf, "Closing zone %I64d\n", key);
             app.DebugPrintf(buf);
             zoneFiles[key]->close();
             zoneFiles.erase(zoneFiles.find(key));
-            //           } catch (IOException e) {
-            //                e.printStackTrace();
-            //            }
+            
+            
+            
         }
     }
 }
@@ -182,12 +182,12 @@ void ZonedChunkStorage::flush() {
              zoneFiles.begin();
          it != itEnd; it++) {
         ZoneFile* zoneFile = it->second;
-        // 4J - removed try/catch
-        //        try {
+        
+        
         zoneFile->close();
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //        }
+        
+        
+        
     }
     zoneFiles.clear();
 }
@@ -199,7 +199,7 @@ void ZonedChunkStorage::loadEntities(Level* level, LevelChunk* lc) {
 
     auto itEnd = tags->end();
     for (auto it = tags->begin(); it != itEnd; it++) {
-        CompoundTag* tag = *it;  // tags->at(i);
+        CompoundTag* tag = *it;  
         int type = tag->getInt(L"_TYPE");
         if (type == 0) {
             std::shared_ptr<Entity> e = EntityIO::loadStatic(tag, level);
@@ -225,7 +225,7 @@ void ZonedChunkStorage::saveEntities(Level* level, LevelChunk* lc) {
 
             auto itEndTags = entities->end();
             for (auto it = entities->begin(); it != itEndTags; it++) {
-                std::shared_ptr<Entity> e = *it;  // entities->at(j);
+                std::shared_ptr<Entity> e = *it;  
                 CompoundTag* cp = new CompoundTag();
                 cp->putInt(L"_TYPE", 0);
                 e->save(cp);

@@ -39,16 +39,16 @@ int DaylightDetectorTile::getSignal(LevelSource* level, int x, int y, int z,
 
 void DaylightDetectorTile::tick(Level* level, int x, int y, int z,
                                 Random* random) {
-    //        updateSignalStrength(level, x, y, z);
+    
 }
 
 void DaylightDetectorTile::neighborChanged(Level* level, int x, int y, int z,
                                            int type) {
-    //        level.addToTickNextTick(x, y, z, id, getTickDelay());
+    
 }
 
 void DaylightDetectorTile::onPlace(Level* level, int x, int y, int z) {
-    //        level.addToTickNextTick(x, y, z, id, getTickDelay());
+    
 }
 
 void DaylightDetectorTile::updateSignalStrength(Level* level, int x, int y,
@@ -60,8 +60,8 @@ void DaylightDetectorTile::updateSignalStrength(Level* level, int x, int y,
         level->getBrightness(LightLayer::Sky, x, y, z) - level->skyDarken;
     float sunAngle = level->getSunAngle(1);
 
-    // tilt sunAngle towards zenith (to make the transition to night
-    // smoother)
+    
+    
     if (sunAngle < std::numbers::pi) {
         sunAngle = sunAngle + (0 - sunAngle) * .2f;
     } else {

@@ -28,7 +28,7 @@ void HealCommand::execute(std::shared_ptr<CommandSender> source,
             DataInputStream dis(&bais);
             targetName = dis.readUTF();
         } catch (...) {
-            // ignore - default to self
+            
         }
     }
 
@@ -48,7 +48,7 @@ void HealCommand::execute(std::shared_ptr<CommandSender> source,
     }
 
     target->setHealth(target->getMaxHealth());
-    // Top up food + saturation while we're at it
+    
     FoodData* food = target->getFoodData();
     if (food != nullptr) {
         food->setFoodLevel(FoodConstants::MAX_FOOD);

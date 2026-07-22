@@ -12,7 +12,7 @@ IUIScene_InventoryMenu::GetSectionAndSlotInDirection(ESceneSection eSection,
                                                      int* piTargetY) {
     ESceneSection newSection = eSection;
 
-    // Find the new section if there is one
+    
     switch (eSection) {
         case eSectionInventoryArmor:
             if (eTapDirection == eTapStateDown) {

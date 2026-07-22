@@ -41,8 +41,8 @@
 #include "nbt/CompoundTag.h"
 
 VillagerGolem::VillagerGolem(Level* level) : Golem(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
     registerAttributes();
     setHealth(getMaxHealth());
@@ -105,7 +105,7 @@ void VillagerGolem::registerAttributes() {
 }
 
 int VillagerGolem::decreaseAirSupply(int currentSupply) {
-    // infinite air supply
+    
     return currentSupply;
 }
 
@@ -236,7 +236,7 @@ void VillagerGolem::die(DamageSource* source) {
 }
 
 bool VillagerGolem::hurt(DamageSource* source, float dmg) {
-    // 4J: Protect owned golem from untrusted players
+    
     if (isPlayerCreated()) {
         std::shared_ptr<Entity> entity = source->getDirectEntity();
         if (entity != nullptr && entity->instanceof(eTYPE_PLAYER)) {

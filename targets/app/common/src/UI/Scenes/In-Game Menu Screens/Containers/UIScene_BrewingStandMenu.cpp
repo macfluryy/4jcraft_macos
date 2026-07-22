@@ -23,7 +23,7 @@ class UILayer;
 UIScene_BrewingStandMenu::UIScene_BrewingStandMenu(int iPad, void* _initData,
                                                    UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     m_progressBrewingArrow.init(

@@ -13,27 +13,27 @@ SnowManModel::SnowManModel() : Model() {
     float g = 0;
 
     head = (new ModelPart(this, 0, 0))->setTexSize(64, 64);
-    head->addBox(-4, -8, -4, 8, 8, 8, g - 0.5f);  // head
+    head->addBox(-4, -8, -4, 8, 8, 8, g - 0.5f);  
     head->setPos(0, 0 + yOffset, 0);
 
     arm1 = (new ModelPart(this, 32, 0))->setTexSize(64, 64);
-    arm1->addBox(-1, 0, -1, 12, 2, 2, g - 0.5f);  // arm
+    arm1->addBox(-1, 0, -1, 12, 2, 2, g - 0.5f);  
     arm1->setPos(0, 0 + yOffset + 9 - 7, 0);
 
     arm2 = (new ModelPart(this, 32, 0))->setTexSize(64, 64);
-    arm2->addBox(-1, 0, -1, 12, 2, 2, g - 0.5f);  // arm
+    arm2->addBox(-1, 0, -1, 12, 2, 2, g - 0.5f);  
     arm2->setPos(0, 0 + yOffset + 9 - 7, 0);
 
     piece1 = (new ModelPart(this, 0, 16))->setTexSize(64, 64);
-    piece1->addBox(-5, -10, -5, 10, 10, 10, g - 0.5f);  // upper body
+    piece1->addBox(-5, -10, -5, 10, 10, 10, g - 0.5f);  
     piece1->setPos(0, 0 + yOffset + 9, 0);
 
     piece2 = (new ModelPart(this, 0, 36))->setTexSize(64, 64);
-    piece2->addBox(-6, -12, -6, 12, 12, 12, g - 0.5f);  // lower body
+    piece2->addBox(-6, -12, -6, 12, 12, 12, g - 0.5f);  
     piece2->setPos(0, 0 + yOffset + 20, 0);
 
-    // 4J added - compile now to avoid random performance hit first time cubes
-    // are rendered
+    
+    
     head->compile(1.0f / 16.0f);
     arm1->compile(1.0f / 16.0f);
     arm2->compile(1.0f / 16.0f);

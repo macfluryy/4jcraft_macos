@@ -23,7 +23,7 @@
 BiomeDecorator::BiomeDecorator(Biome* biome) {
     _init();
 
-    // 4J inits
+    
     level = nullptr;
     random = nullptr;
     xo = 0;
@@ -37,7 +37,7 @@ void BiomeDecorator::decorate(Level* level, Random* random, int xo, int zo) {
         app.DebugPrintf("BiomeDecorator::decorate - Already decorating!!\n");
 #ifndef _CONTENT_PACKAGE
         __debugbreak();
-        // throw new RuntimeException("Already decorating!!");
+        
 #endif
     }
     this->level = level;
@@ -142,7 +142,7 @@ void BiomeDecorator::decorate() {
     }
 
     for (int i = 0; i < grassCount; i++) {
-        // int grassType = TallGrass::TALL_GRASS;
+        
 
         int x = xo + random->nextInt(16) + 8;
         int y = random->nextInt(Level::genDepth);
@@ -152,8 +152,8 @@ void BiomeDecorator::decorate() {
         delete grassFeature;
     }
 
-    // 4J Stu - For some reason this was created each time round in the loop
-    // I assume there is a case where deadBushCount could be 0
+    
+    
     DeadBushFeature* deadBushFeature = nullptr;
     if (deadBushCount > 0)
         deadBushFeature = new DeadBushFeature(Tile::deadBush_Id);
@@ -161,8 +161,8 @@ void BiomeDecorator::decorate() {
         int x = xo + random->nextInt(16) + 8;
         int y = random->nextInt(Level::genDepth);
         int z = zo + random->nextInt(16) + 8;
-        // new DeadBushFeature(Tile::deadBush_Id)->place(level, random, x, y,
-        // z);
+        
+        
         deadBushFeature->place(level, random, x, y, z);
     }
     if (deadBushFeature != nullptr) delete deadBushFeature;
@@ -236,7 +236,7 @@ void BiomeDecorator::decorate() {
     }
 
     if (liquids) {
-        // 4J Stu - For some reason this was created each time round in the loop
+        
         SpringFeature* waterSpringFeature = new SpringFeature(Tile::water_Id);
         for (int i = 0; i < 50; i++) {
             int x = xo + random->nextInt(16) + 8;
@@ -246,7 +246,7 @@ void BiomeDecorator::decorate() {
         }
         delete waterSpringFeature;
 
-        // 4J Stu - For some reason this was created each time round in the loop
+        
         SpringFeature* lavaSpringFeature = new SpringFeature(Tile::lava_Id);
         for (int i = 0; i < 20; i++) {
             int x = xo + random->nextInt(16) + 8;
@@ -285,7 +285,7 @@ void BiomeDecorator::decorateDepthAverage(int count, Feature* feature, int yMid,
 }
 
 void BiomeDecorator::decorateOres() {
-    level->setInstaTick(true);  // 4J - optimisation
+    level->setInstaTick(true);  
     decorateDepthSpan(20, dirtOreFeature, 0, Level::genDepth);
     decorateDepthSpan(10, gravelOreFeature, 0, Level::genDepth);
     decorateDepthSpan(20, coalOreFeature, 0, Level::genDepth);

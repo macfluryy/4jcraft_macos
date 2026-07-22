@@ -14,9 +14,9 @@
 #include "nbt/CompoundTag.h"
 
 PistonPieceEntity::PistonPieceEntity() {
-    // for the tile entity loader
+    
 
-    // 4J - added initialisers
+    
     this->id = 0;
     this->data = 0;
     this->facing = 0;
@@ -29,7 +29,7 @@ PistonPieceEntity::PistonPieceEntity() {
 PistonPieceEntity::PistonPieceEntity(int id, int data, int facing,
                                      bool extending, bool isSourcePiston)
     : TileEntity() {
-    // 4J - added initialisers
+    
     progress = 0.0f;
     progressO = 0.0f;
 
@@ -91,9 +91,9 @@ void PistonPieceEntity::moveCollidedEntities(float progress, float amount) {
     auto aabb =
         Tile::pistonMovingPiece->getAABB(level, x, y, z, id, progress, facing);
     if (aabb.has_value()) {
-        // getEntities fills our own vector, so Entity::move (which queries
-        // entities again through getCubes) can no longer invalidate this
-        // iteration - the old copy-before-move dance is no longer needed.
+        
+        
+        
         std::vector<std::shared_ptr<Entity> > entities;
         level->getEntities(nullptr, &*aabb, entities);
         for (auto it = entities.begin(); it != entities.end(); it++) {
@@ -160,7 +160,7 @@ void PistonPieceEntity::save(CompoundTag* tag) {
     tag->putBoolean(L"extending", extending);
 }
 
-// 4J Added
+
 std::shared_ptr<TileEntity> PistonPieceEntity::clone() {
     std::shared_ptr<PistonPieceEntity> result =
         std::make_shared<PistonPieceEntity>();

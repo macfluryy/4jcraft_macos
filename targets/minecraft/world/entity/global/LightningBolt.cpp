@@ -21,19 +21,19 @@
 
 LightningBolt::LightningBolt(Level* level, double x, double y, double z)
     : life(0), seed(0), flashes(0), GlobalEntity(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     moveTo(x, y, z, 0, 0);
     life = START_LIFE;
     seed = random->nextLong();
-    // 4J-PB - Microsoft request due to photosensitivity issue with multiple
-    // flashes of lightning
-    // flashes = random->nextInt(3) + 1;
+    
+    
+    
     flashes = 1;
 
-    // 4J - added clientside check
+    
     if (!level->isClientSide &&
         level->getGameRules()->getBoolean(GameRules::RULE_DOFIRETICK) &&
         level->difficulty >= 2 &&
@@ -42,8 +42,8 @@ LightningBolt::LightningBolt(Level* level, double x, double y, double z)
             int xt = Mth::floor(x);
             int yt = Mth::floor(y);
             int zt = Mth::floor(z);
-            // 4J added - don't go setting tiles if we aren't tracking them for
-            // network synchronisation
+            
+            
             if (MinecraftServer::getInstance()->getPlayers()->isTrackingTile(
                     xt, yt, zt, level->dimension->id)) {
                 if (level->getTile(xt, yt, zt) == 0 &&
@@ -56,8 +56,8 @@ LightningBolt::LightningBolt(Level* level, double x, double y, double z)
             int xt = Mth::floor(x) + random->nextInt(3) - 1;
             int yt = Mth::floor(y) + random->nextInt(3) - 1;
             int zt = Mth::floor(z) + random->nextInt(3) - 1;
-            // 4J added - don't go setting tiles if we aren't tracking them for
-            // network synchronisation
+            
+            
             if (MinecraftServer::getInstance()->getPlayers()->isTrackingTile(
                     xt, yt, zt, level->dimension->id)) {
                 if (level->getTile(xt, yt, zt) == 0 &&
@@ -72,9 +72,9 @@ void LightningBolt::tick() {
     GlobalEntity::tick();
 
     if (life == START_LIFE) {
-        // 4J-PB - this volume seems off the scale! But the volume is used to
-        // check the distance from the camera player - (volume*32) squared so
-        // we'll limit the sound in the sound engine
+        
+        
+        
         level->playSound(x, y, z, eSoundType_AMBIENT_WEATHER_THUNDER, 10000,
                          0.8f + random->nextFloat() * 0.2f);
         level->playSound(x, y, z, eSoundType_RANDOM_EXPLODE, 2,
@@ -98,8 +98,8 @@ void LightningBolt::tick() {
                 int yt = (int)floor(y);
                 int zt = (int)floor(z);
 
-                // 4J added - don't go setting tiles if we aren't tracking them
-                // for network synchronisation
+                
+                
                 if (MinecraftServer::getInstance()
                         ->getPlayers()
                         ->isTrackingTile(xt, yt, zt, level->dimension->id)) {
@@ -121,7 +121,7 @@ void LightningBolt::tick() {
             level->getEntities(shared_from_this(), &aoe_bb, entities);
             auto itEnd = entities.end();
             for (auto it = entities.begin(); it != itEnd; it++) {
-                std::shared_ptr<Entity> e = (*it);  // entities.at(i);
+                std::shared_ptr<Entity> e = (*it);  
                 e->thunderHit(this);
             }
         }

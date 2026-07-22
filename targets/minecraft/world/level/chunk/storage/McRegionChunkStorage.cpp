@@ -47,9 +47,9 @@ McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile* saveFile,
     : m_prefix(prefix) {
     m_saveFile = saveFile;
 
-    // Make sure that if there are any files for regions to be created, that
-    // they are created in the order that suits us for making the initial level
-    // save work fast
+    
+    
+    
     if (prefix == L"") {
         m_saveFile->createFile(ConsoleSavePath(L"DIM-1r.-1.-1.mcr"));
         m_saveFile->createFile(ConsoleSavePath(L"DIM-1r.0.-1.mcr"));
@@ -95,7 +95,7 @@ McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile* saveFile,
 }
 
 McRegionChunkStorage::~McRegionChunkStorage() {
-    // vectors manage their own memory; clearing the map is sufficient
+    
 }
 
 LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
@@ -103,11 +103,11 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
         RegionFileCache::getChunkDataInputStream(m_saveFile, m_prefix, x, z);
 
 #if defined(SPLIT_SAVES)
-    // If we can't find the chunk in the save file, then we should remove any
-    // entities we might have for that chunk
+    
+    
     if (regionChunkInputStream == nullptr) {
-        // 4jcraft fixed cast from int to int64 and taking the mask of the upper
-        // bits and cast to unsigned
+        
+        
         uint64_t index =
             ((uint64_t)(uint32_t)(x) << 32) | (((uint64_t)(uint32_t)(z)));
 
@@ -170,11 +170,11 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
             delete chunkData;
             return nullptr;
 
-            // 4J Stu - We delete the data within OldChunkStorage::load, so we
-            // can never reload from it
-            // chunkData->putInt(L"xPos", x);
-            // chunkData->putInt(L"zPos", z);
-            // levelChunk = OldChunkStorage::load(level,
+            
+            
+            
+            
+            
         }
 #if defined(SPLIT_SAVES)
         loadEntities(level, levelChunk);
@@ -185,7 +185,7 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
     if (levelChunk && app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
-        // 4J Stu - This will force an update of the chunk's biome array
+        
         levelChunk->reloadBiomes();
     }
 #endif
@@ -195,14 +195,14 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
 void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
     level->checkSession();
 
-    // 4J - removed try/catch
-    //    try {
+    
+    
 
-    // Note - have added use of a mutex round sections of code that
-    // do a lot of memory alloc/free operations. This is because when we are
-    // running saves on multiple threads these sections have a lot of
-    // contention. Better to let each thread have its turn at a higher level of
-    // granularity.
+    
+    
+    
+    
+    
     DataOutputStream* output = RegionFileCache::getChunkDataOutputStream(
         m_saveFile, m_prefix, levelChunk->x, levelChunk->z);
 
@@ -213,7 +213,7 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
                 std::lock_guard<std::mutex> lock(cs_memory);
                 s_chunkDataQueue.push_back(output);
             }
-            // 4jcraft: WAKE UP, WAKE THE FUCK.. UP
+            
             s_queueCondition.notify_one();
 
     } else {
@@ -229,9 +229,9 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
         }
         output->close();
 
-        // 4J Stu - getChunkDataOutputStream makes a new DataOutputStream that
-        // points to a new ChunkBuffer( ByteArrayOutputStream ) We should clean
-        // these up when we are done
+        
+        
+        
         {
             std::lock_guard<std::mutex> lock(cs_memory);
             output->deleteChildStream();
@@ -242,20 +242,20 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
 
     LevelData* levelInfo = level->getLevelData();
 
-    // 4J Stu - Override this with our save file size to stop all the
-    // RegionFileCache lookups
-    // levelInfo->setSizeOnDisk(levelInfo->getSizeOnDisk() +
-    // RegionFileCache::getSizeDelta(m_saveFile, m_prefix, levelChunk->x,
-    // levelChunk->z));
+    
+    
+    
+    
+    
     levelInfo->setSizeOnDisk(this->m_saveFile->getSizeOnDisk());
-    //    } catch (Exception e) {
-    //        e.printStackTrace();
-    //    }
+    
+    
+    
 }
 
 void McRegionChunkStorage::saveEntities(Level* level, LevelChunk* levelChunk) {
 #if defined(SPLIT_SAVES)
-    // 4j added cast to unsigned and changed index to u
+    
     uint64_t index = ((uint64_t)(uint32_t)(levelChunk->x) << 32) |
                      (((uint64_t)(uint32_t)(levelChunk->z)));
 
@@ -328,19 +328,19 @@ void McRegionChunkStorage::staticCtor() {
         sprintf(threadName, "McRegion Save thread %d\n", i);
         C4JThread::setThreadName(0, threadName);
 
-        // saveThreads[j] =
-        // CreateThread(nullptr,0,runSaveThreadProc,&threadData[j],CREATE_SUSPENDED,&threadId[j]);
+        
+        
         s_saveThreads[i] =
             new C4JThread(runSaveThreadProc, nullptr, threadName);
 
-        // app.DebugPrintf("Created new thread: %s\n",threadName);
+        
 
-        // ResumeThread( saveThreads[j] );
+        
         s_saveThreads[i]->run();
     }
 }
 
-// 4jcraft: removed the wasting 100ms chunk loading part.
+
 int McRegionChunkStorage::runSaveThreadProc(void* lpParam) {
     Compression::CreateNewThreadStorage();
 
@@ -353,7 +353,7 @@ int McRegionChunkStorage::runSaveThreadProc(void* lpParam) {
             dos = s_chunkDataQueue.front();
             s_chunkDataQueue.pop_front();
             s_runningThreadCount++;
-        } // Unlock so the main thread can keep working
+        } 
 
         if (dos) {
             dos->close();
@@ -367,7 +367,7 @@ int McRegionChunkStorage::runSaveThreadProc(void* lpParam) {
             s_runningThreadCount--;
         }
 
-        // Tell the main thread we finished a chunk
+        
         s_waitCondition.notify_all();
     }
 
@@ -379,17 +379,17 @@ void McRegionChunkStorage::WaitForAll() { WaitForAllSaves(); }
 
 void McRegionChunkStorage::WaitIfTooManyQueuedChunks() { WaitForSaves(); }
 
-// Static
-// 4jcraft: Better waiting system
+
+
 void McRegionChunkStorage::WaitForAllSaves() {
     std::unique_lock<std::mutex> lock(cs_memory);
-    // Pause the main thread instantly until queue is 0 AND workers are done
+    
     s_waitCondition.wait(lock, [] {
         return s_chunkDataQueue.empty() && s_runningThreadCount == 0;
     });
 }
 
-// Static
+
 void McRegionChunkStorage::WaitForSaves() {
     static const int MAX_QUEUE_SIZE = 12;
     static const int DESIRED_QUEUE_SIZE = 6;
@@ -397,7 +397,7 @@ void McRegionChunkStorage::WaitForSaves() {
 
     std::unique_lock<std::mutex> lock(cs_memory);
     if (s_chunkDataQueue.size() > MAX_QUEUE_SIZE) {
-        // Pause until the queue drains down to the desired size
+        
         s_waitCondition.wait(lock, [] {
             return s_chunkDataQueue.size() <= DESIRED_QUEUE_SIZE;
         });

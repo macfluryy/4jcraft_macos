@@ -35,7 +35,7 @@ TeleportEntityPacket::TeleportEntityPacket(int id, int x, int y, int z,
     this->xRot = xRot;
 }
 
-void TeleportEntityPacket::read(DataInputStream* dis)  // throws IOException
+void TeleportEntityPacket::read(DataInputStream* dis)  
 {
     id = dis->readShort();
 #ifdef _LARGE_WORLDS
@@ -51,7 +51,7 @@ void TeleportEntityPacket::read(DataInputStream* dis)  // throws IOException
     xRot = (uint8_t)dis->read();
 }
 
-void TeleportEntityPacket::write(DataOutputStream* dos)  // throws IOException
+void TeleportEntityPacket::write(DataOutputStream* dos)  
 {
     dos->writeShort(id);
 #ifdef _LARGE_WORLDS

@@ -62,5 +62,5 @@ public:
     static int getExperienceValue(int maxValue);
     virtual bool isAttackable();
 
-    virtual bool shouldRender(Vec3* c);  // 4J added
+    virtual bool shouldRender(Vec3* c);  
 };

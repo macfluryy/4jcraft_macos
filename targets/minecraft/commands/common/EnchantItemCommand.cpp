@@ -63,10 +63,10 @@ void EnchantItemCommand::execute(std::shared_ptr<CommandSender> source,
                     Enchantment* other = Enchantment::enchantments[type];
                     if (!other->isCompatibleWith(e)) {
                         return;
-                        // throw new
-                        // CommandException("commands.enchant.cantCombine",
-                        // e.getFullname(level),
-                        // other.getFullname(enchantmentTags.get(i).getShort(ItemInstance.TAG_ENCH_LEVEL)));
+                        
+                        
+                        
+                        
                     }
                 }
             }
@@ -75,7 +75,7 @@ void EnchantItemCommand::execute(std::shared_ptr<CommandSender> source,
 
     selectedItem->enchant(e, enchantmentLevel);
 
-    // logAdminAction(source, "commands.enchant.success");
+    
     logAdminAction(source, ChatPacket::e_ChatCustom,
                    L"commands.enchant.success");
 }

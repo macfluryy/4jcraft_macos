@@ -9,7 +9,7 @@ class LivingEntity;
 
 class DefendVillageTargetGoal : public TargetGoal {
 private:
-    VillagerGolem* golem;  // Owner of this goal
+    VillagerGolem* golem;  
     std::weak_ptr<LivingEntity> potentialTarget;
 
 public:

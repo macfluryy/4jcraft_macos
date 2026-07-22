@@ -29,7 +29,7 @@ bool WebTile::blocksLight() { return false; }
 bool WebTile::isCubeShaped() { return false; }
 
 int WebTile::getResource(int data, Random* random, int playerBonusLevel) {
-    // @TODO: Explosives currently also give string back. Fix?
+    
     return Item::string->id;
 }
 

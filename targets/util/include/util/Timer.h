@@ -23,7 +23,7 @@ namespace detail {
     return pos == std::string_view::npos ? path : path.substr(pos + 1);
 }
 
-}  // namespace detail
+}  
 
 class Timer final {
 public:
@@ -104,4 +104,4 @@ private:
     Timer timer_;
 };
 
-}  // namespace time_util
+}  

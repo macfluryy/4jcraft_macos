@@ -23,10 +23,10 @@ INetworkPlayer* IPlatformNetworkStub::s_pRemoteHostOverride = nullptr;
 void IPlatformNetworkStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
     const char* pszDescription;
 
-    // 4J Stu - We create a fake socket for every where that we need an INBOUND
-    // queue of game data. Outbound is all handled by QNet so we don't need
-    // that. Therefore each client player has one, and the host has one for each
-    // client player.
+    
+    
+    
+    
     bool createFakeSocket = false;
     bool localPlayer = false;
 
@@ -37,15 +37,15 @@ void IPlatformNetworkStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
         localPlayer = true;
         if (pQNetPlayer->IsHost()) {
             pszDescription = "local host";
-            // 4J Stu - No socket for the localhost as it uses a special
-            // loopback queue
+            
+            
 
             m_machineQNetPrimaryPlayers.push_back(pQNetPlayer);
         } else {
             pszDescription = "local";
 
-            // We need an inbound queue on all local players to receive data
-            // from the host
+            
+            
             createFakeSocket = true;
         }
     } else {
@@ -54,15 +54,15 @@ void IPlatformNetworkStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
         } else {
             pszDescription = "remote";
 
-            // If we are the host, then create a fake socket for every remote
-            // player
+            
+            
             if (m_pIQNet->IsHost()) {
                 createFakeSocket = true;
             }
         }
 
         if (m_pIQNet->IsHost() && !m_bHostChanged) {
-            // Do we already have a primary player for this system?
+            
             bool systemHasPrimaryPlayer = false;
             for (auto it = m_machineQNetPrimaryPlayers.begin();
                  it < m_machineQNetPrimaryPlayers.end(); ++it) {
@@ -88,8 +88,8 @@ void IPlatformNetworkStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
                     (int)pQNetPlayer->HasCamera());
 
     if (m_pIQNet->IsHost()) {
-        // 4J-PB - only the host should do this
-        //		g_NetworkManager.UpdateAndSetGameSessionData();
+        
+        
         SystemFlagAddPlayer(networkPlayer);
     }
 
@@ -107,7 +107,7 @@ void IPlatformNetworkStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
 
         float appTime = app.getAppTime();
 
-        // Only record stats for the primary player here
+        
         m_lastPlayerEventTimeStart = appTime;
     }
 }
@@ -117,7 +117,7 @@ bool IPlatformNetworkStub::Initialise(
     m_pGameNetworkManager = pGameNetworkManager;
     m_flagIndexSize = flagIndexSize;
     g_pPlatformNetworkManager = this;
-    // 4jcraft added this, as it was never called
+    
     m_pIQNet = new IQNet();
     for (int i = 0; i < XUSER_MAX_COUNT; i++) {
         playerChangedCallback[i] = nullptr;
@@ -137,7 +137,7 @@ bool IPlatformNetworkStub::Initialise(
         m_searchResultsCount[i] = 0;
         m_lastSearchStartTime[i] = 0;
 
-        // The results that will be filled in with the current search
+        
         m_pSearchResults[i] = nullptr;
         m_pQoSResult[i] = nullptr;
         m_pCurrentSearchResults[i] = nullptr;
@@ -147,13 +147,13 @@ bool IPlatformNetworkStub::Initialise(
 
     LanDiscovery::Start();
 
-    // Success!
+    
     return true;
 }
 
 void IPlatformNetworkStub::Terminate() {
     LanDiscovery::Stop();
-    // TODO: 4jcraft, no release of ressources
+    
 }
 
 int IPlatformNetworkStub::GetJoiningReadyPercentage() { return 100; }
@@ -165,8 +165,8 @@ bool IPlatformNetworkStub::isSystemPrimaryPlayer(
     return true;
 }
 
-// We call this twice a frame, either side of the render call so is a good place
-// to "tick" things
+
+
 void IPlatformNetworkStub::DoWork() {}
 
 int IPlatformNetworkStub::GetPlayerCount() {
@@ -197,7 +197,7 @@ bool IPlatformNetworkStub::RemoveLocalPlayerByUserIndex(int userIndex) {
 bool IPlatformNetworkStub::IsInStatsEnabledSession() { return true; }
 
 bool IPlatformNetworkStub::SessionHasSpace(
-    unsigned int spaceRequired /*= 1*/) {
+    unsigned int spaceRequired ) {
     return true;
 }
 
@@ -210,14 +210,14 @@ bool IPlatformNetworkStub::LeaveGame(bool bMigrateHost) {
 
     m_bLeavingGame = true;
 
-    // If we are the host wait for the game server to end
+    
     if (m_pIQNet->IsHost() && g_NetworkManager.ServerStoppedValid()) {
         m_pIQNet->EndGame();
         g_NetworkManager.ServerStoppedWait();
         g_NetworkManager.ServerStoppedDestroy();
     } else {
         m_pIQNet->EndGame();
-        _LeaveGame(bMigrateHost, /*bLeaveRoom*/ true);
+        _LeaveGame(bMigrateHost,  true);
         m_bLeavingGame = false;
     }
     return true;
@@ -236,15 +236,15 @@ bool IPlatformNetworkStub::_LeaveGame(bool bMigrateHost,
 
 void IPlatformNetworkStub::HostGame(
     int localUsersMask, bool bOnlineGame, bool bIsPrivate,
-    unsigned char publicSlots /*= MINECRAFT_NET_MAX_PLAYERS*/,
-    unsigned char privateSlots /*= 0*/) {
-    // #ifdef 0
-    // 4J Stu - We probably did this earlier as well, but just to be sure!
+    unsigned char publicSlots ,
+    unsigned char privateSlots ) {
+    
+    
     SetLocalGame(!bOnlineGame);
     SetPrivateGame(bIsPrivate);
     SystemFlagReset();
 
-    // Make sure that the Primary Pad is in by default
+    
     localUsersMask |= GetLocalPlayerMask(g_NetworkManager.GetPrimaryPad());
 
     m_bLeavingGame = false;
@@ -252,12 +252,12 @@ void IPlatformNetworkStub::HostGame(
     m_pIQNet->HostGame();
 
     _HostGame(localUsersMask, publicSlots, privateSlots);
-    // #endif
+    
 }
 
 void IPlatformNetworkStub::_HostGame(
-    int usersMask, unsigned char publicSlots /*= MINECRAFT_NET_MAX_PLAYERS*/,
-    unsigned char privateSlots /*= 0*/) {
+    int usersMask, unsigned char publicSlots ,
+    unsigned char privateSlots ) {
     if (std::getenv("MC_NO_LISTEN") != nullptr) return;
 
     int port = 25565;
@@ -277,8 +277,8 @@ void IPlatformNetworkStub::_HostGame(
                 port, port);
         LanDiscovery::SetBeaconPayload(
             (uint16_t)port, (uint16_t)VER_NETWORK,
-            /*playerCount*/ 1, /*maxPlayers*/ MINECRAFT_NET_MAX_PLAYERS,
-            /*gameMode*/ 0, /*privateGame*/ m_bIsPrivateGame, L"");
+             1,  MINECRAFT_NET_MAX_PLAYERS,
+             0,  m_bIsPrivateGame, L"");
         LanDiscovery::StartHostBeacon();
     }
 }
@@ -317,50 +317,50 @@ void IPlatformNetworkStub::HandleSignInChange() { return; }
 bool IPlatformNetworkStub::_RunNetworkGame() { return true; }
 
 void IPlatformNetworkStub::UpdateAndSetGameSessionData(
-    INetworkPlayer* pNetworkPlayerLeaving /*= nullptr*/) {
-    // 	uint32_t playerCount = m_pIQNet->GetPlayerCount();
-    //
-    // 	if( this->m_bLeavingGame )
-    // 		return;
-    //
-    // 	if( GetHostPlayer() == nullptr )
-    // 		return;
-    //
-    // 	for(unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i)
-    // 	{
-    // 		if( i < playerCount )
-    // 		{
-    // 			INetworkPlayer *pNetworkPlayer = GetPlayerByIndex(i);
-    //
-    // 			// We can call this from NotifyPlayerLeaving but at that
-    // point the player is still considered in the session
-    // if( pNetworkPlayer != pNetworkPlayerLeaving )
-    // 			{
-    // 				m_hostGameSessionData.players[i] =
-    // ((NetworkPlayerXbox *)pNetworkPlayer)->GetUID();
-    //
-    // 				char *temp;
-    // 				temp = (char *)wstringtofilename(
-    // pNetworkPlayer->GetOnlineName() );
-    // 				memcpy(m_hostGameSessionData.szPlayers[i],temp,XUSER_NAME_SIZE);
-    // 			}
-    // 			else
-    // 			{
-    // 				m_hostGameSessionData.players[i] = nullptr;
-    // 				memset(m_hostGameSessionData.szPlayers[i],0,XUSER_NAME_SIZE);
-    // 			}
-    // 		}
-    // 		else
-    // 		{
-    // 			m_hostGameSessionData.players[i] = nullptr;
-    // 			memset(m_hostGameSessionData.szPlayers[i],0,XUSER_NAME_SIZE);
-    // 		}
-    // 	}
-    //
-    // 	m_hostGameSessionData.hostPlayerUID = ((NetworkPlayerXbox
-    // *)GetHostPlayer())->GetQNetPlayer()->GetXuid();
-    // 	m_hostGameSessionData.m_uiGameHostSettings =
-    // app.GetGameHostOption(eGameHostOption_All);
+    INetworkPlayer* pNetworkPlayerLeaving ) {
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 int IPlatformNetworkStub::RemovePlayerOnSocketClosedThreadProc(
@@ -370,11 +370,11 @@ int IPlatformNetworkStub::RemovePlayerOnSocketClosedThreadProc(
     Socket* socket = pNetworkPlayer->GetSocket();
 
     if (socket != nullptr) {
-        // printf("Waiting for socket closed event\n");
+        
         socket->m_socketClosedEvent->waitForSignal(C4JThread::kInfiniteTimeout);
 
-        // printf("Socket closed event has fired\n");
-        //  4J Stu - Clear our reference to this socket
+        
+        
         pNetworkPlayer->SetSocket(nullptr);
         delete socket;
     }
@@ -389,11 +389,11 @@ bool IPlatformNetworkStub::RemoveLocalPlayer(
 
 IPlatformNetworkStub::PlayerFlags::PlayerFlags(
     INetworkPlayer* pNetworkPlayer, unsigned int count) {
-    // 4J Stu - Don't assert, just make it a multiple of 8! This count is
-    // calculated from a load of separate values, and makes tweaking
-    // world/render sizes a pain if we hit an assert here
+    
+    
+    
     count = (count + 8 - 1) & ~(8 - 1);
-    // assert( ( count % 8 ) == 0 );
+    
     this->m_pNetworkPlayer = pNetworkPlayer;
     this->flags = new unsigned char[count / 8];
     memset(this->flags, 0, count / 8);
@@ -401,14 +401,14 @@ IPlatformNetworkStub::PlayerFlags::PlayerFlags(
 }
 IPlatformNetworkStub::PlayerFlags::~PlayerFlags() { delete[] flags; }
 
-// Add a player to the per system flag storage - if we've already got a player
-// from that system, copy its flags over
+
+
 void IPlatformNetworkStub::SystemFlagAddPlayer(
     INetworkPlayer* pNetworkPlayer) {
     PlayerFlags* newPlayerFlags =
         new PlayerFlags(pNetworkPlayer, m_flagIndexSize);
-    // If any of our existing players are on the same system, then copy over
-    // flags from that one
+    
+    
     for (unsigned int i = 0; i < m_playerFlags.size(); i++) {
         if (pNetworkPlayer->IsSameSystem(m_playerFlags[i]->m_pNetworkPlayer)) {
             memcpy(newPlayerFlags->flags, m_playerFlags[i]->flags,
@@ -419,8 +419,8 @@ void IPlatformNetworkStub::SystemFlagAddPlayer(
     m_playerFlags.push_back(newPlayerFlags);
 }
 
-// Remove a player from the per system flag storage - just maintains the
-// m_playerFlags vector without any gaps in it
+
+
 void IPlatformNetworkStub::SystemFlagRemovePlayer(
     INetworkPlayer* pNetworkPlayer) {
     for (unsigned int i = 0; i < m_playerFlags.size(); i++) {
@@ -440,8 +440,8 @@ void IPlatformNetworkStub::SystemFlagReset() {
     m_playerFlags.clear();
 }
 
-// Set a per system flag - this is done by setting the flag on every player that
-// shares that system
+
+
 void IPlatformNetworkStub::SystemFlagSet(INetworkPlayer* pNetworkPlayer,
                                                 int index) {
     if ((index < 0) || (index >= m_flagIndexSize)) return;
@@ -483,9 +483,9 @@ void IPlatformNetworkStub::SystemFlagClear(INetworkPlayer* pNetworkPlayer,
     }
 }
 
-// Get value of a per system flag - can be read from the flags of the passed in
-// player as anything else sent to that system should also have been duplicated
-// here
+
+
+
 bool IPlatformNetworkStub::SystemFlagGet(INetworkPlayer* pNetworkPlayer,
                                                 int index) {
     if ((index < 0) || (index >= m_flagIndexSize)) return false;
@@ -547,11 +547,11 @@ std::vector<FriendSessionInfo*>* IPlatformNetworkStub::GetSessionList(
     for (const auto& s : found) {
         FriendSessionInfo* info = new FriendSessionInfo();
 
-        // Pack {host:port} into sessionId so we can recover it later for
-        // the JoinGame() path. High 16 bits = port, low 48 bits = packed
-        // IPv4 ASCII (we only get IPv4 from inet_ntop on a v4 socket).
-        // The actual mapping is opaque to the UI; we just need a value
-        // that round-trips.
+        
+        
+        
+        
+        
         SessionID id = 0;
         sockaddr_in tmp{};
         if (inet_pton(AF_INET, s.host.c_str(), &tmp.sin_addr) == 1) {
@@ -562,8 +562,8 @@ std::vector<FriendSessionInfo*>* IPlatformNetworkStub::GetSessionList(
         }
         info->sessionId = id;
 
-        // displayLabel is "WorldName (host:port)  N/M" - leak-free since
-        // FriendSessionInfo's destructor deletes it.
+        
+        
         wchar_t buf[160] = {0};
         std::wstring worldName =
             s.worldName.empty() ? std::wstring(L"4jcraft") : s.worldName;

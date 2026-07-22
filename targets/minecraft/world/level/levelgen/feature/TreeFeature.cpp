@@ -32,8 +32,8 @@ bool TreeFeature::place(Level* level, Random* random, int x, int y, int z) {
     bool free = true;
     if (y < 1 || y + treeHeight + 1 > Level::maxBuildHeight) return false;
 
-    // 4J Stu Added to stop tree features generating areas previously place by
-    // game rule generation
+    
+    
     if (app.getLevelGenerationOptions() != nullptr) {
         LevelGenerationOptions* levelGenOptions =
             app.getLevelGenerationOptions();
@@ -41,8 +41,8 @@ bool TreeFeature::place(Level* level, Random* random, int x, int y, int z) {
             x - 2, y - 1, z - 2, x + 2, y + treeHeight, z + 2);
 
         if (intersects) {
-            // app.DebugPrintf("Skipping reeds feature generation as it overlaps
-            // a game rule structure\n");
+            
+            
             return false;
         }
     }
@@ -77,8 +77,8 @@ bool TreeFeature::place(Level* level, Random* random, int x, int y, int z) {
 
     int grassHeight = 3;
     int extraWidth = 0;
-    // 4J Stu - Generate leaves from the top down to stop having to recalc
-    // heightmaps
+    
+    
     for (int yy = y + treeHeight; yy >= y - grassHeight + treeHeight; yy--) {
         int yo = yy - (y + treeHeight);
         int offs = extraWidth + 1 - yo / 2;
@@ -155,7 +155,7 @@ bool TreeFeature::place(Level* level, Random* random, int x, int y, int z) {
             }
         }
 
-        // also chance for cocoa plants around stem
+        
         if (random->nextInt(5) == 0 && treeHeight > 5) {
             for (int rows = 0; rows < 2; rows++) {
                 for (int dir = 0; dir < 4; dir++) {

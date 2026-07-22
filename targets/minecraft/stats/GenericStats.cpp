@@ -401,31 +401,31 @@ Stat* GenericStats::lionTamer() {
 }
 
 std::vector<uint8_t> GenericStats::getParam_walkOneM(int distance) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_swimOneM(int distance) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_fallOneM(int distance) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_climbOneM(int distance) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_minecartOneM(int distance) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_boatOneM(int distance) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_pigOneM(int distance) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_cowsMilked() {
@@ -434,22 +434,22 @@ std::vector<uint8_t> GenericStats::getParam_cowsMilked() {
 
 std::vector<uint8_t> GenericStats::getParam_blocksPlaced(int id, int data,
                                                          int count) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_blocksMined(int id, int data,
                                                         int count) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_itemsCollected(int id, int aux,
                                                            int count) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_itemsCrafted(int id, int aux,
                                                          int count) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_itemsSmelted(int id, int aux,
@@ -459,7 +459,7 @@ std::vector<uint8_t> GenericStats::getParam_itemsSmelted(int id, int aux,
 
 std::vector<uint8_t> GenericStats::getParam_itemsUsed(
     std::shared_ptr<Player> plr, std::shared_ptr<ItemInstance> itm) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_itemsBought(int id, int aux,
@@ -470,45 +470,45 @@ std::vector<uint8_t> GenericStats::getParam_itemsBought(int id, int aux,
 std::vector<uint8_t> GenericStats::getParam_mobKill(std::shared_ptr<Player> plr,
                                                     std::shared_ptr<Mob> mob,
                                                     DamageSource* dmgSrc) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_breedEntity(eINSTANCEOF entityId) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_tamedEntity(eINSTANCEOF entityId) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_curedEntity(eINSTANCEOF entityId) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_craftedEntity(
     eINSTANCEOF entityId) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_shearedEntity(
     eINSTANCEOF entityId) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_time(int timediff) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_changedDimension(int from, int to) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_enteredBiome(int biomeId) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_achievement(eAward id) {
-    return getParam_noArgs();  // Really just a count on most platforms.
+    return getParam_noArgs();  
 }
 
 std::vector<uint8_t> GenericStats::getParam_onARail(int distance) {
@@ -541,7 +541,7 @@ std::vector<uint8_t> GenericStats::getParam_musicToMyEars(int recordId) {
 }
 
 std::vector<uint8_t> GenericStats::getParam_noArgs() {
-    return std::vector<uint8_t>();  // TODO
+    return std::vector<uint8_t>();  
 }
 
 std::vector<uint8_t> GenericStats::param_walk(int distance) {

@@ -13,7 +13,7 @@
 #include "minecraft/client/Lighting.h"
 
 AchievementPopup::AchievementPopup(Minecraft* mc) {
-    // 4J - added initialisers
+    
     width = 0;
     height = 0;
     ach = nullptr;
@@ -46,7 +46,7 @@ void AchievementPopup::prepareWindow() {
         int fbw, fbh;
         RenderManager.GetFramebufferSize(fbw, fbh);
         glViewport(0, 0, fbw, fbh);
-    }  // just future proofing
+    }  
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glMatrixMode(GL_MODELVIEW);
@@ -119,15 +119,15 @@ void AchievementPopup::render() {
 
     blit(xx, yy, 96, 202, 160, 32);
 
-    // if (isHelper)
-    // {
-    //     mc->font->drawWordWrap(desc, xx + 30, yy + 7, 120, 0xffffffff);
-    // }
-    // else
-    // {
+    
+    
+    
+    
+    
+    
     mc->font->draw(title, xx + 30, yy + 7, 0xffffff00);
     mc->font->draw(desc, xx + 30, yy + 18, 0xffffffff);
-    // }
+    
 
     glPushMatrix();
     glRotatef(180, 1, 0, 0);

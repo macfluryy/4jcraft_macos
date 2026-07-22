@@ -10,23 +10,23 @@
 class HtmlString;
 class ItemInstance;
 
-// Uncomment to enable tap input detection to jump 1 slot. Doesn't work
-// particularly well yet, and I feel the system does not need it. Would probably
-// be required if we decide to slow down the pointer movement. 4J Stu - There
-// was a request to be able to navigate the scenes with the dpad, so I have used
-// much of the TAP_DETECTION code as it worked well for that situation. This
-// #define should still stop the same things happening when using the stick
-// though when not defined
+
+
+
+
+
+
+
 #define TAP_DETECTION
 
-// Uncomment to enable acceleration on pointer input.
-// #define USE_POINTER_ACCEL
 
-#define POINTER_INPUT_TIMER_ID (0)    // Arbitrary timer ID.
-#define POINTER_SPEED_FACTOR (13.0f)  // Speed of pointer.
-// #define POINTER_PANEL_OVER_REACH	(42.0f)		// Amount beyond edge of
-// panel which pointer can go over to drop items. - comes from the pointer size
-// in the scene
+
+
+#define POINTER_INPUT_TIMER_ID (0)    
+#define POINTER_SPEED_FACTOR (13.0f)  
+
+
+
 
 #define MAX_INPUT_TICKS_FOR_SCALING (7)
 #define MAX_INPUT_TICKS_FOR_TAPPING (15)
@@ -36,8 +36,8 @@ class Slot;
 
 class IUIScene_AbstractContainerMenu {
 protected:
-    // Sections of this scene containing items selectable by the pointer.
-    // 4J Stu - Always make the Using section the first one
+    
+    
     enum ESceneSection {
         eSectionNone = -1,
         eSectionContainerUsing = 0,
@@ -138,18 +138,18 @@ protected:
 
     UIVec2D m_pointerPos;
 
-    // Offset from pointer image top left to centre (we use the centre as the
-    // actual pointer).
+    
+    
     float m_fPointerImageOffsetX;
     float m_fPointerImageOffsetY;
 
-    // Min and max extents for the pointer.
+    
     float m_fPointerMinX;
     float m_fPointerMaxX;
     float m_fPointerMinY;
     float m_fPointerMaxY;
 
-    // Min and max extents of the panel.
+    
     float m_fPanelMinX;
     float m_fPanelMaxX;
     float m_fPanelMinY;
@@ -157,8 +157,8 @@ protected:
 
     int m_iConsectiveInputTicks;
 
-    // Used for detecting quick "taps" in a direction, should jump cursor to
-    // next slot.
+    
+    
     enum ETapState {
         eTapStateNoInput = 0,
         eTapStateUp,
@@ -174,21 +174,21 @@ protected:
     int m_iCurrSlotX;
     int m_iCurrSlotY;
 
-    // ENum indexes of the first section for this scene, and 1+the last section
+    
     ESceneSection m_eFirstSection, m_eMaxSection;
 
-    // 4J - WESTY  - Added for pointer prototype.
-    // Current tooltip settings.
+    
+    
     EToolTipItem m_aeToolTipSettings[eToolTipNumButtons];
 
-    // 4J - WESTY  - Added for pointer prototype.
-    // Indicates if pointer is outside UI window (used to drop items).
+    
+    
     bool m_bPointerOutsideMenu;
     Slot* m_lastPointerLabelSlot;
 
     bool m_bSplitscreen;
-    bool m_bNavigateBack;  // should we exit the xuiscenes or just navigate back
-                           // on exit?
+    bool m_bNavigateBack;  
+                           
 
     virtual bool IsSectionSlotList(ESceneSection eSection) {
         return eSection != eSectionNone;
@@ -215,11 +215,11 @@ protected:
     ETapState GetTapInputType(float fInputX, float fInputY);
 #endif
 
-    // Current tooltip settings.
+    
     void SetToolTip(EToolTipButton eButton, EToolTipItem eItem);
     void UpdateTooltips();
 
-    // 4J - WESTY  - Added for pointer prototype.
+    
     void SetPointerOutsideMenu(bool bOutside) {
         m_bPointerOutsideMenu = bOutside;
     }

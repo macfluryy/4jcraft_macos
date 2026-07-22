@@ -14,13 +14,13 @@ EntityEventPacket::EntityEventPacket(int entityId, uint8_t eventId) {
     this->eventId = eventId;
 }
 
-void EntityEventPacket::read(DataInputStream* dis)  // throws IOException
+void EntityEventPacket::read(DataInputStream* dis)  
 {
     entityId = dis->readInt();
     eventId = dis->readByte();
 }
 
-void EntityEventPacket::write(DataOutputStream* dos)  // throws IOException
+void EntityEventPacket::write(DataOutputStream* dos)  
 {
     dos->writeInt(entityId);
     dos->writeByte(eventId);

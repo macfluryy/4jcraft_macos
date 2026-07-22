@@ -22,7 +22,7 @@ public:
     MerchantRecipe* getRecipeFor(std::shared_ptr<ItemInstance> buyA,
                                  std::shared_ptr<ItemInstance> buyB,
                                  int selectionHint);
-    bool addIfNewOrBetter(MerchantRecipe* recipe);  // 4J Added bool return
+    bool addIfNewOrBetter(MerchantRecipe* recipe);  
     MerchantRecipe* getMatchingRecipeFor(std::shared_ptr<ItemInstance> buy,
                                          std::shared_ptr<ItemInstance> buyB,
                                          std::shared_ptr<ItemInstance> sell);

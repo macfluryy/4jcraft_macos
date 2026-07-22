@@ -13,10 +13,10 @@ class TutorialConstraint;
 
 CraftTask::CraftTask(
     int itemId, int auxValue, int quantity, Tutorial* tutorial,
-    int descriptionId, bool enablePreCompletion /*= true*/,
-    std::vector<TutorialConstraint*>* inConstraints /*= nullptr*/,
-    bool bShowMinimumTime /*=false*/, bool bAllowFade /*=true*/,
-    bool m_bTaskReminders /*=true*/)
+    int descriptionId, bool enablePreCompletion ,
+    std::vector<TutorialConstraint*>* inConstraints ,
+    bool bShowMinimumTime , bool bAllowFade ,
+    bool m_bTaskReminders )
     : TutorialTask(tutorial, descriptionId, enablePreCompletion, inConstraints,
                    bShowMinimumTime, bAllowFade, m_bTaskReminders),
       m_quantity(quantity),
@@ -30,10 +30,10 @@ CraftTask::CraftTask(
 
 CraftTask::CraftTask(
     int* items, int* auxValues, int numItems, int quantity, Tutorial* tutorial,
-    int descriptionId, bool enablePreCompletion /*= true*/,
-    std::vector<TutorialConstraint*>* inConstraints /*= nullptr*/,
-    bool bShowMinimumTime /*=false*/, bool bAllowFade /*=true*/,
-    bool m_bTaskReminders /*=true*/)
+    int descriptionId, bool enablePreCompletion ,
+    std::vector<TutorialConstraint*>* inConstraints ,
+    bool bShowMinimumTime , bool bAllowFade ,
+    bool m_bTaskReminders )
     : TutorialTask(tutorial, descriptionId, enablePreCompletion, inConstraints,
                    bShowMinimumTime, bAllowFade, m_bTaskReminders),
       m_quantity(quantity),

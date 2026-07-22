@@ -1,5 +1,5 @@
 #pragma once
-// using namespace std;
+
 #include <functional>
 #include <vector>
 #if !defined(__linux__) && !defined(__APPLE__)

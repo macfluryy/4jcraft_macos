@@ -126,7 +126,7 @@ void MerchantContainer::updateSellItem() {
                 setItem(MerchantMenu::RESULT_SLOT,
                         recipeFor->getSellItem()->copy());
             } else if (buyItem2 != nullptr) {
-                // try to switch
+                
                 recipeFor =
                     offers->getRecipeFor(buyItem2, buyItem1, selectionHint);
                 if (recipeFor != nullptr && !recipeFor->isDeprecated()) {

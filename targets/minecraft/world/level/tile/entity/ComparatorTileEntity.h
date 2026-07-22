@@ -8,7 +8,7 @@ public:
     eINSTANCEOF GetType() { return eTYPE_COMPARATORTILEENTITY; }
     static TileEntity* create() { return new ComparatorTileEntity(); }
 
-    // 4J Added
+    
     virtual std::shared_ptr<TileEntity> clone();
 
 private:

@@ -9,9 +9,9 @@
 #include "minecraft/world/level/tile/Tile.h"
 
 BeachBiome::BeachBiome(int id) : Biome(id) {
-    // remove default mob spawn settings
+    
     friendlies.clear();
-    friendlies_chicken.clear();  // 4J added
+    friendlies_chicken.clear();  
     topMaterial = (uint8_t)Tile::sand_Id;
     material = (uint8_t)Tile::sand_Id;
 

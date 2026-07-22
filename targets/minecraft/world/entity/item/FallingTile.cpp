@@ -19,10 +19,10 @@
 #include "nbt/CompoundTag.h"
 #include "nbt/Tag.h"
 
-// 4J - added for common ctor code
+
 void FallingTile::_init() {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     tile = 0;
@@ -36,10 +36,10 @@ void FallingTile::_init() {
     fallDamageAmount = 2;
     tileData = nullptr;
 
-    // 4J Added so that client-side falling tiles can fall through blocks
-    // This fixes a bug on the host where the tile update from the server comes
-    // in before the client-side falling tile has reached that level, causing it
-    // to stop at one block higher.
+    
+    
+    
+    
     m_ignoreVerticalCollisions = level->isClientSide;
 }
 
@@ -65,8 +65,8 @@ FallingTile::FallingTile(Level* level, double x, double y, double z, int tile,
     yo = y;
     zo = z;
 
-    // 4J added - without this newly created falling tiles weren't interpolating
-    // their render positions correctly
+    
+    
     xOld = x;
     yOld = y;
     zOld = z;
@@ -177,14 +177,14 @@ void FallingTile::causeFallDamage(float distance) {
     if (hurtEntities) {
         int dmg = Mth::ceil(distance - 1);
         if (dmg > 0) {
-            // Caller-owned result: hurting entities can no longer invalidate
-            // this iteration (getEntities fills our local vector).
+            
+            
             std::vector<std::shared_ptr<Entity> > entities;
             level->getEntities(shared_from_this(), &bb, entities);
             DamageSource* source = tile == Tile::anvil_Id
                                        ? DamageSource::anvil
                                        : DamageSource::fallingBlock;
-            // for (Entity entity : entities)
+            
             for (auto it = entities.begin(); it != entities.end(); ++it) {
                 (*it)->hurt(source, std::min(Mth::floor(dmg * fallDamageAmount),
                                              fallDamageMax));

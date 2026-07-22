@@ -47,7 +47,7 @@ public:
 
     virtual ~IPlatformRenderer() = default;
 
-    // Lifecycle
+    
     virtual void Initialise() = 0;
     virtual void InitialiseContext() = 0;
     virtual void Tick() = 0;
@@ -60,7 +60,7 @@ public:
     [[nodiscard]] virtual bool Suspended() = 0;
     virtual void Resume() = 0;
 
-    // Window
+    
     virtual void SetWindowSize(int w, int h) = 0;
     virtual void SetFullscreen(bool fs) = 0;
     [[nodiscard]] virtual bool IsWidescreen() = 0;
@@ -70,7 +70,7 @@ public:
     virtual void Close() = 0;
     virtual void UpdateGamma(unsigned short usGamma) = 0;
 
-    // Matrix stack
+    
     virtual void MatrixMode(int type) = 0;
     virtual void MatrixSetIdentity() = 0;
     virtual void MatrixTranslate(float x, float y, float z) = 0;
@@ -86,12 +86,12 @@ public:
     [[nodiscard]] virtual const float* MatrixGet(int type) = 0;
     virtual void Set_matrixDirty() = 0;
 
-    // Draw calls
+    
     virtual void DrawVertices(ePrimitiveType PrimitiveType, int count,
                               void* dataIn, eVertexType vType,
                               ePixelShaderType psType) = 0;
 
-    // Command buffers
+    
     virtual void CBuffLockStaticCreations() = 0;
     [[nodiscard]] virtual int CBuffCreate(int count) = 0;
     virtual void CBuffDelete(int first, int count) = 0;
@@ -104,7 +104,7 @@ public:
     virtual void CBuffDeferredModeStart() = 0;
     virtual void CBuffDeferredModeEnd() = 0;
 
-    // Textures
+    
     [[nodiscard]] virtual int TextureCreate() = 0;
     virtual void TextureFree(int idx) = 0;
     virtual void TextureBind(int idx) = 0;
@@ -138,7 +138,7 @@ public:
     virtual void TextureGetStats() = 0;
     [[nodiscard]] virtual void* TextureGetTexture(int idx) = 0;
 
-    // Render state
+    
     virtual void StateSetColour(float r, float g, float b, float a) = 0;
     virtual void StateSetDepthMask(bool enable) = 0;
     virtual void StateSetBlendEnable(bool enable) = 0;
@@ -155,7 +155,7 @@ public:
     virtual void StateSetAlphaTestEnable(bool enable) = 0;
     virtual void StateSetDepthSlopeAndBias(float slope, float bias) = 0;
 
-    // Fog
+    
     virtual void StateSetFogEnable(bool enable) = 0;
     virtual void StateSetFogMode(int mode) = 0;
     virtual void StateSetFogNearDistance(float dist) = 0;
@@ -163,7 +163,7 @@ public:
     virtual void StateSetFogDensity(float density) = 0;
     virtual void StateSetFogColour(float red, float green, float blue) = 0;
 
-    // Lighting
+    
     virtual void StateSetLightingEnable(bool enable) = 0;
     virtual void StateSetVertexTextureUV(float u, float v) = 0;
     virtual void StateSetLightColour(int light, float red, float green,
@@ -174,7 +174,7 @@ public:
                                         float z) = 0;
     virtual void StateSetLightEnable(int light, bool enable) = 0;
 
-    // Viewport & clipping
+    
     virtual void StateSetViewport(eViewportType viewportType) = 0;
     virtual void StateSetEnableViewportClipPlanes(bool enable) = 0;
     virtual void StateSetTexGenCol(int col, float x, float y, float z, float w,
@@ -186,22 +186,22 @@ public:
     virtual void StateSetTextureEnable(bool enable) = 0;
     virtual void StateSetActiveTexture(int tex) = 0;
 
-    // Chunks
+    
     virtual void SetChunkOffset(float x, float y, float z) = 0;
 
-    // Occlusion
+    
     virtual void BeginConditionalSurvey(int identifier) = 0;
     virtual void EndConditionalSurvey() = 0;
     virtual void BeginConditionalRendering(int identifier) = 0;
     virtual void EndConditionalRendering() = 0;
 
-    // Screenshots
+    
     virtual void DoScreenGrabOnNextPresent() = 0;
     virtual void CaptureThumbnail(ImageFileBuffer* pngOut) = 0;
     virtual void CaptureScreen(ImageFileBuffer* jpgOut,
                                XSOCIAL_PREVIEWIMAGE* previewOut) = 0;
 
-    // Events
+    
     virtual void BeginEvent(const wchar_t* eventName) = 0;
     virtual void EndEvent() = 0;
 };

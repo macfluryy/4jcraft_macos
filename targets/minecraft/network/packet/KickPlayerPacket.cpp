@@ -14,12 +14,12 @@ void KickPlayerPacket::handle(PacketListener* listener) {
     listener->handleKickPlayer(shared_from_this());
 }
 
-void KickPlayerPacket::read(DataInputStream* dis)  // throws IOException
+void KickPlayerPacket::read(DataInputStream* dis)  
 {
     m_networkSmallId = dis->readByte();
 }
 
-void KickPlayerPacket::write(DataOutputStream* dos)  // throws IOException
+void KickPlayerPacket::write(DataOutputStream* dos)  
 {
     dos->writeByte((std::uint8_t)m_networkSmallId);
 }

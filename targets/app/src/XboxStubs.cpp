@@ -78,7 +78,7 @@ void IQNet::HostGame() {
 }
 void IQNet::EndGame() {
     _bQNetStubGameRunning = false;
-    _bQNetStubIsHost = true;  // reset for next session
+    _bQNetStubIsHost = true;  
 }
 
 uint32_t XUserGetSigninInfo(uint32_t dwUserIndex, uint32_t dwFlags,
@@ -97,7 +97,7 @@ uint32_t XUserAreUsersFriends(uint32_t dwUserIndex, PPlayerUID pXuids,
     return 0;
 }
 
-// #if 1
+
 uint32_t XGetLanguage() { return 1; }
 uint32_t XGetLocale() { return 0; }
 uint32_t XEnableGuestSignin(bool fEnable) { return 0; }

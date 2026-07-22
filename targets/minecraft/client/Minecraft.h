@@ -5,6 +5,7 @@
 #include <mutex>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "platform/PlatformTypes.h"
 #include "platform/C4JThread.h"
@@ -62,15 +63,33 @@ private:
     static ResourceLocation ALT_FONT_LOCATION;
 
 public:
+    
+    
+    
+    struct JavaTabEntry {
+        std::wstring name;
+        int ping = 0;
+    };
+    std::unordered_map<std::string, JavaTabEntry> m_javaTabList;
+    std::vector<std::string> m_javaTabOrder;
+
+    void javaTabAdd(const std::string& uuid, const std::wstring& name, int ping);
+    void javaTabRemove(const std::string& uuid);
+    void javaTabClear();
+    
+    bool isJavaTabListed(const std::string& uuid) const {
+        return !uuid.empty() && m_javaTabList.count(uuid) != 0;
+    }
+
     static const std::wstring VERSION_STRING;
     Minecraft(Component* mouseComponent, Canvas* parent,
               MinecraftApplet* minecraftApplet, int width, int height,
               bool fullscreen);
     void init();
 
-    // 4J - removed
-    //    void crash(CrashReport crash);
-    //    public abstract void onCrash(CrashReport crash);
+    
+    
+    
 
 private:
     static Minecraft* m_instance;
@@ -89,18 +108,18 @@ private:
 
 public:
     int width, height;
-    int width_phys, height_phys;  // 4J - added
-    //    private OpenGLCapabilities openGLCapabilities;
+    int width_phys, height_phys;  
+    
 
 private:
     Timer* timer;
     bool reloadTextures;
 
 public:
-    Level* oldLevel;  // 4J Stu added to keep a handle on an old level so we can
-                      // delete it
-    // void* m_hPlayerRespawned; // 4J Added so we can wait in menus until it
-    // is done (for async in multiplayer)
+    Level* oldLevel;  
+                      
+    
+    
 public:
     MultiPlayerLevel* level;
     LevelRenderer* levelRenderer;
@@ -114,17 +133,17 @@ public:
     MultiPlayerGameMode* localgameModes[XUSER_MAX_COUNT];
     int localPlayerIdx;
     ItemInHandRenderer* localitemInHandRenderers[XUSER_MAX_COUNT];
-    // 4J-PB - so we can have debugoptions in the server
+    
     unsigned int uiDebugOptionsA[XUSER_MAX_COUNT];
 
-    // 4J Stu - Added these so that we can show a Xui scene while connecting
+    
     bool m_connectionFailed[XUSER_MAX_COUNT];
     DisconnectPacket::eDisconnectReason
         m_connectionFailedReason[XUSER_MAX_COUNT];
     ClientConnection* m_pendingLocalConnections[XUSER_MAX_COUNT];
 
     bool addLocalPlayer(
-        int idx);  // Re-arrange the screen and start the connection
+        int idx);  
     void addPendingLocalConnection(int idx, ClientConnection* connection);
     void connectionDisconnected(int idx,
                                 DisconnectPacket::eDisconnectReason reason) {
@@ -142,7 +161,7 @@ public:
     void removeLocalPlayerIdx(int idx);
     void storeExtraLocalPlayer(int idx);
     void updatePlayerViewportAssignments();
-    int unoccupiedQuadrant;  // 4J - added
+    int unoccupiedQuadrant;  
 
     std::shared_ptr<LivingEntity> cameraTargetPlayer;
     std::shared_ptr<LivingEntity> crosshairPickMob;
@@ -152,7 +171,7 @@ public:
     Canvas* parent;
     bool appletMode;
 
-    // 4J - per player ?
+    
     volatile bool pause;
     volatile bool exitingWorldRightNow;
 
@@ -166,9 +185,9 @@ private:
     BackgroundDownloader* bgLoader;
 
     int ticks;
-    // 4J-PB - moved to per player
+    
 
-    // int missTime;
+    
 
     int orgWidth, orgHeight;
 
@@ -177,7 +196,7 @@ public:
 
 public:
     Gui* gui;
-    // 4J - move to the per player structure?
+    
     bool noRender;
 
     HumanoidModel* humanoidModel;
@@ -210,7 +229,7 @@ private:
     int rightClickDelay;
 
 public:
-    // 4J- this should really be in localplayer
+    
     StatsCounter* stats[4];
 
 private:
@@ -247,60 +266,60 @@ public:
     volatile bool running;
     std::wstring fpsString;
     void run();
-    // 4J-PB - split the run into 3 parts so we can run it from our xbox game
-    // loop
+    
+    
     static Minecraft* GetInstance();
     void run_middle();
     void run_end();
 
     void emergencySave();
 
-    // 4J - removed
-    // bool wasDown ;
+    
+    
 private:
-    //  void checkScreenshot();     // 4J - removed
-    //    String grabHugeScreenshot(File workDir2, int width, int height, int
-    //    ssWidth, int ssHeight);   // 4J - removed
+    
+    
+    
 
-    // 4J - per player thing?
+    
     int64_t lastTimer;
 
     void renderFpsMeter(int64_t tickTime);
 
 public:
     void stop();
-    // 4J removed
-    //    bool mouseGrabbed;
-    //    void grabMouse();
-    //    void releaseMouse();
-    // 4J-PB - moved these into localplayer
-    // void handleMouseDown(int button, bool down);
-    // void handleMouseClick(int button);
+    
+    
+    
+    
+    
+    
+    
 
     void pauseGame();
-    //    void toggleFullScreen();  // 4J - removed
+    
     bool pollResize();
 
 private:
     void resize(int width, int height);
 
 public:
-    // 4J - Moved to per player
-    // bool isRaining ;
+    
+    
 
-    // 4J - Moved to per player
-    // int64_t lastTickTime;
+    
+    
 
 private:
-    // 4J- per player?
+    
     int recheckPlayerIn;
     void verify();
 
 public:
-    // 4J - added bFirst parameter, which is true for the first active viewport
-    // in splitscreen 4J - added bUpdateTextures, which is true if the actual
-    // renderer textures are to be updated - this will be true for the last time
-    // this tick runs with bFirst true
+    
+    
+    
+    
     void tick(bool bFirst, bool bUpdateTextures);
 
 private:
@@ -311,24 +330,24 @@ public:
     void selectLevel(ConsoleSaveFile* saveFile, const std::wstring& levelId,
                      const std::wstring& levelName,
                      LevelSettings* levelSettings);
-    // void toggleDimension(int targetDimension);
+    
     bool saveSlot(int slot, const std::wstring& name);
     bool loadSlot(const std::wstring& userName, int slot);
     void releaseLevel(int message);
-    // 4J Stu - Added the doForceStatsSave param
-    // void setLevel(Level *level, bool doForceStatsSave = true);
-    // void setLevel(Level *level, const std::wstring& message, bool
-    // doForceStatsSave = true);
+    
+    
+    
+    
     void setLevel(MultiPlayerLevel* level, int message = -1,
                   std::shared_ptr<Player> forceInsertPlayer = nullptr,
                   bool doForceStatsSave = true,
                   bool bPrimaryPlayerSignedOut = false);
-    // 4J-PB - added to force in the 'other' level when the main player creates
-    // the level at game load time
+    
+    
     void forceaddLevel(MultiPlayerLevel* level);
-    void prepareLevel(int title);  // 4J - changed to public
+    void prepareLevel(int title);  
     void fileDownloaded(const std::wstring& name, File* file);
-    //  OpenGLCapabilities getOpenGLCapabilities(); // 4J - removed
+    
 
     std::wstring gatherStats1();
     std::wstring gatherStats2();
@@ -340,7 +359,7 @@ public:
     static void startAndConnectTo(const std::wstring& name,
                                   const std::wstring& sid,
                                   const std::wstring& url);
-    ClientConnection* getConnection(int iPad);  // 4J Stu added iPad param
+    ClientConnection* getConnection(int iPad);  
     static void main();
     static bool renderNames();
     static bool useFancyGraphics();
@@ -353,17 +372,17 @@ public:
     static int64_t currentTimeMillis();
 
     static int InGame_SignInReturned(void* pParam, bool bContinue, int iPad);
-    // 4J-PB
+    
     Screen* getScreen();
 
-    // 4J Stu
+    
     void forceStatsSave(int idx);
 
     std::recursive_mutex m_setLevelCS;
 
 private:
-    // A bit field that store whether a particular quadrant is in the full
-    // tutorial or not
+    
+    
     uint8_t m_inFullTutorialBits;
 
 public:
@@ -371,20 +390,20 @@ public:
     void playerStartedTutorial(int iPad);
     void playerLeftTutorial(int iPad);
 
-    // 4J Added
+    
     MultiPlayerLevel* getLevel(int dimension);
 
     void tickAllConnections();
 
-    Level* animateTickLevel;  // 4J added
+    Level* animateTickLevel;  
 
-    // 4J - When a client requests a texture, it should add it to here while we
-    // are waiting for it
+    
+    
     std::vector<std::wstring> m_pendingTextureRequests;
     std::vector<std::wstring>
-        m_pendingGeometryRequests;  // additional skin box geometry
+        m_pendingGeometryRequests;  
 
-    // 4J Added
+    
     bool addPendingClientTextureRequest(const std::wstring& textureName);
     void handleClientTextureReceived(const std::wstring& textureName);
     void clearPendingClientTextureRequests() {

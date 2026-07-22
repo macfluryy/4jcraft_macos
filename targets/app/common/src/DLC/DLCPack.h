@@ -1,5 +1,5 @@
 #pragma once
-// using namespace std;
+
 #include <cstdint>
 #include <string>
 #include <unordered_map>
@@ -31,8 +31,8 @@ private:
     std::uint32_t m_packVersion;
 
     std::uint8_t*
-        m_data;  // This pointer is for all the data used for this pack, so
-                 // deleting it invalidates ALL of it's children.
+        m_data;  
+                 
 public:
     DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask);
     ~DLCPack();

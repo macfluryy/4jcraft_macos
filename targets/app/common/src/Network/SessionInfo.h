@@ -2,15 +2,15 @@
 
 #include "app/include/NetTypes.h"
 
-// A struct that we store in the QoS data when we are hosting the session. Max
-// size 1020 bytes.
-typedef struct _GameSessionData {
-    unsigned short netVersion;          //   2 bytes
-    unsigned int m_uiGameHostSettings;  //   4 bytes
-    unsigned int texturePackParentId;   //   4 bytes
-    unsigned char subTexturePackId;     //   1 byte
 
-    bool isReadyToJoin;  //   1 byte
+
+typedef struct _GameSessionData {
+    unsigned short netVersion;          
+    unsigned int m_uiGameHostSettings;  
+    unsigned int texturePackParentId;   
+    unsigned char subTexturePackId;     
+
+    bool isReadyToJoin;  
 
     _GameSessionData() {
         netVersion = 0;

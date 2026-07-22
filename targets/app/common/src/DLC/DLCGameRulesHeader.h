@@ -10,7 +10,7 @@ class StringTable;
 
 class DLCGameRulesHeader : public DLCGameRules, public JustGrSource {
 private:
-    // GR-Header
+    
     std::uint8_t* m_pbData;
     std::uint32_t m_dataBytes;
 

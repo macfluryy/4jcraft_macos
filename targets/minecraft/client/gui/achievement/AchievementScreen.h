@@ -12,7 +12,7 @@ private:
     static const int BIGMAP_WIDTH = 224;
     static const int BIGMAP_HEIGHT = 155;
 
-    // number of pixels per achievement
+    
     static const int ACHIEVEMENT_COORD_SCALE = 24;
     static const int EDGE_VALUE_X =
         Achievements::ACHIEVEMENT_WIDTH_POSITION * ACHIEVEMENT_COORD_SCALE;

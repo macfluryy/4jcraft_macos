@@ -6,7 +6,7 @@
 Random* GuiParticle::random = new Random();
 
 GuiParticle::GuiParticle(double x, double y, double xa, double ya) {
-    // 4J - added initialisation block
+    
     removed = false;
     life = 0;
     a = 1;

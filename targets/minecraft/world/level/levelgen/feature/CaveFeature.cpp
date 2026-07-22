@@ -44,8 +44,8 @@ bool CaveFeature::place(Level* level, Random* random, int x, int y, int z) {
         double hr =
             (Mth::sin(d / 16.0f * std::numbers::pi) * radius + 1) * ss + 1;
 
-        // 4J Stu Added to stop cave features generating areas previously place
-        // by game rule generation
+        
+        
         if (app.getLevelGenerationOptions() != nullptr) {
             LevelGenerationOptions* levelGenOptions =
                 app.getLevelGenerationOptions();
@@ -53,8 +53,8 @@ bool CaveFeature::place(Level* level, Random* random, int x, int y, int z) {
                 (xx - r / 2), (yy - hr / 2), (zz - r / 2), (xx + r / 2),
                 (yy + hr / 2), (zz + r / 2));
             if (intersects) {
-                // app.DebugPrintf("Skipping cave feature generation as it
-                // overlaps a game rule structure\n");
+                
+                
                 return false;
             }
         }
@@ -89,13 +89,13 @@ bool CaveFeature::place(Level* level, Random* random, int x, int y, int z) {
 
     auto itEnd = toRemove.end();
     for (auto it = toRemove.begin(); it != itEnd; it++) {
-        TilePos* p = *it;  // toRemove[i];
+        TilePos* p = *it;  
         level->setTileAndData(p->x, p->y, p->z, 0, 0, Tile::UPDATE_CLIENTS);
     }
 
     itEnd = toRemove.end();
     for (auto it = toRemove.begin(); it != itEnd; it++) {
-        TilePos* p = *it;  // toRemove[i];
+        TilePos* p = *it;  
         if (level->getTile(p->x, p->y - 1, p->z) == Tile::dirt_Id &&
             level->getDaytimeRawBrightness(p->x, p->y, p->z) > 8) {
             level->setTileAndData(p->x, p->y - 1, p->z, Tile::grass_Id, 0,

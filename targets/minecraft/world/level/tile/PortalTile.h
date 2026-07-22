@@ -15,7 +15,7 @@ public:
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
-            TileEntity>());  // 4J added forceData, forceEntity param
+            TileEntity>());  
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool isCubeShaped();
     virtual bool trySpawnPortal(Level* level, int x, int y, int z,
@@ -30,5 +30,5 @@ public:
     virtual void animateTick(Level* level, int xt, int yt, int zt,
                              Random* random);
     virtual int cloneTileId(Level* level, int x, int y, int z);
-    virtual bool mayPick();  // 4J Added override
+    virtual bool mayPick();  
 };

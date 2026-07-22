@@ -19,7 +19,7 @@ private:
     static const int DEFAULT_SHAFT_HEIGHT = 3;
     static const int DEFAULT_SHAFT_LENGTH = 5;
 
-    static const int MAX_DEPTH = 8;  // 1.2.3 change
+    static const int MAX_DEPTH = 8;  
 
 public:
     static void loadStatic();
@@ -33,10 +33,10 @@ private:
         Random* random, int footX, int footY, int footZ, int direction,
         int depth);
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class MineShaftRoom : public StructurePiece {
     public:
@@ -64,10 +64,10 @@ public:
         void readAdditonalSaveData(CompoundTag* tag);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class MineShaftCorridor : public StructurePiece {
     public:
         static StructurePiece* Create() { return new MineShaftCorridor(); }
@@ -76,8 +76,8 @@ public:
         }
 
     private:
-        bool hasRails;        // was final
-        bool spiderCorridor;  // was final
+        bool hasRails;        
+        bool spiderCorridor;  
         bool hasPlacedSpider;
         int numSections;
 
@@ -111,10 +111,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class MineShaftCrossing : public StructurePiece {
     public:
         static StructurePiece* Create() { return new MineShaftCrossing(); }
@@ -147,10 +147,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class MineShaftStairs : public StructurePiece {
     public:
         static StructurePiece* Create() { return new MineShaftStairs(); }
@@ -178,10 +178,10 @@ public:
                                  BoundingBox* chunkBB);
     };
 
-    /* @formatter:off */
+    
 private:
     static std::vector<WeighedTreasure*> smallTreasureItems;
-    /* @formatter:on */
+    
 
 public:
     static void staticCtor();

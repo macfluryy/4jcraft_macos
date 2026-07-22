@@ -37,7 +37,7 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
     m_pPlayer = initData->player;
     m_bSplitscreen = initData->bSplitscreen;
 
-    // Setup all the Iggy references we need for this scene
+    
     initialiseMovie();
 
     for (unsigned int i = 0; i < 4; ++i) m_labelIngredientsDesc[i].init(L"");
@@ -69,8 +69,8 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
         CRAFTING_HOTBAR_SLOT_END - CRAFTING_HOTBAR_SLOT_START);
 
 #if TO_BE_IMPLEMENTED
-    // if we are in splitscreen, then we need to figure out if we want to move
-    // this scene
+    
+    
     if (m_bSplitscreen) {
         app.AdjustSplitscreenScene(m_hObj, &m_OriginalPosition, m_iPad);
     }
@@ -93,21 +93,21 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
 
 #if TO_BE_IMPLEMENTED
 
-    // display the first group tab
+    
     m_hTabGroupA[m_iGroupIndex].SetShow(true);
 
-    // store the slot 0 position
+    
     m_pHSlotsBrushImageControl[0]->GetPosition(&m_vSlot0Pos);
     m_pHSlotsBrushImageControl[1]->GetPosition(&vec);
     m_fSlotSize = vec.x - m_vSlot0Pos.x;
 
-    // store the slot 0 highlight position
+    
     m_hHighlight.GetPosition(&m_vSlot0HighlightPos);
-    // Store the V slot position
+    
     m_hScrollBar2.GetPosition(&m_vSlot0V2ScrollPos);
     m_hScrollBar3.GetPosition(&m_vSlot0V3ScrollPos);
 
-    // get the position of the slot from the xui, and apply any offset needed
+    
     for (int i = 0; i < m_iCraftablesMaxHSlotC; i++) {
         m_pHSlotsBrushImageControl[i]->SetShow(false);
     }
@@ -122,7 +122,7 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
     app.SetRichPresenceContext(m_iPad, CONTEXT_GAME_STATE_CRAFTING);
     setGroupText(GetGroupNameText(m_pGroupA[m_iGroupIndex]));
 
-    // Update the tutorial state
+    
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     if (pMinecraft->localgameModes[m_iPad] != nullptr) {
@@ -150,25 +150,25 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
     m_slotListIngredientsLayout.addSlots(CRAFTING_INGREDIENTS_LAYOUT_START,
                                          m_iIngredientsMaxSlotC);
 
-    // 3 Slot vertical scroll
+    
     m_slotListCrafting3VSlots[0].addSlot(CRAFTING_V_SLOT_START + 0);
     m_slotListCrafting3VSlots[1].addSlot(CRAFTING_V_SLOT_START + 1);
     m_slotListCrafting3VSlots[2].addSlot(CRAFTING_V_SLOT_START + 2);
 
-    // 2 Slot vertical scroll
-    // 2 slot scroll has swapped order
+    
+    
     m_slotListCrafting2VSlots[0].addSlot(CRAFTING_V_SLOT_START + 1);
     m_slotListCrafting2VSlots[1].addSlot(CRAFTING_V_SLOT_START + 0);
 
-    // 1 Slot scroll (for 480 mainly)
+    
     m_slotListCrafting1VSlots.addSlot(CRAFTING_V_SLOT_START);
 
     m_slotListCraftingHSlots.addSlots(CRAFTING_H_SLOT_START,
                                       m_iCraftablesMaxHSlotC);
 
-    // Check which recipes are available with the resources we have
+    
     CheckRecipesAvailable();
-    // reset the vertical slots
+    
     iVSlotIndexA[0] = CanBeMadeA[m_iCurrentSlotHIndex].iCount - 1;
     iVSlotIndexA[1] = 0;
     iVSlotIndexA[2] = 1;
@@ -177,8 +177,8 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
 
     if (initData) delete initData;
 
-    // in this scene, we override the press sound with our own for crafting
-    // success or fail
+    
+    
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_LEFT_SCROLL, true);
@@ -188,8 +188,8 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
     ui.OverrideSFX(m_iPad, ACTION_MENU_UP, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_DOWN, true);
 
-    // 4J-PB - Must be after the CanBeMade list has been set up with
-    // CheckRecipesAvailable
+    
+    
     UpdateTooltips();
 }
 
@@ -204,9 +204,9 @@ void UIScene_CraftingMenu::handleDestroy() {
                 m_previousTutorialState);
     }
 
-    // We need to make sure that we call closeContainer() anytime this menu is
-    // closed, even if it is forced to close by some other reason (like the
-    // player dying)
+    
+    
+    
     if (Minecraft::GetInstance()->localplayers[m_iPad] != nullptr &&
         Minecraft::GetInstance()
                 ->localplayers[m_iPad]
@@ -265,17 +265,17 @@ void UIScene_CraftingMenu::handleReload() {
     m_slotListIngredientsLayout.addSlots(CRAFTING_INGREDIENTS_LAYOUT_START,
                                          m_iIngredientsMaxSlotC);
 
-    // 3 Slot vertical scroll
+    
     m_slotListCrafting3VSlots[0].addSlot(CRAFTING_V_SLOT_START + 0);
     m_slotListCrafting3VSlots[1].addSlot(CRAFTING_V_SLOT_START + 1);
     m_slotListCrafting3VSlots[2].addSlot(CRAFTING_V_SLOT_START + 2);
 
-    // 2 Slot vertical scroll
-    // 2 slot scroll has swapped order
+    
+    
     m_slotListCrafting2VSlots[0].addSlot(CRAFTING_V_SLOT_START + 1);
     m_slotListCrafting2VSlots[1].addSlot(CRAFTING_V_SLOT_START + 0);
 
-    // 1 Slot scroll (for 480 mainly)
+    
     m_slotListCrafting1VSlots.addSlot(CRAFTING_V_SLOT_START);
 
     m_slotListCraftingHSlots.addSlots(CRAFTING_H_SLOT_START,
@@ -290,7 +290,7 @@ void UIScene_CraftingMenu::handleReload() {
 
     app.DebugPrintf(app.USER_SR, "Reloading Highlight and scroll\n");
 
-    // reset the vertical slots
+    
     m_iCurrentSlotHIndex = 0;
     m_iCurrentSlotVIndex = 1;
     iVSlotIndexA[0] = CanBeMadeA[m_iCurrentSlotHIndex].iCount - 1;
@@ -373,12 +373,12 @@ void UIScene_CraftingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
     if (item != nullptr) {
         if (!inventoryItem) {
             if (item->id == Item::clock_Id || item->id == Item::compass_Id) {
-                // 4J Stu - For clocks and compasses we set the aux value to a
-                // special one that signals we should use a default texture
-                // rather than the dynamic one for the player
+                
+                
+                
                 item->setAuxValue(0xFF);
             } else if ((item->getAuxValue() & 0xFF) == 0xFF) {
-                // 4J Stu - If the aux value is set to match any
+                
                 item->setAuxValue(0);
             }
         }
@@ -391,7 +391,7 @@ int UIScene_CraftingMenu::getPad() { return m_iPad; }
 
 bool UIScene_CraftingMenu::allowRepeat(int key) {
     switch (key) {
-        // X is used to open this menu, so don't let it repeat
+        
         case ACTION_MENU_X:
             return false;
     }
@@ -401,9 +401,9 @@ bool UIScene_CraftingMenu::allowRepeat(int key) {
 void UIScene_CraftingMenu::handleInput(int iPad, int key, bool repeat,
                                        bool pressed, bool released,
                                        bool& handled) {
-    // app.DebugPrintf("UIScene_InventoryMenu handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
-    // pressed?"true":"false", released?"true":"false");
+    
+    
+    
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {
@@ -554,7 +554,7 @@ void UIScene_CraftingMenu::setItemText(const wchar_t* text) {
 }
 
 void UIScene_CraftingMenu::UpdateMultiPanel() {
-    // Call Iggy function to show the current panel
+    
     IggyDataValue result;
     IggyDataValue value[1];
 
@@ -567,11 +567,11 @@ void UIScene_CraftingMenu::UpdateMultiPanel() {
 }
 
 void UIScene_CraftingMenu::scrollDescriptionUp() {
-    // handled differently
+    
 }
 
 void UIScene_CraftingMenu::scrollDescriptionDown() {
-    // handled differently
+    
 }
 
 void UIScene_CraftingMenu::updateHighlightAndScrollPositions() {
@@ -625,5 +625,5 @@ void UIScene_CraftingMenu::handleInventoryUpdated(void* data) {
 }
 
 void UIScene_CraftingMenu::updateVSlotPositions(int iSlots, int i) {
-    // Not needed
+    
 }

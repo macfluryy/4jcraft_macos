@@ -10,7 +10,7 @@
 class LocalPlayer;
 class ItemInstance;
 
-// 4J Stu - Crafting menu code that's shared across Iggy and XUI
+
 class IUIScene_CraftingMenu {
 protected:
 #define DISPLAY_INVENTORY 0
@@ -38,7 +38,7 @@ protected:
     typedef struct {
         int iCount;
         int iItemBaseType;
-        int iRecipeA[m_iMaxVSlotC];  // tiers of item that can be made
+        int iRecipeA[m_iMaxVSlotC];  
     } CANBEMADE;
 
     CANBEMADE CanBeMadeA[m_iMaxHSlotC];
@@ -46,11 +46,11 @@ protected:
     int m_iCurrentSlotHIndex;
     int m_iCurrentSlotVIndex;
     int m_iRecipeC;
-    int m_iContainerType;  // 2x2 or 3x3
+    int m_iContainerType;  
     std::shared_ptr<LocalPlayer> m_pPlayer;
     int m_iGroupIndex;
 
-    int iVSlotIndexA[3];  // index of the v slots currently displayed
+    int iVSlotIndexA[3];  
 
     static const wchar_t* m_GroupIconNameA[m_iMaxGroup3x3];
     static Recipy::_eGroupType m_GroupTypeMapping4GridA[m_iMaxGroup2x2];

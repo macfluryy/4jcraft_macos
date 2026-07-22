@@ -26,26 +26,26 @@ MushroomCowRenderer::MushroomCowRenderer(Model* model, float shadow)
 
 void MushroomCowRenderer::render(std::shared_ptr<Entity> _mob, double x,
                                  double y, double z, float rot, float a) {
-    // 4J - original version used generics and thus had an input parameter of
-    // type MushroomCow rather than shared_ptr<Entity>  we have here - do some
-    // casting around instead
-    // shared_ptr<MushroomCow> mob =
-    // std::dynamic_pointer_cast<MushroomCow>(_mob);
+    
+    
+    
+    
+    
 
-    // 4J Stu - No need to do the cast, just pass through as-is
+    
     MobRenderer::render(_mob, x, y, z, rot, a);
 }
 
 void MushroomCowRenderer::additionalRendering(
     std::shared_ptr<LivingEntity> _mob, float a) {
-    // 4J - original version used generics and thus had an input parameter of
-    // type MushroomCow rather than shared_ptr<Mob>  we have here - do some
-    // casting around instead
+    
+    
+    
     std::shared_ptr<MushroomCow> mob =
         std::dynamic_pointer_cast<MushroomCow>(_mob);
     MobRenderer::additionalRendering(mob, a);
     if (mob->isBaby()) return;
-    bindTexture(&TextureAtlas::LOCATION_BLOCKS);  // 4J was "/terrain.png"
+    bindTexture(&TextureAtlas::LOCATION_BLOCKS);  
     glEnable(GL_CULL_FACE);
     glPushMatrix();
     glScalef(1, -1, 1);

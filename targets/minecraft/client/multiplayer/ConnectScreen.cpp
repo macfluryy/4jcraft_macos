@@ -15,10 +15,10 @@
 ConnectScreen::ConnectScreen(Minecraft* minecraft, const std::wstring& ip,
                              int port) {
     aborted = false;
-    //    System.out.println("Connecting to " + ip + ", " + port);
+    
     minecraft->setLevel(nullptr);
-    // 4J - removed from separate thread, but need to investigate what we
-    // actually need here
+    
+    
     connection = new ClientConnection(minecraft, ip, port);
     if (aborted) return;
     connection->send(std::shared_ptr<PreLoginPacket>(

@@ -5,8 +5,8 @@
 #include "java/File.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 
-// 4J Stu - There are changes to this class for 1.8.2, but since we never use it
-// anyway lets not worry about it
+
+
 
 class ZoneFile;
 class ZoneIo;
@@ -15,8 +15,8 @@ class ZonedChunkStorage : public ChunkStorage {
 public:
     static const int BIT_TERRAIN_POPULATED;
 
-    static const int CHUNKS_PER_ZONE_BITS;  // = 32
-    static const int CHUNKS_PER_ZONE;       // ^2
+    static const int CHUNKS_PER_ZONE_BITS;  
+    static const int CHUNKS_PER_ZONE;       
 
     static const int CHUNK_WIDTH;
 

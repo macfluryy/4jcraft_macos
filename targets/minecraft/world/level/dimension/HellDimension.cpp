@@ -32,9 +32,9 @@ Vec3 HellDimension::getFogColor(float td, float a) const {
     uint8_t greenComponent = ((colour >> 8) & 0xFF);
     uint8_t blueComponent = ((colour) & 0xFF);
 
-    float rr = (float)redComponent / 256;    // 0.2f;
-    float gg = (float)greenComponent / 256;  // 0.03f;
-    float bb = (float)blueComponent / 256;   // 0.03f;
+    float rr = (float)redComponent / 256;    
+    float gg = (float)greenComponent / 256;  
+    float bb = (float)blueComponent / 256;   
     return Vec3(rr, gg, bb);
 }
 

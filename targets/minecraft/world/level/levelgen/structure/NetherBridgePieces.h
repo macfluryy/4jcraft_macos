@@ -14,11 +14,11 @@ class WeighedTreasure;
 class NetherBridgePieces {
 private:
     static const int MAX_DEPTH = 30;
-    // the dungeon starts at 64 and traverses downwards to this point
+    
     static const int LOWEST_Y_POSITION = 10;
 
-    // 4J - added to replace use of Class<? extends NetherBridgePiece> within
-    // this class
+    
+    
     enum EPieceClass {
         EPieceClass_BridgeStraight,
         EPieceClass_BridgeEndFiller,
@@ -70,10 +70,10 @@ private:
         std::list<StructurePiece*>* pieces, Random* random, int footX,
         int footY, int footZ, int direction, int depth);
 
-    /**
-     *
-     *
-     */
+    
+
+
+
 public:
     class StartPiece;
 
@@ -122,7 +122,7 @@ private:
                                            bool isCastle);
 
         static bool isOkBox(BoundingBox* box,
-                            StartPiece* startRoom);  // 4J added startRoom param
+                            StartPiece* startRoom);  
         void generateLightPost(Level* level, Random* random,
                                BoundingBox* chunkBB, int x, int y, int z,
                                int xOff, int zOff);
@@ -141,10 +141,10 @@ private:
                                          int z);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class BridgeStraight : public NetherBridgePiece {
     public:
         static StructurePiece* Create() { return new BridgeStraight(); }
@@ -249,13 +249,13 @@ public:
         std::list<PieceWeight*> availableBridgePieces;
         std::list<PieceWeight*> availableCastlePieces;
 
-        // this queue is used so that the addChildren calls are
-        // called in a random order
+        
+        
         std::vector<StructurePiece*> pendingChildren;
 
         StartPiece();
         StartPiece(Random* random, int west, int north,
-                   Level* level);  // 4J Added level param
+                   Level* level);  
 
     protected:
         virtual void readAdditonalSaveData(CompoundTag* tag);
@@ -346,10 +346,10 @@ private:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class CastleEntrance : public NetherBridgePiece {
     public:
         static StructurePiece* Create() { return new CastleEntrance(); }
@@ -377,10 +377,10 @@ private:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class CastleStalkRoom : public NetherBridgePiece {
     public:
         static StructurePiece* Create() { return new CastleStalkRoom(); }
@@ -408,10 +408,10 @@ private:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class CastleSmallCorridorPiece : public NetherBridgePiece {
     public:
         static StructurePiece* Create() {
@@ -440,10 +440,10 @@ private:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class CastleSmallCorridorCrossingPiece : public NetherBridgePiece {
     public:
         static StructurePiece* Create() {
@@ -472,10 +472,10 @@ private:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class CastleSmallCorridorRightTurnPiece : public NetherBridgePiece {
     public:
         static StructurePiece* Create() {
@@ -513,10 +513,10 @@ private:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class CastleSmallCorridorLeftTurnPiece : public NetherBridgePiece {
     public:
         static StructurePiece* Create() {
@@ -552,10 +552,10 @@ private:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class CastleCorridorStairsPiece : public NetherBridgePiece {
     public:
         static StructurePiece* Create() {
@@ -584,10 +584,10 @@ private:
                                  BoundingBox* chunkBB);
     };
 
-    /**
-     *
-     *
-     */
+    
+
+
+
     class CastleCorridorTBalconyPiece : public NetherBridgePiece {
     public:
         static StructurePiece* Create() {

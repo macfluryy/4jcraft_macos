@@ -17,8 +17,8 @@ private:
         double cullOffs;
 
     public:
-        Face() {}  // 4J - added so we can declare an array of these
-                   // (unitialised) in the class
+        Face() {}  
+                   
         Face(double x, double y, double z, float yRot, float xRot);
         bool inFront(double x, double y, double z, double r);
         bool inFront(double x0, double y0, double z0, double x1, double y1,
@@ -43,7 +43,7 @@ public:
 private:
     double _max(
         double a, double b,
-        double c);  // 4J - renamed from _max due to #define conflict in stdlib
+        double c);  
 public:
     virtual void prepare(double xOff, double yOff, double zOff);
 };

@@ -20,7 +20,7 @@ public:
                     double ya, double za, Tile* tile, int face, int data,
                     Textures* textures);
     std::shared_ptr<TerrainParticle> init(
-        int x, int y, int z, int data);  // 4J - added data parameter
+        int x, int y, int z, int data);  
     std::shared_ptr<TerrainParticle> init(int data);
     virtual int getParticleTexture();
     virtual void render(Tesselator* t, float a, float xa, float ya, float za,

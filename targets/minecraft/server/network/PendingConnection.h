@@ -15,12 +15,12 @@ class Packet;
 class PendingConnection : public PacketListener {
 private:
     static const int FAKE_LAG = 0;
-    // 4J - 60 seconds at 20 TPS. Was 10 minutes which was effectively no DoS
-    // protection: a half-open TCP connection that never sends PreLoginPacket
-    // would sit in the pending list for that whole window.
+    
+    
+    
     static const int MAX_TICKS_BEFORE_LOGIN = 20 * 60;
 
-    //    public static Logger logger = Logger.getLogger("Minecraft");
+    
     static Random* random;
 
 public:

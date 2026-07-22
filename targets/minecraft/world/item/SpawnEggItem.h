@@ -48,15 +48,15 @@ public:
 
     static std::shared_ptr<Entity> spawnMobAt(
         Level* level, int mobId, double x, double y, double z,
-        int* piResult);  // 4J Added piResult param
+        int* piResult);  
 
-    // 4J-PB added for dispenser
+    
     static std::shared_ptr<Entity> canSpawn(int iAuxVal, Level* level,
                                             int* piResult);
 
-    // 4J: Added for neatness
+    
     static void DisplaySpawnError(std::shared_ptr<Player> player, int result);
 
-    //@Override
+    
     void registerIcons(IconRegister* iconRegister);
 };

@@ -8,15 +8,15 @@
 #include "minecraft/world/level/Level.h"
 
 MinecartRideable::MinecartRideable(Level* level) : Minecart(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 }
 
 MinecartRideable::MinecartRideable(Level* level, double x, double y, double z)
     : Minecart(level, x, y, z) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 }
 

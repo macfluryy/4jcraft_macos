@@ -58,7 +58,7 @@ void ModelPart::construct(Model* model, int xTexOffs, int yTexOffs) {
 }
 
 void ModelPart::addChild(ModelPart* child) {
-    // if (children == nullptr) children = new std::vector<ModelPart*>;
+    
     children.push_back(child);
 }
 
@@ -166,7 +166,7 @@ void ModelPart::render(float scale, bool usecompiled,
                 }
             }
         }
-        // if (children != nullptr)
+        
         {
             for (unsigned int i = 0; i < children.size(); i++) {
                 children.at(i)->render(scale, usecompiled);
@@ -186,7 +186,7 @@ void ModelPart::render(float scale, bool usecompiled,
                 }
             }
         }
-        // if (children != nullptr)
+        
         {
             for (unsigned int i = 0; i < children.size(); i++) {
                 children.at(i)->render(scale, usecompiled);
@@ -204,7 +204,7 @@ void ModelPart::render(float scale, bool usecompiled,
                 }
             }
         }
-        // if (children != nullptr)
+        
         {
             for (unsigned int i = 0; i < children.size(); i++) {
                 children.at(i)->render(scale, usecompiled);
@@ -249,7 +249,7 @@ void ModelPart::compile(float scale) {
     list = MemoryTracker::genLists(1);
 
     glNewList(list, GL_COMPILE);
-    // Set a few render states that aren't configured by default
+    
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
     glDepthMask(true);

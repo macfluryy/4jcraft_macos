@@ -8,11 +8,11 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/Tile.h"
 
-// 4J-PB - adding "" on the end of these so we can detect it
+
 std::wstring WeaponRecipies::shapes[][4] = {
-    {L"X",        //
-     L"X",        //
-     L"#", L""},  //
+    {L"X",        
+     L"X",        
+     L"#", L""},  
 };
 
 void WeaponRecipies::_init() {
@@ -53,7 +53,7 @@ void WeaponRecipies::addRecipes(Recipes* r) {
 
                     L'#', Item::stick, L'X', pObjMaterial->tile, L'T');
             } else {
-                // must be Item
+                
                 wchTypes[4] = L'i';
                 r->addShapedRecipy(
                     new ItemInstance(target), wchTypes, shapes[t],
@@ -63,26 +63,26 @@ void WeaponRecipies::addRecipes(Recipes* r) {
         }
     }
 
-    /* 4J-PB - moved out to main recipes so we can avoid them stacking on the
-    group display name r->addShapedRecipy(new ItemInstance(Item::bow, 1), //
-            L"ssscicig",
-            L" #X", //
-            L"# X", //
-            L" #X", //
+    
 
-            L'X', Item::string,//
-            L'#', Item::stick,
-            L'T');
 
-    r->addShapedRecipy(new ItemInstance(Item::arrow, 4), //
-            L"ssscicicig",
-            L"X", //
-            L"#", //
-            L"Y", //
 
-            L'Y', Item::feather,//
-            L'X', Item::flint,//
-            L'#', Item::stick,
-            L'T');
-            */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

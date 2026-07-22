@@ -1,34 +1,34 @@
-#include "minecraft/stdafx.h"  // 4J
+#include "minecraft/stdafx.h"  
 
-// gdraw_d3d11.cpp - author: Fabian Giesen - copyright 2011 RAD Game Tools
-//
-// This implements the Iggy graphics driver layer for D3D 11.
 
-// GDraw consists of several components that interact fairly loosely with each
-// other; e.g. the resource management, drawing and filtering parts are all
-// fairly independent of each other. If you want to modify some aspect of GDraw
-// - say the texture allocation logic - your best bet is usually to just look
-// for one of the related entry points, e.g. MakeTextureBegin, and take it from
-// there. There's a bunch of code in this file, but none of it is really
-// complicated.
-//
-// The one bit you might want to change that's not that localized is to
-// integrate GDraw with an existing state caching system. The following bits all
-// modify D3D state in some way:
-// - The rendering helpers (set_viewport_raw, set_projection_raw,
-// set_*_renderstate)
-// - RenderTile*/TextureDrawBuffer* may change the active rendertarget and
-// depth/stencil surface,
-//   as do D3D1X_(NoMoreGDrawThisFrame) and set_render_target
-// - set_texture
-// - set_renderstate and set_renderstate_full. These are the main places where
-// render state changes occur;
-//   you should probably start here.
-// - DrawIndexedTriangles sets the active vertex/index buffers and vertex
-// declaration
-// - Most of the functions in the "filter effects" section modify D3D state,
-// mostly
-//   pixel shader constants and textures
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #define GDRAW_ASSERTS
 
@@ -36,10 +36,10 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 
-// We temporarily disable this warning for the shared interface portions
+
 #pragma warning(push)
 #pragma warning(disable \
-                : 4201)  // nonstandard extension used : nameless struct/union
+                : 4201)  
 
 #include <d3d11.h>
 #include <math.h>
@@ -52,8 +52,8 @@
 
 #pragma warning(pop)
 
-// Some macros to allow as much sharing between D3D10 and D3D11 code as
-// possible.
+
+
 #define D3D1X_(id) D3D11_##id
 #define ID3D1X(id) ID3D11##id
 #define gdraw_D3D1X_(id) gdraw_D3D11_##id
@@ -153,6 +153,6 @@ GDrawFunctions* gdraw_D3D11_CreateContext(ID3D11Device* dev,
     return create_context(dev, ctx, w, h);
 }
 
-// 4J added - interface so we can set the viewport back to the one that Iggy
-// last set up
+
+
 void gdraw_D3D11_setViewport_4J() { set_viewport(); }

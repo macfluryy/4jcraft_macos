@@ -24,8 +24,8 @@ bool MegaTreeFeature::place(Level* level, Random* random, int x, int y, int z) {
     bool free = true;
     if (y < 1 || y + treeHeight + 1 > Level::maxBuildHeight) return false;
 
-    // 4J Stu Added to stop tree features generating areas previously place by
-    // game rule generation
+    
+    
     if (app.getLevelGenerationOptions() != nullptr) {
         LevelGenerationOptions* levelGenOptions =
             app.getLevelGenerationOptions();
@@ -33,8 +33,8 @@ bool MegaTreeFeature::place(Level* level, Random* random, int x, int y, int z) {
             x - 2, y - 1, z - 2, x + 2, y + treeHeight, z + 2);
 
         if (intersects) {
-            // app.DebugPrintf("Skipping reeds feature generation as it overlaps
-            // a game rule structure\n");
+            
+            
             return false;
         }
     }
@@ -170,8 +170,8 @@ bool MegaTreeFeature::place(Level* level, Random* random, int x, int y, int z) {
 void MegaTreeFeature::placeLeaves(Level* level, int x, int z, int topPosition,
                                   int baseRadius, Random* random) {
     int grassHeight = 2;
-    // 4J Stu - Generate from top down so that we don't have to keep adjusting
-    // the heightmaps
+    
+    
     for (int yy = topPosition; yy >= topPosition - grassHeight; yy--) {
         int yo = yy - (topPosition);
         int radius = baseRadius + 1 - yo;

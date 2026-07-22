@@ -26,10 +26,10 @@
 #include "minecraft/world/phys/Vec3.h"
 #include "nbt/CompoundTag.h"
 
-// 4J - added common ctor code.
+
 void FishingHook::_init() {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
+    
+    
     this->defineSynchedData();
 
     xTile = -1;
@@ -66,9 +66,9 @@ FishingHook::FishingHook(Level* level, double x, double y, double z,
     _init();
 
     this->owner = owner;
-    // 4J Stu - Moved this outside the ctor
-    // owner->fishing = std::dynamic_pointer_cast<FishingHook>(
-    // shared_from_this() );
+    
+    
+    
 
     setPos(x, y, z);
 }
@@ -78,9 +78,9 @@ FishingHook::FishingHook(Level* level, std::shared_ptr<Player> mob)
     _init();
 
     owner = mob;
-    // 4J Stu - Moved this outside the ctor
-    // owner->fishing = std::dynamic_pointer_cast<FishingHook>(
-    // shared_from_this() );
+    
+    
+    
 
     moveTo(mob->x, mob->y + 1.62 - mob->heightOffset, mob->z, mob->yRot,
            mob->xRot);
@@ -237,7 +237,7 @@ void FishingHook::tick() {
     double nearest = 0;
     auto itEnd = objects.end();
     for (auto it = objects.begin(); it != itEnd; it++) {
-        std::shared_ptr<Entity> e = *it;  // objects.at(i);
+        std::shared_ptr<Entity> e = *it;  
         if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
         float rr = 0.3f;
@@ -260,10 +260,10 @@ void FishingHook::tick() {
 
     if (res != nullptr) {
         if (res->entity != nullptr) {
-            // 4J Stu Move fix for : fix for #48587 - CRASH: Code: Gameplay:
-            // Hitting another player with the fishing bobber crashes the game.
-            // [Fishing pole, line] Incorrect dynamic_pointer_cast used around
-            // the shared_from_this()
+            
+            
+            
+            
             DamageSource* damageSource =
                 DamageSource::thrown(shared_from_this(), owner);
             if (res->entity->hurt(damageSource, 0)) {
@@ -416,7 +416,7 @@ int FishingHook::retrieve() {
         level->addEntity(ie);
         owner->level->addEntity(std::make_shared<ExperienceOrb>(
             owner->level, owner->x, owner->y + 0.5f, owner->z + 0.5f,
-            random->nextInt(6) + 1));  // 4J Stu brought forward from 1.4
+            random->nextInt(6) + 1));  
         dmg = 1;
     }
     if (inGround) dmg = 2;
@@ -426,7 +426,7 @@ int FishingHook::retrieve() {
     return dmg;
 }
 
-// 4J Stu - Brought forward from 1.4
+
 void FishingHook::remove() {
     Entity::remove();
     if (owner != nullptr) owner->fishing = nullptr;

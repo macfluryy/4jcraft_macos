@@ -34,14 +34,14 @@ std::shared_ptr<ItemInstance> DispenserTileEntity::removeItem(unsigned int slot,
             std::shared_ptr<ItemInstance> item = items[slot];
             items[slot] = nullptr;
             setChanged();
-            // 4J Stu - Fix for duplication glitch
+            
             if (item->count <= 0) return nullptr;
             return item;
         } else {
             std::shared_ptr<ItemInstance> i = items[slot]->remove(count);
             if (items[slot]->count == 0) items[slot] = nullptr;
             setChanged();
-            // 4J Stu - Fix for duplication glitch
+            
             if (i->count <= 0) return nullptr;
             return i;
         }
@@ -59,12 +59,12 @@ std::shared_ptr<ItemInstance> DispenserTileEntity::removeItemNoUpdate(
     return nullptr;
 }
 
-// 4J-PB added for spawn eggs not being useable due to limits, so add them in
-// again
+
+
 void DispenserTileEntity::AddItemBack(std::shared_ptr<ItemInstance> item,
                                       unsigned int slot) {
     if (items[slot] != nullptr) {
-        // just increment the count of the items
+        
         if (item->id == items[slot]->id) {
             items[slot]->count++;
             setChanged();
@@ -76,12 +76,12 @@ void DispenserTileEntity::AddItemBack(std::shared_ptr<ItemInstance> item,
         setChanged();
     }
 }
-/**
- * Removes an item with the given id and returns true if one was found.
- *
- * @param itemId
- * @return
- */
+
+
+
+
+
+
 bool DispenserTileEntity::removeProjectile(int itemId) {
     for (unsigned int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr && items[i]->id == itemId) {
@@ -188,7 +188,7 @@ bool DispenserTileEntity::canPlaceItem(int slot,
     return true;
 }
 
-// 4J Added
+
 std::shared_ptr<TileEntity> DispenserTileEntity::clone() {
     std::shared_ptr<DispenserTileEntity> result =
         std::make_shared<DispenserTileEntity>();
